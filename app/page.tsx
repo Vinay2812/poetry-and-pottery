@@ -26,8 +26,8 @@ export default function Home() {
 
       <main className="container mx-auto pt-14 lg:pt-0">
         {/* Hero Section */}
-        <section className="px-4 py-4 md:px-8 md:py-12">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-[#5C6B4A] md:aspect-[21/9]">
+        <section className="px-4 py-4 lg:px-8 lg:py-12">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-[#5C6B4A] lg:aspect-[21/9]">
             <Image
               src={HERO_IMAGES.springRituals}
               alt="Spring Rituals Collection"
@@ -36,16 +36,16 @@ export default function Home() {
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12">
+            <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
               <span className="bg-primary text-primary-foreground mb-4 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium">
                 NEW ARRIVALS
               </span>
-              <h1 className="mb-2 text-4xl font-bold text-white md:text-6xl">
+              <h1 className="mb-2 text-4xl font-bold text-white lg:text-6xl">
                 Spring
                 <br />
                 Rituals
               </h1>
-              <p className="mb-6 max-w-md text-sm text-white/90 md:text-base">
+              <p className="mb-6 max-w-md text-sm text-white/90 lg:text-base">
                 Hand-thrown porcelain designed to ground your daily moments in
                 nature.
               </p>
@@ -57,7 +57,7 @@ export default function Home() {
         </section>
 
         {/* Shop by Category */}
-        <section className="px-4 py-6 md:px-8">
+        <section className="px-4 py-6 lg:px-8">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Shop by Category</h2>
             <Link
@@ -87,9 +87,9 @@ export default function Home() {
         </section>
 
         {/* Curated Favorites */}
-        <section className="px-4 py-6 md:px-8">
+        <section className="px-4 py-6 lg:px-8">
           <h2 className="mb-4 text-lg font-semibold">Curated Favorites</h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -98,7 +98,7 @@ export default function Home() {
 
         {/* Upcoming Event */}
         {upcomingEvent && (
-          <section className="px-4 py-6 md:px-8">
+          <section className="px-4 py-6 lg:px-8">
             <div className="shadow-soft rounded-2xl bg-white p-4">
               <div className="flex gap-4">
                 <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl">
@@ -137,8 +137,8 @@ export default function Home() {
         )}
 
         {/* Our Story CTA */}
-        <section className="px-4 py-6 md:px-8">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl md:aspect-[21/9]">
+        <section className="px-4 py-6 lg:px-8">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl lg:aspect-[21/9]">
             <Image
               src={HERO_IMAGES.ourStory}
               alt="Our Story"
@@ -146,8 +146,8 @@ export default function Home() {
               className="object-cover"
             />
             <div className="from-primary/90 to-primary/40 absolute inset-0 bg-gradient-to-t" />
-            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12">
-              <h2 className="mb-2 text-2xl font-bold text-white md:text-4xl">
+            <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
+              <h2 className="mb-2 text-2xl font-bold text-white lg:text-4xl">
                 Our Story
               </h2>
               <p className="mb-4 max-w-sm text-sm text-white/90">

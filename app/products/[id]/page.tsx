@@ -52,8 +52,8 @@ export default function ProductPage() {
       <MobileHeader title="Product Detail" showBack backHref="/products" />
 
       <main className="pt-14 pb-40 lg:pt-0 lg:pb-0">
-        <div className="container mx-auto px-4 py-6 md:px-8">
-          <div className="grid gap-8 md:grid-cols-2">
+        <div className="container mx-auto px-4 py-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-2">
             {/* Image Gallery */}
             <div className="min-w-0">
               <div className="bg-muted/30 group relative mb-4 aspect-square w-full overflow-hidden rounded-2xl">
@@ -162,7 +162,7 @@ export default function ProductPage() {
 
             {/* Product Info */}
             <div className="min-w-0">
-              <h1 className="mb-2 text-2xl font-semibold md:text-3xl">
+              <h1 className="mb-2 text-2xl font-semibold lg:text-3xl">
                 {product.name}
                 {selectedGlaze && ` - ${selectedGlaze}`}
               </h1>
@@ -317,7 +317,7 @@ export default function ProductPage() {
               <h2 className="mb-6 text-xl font-semibold">
                 You might also like
               </h2>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                 {relatedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

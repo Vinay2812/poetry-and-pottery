@@ -173,7 +173,7 @@ export default function ShopPage() {
           </Select>
         </div>
 
-        <div className="container mx-auto px-4 py-2 md:px-8 md:py-6">
+        <div className="container mx-auto px-4 py-2 lg:px-8 lg:py-6">
           <div className="flex gap-8">
             {/* Desktop Sidebar */}
             <aside className="hidden w-64 flex-shrink-0 lg:block">
@@ -212,7 +212,7 @@ export default function ShopPage() {
                 </Select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+              <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
                 {sortedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

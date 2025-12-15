@@ -27,8 +27,8 @@ export default function WishlistPage() {
       <Navbar />
       <MobileHeader title="My Wishlist" showBack backHref="/products" />
 
-      <main className="pt-14 pb-24 md:pt-0 md:pb-0">
-        <div className="container mx-auto px-4 py-6 md:px-8">
+      <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
+        <div className="container mx-auto px-4 py-6 lg:px-8">
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <p className="text-muted-foreground text-sm">
@@ -50,7 +50,7 @@ export default function WishlistPage() {
                   <div className="flex gap-4">
                     <Link
                       href={`/products/${item.id}`}
-                      className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl md:h-32 md:w-32"
+                      className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32"
                     >
                       <Image
                         src={item.image}
@@ -128,9 +128,9 @@ export default function WishlistPage() {
           {/* Recommendations */}
           <section>
             <h2 className="mb-4 text-lg font-semibold">You might also like</h2>
-            <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-4">
+            <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-4 lg:grid lg:grid-cols-4">
               {RECOMMENDATIONS.map((product) => (
-                <div key={product.id} className="min-w-[160px] md:min-w-0">
+                <div key={product.id} className="min-w-[160px] lg:min-w-0">
                   <ProductCard product={product} />
                 </div>
               ))}

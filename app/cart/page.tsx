@@ -51,11 +51,11 @@ export default function CartPage() {
       <Navbar />
       <MobileHeader title="My Cart" showBack backHref="/products" />
 
-      <main className="pt-14 pb-64 md:pt-0 md:pb-0">
-        <div className="container mx-auto px-4 py-6 md:px-8">
-          <div className="grid gap-8 md:grid-cols-3">
+      <main className="pt-14 pb-64 lg:pt-0 lg:pb-0">
+        <div className="container mx-auto px-4 py-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-3">
             {/* Cart Items */}
-            <div className="md:col-span-2">
+            <div className="lg:col-span-2">
               {cartItems.length > 0 ? (
                 <div className="space-y-4">
                   {cartItems.map((item) => (
@@ -138,7 +138,7 @@ export default function CartPage() {
 
             {/* Order Summary - Desktop */}
             {cartItems.length > 0 && (
-              <div className="hidden md:block">
+              <div className="hidden lg:block">
                 <div className="shadow-soft sticky top-24 rounded-2xl bg-white p-6">
                   <h2 className="mb-4 text-lg font-semibold">Order Summary</h2>
 
@@ -187,7 +187,7 @@ export default function CartPage() {
 
       {/* Mobile Fixed Bottom Summary */}
       {cartItems.length > 0 && (
-        <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 backdrop-blur-md md:hidden">
+        <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 backdrop-blur-md lg:hidden">
           <div className="p-4">
             <div className="bg-muted/50 mb-3 rounded-xl p-3">
               <div className="space-y-1.5 text-sm">

@@ -24,7 +24,7 @@ export function ProductCard({
         {/* Image */}
         <div
           className={cn(
-            "bg-muted relative overflow-hidden rounded-xl md:rounded-2xl",
+            "bg-muted relative overflow-hidden rounded-xl lg:rounded-2xl",
             variant === "default" ? "aspect-square" : "aspect-[4/3]",
           )}
         >
@@ -40,7 +40,7 @@ export function ProductCard({
         <Button
           variant="secondary"
           size="icon"
-          className="absolute top-2 right-2 h-8 w-8 rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:bg-white md:top-3 md:right-3"
+          className="absolute top-2 right-2 h-8 w-8 rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:bg-white lg:top-3 lg:right-3"
           onClick={(e) => {
             e.preventDefault();
             // Toggle wishlist
@@ -51,7 +51,7 @@ export function ProductCard({
       </div>
 
       {/* Info */}
-      <div className="mt-2 space-y-0.5 md:mt-3">
+      <div className="mt-2 space-y-0.5 lg:mt-3">
         <div className="flex items-start justify-between gap-2">
           <h3 className="line-clamp-1 text-sm leading-tight font-medium">
             {product.name}

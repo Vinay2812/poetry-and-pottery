@@ -27,7 +27,7 @@ export const PRODUCT_IMAGES = {
   succulentPlanter:
     "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&h=400&fit=crop",
   coasterSet:
-    "https://images.unsplash.com/photo-1595341595379-cf1cd0ed7ad1?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1732983461382-91e57809be1c?w=400&h=400&fit=crop",
   dinnerPlate:
     "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400&h=400&fit=crop",
   rusticPlate:
@@ -342,6 +342,10 @@ export interface Event {
   image: string;
   spotsLeft?: number;
   level?: "Beginner" | "Intermediate" | "Advanced";
+  duration?: string;
+  location?: string;
+  instructor?: string;
+  includes?: string[];
 }
 
 // Events Data
@@ -350,34 +354,88 @@ export const EVENTS: Event[] = [
     id: "1",
     title: "Intro to Wheel Throwing",
     description:
-      "Learn the basics of centering clay and throwing your first bowl on the pottery wheel.",
+      "Learn the basics of centering clay and throwing your first bowl on the pottery wheel. This hands-on workshop is perfect for beginners who want to experience the joy of working with clay on a pottery wheel. You'll learn proper posture, hand positioning, and the fundamentals of centering clay - the most crucial skill in wheel throwing.",
     date: "Sat, Oct 12",
     time: "2:00 PM",
     price: 45,
     image: EVENT_IMAGES.wheelThrowing,
     spotsLeft: 3,
+    duration: "2 hours",
+    location: "Poetry & Pottery Studio, Downtown",
+    instructor: "Maya Thompson",
+    includes: [
+      "All materials and clay",
+      "Use of pottery wheel",
+      "Take home your creation",
+      "Complimentary tea and snacks",
+    ],
   },
   {
     id: "2",
     title: "Glazing Masterclass",
     description:
-      "Master the art of glazing in our comprehensive workshop. Learn techniques from dipping to brushwork.",
+      "Master the art of glazing in our comprehensive workshop. Learn techniques from dipping to brushwork. Discover how different glazes react during firing and create stunning effects. You'll experiment with layering techniques and learn to predict how colors will transform in the kiln.",
     date: "Sun, Oct 13",
     time: "10:00 AM",
     price: 55,
     image: EVENT_IMAGES.glazingClass,
     level: "Beginner",
+    duration: "3 hours",
+    location: "Poetry & Pottery Studio, Downtown",
+    instructor: "James Chen",
+    includes: [
+      "Bisque-fired piece to glaze",
+      "Access to 12+ glaze colors",
+      "Firing included",
+      "Reference guide to take home",
+    ],
   },
   {
     id: "3",
     title: "Raku Firing Night",
     description:
-      "Experience the magic of raku firing. Watch your pieces transform in the flames.",
+      "Experience the magic of raku firing. Watch your pieces transform in the flames. This ancient Japanese technique creates unique, unpredictable results with metallic lusters and crackle effects. Each piece emerges from the fire as a one-of-a-kind treasure.",
     date: "Fri, Oct 18",
     time: "6:00 PM",
     price: 60,
     image: EVENT_IMAGES.rakuFiring,
     level: "Advanced",
+    duration: "4 hours",
+    location: "Poetry & Pottery Outdoor Kiln Area",
+    instructor: "Sarah Mitchell",
+    includes: [
+      "Pre-made bisque piece for raku",
+      "Safety equipment provided",
+      "Light dinner and drinks",
+      "Certificate of completion",
+    ],
+  },
+];
+
+// Registered Event Type
+export interface RegisteredEvent {
+  id: string;
+  eventId: string;
+  registrationDate: string;
+  status: "confirmed" | "pending" | "completed";
+  ticketNumber: string;
+}
+
+// Demo Registered Events Data
+export const REGISTERED_EVENTS: RegisteredEvent[] = [
+  {
+    id: "reg-1",
+    eventId: "1",
+    registrationDate: "Oct 5, 2024",
+    status: "confirmed",
+    ticketNumber: "PPW-2024-1012",
+  },
+  {
+    id: "reg-2",
+    eventId: "3",
+    registrationDate: "Oct 8, 2024",
+    status: "confirmed",
+    ticketNumber: "PPW-2024-1018",
   },
 ];
 
