@@ -27,7 +27,7 @@ export default function Home() {
       <main className="container mx-auto pt-14 lg:pt-0">
         {/* Hero Section */}
         <section className="px-4 py-4 lg:px-8 lg:py-12">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-[#5C6B4A] lg:aspect-[21/9]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-[#5C6B4A] lg:aspect-21/9">
             <Image
               src={HERO_IMAGES.springRituals}
               alt="Spring Rituals Collection"
@@ -35,7 +35,7 @@ export default function Home() {
               className="object-cover opacity-80"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
               <span className="bg-primary text-primary-foreground mb-4 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium">
                 NEW ARRIVALS
@@ -138,14 +138,14 @@ export default function Home() {
 
         {/* Our Story CTA */}
         <section className="px-4 py-6 lg:px-8">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl lg:aspect-[21/9]">
+          <div className="relative aspect-4/3 overflow-hidden rounded-3xl lg:aspect-21/9">
             <Image
               src={HERO_IMAGES.ourStory}
               alt="Our Story"
               fill
               className="object-cover"
             />
-            <div className="from-primary/90 to-primary/40 absolute inset-0 bg-gradient-to-t" />
+            <div className="from-primary/90 to-primary/40 absolute inset-0 bg-linear-to-t" />
             <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
               <h2 className="mb-2 text-2xl font-bold text-white lg:text-4xl">
                 Our Story

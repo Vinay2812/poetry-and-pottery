@@ -25,7 +25,7 @@ export function ProductCard({
         <div
           className={cn(
             "bg-muted relative overflow-hidden rounded-xl lg:rounded-2xl",
-            variant === "default" ? "aspect-square" : "aspect-[4/3]",
+            variant === "default" ? "aspect-square" : "aspect-4/3",
           )}
         >
           <Image

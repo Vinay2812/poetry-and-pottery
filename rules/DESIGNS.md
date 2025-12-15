@@ -226,11 +226,11 @@ This document outlines the design system rules and guidelines for the Poetry & P
 #### Variants
 
 - **Default**: `aspect-square` - Square format for grid layouts
-- **Compact**: `aspect-[4/3]` - Landscape format for compact views
+- **Compact**: `aspect-4/3` - Landscape format for compact views
 
 #### Image
 
-- **Aspect Ratio**: `aspect-square` (default) or `aspect-[4/3]` (compact variant)
+- **Aspect Ratio**: `aspect-square` (default) or `aspect-4/3` (compact variant)
 - **Border Radius**: `rounded-xl md:rounded-2xl`
 - **Background**: `bg-muted`
 - **Hover Effect**: `group-hover:scale-105` with `transition-transform duration-300`
@@ -323,7 +323,7 @@ This document outlines the design system rules and guidelines for the Poetry & P
 
 - **Aspect Ratio**: `aspect-[4/5]`
 - **Border Radius**: `rounded-3xl`
-- **Gradient**: `bg-gradient-to-t from-black/50 to-transparent`
+- **Gradient**: `bg-linear-to-t from-black/50 to-transparent`
 - **Content Padding**: `p-6`
 - **Content Position**: `flex flex-col justify-end`
 - **Badge**: `px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full w-fit mb-4`
@@ -341,8 +341,8 @@ This document outlines the design system rules and guidelines for the Poetry & P
 
 #### Secondary Hero (Our Story CTA)
 
-- **Aspect Ratio**: `aspect-[4/3] md:aspect-[21/9]`
-- **Gradient**: `bg-gradient-to-t from-primary/90 to-primary/40`
+- **Aspect Ratio**: `aspect-4/3 md:aspect-[21/9]`
+- **Gradient**: `bg-linear-to-t from-primary/90 to-primary/40`
 - **Title**: `text-2xl md:text-4xl font-bold text-white`
 - **Description**: `text-white/90 text-sm max-w-sm`
 - **CTA Button**: `variant="secondary"` with `bg-white text-primary hover:bg-white/90`

@@ -108,7 +108,7 @@ export default function AboutPage() {
       <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl lg:aspect-[21/9]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl lg:aspect-21/9">
             <Image
               src={HERO_IMAGES.ourStory}
               alt="Our Story"
@@ -116,7 +116,7 @@ export default function AboutPage() {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
               <h1 className="mb-2 text-4xl font-bold text-white lg:text-6xl">
                 Our Story
