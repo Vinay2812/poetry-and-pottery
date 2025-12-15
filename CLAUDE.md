@@ -70,40 +70,21 @@ Visual components render UI and should be isolated from application state, API d
 **Setup and Development:**
 
 - `npm install` - Install dependencies
-- `npm run dev` - Start development server on port 3001 (requires .env setup and codegen)
-- `npm run dev:fast` - Start development server with Turbo mode
-- `npm run dev:local` - Start development server for local environment
-
-**GraphQL Code Generation:**
-
-- `npm run codegen` - Generate GraphQL types (required before starting dev server)
-- `npm run jsonapi-update` - Update API resources (automatically runs with dev commands)
+- `npm run dev` - Start development server on port 3000(requires .env setup)
 
 **Build and Production:**
 
 - `npm run build` - Build for production (includes codegen and verification)
 - `npm start` - Start production server on port 3001
 
-**Testing:**
-
-- `npm test` - Run Jest tests with JSON output
-- `npm run test:watch` - Run tests in watch mode
-- `npm run test:file` - Run specific test file
-- `npm run test-storybook` - Run Storybook tests in watch mode
-- `npm run test-storybook:ci` - Run Storybook tests for CI
-
 **Code Quality:**
 
 - `npm run lint` - Run ESLint
-- `npm run lint:fix` - Run ESLint with auto-fix
 - `npm run prettier` - Check code formatting
 - `npm run prettier:format` - Format code with Prettier
 - `npm run tsc` - TypeScript type checking without emitting files
 
 **Storybook:**
-
-- `npm run storybook` - Start Storybook development server on port 6006
-- `npm run build-storybook` - Build static Storybook
 
 ## Architecture Overview
 
@@ -118,12 +99,11 @@ Visual components render UI and should be isolated from application state, API d
 
 **Key Technologies:**
 
-- **Frontend:** Next.js 14+, React 18, TypeScript
+- **Frontend:** Next.js 16+, React 19, TypeScript
 - **Styling:** Tailwind CSS with custom theme, Emotion for styled components
-- **State Management:** Redux Toolkit, React Query (@tanstack/react-query)
+- **State Management:** Zustand, React Query (@tanstack/react-query)
 - **GraphQL:** Apollo Client with automated code generation
-- **Auth:** Auth0 (@auth0/nextjs-auth0)
-- **Feature Flags:** LaunchDarkly for feature management
+- **Auth:** Clerk
 - **UI Components:** Radix UI primitives, custom design system in `src/components/ui/`
 
 **Component Architecture:**
@@ -144,7 +124,6 @@ Visual components render UI and should be isolated from application state, API d
 
 - Node.js >=18.17.0, npm >=9.6.7
 - Requires `.env` file with all variables from `.env.example`
-- GraphQL codegen depends on proper environment setup
 
 **Path Aliases:**
 
@@ -153,8 +132,5 @@ Visual components render UI and should be isolated from application state, API d
 
 ## Important Notes
 
-- Always run `npm run codegen` before starting development if GraphQL schema changes
-- Development server runs on port 3001 (not the default 3000)
-- Feature flags are managed through LaunchDarkly - check `docs/feature-flags.md`
-- Uses timezone UTC for testing (`TZ=UTC` in test commands)
-- Storybook integration with Jest test results for component documentation
+- Always follow the design principles written in
+  rules/DESIGN-PRINCIPLES, rules/DESIGNS
