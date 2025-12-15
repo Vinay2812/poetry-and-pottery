@@ -480,6 +480,56 @@ export const REVIEWS: Review[] = [
       "Beautiful craftsmanship. Slightly smaller than I expected but perfect for my morning tea ritual.",
     date: "1 month ago",
   },
+  {
+    id: "4",
+    author: "David Park",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+    rating: 5,
+    content:
+      "The attention to detail is incredible. You can really tell this was made by skilled artisans. The moss green glaze is even more beautiful in person!",
+    date: "2 months ago",
+  },
+  {
+    id: "5",
+    author: "Lisa Thompson",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+    rating: 4,
+    content:
+      "Lovely piece that adds warmth to my kitchen. The glaze has such depth and character. Would definitely buy from this shop again.",
+    date: "2 months ago",
+  },
+  {
+    id: "6",
+    author: "James Rodriguez",
+    avatar:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop",
+    rating: 5,
+    content:
+      "Bought this as a gift for my mother and she absolutely loved it. The packaging was also very thoughtful and eco-friendly.",
+    date: "3 months ago",
+  },
+  {
+    id: "7",
+    author: "Amanda Foster",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop",
+    rating: 3,
+    content:
+      "Nice quality but the color was slightly different from what I expected based on the photos. Still a lovely piece overall.",
+    date: "3 months ago",
+  },
+  {
+    id: "8",
+    author: "Robert Kim",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+    rating: 5,
+    content:
+      "This is my third purchase from Poetry & Pottery and they never disappoint. The quality is consistently excellent.",
+    date: "4 months ago",
+  },
 ];
 
 // Navigation Links

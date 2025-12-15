@@ -1,8 +1,6 @@
 "use client";
 
 import { Heart, ShoppingBag } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
@@ -10,6 +8,8 @@ import { MobileHeader, MobileNav, Navbar } from "@/components/layout";
 import { ProductCard } from "@/components/product-card";
 import { ProductImageGallery } from "@/components/product-image-gallery";
 import { Rating } from "@/components/rating";
+import { ReviewCard } from "@/components/review-card";
+import { ReviewsSheet } from "@/components/reviews-sheet";
 import {
   Accordion,
   AccordionContent,
@@ -119,38 +119,27 @@ export default function ProductPage() {
               <div className="mb-6">
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className="font-semibold">Recent Reviews</h3>
-                  <Link href="#reviews" className="text-primary text-sm">
-                    View All →
-                  </Link>
+                  <ReviewsSheet
+                    reviews={REVIEWS}
+                    averageRating={product.rating}
+                    totalReviews={product.reviewCount}
+                  >
+                    <button className="text-primary text-sm hover:underline">
+                      View All →
+                    </button>
+                  </ReviewsSheet>
                 </div>
                 <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-2">
                   {REVIEWS.slice(0, 2).map((review) => (
-                    <div
+                    <ReviewCard
                       key={review.id}
-                      className="border-border w-64 shrink-0 rounded-xl border bg-white p-4"
-                    >
-                      <div className="mb-2 flex items-center gap-2">
-                        <div className="relative h-8 w-8 overflow-hidden rounded-full">
-                          <Image
-                            src={review.avatar}
-                            alt={review.author}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">{review.author}</p>
-                          <Rating
-                            rating={review.rating}
-                            showCount={false}
-                            size="sm"
-                          />
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground line-clamp-3 text-sm">
-                        {review.content}
-                      </p>
-                    </div>
+                      author={review.author}
+                      avatar={review.avatar}
+                      rating={review.rating}
+                      content={review.content}
+                      date={review.date}
+                      isCompact
+                    />
                   ))}
                 </div>
               </div>
