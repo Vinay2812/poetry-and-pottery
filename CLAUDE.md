@@ -90,7 +90,7 @@ Visual components render UI and should be isolated from application state, API d
 
 **Next.js App Router Structure:**
 
-- Uses Next.js 14+ App Router with route groups
+- Uses Next.js 16+ App Router with route groups
 - `src/app/(authenticated)/` - Protected routes requiring authentication
 - `src/app/(unauthenticated)/` - Public routes (bills, state pages, etc.)
 - `src/app/(auth)/` - Authentication-related pages
@@ -134,3 +134,5 @@ Visual components render UI and should be isolated from application state, API d
 
 - Always follow the design principles written in
   rules/DESIGN-PRINCIPLES, rules/DESIGNS
+
+- Always format the files after writing the code
