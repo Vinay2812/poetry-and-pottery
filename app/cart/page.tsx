@@ -19,25 +19,28 @@ const INITIAL_CART = [
 export default function CartPage() {
   const [cartItems, setCartItems] = useState(INITIAL_CART);
 
-  const updateQuantity = useCallback((productId: string, newQuantity: number) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.product.id === productId
-          ? { ...item, quantity: newQuantity }
-          : item
-      )
-    );
-  }, []);
+  const updateQuantity = useCallback(
+    (productId: string, newQuantity: number) => {
+      setCartItems((items) =>
+        items.map((item) =>
+          item.product.id === productId
+            ? { ...item, quantity: newQuantity }
+            : item,
+        ),
+      );
+    },
+    [],
+  );
 
   const removeItem = useCallback((productId: string) => {
     setCartItems((items) =>
-      items.filter((item) => item.product.id !== productId)
+      items.filter((item) => item.product.id !== productId),
     );
   }, []);
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
-    0
+    0,
   );
   const shipping = subtotal > 75 ? 0 : 12;
   const tax = 0;

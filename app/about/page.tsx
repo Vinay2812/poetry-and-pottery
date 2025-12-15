@@ -3,11 +3,7 @@
 import { Flame, Heart, Leaf, Sparkles } from "lucide-react";
 import Image from "next/image";
 
-import {
-  ProcessStepCard,
-  TeamMemberCard,
-  ValueCard,
-} from "@/components/cards";
+import { ProcessStepCard, TeamMemberCard, ValueCard } from "@/components/cards";
 import { ContactForm } from "@/components/forms";
 import { Footer, MobileHeader, MobileNav, Navbar } from "@/components/layout";
 import { CTASection, SectionHeader } from "@/components/sections";

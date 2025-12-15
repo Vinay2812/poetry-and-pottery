@@ -3,9 +3,15 @@
 import { useCallback } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
+
 import { CATEGORIES } from "@/lib/constants";
 
-export const MATERIALS = ["Stoneware", "Terracotta", "Porcelain", "Earthenware"];
+export const MATERIALS = [
+  "Stoneware",
+  "Terracotta",
+  "Porcelain",
+  "Earthenware",
+];
 
 interface FilterSidebarProps {
   activeCategory: string;
@@ -24,14 +30,14 @@ export function FilterSidebar({
     (categoryId: string) => {
       onCategoryChange(categoryId);
     },
-    [onCategoryChange]
+    [onCategoryChange],
   );
 
   const handleMaterialToggle = useCallback(
     (material: string) => {
       onMaterialToggle(material);
     },
-    [onMaterialToggle]
+    [onMaterialToggle],
   );
 
   return (

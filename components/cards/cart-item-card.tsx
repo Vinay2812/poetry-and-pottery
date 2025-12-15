@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { QuantitySelector } from "@/components/quantity-selector";
+
 import { Product } from "@/lib/constants";
 
 interface CartItemCardProps {

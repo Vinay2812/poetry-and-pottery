@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 export default function EventsPage() {
   const [selectedEvent, setSelectedEvent] = useState(EVENTS[0]?.id || "");
   const [activeTab, setActiveTab] = useState<"upcoming" | "registered">(
-    "upcoming"
+    "upcoming",
   );
 
   const selectedEventData = EVENTS.find((e) => e.id === selectedEvent);
@@ -50,7 +50,7 @@ export default function EventsPage() {
                 "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 activeTab === "upcoming"
                   ? "bg-primary text-primary-foreground"
-                  : "border-border text-foreground hover:bg-muted border bg-white"
+                  : "border-border text-foreground hover:bg-muted border bg-white",
               )}
             >
               Upcoming Sessions
@@ -61,7 +61,7 @@ export default function EventsPage() {
                 "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 activeTab === "registered"
                   ? "bg-primary text-primary-foreground"
-                  : "border-border text-foreground hover:bg-muted border bg-white"
+                  : "border-border text-foreground hover:bg-muted border bg-white",
               )}
             >
               My Registrations
@@ -160,7 +160,7 @@ export default function EventsPage() {
                       ticketNumber={ticketNumber}
                       registrationDate={registrationDate}
                     />
-                  )
+                  ),
                 )
               )}
             </div>

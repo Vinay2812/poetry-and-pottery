@@ -39,9 +39,7 @@ export function OrderSummary({
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Shipping</span>
-              <span>
-                {shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}
-              </span>
+              <span>{shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Tax</span>

@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
+
 import { Event } from "@/lib/constants";
 
 interface RegisteredEventCardProps {
@@ -71,7 +72,10 @@ export function RegisteredEventCard({
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline" className="flex items-center gap-1 text-xs">
+            <Badge
+              variant="outline"
+              className="flex items-center gap-1 text-xs"
+            >
               <Ticket className="h-3 w-3" />
               {ticketNumber}
             </Badge>

@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -8,14 +8,12 @@ interface BaseFormFieldProps {
 }
 
 interface FormInputProps
-  extends BaseFormFieldProps,
-    InputHTMLAttributes<HTMLInputElement> {
+  extends BaseFormFieldProps, InputHTMLAttributes<HTMLInputElement> {
   as?: "input";
 }
 
 interface FormTextareaProps
-  extends BaseFormFieldProps,
-    TextareaHTMLAttributes<HTMLTextAreaElement> {
+  extends BaseFormFieldProps, TextareaHTMLAttributes<HTMLTextAreaElement> {
   as: "textarea";
 }
 
@@ -43,7 +41,7 @@ export const FormInput = forwardRef<
             inputStyles,
             "h-auto resize-none py-3",
             error && "border-destructive",
-            className
+            className,
           )}
           {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
         />
@@ -55,9 +53,7 @@ export const FormInput = forwardRef<
           {...(props as InputHTMLAttributes<HTMLInputElement>)}
         />
       )}
-      {error && (
-        <p className="text-destructive mt-1 text-xs">{error}</p>
-      )}
+      {error && <p className="text-destructive mt-1 text-xs">{error}</p>}
     </div>
   );
 });

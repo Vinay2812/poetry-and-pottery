@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
+
 import { Event } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -19,13 +20,10 @@ export function EventCard({ event, isSelected, onSelect }: EventCardProps) {
         "w-full rounded-2xl bg-white p-4 text-left transition-all",
         isSelected
           ? "ring-primary shadow-card ring-2"
-          : "shadow-soft hover:shadow-card"
+          : "shadow-soft hover:shadow-card",
       )}
     >
-      <button
-        onClick={() => onSelect?.(event.id)}
-        className="w-full text-left"
-      >
+      <button onClick={() => onSelect?.(event.id)} className="w-full text-left">
         <div className="flex gap-4">
           <Link
             href={`/events/${event.id}`}
@@ -57,7 +55,7 @@ export function EventCard({ event, isSelected, onSelect }: EventCardProps) {
                     "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2",
                     isSelected
                       ? "border-primary bg-primary"
-                      : "border-muted-foreground/30"
+                      : "border-muted-foreground/30",
                   )}
                 >
                   {isSelected && (

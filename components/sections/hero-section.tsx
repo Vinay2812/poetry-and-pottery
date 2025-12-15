@@ -27,13 +27,15 @@ export function HeroSection({
   className,
 }: HeroSectionProps) {
   return (
-    <section className={cn("container mx-auto px-4 py-6 lg:px-8 lg:py-12", className)}>
+    <section
+      className={cn("container mx-auto px-4 py-6 lg:px-8 lg:py-12", className)}
+    >
       <div
         className={cn(
           "relative overflow-hidden rounded-3xl",
           aspectRatio === "portrait"
             ? "aspect-[4/5] lg:aspect-21/9"
-            : "aspect-4/3 lg:aspect-21/9"
+            : "aspect-4/3 lg:aspect-21/9",
         )}
       >
         <Image

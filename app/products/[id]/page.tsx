@@ -25,11 +25,11 @@ export default function ProductPage() {
   const params = useParams();
   const product = PRODUCTS.find((p) => p.id === params.id) || PRODUCTS[0];
   const [selectedGlaze, setSelectedGlaze] = useState(
-    product.glazeOptions?.[0]?.name || ""
+    product.glazeOptions?.[0]?.name || "",
   );
 
   const relatedProducts = PRODUCTS.filter(
-    (p) => p.category === product.category && p.id !== product.id
+    (p) => p.category === product.category && p.id !== product.id,
   ).slice(0, 4);
 
   const images = product.images || [product.image];
@@ -77,7 +77,9 @@ export default function ProductPage() {
                 )}
 
               {/* Description */}
-              <p className="text-muted-foreground mb-6">{product.description}</p>
+              <p className="text-muted-foreground mb-6">
+                {product.description}
+              </p>
 
               {/* Glaze Selector */}
               {product.glazeOptions && product.glazeOptions.length > 0 && (
@@ -97,7 +99,7 @@ export default function ProductPage() {
                           "h-10 w-10 rounded-full border-2 transition-all",
                           selectedGlaze === glaze.name
                             ? "border-primary ring-primary/20 ring-2"
-                            : "border-transparent"
+                            : "border-transparent",
                         )}
                         style={{ backgroundColor: glaze.color }}
                         title={glaze.name}
@@ -202,7 +204,10 @@ export default function ProductPage() {
               </h2>
               <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                 {relatedProducts.map((relatedProduct) => (
-                  <ProductCard key={relatedProduct.id} product={relatedProduct} />
+                  <ProductCard
+                    key={relatedProduct.id}
+                    product={relatedProduct}
+                  />
                 ))}
               </div>
             </section>

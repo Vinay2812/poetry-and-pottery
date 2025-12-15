@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 import { cn } from "@/lib/utils";
 
 interface ProductImageGalleryProps {
@@ -114,7 +115,7 @@ export function ProductImageGallery({
                 "h-2 w-2 rounded-full transition-colors",
                 index === selectedImage
                   ? "bg-primary"
-                  : "bg-muted-foreground/30"
+                  : "bg-muted-foreground/30",
               )}
             />
           ))}

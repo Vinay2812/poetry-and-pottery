@@ -46,7 +46,7 @@ export default function ShopPage() {
     setSelectedMaterials((prev) =>
       prev.includes(material)
         ? prev.filter((m) => m !== material)
-        : [...prev, material]
+        : [...prev, material],
     );
   }, []);
 

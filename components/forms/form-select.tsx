@@ -1,4 +1,4 @@
-import { forwardRef, SelectHTMLAttributes } from "react";
+import { SelectHTMLAttributes, forwardRef } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -37,7 +37,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
         {error && <p className="text-destructive mt-1 text-xs">{error}</p>}
       </div>
     );
-  }
+  },
 );
 
 FormSelect.displayName = "FormSelect";
