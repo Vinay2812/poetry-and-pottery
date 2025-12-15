@@ -5,11 +5,11 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "husky": "husky",
     "lint": "eslint",
     "prettier": "prettier --check .",
     "prettier:format": "prettier --write .",
-    "start": "next start",
-    "husky": "husky"
+    "start": "next start"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.2",
