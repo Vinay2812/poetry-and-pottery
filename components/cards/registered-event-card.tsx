@@ -29,7 +29,7 @@ export function RegisteredEventCard({
   return (
     <Link
       href={`/events/${event.id}`}
-      className="shadow-soft hover:shadow-card block rounded-2xl bg-white p-4 transition-all"
+      className="shadow-soft hover:shadow-card focus-visible:ring-primary/30 block rounded-2xl bg-white p-4 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       <div className="flex gap-4">
         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32">

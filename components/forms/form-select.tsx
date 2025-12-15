@@ -10,7 +10,7 @@ interface FormSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const selectStyles =
-  "border-border bg-muted/30 focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border px-4 text-sm transition-colors focus:bg-white focus:ring-2 focus:outline-none";
+  "h-12 w-full cursor-pointer rounded-xl border border-border bg-muted/30 px-4 text-sm transition-all duration-150 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50";
 
 export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
   ({ label, error, options, placeholder, className, ...props }, ref) => {

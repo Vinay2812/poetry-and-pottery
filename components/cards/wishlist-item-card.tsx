@@ -26,11 +26,11 @@ export function WishlistItemCard({
   const stockColor = product.inStock ? "text-in-stock" : "text-low-stock";
 
   return (
-    <div className="shadow-soft rounded-2xl bg-white p-4">
+    <div className="shadow-soft hover:shadow-card rounded-2xl bg-white p-4 transition-shadow duration-200">
       <div className="flex gap-4">
         <Link
           href={`/products/${product.id}`}
-          className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32"
+          className="focus-visible:ring-primary/30 relative h-24 w-24 shrink-0 overflow-hidden rounded-xl focus-visible:ring-2 focus-visible:outline-none lg:h-32 lg:w-32"
         >
           <Image
             src={product.image}
@@ -43,7 +43,7 @@ export function WishlistItemCard({
           <div className="flex items-start justify-between">
             <div>
               <Link href={`/products/${product.id}`}>
-                <h3 className="hover:text-primary mb-0.5 font-semibold">
+                <h3 className="hover:text-primary mb-0.5 font-semibold transition-colors duration-150">
                   {product.name}
                 </h3>
               </Link>
@@ -51,7 +51,10 @@ export function WishlistItemCard({
                 {product.vendor}
               </p>
             </div>
-            <button onClick={onRemove} className="text-primary">
+            <button
+              onClick={onRemove}
+              className="text-primary hover:bg-primary/10 focus-visible:ring-primary/30 rounded-full p-1 transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
+            >
               <Heart className="h-5 w-5 fill-current" />
             </button>
           </div>

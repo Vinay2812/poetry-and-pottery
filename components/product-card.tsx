@@ -19,7 +19,10 @@ export function ProductCard({
   variant = "default",
 }: ProductCardProps) {
   return (
-    <Link href={`/products/${product.id}`} className="group block">
+    <Link
+      href={`/products/${product.id}`}
+      className="group focus-visible:ring-primary/30 block rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
       <div className="relative">
         {/* Image */}
         <div
@@ -40,7 +43,7 @@ export function ProductCard({
         <Button
           variant="secondary"
           size="icon"
-          className="absolute top-2 right-2 h-8 w-8 rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:bg-white lg:top-3 lg:right-3"
+          className="absolute top-2 right-2 h-8 w-8 rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-all duration-150 hover:scale-105 hover:bg-white lg:top-3 lg:right-3"
           onClick={(e) => {
             e.preventDefault();
             // Toggle wishlist

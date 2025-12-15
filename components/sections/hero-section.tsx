@@ -34,7 +34,7 @@ export function HeroSection({
         className={cn(
           "relative overflow-hidden rounded-3xl",
           aspectRatio === "portrait"
-            ? "aspect-[4/5] lg:aspect-21/9"
+            ? "aspect-4/5 lg:aspect-21/9"
             : "aspect-4/3 lg:aspect-21/9",
         )}
       >

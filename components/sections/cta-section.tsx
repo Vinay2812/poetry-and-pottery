@@ -53,7 +53,7 @@ export function CTASection({
               <Button
                 asChild
                 variant="secondary"
-                className="text-primary w-full rounded-full bg-white hover:bg-white/90 sm:w-auto"
+                className="text-primary w-full rounded-full bg-white transition-colors duration-150 hover:bg-white/90 sm:w-auto"
                 size="lg"
               >
                 <Link href={primaryButtonHref}>
@@ -65,7 +65,7 @@ export function CTASection({
                 <Button
                   asChild
                   variant="outline"
-                  className="w-full rounded-full border-white/30 bg-transparent text-white hover:bg-white/10 sm:w-auto"
+                  className="w-full rounded-full border-white/30 bg-transparent text-white transition-colors duration-150 hover:bg-white/10 sm:w-auto"
                   size="lg"
                 >
                   <Link href={secondaryButtonHref}>{secondaryButtonText}</Link>
@@ -101,7 +101,7 @@ export function CTASection({
           <Button
             asChild
             variant="secondary"
-            className="text-primary w-fit rounded-full bg-white px-6 hover:bg-white/90"
+            className="text-primary w-fit rounded-full bg-white px-6 transition-colors duration-150 hover:bg-white/90"
           >
             <Link href={primaryButtonHref}>{primaryButtonText}</Link>
           </Button>

@@ -63,7 +63,7 @@ export default function Home() {
             <h2 className="text-lg font-semibold">Shop by Category</h2>
             <Link
               href="/products"
-              className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm"
+              className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm transition-colors duration-150"
             >
               SEE ALL <ArrowRight className="h-3 w-3" />
             </Link>
@@ -75,9 +75,9 @@ export default function Home() {
                 <Link
                   key={category.id}
                   href={`/products?category=${category.id}`}
-                  className="flex min-w-[72px] flex-col items-center gap-2"
+                  className="flex min-w-[72px] flex-col items-center gap-2 focus-visible:outline-none"
                 >
-                  <div className="bg-subtle-green hover:bg-accent flex h-16 w-16 items-center justify-center rounded-2xl transition-colors">
+                  <div className="bg-subtle-green hover:bg-accent flex h-16 w-16 items-center justify-center rounded-2xl transition-colors duration-150">
                     <Icon className="text-primary h-6 w-6" />
                   </div>
                   <span className="text-xs font-medium">{category.name}</span>
@@ -100,7 +100,7 @@ export default function Home() {
         {/* Upcoming Event */}
         {upcomingEvent && (
           <section className="px-4 py-6 lg:px-8">
-            <div className="shadow-soft rounded-2xl bg-white p-4">
+            <div className="shadow-soft hover:shadow-card rounded-2xl bg-white p-4 transition-shadow duration-200">
               <div className="flex gap-4">
                 <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
                   <Image
@@ -112,7 +112,7 @@ export default function Home() {
                 </div>
                 <div className="flex-1">
                   <div className="mb-1 flex items-center gap-2">
-                    <span className="text-primary bg-subtle-green rounded px-2 py-0.5 text-xs font-medium">
+                    <span className="bg-subtle-green text-primary rounded px-2 py-0.5 text-xs font-medium">
                       WORKSHOP
                     </span>
                     <span className="text-muted-foreground text-xs">
@@ -127,7 +127,7 @@ export default function Home() {
                   </p>
                   <Link
                     href="/events"
-                    className="text-primary flex items-center gap-1 text-xs font-medium"
+                    className="text-primary hover:text-primary-hover flex items-center gap-1 text-xs font-medium transition-colors duration-150"
                   >
                     Book Spot <ArrowRight className="h-3 w-3" />
                   </Link>

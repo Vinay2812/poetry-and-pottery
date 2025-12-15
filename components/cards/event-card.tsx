@@ -17,13 +17,16 @@ export function EventCard({ event, isSelected, onSelect }: EventCardProps) {
   return (
     <div
       className={cn(
-        "w-full rounded-2xl bg-white p-4 text-left transition-all",
+        "w-full rounded-2xl bg-white p-4 text-left transition-all duration-200",
         isSelected
-          ? "ring-primary shadow-card ring-2"
+          ? "shadow-card ring-primary ring-2"
           : "shadow-soft hover:shadow-card",
       )}
     >
-      <button onClick={() => onSelect?.(event.id)} className="w-full text-left">
+      <button
+        onClick={() => onSelect?.(event.id)}
+        className="w-full text-left focus-visible:outline-none"
+      >
         <div className="flex gap-4">
           <Link
             href={`/events/${event.id}`}
@@ -41,7 +44,7 @@ export function EventCard({ event, isSelected, onSelect }: EventCardProps) {
               <div>
                 <Link
                   href={`/events/${event.id}`}
-                  className="text-primary mb-1 font-semibold hover:underline"
+                  className="text-primary mb-1 font-semibold transition-colors duration-150 hover:underline"
                 >
                   {event.title}
                 </Link>
@@ -88,7 +91,7 @@ export function EventCard({ event, isSelected, onSelect }: EventCardProps) {
       <div className="border-border mt-3 border-t pt-3">
         <Link
           href={`/events/${event.id}`}
-          className="text-primary flex items-center gap-1 text-sm font-medium hover:underline"
+          className="text-primary flex items-center gap-1 text-sm font-medium transition-colors duration-150 hover:underline"
         >
           View Details
           <ArrowRight className="h-4 w-4" />

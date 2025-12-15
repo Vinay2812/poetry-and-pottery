@@ -10,7 +10,7 @@ export function ProcessStepCard({
   description,
 }: ProcessStepCardProps) {
   return (
-    <div className="shadow-soft rounded-2xl bg-white p-6">
+    <div className="shadow-soft hover:shadow-card rounded-2xl bg-white p-6 transition-shadow duration-200">
       <span className="text-primary mb-2 block text-3xl font-bold opacity-30">
         {step}
       </span>

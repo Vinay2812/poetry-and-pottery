@@ -32,7 +32,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/products?category=vases"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Vases
                 </Link>
@@ -40,7 +40,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/products?category=plates"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Plates
                 </Link>
@@ -48,7 +48,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/products?category=mugs"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Mugs
                 </Link>
@@ -56,7 +56,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/products?category=planters"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Planters
                 </Link>
@@ -71,7 +71,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Our Story
                 </Link>
@@ -79,7 +79,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/events"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Workshops
                 </Link>
@@ -87,7 +87,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Contact
                 </Link>
@@ -102,7 +102,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/shipping"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Shipping & Returns
                 </Link>
@@ -110,7 +110,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   FAQ
                 </Link>
@@ -118,7 +118,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/care"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   Care Instructions
                 </Link>
@@ -146,7 +146,7 @@ export function Footer() {
                 <Mail className="text-primary h-4 w-4 shrink-0" />
                 <a
                   href="mailto:hello@poetryandpottery.com"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   hello@poetryandpottery.com
                 </a>
@@ -155,7 +155,7 @@ export function Footer() {
                 <Phone className="text-primary h-4 w-4 shrink-0" />
                 <a
                   href="tel:+919876543210"
-                  className="text-muted-foreground hover:text-foreground text-sm"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
                   +91 98765 43210
                 </a>

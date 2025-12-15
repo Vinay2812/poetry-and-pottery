@@ -27,7 +27,7 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
   };
 
   return (
-    <header className="border-border fixed top-0 right-0 left-0 z-50 border-b bg-white/95 backdrop-blur-md lg:hidden">
+    <header className="border-border shadow-header fixed top-0 right-0 left-0 z-50 border-b bg-white/95 backdrop-blur-md lg:hidden">
       <div className="flex h-14 items-center px-4">
         {/* Left side / Search Input */}
         <div className="flex flex-1 items-center gap-2">
@@ -35,7 +35,7 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleBack}
-                className="hover:bg-muted -ml-2 rounded-full p-2 transition-colors"
+                className="hover:bg-muted focus-visible:ring-primary/30 -ml-2 rounded-full p-2 transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
@@ -75,7 +75,7 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
         <div className="-mr-1 flex items-center pl-2">
           <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="hover:bg-muted flex h-11 w-11 items-center justify-center rounded-full transition-colors"
+            className="hover:bg-muted focus-visible:ring-primary/30 flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
           >
             {isSearchOpen ? (
               <X className="h-6 w-6" />
@@ -85,7 +85,7 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
           </button>
           <Link
             href="/wishlist"
-            className="hover:bg-muted relative flex h-11 w-11 items-center justify-center rounded-full transition-colors"
+            className="hover:bg-muted focus-visible:ring-primary/30 relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
           >
             <Heart className="text-muted-foreground h-6 w-6" />
             <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
@@ -107,7 +107,7 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
           <SignedOut>
             <Link
               href="/profile"
-              className="hover:bg-muted flex h-11 w-11 items-center justify-center rounded-full transition-colors"
+              className="hover:bg-muted focus-visible:ring-primary/30 flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
             >
               <User className="text-muted-foreground h-6 w-6" />
             </Link>

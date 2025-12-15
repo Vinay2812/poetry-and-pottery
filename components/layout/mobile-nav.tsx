@@ -23,7 +23,7 @@ export function MobileNav() {
   };
 
   return (
-    <nav className="border-border fixed right-0 bottom-0 left-0 z-50 h-16 border-t bg-white lg:hidden">
+    <nav className="border-border shadow-nav fixed right-0 bottom-0 left-0 z-50 h-16 border-t bg-white lg:hidden">
       <div className="grid h-full grid-cols-4 items-center">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
@@ -34,13 +34,13 @@ export function MobileNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center justify-center transition-colors",
+                "flex items-center justify-center transition-colors duration-150 focus-visible:outline-none",
                 isActive ? "text-primary" : "text-muted-foreground",
               )}
             >
               <div
                 className={cn(
-                  "relative flex h-11 w-11 items-center justify-center rounded-full transition-colors",
+                  "relative flex h-11 w-11 items-center justify-center rounded-full transition-all duration-150",
                   isActive && "bg-primary/10",
                 )}
               >
