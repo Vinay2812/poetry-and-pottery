@@ -148,7 +148,7 @@ export function Footer() {
                   href="mailto:hello@poetryandpottery.com"
                   className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                 >
-                  hello@poetryandpottery.com
+                  support
                 </a>
               </li>
               <li className="flex items-center gap-2">
