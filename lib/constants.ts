@@ -439,6 +439,291 @@ export const REGISTERED_EVENTS: RegisteredEvent[] = [
   },
 ];
 
+// Workshop Review Type
+export interface WorkshopReview {
+  id: string;
+  author: string;
+  avatar: string;
+  rating: number;
+  content: string;
+  date: string;
+}
+
+// Past Workshop Type
+export interface PastWorkshop {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  attendees: number;
+  image: string;
+  galleryImages?: string[];
+  highlights?: string[];
+  instructor?: string;
+  duration?: string;
+  location?: string;
+  reviews?: WorkshopReview[];
+}
+
+// Past Workshop Images
+export const PAST_WORKSHOP_IMAGES = {
+  handBuilding:
+    "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=600&h=400&fit=crop",
+  summerCamp:
+    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&h=400&fit=crop",
+  kidsClass:
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop",
+  tribalPottery:
+    "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&h=400&fit=crop",
+  teaCeremony:
+    "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&h=400&fit=crop",
+  sculptureClass:
+    "https://images.unsplash.com/photo-1605883705077-8d3d3cebe78c?w=600&h=400&fit=crop",
+};
+
+// Past Workshops Data
+export const PAST_WORKSHOPS: PastWorkshop[] = [
+  {
+    id: "past-1",
+    title: "Hand-Building Fundamentals",
+    description:
+      "This workshop introduced participants to the core hand-building techniques used in pottery. Students learned pinch pot methods, coil building, and slab construction while creating their own unique pieces to take home.",
+    date: "Sep 28, 2024",
+    attendees: 12,
+    image: PAST_WORKSHOP_IMAGES.handBuilding,
+    galleryImages: [
+      PAST_WORKSHOP_IMAGES.handBuilding,
+      PAST_WORKSHOP_IMAGES.summerCamp,
+      PAST_WORKSHOP_IMAGES.kidsClass,
+    ],
+    highlights: [
+      "Pinch pot techniques",
+      "Coil building basics",
+      "Slab construction",
+    ],
+    instructor: "Maya Thompson",
+    duration: "3 hours",
+    location: "Poetry & Pottery Studio, Downtown",
+    reviews: [
+      {
+        id: "wr-1",
+        author: "Jennifer Lee",
+        avatar:
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "Amazing workshop! Maya was so patient and helpful. I never thought I could make something so beautiful on my first try.",
+        date: "Oct 2, 2024",
+      },
+      {
+        id: "wr-2",
+        author: "Tom Wilson",
+        avatar:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "Perfect introduction to pottery. The studio atmosphere was wonderful and I left feeling inspired to continue learning.",
+        date: "Sep 30, 2024",
+      },
+      {
+        id: "wr-3",
+        author: "Rachel Green",
+        avatar:
+          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
+        rating: 4,
+        content:
+          "Great experience overall. Would have loved a bit more time to finish my piece, but the techniques I learned were invaluable.",
+        date: "Sep 29, 2024",
+      },
+    ],
+  },
+  {
+    id: "past-2",
+    title: "Summer Pottery Camp",
+    description:
+      "Our most popular annual event! This 5-day intensive program took participants on a journey through wheel throwing, hand-building, and glazing. Everyone left with multiple finished pieces and lasting memories.",
+    date: "Aug 15-19, 2024",
+    attendees: 24,
+    image: PAST_WORKSHOP_IMAGES.summerCamp,
+    galleryImages: [
+      PAST_WORKSHOP_IMAGES.summerCamp,
+      PAST_WORKSHOP_IMAGES.tribalPottery,
+    ],
+    highlights: [
+      "5-day intensive program",
+      "Wheel throwing & hand-building",
+      "Glazing workshop",
+    ],
+    instructor: "James Chen",
+    duration: "5 days (4 hours/day)",
+    location: "Poetry & Pottery Studio, Downtown",
+    reviews: [
+      {
+        id: "wr-4",
+        author: "Mark Stevens",
+        avatar:
+          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "Best week of my summer! The progression from day 1 to day 5 was incredible. James is a fantastic teacher.",
+        date: "Aug 22, 2024",
+      },
+      {
+        id: "wr-5",
+        author: "Lisa Park",
+        avatar:
+          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "Worth every penny. I came in knowing nothing and left with skills I'll use forever. Already signed up for next year!",
+        date: "Aug 20, 2024",
+      },
+    ],
+  },
+  {
+    id: "past-3",
+    title: "Kids Pottery Day",
+    description:
+      "A fun-filled day designed especially for young artists aged 6-12. Children explored their creativity by making animal sculptures and painting their own pottery pieces in a safe, encouraging environment.",
+    date: "Jul 20, 2024",
+    attendees: 16,
+    image: PAST_WORKSHOP_IMAGES.kidsClass,
+    highlights: ["Ages 6-12", "Animal sculptures", "Paint your own pottery"],
+    instructor: "Sarah Mitchell",
+    duration: "2.5 hours",
+    location: "Poetry & Pottery Studio, Downtown",
+    reviews: [
+      {
+        id: "wr-6",
+        author: "Amanda Foster",
+        avatar:
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "My daughter had the best time! She hasn't stopped talking about her elephant sculpture. Sarah was wonderful with the kids.",
+        date: "Jul 22, 2024",
+      },
+      {
+        id: "wr-7",
+        author: "David Kim",
+        avatar:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+        rating: 4,
+        content:
+          "Great activity for kids. My son loved it. Only wish it was a bit longer so they could do more.",
+        date: "Jul 21, 2024",
+      },
+    ],
+  },
+  {
+    id: "past-4",
+    title: "Tribal Pottery Techniques",
+    description:
+      "An exploration of traditional pottery methods from around the world. Participants learned ancient techniques including natural clay preparation, hand-coiling without a wheel, and open-fire finishing methods.",
+    date: "Jun 8, 2024",
+    attendees: 8,
+    image: PAST_WORKSHOP_IMAGES.tribalPottery,
+    galleryImages: [
+      PAST_WORKSHOP_IMAGES.tribalPottery,
+      PAST_WORKSHOP_IMAGES.teaCeremony,
+    ],
+    highlights: [
+      "Traditional methods",
+      "Natural clay preparation",
+      "Open-fire techniques",
+    ],
+    instructor: "Maya Thompson",
+    duration: "4 hours",
+    location: "Poetry & Pottery Outdoor Kiln Area",
+    reviews: [
+      {
+        id: "wr-8",
+        author: "Nina Rodriguez",
+        avatar:
+          "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "Truly unique experience. Learning about the history behind these techniques made it so much more meaningful.",
+        date: "Jun 12, 2024",
+      },
+    ],
+  },
+  {
+    id: "past-5",
+    title: "Japanese Tea Ceremony Bowls",
+    description:
+      "A meditative workshop focused on creating chawan (tea ceremony bowls) in the Japanese tradition. We explored wabi-sabi aesthetics and ended with a traditional tea ceremony demonstration.",
+    date: "May 25, 2024",
+    attendees: 10,
+    image: PAST_WORKSHOP_IMAGES.teaCeremony,
+    highlights: ["Chawan making", "Wabi-sabi aesthetics", "Tea ceremony demo"],
+    instructor: "James Chen",
+    duration: "3.5 hours",
+    location: "Poetry & Pottery Studio, Downtown",
+    reviews: [
+      {
+        id: "wr-9",
+        author: "Emily Watson",
+        avatar:
+          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "The most peaceful workshop I've ever attended. James explained the philosophy beautifully and the tea ceremony at the end was magical.",
+        date: "May 28, 2024",
+      },
+      {
+        id: "wr-10",
+        author: "Michael Chen",
+        avatar:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "As someone with Japanese heritage, this workshop meant a lot to me. Beautifully done with respect for the tradition.",
+        date: "May 27, 2024",
+      },
+    ],
+  },
+  {
+    id: "past-6",
+    title: "Ceramic Sculpture Workshop",
+    description:
+      "This advanced workshop pushed creative boundaries as participants learned figure sculpting, abstract form creation, and various surface texturing techniques to create expressive ceramic sculptures.",
+    date: "Apr 12, 2024",
+    attendees: 14,
+    image: PAST_WORKSHOP_IMAGES.sculptureClass,
+    galleryImages: [
+      PAST_WORKSHOP_IMAGES.sculptureClass,
+      PAST_WORKSHOP_IMAGES.handBuilding,
+    ],
+    highlights: ["Figure sculpting", "Abstract forms", "Surface texturing"],
+    instructor: "Sarah Mitchell",
+    duration: "4 hours",
+    location: "Poetry & Pottery Studio, Downtown",
+    reviews: [
+      {
+        id: "wr-11",
+        author: "Robert Kim",
+        avatar:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+        rating: 4,
+        content:
+          "Challenging but rewarding. Sarah helped me push past my comfort zone and I'm proud of what I created.",
+        date: "Apr 15, 2024",
+      },
+      {
+        id: "wr-12",
+        author: "Sarah Jenkins",
+        avatar:
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+        rating: 5,
+        content:
+          "Finally a workshop that challenges experienced potters! The sculpture techniques were completely new to me.",
+        date: "Apr 14, 2024",
+      },
+    ],
+  },
+];
+
 // Reviews
 export interface Review {
   id: string;

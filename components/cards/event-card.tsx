@@ -1,102 +1,96 @@
-import { ArrowRight } from "lucide-react";
+import { Calendar, Clock, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 
 import { Event } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 
 interface EventCardProps {
   event: Event;
-  isSelected?: boolean;
-  onSelect?: (id: string) => void;
 }
 
-export function EventCard({ event, isSelected, onSelect }: EventCardProps) {
+export function EventCard({ event }: EventCardProps) {
   return (
-    <div
-      className={cn(
-        "w-full rounded-2xl bg-white p-4 text-left transition-all duration-200",
-        isSelected
-          ? "shadow-card ring-primary ring-2"
-          : "shadow-soft hover:shadow-card",
-      )}
+    <Link
+      href={`/events/upcoming/${event.id}`}
+      className="group shadow-soft hover:shadow-card block overflow-hidden rounded-2xl bg-white transition-shadow duration-200"
     >
-      <button
-        onClick={() => onSelect?.(event.id)}
-        className="w-full text-left focus-visible:outline-none"
-      >
-        <div className="flex gap-4">
-          <Link
-            href={`/events/${event.id}`}
-            className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32"
-          >
-            <Image
-              src={event.image}
-              alt={event.title}
-              fill
-              className="object-cover transition-transform duration-300 hover:scale-105"
-            />
-          </Link>
-          <div className="flex-1">
-            <div className="flex items-start justify-between">
-              <div>
-                <Link
-                  href={`/events/${event.id}`}
-                  className="text-primary mb-1 font-semibold transition-colors duration-150 hover:underline"
-                >
-                  {event.title}
-                </Link>
-                <p className="text-muted-foreground mb-2 text-sm">
-                  {event.date} • {event.time}
-                </p>
-              </div>
-              {onSelect && (
-                <div
-                  className={cn(
-                    "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2",
-                    isSelected
-                      ? "border-primary bg-primary"
-                      : "border-muted-foreground/30",
-                  )}
-                >
-                  {isSelected && (
-                    <div className="h-2 w-2 rounded-full bg-white" />
-                  )}
-                </div>
-              )}
-            </div>
+      {/* Image */}
+      <div className="relative aspect-4/3 overflow-hidden">
+        <Image
+          src={event.image}
+          alt={event.title}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
 
-            <div className="mt-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {event.spotsLeft && (
-                  <Badge variant="outline" className="text-xs">
-                    {event.spotsLeft} spots left
-                  </Badge>
-                )}
-                {event.level && (
-                  <Badge variant="secondary" className="text-xs">
-                    {event.level}
-                  </Badge>
-                )}
-              </div>
-              <span className="text-primary font-semibold">
-                ₹{event.price.toFixed(2)}
-              </span>
-            </div>
+        {/* Price Badge */}
+        <div className="absolute top-3 right-3">
+          <Badge className="text-foreground bg-white/90 backdrop-blur-sm hover:bg-white">
+            ₹{event.price.toFixed(0)}
+          </Badge>
+        </div>
+
+        {/* Title and Date on Image */}
+        <div className="absolute right-0 bottom-0 left-0 p-4">
+          <h3 className="mb-1 text-lg font-semibold text-white">
+            {event.title}
+          </h3>
+          <div className="flex items-center gap-1 text-sm text-white/90">
+            <Calendar className="h-3.5 w-3.5" />
+            {event.date}
           </div>
         </div>
-      </button>
-      <div className="border-border mt-3 border-t pt-3">
-        <Link
-          href={`/events/${event.id}`}
-          className="text-primary flex items-center gap-1 text-sm font-medium transition-colors duration-150 hover:underline"
-        >
-          View Details
-          <ArrowRight className="h-4 w-4" />
-        </Link>
       </div>
-    </div>
+
+      {/* Content */}
+      <div className="p-4">
+        {/* Time and Duration */}
+        <div className="text-muted-foreground mb-3 flex items-center gap-4 text-sm">
+          <div className="flex items-center gap-1.5">
+            <Clock className="h-4 w-4" />
+            <span>{event.time}</span>
+          </div>
+          {event.duration && (
+            <div className="flex items-center gap-1.5">
+              <span>•</span>
+              <span>{event.duration}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5">
+          {event.spotsLeft && (
+            <Badge
+              variant="secondary"
+              className="bg-primary/10 text-primary text-xs"
+            >
+              {event.spotsLeft} spots left
+            </Badge>
+          )}
+          {event.level && (
+            <Badge
+              variant="secondary"
+              className="bg-primary/10 text-primary text-xs"
+            >
+              {event.level}
+            </Badge>
+          )}
+          {event.location && (
+            <Badge
+              variant="secondary"
+              className="text-muted-foreground text-xs"
+            >
+              <MapPin className="mr-1 h-3 w-3" />
+              {event.location.split(",")[0]}
+            </Badge>
+          )}
+        </div>
+      </div>
+    </Link>
   );
 }

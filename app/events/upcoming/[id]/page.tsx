@@ -7,6 +7,7 @@ import {
   Clock,
   MapPin,
   Share2,
+  Sparkles,
   User,
   Users,
 } from "lucide-react";
@@ -18,18 +19,11 @@ import { MobileHeader, MobileNav, Navbar } from "@/components/layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { EVENTS, REGISTERED_EVENTS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { EVENTS } from "@/lib/constants";
 
 export default function EventDetailPage() {
   const params = useParams();
   const event = EVENTS.find((e) => e.id === params.id) || EVENTS[0];
-
-  // Check if user is already registered for this event
-  const registration = REGISTERED_EVENTS.find(
-    (reg) => reg.eventId === event.id,
-  );
-  const isRegistered = !!registration;
 
   // Get other events for recommendations
   const otherEvents = EVENTS.filter((e) => e.id !== event.id).slice(0, 2);
@@ -37,15 +31,30 @@ export default function EventDetailPage() {
   return (
     <div className="bg-background min-h-screen">
       <Navbar />
-      <MobileHeader title="Event Details" showBack backHref="/events" />
+      <MobileHeader
+        title="Event Details"
+        showBack
+        backHref="/events/upcoming"
+      />
 
       <main className="pt-14 pb-40 lg:pt-0 lg:pb-12">
         <div className="container mx-auto px-4 py-6 lg:px-8">
+          {/* Category Header */}
+          <div className="mb-6">
+            <Link
+              href="/events/upcoming"
+              className="bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors"
+            >
+              <Sparkles className="h-4 w-4" />
+              Upcoming Session
+            </Link>
+          </div>
+
           <div className="grid gap-8 lg:grid-cols-3">
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Hero Image */}
-              <div className="relative mb-6 aspect-[16/9] w-full overflow-hidden rounded-2xl lg:rounded-3xl">
+              <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-2xl lg:rounded-3xl">
                 <Image
                   src={event.image}
                   alt={event.title}
@@ -206,7 +215,7 @@ export default function EventDetailPage() {
                     {otherEvents.map((otherEvent) => (
                       <Link
                         key={otherEvent.id}
-                        href={`/events/${otherEvent.id}`}
+                        href={`/events/upcoming/${otherEvent.id}`}
                         className="group shadow-soft hover:shadow-card rounded-2xl bg-white p-4 transition-all"
                       >
                         <div className="flex gap-4">
@@ -240,119 +249,56 @@ export default function EventDetailPage() {
             {/* Desktop Sidebar */}
             <div className="hidden lg:block">
               <div className="shadow-soft sticky top-24 rounded-2xl bg-white p-6">
-                {isRegistered ? (
-                  <>
-                    <div className="bg-primary/10 mb-4 flex items-center gap-2 rounded-xl p-3">
-                      <Check className="text-primary h-5 w-5" />
-                      <span className="text-primary font-medium">
-                        You&apos;re registered!
+                <h2 className="mb-4 text-lg font-semibold">
+                  Reserve Your Spot
+                </h2>
+
+                <div className="mb-4 space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Workshop</span>
+                    <span className="text-right font-medium">
+                      {event.title}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Date</span>
+                    <span>{event.date}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Time</span>
+                    <span>{event.time}</span>
+                  </div>
+                  {event.duration && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Duration</span>
+                      <span>{event.duration}</span>
+                    </div>
+                  )}
+                  {event.spotsLeft && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">
+                        Availability
+                      </span>
+                      <span className="text-primary">
+                        {event.spotsLeft} spots left
                       </span>
                     </div>
+                  )}
+                </div>
 
-                    <div className="mb-4 space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">
-                          Ticket Number
-                        </span>
-                        <span className="font-medium">
-                          {registration?.ticketNumber}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">
-                          Registered On
-                        </span>
-                        <span>{registration?.registrationDate}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Status</span>
-                        <Badge
-                          variant="outline"
-                          className={cn(
-                            registration?.status === "confirmed" &&
-                              "border-primary text-primary capitalize",
-                          )}
-                        >
-                          {registration?.status}
-                        </Badge>
-                      </div>
-                    </div>
+                <div className="border-border my-4 border-t" />
 
-                    <div className="border-border my-4 border-t" />
+                <div className="mb-6 flex justify-between">
+                  <span className="font-semibold">Total</span>
+                  <span className="text-primary text-xl font-bold">
+                    ₹{event.price.toFixed(2)}
+                  </span>
+                </div>
 
-                    <div className="space-y-3">
-                      <Button
-                        // variant="outline"
-                        className="h-12 w-full rounded-xl"
-                        size="lg"
-                      >
-                        View Ticket
-                      </Button>
-                      {/* <Button
-                        variant="outline"
-                        className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive h-12 w-full rounded-xl"
-                        size="lg"
-                      >
-                        Cancel Registration
-                      </Button> */}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h2 className="mb-4 text-lg font-semibold">
-                      Reserve Your Spot
-                    </h2>
-
-                    <div className="mb-4 space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Workshop</span>
-                        <span className="text-right font-medium">
-                          {event.title}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Date</span>
-                        <span>{event.date}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Time</span>
-                        <span>{event.time}</span>
-                      </div>
-                      {event.duration && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">
-                            Duration
-                          </span>
-                          <span>{event.duration}</span>
-                        </div>
-                      )}
-                      {event.spotsLeft && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">
-                            Availability
-                          </span>
-                          <span className="text-primary">
-                            {event.spotsLeft} spots left
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="border-border my-4 border-t" />
-
-                    <div className="mb-6 flex justify-between">
-                      <span className="font-semibold">Total</span>
-                      <span className="text-primary text-xl font-bold">
-                        ₹{event.price.toFixed(2)}
-                      </span>
-                    </div>
-
-                    <Button className="h-12 w-full rounded-xl" size="lg">
-                      Complete Registration
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </>
-                )}
+                <Button className="h-12 w-full rounded-xl" size="lg">
+                  Reserve Seat
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </div>
             </div>
           </div>
@@ -361,32 +307,11 @@ export default function EventDetailPage() {
 
       {/* Mobile Fixed Bottom CTA */}
       <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
-        {isRegistered ? (
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="h-12 flex-1 rounded-xl"
-              size="lg"
-            >
-              View Ticket
-            </Button>
-            {/* <Button
-              variant="ghost"
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive h-12 shrink-0 rounded-xl px-4"
-              size="lg"
-            >
-              Cancel
-            </Button> */}
-          </div>
-        ) : (
-          <Button className="h-12 w-full rounded-xl" size="lg">
-            Complete Registration
-            <span className="ml-2 font-semibold">
-              ₹{event.price.toFixed(2)}
-            </span>
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        )}
+        <Button className="h-12 w-full rounded-xl" size="lg">
+          Reserve Seat
+          <span className="ml-2 font-semibold">₹{event.price.toFixed(2)}</span>
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
       </div>
 
       <MobileNav />
