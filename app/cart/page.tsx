@@ -66,7 +66,7 @@ export default function CartPage() {
                       <div className="flex gap-4">
                         <Link
                           href={`/products/${item.product.id}`}
-                          className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl"
+                          className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl"
                         >
                           <Image
                             src={item.product.image}

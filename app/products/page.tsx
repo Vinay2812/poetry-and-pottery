@@ -176,7 +176,7 @@ export default function ShopPage() {
         <div className="container mx-auto px-4 py-2 lg:px-8 lg:py-6">
           <div className="flex gap-8">
             {/* Desktop Sidebar */}
-            <aside className="hidden w-64 flex-shrink-0 lg:block">
+            <aside className="hidden w-64 shrink-0 lg:block">
               <div className="sticky top-20">
                 <h2 className="mb-6 text-xl font-semibold">Filters</h2>
                 <FilterSidebar

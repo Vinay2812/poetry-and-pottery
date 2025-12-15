@@ -56,7 +56,7 @@ export function ProductCard({
           <h3 className="line-clamp-1 text-sm leading-tight font-medium">
             {product.name}
           </h3>
-          <span className="text-primary flex-shrink-0 text-sm font-semibold">
+          <span className="text-primary shrink-0 text-sm font-semibold">
             ₹{product.price}
           </span>
         </div>

@@ -242,7 +242,7 @@ export default function ProductPage() {
                   {REVIEWS.slice(0, 2).map((review) => (
                     <div
                       key={review.id}
-                      className="border-border w-64 flex-shrink-0 rounded-xl border bg-white p-4"
+                      className="border-border w-64 shrink-0 rounded-xl border bg-white p-4"
                     >
                       <div className="mb-2 flex items-center gap-2">
                         <div className="relative h-8 w-8 overflow-hidden rounded-full">
@@ -333,7 +333,7 @@ export default function ProductPage() {
           <Button
             variant="outline"
             size="icon"
-            className="h-12 w-12 flex-shrink-0 rounded-xl"
+            className="h-12 w-12 shrink-0 rounded-xl"
           >
             <Heart className="h-5 w-5" />
           </Button>

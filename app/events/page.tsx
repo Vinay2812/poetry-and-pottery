@@ -58,7 +58,7 @@ export default function EventsPage() {
                 "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 activeTab === "upcoming"
                   ? "bg-primary text-primary-foreground"
-                  : "bg-white border border-border text-foreground hover:bg-muted",
+                  : "border-border text-foreground hover:bg-muted border bg-white",
               )}
             >
               Upcoming Sessions
@@ -69,12 +69,12 @@ export default function EventsPage() {
                 "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 activeTab === "registered"
                   ? "bg-primary text-primary-foreground"
-                  : "bg-white border border-border text-foreground hover:bg-muted",
+                  : "border-border text-foreground hover:bg-muted border bg-white",
               )}
             >
               My Registrations
               {registeredEventsData.length > 0 && (
-                <span className="ml-2 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white/20 px-1.5 text-xs">
+                <span className="bg-primary ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs text-white">
                   {registeredEventsData.length}
                 </span>
               )}
@@ -102,7 +102,7 @@ export default function EventsPage() {
                       <div className="flex gap-4">
                         <Link
                           href={`/events/${event.id}`}
-                          className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32"
+                          className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32"
                         >
                           <Image
                             src={event.image}
@@ -126,7 +126,7 @@ export default function EventsPage() {
                             </div>
                             <div
                               className={cn(
-                                "flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2",
+                                "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2",
                                 selectedEvent === event.id
                                   ? "border-primary bg-primary"
                                   : "border-muted-foreground/30",
@@ -158,7 +158,7 @@ export default function EventsPage() {
                         </div>
                       </div>
                     </button>
-                    <div className="mt-3 border-t border-border pt-3">
+                    <div className="border-border mt-3 border-t pt-3">
                       <Link
                         href={`/events/${event.id}`}
                         className="text-primary flex items-center gap-1 text-sm font-medium hover:underline"
@@ -227,8 +227,8 @@ export default function EventsPage() {
             /* Registered Events Tab */
             <div className="space-y-4">
               {registeredEventsData.length === 0 ? (
-                <div className="rounded-2xl bg-white p-8 text-center shadow-soft">
-                  <Calendar className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+                <div className="shadow-soft rounded-2xl bg-white p-8 text-center">
+                  <Calendar className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
                   <h3 className="mb-2 font-semibold">No Registrations Yet</h3>
                   <p className="text-muted-foreground mb-4 text-sm">
                     You haven&apos;t registered for any workshops yet. Browse
@@ -242,71 +242,73 @@ export default function EventsPage() {
                   </Button>
                 </div>
               ) : (
-                registeredEventsData.map(({ id, event, status, ticketNumber, registrationDate }) => (
-                  <Link
-                    key={id}
-                    href={`/events/${event!.id}`}
-                    className="block rounded-2xl bg-white p-4 shadow-soft transition-all hover:shadow-card"
-                  >
-                    <div className="flex gap-4">
-                      <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32">
-                        <Image
-                          src={event!.image}
-                          alt={event!.title}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <div className="mb-1 flex items-center gap-2">
-                          <h3 className="text-primary font-semibold">
-                            {event!.title}
-                          </h3>
-                          {status === "confirmed" && (
-                            <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                              <CheckCircle2 className="h-3 w-3" />
-                              Confirmed
-                            </span>
-                          )}
+                registeredEventsData.map(
+                  ({ id, event, status, ticketNumber, registrationDate }) => (
+                    <Link
+                      key={id}
+                      href={`/events/${event!.id}`}
+                      className="shadow-soft hover:shadow-card block rounded-2xl bg-white p-4 transition-all"
+                    >
+                      <div className="flex gap-4">
+                        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32">
+                          <Image
+                            src={event!.image}
+                            alt={event!.title}
+                            fill
+                            className="object-cover"
+                          />
                         </div>
-                        <div className="text-muted-foreground mb-3 space-y-1 text-sm">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4" />
-                            <span>
-                              {event!.date} • {event!.time}
+                        <div className="flex-1">
+                          <div className="mb-1 flex items-center gap-2">
+                            <h3 className="text-primary font-semibold">
+                              {event!.title}
+                            </h3>
+                            {status === "confirmed" && (
+                              <span className="bg-primary/10 text-primary flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium">
+                                <CheckCircle2 className="h-3 w-3" />
+                                Confirmed
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-muted-foreground mb-3 space-y-1 text-sm">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4" />
+                              <span>
+                                {event!.date} • {event!.time}
+                              </span>
+                            </div>
+                            {event!.location && (
+                              <div className="flex items-center gap-2">
+                                <MapPin className="h-4 w-4" />
+                                <span>{event!.location}</span>
+                              </div>
+                            )}
+                            {event!.duration && (
+                              <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4" />
+                                <span>{event!.duration}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge
+                              variant="outline"
+                              className="flex items-center gap-1 text-xs"
+                            >
+                              <Ticket className="h-3 w-3" />
+                              {ticketNumber}
+                            </Badge>
+                            <span className="text-muted-foreground text-xs">
+                              Registered on {registrationDate}
                             </span>
                           </div>
-                          {event!.location && (
-                            <div className="flex items-center gap-2">
-                              <MapPin className="h-4 w-4" />
-                              <span>{event!.location}</span>
-                            </div>
-                          )}
-                          {event!.duration && (
-                            <div className="flex items-center gap-2">
-                              <Clock className="h-4 w-4" />
-                              <span>{event!.duration}</span>
-                            </div>
-                          )}
                         </div>
-
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Badge
-                            variant="outline"
-                            className="flex items-center gap-1 text-xs"
-                          >
-                            <Ticket className="h-3 w-3" />
-                            {ticketNumber}
-                          </Badge>
-                          <span className="text-muted-foreground text-xs">
-                            Registered on {registrationDate}
-                          </span>
-                        </div>
+                        <ArrowRight className="text-muted-foreground h-5 w-5 shrink-0 self-center" />
                       </div>
-                      <ArrowRight className="text-muted-foreground h-5 w-5 flex-shrink-0 self-center" />
-                    </div>
-                  </Link>
-                ))
+                    </Link>
+                  ),
+                )
               )}
             </div>
           )}

@@ -1,3 +1,4 @@
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { Separator } from "../ui/separator";
@@ -9,12 +10,12 @@ export function Footer() {
     <footer className="container mx-auto mt-auto">
       <div className="mx-auto px-4 pt-12 pb-24 lg:pb-12">
         <Separator className="border-border mb-8 border-t lg:mb-16" />
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="mb-4 flex items-center gap-2">
               <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
-                <span className="text-sm font-bold text-white">E</span>
+                <span className="text-sm font-bold text-white">P</span>
               </div>
               <span className="text-lg font-semibold">Poetry & Pottery</span>
             </Link>
@@ -121,6 +122,43 @@ export function Footer() {
                 >
                   Care Instructions
                 </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="col-span-1">
+            <h4 className="mb-4 font-semibold">Contact</h4>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-2">
+                <MapPin className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                <span className="text-muted-foreground text-sm">
+                  Sangli, Maharashtra, India
+                </span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Clock className="text-primary h-4 w-4 shrink-0" />
+                <span className="text-muted-foreground text-sm">
+                  Tue-Sat: 10am-6pm
+                </span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="text-primary h-4 w-4 shrink-0" />
+                <a
+                  href="mailto:hello@poetryandpottery.com"
+                  className="text-muted-foreground hover:text-foreground text-sm"
+                >
+                  hello@poetryandpottery.com
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="text-primary h-4 w-4 shrink-0" />
+                <a
+                  href="tel:+919876543210"
+                  className="text-muted-foreground hover:text-foreground text-sm"
+                >
+                  +91 98765 43210
+                </a>
               </li>
             </ul>
           </div>

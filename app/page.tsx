@@ -101,7 +101,7 @@ export default function Home() {
           <section className="px-4 py-6 lg:px-8">
             <div className="shadow-soft rounded-2xl bg-white p-4">
               <div className="flex gap-4">
-                <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl">
+                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
                   <Image
                     src={upcomingEvent.image}
                     alt={upcomingEvent.title}

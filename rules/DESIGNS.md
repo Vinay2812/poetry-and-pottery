@@ -250,7 +250,7 @@ This document outlines the design system rules and guidelines for the Poetry & P
 - **Container**: `mt-2 md:mt-3 space-y-0.5`
 - **Layout**: Flex row with `items-start justify-between gap-2`
 - **Title**: `font-medium text-sm leading-tight line-clamp-1`
-- **Price**: `font-semibold text-sm text-primary flex-shrink-0`
+- **Price**: `font-semibold text-sm text-primary shrink-0`
 - **Vendor**: `text-xs text-muted-foreground`
 
 ### Category Pills (Filter Pills)
@@ -426,7 +426,7 @@ This document outlines the design system rules and guidelines for the Poetry & P
 - **Image**:
   - Size: `w-24 h-24`
   - Border Radius: `rounded-xl`
-  - Overflow: `overflow-hidden flex-shrink-0`
+  - Overflow: `overflow-hidden shrink-0`
 - **Content**: `flex-1`
 - **Header**: `flex items-center gap-2 mb-1`
 - **Tag**: Workshop badge (see Tag Badges above)

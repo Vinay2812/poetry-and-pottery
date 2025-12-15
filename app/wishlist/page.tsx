@@ -50,7 +50,7 @@ export default function WishlistPage() {
                   <div className="flex gap-4">
                     <Link
                       href={`/products/${item.id}`}
-                      className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32"
+                      className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl lg:h-32 lg:w-32"
                     >
                       <Image
                         src={item.image}
