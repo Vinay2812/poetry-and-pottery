@@ -166,7 +166,7 @@ export default function FAQPage() {
                 <h2 className="mb-6 text-xl font-bold lg:text-2xl">
                   {category.title}
                 </h2>
-                <div className="rounded-2xl bg-white p-6 shadow-soft">
+                <div className="shadow-soft rounded-2xl bg-white p-6">
                   <Accordion type="single" collapsible className="w-full">
                     {category.faqs.map((faq, index) => (
                       <AccordionItem
@@ -200,9 +200,9 @@ export default function FAQPage() {
             <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
               <a
                 href="mailto:hello@poetryandpottery.com"
-                className="group rounded-2xl bg-white p-6 shadow-soft transition-shadow hover:shadow-card"
+                className="group shadow-soft hover:shadow-card rounded-2xl bg-white p-6 transition-shadow"
               >
-                <h3 className="mb-2 font-semibold group-hover:text-primary">
+                <h3 className="group-hover:text-primary mb-2 font-semibold">
                   Email Us
                 </h3>
                 <p className="text-muted-foreground text-sm">
@@ -211,9 +211,9 @@ export default function FAQPage() {
               </a>
               <a
                 href="tel:+919876543210"
-                className="group rounded-2xl bg-white p-6 shadow-soft transition-shadow hover:shadow-card"
+                className="group shadow-soft hover:shadow-card rounded-2xl bg-white p-6 transition-shadow"
               >
-                <h3 className="mb-2 font-semibold group-hover:text-primary">
+                <h3 className="group-hover:text-primary mb-2 font-semibold">
                   Call Us
                 </h3>
                 <p className="text-muted-foreground text-sm">+91 98765 43210</p>

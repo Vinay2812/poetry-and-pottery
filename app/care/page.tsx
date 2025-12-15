@@ -223,7 +223,7 @@ export default function CarePage() {
             {CARE_CATEGORIES.map((category) => (
               <div
                 key={category.title}
-                className="rounded-2xl bg-white p-6 shadow-soft"
+                className="shadow-soft rounded-2xl bg-white p-6"
               >
                 <div className="mb-4 flex items-center gap-3">
                   <div className="bg-subtle-green flex h-12 w-12 items-center justify-center rounded-xl">
@@ -264,7 +264,7 @@ export default function CarePage() {
               {GLAZE_TYPES.map((glaze) => (
                 <div
                   key={glaze.name}
-                  className="rounded-2xl bg-white p-6 shadow-soft"
+                  className="shadow-soft rounded-2xl bg-white p-6"
                 >
                   <div className="bg-subtle-green mb-4 flex h-12 w-12 items-center justify-center rounded-xl">
                     <glaze.icon className="text-primary h-6 w-6" />
@@ -274,8 +274,12 @@ export default function CarePage() {
                     {glaze.description}
                   </p>
                   <div className="border-border border-t pt-3">
-                    <p className="text-xs font-medium text-primary">Care tip:</p>
-                    <p className="text-muted-foreground text-xs">{glaze.care}</p>
+                    <p className="text-primary text-xs font-medium">
+                      Care tip:
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {glaze.care}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -314,7 +318,7 @@ export default function CarePage() {
               title="Quick Reference"
               description="At-a-glance care summary for your convenience."
             />
-            <div className="mx-auto max-w-2xl rounded-3xl bg-primary p-8 text-white">
+            <div className="bg-primary mx-auto max-w-2xl rounded-3xl p-8 text-white">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
                   <h4 className="mb-3 flex items-center gap-2 font-semibold">

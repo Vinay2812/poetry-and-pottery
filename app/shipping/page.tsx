@@ -101,7 +101,7 @@ export default function ShippingPage() {
             {SHIPPING_OPTIONS.map((option) => (
               <div
                 key={option.title}
-                className="rounded-2xl bg-white p-6 shadow-soft"
+                className="shadow-soft rounded-2xl bg-white p-6"
               >
                 <div className="bg-subtle-green mb-4 flex h-12 w-12 items-center justify-center rounded-xl">
                   <option.icon className="text-primary h-6 w-6" />
@@ -129,7 +129,7 @@ export default function ShippingPage() {
               {SHIPPING_INFO.map((info) => (
                 <div
                   key={info.title}
-                  className="rounded-2xl bg-white p-6 shadow-soft"
+                  className="shadow-soft rounded-2xl bg-white p-6"
                 >
                   <h3 className="mb-2 font-semibold">{info.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
@@ -199,7 +199,7 @@ export default function ShippingPage() {
                 ].map((item) => (
                   <div
                     key={item.step}
-                    className="flex gap-4 rounded-2xl bg-muted/50 p-6"
+                    className="bg-muted/50 flex gap-4 rounded-2xl p-6"
                   >
                     <div className="bg-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
                       <span className="text-sm font-bold text-white">
