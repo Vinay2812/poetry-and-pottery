@@ -288,13 +288,13 @@ export default function EventDetailPage() {
                       >
                         View Ticket
                       </Button>
-                      <Button
+                      {/* <Button
                         variant="outline"
                         className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive h-12 w-full rounded-xl"
                         size="lg"
                       >
                         Cancel Registration
-                      </Button>
+                      </Button> */}
                     </div>
                   </>
                 ) : (
@@ -370,13 +370,13 @@ export default function EventDetailPage() {
             >
               View Ticket
             </Button>
-            <Button
+            {/* <Button
               variant="ghost"
               className="text-destructive hover:bg-destructive/10 hover:text-destructive h-12 shrink-0 rounded-xl px-4"
               size="lg"
             >
               Cancel
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <Button className="h-12 w-full rounded-xl" size="lg">

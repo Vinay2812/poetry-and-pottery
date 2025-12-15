@@ -1,13 +1,14 @@
 "use client";
 
-import { SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import { Search, SlidersHorizontal } from "lucide-react";
+import { useCallback, useState } from "react";
 
 import { CategoryPill } from "@/components/category-pill";
+import { FilterSidebar } from "@/components/filter-sidebar";
 import { MobileHeader, MobileNav, Navbar } from "@/components/layout";
 import { ProductCard } from "@/components/product-card";
+import { EmptyState } from "@/components/sections";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -25,64 +26,29 @@ import {
 
 import { CATEGORIES, PRODUCTS } from "@/lib/constants";
 
-const MATERIALS = ["Stoneware", "Terracotta", "Porcelain", "Earthenware"];
-
-interface FilterSidebarProps {
-  activeCategory: string;
-  setActiveCategory: (category: string) => void;
-  selectedMaterials: string[];
-  toggleMaterial: (material: string) => void;
-}
-
-const FilterSidebar = ({
-  activeCategory,
-  setActiveCategory,
-  selectedMaterials,
-  toggleMaterial,
-}: FilterSidebarProps) => (
-  <div className="space-y-6">
-    <div>
-      <h3 className="mb-3 font-semibold">Categories</h3>
-      <div className="space-y-2">
-        {[{ id: "all", name: "All" }, ...CATEGORIES].map((category) => (
-          <label
-            key={category.id}
-            className="flex cursor-pointer items-center gap-2"
-          >
-            <Checkbox
-              checked={activeCategory === category.id}
-              onCheckedChange={() => setActiveCategory(category.id)}
-            />
-            <span className="text-sm">{category.name}</span>
-          </label>
-        ))}
-      </div>
-    </div>
-
-    <div>
-      <h3 className="mb-3 font-semibold">Material</h3>
-      <div className="space-y-2">
-        {MATERIALS.map((material) => (
-          <label
-            key={material}
-            className="flex cursor-pointer items-center gap-2"
-          >
-            <Checkbox
-              checked={selectedMaterials.includes(material)}
-              onCheckedChange={() => toggleMaterial(material)}
-            />
-            <span className="text-sm">{material}</span>
-          </label>
-        ))}
-      </div>
-    </div>
-  </div>
-);
+const SORT_OPTIONS = [
+  { value: "featured", label: "Featured" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" },
+  { value: "rating", label: "Top Rated" },
+];
 
 export default function ShopPage() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("featured");
+
+  const handleCategoryChange = useCallback((category: string) => {
+    setActiveCategory(category);
+  }, []);
+
+  const handleMaterialToggle = useCallback((material: string) => {
+    setSelectedMaterials((prev) =>
+      prev.includes(material)
+        ? prev.filter((m) => m !== material)
+        : [...prev, material]
+    );
+  }, []);
 
   const filteredProducts = PRODUCTS.filter((product) => {
     if (activeCategory !== "all" && product.category !== activeCategory) {
@@ -105,14 +71,6 @@ export default function ShopPage() {
     return 0;
   });
 
-  const toggleMaterial = (material: string) => {
-    setSelectedMaterials((prev) =>
-      prev.includes(material)
-        ? prev.filter((m) => m !== material)
-        : [...prev, material],
-    );
-  };
-
   return (
     <div className="bg-background min-h-screen">
       <Navbar />
@@ -124,14 +82,14 @@ export default function ShopPage() {
           <CategoryPill
             label="All"
             isActive={activeCategory === "all"}
-            onClick={() => setActiveCategory("all")}
+            onClick={() => handleCategoryChange("all")}
           />
           {CATEGORIES.map((category) => (
             <CategoryPill
               key={category.id}
               label={category.name}
               isActive={activeCategory === category.id}
-              onClick={() => setActiveCategory(category.id)}
+              onClick={() => handleCategoryChange(category.id)}
             />
           ))}
         </div>
@@ -152,9 +110,9 @@ export default function ShopPage() {
               <div className="mt-2 px-6 pb-6">
                 <FilterSidebar
                   activeCategory={activeCategory}
-                  setActiveCategory={setActiveCategory}
                   selectedMaterials={selectedMaterials}
-                  toggleMaterial={toggleMaterial}
+                  onCategoryChange={handleCategoryChange}
+                  onMaterialToggle={handleMaterialToggle}
                 />
               </div>
             </SheetContent>
@@ -165,10 +123,11 @@ export default function ShopPage() {
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="featured">Featured</SelectItem>
-              <SelectItem value="price-low">Price: Low to High</SelectItem>
-              <SelectItem value="price-high">Price: High to Low</SelectItem>
-              <SelectItem value="rating">Top Rated</SelectItem>
+              {SORT_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -181,9 +140,9 @@ export default function ShopPage() {
                 <h2 className="mb-6 text-xl font-semibold">Filters</h2>
                 <FilterSidebar
                   activeCategory={activeCategory}
-                  setActiveCategory={setActiveCategory}
                   selectedMaterials={selectedMaterials}
-                  toggleMaterial={toggleMaterial}
+                  onCategoryChange={handleCategoryChange}
+                  onMaterialToggle={handleMaterialToggle}
                 />
               </div>
             </aside>
@@ -200,39 +159,41 @@ export default function ShopPage() {
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="featured">Featured</SelectItem>
-                    <SelectItem value="price-low">
-                      Price: Low to High
-                    </SelectItem>
-                    <SelectItem value="price-high">
-                      Price: High to Low
-                    </SelectItem>
-                    <SelectItem value="rating">Top Rated</SelectItem>
+                    {SORT_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
-                {sortedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              {sortedProducts.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
+                    {sortedProducts.map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                  </div>
 
-              {/* Load More */}
-              {sortedProducts.length > 0 && (
-                <div className="mt-8 mb-4 flex justify-center">
-                  <Button variant="outline" className="rounded-full">
-                    Load more products
-                  </Button>
-                </div>
-              )}
-
-              {sortedProducts.length === 0 && (
-                <div className="py-12 text-center">
-                  <p className="text-muted-foreground">
-                    No products found matching your filters.
-                  </p>
-                </div>
+                  {/* Load More */}
+                  <div className="mt-8 mb-4 flex justify-center">
+                    <Button variant="outline" className="rounded-full">
+                      Load more products
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <EmptyState
+                  icon={Search}
+                  title="No products found"
+                  description="No products found matching your filters."
+                  actionText="Clear Filters"
+                  onAction={() => {
+                    setActiveCategory("all");
+                    setSelectedMaterials([]);
+                  }}
+                />
               )}
             </div>
           </div>

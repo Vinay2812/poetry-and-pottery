@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Footer, MobileHeader, MobileNav, Navbar } from "@/components/layout";
 import { ProductCard } from "@/components/product-card";
+import { CTASection } from "@/components/sections";
 import { Button } from "@/components/ui/button";
 
 import { EVENTS, HERO_IMAGES, PRODUCTS } from "@/lib/constants";
@@ -137,32 +138,15 @@ export default function Home() {
         )}
 
         {/* Our Story CTA */}
-        <section className="px-4 py-6 lg:px-8">
-          <div className="relative aspect-4/3 overflow-hidden rounded-3xl lg:aspect-21/9">
-            <Image
-              src={HERO_IMAGES.ourStory}
-              alt="Our Story"
-              fill
-              className="object-cover"
-            />
-            <div className="from-primary/90 to-primary/40 absolute inset-0 bg-linear-to-t" />
-            <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
-              <h2 className="mb-2 text-2xl font-bold text-white lg:text-4xl">
-                Our Story
-              </h2>
-              <p className="mb-4 max-w-sm text-sm text-white/90">
-                From the earth to your hands, discover the process behind every
-                piece.
-              </p>
-              <Button
-                variant="secondary"
-                className="text-primary w-fit rounded-full bg-white px-6 hover:bg-white/90"
-              >
-                READ OUR JOURNEY
-              </Button>
-            </div>
-          </div>
-        </section>
+        <CTASection
+          title="Our Story"
+          description="From the earth to your hands, discover the process behind every piece."
+          primaryButtonText="READ OUR JOURNEY"
+          primaryButtonHref="/about"
+          image={HERO_IMAGES.ourStory}
+          imageAlt="Our Story"
+          variant="image"
+        />
       </main>
       <Footer />
 

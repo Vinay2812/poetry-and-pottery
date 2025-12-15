@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  Heart,
-  Maximize2,
-  ShoppingBag,
-} from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -14,6 +8,7 @@ import { useState } from "react";
 
 import { MobileHeader, MobileNav, Navbar } from "@/components/layout";
 import { ProductCard } from "@/components/product-card";
+import { ProductImageGallery } from "@/components/product-image-gallery";
 import { Rating } from "@/components/rating";
 import {
   Accordion,
@@ -22,12 +17,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { PRODUCTS, REVIEWS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -35,13 +24,12 @@ import { cn } from "@/lib/utils";
 export default function ProductPage() {
   const params = useParams();
   const product = PRODUCTS.find((p) => p.id === params.id) || PRODUCTS[0];
-  const [selectedImage, setSelectedImage] = useState(0);
   const [selectedGlaze, setSelectedGlaze] = useState(
-    product.glazeOptions?.[0]?.name || "",
+    product.glazeOptions?.[0]?.name || ""
   );
 
   const relatedProducts = PRODUCTS.filter(
-    (p) => p.category === product.category && p.id !== product.id,
+    (p) => p.category === product.category && p.id !== product.id
   ).slice(0, 4);
 
   const images = product.images || [product.image];
@@ -55,110 +43,7 @@ export default function ProductPage() {
         <div className="container mx-auto px-4 py-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Image Gallery */}
-            <div className="min-w-0">
-              <div className="bg-muted/30 group relative mb-4 aspect-square w-full overflow-hidden rounded-2xl">
-                <Image
-                  src={images[selectedImage]}
-                  alt={product.name}
-                  fill
-                  className="object-contain"
-                  priority
-                />
-
-                {/* Full Screen Trigger */}
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button
-                      className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 opacity-100 shadow-sm backdrop-blur-sm transition-colors hover:bg-white focus:opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
-                      aria-label="View full screen"
-                    >
-                      <Maximize2 className="text-foreground h-5 w-5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="h-full max-h-[90vh] w-full max-w-[90vw] border-none bg-black/95 p-0 sm:max-w-screen-xl">
-                    <DialogTitle className="sr-only">Product Image</DialogTitle>
-                    <div className="relative flex h-full w-full items-center justify-center p-4">
-                      <Image
-                        src={images[selectedImage]}
-                        alt={product.name}
-                        fill
-                        className="object-contain"
-                        priority
-                      />
-                      {images.length > 1 && (
-                        <>
-                          <button
-                            onClick={() =>
-                              setSelectedImage((prev) =>
-                                prev === 0 ? images.length - 1 : prev - 1,
-                              )
-                            }
-                            className="absolute top-1/2 left-4 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
-                          >
-                            <ChevronLeft className="h-8 w-8" />
-                          </button>
-                          <button
-                            onClick={() =>
-                              setSelectedImage((prev) =>
-                                prev === images.length - 1 ? 0 : prev + 1,
-                              )
-                            }
-                            className="absolute top-1/2 right-4 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
-                          >
-                            <ChevronRight className="h-8 w-8" />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </DialogContent>
-                </Dialog>
-
-                {/* Image Navigation Arrows */}
-                {images.length > 1 && (
-                  <>
-                    <button
-                      onClick={() =>
-                        setSelectedImage((prev) =>
-                          prev === 0 ? images.length - 1 : prev - 1,
-                        )
-                      }
-                      className="absolute top-1/2 left-4 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </button>
-                    <button
-                      onClick={() =>
-                        setSelectedImage((prev) =>
-                          prev === images.length - 1 ? 0 : prev + 1,
-                        )
-                      }
-                      className="absolute top-1/2 right-4 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-                      aria-label="Next image"
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </button>
-                  </>
-                )}
-              </div>
-              {/* Thumbnail dots */}
-              {images.length > 1 && (
-                <div className="flex justify-center gap-2">
-                  {images.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImage(index)}
-                      className={cn(
-                        "h-2 w-2 rounded-full transition-colors",
-                        index === selectedImage
-                          ? "bg-primary"
-                          : "bg-muted-foreground/30",
-                      )}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+            <ProductImageGallery images={images} productName={product.name} />
 
             {/* Product Info */}
             <div className="min-w-0">
@@ -192,9 +77,7 @@ export default function ProductPage() {
                 )}
 
               {/* Description */}
-              <p className="text-muted-foreground mb-6">
-                {product.description}
-              </p>
+              <p className="text-muted-foreground mb-6">{product.description}</p>
 
               {/* Glaze Selector */}
               {product.glazeOptions && product.glazeOptions.length > 0 && (
@@ -214,7 +97,7 @@ export default function ProductPage() {
                           "h-10 w-10 rounded-full border-2 transition-all",
                           selectedGlaze === glaze.name
                             ? "border-primary ring-primary/20 ring-2"
-                            : "border-transparent",
+                            : "border-transparent"
                         )}
                         style={{ backgroundColor: glaze.color }}
                         title={glaze.name}
@@ -318,8 +201,8 @@ export default function ProductPage() {
                 You might also like
               </h2>
               <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                {relatedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {relatedProducts.map((relatedProduct) => (
+                  <ProductCard key={relatedProduct.id} product={relatedProduct} />
                 ))}
               </div>
             </section>
