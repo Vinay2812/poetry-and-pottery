@@ -1,83 +1,63 @@
 "use client";
 
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
+import { EVENTS_TABS, EVENTS_TABS_MAP, TabType } from "./events-list-layout";
+
 interface EventsTabsProps {
+  activeTab: TabType;
   registeredCount?: number;
 }
 
-export function EventsTabs({ registeredCount = 0 }: EventsTabsProps) {
-  const pathname = usePathname();
-
-  const isUpcoming =
-    pathname === "/events/upcoming" || pathname.startsWith("/events/upcoming/");
-  const isRegistered =
-    pathname === "/events/registrations" ||
-    pathname.startsWith("/events/registrations/");
-  const isPast =
-    pathname === "/events/past" || pathname.startsWith("/events/past/");
-
+export function EventsTabs({
+  activeTab,
+  registeredCount = 0,
+}: EventsTabsProps) {
   const isShowRegistered = registeredCount > 0;
 
-  if (!isShowRegistered && isRegistered) {
-    return redirect("/events/upcoming");
+  const TABS = EVENTS_TABS.filter((tab) => {
+    if (tab.type === TabType.REGISTERED) {
+      return isShowRegistered;
+    }
+    return true;
+  });
+
+  if (!isShowRegistered && activeTab === TabType.REGISTERED) {
+    return redirect(EVENTS_TABS_MAP[TabType.UPCOMING].href);
   }
 
   return (
     <div className="mb-6 flex gap-2">
-      {registeredCount > 0 && (
+      {TABS.map((tab) => (
         <Link
-          href="/events/registrations"
+          key={tab.type}
+          href={tab.href}
           className={cn(
-            "flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition-colors sm:px-4",
-            isRegistered
+            "flex items-center rounded-full px-3 py-2 text-sm font-medium transition-colors sm:px-4",
+            activeTab === tab.type
               ? "bg-primary text-primary-foreground"
               : "border-border text-foreground hover:bg-muted border bg-white",
           )}
         >
-          <span className="hidden sm:inline">My Registrations</span>
-          <span className="sm:hidden">Registered</span>
-          {registeredCount > 0 && (
+          <span className="hidden sm:inline">{tab.desktopLabel}</span>
+          <span className="sm:hidden">{tab.mobileLabel}</span>
+          {tab.type === TabType.REGISTERED && (
             <span
               className={cn(
-                "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs",
-                isRegistered
-                  ? "text-primary bg-white"
-                  : "bg-primary text-white",
+                "ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full text-xs font-bold",
+                activeTab !== TabType.REGISTERED
+                  ? "bg-primary text-primary-foreground"
+                  : "border-border text-foreground hover:bg-muted border bg-white",
               )}
             >
               {registeredCount}
             </span>
           )}
         </Link>
-      )}
-      <Link
-        href="/events/upcoming"
-        className={cn(
-          "rounded-full px-3 py-2 text-sm font-medium transition-colors sm:px-4",
-          isUpcoming
-            ? "bg-primary text-primary-foreground"
-            : "border-border text-foreground hover:bg-muted border bg-white",
-        )}
-      >
-        <span className="hidden sm:inline">Upcoming Sessions</span>
-        <span className="sm:hidden">Upcoming</span>
-      </Link>
-      <Link
-        href="/events/past"
-        className={cn(
-          "rounded-full px-3 py-2 text-sm font-medium transition-colors sm:px-4",
-          isPast
-            ? "bg-primary text-primary-foreground"
-            : "border-border text-foreground hover:bg-muted border bg-white",
-        )}
-      >
-        <span className="hidden sm:inline">Past Workshops</span>
-        <span className="sm:hidden">Past</span>
-      </Link>
+      ))}
     </div>
   );
 }

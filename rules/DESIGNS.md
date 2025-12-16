@@ -1179,7 +1179,143 @@ Always respect user preferences for reduced motion:
 
 ---
 
-## 21. Page Layout Patterns
+## 21. Next.js Layout Architecture
+
+This project uses Next.js App Router layouts to maintain DRY code and share common UI elements across pages.
+
+### Layout Hierarchy
+
+```
+app/
+├── layout.tsx                    # Root: ClerkProvider, fonts, html/body
+└── (main)/
+    ├── layout.tsx                # Main: Navbar, MobileNav, bg-background
+    └── (with-footer)/
+        └── layout.tsx            # WithFooter: Footer component
+```
+
+### Route Groups
+
+Route groups (folders with parentheses) organize layouts without affecting URLs:
+
+| Route Group     | Purpose                      | Contains          |
+| --------------- | ---------------------------- | ----------------- |
+| `(main)`        | All authenticated/main pages | Navbar, MobileNav |
+| `(with-footer)` | Pages that display Footer    | Footer            |
+
+### Layout Rules
+
+#### When to Create a Layout
+
+1. **Multiple pages share the same wrapper** - Create a route group with layout
+2. **Some pages need element X, others don't** - Use nested route groups
+3. **Sibling routes share UI but parent doesn't** - Create a route group at sibling level
+
+#### When NOT to Use a Layout
+
+1. **Only 1-2 pages share a component** - Use a shared component instead
+2. **The shared element varies per page** - Keep in individual pages
+3. **Layout would require client-side state** - Consider a wrapper component
+
+### Layout Examples
+
+#### Root Layout (app/layout.tsx)
+
+```tsx
+// Providers, fonts, global html/body structure
+export default function RootLayout({ children }) {
+  return (
+    <ClerkProvider>
+      <html lang="en">
+        <body className={font.className}>{children}</body>
+      </html>
+    </ClerkProvider>
+  );
+}
+```
+
+#### Main Layout (app/(main)/layout.tsx)
+
+```tsx
+// Shared navigation for all main pages
+export default function MainLayout({ children }) {
+  return (
+    <div className="bg-background min-h-screen">
+      <Navbar />
+      {children}
+      <MobileNav />
+    </div>
+  );
+}
+```
+
+#### Footer Layout (app/(main)/(with-footer)/layout.tsx)
+
+```tsx
+// Adds Footer to specific pages
+export default function WithFooterLayout({ children }) {
+  return (
+    <>
+      {children}
+      <Footer />
+    </>
+  );
+}
+```
+
+### Shared Component Pattern
+
+For pages that share complex UI but can't use layouts (e.g., detail pages differ from list pages):
+
+```tsx
+// components/events-list-layout.tsx
+export function EventsListLayout({ children }) {
+  return (
+    <>
+      <MobileHeader title="Pottery Workshops" showBack backHref="/" />
+      <main className="pt-14 pb-24 lg:pt-0 lg:pb-12">
+        <div className="container mx-auto px-4 py-6 lg:px-8">
+          <h1>Pottery Workshops</h1>
+          <EventsTabs />
+          {children}
+        </div>
+      </main>
+    </>
+  );
+}
+
+// Usage in page
+export default function UpcomingPage() {
+  return <EventsListLayout>{/* Page-specific content */}</EventsListLayout>;
+}
+```
+
+### Decision Tree: Layout vs Component
+
+```
+Does this UI appear on 3+ pages?
+├── Yes: Is it a wrapper (surrounds content)?
+│   ├── Yes: Do all pages in a route segment need it?
+│   │   ├── Yes → Use layout.tsx
+│   │   └── No → Use route group + layout.tsx
+│   └── No → Use shared component
+└── No → Keep in individual pages
+```
+
+### URL Structure
+
+Route groups don't affect URLs:
+
+| File Path                                 | URL                |
+| ----------------------------------------- | ------------------ |
+| `app/(main)/(with-footer)/page.tsx`       | `/`                |
+| `app/(main)/(with-footer)/about/page.tsx` | `/about`           |
+| `app/(main)/products/page.tsx`            | `/products`        |
+| `app/(main)/events/upcoming/page.tsx`     | `/events/upcoming` |
+
+---
+
+## 22. Page Layout Patterns
 
 ### Main Container
 
@@ -1206,7 +1342,7 @@ Always respect user preferences for reduced motion:
 
 ---
 
-## 22. Decision Trees
+## 23. Decision Trees
 
 Use these decision trees to make consistent styling choices for the Poetry & Pottery e-commerce site.
 

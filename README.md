@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Poetry & Pottery
+
+A handcrafted pottery e-commerce website built with Next.js 16+, featuring a beautiful mobile-first design with pottery workshops and events management.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js >=18.17.0
+- npm >=9.6.7
+
+### Installation
+
+```bash
+npm install
+```
+
+### Environment Setup
+
+Copy the example environment file and configure your variables:
+
+```bash
+cp .env.example .env
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script                    | Description                               |
+| ------------------------- | ----------------------------------------- |
+| `npm run dev`             | Start development server on port 3000     |
+| `npm run build`           | Build for production (includes codegen)   |
+| `npm start`               | Start production server on port 3001      |
+| `npm run lint`            | Run ESLint                                |
+| `npm run tsc`             | TypeScript type checking without emitting |
+| `npm run prettier`        | Check code formatting                     |
+| `npm run prettier:format` | Format code with Prettier                 |
+
+## Directory Structure
+
+```
+poetry-and-pottery/
+├── app/
+│   ├── layout.tsx                          # Root layout (ClerkProvider, fonts)
+│   ├── globals.css                         # Global styles
+│   └── (main)/                             # Main route group
+│       ├── layout.tsx                      # Shared layout (Navbar, MobileNav)
+│       ├── (with-footer)/                  # Pages with Footer
+│       │   ├── layout.tsx                  # Footer layout
+│       │   ├── page.tsx                    # Home page
+│       │   ├── about/page.tsx              # About page
+│       │   ├── contact/page.tsx            # Contact page
+│       │   ├── care/page.tsx               # Care instructions
+│       │   ├── faq/page.tsx                # FAQ page
+│       │   └── shipping/page.tsx           # Shipping & returns
+│       ├── products/                       # Products (no footer)
+│       │   ├── page.tsx                    # Products listing
+│       │   └── [id]/page.tsx               # Product detail
+│       ├── cart/page.tsx                   # Shopping cart
+│       ├── wishlist/page.tsx               # Wishlist
+│       ├── profile/page.tsx                # User profile
+│       └── events/                         # Events section
+│           ├── page.tsx                    # Redirect to registrations
+│           ├── registrations/
+│           │   ├── page.tsx                # My registrations
+│           │   └── [id]/page.tsx           # Registration detail
+│           ├── upcoming/
+│           │   ├── page.tsx                # Upcoming events
+│           │   └── [id]/page.tsx           # Event detail
+│           └── past/
+│               ├── page.tsx                # Past workshops
+│               └── [id]/page.tsx           # Past workshop detail
+├── components/
+│   ├── ui/                                 # UI primitives (shadcn/ui-style)
+│   ├── layout/                             # Layout components
+│   │   ├── navbar.tsx                      # Desktop navigation
+│   │   ├── mobile-header.tsx               # Mobile header
+│   │   ├── mobile-nav.tsx                  # Mobile bottom navigation
+│   │   └── footer.tsx                      # Footer component
+│   ├── cards/                              # Card components
+│   ├── forms/                              # Form components
+│   ├── sections/                           # Section components
+│   ├── events-list-layout.tsx              # Shared events list layout
+│   ├── events-tabs.tsx                     # Events navigation tabs
+│   └── ...                                 # Other components
+├── lib/
+│   ├── constants.ts                        # App constants and mock data
+│   └── utils.ts                            # Utility functions
+├── rules/
+│   ├── DESIGN-PRINCIPLES.md                # Design principles documentation
+│   └── DESIGNS.md                          # Design system rules
+└── CLAUDE.md                               # AI coding guidelines
+```
+
+## Architecture
+
+### Route Groups
+
+The app uses Next.js route groups (folders with parentheses) to organize layouts:
+
+- `(main)` - All pages share Navbar and MobileNav
+- `(with-footer)` - Pages that also include Footer
+
+This keeps URLs clean while sharing layouts between related pages.
+
+### Key Technologies
+
+- **Framework**: Next.js 16+ (App Router)
+- **UI**: React 19, TypeScript
+- **Styling**: Tailwind CSS, Emotion
+- **State**: Zustand, React Query
+- **Auth**: Clerk
+- **UI Components**: Radix UI, custom design system
+
+### Path Aliases
+
+- `@/*` → `src/*`
+- `@ui/*` → `src/components/ui/*`
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [Clerk Authentication](https://clerk.com/docs)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deploy easily with [Vercel](https://vercel.com):
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
