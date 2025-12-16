@@ -131,10 +131,12 @@ export default function AboutPage() {
         </section>
 
         {/* Story Section */}
-        <section className="container mx-auto px-4 py-8 lg:px-8 lg:py-16">
+        <section className="container mx-auto px-4 pb-8 lg:px-8 lg:py-16">
           {/* Mobile Layout */}
-          <div className="mx-auto max-w-3xl text-center lg:hidden">
-            <h2 className="mb-6 text-2xl font-bold">Where Clay Meets Soul</h2>
+          <div className="mx-auto max-w-3xl p-8 lg:hidden">
+            <h2 className="mb-6 w-full text-center text-2xl font-bold">
+              Where Clay Meets Soul
+            </h2>
             <div className="text-muted-foreground space-y-4 leading-relaxed">
               <p>
                 Poetry & Pottery began in 2018 in a small garage studio, born
