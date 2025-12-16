@@ -36,17 +36,19 @@ export function ReviewCard({
     <div
       className={`border-border rounded-xl border bg-white ${isCompact ? "w-64 shrink-0 p-4" : "p-4"}`}
     >
-      <div className="mb-3 flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
-            <Image src={avatar} alt={author} fill className="object-cover" />
-          </div>
-          <div>
-            <p className="text-sm font-medium">{author}</p>
-            <Rating rating={rating} showCount={false} size="sm" />
-          </div>
+      <div className="mb-3 flex items-start gap-3">
+        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+          <Image src={avatar} alt={author} fill className="object-cover" />
         </div>
-        <span className="text-muted-foreground shrink-0 text-xs">{date}</span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="truncate text-sm font-medium">{author}</p>
+            <span className="text-muted-foreground shrink-0 text-xs">
+              {date}
+            </span>
+          </div>
+          <Rating rating={rating} showCount={false} size="sm" />
+        </div>
       </div>
       <p
         className={`text-muted-foreground text-sm ${isCompact ? "line-clamp-3" : ""}`}

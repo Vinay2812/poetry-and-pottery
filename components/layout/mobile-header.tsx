@@ -1,11 +1,12 @@
 "use client";
 
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { ArrowLeft, Heart, Search, User, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { AccountDropdown } from "@/components/layout/account-dropdown";
 import { Input } from "@/components/ui/input";
 
 interface MobileHeaderProps {
@@ -93,24 +94,14 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
             </span>
           </Link>
           <SignedIn>
-            <div className="flex h-11 w-11 items-center justify-center">
-              <UserButton
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: {
-                    avatarBox: "h-8 w-8",
-                  },
-                }}
-              />
-            </div>
+            <AccountDropdown />
           </SignedIn>
           <SignedOut>
-            <Link
-              href="/profile"
-              className="hover:bg-muted focus-visible:ring-primary/30 flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
-            >
-              <User className="text-muted-foreground h-6 w-6" />
-            </Link>
+            <SignInButton mode="modal">
+              <button className="hover:bg-muted focus-visible:ring-primary/30 flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none">
+                <User className="text-muted-foreground h-6 w-6" />
+              </button>
+            </SignInButton>
           </SignedOut>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import { Heart, ShoppingCartIcon } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { MobileHeader } from "@/components/layout";
 import { ProductCard } from "@/components/product-card";
@@ -18,7 +18,11 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 
-import { PRODUCTS, REVIEWS } from "@/lib/constants";
+import { PRODUCTS } from "@/lib/constants";
+import {
+  calculateAverageRating,
+  getProductReviews,
+} from "@/lib/product-reviews";
 import { cn } from "@/lib/utils";
 
 export default function ProductPage() {
@@ -27,6 +31,17 @@ export default function ProductPage() {
   const [selectedGlaze, setSelectedGlaze] = useState(
     product.glazeOptions?.[0]?.name || "",
   );
+
+  // Load merged reviews (base + user-submitted) using useMemo
+  const reviews = useMemo(() => {
+    if (typeof window === "undefined") return [];
+    return getProductReviews(product.id);
+  }, [product.id]);
+
+  const averageRating =
+    reviews.length > 0 ? calculateAverageRating(reviews) : product.rating;
+  const totalReviews =
+    reviews.length > 0 ? reviews.length : product.reviewCount;
 
   const relatedProducts = PRODUCTS.filter(
     (p) => p.category === product.category && p.id !== product.id,
@@ -55,10 +70,7 @@ export default function ProductPage() {
                 <span className="text-2xl font-bold">
                   ₹{product.price.toFixed(2)}
                 </span>
-                <Rating
-                  rating={product.rating}
-                  reviewCount={product.reviewCount}
-                />
+                <Rating rating={averageRating} reviewCount={totalReviews} />
               </div>
 
               {/* Stock Status */}
@@ -120,9 +132,9 @@ export default function ProductPage() {
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className="font-semibold">Recent Reviews</h3>
                   <ReviewsSheet
-                    reviews={REVIEWS}
-                    averageRating={product.rating}
-                    totalReviews={product.reviewCount}
+                    reviews={reviews}
+                    averageRating={averageRating}
+                    totalReviews={totalReviews}
                   >
                     <button className="text-primary text-sm hover:underline">
                       View All →
@@ -130,7 +142,7 @@ export default function ProductPage() {
                   </ReviewsSheet>
                 </div>
                 <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-2">
-                  {REVIEWS.slice(0, 2).map((review) => (
+                  {reviews.slice(0, 2).map((review) => (
                     <ReviewCard
                       key={review.id}
                       author={review.author}

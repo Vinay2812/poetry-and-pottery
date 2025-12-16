@@ -33,7 +33,7 @@ export const EVENTS_TABS_MAP = {
   [TabType.PAST]: {
     href: "/events/past",
     type: TabType.PAST,
-    mobileLabel: "Past Events",
+    mobileLabel: "Past",
     desktopLabel: "Past Events",
   },
 };
