@@ -96,20 +96,21 @@ export default function ProductPage() {
                         key={glaze.name}
                         onClick={() => setSelectedGlaze(glaze.name)}
                         className={cn(
-                          "h-10 w-10 rounded-full border-2 transition-all",
-                          selectedGlaze === glaze.name
-                            ? "border-primary ring-primary/20 ring-2"
-                            : "border-transparent",
+                          "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all",
                         )}
-                        style={{ backgroundColor: glaze.color }}
+                        style={{
+                          backgroundColor: glaze.color,
+                          outlineColor:
+                            selectedGlaze === glaze.name
+                              ? glaze.color
+                              : "transparent",
+                          outlineWidth:
+                            selectedGlaze === glaze.name ? "2px" : "0px",
+                          outlineStyle:
+                            selectedGlaze === glaze.name ? "solid" : "none",
+                        }}
                         title={glaze.name}
-                      >
-                        {selectedGlaze === glaze.name && (
-                          <span className="flex h-full items-center justify-center">
-                            <span className="h-3 w-3 text-white">✓</span>
-                          </span>
-                        )}
-                      </button>
+                      />
                     ))}
                   </div>
                 </div>
