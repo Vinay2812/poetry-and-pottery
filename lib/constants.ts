@@ -447,6 +447,8 @@ export interface WorkshopReview {
   rating: number;
   content: string;
   date: string;
+  likes?: number;
+  images?: string[];
 }
 
 // Past Workshop Type
@@ -514,6 +516,11 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Amazing workshop! Maya was so patient and helpful. I never thought I could make something so beautiful on my first try.",
         date: "Oct 2, 2024",
+        likes: 28,
+        images: [
+          "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=300&fit=crop",
+          "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=300&h=300&fit=crop",
+        ],
       },
       {
         id: "wr-2",
@@ -524,6 +531,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Perfect introduction to pottery. The studio atmosphere was wonderful and I left feeling inspired to continue learning.",
         date: "Sep 30, 2024",
+        likes: 15,
       },
       {
         id: "wr-3",
@@ -534,6 +542,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Great experience overall. Would have loved a bit more time to finish my piece, but the techniques I learned were invaluable.",
         date: "Sep 29, 2024",
+        likes: 9,
       },
     ],
   },
@@ -567,6 +576,10 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Best week of my summer! The progression from day 1 to day 5 was incredible. James is a fantastic teacher.",
         date: "Aug 22, 2024",
+        likes: 42,
+        images: [
+          "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=300&h=300&fit=crop",
+        ],
       },
       {
         id: "wr-5",
@@ -577,6 +590,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Worth every penny. I came in knowing nothing and left with skills I'll use forever. Already signed up for next year!",
         date: "Aug 20, 2024",
+        likes: 36,
       },
     ],
   },
@@ -602,6 +616,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "My daughter had the best time! She hasn't stopped talking about her elephant sculpture. Sarah was wonderful with the kids.",
         date: "Jul 22, 2024",
+        likes: 19,
       },
       {
         id: "wr-7",
@@ -612,6 +627,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Great activity for kids. My son loved it. Only wish it was a bit longer so they could do more.",
         date: "Jul 21, 2024",
+        likes: 11,
       },
     ],
   },
@@ -645,6 +661,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Truly unique experience. Learning about the history behind these techniques made it so much more meaningful.",
         date: "Jun 12, 2024",
+        likes: 23,
       },
     ],
   },
@@ -670,6 +687,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "The most peaceful workshop I've ever attended. James explained the philosophy beautifully and the tea ceremony at the end was magical.",
         date: "May 28, 2024",
+        likes: 31,
       },
       {
         id: "wr-10",
@@ -680,6 +698,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "As someone with Japanese heritage, this workshop meant a lot to me. Beautifully done with respect for the tradition.",
         date: "May 27, 2024",
+        likes: 27,
       },
     ],
   },
@@ -709,6 +728,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Challenging but rewarding. Sarah helped me push past my comfort zone and I'm proud of what I created.",
         date: "Apr 15, 2024",
+        likes: 14,
       },
       {
         id: "wr-12",
@@ -719,6 +739,7 @@ export const PAST_WORKSHOPS: PastWorkshop[] = [
         content:
           "Finally a workshop that challenges experienced potters! The sculpture techniques were completely new to me.",
         date: "Apr 14, 2024",
+        likes: 22,
       },
     ],
   },
@@ -732,6 +753,8 @@ export interface Review {
   rating: number;
   content: string;
   date: string;
+  likes?: number;
+  images?: string[];
 }
 
 export const REVIEWS: Review[] = [
@@ -744,6 +767,11 @@ export const REVIEWS: Review[] = [
     content:
       "Absolutely stunning piece. The texture is amazing to hold, and it keeps my matcha warm for longer than my previous bowls.",
     date: "2 weeks ago",
+    likes: 24,
+    images: [
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=300&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300&h=300&fit=crop",
+    ],
   },
   {
     id: "2",
@@ -754,6 +782,10 @@ export const REVIEWS: Review[] = [
     content:
       "Great quality and beautiful color. I love the unique glaze pattern on mine!",
     date: "1 month ago",
+    likes: 18,
+    images: [
+      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=300&h=300&fit=crop",
+    ],
   },
   {
     id: "3",
@@ -764,6 +796,7 @@ export const REVIEWS: Review[] = [
     content:
       "Beautiful craftsmanship. Slightly smaller than I expected but perfect for my morning tea ritual.",
     date: "1 month ago",
+    likes: 12,
   },
   {
     id: "4",
@@ -774,6 +807,12 @@ export const REVIEWS: Review[] = [
     content:
       "The attention to detail is incredible. You can really tell this was made by skilled artisans. The moss green glaze is even more beautiful in person!",
     date: "2 months ago",
+    likes: 45,
+    images: [
+      "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=300&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1610701596061-2ecf227e85b2?w=300&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=300&h=300&fit=crop",
+    ],
   },
   {
     id: "5",
@@ -784,6 +823,7 @@ export const REVIEWS: Review[] = [
     content:
       "Lovely piece that adds warmth to my kitchen. The glaze has such depth and character. Would definitely buy from this shop again.",
     date: "2 months ago",
+    likes: 31,
   },
   {
     id: "6",
@@ -794,6 +834,7 @@ export const REVIEWS: Review[] = [
     content:
       "Bought this as a gift for my mother and she absolutely loved it. The packaging was also very thoughtful and eco-friendly.",
     date: "3 months ago",
+    likes: 8,
   },
   {
     id: "7",
@@ -804,6 +845,7 @@ export const REVIEWS: Review[] = [
     content:
       "Nice quality but the color was slightly different from what I expected based on the photos. Still a lovely piece overall.",
     date: "3 months ago",
+    likes: 5,
   },
   {
     id: "8",
@@ -814,6 +856,10 @@ export const REVIEWS: Review[] = [
     content:
       "This is my third purchase from Poetry & Pottery and they never disappoint. The quality is consistently excellent.",
     date: "4 months ago",
+    likes: 52,
+    images: [
+      "https://images.unsplash.com/photo-1603199506016-b9a594b593c0?w=300&h=300&fit=crop",
+    ],
   },
 ];
 

@@ -1,9 +1,20 @@
 "use client";
 
 import { Star } from "lucide-react";
-import { useMemo, useState } from "react";
+import Image from "next/image";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { Rating } from "@/components/rating";
 import { ReviewCard } from "@/components/review-card";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -21,7 +32,7 @@ import {
 
 import { Review } from "@/lib/constants";
 
-type SortOption = "recent" | "highest" | "lowest";
+type SortOption = "recent" | "highest" | "lowest" | "top";
 
 interface RatingBreakdownProps {
   rating: number;
@@ -63,6 +74,37 @@ export function ReviewsSheet({
   children,
 }: ReviewsSheetProps) {
   const [sortBy, setSortBy] = useState<SortOption>("recent");
+  const [likedReviews, setLikedReviews] = useState<Set<string>>(new Set());
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>(() =>
+    reviews.reduce(
+      (acc, review) => {
+        acc[review.id] = review.likes ?? 0;
+        return acc;
+      },
+      {} as Record<string, number>,
+    ),
+  );
+
+  const handleLike = useCallback(
+    (reviewId: string) => {
+      setLikedReviews((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(reviewId)) {
+          newSet.delete(reviewId);
+        } else {
+          newSet.add(reviewId);
+        }
+        return newSet;
+      });
+      setLikeCounts((prev) => ({
+        ...prev,
+        [reviewId]: likedReviews.has(reviewId)
+          ? (prev[reviewId] ?? 0) - 1
+          : (prev[reviewId] ?? 0) + 1,
+      }));
+    },
+    [likedReviews],
+  );
 
   const ratingCounts = useMemo(() => {
     const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -75,6 +117,51 @@ export function ReviewsSheet({
     return counts;
   }, [reviews]);
 
+  const imageWithReview = useMemo(() => {
+    return reviews.flatMap((review) =>
+      (review.images ?? []).map((image) => ({
+        image,
+        review,
+      })),
+    );
+  }, [reviews]);
+
+  const allImages = useMemo(() => {
+    return imageWithReview.map((item) => item.image);
+  }, [imageWithReview]);
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    setCurrentSlide(carouselApi.selectedScrollSnap());
+
+    carouselApi.on("select", () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    });
+  }, [carouselApi]);
+
+  const handleImageClick = useCallback(
+    (imageUrl: string) => {
+      const index = imageWithReview.findIndex(
+        (item) => item.image === imageUrl,
+      );
+      if (index !== -1) {
+        setSelectedImageIndex(index);
+      }
+    },
+    [imageWithReview],
+  );
+
+  const handleCloseViewer = useCallback(() => {
+    setSelectedImageIndex(null);
+  }, []);
+
   const sortedReviews = useMemo(() => {
     const sorted = [...reviews];
     switch (sortBy) {
@@ -82,11 +169,15 @@ export function ReviewsSheet({
         return sorted.sort((a, b) => b.rating - a.rating);
       case "lowest":
         return sorted.sort((a, b) => a.rating - b.rating);
+      case "top":
+        return sorted.sort(
+          (a, b) => (likeCounts[b.id] ?? 0) - (likeCounts[a.id] ?? 0),
+        );
       case "recent":
       default:
         return sorted;
     }
-  }, [reviews, sortBy]);
+  }, [reviews, sortBy, likeCounts]);
 
   const handleSortChange = (value: string) => {
     setSortBy(value as SortOption);
@@ -143,6 +234,32 @@ export function ReviewsSheet({
             </div>
           </div>
 
+          {/* Customer Photos */}
+          {allImages.length > 0 && (
+            <div className="border-border border-b px-4 py-4">
+              <h3 className="mb-3 text-sm font-medium">
+                Customer Photos ({allImages.length})
+              </h3>
+              <div className="scrollbar-hide flex gap-2 overflow-x-auto">
+                {allImages.map((image, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => handleImageClick(image)}
+                    className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg"
+                  >
+                    <Image
+                      src={image}
+                      alt={`Customer photo ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Sort Controls */}
           <div className="flex items-center justify-between px-4 py-3">
             <span className="text-muted-foreground text-sm">
@@ -154,6 +271,7 @@ export function ReviewsSheet({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="recent">Most Recent</SelectItem>
+                <SelectItem value="top">Top Reviews</SelectItem>
                 <SelectItem value="highest">Highest Rated</SelectItem>
                 <SelectItem value="lowest">Lowest Rated</SelectItem>
               </SelectContent>
@@ -170,10 +288,90 @@ export function ReviewsSheet({
                 rating={review.rating}
                 content={review.content}
                 date={review.date}
+                likes={likeCounts[review.id] ?? 0}
+                isLiked={likedReviews.has(review.id)}
+                images={review.images}
+                onLike={() => handleLike(review.id)}
+                onImageClick={handleImageClick}
               />
             ))}
           </div>
         </div>
+
+        {/* Fullscreen Image Viewer with Carousel */}
+        <Dialog
+          open={selectedImageIndex !== null}
+          onOpenChange={(open) => !open && handleCloseViewer()}
+        >
+          <DialogContent className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0">
+            <DialogTitle className="sr-only">Review Image Viewer</DialogTitle>
+            <div className="max-h-[calc(90vh-2rem)] overflow-y-auto p-4">
+              <Carousel
+                className="w-full"
+                opts={{ startIndex: selectedImageIndex ?? 0 }}
+                setApi={setCarouselApi}
+              >
+                <CarouselContent>
+                  {imageWithReview.map((item, index) => (
+                    <CarouselItem key={index}>
+                      <div className="space-y-4">
+                        {/* Reviewer info */}
+                        <div className="flex items-center gap-3">
+                          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                            <Image
+                              src={item.review.avatar}
+                              alt={item.review.author}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div>
+                            <p className="text-foreground text-sm font-medium">
+                              {item.review.author}
+                            </p>
+                            <Rating
+                              rating={item.review.rating}
+                              showCount={false}
+                              size="sm"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Image with aspect ratio */}
+                        <div className="bg-muted relative aspect-square max-h-[50vh] w-full overflow-hidden rounded-lg">
+                          <Image
+                            src={item.image}
+                            alt={`Review image by ${item.review.author}`}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+
+                        {/* Review content */}
+                        <p className="text-muted-foreground line-clamp-3 text-sm">
+                          {item.review.content}
+                        </p>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                {imageWithReview.length > 1 && (
+                  <>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2" />
+                  </>
+                )}
+              </Carousel>
+
+              {/* Counter */}
+              {imageWithReview.length > 1 && (
+                <div className="text-muted-foreground mt-4 text-center text-sm">
+                  {currentSlide + 1} / {imageWithReview.length}
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
       </SheetContent>
     </Sheet>
   );

@@ -1,17 +1,23 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { cn } from "@/lib/utils";
 
 interface ProductImageGalleryProps {
   images: string[];
@@ -22,105 +28,119 @@ export function ProductImageGallery({
   images,
   productName,
 }: ProductImageGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const goToPrevious = () => {
-    setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
+  useEffect(() => {
+    if (!carouselApi) return;
 
-  const goToNext = () => {
-    setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+    setCurrentSlide(carouselApi.selectedScrollSnap());
+
+    carouselApi.on("select", () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    });
+  }, [carouselApi]);
+
+  const handleImageClick = useCallback((index: number) => {
+    setSelectedIndex(index);
+  }, []);
+
+  const handleCloseViewer = useCallback(() => {
+    setSelectedIndex(null);
+  }, []);
 
   return (
     <div className="min-w-0">
-      <div className="bg-muted/30 group relative mb-4 aspect-square w-full overflow-hidden rounded-2xl">
-        <Image
-          src={images[selectedImage]}
-          alt={productName}
-          fill
-          className="object-contain"
-          priority
-        />
-
-        {/* Full Screen Trigger */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <button
-              className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 opacity-100 shadow-sm backdrop-blur-sm transition-colors hover:bg-white focus:opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
-              aria-label="View full screen"
-            >
-              <Maximize2 className="text-foreground h-5 w-5" />
-            </button>
-          </DialogTrigger>
-          <DialogContent className="h-full max-h-[90vh] w-full max-w-[90vw] border-none bg-black/95 p-0 sm:max-w-screen-xl">
-            <DialogTitle className="sr-only">Product Image</DialogTitle>
-            <div className="relative flex h-full w-full items-center justify-center p-4">
-              <Image
-                src={images[selectedImage]}
-                alt={productName}
-                fill
-                className="object-contain"
-                priority
-              />
-              {images.length > 1 && (
-                <>
-                  <button
-                    onClick={goToPrevious}
-                    className="absolute top-1/2 left-4 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
-                  >
-                    <ChevronLeft className="h-8 w-8" />
-                  </button>
-                  <button
-                    onClick={goToNext}
-                    className="absolute top-1/2 right-4 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
-                  >
-                    <ChevronRight className="h-8 w-8" />
-                  </button>
-                </>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-
-        {/* Image Navigation Arrows */}
-        {images.length > 1 && (
-          <>
-            <button
-              onClick={goToPrevious}
-              className="absolute top-1/2 left-4 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              onClick={goToNext}
-              className="absolute top-1/2 right-4 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-              aria-label="Next image"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </>
-        )}
+      <div className="bg-muted/30 group relative mb-4 w-full overflow-hidden rounded-2xl">
+        <Carousel className="w-full">
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
+                <button
+                  type="button"
+                  onClick={() => handleImageClick(index)}
+                  className="relative aspect-square w-full cursor-zoom-in"
+                >
+                  <Image
+                    src={image}
+                    alt={`${productName} - Image ${index + 1}`}
+                    fill
+                    className="object-contain"
+                    priority={index === 0}
+                  />
+                </button>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          {images.length > 1 && (
+            <>
+              <CarouselPrevious className="left-4 border-none bg-white/80 shadow-sm backdrop-blur-sm hover:bg-white" />
+              <CarouselNext className="right-4 border-none bg-white/80 shadow-sm backdrop-blur-sm hover:bg-white" />
+            </>
+          )}
+        </Carousel>
       </div>
 
-      {/* Thumbnail dots */}
-      {images.length > 1 && (
-        <div className="flex justify-center gap-2">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setSelectedImage(index)}
-              className={cn(
-                "h-2 w-2 rounded-full transition-colors",
-                index === selectedImage
-                  ? "bg-primary"
-                  : "bg-muted-foreground/30",
+      {/* Fullscreen Image Viewer */}
+      <Dialog
+        open={selectedIndex !== null}
+        onOpenChange={(open) => !open && handleCloseViewer()}
+      >
+        <DialogContent
+          className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0"
+          showCloseButton={false}
+        >
+          <div className="flex flex-col p-4">
+            {/* Header with close button */}
+            <div className="mb-4 flex items-center justify-between">
+              <DialogTitle className="text-base font-medium">
+                {productName}
+              </DialogTitle>
+              <DialogClose className="text-muted-foreground hover:text-foreground rounded-sm transition-colors">
+                <X className="h-5 w-5" />
+                <span className="sr-only">Close</span>
+              </DialogClose>
+            </div>
+
+            {/* Carousel */}
+            <Carousel
+              className="w-full"
+              opts={{ startIndex: selectedIndex ?? 0 }}
+              setApi={setCarouselApi}
+            >
+              <CarouselContent>
+                {images.map((image, index) => (
+                  <CarouselItem key={index}>
+                    <div className="bg-muted relative aspect-square max-h-[60vh] w-full overflow-hidden rounded-lg">
+                      <Image
+                        src={image}
+                        alt={`${productName} - Image ${index + 1}`}
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              {images.length > 1 && (
+                <>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </>
               )}
-            />
-          ))}
-        </div>
-      )}
+            </Carousel>
+
+            {/* Counter */}
+            {images.length > 1 && (
+              <div className="text-muted-foreground mt-4 text-center text-sm">
+                {currentSlide + 1} / {images.length}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

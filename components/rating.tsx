@@ -7,6 +7,8 @@ interface RatingProps {
   reviewCount?: number;
   showCount?: boolean;
   size?: "sm" | "md";
+  className?: string;
+  textClassName?: string;
 }
 
 export function Rating({
@@ -14,9 +16,11 @@ export function Rating({
   reviewCount,
   showCount = true,
   size = "md",
+  className,
+  textClassName,
 }: RatingProps) {
   return (
-    <div className="flex items-center gap-1">
+    <div className={cn("flex items-center gap-1", className)}>
       <Star
         className={cn(
           "fill-yellow-400 text-yellow-400",
@@ -24,7 +28,11 @@ export function Rating({
         )}
       />
       <span
-        className={cn("font-medium", size === "sm" ? "text-xs" : "text-sm")}
+        className={cn(
+          "font-medium",
+          size === "sm" ? "text-xs" : "text-sm",
+          textClassName,
+        )}
       >
         {rating.toFixed(1)}
       </span>

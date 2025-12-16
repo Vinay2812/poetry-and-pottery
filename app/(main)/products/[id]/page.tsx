@@ -138,6 +138,8 @@ export default function ProductPage() {
                       rating={review.rating}
                       content={review.content}
                       date={review.date}
+                      likes={review.likes}
+                      images={review.images}
                       isCompact
                     />
                   ))}
