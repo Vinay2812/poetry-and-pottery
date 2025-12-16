@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCartIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 
 import { CartItemCard } from "@/components/cards";
@@ -71,7 +71,7 @@ export default function CartPage() {
                 </div>
               ) : (
                 <EmptyState
-                  icon={ShoppingBag}
+                  icon={ShoppingCartIcon}
                   title="Your cart is empty"
                   description="Add some beautiful pottery to your cart"
                   actionText="Start Shopping"

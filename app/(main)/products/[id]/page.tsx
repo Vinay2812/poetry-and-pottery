@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingCartIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
@@ -182,7 +182,7 @@ export default function ProductPage() {
                   <Heart className="h-5 w-5" />
                 </Button>
                 <Button className="h-12 flex-1 rounded-xl" size="lg">
-                  <ShoppingBag className="mr-2 h-5 w-5" />
+                  <ShoppingCartIcon className="mr-2 h-5 w-5" />
                   Add to Cart
                 </Button>
               </div>
@@ -219,7 +219,7 @@ export default function ProductPage() {
             <Heart className="h-5 w-5" />
           </Button>
           <Button className="h-12 flex-1 rounded-xl">
-            <ShoppingBag className="mr-2 h-5 w-5" />
+            <ShoppingCartIcon className="mr-2 h-5 w-5" />
             Add to Cart
           </Button>
         </div>

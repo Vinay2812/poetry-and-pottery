@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Home, ShoppingBag, Store } from "lucide-react";
+import { CalendarDaysIcon, Home, ShoppingCartIcon, Store } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/", icon: Home },
   { href: "/products", icon: Store },
-  { href: "/cart", icon: ShoppingBag, badge: 2 },
-  { href: "/events", icon: Calendar, badge: 2 },
+  { href: "/cart", icon: ShoppingCartIcon, badge: 2 },
+  { href: "/events", icon: CalendarDaysIcon, badge: 2 },
 ];
 
 export function MobileNav() {
