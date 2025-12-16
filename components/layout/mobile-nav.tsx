@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/", icon: Home },
   { href: "/products", icon: Store },
-  { href: "/events", icon: Calendar },
   { href: "/cart", icon: ShoppingBag, badge: 2 },
+  { href: "/events", icon: Calendar, badge: 2 },
 ];
 
 export function MobileNav() {
