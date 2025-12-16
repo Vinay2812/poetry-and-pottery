@@ -139,11 +139,16 @@ export function ReviewsSheet({
   useEffect(() => {
     if (!carouselApi) return;
 
-    setCurrentSlide(carouselApi.selectedScrollSnap());
-
-    carouselApi.on("select", () => {
+    const onSelect = () => {
       setCurrentSlide(carouselApi.selectedScrollSnap());
-    });
+    };
+
+    onSelect();
+
+    carouselApi.on("select", onSelect);
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
   }, [carouselApi]);
 
   const handleImageClick = useCallback(
@@ -153,6 +158,7 @@ export function ReviewsSheet({
       );
       if (index !== -1) {
         setSelectedImageIndex(index);
+        setCurrentSlide(index);
       }
     },
     [imageWithReview],
