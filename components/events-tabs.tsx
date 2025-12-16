@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
@@ -20,30 +20,40 @@ export function EventsTabs({ registeredCount = 0 }: EventsTabsProps) {
   const isPast =
     pathname === "/events/past" || pathname.startsWith("/events/past/");
 
+  const isShowRegistered = registeredCount > 0;
+
+  if (!isShowRegistered && isRegistered) {
+    return redirect("/events/upcoming");
+  }
+
   return (
     <div className="mb-6 flex gap-2">
-      <Link
-        href="/events/registrations"
-        className={cn(
-          "flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition-colors sm:px-4",
-          isRegistered
-            ? "bg-primary text-primary-foreground"
-            : "border-border text-foreground hover:bg-muted border bg-white",
-        )}
-      >
-        <span className="hidden sm:inline">My Registrations</span>
-        <span className="sm:hidden">Registered</span>
-        {registeredCount > 0 && (
-          <span
-            className={cn(
-              "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs",
-              isRegistered ? "text-primary bg-white" : "bg-primary text-white",
-            )}
-          >
-            {registeredCount}
-          </span>
-        )}
-      </Link>
+      {registeredCount > 0 && (
+        <Link
+          href="/events/registrations"
+          className={cn(
+            "flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition-colors sm:px-4",
+            isRegistered
+              ? "bg-primary text-primary-foreground"
+              : "border-border text-foreground hover:bg-muted border bg-white",
+          )}
+        >
+          <span className="hidden sm:inline">My Registrations</span>
+          <span className="sm:hidden">Registered</span>
+          {registeredCount > 0 && (
+            <span
+              className={cn(
+                "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs",
+                isRegistered
+                  ? "text-primary bg-white"
+                  : "bg-primary text-white",
+              )}
+            >
+              {registeredCount}
+            </span>
+          )}
+        </Link>
+      )}
       <Link
         href="/events/upcoming"
         className={cn(

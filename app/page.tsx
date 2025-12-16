@@ -97,45 +97,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Upcoming Event */}
-        {upcomingEvent && (
-          <section className="px-4 py-6 lg:px-8">
-            <div className="shadow-soft hover:shadow-card rounded-2xl bg-white p-4 transition-shadow duration-200">
-              <div className="flex gap-4">
-                <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-                  <Image
-                    src={upcomingEvent.image}
-                    alt={upcomingEvent.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="mb-1 flex items-center gap-2">
-                    <span className="bg-subtle-green text-primary rounded px-2 py-0.5 text-xs font-medium">
-                      WORKSHOP
-                    </span>
-                    <span className="text-muted-foreground text-xs">
-                      {upcomingEvent.date.split(",")[1]}
-                    </span>
-                  </div>
-                  <h3 className="mb-1 text-sm font-semibold">
-                    {upcomingEvent.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-2 line-clamp-2 text-xs">
-                    {upcomingEvent.description.substring(0, 50)}...
-                  </p>
-                  <Link
-                    href="/events"
-                    className="text-primary hover:text-primary-hover flex items-center gap-1 text-xs font-medium transition-colors duration-150"
-                  >
-                    Book Spot <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
+        {/* Studio Visit CTA */}
+        <CTASection
+          title="Visit Our Studio"
+          description="Come see where the magic happens. Book a studio tour, join a workshop, or simply stop by for a cup of tea and a chat about clay."
+          primaryButtonText="Book a Workshop"
+          primaryButtonHref="/events/upcoming"
+          secondaryButtonText="Browse Collection"
+          secondaryButtonHref="/products"
+          variant="solid"
+        />
 
         {/* Our Story CTA */}
         <CTASection
