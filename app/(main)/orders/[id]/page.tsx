@@ -140,7 +140,7 @@ function ReviewForm({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Share your experience with this product..."
-          className="min-h-24 resize-none rounded-xl"
+          className="h-24 resize-none rounded-xl text-sm"
           required
         />
       </div>
