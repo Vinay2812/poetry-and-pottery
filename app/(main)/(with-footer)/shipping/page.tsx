@@ -76,37 +76,20 @@ export default function ShippingPage() {
       <MobileHeader title="Shipping & Returns" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
-        {/* Hero Section */}
-        <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-4 text-4xl font-bold lg:text-6xl">
-              Shipping & Returns
-            </h1>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              We take great care in packaging and delivering your handcrafted
-              pottery. Learn about our shipping options and hassle-free return
-              policy.
-            </p>
-          </div>
-        </section>
-
         {/* Shipping Options */}
         <section className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
           <SectionHeader
             title="Shipping Options"
             description="Choose the delivery speed that works best for you."
           />
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-3">
             {SHIPPING_OPTIONS.map((option) => (
-              <div
-                key={option.title}
-                className="shadow-soft rounded-2xl bg-white p-6"
-              >
-                <div className="bg-subtle-green mb-4 flex h-12 w-12 items-center justify-center rounded-xl">
-                  <option.icon className="text-primary h-6 w-6" />
+              <div key={option.title} className="text-center">
+                <div className="bg-subtle-green mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl">
+                  <option.icon className="text-primary h-8 w-8" />
                 </div>
-                <h3 className="mb-1 font-semibold">{option.title}</h3>
-                <p className="text-muted-foreground mb-2 text-sm">
+                <h3 className="mb-2 font-semibold">{option.title}</h3>
+                <p className="text-muted-foreground mb-1 text-sm">
                   {option.description}
                 </p>
                 <p className="text-primary text-sm font-medium">
@@ -120,22 +103,78 @@ export default function ShippingPage() {
         {/* Shipping Details */}
         <section className="bg-subtle-green py-12 lg:py-20">
           <div className="container mx-auto px-4 lg:px-8">
-            <SectionHeader
-              title="Shipping Details"
-              description="Everything you need to know about how we ship your order."
-            />
-            <div className="mx-auto max-w-3xl space-y-6">
-              {SHIPPING_INFO.map((info) => (
-                <div
-                  key={info.title}
-                  className="shadow-soft rounded-2xl bg-white p-6"
-                >
-                  <h3 className="mb-2 font-semibold">{info.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {info.content}
-                  </p>
+            {/* Mobile Layout */}
+            <div className="lg:hidden">
+              <SectionHeader
+                title="Shipping Details"
+                description="Everything you need to know about how we ship your order."
+              />
+              <div className="space-y-4">
+                {SHIPPING_INFO.map((info) => (
+                  <div
+                    key={info.title}
+                    className="shadow-soft rounded-2xl bg-white p-6"
+                  >
+                    <h3 className="mb-2 font-semibold">{info.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {info.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden gap-8 lg:grid lg:grid-cols-2">
+              {/* Info Card */}
+              <div className="bg-primary flex flex-col justify-center rounded-3xl p-10 text-white">
+                <p className="mb-4 text-sm font-medium tracking-wider text-white/70 uppercase">
+                  Delivery Info
+                </p>
+                <h2 className="mb-6 text-4xl font-bold">Shipping Details</h2>
+                <p className="mb-8 text-lg leading-relaxed text-white/90">
+                  Everything you need to know about how we ship your order.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                      <Package className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Carefully Packaged</p>
+                      <p className="text-sm text-white/80">
+                        Every piece wrapped with care
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                      <Truck className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Tracked Delivery</p>
+                      <p className="text-sm text-white/80">
+                        Know where your order is
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Content */}
+              <div className="space-y-4">
+                {SHIPPING_INFO.map((info) => (
+                  <div
+                    key={info.title}
+                    className="shadow-soft rounded-2xl bg-white p-6"
+                  >
+                    <h3 className="mb-2 font-semibold">{info.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {info.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -162,13 +201,14 @@ export default function ShippingPage() {
         </section>
 
         {/* Return Process */}
-        <section className="bg-white py-12 lg:py-20">
+        <section className="bg-subtle-green py-12 lg:py-20">
           <div className="container mx-auto px-4 lg:px-8">
-            <SectionHeader
-              title="How to Return"
-              description="Follow these simple steps to initiate a return."
-            />
-            <div className="mx-auto max-w-3xl">
+            {/* Mobile Layout */}
+            <div className="lg:hidden">
+              <SectionHeader
+                title="How to Return"
+                description="Follow these simple steps to initiate a return."
+              />
               <div className="space-y-4">
                 {[
                   {
@@ -198,7 +238,93 @@ export default function ShippingPage() {
                 ].map((item) => (
                   <div
                     key={item.step}
-                    className="bg-muted/50 flex gap-4 rounded-2xl p-6"
+                    className="shadow-soft flex gap-4 rounded-2xl bg-white p-6"
+                  >
+                    <div className="bg-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+                      <span className="text-sm font-bold text-white">
+                        {item.step}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="mb-1 font-semibold">{item.title}</h3>
+                      <p className="text-muted-foreground text-sm">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden gap-8 lg:grid lg:grid-cols-2">
+              {/* Info Card */}
+              <div className="bg-primary flex flex-col justify-center rounded-3xl p-10 text-white">
+                <p className="mb-4 text-sm font-medium tracking-wider text-white/70 uppercase">
+                  Easy Returns
+                </p>
+                <h2 className="mb-6 text-4xl font-bold">How to Return</h2>
+                <p className="mb-8 text-lg leading-relaxed text-white/90">
+                  Follow these simple steps to initiate a return. We make the
+                  process as easy as possible.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                      <RefreshCw className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">30-Day Window</p>
+                      <p className="text-sm text-white/80">
+                        Plenty of time to decide
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                      <Shield className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Full Refund</p>
+                      <p className="text-sm text-white/80">
+                        No questions asked
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Steps */}
+              <div className="space-y-4">
+                {[
+                  {
+                    step: "01",
+                    title: "Contact Us",
+                    description:
+                      "Email us at returns@poetryandpottery.com or use the return form in your account within 30 days of delivery.",
+                  },
+                  {
+                    step: "02",
+                    title: "Pack Your Item",
+                    description:
+                      "Place the item in its original packaging. If original packaging is unavailable, use secure packaging to prevent damage.",
+                  },
+                  {
+                    step: "03",
+                    title: "Ship It Back",
+                    description:
+                      "Use the prepaid shipping label we provide. Drop off the package at any courier pickup point.",
+                  },
+                  {
+                    step: "04",
+                    title: "Receive Refund",
+                    description:
+                      "Once we receive and inspect the item, your refund will be processed within 5-7 business days.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.step}
+                    className="shadow-soft flex gap-4 rounded-2xl bg-white p-6"
                   >
                     <div className="bg-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
                       <span className="text-sm font-bold text-white">

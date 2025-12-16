@@ -17,133 +17,6 @@ import {
 import { MobileHeader } from "@/components/layout";
 import { CTASection, SectionHeader } from "@/components/sections";
 
-const CARE_CATEGORIES = [
-  {
-    icon: Droplets,
-    title: "Cleaning",
-    description: "Keep your pottery looking beautiful",
-    tips: [
-      {
-        do: true,
-        text: "Hand wash with warm water and mild dish soap",
-      },
-      {
-        do: true,
-        text: "Use a soft sponge or cloth to clean surfaces",
-      },
-      {
-        do: true,
-        text: "Dry thoroughly with a soft towel",
-      },
-      {
-        do: false,
-        text: "Use abrasive scrubbers or steel wool",
-      },
-      {
-        do: false,
-        text: "Soak pottery for extended periods",
-      },
-      {
-        do: false,
-        text: "Use harsh chemical cleaners or bleach",
-      },
-    ],
-  },
-  {
-    icon: Flame,
-    title: "Heat & Temperature",
-    description: "Protect your pieces from thermal shock",
-    tips: [
-      {
-        do: true,
-        text: "Allow pottery to reach room temperature before heating",
-      },
-      {
-        do: true,
-        text: "Use trivets or mats under hot pieces",
-      },
-      {
-        do: true,
-        text: "Most pieces are oven-safe up to 400°F (204°C)",
-      },
-      {
-        do: false,
-        text: "Place cold pottery directly on high heat",
-      },
-      {
-        do: false,
-        text: "Use on direct flame or stovetop",
-      },
-      {
-        do: false,
-        text: "Subject to sudden temperature changes",
-      },
-    ],
-  },
-  {
-    icon: Zap,
-    title: "Microwave & Dishwasher",
-    description: "Modern convenience guidelines",
-    tips: [
-      {
-        do: true,
-        text: "Most glazed pieces are microwave safe",
-      },
-      {
-        do: true,
-        text: "Place on top rack of dishwasher with mild detergent",
-      },
-      {
-        do: true,
-        text: "Check product tags for specific guidelines",
-      },
-      {
-        do: false,
-        text: "Microwave pieces with metallic glazes or accents",
-      },
-      {
-        do: false,
-        text: "Use harsh dishwasher detergents",
-      },
-      {
-        do: false,
-        text: "Overload dishwasher causing pieces to touch",
-      },
-    ],
-  },
-  {
-    icon: Hand,
-    title: "Handling & Storage",
-    description: "Prevent chips and cracks",
-    tips: [
-      {
-        do: true,
-        text: "Handle with care, supporting from the base",
-      },
-      {
-        do: true,
-        text: "Store with felt or cloth between stacked pieces",
-      },
-      {
-        do: true,
-        text: "Keep in a stable location away from edges",
-      },
-      {
-        do: false,
-        text: "Stack heavy items on top of delicate pieces",
-      },
-      {
-        do: false,
-        text: "Pick up by handles or rims alone",
-      },
-      {
-        do: false,
-        text: "Store in areas with high humidity or moisture",
-      },
-    ],
-  },
-];
-
 const GLAZE_TYPES = [
   {
     name: "Matte Glazes",
@@ -204,51 +77,105 @@ export default function CarePage() {
       <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-4 text-4xl font-bold lg:text-6xl">
-              Care Instructions
-            </h1>
+          {/* Mobile Layout */}
+          <div className="mx-auto max-w-3xl text-center lg:hidden">
+            <h1 className="mb-4 text-4xl font-bold">Care Instructions</h1>
             <p className="text-muted-foreground text-lg leading-relaxed">
               With proper care, your handcrafted pottery will bring joy for
               years to come. Follow these guidelines to keep your pieces
               beautiful and functional.
             </p>
           </div>
-        </section>
 
-        {/* Care Categories */}
-        <section className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
-          <div className="grid gap-6 lg:grid-cols-2">
-            {CARE_CATEGORIES.map((category) => (
-              <div
-                key={category.title}
-                className="shadow-soft rounded-2xl bg-white p-6"
-              >
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="bg-subtle-green flex h-12 w-12 items-center justify-center rounded-xl">
-                    <category.icon className="text-primary h-6 w-6" />
+          {/* Desktop Layout */}
+          <div className="hidden gap-8 lg:grid lg:grid-cols-2">
+            {/* Info Card */}
+            <div className="bg-primary flex flex-col justify-center rounded-3xl p-10 text-white">
+              <p className="mb-4 text-sm font-medium tracking-wider text-white/70 uppercase">
+                Pottery Care Guide
+              </p>
+              <h1 className="mb-6 text-4xl font-bold">Care Instructions</h1>
+              <p className="mb-6 text-lg leading-relaxed text-white/90">
+                With proper care, your handcrafted pottery will bring joy for
+                years to come.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20">
+                    <Droplets className="h-4 w-4" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{category.title}</h3>
-                    <p className="text-muted-foreground text-sm">
-                      {category.description}
+                    <p className="text-sm font-semibold">Cleaning</p>
+                    <p className="text-xs text-white/70">
+                      Hand wash with mild soap
                     </p>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {category.tips.map((tip, index) => (
-                    <div key={index} className="flex items-start gap-2">
-                      {tip.do ? (
-                        <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
-                      ) : (
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
-                      )}
-                      <span className="text-sm">{tip.text}</span>
-                    </div>
-                  ))}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20">
+                    <Flame className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">Temperature</p>
+                    <p className="text-xs text-white/70">Avoid thermal shock</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20">
+                    <Zap className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">Appliances</p>
+                    <p className="text-xs text-white/70">
+                      Check glaze type first
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20">
+                    <Hand className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">Handling</p>
+                    <p className="text-xs text-white/70">Store with care</p>
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Quick Reference */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="shadow-soft rounded-2xl bg-white p-6">
+                <h4 className="text-primary mb-4 flex items-center gap-2 font-semibold">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  Safe For
+                </h4>
+                <ul className="text-muted-foreground space-y-2 text-sm">
+                  <li>• Dishwasher (top rack, most pieces)</li>
+                  <li>• Microwave (no metallic glazes)</li>
+                  <li>• Oven up to 400°F (204°C)</li>
+                  <li>• Food and beverages (glazed pieces)</li>
+                  <li>• Refrigerator storage</li>
+                  <li>• Hand washing with mild soap</li>
+                  <li>• Soft sponge or cloth cleaning</li>
+                </ul>
+              </div>
+              <div className="shadow-soft rounded-2xl bg-white p-6">
+                <h4 className="text-primary mb-4 flex items-center gap-2 font-semibold">
+                  <XCircle className="h-5 w-5 text-red-500" />
+                  Avoid
+                </h4>
+                <ul className="text-muted-foreground space-y-2 text-sm">
+                  <li>• Direct flame or stovetop</li>
+                  <li>• Sudden temperature changes</li>
+                  <li>• Abrasive cleaners or scrubbers</li>
+                  <li>• Microwaving metallic glazes</li>
+                  <li>• Extended soaking in water</li>
+                  <li>• Steel wool or harsh chemicals</li>
+                  <li>• Stacking without protection</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -287,64 +214,86 @@ export default function CarePage() {
         </section>
 
         {/* Important Warnings */}
-        <section className="container mx-auto px-4 py-12 lg:px-8 lg:py-20">
-          <SectionHeader
-            title="Important Reminders"
-            description="Keep these key points in mind for the longevity of your pottery."
-          />
-          <div className="mx-auto max-w-3xl space-y-4">
-            {WARNINGS.map((warning) => (
-              <div
-                key={warning.title}
-                className="flex gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-6"
-              >
-                <warning.icon className="h-6 w-6 shrink-0 text-amber-600" />
-                <div>
-                  <h3 className="mb-1 font-semibold">{warning.title}</h3>
-                  <p className="text-muted-foreground text-sm">
-                    {warning.description}
-                  </p>
+        <section className="py-12 lg:py-20">
+          <div className="container mx-auto px-4 lg:px-8">
+            {/* Mobile Layout */}
+            <div className="lg:hidden">
+              <SectionHeader
+                title="Important Reminders"
+                description="Keep these key points in mind for the longevity of your pottery."
+              />
+              <div className="space-y-4">
+                {WARNINGS.map((warning) => (
+                  <div
+                    key={warning.title}
+                    className="flex gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-6"
+                  >
+                    <warning.icon className="h-6 w-6 shrink-0 text-amber-600" />
+                    <div>
+                      <h3 className="mb-1 font-semibold">{warning.title}</h3>
+                      <p className="text-muted-foreground text-sm">
+                        {warning.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden gap-8 lg:grid lg:grid-cols-2">
+              {/* Info Card */}
+              <div className="bg-primary flex flex-col justify-center rounded-3xl p-10 text-white">
+                <p className="mb-4 text-sm font-medium tracking-wider text-white/70 uppercase">
+                  Please Note
+                </p>
+                <h2 className="mb-6 text-4xl font-bold">Important Reminders</h2>
+                <p className="mb-8 text-lg leading-relaxed text-white/90">
+                  Keep these key points in mind for the longevity of your
+                  pottery.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                      <AlertTriangle className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Handle With Care</p>
+                      <p className="text-sm text-white/80">
+                        Protect your investment
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                      <Heart className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Made to Last</p>
+                      <p className="text-sm text-white/80">
+                        With proper care, a lifetime of beauty
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* Quick Reference Card */}
-        <section className="bg-white py-12 lg:py-20">
-          <div className="container mx-auto px-4 lg:px-8">
-            <SectionHeader
-              title="Quick Reference"
-              description="At-a-glance care summary for your convenience."
-            />
-            <div className="bg-primary mx-auto max-w-2xl rounded-3xl p-8 text-white">
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div>
-                  <h4 className="mb-3 flex items-center gap-2 font-semibold">
-                    <CheckCircle className="h-5 w-5" />
-                    Safe For
-                  </h4>
-                  <ul className="space-y-2 text-sm text-white/90">
-                    <li>• Dishwasher (top rack, most pieces)</li>
-                    <li>• Microwave (no metallic glazes)</li>
-                    <li>• Oven up to 400°F (204°C)</li>
-                    <li>• Food and beverages (glazed pieces)</li>
-                    <li>• Refrigerator storage</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="mb-3 flex items-center gap-2 font-semibold">
-                    <XCircle className="h-5 w-5" />
-                    Avoid
-                  </h4>
-                  <ul className="space-y-2 text-sm text-white/90">
-                    <li>• Direct flame or stovetop</li>
-                    <li>• Sudden temperature changes</li>
-                    <li>• Abrasive cleaners or scrubbers</li>
-                    <li>• Microwaving metallic glazes</li>
-                    <li>• Extended soaking in water</li>
-                  </ul>
-                </div>
+              {/* Warnings Content */}
+              <div className="flex flex-col justify-center space-y-4">
+                {WARNINGS.map((warning) => (
+                  <div
+                    key={warning.title}
+                    className="flex gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-6"
+                  >
+                    <warning.icon className="h-6 w-6 shrink-0 text-amber-600" />
+                    <div>
+                      <h3 className="mb-1 font-semibold">{warning.title}</h3>
+                      <p className="text-muted-foreground text-sm">
+                        {warning.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
