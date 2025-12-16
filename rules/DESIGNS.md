@@ -634,6 +634,12 @@ This document outlines the design system rules and guidelines for the Poetry & P
 - **Size**: `h-9 w-9` (mobile) or `h-11 w-11` (desktop)
 - **Border Radius**: `rounded-full`
 
+### Accordions
+
+- **Content Format**: Use bullet points (`<ul>` with `list-disc`) instead of paragraphs for accordion content
+- **List Styling**: `list-disc space-y-1 pl-4 text-sm text-muted-foreground`
+- **Each point should be concise and scannable**
+
 ### Headers
 
 #### Mobile Page Headers

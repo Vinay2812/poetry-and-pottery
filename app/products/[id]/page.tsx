@@ -150,21 +150,25 @@ export default function ProductPage() {
                 <AccordionItem value="materials">
                   <AccordionTrigger>Materials & Care</AccordionTrigger>
                   <AccordionContent>
-                    <p className="text-muted-foreground text-sm">
-                      Made from high-quality {product.material || "stoneware"}.
-                      Dishwasher and microwave safe. Hand wash recommended for
-                      longevity. Avoid sudden temperature changes.
-                    </p>
+                    <ul className="text-muted-foreground list-disc space-y-1 pl-4 text-sm">
+                      <li>
+                        Made from high-quality {product.material || "Stoneware"}
+                      </li>
+                      <li>Dishwasher and microwave safe</li>
+                      <li>Hand wash recommended for longevity</li>
+                      <li>Avoid sudden temperature changes</li>
+                    </ul>
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="shipping">
                   <AccordionTrigger>Shipping & Returns</AccordionTrigger>
                   <AccordionContent>
-                    <p className="text-muted-foreground text-sm">
-                      Free shipping on orders over ₹75. Standard delivery 5-7
-                      business days. Express delivery 2-3 business days. 30-day
-                      return policy for unused items.
-                    </p>
+                    <ul className="text-muted-foreground list-disc space-y-1 pl-4 text-sm">
+                      <li>Free shipping on orders over ₹75</li>
+                      <li>Standard delivery 5-7 business days</li>
+                      <li>Express delivery 2-3 business days</li>
+                      <li>30-day return policy for unused items</li>
+                    </ul>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
