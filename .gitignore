@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 designs/
 plan.md
+
+# data
+data/
+prisma/generated
+lib/reset-db.ts
