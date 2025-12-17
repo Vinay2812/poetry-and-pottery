@@ -7,7 +7,7 @@
     "db:init": "npx tsx lib/seed.ts",
     "dev": "next dev",
     "husky": "husky",
-    "lint": "eslint",
+    "lint": "eslint .",
     "migration:apply": "bunx prisma migrate deploy",
     "migration:create": "bunx prisma migrate dev --create-only",
     "prettier": "prettier --check .",
