@@ -13,11 +13,33 @@ import type {
   UserAddress,
   Wishlist,
 } from "@/prisma/generated/client";
-import {
-  EventLevel,
-  EventStatus,
-  OrderStatus,
-} from "@/prisma/generated/client";
+
+// Define enums locally to avoid importing Prisma runtime into client bundles
+// Keep in sync with prisma/schema.prisma
+export enum EventLevel {
+  BEGINNER = "BEGINNER",
+  INTERMEDIATE = "INTERMEDIATE",
+  ADVANCED = "ADVANCED",
+}
+
+export enum EventStatus {
+  UPCOMING = "UPCOMING",
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  CANCELLED = "CANCELLED",
+  COMPLETED = "COMPLETED",
+}
+
+export enum OrderStatus {
+  PENDING = "PENDING",
+  PROCESSING = "PROCESSING",
+  PAID = "PAID",
+  SHIPPED = "SHIPPED",
+  DELIVERED = "DELIVERED",
+  CANCELLED = "CANCELLED",
+  RETURNED = "RETURNED",
+  REFUNDED = "REFUNDED",
+}
 
 // Re-export base Prisma types for convenience
 export type {
@@ -153,6 +175,3 @@ export interface ProductsResponse extends PaginatedResponse<ProductWithCategorie
 export interface EventsResponse extends PaginatedResponse<EventWithRegistrationCount> {
   levels: EventLevel[];
 }
-
-// Re-export enums for convenience
-export { EventLevel, EventStatus, OrderStatus };
