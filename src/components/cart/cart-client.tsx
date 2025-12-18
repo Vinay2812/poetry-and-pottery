@@ -22,8 +22,8 @@ export function CartClient({
   recommendedProducts,
 }: CartClientProps) {
   const cartStore = useCartStore();
-  const cartItems = cartStore.items;
-  // const [cartItems, setCartItems] = useState(initialCartItems);
+  const cartItems =
+    cartStore.items.length > 0 ? cartStore.items : initialCartItems;
   const {
     updateQuantity: updateCartQuantity,
     removeFromCart,
