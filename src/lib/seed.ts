@@ -104,8 +104,8 @@ async function allTablesEmptyOrExit() {
 async function main() {
   await allTablesEmptyOrExit();
 
-  const N = 100;
-  const CAPPED_N = 20; // 20 items for most tables
+  const N = 500;
+  const CAPPED_N = 30;
 
   // -----------------------------
   // Fetch PEXELS image pools (separately)
@@ -114,22 +114,22 @@ async function main() {
 
   const [USER_IMAGES, PRODUCT_IMAGES, EVENT_IMAGES] = await Promise.all([
     fetchPexelsImages({
-      query: "profile",
+      query: "professional portrait profile",
       orientation: "portrait",
-      size: "large",
+      size: "original",
       perPage: 50,
     }),
     fetchPexelsImages({
-      query: "mug bowl plate vase",
+      query: "pottery handmade mug vase cup plate",
       orientation: "square",
-      size: "large",
-      perPage: 100,
+      size: "original",
+      perPage: 5000,
     }),
     fetchPexelsImages({
-      query: "pottery workshop ceramics class clay wheel studio",
+      query: "pottery handmade clay workshop",
       orientation: "landscape",
-      size: "large",
-      perPage: 100,
+      size: "original",
+      perPage: 5000,
     }),
   ]);
 
@@ -250,21 +250,38 @@ async function main() {
       "Snack Plate",
     ];
 
-    const materials = ["Stoneware", "Porcelain", "Earthenware", "Terracotta"];
+    const materials = [
+      "Stoneware",
+      "Porcelain",
+      "Earthenware",
+      "Terracotta",
+      "Ceramic",
+    ];
     const colors = [
       { code: "#F2E9DC", name: "Sand" },
       { code: "#E8D5C4", name: "Blush Clay" },
       { code: "#C7D3D4", name: "Mist" },
       { code: "#2F3E46", name: "Charcoal" },
       { code: "#A3B18A", name: "Sage" },
+      { code: "#588157", name: "Forest Green" },
+      { code: "#3A5A40", name: "Dark Olive" },
+      { code: "#223323", name: "Charcoal Gray" },
+      { code: "#1F2937", name: "Jet Black" },
+      { code: "#4B5563", name: "Storm Gray" },
+      { code: "#6B7280", name: "Slate Gray" },
+      { code: "#9CA3AF", name: "Cloud Gray" },
+      { code: "#D1D5DB", name: "Light Gray" },
     ];
 
     const instructionsPool = [
+      "Do not use in dishwasher",
       "Handwash recommended",
       "Dishwasher safe (top rack)",
       "Microwave safe",
       "Avoid sudden temperature changes",
       "Do not use abrasive scrubbers",
+      "Do not use in microwave",
+      "Avoid microwave oven",
     ];
 
     const productData = Array.from({ length: N }).map((_, i) => {
@@ -278,6 +295,9 @@ async function main() {
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "")}`;
+
+      const imageUrlsCount = randInt(2, 5);
+      const imageUrls = pickManyUnique(PRODUCT_IMAGES, imageUrlsCount);
 
       return {
         slug,
@@ -293,7 +313,7 @@ async function main() {
         available_quantity: available,
         is_active: true,
         price,
-        image_urls: [pick(PRODUCT_IMAGES), pick(PRODUCT_IMAGES)],
+        image_urls: imageUrls,
       };
     });
 
@@ -365,6 +385,7 @@ async function main() {
       "Porcelain Techniques",
       "Functional Ceramics",
       "Surface Decoration",
+      "Electric Kiln Firing",
       "Studio Practice",
     ];
 
@@ -372,10 +393,12 @@ async function main() {
       "Learn fundamental wheel throwing techniques and create your first bowl or mug. Perfect for complete beginners eager to explore the potter's wheel.",
       "Master the art of glazing with hands-on practice using various firing techniques and color combinations. Discover how to achieve professional-quality finishes.",
       "Explore pinch, coil, and slab building methods to create sculptural forms. Build confidence in hand-sculpting and develop your unique artistic style.",
+      "A advanced session on how to use the electric kiln to fire your pottery. You will learn how to use the electric kiln to fire your pottery and how to achieve professional-quality finishes.",
       "Dive deep into porcelain working with advanced shaping and surface manipulation. This intermediate session covers delicate techniques for fine ceramics.",
       "Create functional pieces designed for everyday use. Learn how to balance aesthetics with durability in your pottery creations.",
       "Discover surface techniques including carving, stamping, and texture application. Transform your pieces with creative decorative methods and patterns.",
       "Join an open studio session with guidance from our instructor. Work on your ongoing projects with personalized feedback and creative support.",
+      "Learn the basics of pottery and create your first piece. Perfect for complete beginners eager to explore the potter's wheel.",
     ];
 
     const includedItems = [
@@ -387,8 +410,10 @@ async function main() {
         "Air-dry materials",
         "Firing (1st piece)",
       ],
+      ["Electric kiln", "All hand tools", "Firing included", "Apron provided"],
       ["Fine porcelain", "Specialized tools", "Texture tools", "1 kiln firing"],
       ["Stoneware clay", "Functional forms guide", "Tools", "Glazing session"],
+      ["Ceramic clay", "Functional forms guide", "Tools", "Glazing session"],
       [
         "Decorating tools",
         "Glaze samples",
@@ -400,6 +425,40 @@ async function main() {
         "Your choice of clay",
         "All equipment",
         "2 hour studio time",
+      ],
+      [
+        "All equipment",
+        "2 hour studio time",
+        "Studio materials",
+        "Take-home guidance",
+      ],
+    ];
+
+    const highlightsItems = [
+      ["Live demo", "Hands-on practice", "Take-home guidance"],
+      [
+        "Fire your pottery",
+        "Learn how to use the electric kiln",
+        "Learn how to achieve professional-quality finishes",
+      ],
+      [
+        "Learn how to use the electric kiln",
+        "Learn how to achieve professional-quality finishes",
+      ],
+      [
+        "Functional ceramics",
+        "Learn how to balance aesthetics with durability in your pottery creations",
+      ],
+      [
+        "Surface decoration",
+        "Discover surface techniques including carving, stamping, and texture application. Transform your pieces with creative decorative methods and patterns.",
+      ],
+      [
+        "Studio practice",
+        "Join an open studio session with guidance from our instructor. Work on your ongoing projects with personalized feedback and creative support.",
+      ],
+      [
+        "Learn the basics of pottery and create your first piece. Perfect for complete beginners eager to explore the potter's wheel.",
       ],
     ];
 
@@ -415,6 +474,13 @@ async function main() {
 
       const total_seats = randInt(8, 24);
       const available_seats = randInt(0, total_seats);
+      const highlights = pickManyUnique(EVENT_IMAGES, randInt(2, 5));
+      const status = pick([EventStatus.ACTIVE, EventStatus.UPCOMING]);
+      const level = pick([
+        EventLevel.BEGINNER,
+        EventLevel.INTERMEDIATE,
+        EventLevel.ADVANCED,
+      ]);
 
       return {
         slug: `event-${i + 1}-${pick(eventTitles)
@@ -431,13 +497,9 @@ async function main() {
         includes: pick(includedItems),
         price: randInt(499, 7999),
         image: pick(EVENT_IMAGES),
-        highlights: ["Live demo", "Hands-on practice", "Take-home guidance"],
-        status: pick([EventStatus.ACTIVE, EventStatus.UPCOMING]),
-        level: pick([
-          EventLevel.BEGINNER,
-          EventLevel.INTERMEDIATE,
-          EventLevel.ADVANCED,
-        ]),
+        highlights: highlights,
+        status: status,
+        level: level,
       };
     });
 
@@ -605,7 +667,7 @@ async function main() {
     console.log(`Inserted purchasedProductItems: ${purchasedCount}`);
 
     // -----------------------------
-    // EVENT REGISTRATIONS (100)
+    // EVENT REGISTRATIONS (20)
     // -----------------------------
     const regSet = new Set<string>();
     const regs: {
@@ -635,12 +697,37 @@ async function main() {
     // -----------------------------
     // REVIEWS (100) (polymorphic)
     // -----------------------------
-    const reviewTexts = [
+    const productReviewTexts = [
       "Excellent finish and great weight in the hand.",
       "Loved the glaze, looks even better in person.",
       "Solid craftsmanship, would buy again.",
+      "The bowl is perfect for everyday use.",
+      "The plate is perfect for everyday use.",
+      "The vase is perfect for everyday use.",
+      "The planter is perfect for everyday use.",
+      "The accessory is perfect for everyday use.",
+      "The serveware is perfect for everyday use.",
+      "The mug is perfect for everyday use.",
+      "The plate is perfect for everyday use.",
+      "The vase is perfect for everyday use.",
+      "Design is beautiful and functional.",
+      "Useful and well made.",
+      "Beautiful and unique design.",
+      "Well crafted and durable.",
+      "Beautiful and unique design.",
+    ];
+
+    const eventReviewTexts = [
+      "Solid craftsmanship, would buy again.",
       "Great workshop — learned a lot and had fun.",
       "Instructor was clear and helpful throughout.",
+      "The workshop was a great experience and I learned a lot.",
+      "The instructor was very knowledgeable and the workshop was well organized.",
+      "Had a great time and learned a lot.",
+      "Workshop was well organized and the instructor was great.",
+      "Instructor was knowledgeable and the workshop was well organized.",
+      "Had fun while learning and creating something new.",
+      "Super fun workshop, highly recommend!",
     ];
 
     const productReviewSet = new Set<string>(); // productId::userId
@@ -660,7 +747,7 @@ async function main() {
         reviews.push({
           user_id: u.id,
           rating: randInt(3, 5),
-          review: pick(reviewTexts),
+          review: pick(productReviewTexts),
           image_urls: [pick(PRODUCT_IMAGES), pick(PRODUCT_IMAGES)],
           product_id: p,
           event_id: null,
@@ -674,9 +761,9 @@ async function main() {
         reviews.push({
           user_id: u.id,
           rating: randInt(3, 5),
-          review: pick(reviewTexts),
+          review: pick(eventReviewTexts),
           image_urls: [pick(EVENT_IMAGES), pick(EVENT_IMAGES)],
-          product_id: null, // ✅ important
+          product_id: null,
           event_id: e,
         });
       }
