@@ -6,6 +6,7 @@ import {
   Check,
   CheckCircle2,
   Clock,
+  Download,
   MapPin,
   Share2,
   Ticket,
@@ -17,6 +18,8 @@ import Link from "next/link";
 import { MobileHeader } from "@/components/layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
+import { TicketDownloadDialog } from "./ticket-download-dialog";
 
 // Helper function to calculate duration from DateTime objects
 function calculateDuration(startsAt: Date, endsAt: Date): string {
@@ -305,9 +308,15 @@ export function RegistrationDetailClient({
                 <div className="border-border my-4 border-t" />
 
                 <div className="space-y-3">
-                  <Button className="h-12 w-full rounded-xl" size="lg">
-                    View Ticket
-                  </Button>
+                  <TicketDownloadDialog
+                    registration={registration}
+                    trigger={
+                      <Button className="h-12 w-full rounded-xl" size="lg">
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Ticket
+                      </Button>
+                    }
+                  />
                   <Link href="/events/upcoming">
                     <Button
                       variant="outline"
@@ -326,9 +335,15 @@ export function RegistrationDetailClient({
 
       {/* Mobile Fixed Bottom CTA */}
       <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
-        <Button className="h-12 w-full rounded-xl" size="lg">
-          View Ticket
-        </Button>
+        <TicketDownloadDialog
+          registration={registration}
+          trigger={
+            <Button className="h-12 w-full rounded-xl" size="lg">
+              <Download className="mr-2 h-4 w-4" />
+              Download Ticket
+            </Button>
+          }
+        />
       </div>
     </>
   );
