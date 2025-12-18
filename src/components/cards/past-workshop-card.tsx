@@ -21,6 +21,8 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
   const imageUrl = event.image || "/placeholder.jpg";
   const attendees = event._count?.event_registrations || 0;
   const highlights = event.highlights || [];
+  const gallery = event.gallery || [];
+
   return (
     <Link
       href={`/events/past/${event.slug}`}
@@ -42,7 +44,7 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
           <div className="absolute top-3 right-3">
             <Badge className="text-foreground flex items-center gap-1 bg-white/90 backdrop-blur-sm hover:bg-white">
               <Images className="h-3 w-3" />
-              {highlights.length}
+              {gallery.length}
             </Badge>
           </div>
         )}

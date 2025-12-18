@@ -435,31 +435,20 @@ async function main() {
     ];
 
     const highlightsItems = [
-      ["Live demo", "Hands-on practice", "Take-home guidance"],
-      [
-        "Fire your pottery",
-        "Learn how to use the electric kiln",
-        "Learn how to achieve professional-quality finishes",
-      ],
-      [
-        "Learn how to use the electric kiln",
-        "Learn how to achieve professional-quality finishes",
-      ],
-      [
-        "Functional ceramics",
-        "Learn how to balance aesthetics with durability in your pottery creations",
-      ],
-      [
-        "Surface decoration",
-        "Discover surface techniques including carving, stamping, and texture application. Transform your pieces with creative decorative methods and patterns.",
-      ],
-      [
-        "Studio practice",
-        "Join an open studio session with guidance from our instructor. Work on your ongoing projects with personalized feedback and creative support.",
-      ],
-      [
-        "Learn the basics of pottery and create your first piece. Perfect for complete beginners eager to explore the potter's wheel.",
-      ],
+      "Live demo",
+      "Hands-on practice",
+      "Take-home guidance",
+      "Fire your pottery",
+      "Learn how to use the electric kiln",
+      "Learn how to achieve professional-quality finishes",
+      "Functional ceramics",
+      "Learn how to balance aesthetics with durability in your pottery creations",
+      "Surface decoration",
+      "Studio practice",
+      "open studio session",
+      "Personalized feedback",
+      "Create your first piece",
+      "Creative support",
     ];
 
     const now = new Date();
@@ -474,7 +463,11 @@ async function main() {
 
       const total_seats = randInt(8, 24);
       const available_seats = randInt(0, total_seats);
-      const highlights = pickManyUnique(EVENT_IMAGES, randInt(2, 5));
+      const highlights = pickManyUnique(highlightsItems, randInt(2, 5));
+      const gallery = pickManyUnique(
+        [...EVENT_IMAGES, ...PRODUCT_IMAGES],
+        randInt(2, 6),
+      );
       const status = pick([EventStatus.ACTIVE, EventStatus.UPCOMING]);
       const level = pick([
         EventLevel.BEGINNER,
@@ -498,6 +491,7 @@ async function main() {
         price: randInt(499, 7999),
         image: pick(EVENT_IMAGES),
         highlights: highlights,
+        gallery: gallery,
         status: status,
         level: level,
       };

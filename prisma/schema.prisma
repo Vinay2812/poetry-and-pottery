@@ -133,6 +133,7 @@ model Event {
   price           Int
   image           String
   highlights      String[]
+  gallery         String[]
   status          String?  @default("active")
   level           String?  @default("beginner")
 
