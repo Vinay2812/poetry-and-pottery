@@ -1,5 +1,6 @@
 "use client";
 
+import { OrderStatus } from "@/prisma/generated/client";
 import type { OrderWithDetails } from "@/types";
 import { Package, Star } from "lucide-react";
 import Image from "next/image";
@@ -23,16 +24,18 @@ function formatOrderDate(dateString: Date | string): string {
   });
 }
 
-function getStatusLabel(status: string | null): string {
-  const labels: Record<string, string> = {
-    processing: "Processing",
-    shipped: "Shipped",
-    delivered: "Delivered",
-    cancelled: "Cancelled",
-    returned: "Returned",
-    refunded: "Refunded",
+function getStatusLabel(status: OrderStatus | null): string {
+  const labels: Record<OrderStatus, string> = {
+    [OrderStatus.PENDING]: "Pending",
+    [OrderStatus.PROCESSING]: "Processing",
+    [OrderStatus.PAID]: "Paid",
+    [OrderStatus.SHIPPED]: "Shipped",
+    [OrderStatus.DELIVERED]: "Delivered",
+    [OrderStatus.CANCELLED]: "Cancelled",
+    [OrderStatus.RETURNED]: "Returned",
+    [OrderStatus.REFUNDED]: "Refunded",
   };
-  return labels[status || "processing"] || "Processing";
+  return labels[status || OrderStatus.PROCESSING] || "Processing";
 }
 
 interface ReviewFormProps {
@@ -251,7 +254,7 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
     );
   }
 
-  const canReview = order.status === "delivered";
+  const canReview = order.status === OrderStatus.DELIVERED;
   const items = order.ordered_products;
 
   return (
@@ -263,18 +266,18 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
           <div
             className={cn(
               "flex items-center gap-2 rounded-xl p-3",
-              order.status === "delivered" && "bg-green-50",
-              order.status === "shipped" && "bg-blue-50",
-              order.status === "processing" && "bg-yellow-50",
+              order.status === OrderStatus.DELIVERED && "bg-green-50",
+              order.status === OrderStatus.SHIPPED && "bg-blue-50",
+              order.status === OrderStatus.PROCESSING && "bg-yellow-50",
             )}
           >
             <StatusIcon status={order.status} className="h-5 w-5" />
             <span
               className={cn(
                 "font-medium",
-                order.status === "delivered" && "text-green-700",
-                order.status === "shipped" && "text-blue-700",
-                order.status === "processing" && "text-yellow-700",
+                order.status === OrderStatus.DELIVERED && "text-green-700",
+                order.status === OrderStatus.SHIPPED && "text-blue-700",
+                order.status === OrderStatus.PROCESSING && "text-yellow-700",
               )}
             >
               {getStatusLabel(order.status)}
@@ -301,7 +304,7 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
 
           {/* Order Progress */}
           <OrderProgress
-            status={order.status || "processing"}
+            status={order.status || OrderStatus.PROCESSING}
             createdAt={order.created_at}
             shippedAt={order.shipped_at}
             deliveredAt={order.delivered_at}
@@ -376,9 +379,9 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
             <div
               className={cn(
                 "flex items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-white",
-                order.status === "delivered" && "bg-green-600",
-                order.status === "shipped" && "bg-blue-600",
-                order.status === "processing" && "bg-yellow-600",
+                order.status === OrderStatus.DELIVERED && "bg-green-600",
+                order.status === OrderStatus.SHIPPED && "bg-blue-600",
+                order.status === OrderStatus.PROCESSING && "bg-yellow-600",
               )}
             >
               <StatusIcon
@@ -401,7 +404,7 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
         {/* Order Progress - Mobile Only */}
         <div className="mb-6 lg:hidden">
           <OrderProgress
-            status={order.status || "processing"}
+            status={order.status || OrderStatus.PROCESSING}
             createdAt={order.created_at}
             shippedAt={order.shipped_at}
             deliveredAt={order.delivered_at}

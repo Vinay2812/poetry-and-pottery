@@ -13,6 +13,11 @@ import type {
   UserAddress,
   Wishlist,
 } from "@/prisma/generated/client";
+import {
+  EventLevel,
+  EventStatus,
+  OrderStatus,
+} from "@/prisma/generated/client";
 
 // Re-export base Prisma types for convenience
 export type {
@@ -127,8 +132,8 @@ export interface ProductFilterParams {
 }
 
 export interface EventFilterParams {
-  status?: string;
-  level?: string;
+  status?: EventStatus;
+  level?: EventLevel;
   page?: number;
   limit?: number;
 }
@@ -146,5 +151,8 @@ export interface ProductsResponse extends PaginatedResponse<ProductWithCategorie
 }
 
 export interface EventsResponse extends PaginatedResponse<EventWithRegistrationCount> {
-  levels: string[];
+  levels: EventLevel[];
 }
+
+// Re-export enums for convenience
+export { EventLevel, EventStatus, OrderStatus };

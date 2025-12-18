@@ -1,6 +1,6 @@
 "use server";
 
-import { Prisma } from "@/prisma/generated/client";
+import { EventLevel, EventStatus, Prisma } from "@/prisma/generated/client";
 import type {
   EventFilterParams,
   EventWithDetails,
@@ -48,7 +48,6 @@ export async function getEvents(
     prisma.event.findMany({
       distinct: ["level"],
       select: { level: true },
-      where: { level: { not: null } },
     }),
   ]);
 
@@ -57,9 +56,7 @@ export async function getEvents(
     total,
     page,
     totalPages: Math.ceil(total / limit),
-    levels: levelsResult
-      .map((l) => l.level)
-      .filter((l): l is string => l !== null),
+    levels: levelsResult.map((l) => l.level),
   };
 }
 
@@ -91,7 +88,7 @@ export async function getUpcomingEvents(
   return prisma.event.findMany({
     where: {
       starts_at: { gte: new Date() },
-      status: { in: ["upcoming", "active"] },
+      status: { in: [EventStatus.UPCOMING, EventStatus.ACTIVE] },
     },
     include: {
       _count: {
@@ -108,7 +105,7 @@ export async function getPastEvents(
   limit: number = 12,
 ): Promise<PaginatedResponse<EventWithRegistrationCount>> {
   const where: Prisma.EventWhereInput = {
-    OR: [{ status: "completed" }, { ends_at: { lt: new Date() } }],
+    OR: [{ status: EventStatus.COMPLETED }, { ends_at: { lt: new Date() } }],
   };
 
   const [events, total] = await Promise.all([

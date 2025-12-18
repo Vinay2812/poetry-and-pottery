@@ -1,4 +1,5 @@
 import type { OrderWithItems, PaginatedResponse } from "@/types";
+import { OrderStatus } from "@/types";
 import { create } from "zustand";
 
 interface OrderState {
@@ -14,7 +15,7 @@ interface OrderState {
   ) => void;
   hydrateCount: (pendingCount: number) => void;
   addOrder: (order: OrderWithItems) => void;
-  updateOrderStatus: (orderId: string, status: string) => void;
+  updateOrderStatus: (orderId: string, status: OrderStatus) => void;
   loadMore: (
     orders: OrderWithItems[],
     pagination: PaginatedResponse<OrderWithItems>,
@@ -61,8 +62,11 @@ export const useOrderStore = create<OrderState>()((set, get) => ({
     set((state) => {
       const order = state.orders.find((o) => o.id === orderId);
       const wasPending =
-        order && order.status !== "delivered" && order.status !== "cancelled";
-      const isPending = status !== "delivered" && status !== "cancelled";
+        order &&
+        order.status !== OrderStatus.DELIVERED &&
+        order.status !== OrderStatus.CANCELLED;
+      const isPending =
+        status !== OrderStatus.DELIVERED && status !== OrderStatus.CANCELLED;
       const pendingDelta = wasPending && !isPending ? -1 : 0;
 
       return {

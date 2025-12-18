@@ -18,18 +18,18 @@ generator json {
 }
 
 enum UserRole {
-  ADMIN @map("admin")
-  USER  @map("user")
+  ADMIN
+  USER
 }
 
 model User {
-  id      Int     @id @default(autoincrement())
-  auth_id String  @unique
-  email   String  @unique
+  id      Int      @id @default(autoincrement())
+  auth_id String   @unique
+  email   String   @unique
   phone   String?
   name    String?
   image   String?
-  role    String? @default("user")
+  role    UserRole @default(USER)
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -105,37 +105,37 @@ model ProductCategory {
 }
 
 enum EventLevel {
-  BEGINNER     @map("beginner")
-  INTERMEDIATE @map("intermediate")
-  ADVANCED     @map("advanced")
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
 }
 
 enum EventStatus {
-  UPCOMING  @map("upcoming")
-  ACTIVE    @map("active")
-  INACTIVE  @map("inactive")
-  CANCELLED @map("cancelled")
-  COMPLETED @map("completed")
+  UPCOMING
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  COMPLETED
 }
 
 model Event {
-  id              String   @id @default(dbgenerated("('event_' || gen_random_uuid()::text)")) @db.Text
-  slug            String   @unique @db.Text
+  id              String      @id @default(ulid())
+  slug            String      @unique @db.Text
   title           String
   description     String
   starts_at       DateTime
   ends_at         DateTime
   location        String
-  total_seats     Int      @default(10)
-  available_seats Int      @default(10)
+  total_seats     Int         @default(10)
+  available_seats Int         @default(10)
   instructor      String
   includes        String[]
   price           Int
   image           String
   highlights      String[]
   gallery         String[]
-  status          String?  @default("active")
-  level           String?  @default("beginner")
+  status          EventStatus @default(ACTIVE)
+  level           EventLevel  @default(BEGINNER)
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -148,12 +148,19 @@ model Event {
   @@map("events")
 }
 
+enum EventRegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
 model EventRegistration {
-  id             String @id @default(dbgenerated("('ticket_' || gen_random_uuid()::text)")) @db.Text
+  id             String                  @id @default(ulid())
   event_id       String
   user_id        Int
-  seats_reserved Int    @default(1)
+  seats_reserved Int                     @default(1)
   price          Int
+  status         EventRegistrationStatus @default(PENDING)
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -247,21 +254,23 @@ model Cart {
 }
 
 enum OrderStatus {
-  PROCESSING @map("processing")
-  SHIPPED    @map("shipped")
-  DELIVERED  @map("delivered")
-  CANCELLED  @map("cancelled")
-  RETURNED   @map("returned")
-  REFUNDED   @map("refunded")
+  PENDING
+  PROCESSING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+  REFUNDED
 }
 
 model ProductOrder {
-  id           String    @id @default(dbgenerated("('order_' || gen_random_uuid()::text)")) @db.Text
+  id           String      @id @default(ulid())
   user_id      Int
   shipping_fee Int
   subtotal     Int
   total        Int
-  status       String?   @default("processing")
+  status       OrderStatus @default(PROCESSING)
   shipped_at   DateTime?
   delivered_at DateTime?
   cancelled_at DateTime?

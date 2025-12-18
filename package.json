@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "db:init": "npx tsx src/lib/seed.ts",
+    "db:init": "bunx tsx src/lib/seed.ts",
     "db:reset": "bunx tsx src/lib/reset-db.ts && bunx prisma migrate deploy && bun db:init",
     "dev": "next dev --port 3001",
     "husky": "husky",
@@ -14,7 +14,6 @@
     "prettier": "prettier --check .",
     "prettier:format": "prettier --write .",
     "prisma:generate": "bunx prisma generate",
-    "prisma:seed": "bun prisma/seeds/seed.ts",
     "prisma:studio": "bunx prisma studio",
     "start": "next start --port 3001",
     "tsc": "bunx tsc --noEmit"

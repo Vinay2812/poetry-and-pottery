@@ -1,5 +1,6 @@
 "use client";
 
+import { OrderStatus } from "@/prisma/generated/client";
 import type { OrderWithItems } from "@/types";
 import { ChevronRight, ShoppingBag } from "lucide-react";
 import Image from "next/image";
@@ -20,16 +21,18 @@ function formatOrderDate(dateString: Date | string): string {
   });
 }
 
-function getStatusLabel(status: string | null): string {
-  const labels: Record<string, string> = {
-    processing: "Processing",
-    shipped: "Shipped",
-    delivered: "Delivered",
-    cancelled: "Cancelled",
-    returned: "Returned",
-    refunded: "Refunded",
+function getStatusLabel(status: OrderStatus | null): string {
+  const labels: Record<OrderStatus, string> = {
+    [OrderStatus.PENDING]: "Pending",
+    [OrderStatus.PROCESSING]: "Processing",
+    [OrderStatus.PAID]: "Paid",
+    [OrderStatus.SHIPPED]: "Shipped",
+    [OrderStatus.DELIVERED]: "Delivered",
+    [OrderStatus.CANCELLED]: "Cancelled",
+    [OrderStatus.RETURNED]: "Returned",
+    [OrderStatus.REFUNDED]: "Refunded",
   };
-  return labels[status || "processing"] || "Processing";
+  return labels[status || OrderStatus.PROCESSING] || "Processing";
 }
 
 interface OrdersListClientProps {
@@ -75,9 +78,9 @@ export function OrdersListClient({ orders }: OrdersListClientProps) {
                 <div
                   className={cn(
                     "flex h-8 w-8 items-center justify-center rounded-full",
-                    order.status === "delivered" && "bg-green-100",
-                    order.status === "shipped" && "bg-blue-100",
-                    order.status === "processing" && "bg-yellow-100",
+                    order.status === OrderStatus.DELIVERED && "bg-green-100",
+                    order.status === OrderStatus.SHIPPED && "bg-blue-100",
+                    order.status === OrderStatus.PROCESSING && "bg-yellow-100",
                   )}
                 >
                   <StatusIcon status={order.status} className="h-4 w-4" />
@@ -86,9 +89,11 @@ export function OrdersListClient({ orders }: OrdersListClientProps) {
                   <span
                     className={cn(
                       "text-sm font-medium",
-                      order.status === "delivered" && "text-green-600",
-                      order.status === "shipped" && "text-blue-600",
-                      order.status === "processing" && "text-yellow-600",
+                      order.status === OrderStatus.DELIVERED &&
+                        "text-green-600",
+                      order.status === OrderStatus.SHIPPED && "text-blue-600",
+                      order.status === OrderStatus.PROCESSING &&
+                        "text-yellow-600",
                     )}
                   >
                     {getStatusLabel(order.status)}

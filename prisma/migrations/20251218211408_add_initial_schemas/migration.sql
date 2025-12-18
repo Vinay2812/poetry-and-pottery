@@ -1,27 +1,32 @@
--- ADD PG CRYPTO EXTENSION
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER');
 
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('admin', 'user');
+CREATE TYPE "EventLevel" AS ENUM ('BEGINNER', 'INTERMEDIATE', 'ADVANCED');
 
 -- CreateEnum
-CREATE TYPE "EventLevel" AS ENUM ('beginner', 'intermediate', 'advanced');
+CREATE TYPE "EventStatus" AS ENUM ('UPCOMING', 'ACTIVE', 'INACTIVE', 'CANCELLED', 'COMPLETED');
 
 -- CreateEnum
-CREATE TYPE "EventStatus" AS ENUM ('upcoming', 'active', 'inactive', 'cancelled', 'completed');
+CREATE TYPE "EventRegistrationStatus" AS ENUM ('PENDING', 'CONFIRMED', 'CANCELLED');
 
 -- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('processing', 'shipped', 'delivered', 'cancelled', 'returned', 'refunded');
+CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'PROCESSING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED', 'REFUNDED');
 
--- DropIndex
-DROP INDEX "users_auth_id_idx";
+-- CreateTable
+CREATE TABLE "users" (
+    "id" SERIAL NOT NULL,
+    "auth_id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT,
+    "name" TEXT,
+    "image" TEXT,
+    "role" "UserRole" NOT NULL DEFAULT 'USER',
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
--- DropIndex
-DROP INDEX "users_email_idx";
-
--- AlterTable
-ALTER TABLE "users" ADD COLUMN     "phone" TEXT,
-ADD COLUMN     "role" "UserRole" NOT NULL DEFAULT 'user';
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "user_addresses" (
@@ -71,7 +76,7 @@ CREATE TABLE "product_categories" (
 
 -- CreateTable
 CREATE TABLE "events" (
-    "id" TEXT NOT NULL DEFAULT ('event_' || gen_random_uuid()::text),
+    "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
@@ -85,21 +90,23 @@ CREATE TABLE "events" (
     "price" INTEGER NOT NULL,
     "image" TEXT NOT NULL,
     "highlights" TEXT[],
-    "status" "EventStatus" NOT NULL DEFAULT 'active',
+    "gallery" TEXT[],
+    "status" "EventStatus" NOT NULL DEFAULT 'ACTIVE',
+    "level" "EventLevel" NOT NULL DEFAULT 'BEGINNER',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "level" "EventLevel" NOT NULL,
 
     CONSTRAINT "events_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "event_registrations" (
-    "id" TEXT NOT NULL DEFAULT ('ticket_' || gen_random_uuid()::text),
+    "id" TEXT NOT NULL,
     "event_id" TEXT NOT NULL,
     "user_id" INTEGER NOT NULL,
     "seats_reserved" INTEGER NOT NULL DEFAULT 1,
     "price" INTEGER NOT NULL,
+    "status" "EventRegistrationStatus" NOT NULL DEFAULT 'PENDING',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -157,12 +164,12 @@ CREATE TABLE "carts" (
 
 -- CreateTable
 CREATE TABLE "product_orders" (
-    "id" TEXT NOT NULL DEFAULT ('order_' || gen_random_uuid()::text),
+    "id" TEXT NOT NULL,
     "user_id" INTEGER NOT NULL,
     "shipping_fee" INTEGER NOT NULL,
     "subtotal" INTEGER NOT NULL,
     "total" INTEGER NOT NULL,
-    "status" "OrderStatus" NOT NULL,
+    "status" "OrderStatus" NOT NULL DEFAULT 'PROCESSING',
     "shipped_at" TIMESTAMP(3),
     "delivered_at" TIMESTAMP(3),
     "cancelled_at" TIMESTAMP(3),
@@ -187,6 +194,12 @@ CREATE TABLE "purchased_product_items" (
 
     CONSTRAINT "purchased_product_items_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_auth_id_key" ON "users"("auth_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE INDEX "user_addresses_user_id_idx" ON "user_addresses"("user_id");
@@ -319,20 +332,3 @@ ALTER TABLE "purchased_product_items" ADD CONSTRAINT "purchased_product_items_or
 
 -- AddForeignKey
 ALTER TABLE "purchased_product_items" ADD CONSTRAINT "purchased_product_items_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- Add Check Constraint to Reviews Table
-ALTER TABLE "reviews" ADD CONSTRAINT "reviews_target_check" CHECK (
-    (product_id IS NOT NULL AND event_id IS NULL) OR
-    (product_id IS NULL AND event_id IS NOT NULL)
-);
-
--- Add Constraint for Event starts_at and ends_at
-ALTER TABLE "events" ADD CONSTRAINT "events_starts_at_ends_at_check" CHECK (starts_at < ends_at);
-
--- Add Constraint for available_quantity to be less than or equal to total_quantity
-ALTER TABLE "products" ADD CONSTRAINT "products_available_quantity_total_quantity_check" CHECK (available_quantity <= total_quantity);
-
--- Add Constraint for available_seats to be less than or equal to total_seats
-ALTER TABLE "events" ADD CONSTRAINT "events_available_seats_total_seats_check" CHECK (available_seats <= total_seats);
-
-

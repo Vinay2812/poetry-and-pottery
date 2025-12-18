@@ -1,5 +1,6 @@
 "use server";
 
+import { OrderStatus } from "@/prisma/generated/client";
 import type {
   OrderWithDetails,
   OrderWithItems,
@@ -125,7 +126,7 @@ export async function createOrder(data: {
           shipping_fee: data.shippingFee,
           subtotal,
           total,
-          status: "processing",
+          status: OrderStatus.PROCESSING,
           shipping_address: data.shippingAddress,
           ordered_products: {
             create: cartItems.map((item) => ({
@@ -167,7 +168,7 @@ export async function getPendingOrdersCount(): Promise<number> {
     where: {
       user_id: userId,
       status: {
-        notIn: ["delivered", "cancelled"],
+        notIn: [OrderStatus.DELIVERED, OrderStatus.CANCELLED],
       },
     },
   });
@@ -194,7 +195,7 @@ export async function cancelOrder(orderId: string) {
       return { success: false as const, error: "Order not found" };
     }
 
-    if (order.status !== "processing") {
+    if (order.status !== OrderStatus.PROCESSING) {
       return {
         success: false as const,
         error: "Only processing orders can be cancelled",
@@ -204,7 +205,7 @@ export async function cancelOrder(orderId: string) {
     const updated = await prisma.productOrder.update({
       where: { id: orderId },
       data: {
-        status: "cancelled",
+        status: OrderStatus.CANCELLED,
         cancelled_at: new Date(),
       },
       include: {
