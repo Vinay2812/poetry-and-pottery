@@ -45,4 +45,4 @@ plan.md
 # data
 data/
 prisma/generated
-lib/reset-db.ts
+src/lib/reset-db.ts

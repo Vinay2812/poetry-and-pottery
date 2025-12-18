@@ -1,93 +1,83 @@
+import type { CartWithProduct } from "@/types";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
-interface CartItem {
-  productId: number;
-  quantity: number;
-}
 
 interface CartState {
-  items: CartItem[];
-  isLoading: boolean;
-  isSynced: boolean;
+  items: CartWithProduct[];
+  isHydrated: boolean;
 
   // Actions
-  setItems: (items: CartItem[]) => void;
-  addItem: (productId: number, quantity?: number) => void;
+  hydrate: (items: CartWithProduct[]) => void;
+  addItem: (item: CartWithProduct) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   removeItem: (productId: number) => void;
-  clearCart: () => void;
-  setLoading: (loading: boolean) => void;
-  setSynced: (synced: boolean) => void;
+  clear: () => void;
+  reset: () => void;
 
   // Getters
   getQuantity: (productId: number) => number;
   getTotalItems: () => number;
+  getTotalPrice: () => number;
 }
 
-export const useCartStore = create<CartState>()(
-  persist(
-    (set, get) => ({
-      items: [],
-      isLoading: false,
-      isSynced: false,
+export const useCartStore = create<CartState>()((set, get) => ({
+  items: [],
+  isHydrated: false,
 
-      setItems: (items) => set({ items, isSynced: true }),
+  hydrate: (items) => set({ items, isHydrated: true }),
 
-      addItem: (productId, quantity = 1) =>
-        set((state) => {
-          const existing = state.items.find((i) => i.productId === productId);
-          if (existing) {
-            return {
-              items: state.items.map((i) =>
-                i.productId === productId
-                  ? { ...i, quantity: i.quantity + quantity }
-                  : i,
-              ),
-            };
-          }
-          return { items: [...state.items, { productId, quantity }] };
-        }),
-
-      updateQuantity: (productId, quantity) =>
-        set((state) => {
-          if (quantity <= 0) {
-            return {
-              items: state.items.filter((i) => i.productId !== productId),
-            };
-          }
-          return {
-            items: state.items.map((i) =>
-              i.productId === productId ? { ...i, quantity } : i,
-            ),
-          };
-        }),
-
-      removeItem: (productId) =>
-        set((state) => ({
-          items: state.items.filter((i) => i.productId !== productId),
-        })),
-
-      clearCart: () => set({ items: [], isSynced: false }),
-
-      setLoading: (isLoading) => set({ isLoading }),
-
-      setSynced: (isSynced) => set({ isSynced }),
-
-      getQuantity: (productId) => {
-        const item = get().items.find((i) => i.productId === productId);
-        return item?.quantity ?? 0;
-      },
-
-      getTotalItems: () => {
-        return get().items.reduce((sum, item) => sum + item.quantity, 0);
-      },
+  addItem: (item) =>
+    set((state) => {
+      const existing = state.items.find(
+        (i) => i.product_id === item.product_id,
+      );
+      if (existing) {
+        return {
+          items: state.items.map((i) =>
+            i.product_id === item.product_id
+              ? { ...i, quantity: i.quantity + item.quantity }
+              : i,
+          ),
+        };
+      }
+      return { items: [...state.items, item] };
     }),
-    {
-      name: "cart-storage",
-      partialize: (state) => ({
-        items: state.items,
-      }),
-    },
-  ),
-);
+
+  updateQuantity: (productId, quantity) =>
+    set((state) => {
+      if (quantity <= 0) {
+        return {
+          items: state.items.filter((i) => i.product_id !== productId),
+        };
+      }
+      return {
+        items: state.items.map((i) =>
+          i.product_id === productId ? { ...i, quantity } : i,
+        ),
+      };
+    }),
+
+  removeItem: (productId) =>
+    set((state) => ({
+      items: state.items.filter((i) => i.product_id !== productId),
+    })),
+
+  clear: () => set({ items: [] }),
+
+  reset: () => set({ items: [], isHydrated: false }),
+
+  getQuantity: (productId) => {
+    const item = get().items.find((i) => i.product_id === productId);
+    return item?.quantity ?? 0;
+  },
+
+  getTotalItems: () => {
+    return get().items.reduce((sum, item) => sum + item.quantity, 0);
+  },
+
+  getTotalPrice: () => {
+    return get().items.reduce(
+      (sum, item) => sum + item.quantity * item.product.price,
+      0,
+    );
+  },
+}));

@@ -1,4 +1,8 @@
-import { ProductService } from "@/services";
+import {
+  getProductById,
+  getProductBySlug,
+  getRelatedProducts,
+} from "@/actions";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -16,11 +20,11 @@ export async function generateMetadata({
   const { id } = await params;
 
   // Try to find by slug first, then by ID
-  let product = await ProductService.getProductBySlug(id);
+  let product = await getProductBySlug(id);
   if (!product) {
     const numericId = parseInt(id, 10);
     if (!isNaN(numericId)) {
-      product = await ProductService.getProductById(numericId);
+      product = await getProductById(numericId);
     }
   }
 
@@ -64,11 +68,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
 
   // Try to find by slug first, then by ID
-  let product = await ProductService.getProductBySlug(id);
+  let product = await getProductBySlug(id);
   if (!product) {
     const numericId = parseInt(id, 10);
     if (!isNaN(numericId)) {
-      product = await ProductService.getProductById(numericId);
+      product = await getProductById(numericId);
     }
   }
 
@@ -79,7 +83,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   // Get related products (same category, excluding current)
   const category = product.product_categories[0]?.category || "";
   const relatedProducts = category
-    ? await ProductService.getRelatedProducts(product.id, category, 4)
+    ? await getRelatedProducts(product.id, category, 4)
     : [];
 
   return (

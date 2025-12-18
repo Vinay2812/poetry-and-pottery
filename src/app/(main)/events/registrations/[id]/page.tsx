@@ -1,7 +1,6 @@
-import { EventService } from "@/services";
-import { auth } from "@clerk/nextjs/server";
+import { getRegistrationById } from "@/actions";
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 import { RegistrationDetailClient } from "@/components/events";
 
@@ -22,14 +21,9 @@ export const metadata: Metadata = {
 export default async function RegistrationDetailPage({
   params,
 }: RegistrationDetailPageProps) {
-  const { userId } = await auth();
   const { id } = await params;
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
-
-  const registration = await EventService.getRegistrationById(id, userId);
+  const registration = await getRegistrationById(id);
 
   if (!registration) {
     notFound();

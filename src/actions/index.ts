@@ -16,8 +16,6 @@ export {
   updateCartQuantity,
   removeFromCart,
   clearCart,
-  getCartCount,
-  syncCartFromLocal,
 } from "./cart.actions";
 
 // Wishlist actions
@@ -27,9 +25,6 @@ export {
   toggleWishlist,
   addToWishlist,
   removeFromWishlist,
-  clearWishlist,
-  getWishlistCount,
-  syncWishlistFromLocal,
   moveToCart,
 } from "./wishlist.actions";
 
@@ -48,11 +43,11 @@ export {
   getPastEvents,
   getEventBySlug,
   getEventById,
-  getFeaturedEvents,
   registerForEvent,
   cancelRegistration,
   getUserRegistrations,
   getRegistrationById,
+  getRegistrationCount,
 } from "./event.actions";
 
 // Review actions
@@ -61,10 +56,9 @@ export {
   getEventReviews,
   createProductReview,
   createEventReview,
-  updateReview,
   deleteReview,
   toggleReviewLike,
-  getProductAverageRating,
-  getEventAverageRating,
-  getUserProductReview,
 } from "./review.actions";
+
+// Auth actions
+export { getCurrentUser, getCurrentUserId } from "./auth.action";

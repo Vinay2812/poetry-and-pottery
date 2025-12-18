@@ -1,32 +1,66 @@
 "use server";
 
-import { ReviewService } from "@/services/review.service";
-import { UserService } from "@/services/user.service";
-import { auth } from "@clerk/nextjs/server";
+import type { PaginatedResponse, ReviewWithUser } from "@/types";
 import { revalidatePath } from "next/cache";
 
-async function getCurrentUserId(): Promise<number | null> {
-  const { userId: authId } = await auth();
-  if (!authId) return null;
+import { prisma } from "@/lib/prisma";
 
-  const user = await UserService.getUserByAuthId(authId);
-  return user?.id ?? null;
-}
+import { getCurrentUserId } from "./auth.action";
+
+const DEFAULT_PAGE_SIZE = 10;
 
 export async function getProductReviews(
   productId: number,
-  page?: number,
-  limit?: number,
-) {
-  return ReviewService.getProductReviews(productId, page, limit);
+  page: number = 1,
+  limit: number = DEFAULT_PAGE_SIZE,
+): Promise<PaginatedResponse<ReviewWithUser>> {
+  const [reviews, total] = await Promise.all([
+    prisma.review.findMany({
+      where: { product_id: productId },
+      include: {
+        user: true,
+        likes: true,
+      },
+      orderBy: { created_at: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.review.count({ where: { product_id: productId } }),
+  ]);
+
+  return {
+    data: reviews as ReviewWithUser[],
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 }
 
 export async function getEventReviews(
   eventId: string,
-  page?: number,
-  limit?: number,
-) {
-  return ReviewService.getEventReviews(eventId, page, limit);
+  page: number = 1,
+  limit: number = DEFAULT_PAGE_SIZE,
+): Promise<PaginatedResponse<ReviewWithUser>> {
+  const [reviews, total] = await Promise.all([
+    prisma.review.findMany({
+      where: { event_id: eventId },
+      include: {
+        user: true,
+        likes: true,
+      },
+      orderBy: { created_at: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.review.count({ where: { event_id: eventId } }),
+  ]);
+
+  return {
+    data: reviews as ReviewWithUser[],
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 }
 
 export async function createProductReview(data: {
@@ -37,37 +71,48 @@ export async function createProductReview(data: {
 }) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
     // Check if user already reviewed this product
-    const hasReviewed = await ReviewService.hasUserReviewedProduct(
-      userId,
-      data.productId,
-    );
-    if (hasReviewed) {
+    const existing = await prisma.review.findUnique({
+      where: {
+        product_id_user_id: {
+          product_id: data.productId,
+          user_id: userId,
+        },
+      },
+    });
+
+    if (existing) {
       return {
-        success: false,
+        success: false as const,
         error: "You have already reviewed this product",
       };
     }
 
-    const review = await ReviewService.createProductReview({
-      userId,
-      productId: data.productId,
-      rating: data.rating,
-      review: data.review,
-      imageUrls: data.imageUrls,
+    const review = await prisma.review.create({
+      data: {
+        user_id: userId,
+        product_id: data.productId,
+        rating: data.rating,
+        review: data.review,
+        image_urls: data.imageUrls ?? [],
+      },
+      include: {
+        user: true,
+        likes: true,
+      },
     });
 
     revalidatePath(`/products/${data.productId}`);
     revalidatePath("/products");
 
-    return { success: true, data: review };
+    return { success: true as const, data: review as ReviewWithUser };
   } catch (error) {
     console.error("Failed to create review:", error);
-    return { success: false, error: "Failed to create review" };
+    return { success: false as const, error: "Failed to create review" };
   }
 }
 
@@ -79,109 +124,114 @@ export async function createEventReview(data: {
 }) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
     // Check if user already reviewed this event
-    const hasReviewed = await ReviewService.hasUserReviewedEvent(
-      userId,
-      data.eventId,
-    );
-    if (hasReviewed) {
-      return { success: false, error: "You have already reviewed this event" };
+    const existing = await prisma.review.findUnique({
+      where: {
+        event_id_user_id: {
+          event_id: data.eventId,
+          user_id: userId,
+        },
+      },
+    });
+
+    if (existing) {
+      return {
+        success: false as const,
+        error: "You have already reviewed this event",
+      };
     }
 
-    const review = await ReviewService.createEventReview({
-      userId,
-      eventId: data.eventId,
-      rating: data.rating,
-      review: data.review,
-      imageUrls: data.imageUrls,
+    const review = await prisma.review.create({
+      data: {
+        user_id: userId,
+        event_id: data.eventId,
+        rating: data.rating,
+        review: data.review,
+        image_urls: data.imageUrls ?? [],
+      },
+      include: {
+        user: true,
+        likes: true,
+      },
     });
 
     revalidatePath(`/events/past/${data.eventId}`);
     revalidatePath("/events/past");
 
-    return { success: true, data: review };
+    return { success: true as const, data: review as ReviewWithUser };
   } catch (error) {
     console.error("Failed to create review:", error);
-    return { success: false, error: "Failed to create review" };
-  }
-}
-
-export async function updateReview(
-  reviewId: number,
-  data: {
-    rating?: number;
-    review?: string;
-    imageUrls?: string[];
-  },
-) {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, error: "Not authenticated" };
-  }
-
-  try {
-    const review = await ReviewService.updateReview(reviewId, userId, data);
-    revalidatePath("/products");
-    revalidatePath("/events");
-
-    return { success: true, data: review };
-  } catch (error) {
-    console.error("Failed to update review:", error);
-    return { success: false, error: "Failed to update review" };
+    return { success: false as const, error: "Failed to create review" };
   }
 }
 
 export async function deleteReview(reviewId: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    await ReviewService.deleteReview(reviewId, userId);
+    await prisma.review.delete({
+      where: {
+        id: reviewId,
+        user_id: userId,
+      },
+    });
     revalidatePath("/products");
     revalidatePath("/events");
 
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error("Failed to delete review:", error);
-    return { success: false, error: "Failed to delete review" };
+    return { success: false as const, error: "Failed to delete review" };
   }
 }
 
 export async function toggleReviewLike(reviewId: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    const result = await ReviewService.toggleLike(reviewId, userId);
-    return { success: true, ...result };
+    const existing = await prisma.reviewLike.findUnique({
+      where: {
+        review_id_user_id: {
+          review_id: reviewId,
+          user_id: userId,
+        },
+      },
+    });
+
+    if (existing) {
+      await prisma.reviewLike.delete({
+        where: { id: existing.id },
+      });
+    } else {
+      await prisma.reviewLike.create({
+        data: {
+          review_id: reviewId,
+          user_id: userId,
+        },
+      });
+    }
+
+    const likesCount = await prisma.reviewLike.count({
+      where: { review_id: reviewId },
+    });
+
+    return {
+      success: true as const,
+      action: existing ? ("unliked" as const) : ("liked" as const),
+      likesCount,
+    };
   } catch (error) {
     console.error("Failed to toggle like:", error);
-    return { success: false, error: "Failed to toggle like" };
+    return { success: false as const, error: "Failed to toggle like" };
   }
-}
-
-export async function getProductAverageRating(productId: number) {
-  return ReviewService.getProductAverageRating(productId);
-}
-
-export async function getEventAverageRating(eventId: string) {
-  return ReviewService.getEventAverageRating(eventId);
-}
-
-export async function getUserProductReview(productId: number) {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, data: null };
-  }
-
-  const review = await ReviewService.getUserProductReview(userId, productId);
-  return { success: true, data: review };
 }

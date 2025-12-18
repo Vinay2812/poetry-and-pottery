@@ -1,6 +1,4 @@
-import { ProductService, WishlistService } from "@/services";
-import type { ProductWithCategories } from "@/types";
-import { auth } from "@clerk/nextjs/server";
+import { getFeaturedProducts, getWishlist } from "@/actions";
 import type { Metadata } from "next";
 
 import { WishlistClient } from "@/components/wishlist";
@@ -16,25 +14,16 @@ export const metadata: Metadata = {
 };
 
 export default async function WishlistPage() {
-  const { userId } = await auth();
-
-  // Fetch wishlist items if user is authenticated
-  let wishlistItems: ProductWithCategories[] = [];
-  if (userId) {
-    try {
-      wishlistItems = await WishlistService.getWishlistItemsByAuthId(userId);
-    } catch {
-      // User not found in DB or other error
-      wishlistItems = [];
-    }
-  }
-
-  // Fetch recommendations (featured products)
-  const recommendations = await ProductService.getFeaturedProducts(4);
+  const [wishlistResult, recommendations] = await Promise.all([
+    getWishlist(),
+    getFeaturedProducts(4),
+  ]);
 
   return (
     <WishlistClient
-      initialWishlistItems={wishlistItems}
+      initialWishlistItems={
+        wishlistResult.success ? wishlistResult.data.data : []
+      }
       recommendations={recommendations}
     />
   );

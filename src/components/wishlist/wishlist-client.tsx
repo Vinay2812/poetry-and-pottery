@@ -1,7 +1,7 @@
 "use client";
 
 import { useWishlist } from "@/hooks";
-import type { ProductWithCategories } from "@/types";
+import type { ProductWithCategories, WishlistWithProduct } from "@/types";
 import { AnimatePresence } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -11,7 +11,7 @@ import { MobileHeader } from "@/components/layout";
 import { EmptyState } from "@/components/sections";
 
 interface WishlistClientProps {
-  initialWishlistItems: ProductWithCategories[];
+  initialWishlistItems: WishlistWithProduct[];
   recommendations: ProductWithCategories[];
 }
 
@@ -29,7 +29,7 @@ export function WishlistClient({
       const success = await removeFromWishlist(productId);
       if (success) {
         setWishlistItems((items) =>
-          items.filter((item) => item.id !== productId),
+          items.filter((item) => item.product_id !== productId),
         );
       }
     },
@@ -43,7 +43,7 @@ export function WishlistClient({
         setMovedToCartIds((prev) => new Set(prev).add(productId));
         setTimeout(() => {
           setWishlistItems((items) =>
-            items.filter((item) => item.id !== productId),
+            items.filter((item) => item.product_id !== productId),
           );
           setMovedToCartIds((prev) => {
             const next = new Set(prev);
@@ -80,14 +80,15 @@ export function WishlistClient({
                 {wishlistItems.map((item) => (
                   <WishlistItemCard
                     key={item.id}
-                    product={item}
-                    onRemove={() => handleRemove(item.id)}
-                    onMoveToCart={() => handleMoveToCart(item.id)}
-                    isRemoving={isLoading(item.id)}
+                    product={item.product}
+                    onRemove={() => handleRemove(item.product_id)}
+                    onMoveToCart={() => handleMoveToCart(item.product_id)}
+                    isRemoving={isLoading(item.product_id)}
                     isMovingToCart={
-                      isLoading(item.id) && !movedToCartIds.has(item.id)
+                      isLoading(item.product_id) &&
+                      !movedToCartIds.has(item.product_id)
                     }
-                    movedToCart={movedToCartIds.has(item.id)}
+                    movedToCart={movedToCartIds.has(item.product_id)}
                   />
                 ))}
               </AnimatePresence>

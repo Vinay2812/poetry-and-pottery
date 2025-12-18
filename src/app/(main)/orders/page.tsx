@@ -1,6 +1,4 @@
-import { OrderService } from "@/services";
-import type { OrderWithItems } from "@/types";
-import { auth } from "@clerk/nextjs/server";
+import { getOrders } from "@/actions";
 import type { Metadata } from "next";
 
 import { MobileHeader } from "@/components/layout";
@@ -17,18 +15,16 @@ export const metadata: Metadata = {
 };
 
 export default async function OrdersPage() {
-  const { userId } = await auth();
+  const result = await getOrders();
 
-  // Fetch orders if user is authenticated
-  let orders: OrderWithItems[] = [];
-  if (userId) {
-    try {
-      orders = await OrderService.getOrdersByAuthId(userId);
-    } catch {
-      // User not found in DB or other error
-      orders = [];
-    }
-  }
+  const orders = result.success ? result.data.data : [];
+  const pagination = result.success
+    ? {
+        page: result.data.page,
+        totalPages: result.data.totalPages,
+        total: result.data.total,
+      }
+    : { page: 1, totalPages: 1, total: 0 };
 
   return (
     <>

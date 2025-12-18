@@ -1,41 +1,85 @@
 "use server";
 
-import { CartService } from "@/services/cart.service";
-import { OrderService } from "@/services/order.service";
-import { UserService } from "@/services/user.service";
-import { auth } from "@clerk/nextjs/server";
+import type {
+  OrderWithDetails,
+  OrderWithItems,
+  PaginatedResponse,
+} from "@/types";
 import { revalidatePath } from "next/cache";
 
-async function getCurrentUserId(): Promise<number | null> {
-  const { userId: authId } = await auth();
-  if (!authId) return null;
+import { prisma } from "@/lib/prisma";
 
-  const user = await UserService.getUserByAuthId(authId);
-  return user?.id ?? null;
-}
+import { getCurrentUserId } from "./auth.action";
 
-export async function getOrders(page: number = 1, limit: number = 10) {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, error: "Not authenticated", data: [] };
-  }
+const DEFAULT_PAGE_SIZE = 10;
 
-  const result = await OrderService.getOrdersByUserId(userId, page, limit);
-  return { success: true, ...result };
-}
-
-export async function getOrderById(orderId: string) {
+export async function getOrders(
+  page: number = 1,
+  limit: number = DEFAULT_PAGE_SIZE,
+): Promise<
+  | { success: true; data: PaginatedResponse<OrderWithItems> }
+  | { success: false; error: string }
+> {
   const userId = await getCurrentUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };
   }
 
-  const order = await OrderService.getOrderByIdForUser(orderId, userId);
-  if (!order) {
-    return { success: false, error: "Order not found" };
+  const [orders, total] = await Promise.all([
+    prisma.productOrder.findMany({
+      where: { user_id: userId },
+      include: {
+        ordered_products: {
+          include: { product: true },
+        },
+        user: true,
+      },
+      orderBy: { created_at: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.productOrder.count({ where: { user_id: userId } }),
+  ]);
+
+  return {
+    success: true,
+    data: {
+      data: orders as OrderWithItems[],
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+}
+
+export async function getOrderById(orderId: string) {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    return { success: false as const, error: "Not authenticated" };
   }
 
-  return { success: true, data: order };
+  const order = await prisma.productOrder.findFirst({
+    where: {
+      id: orderId,
+      user_id: userId,
+    },
+    include: {
+      ordered_products: {
+        include: {
+          product: {
+            include: { product_categories: true },
+          },
+        },
+      },
+      user: true,
+    },
+  });
+
+  if (!order) {
+    return { success: false as const, error: "Order not found" };
+  }
+
+  return { success: true as const, data: order as OrderWithDetails };
 }
 
 export async function createOrder(data: {
@@ -52,69 +96,113 @@ export async function createOrder(data: {
 }) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
     // Get cart items
-    const cartItems = await CartService.getCartByUserId(userId);
-    if (cartItems.length === 0) {
-      return { success: false, error: "Cart is empty" };
-    }
-
-    // Create order
-    const order = await OrderService.createOrder({
-      userId,
-      items: cartItems.map((item) => ({
-        productId: item.product_id,
-        quantity: item.quantity,
-        price: item.product.price,
-      })),
-      shippingFee: data.shippingFee,
-      shippingAddress: data.shippingAddress,
+    const cartItems = await prisma.cart.findMany({
+      where: { user_id: userId },
+      include: { product: true },
     });
 
-    // Clear cart after successful order
-    await CartService.clearCart(userId);
+    if (cartItems.length === 0) {
+      return { success: false as const, error: "Cart is empty" };
+    }
+
+    // Calculate totals
+    const subtotal = cartItems.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0,
+    );
+    const total = subtotal + data.shippingFee;
+
+    // Create order and clear cart in transaction
+    const [order] = await prisma.$transaction([
+      prisma.productOrder.create({
+        data: {
+          user_id: userId,
+          shipping_fee: data.shippingFee,
+          subtotal,
+          total,
+          status: "processing",
+          shipping_address: data.shippingAddress,
+          ordered_products: {
+            create: cartItems.map((item) => ({
+              product_id: item.product_id,
+              quantity: item.quantity,
+              price: item.product.price,
+            })),
+          },
+        },
+        include: {
+          ordered_products: {
+            include: { product: true },
+          },
+          user: true,
+        },
+      }),
+      prisma.cart.deleteMany({
+        where: { user_id: userId },
+      }),
+    ]);
 
     revalidatePath("/orders");
     revalidatePath("/cart");
 
-    return { success: true, data: order };
+    return { success: true as const, data: order as OrderWithItems };
   } catch (error) {
     console.error("Failed to create order:", error);
-    return { success: false, error: "Failed to create order" };
+    return { success: false as const, error: "Failed to create order" };
   }
 }
 
 export async function cancelOrder(orderId: string) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
     // Verify order belongs to user
-    const order = await OrderService.getOrderByIdForUser(orderId, userId);
+    const order = await prisma.productOrder.findFirst({
+      where: {
+        id: orderId,
+        user_id: userId,
+      },
+    });
+
     if (!order) {
-      return { success: false, error: "Order not found" };
+      return { success: false as const, error: "Order not found" };
     }
 
-    // Only allow cancellation of processing orders
     if (order.status !== "processing") {
       return {
-        success: false,
+        success: false as const,
         error: "Only processing orders can be cancelled",
       };
     }
 
-    const updated = await OrderService.updateOrderStatus(orderId, "cancelled");
+    const updated = await prisma.productOrder.update({
+      where: { id: orderId },
+      data: {
+        status: "cancelled",
+        cancelled_at: new Date(),
+      },
+      include: {
+        ordered_products: {
+          include: { product: true },
+        },
+        user: true,
+      },
+    });
+
     revalidatePath("/orders");
     revalidatePath(`/orders/${orderId}`);
 
-    return { success: true, data: updated };
+    return { success: true as const, data: updated as OrderWithItems };
   } catch (error) {
     console.error("Failed to cancel order:", error);
-    return { success: false, error: "Failed to cancel order" };
+    return { success: false as const, error: "Failed to cancel order" };
   }
 }

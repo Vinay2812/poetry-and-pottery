@@ -1,5 +1,4 @@
-import { CartService, ProductService } from "@/services";
-import { auth } from "@clerk/nextjs/server";
+import { getCart, getFeaturedProducts } from "@/actions";
 import type { Metadata } from "next";
 
 import { CartClient } from "@/components/cart";
@@ -15,30 +14,14 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
-  const { userId } = await auth();
-
-  // Fetch cart items if user is authenticated
-  let cartItems: {
-    product: Awaited<
-      ReturnType<typeof CartService.getCartItemsByAuthId>
-    >[number]["product"];
-    quantity: number;
-  }[] = [];
-  if (userId) {
-    try {
-      cartItems = await CartService.getCartItemsByAuthId(userId);
-    } catch {
-      // User not found in DB or other error
-      cartItems = [];
-    }
-  }
-
-  // Fetch recommended products
-  const recommendedProducts = await ProductService.getFeaturedProducts(4);
+  const [cartResult, recommendedProducts] = await Promise.all([
+    getCart(),
+    getFeaturedProducts(4),
+  ]);
 
   return (
     <CartClient
-      initialCartItems={cartItems}
+      initialCartItems={cartResult.success ? cartResult.data : []}
       recommendedProducts={recommendedProducts}
     />
   );

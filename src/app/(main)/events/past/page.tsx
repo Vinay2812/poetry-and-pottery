@@ -1,4 +1,4 @@
-import { EventService } from "@/services";
+import { getPastEvents } from "@/actions";
 import type { Metadata } from "next";
 
 import { PastWorkshopsClient } from "@/components/events";
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PastWorkshopsPage() {
-  const { data: events } = await EventService.getPastEvents();
+  const { data: events } = await getPastEvents();
 
   return <PastWorkshopsClient events={events} />;
 }

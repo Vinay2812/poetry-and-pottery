@@ -1,11 +1,28 @@
 "use client";
 
-import { CheckCircle2, Clock, Package, Truck } from "lucide-react";
+import { CheckCircle2, Clock, Truck } from "lucide-react";
 
-import { ORDER_STEPS } from "@/lib/orders";
 import { cn } from "@/lib/utils";
 
 type OrderStatusType = "processing" | "shipped" | "delivered";
+
+const ORDER_STEPS = [
+  {
+    status: "processing" as OrderStatusType,
+    label: "Order Placed",
+    description: "We've received your order",
+  },
+  {
+    status: "shipped" as OrderStatusType,
+    label: "Shipped",
+    description: "Your order is on its way",
+  },
+  {
+    status: "delivered" as OrderStatusType,
+    label: "Delivered",
+    description: "Your order has arrived",
+  },
+] as const;
 
 interface OrderProgressProps {
   status: string;

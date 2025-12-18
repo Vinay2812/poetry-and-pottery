@@ -1,75 +1,200 @@
 "use server";
 
-import { EventService } from "@/services/event.service";
-import { UserService } from "@/services/user.service";
-import type { EventFilterParams } from "@/types";
-import { auth } from "@clerk/nextjs/server";
+import { Prisma } from "@/prisma/generated/client";
+import type {
+  EventFilterParams,
+  EventWithDetails,
+  EventWithRegistrationCount,
+  EventsResponse,
+  PaginatedResponse,
+  RegistrationWithEvent,
+} from "@/types";
 import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
-async function getCurrentUserId(): Promise<number | null> {
-  const { userId: authId } = await auth();
-  if (!authId) return null;
+import { getCurrentUserId } from "./auth.action";
 
-  const user = await UserService.getUserByAuthId(authId);
-  return user?.id ?? null;
+const DEFAULT_PAGE_SIZE = 10;
+
+export async function getEvents(
+  params: EventFilterParams = {},
+): Promise<EventsResponse> {
+  const { status, level, page = 1, limit = 12 } = params;
+
+  const where: Prisma.EventWhereInput = {};
+
+  if (status) {
+    where.status = status;
+  }
+
+  if (level) {
+    where.level = level;
+  }
+
+  const [events, total, levelsResult] = await Promise.all([
+    prisma.event.findMany({
+      where,
+      include: {
+        _count: {
+          select: { event_registrations: true },
+        },
+      },
+      orderBy: { starts_at: "asc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.event.count({ where }),
+    prisma.event.findMany({
+      distinct: ["level"],
+      select: { level: true },
+      where: { level: { not: null } },
+    }),
+  ]);
+
+  return {
+    data: events as EventWithRegistrationCount[],
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+    levels: levelsResult
+      .map((l) => l.level)
+      .filter((l): l is string => l !== null),
+  };
 }
 
-export async function getEvents(params: EventFilterParams = {}) {
-  return EventService.getEvents(params);
+export async function getEventBySlug(
+  slug: string,
+): Promise<EventWithDetails | null> {
+  return prisma.event.findUnique({
+    where: { slug },
+    include: {
+      reviews: {
+        include: {
+          user: true,
+          likes: true,
+        },
+        orderBy: { created_at: "desc" },
+        take: 10,
+      },
+      event_registrations: true,
+      _count: {
+        select: { reviews: true, event_registrations: true },
+      },
+    },
+  }) as Promise<EventWithDetails | null>;
 }
 
-export async function getUpcomingEvents(limit?: number) {
-  return EventService.getUpcomingEvents(limit);
+export async function getUpcomingEvents(
+  limit: number = 10,
+): Promise<EventWithRegistrationCount[]> {
+  return prisma.event.findMany({
+    where: {
+      starts_at: { gte: new Date() },
+      status: { in: ["upcoming", "active"] },
+    },
+    include: {
+      _count: {
+        select: { event_registrations: true },
+      },
+    },
+    orderBy: { starts_at: "asc" },
+    take: limit,
+  }) as Promise<EventWithRegistrationCount[]>;
 }
 
-export async function getPastEvents(page?: number, limit?: number) {
-  return EventService.getPastEvents(page, limit);
+export async function getPastEvents(
+  page: number = 1,
+  limit: number = 12,
+): Promise<PaginatedResponse<EventWithRegistrationCount>> {
+  const where: Prisma.EventWhereInput = {
+    OR: [{ status: "completed" }, { ends_at: { lt: new Date() } }],
+  };
+
+  const [events, total] = await Promise.all([
+    prisma.event.findMany({
+      where,
+      include: {
+        _count: {
+          select: { event_registrations: true },
+        },
+      },
+      orderBy: { starts_at: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.event.count({ where }),
+  ]);
+
+  return {
+    data: events as EventWithRegistrationCount[],
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 }
 
-export async function getEventBySlug(slug: string) {
-  return EventService.getEventBySlug(slug);
-}
-
-export async function getEventById(id: string) {
-  return EventService.getEventById(id);
-}
-
-export async function getFeaturedEvents(limit?: number) {
-  return EventService.getFeaturedEvents(limit);
+export async function getEventById(
+  id: string,
+): Promise<EventWithDetails | null> {
+  return prisma.event.findUnique({
+    where: { id },
+    include: {
+      reviews: {
+        include: {
+          user: true,
+          likes: true,
+        },
+        orderBy: { created_at: "desc" },
+        take: 10,
+      },
+      event_registrations: true,
+      _count: {
+        select: { reviews: true, event_registrations: true },
+      },
+    },
+  }) as Promise<EventWithDetails | null>;
 }
 
 export async function registerForEvent(eventId: string, seats: number = 1) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
     // Check if already registered
-    const isRegistered = await EventService.isUserRegistered(eventId, userId);
-    if (isRegistered) {
-      return { success: false, error: "Already registered for this event" };
+    const existing = await prisma.eventRegistration.findUnique({
+      where: {
+        event_id_user_id: {
+          event_id: eventId,
+          user_id: userId,
+        },
+      },
+    });
+
+    if (existing) {
+      return {
+        success: false as const,
+        error: "Already registered for this event",
+      };
     }
 
-    // Check available seats
-    const availableSeats = await EventService.getAvailableSeats(eventId);
-    if (availableSeats < seats) {
-      return { success: false, error: "Not enough seats available" };
-    }
-
-    // Get event to get price
+    // Get event details
     const event = await prisma.event.findUnique({
       where: { id: eventId },
       select: { price: true, available_seats: true },
     });
 
     if (!event) {
-      return { success: false, error: "Event not found" };
+      return { success: false as const, error: "Event not found" };
     }
 
-    // Create registration and update available seats in transaction
+    if (event.available_seats < seats) {
+      return { success: false as const, error: "Not enough seats available" };
+    }
+
+    // Create registration and update seats in transaction
     const [registration] = await prisma.$transaction([
       prisma.eventRegistration.create({
         data: {
@@ -78,7 +203,7 @@ export async function registerForEvent(eventId: string, seats: number = 1) {
           seats_reserved: seats,
           price: event.price * seats,
         },
-        include: { event: true },
+        include: { event: true, user: true },
       }),
       prisma.event.update({
         where: { id: eventId },
@@ -90,23 +215,24 @@ export async function registerForEvent(eventId: string, seats: number = 1) {
 
     revalidatePath("/events");
     revalidatePath("/events/registrations");
-    revalidatePath(`/events/upcoming/${eventId}`);
 
-    return { success: true, data: registration };
+    return {
+      success: true as const,
+      data: registration as RegistrationWithEvent,
+    };
   } catch (error) {
     console.error("Failed to register for event:", error);
-    return { success: false, error: "Failed to register for event" };
+    return { success: false as const, error: "Failed to register for event" };
   }
 }
 
 export async function cancelRegistration(registrationId: string) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    // Get registration
     const registration = await prisma.eventRegistration.findFirst({
       where: {
         id: registrationId,
@@ -115,10 +241,9 @@ export async function cancelRegistration(registrationId: string) {
     });
 
     if (!registration) {
-      return { success: false, error: "Registration not found" };
+      return { success: false as const, error: "Registration not found" };
     }
 
-    // Delete registration and restore seats in transaction
     await prisma.$transaction([
       prisma.eventRegistration.delete({
         where: { id: registrationId },
@@ -134,55 +259,69 @@ export async function cancelRegistration(registrationId: string) {
     revalidatePath("/events");
     revalidatePath("/events/registrations");
 
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error("Failed to cancel registration:", error);
-    return { success: false, error: "Failed to cancel registration" };
+    return { success: false as const, error: "Failed to cancel registration" };
   }
 }
 
-export async function getUserRegistrations() {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, error: "Not authenticated", data: [] };
-  }
-
-  try {
-    const registrations = await prisma.eventRegistration.findMany({
-      where: { user_id: userId },
-      include: { event: true },
-      orderBy: { created_at: "desc" },
-    });
-
-    return { success: true, data: registrations };
-  } catch (error) {
-    console.error("Failed to get registrations:", error);
-    return { success: false, error: "Failed to get registrations", data: [] };
-  }
-}
-
-export async function getRegistrationById(registrationId: string) {
+export async function getUserRegistrations(
+  page: number = 1,
+  limit: number = DEFAULT_PAGE_SIZE,
+): Promise<
+  | { success: true; data: PaginatedResponse<RegistrationWithEvent> }
+  | { success: false; error: string }
+> {
   const userId = await getCurrentUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };
   }
 
-  try {
-    const registration = await prisma.eventRegistration.findFirst({
-      where: {
-        id: registrationId,
-        user_id: userId,
-      },
+  const [registrations, total] = await Promise.all([
+    prisma.eventRegistration.findMany({
+      where: { user_id: userId },
       include: { event: true, user: true },
-    });
+      orderBy: { created_at: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.eventRegistration.count({ where: { user_id: userId } }),
+  ]);
 
-    if (!registration) {
-      return { success: false, error: "Registration not found" };
-    }
+  return {
+    success: true,
+    data: {
+      data: registrations as RegistrationWithEvent[],
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+}
 
-    return { success: true, data: registration };
-  } catch (error) {
-    console.error("Failed to get registration:", error);
-    return { success: false, error: "Failed to get registration" };
+export async function getRegistrationById(
+  registrationId: string,
+): Promise<RegistrationWithEvent | null> {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    return null;
   }
+
+  return prisma.eventRegistration.findFirst({
+    where: {
+      id: registrationId,
+      user_id: userId,
+    },
+    include: { event: true, user: true },
+  }) as Promise<RegistrationWithEvent | null>;
+}
+
+export async function getRegistrationCount(): Promise<number> {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    return 0;
+  }
+
+  return prisma.eventRegistration.count({ where: { user_id: userId } });
 }

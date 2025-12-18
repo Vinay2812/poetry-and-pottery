@@ -1,11 +1,10 @@
 "use client";
 
+import { useEventStore } from "@/store/event.store";
 import { redirect, usePathname } from "next/navigation";
 
 import { EventsTabs } from "@/components/events";
 import { MobileHeader } from "@/components/layout";
-
-import { REGISTERED_EVENTS } from "@/lib/constants";
 
 interface EventsListLayoutProps {
   children: React.ReactNode;
@@ -42,6 +41,7 @@ export const EVENTS_TABS = Object.values(EVENTS_TABS_MAP);
 
 export function EventsListLayout({ children }: EventsListLayoutProps) {
   const pathname = usePathname();
+  const registrationCount = useEventStore((state) => state.getCount());
 
   const activeTab = EVENTS_TABS.find(
     (tab) => pathname === tab.href || pathname.startsWith(`${tab.href}/`),
@@ -70,7 +70,7 @@ export function EventsListLayout({ children }: EventsListLayoutProps) {
           {/* Tab Navigation */}
           <EventsTabs
             activeTab={activeTab}
-            registeredCount={REGISTERED_EVENTS.length}
+            registeredCount={registrationCount}
           />
 
           {/* Page Content */}

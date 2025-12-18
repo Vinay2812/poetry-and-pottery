@@ -1,6 +1,4 @@
-import { EventService } from "@/services";
-import type { RegistrationWithEvent } from "@/types";
-import { auth } from "@clerk/nextjs/server";
+import { getUserRegistrations } from "@/actions";
 import type { Metadata } from "next";
 
 import { RegistrationsClient } from "@/components/events";
@@ -16,18 +14,8 @@ export const metadata: Metadata = {
 };
 
 export default async function RegistrationsPage() {
-  const { userId } = await auth();
-
-  // Fetch registrations if user is authenticated
-  let registrations: RegistrationWithEvent[] = [];
-  if (userId) {
-    try {
-      registrations = await EventService.getRegistrationsByAuthId(userId);
-    } catch {
-      // User not found in DB or other error
-      registrations = [];
-    }
-  }
+  const result = await getUserRegistrations();
+  const registrations = result.success ? result.data.data : [];
 
   return <RegistrationsClient registrations={registrations} />;
 }

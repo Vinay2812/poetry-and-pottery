@@ -1,116 +1,148 @@
 "use server";
 
-import { CartService } from "@/services/cart.service";
-import { UserService } from "@/services/user.service";
-import { auth } from "@clerk/nextjs/server";
+import type { CartWithProduct } from "@/types";
 import { revalidatePath } from "next/cache";
 
-async function getCurrentUserId(): Promise<number | null> {
-  const { userId: authId } = await auth();
-  if (!authId) return null;
+import { prisma } from "@/lib/prisma";
 
-  const user = await UserService.getUserByAuthId(authId);
-  return user?.id ?? null;
-}
+import { getCurrentUserId } from "./auth.action";
 
 export async function getCart() {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated", data: [] };
+    return { success: false as const, error: "Not authenticated", data: [] };
   }
 
-  const items = await CartService.getCartByUserId(userId);
-  return { success: true, data: items };
+  const items = await prisma.cart.findMany({
+    where: { user_id: userId },
+    include: {
+      product: {
+        include: { product_categories: true },
+      },
+    },
+    orderBy: { created_at: "desc" },
+  });
+
+  return { success: true as const, data: items as CartWithProduct[] };
 }
 
 export async function addToCart(productId: number, quantity: number = 1) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    const item = await CartService.addToCart(userId, productId, quantity);
+    const item = await prisma.cart.upsert({
+      where: {
+        user_id_product_id: {
+          user_id: userId,
+          product_id: productId,
+        },
+      },
+      update: {
+        quantity: { increment: quantity },
+      },
+      create: {
+        user_id: userId,
+        product_id: productId,
+        quantity,
+      },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    });
+
     revalidatePath("/cart");
-    return { success: true, data: item };
+    return { success: true as const, data: item as CartWithProduct };
   } catch (error) {
     console.error("Failed to add to cart:", error);
-    return { success: false, error: "Failed to add to cart" };
+    return { success: false as const, error: "Failed to add to cart" };
   }
 }
 
 export async function updateCartQuantity(productId: number, quantity: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    const item = await CartService.updateQuantity(userId, productId, quantity);
+    if (quantity <= 0) {
+      await prisma.cart.delete({
+        where: {
+          user_id_product_id: {
+            user_id: userId,
+            product_id: productId,
+          },
+        },
+      });
+      revalidatePath("/cart");
+      return { success: true as const, data: null };
+    }
+
+    const item = await prisma.cart.update({
+      where: {
+        user_id_product_id: {
+          user_id: userId,
+          product_id: productId,
+        },
+      },
+      data: { quantity },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    });
+
     revalidatePath("/cart");
-    return { success: true, data: item };
+    return { success: true as const, data: item as CartWithProduct };
   } catch (error) {
     console.error("Failed to update cart:", error);
-    return { success: false, error: "Failed to update cart" };
+    return { success: false as const, error: "Failed to update cart" };
   }
 }
 
 export async function removeFromCart(productId: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    await CartService.removeFromCart(userId, productId);
+    await prisma.cart.delete({
+      where: {
+        user_id_product_id: {
+          user_id: userId,
+          product_id: productId,
+        },
+      },
+    });
     revalidatePath("/cart");
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error("Failed to remove from cart:", error);
-    return { success: false, error: "Failed to remove from cart" };
+    return { success: false as const, error: "Failed to remove from cart" };
   }
 }
 
 export async function clearCart() {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    await CartService.clearCart(userId);
+    await prisma.cart.deleteMany({
+      where: { user_id: userId },
+    });
     revalidatePath("/cart");
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error("Failed to clear cart:", error);
-    return { success: false, error: "Failed to clear cart" };
-  }
-}
-
-export async function getCartCount() {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, count: 0 };
-  }
-
-  const count = await CartService.getCartCount(userId);
-  return { success: true, count };
-}
-
-export async function syncCartFromLocal(
-  items: { productId: number; quantity: number }[],
-) {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, error: "Not authenticated" };
-  }
-
-  try {
-    const syncedItems = await CartService.syncFromLocalStorage(userId, items);
-    revalidatePath("/cart");
-    return { success: true, data: syncedItems };
-  } catch (error) {
-    console.error("Failed to sync cart:", error);
-    return { success: false, error: "Failed to sync cart" };
+    return { success: false as const, error: "Failed to clear cart" };
   }
 }

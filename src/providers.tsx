@@ -1,5 +1,6 @@
 "use client";
 
+import { StoreProvider } from "@/providers/store-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -26,9 +27,11 @@ export default function Providers({ children }: Props) {
   return (
     <ClerkProvider>
       <QueryClientProvider client={queryClient}>
-        {children}
-        <SignInModal />
-        <ToastContainer />
+        <StoreProvider>
+          {children}
+          <SignInModal />
+          <ToastContainer />
+        </StoreProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );

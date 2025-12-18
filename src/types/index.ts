@@ -82,14 +82,22 @@ export type RegistrationWithEvent = Prisma.EventRegistrationGetPayload<{
   include: { event: true; user: true };
 }>;
 
-// Cart with product
+// Cart with product (including categories for display)
 export type CartWithProduct = Prisma.CartGetPayload<{
-  include: { product: true };
+  include: {
+    product: {
+      include: { product_categories: true };
+    };
+  };
 }>;
 
-// Wishlist with product
+// Wishlist with product (including categories for display)
 export type WishlistWithProduct = Prisma.WishlistGetPayload<{
-  include: { product: true };
+  include: {
+    product: {
+      include: { product_categories: true };
+    };
+  };
 }>;
 
 // Review with user and likes

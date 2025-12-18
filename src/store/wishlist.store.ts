@@ -1,72 +1,108 @@
+import type { PaginatedResponse, WishlistWithProduct } from "@/types";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 interface WishlistState {
+  items: WishlistWithProduct[];
   productIds: number[];
-  isLoading: boolean;
-  isSynced: boolean;
+  pagination: { page: number; totalPages: number; total: number };
+  isHydrated: boolean;
 
   // Actions
-  setProductIds: (ids: number[]) => void;
-  addItem: (productId: number) => void;
+  hydrate: (
+    items: WishlistWithProduct[],
+    pagination: PaginatedResponse<WishlistWithProduct>,
+  ) => void;
+  hydrateIds: (ids: number[]) => void;
+  addItem: (item: WishlistWithProduct) => void;
   removeItem: (productId: number) => void;
-  toggleItem: (productId: number) => void;
-  clearWishlist: () => void;
-  setLoading: (loading: boolean) => void;
-  setSynced: (synced: boolean) => void;
+  loadMore: (
+    items: WishlistWithProduct[],
+    pagination: PaginatedResponse<WishlistWithProduct>,
+  ) => void;
+  clear: () => void;
+  reset: () => void;
 
   // Getters
   isInWishlist: (productId: number) => boolean;
   getCount: () => number;
 }
 
-export const useWishlistStore = create<WishlistState>()(
-  persist(
-    (set, get) => ({
-      productIds: [],
-      isLoading: false,
-      isSynced: false,
+export const useWishlistStore = create<WishlistState>()((set, get) => ({
+  items: [],
+  productIds: [],
+  pagination: { page: 1, totalPages: 1, total: 0 },
+  isHydrated: false,
 
-      setProductIds: (productIds) => set({ productIds, isSynced: true }),
-
-      addItem: (productId) =>
-        set((state) => {
-          if (state.productIds.includes(productId)) {
-            return state;
-          }
-          return { productIds: [...state.productIds, productId] };
-        }),
-
-      removeItem: (productId) =>
-        set((state) => ({
-          productIds: state.productIds.filter((id) => id !== productId),
-        })),
-
-      toggleItem: (productId) =>
-        set((state) => {
-          if (state.productIds.includes(productId)) {
-            return {
-              productIds: state.productIds.filter((id) => id !== productId),
-            };
-          }
-          return { productIds: [...state.productIds, productId] };
-        }),
-
-      clearWishlist: () => set({ productIds: [], isSynced: false }),
-
-      setLoading: (isLoading) => set({ isLoading }),
-
-      setSynced: (isSynced) => set({ isSynced }),
-
-      isInWishlist: (productId) => get().productIds.includes(productId),
-
-      getCount: () => get().productIds.length,
+  hydrate: (items, pagination) =>
+    set({
+      items,
+      productIds: items.map((i) => i.product_id),
+      pagination: {
+        page: pagination.page,
+        totalPages: pagination.totalPages,
+        total: pagination.total,
+      },
+      isHydrated: true,
     }),
-    {
-      name: "wishlist-storage",
-      partialize: (state) => ({
-        productIds: state.productIds,
-      }),
-    },
-  ),
-);
+
+  hydrateIds: (ids) =>
+    set({
+      productIds: ids,
+      pagination: { ...get().pagination, total: ids.length },
+      isHydrated: true,
+    }),
+
+  addItem: (item) =>
+    set((state) => {
+      if (state.productIds.includes(item.product_id)) {
+        return state;
+      }
+      return {
+        items: [item, ...state.items],
+        productIds: [...state.productIds, item.product_id],
+        pagination: { ...state.pagination, total: state.pagination.total + 1 },
+      };
+    }),
+
+  removeItem: (productId) =>
+    set((state) => ({
+      items: state.items.filter((i) => i.product_id !== productId),
+      productIds: state.productIds.filter((id) => id !== productId),
+      pagination: { ...state.pagination, total: state.pagination.total - 1 },
+    })),
+
+  loadMore: (items, pagination) =>
+    set((state) => ({
+      items: [...state.items, ...items],
+      productIds: [
+        ...state.productIds,
+        ...items
+          .map((i) => i.product_id)
+          .filter((id) => !state.productIds.includes(id)),
+      ],
+      pagination: {
+        page: pagination.page,
+        totalPages: pagination.totalPages,
+        total: pagination.total,
+      },
+    })),
+
+  clear: () =>
+    set({
+      items: [],
+      productIds: [],
+      pagination: { page: 1, totalPages: 1, total: 0 },
+    }),
+
+  reset: () =>
+    set({
+      items: [],
+      productIds: [],
+      pagination: { page: 1, totalPages: 1, total: 0 },
+      isHydrated: false,
+    }),
+
+  isInWishlist: (productId) => get().productIds.includes(productId),
+
+  getCount: () => get().pagination.total,
+}));

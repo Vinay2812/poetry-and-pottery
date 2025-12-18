@@ -1,4 +1,4 @@
-import { ProductService } from "@/services";
+import { getFeaturedProducts } from "@/actions";
 import { ArrowRight, Circle, Coffee, Flower2, Leaf } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -46,7 +46,7 @@ const CATEGORIES = [
 ];
 
 export default async function Home() {
-  const featuredProducts = await ProductService.getFeaturedProducts(4);
+  const featuredProducts = await getFeaturedProducts(4);
 
   return (
     <>

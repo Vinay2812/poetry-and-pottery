@@ -1,147 +1,166 @@
 "use server";
 
-import { UserService } from "@/services/user.service";
-import { WishlistService } from "@/services/wishlist.service";
-import { auth } from "@clerk/nextjs/server";
+import type { PaginatedResponse, WishlistWithProduct } from "@/types";
 import { revalidatePath } from "next/cache";
 
-async function getCurrentUserId(): Promise<number | null> {
-  const { userId: authId } = await auth();
-  if (!authId) return null;
+import { prisma } from "@/lib/prisma";
 
-  const user = await UserService.getUserByAuthId(authId);
-  return user?.id ?? null;
-}
+import { getCurrentUserId } from "./auth.action";
 
-export async function getWishlist() {
+const DEFAULT_PAGE_SIZE = 10;
+
+export async function getWishlist(
+  page: number = 1,
+  limit: number = DEFAULT_PAGE_SIZE,
+): Promise<
+  | { success: true; data: PaginatedResponse<WishlistWithProduct> }
+  | { success: false; error: string }
+> {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated", data: [] };
+    return { success: false, error: "Not authenticated" };
   }
 
-  const items = await WishlistService.getWishlistByUserId(userId);
-  return { success: true, data: items };
+  const [items, total] = await Promise.all([
+    prisma.wishlist.findMany({
+      where: { user_id: userId },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+      orderBy: { created_at: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.wishlist.count({ where: { user_id: userId } }),
+  ]);
+
+  return {
+    success: true,
+    data: {
+      data: items as WishlistWithProduct[],
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 }
 
 export async function getWishlistIds() {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, data: [] };
+    return { success: false as const, data: [] };
   }
 
-  const ids = await WishlistService.getWishlistIds(userId);
-  return { success: true, data: ids };
-}
+  const wishlists = await prisma.wishlist.findMany({
+    where: { user_id: userId },
+    select: { product_id: true },
+  });
 
-export async function toggleWishlist(productId: number) {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, error: "Not authenticated" };
-  }
-
-  try {
-    const result = await WishlistService.toggleWishlist(userId, productId);
-    revalidatePath("/wishlist");
-    revalidatePath("/products");
-    return { success: true, action: result.action };
-  } catch (error) {
-    console.error("Failed to toggle wishlist:", error);
-    return { success: false, error: "Failed to update wishlist" };
-  }
+  return { success: true as const, data: wishlists.map((w) => w.product_id) };
 }
 
 export async function addToWishlist(productId: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    const item = await WishlistService.addToWishlist(userId, productId);
+    const item = await prisma.wishlist.create({
+      data: { user_id: userId, product_id: productId },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    });
+
     revalidatePath("/wishlist");
     revalidatePath("/products");
-    return { success: true, data: item };
+    return { success: true as const, data: item };
   } catch (error) {
     console.error("Failed to add to wishlist:", error);
-    return { success: false, error: "Failed to add to wishlist" };
+    return { success: false as const, error: "Failed to add to wishlist" };
   }
 }
 
 export async function removeFromWishlist(productId: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    await WishlistService.removeFromWishlist(userId, productId);
+    await prisma.wishlist.delete({
+      where: { user_id_product_id: { user_id: userId, product_id: productId } },
+    });
     revalidatePath("/wishlist");
     revalidatePath("/products");
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error("Failed to remove from wishlist:", error);
-    return { success: false, error: "Failed to remove from wishlist" };
+    return { success: false as const, error: "Failed to remove from wishlist" };
   }
 }
 
-export async function clearWishlist() {
+export async function toggleWishlist(productId: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    await WishlistService.clearWishlist(userId);
+    const existing = await prisma.wishlist.findUnique({
+      where: { user_id_product_id: { user_id: userId, product_id: productId } },
+    });
+
+    if (existing) {
+      await prisma.wishlist.delete({ where: { id: existing.id } });
+      revalidatePath("/wishlist");
+      revalidatePath("/products");
+      return { success: true as const, action: "removed" as const };
+    }
+
+    await prisma.wishlist.create({
+      data: { user_id: userId, product_id: productId },
+    });
     revalidatePath("/wishlist");
-    return { success: true };
+    revalidatePath("/products");
+    return { success: true as const, action: "added" as const };
   } catch (error) {
-    console.error("Failed to clear wishlist:", error);
-    return { success: false, error: "Failed to clear wishlist" };
-  }
-}
-
-export async function getWishlistCount() {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, count: 0 };
-  }
-
-  const count = await WishlistService.getWishlistCount(userId);
-  return { success: true, count };
-}
-
-export async function syncWishlistFromLocal(productIds: number[]) {
-  const userId = await getCurrentUserId();
-  if (!userId) {
-    return { success: false, error: "Not authenticated" };
-  }
-
-  try {
-    const items = await WishlistService.syncFromLocalStorage(
-      userId,
-      productIds,
-    );
-    revalidatePath("/wishlist");
-    return { success: true, data: items };
-  } catch (error) {
-    console.error("Failed to sync wishlist:", error);
-    return { success: false, error: "Failed to sync wishlist" };
+    console.error("Failed to toggle wishlist:", error);
+    return { success: false as const, error: "Failed to update wishlist" };
   }
 }
 
 export async function moveToCart(productId: number) {
   const userId = await getCurrentUserId();
   if (!userId) {
-    return { success: false, error: "Not authenticated" };
+    return { success: false as const, error: "Not authenticated" };
   }
 
   try {
-    await WishlistService.moveToCart(userId, productId);
+    await prisma.$transaction([
+      prisma.cart.upsert({
+        where: {
+          user_id_product_id: { user_id: userId, product_id: productId },
+        },
+        update: { quantity: { increment: 1 } },
+        create: { user_id: userId, product_id: productId, quantity: 1 },
+      }),
+      prisma.wishlist.delete({
+        where: {
+          user_id_product_id: { user_id: userId, product_id: productId },
+        },
+      }),
+    ]);
     revalidatePath("/wishlist");
     revalidatePath("/cart");
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error("Failed to move to cart:", error);
-    return { success: false, error: "Failed to move to cart" };
+    return { success: false as const, error: "Failed to move to cart" };
   }
 }

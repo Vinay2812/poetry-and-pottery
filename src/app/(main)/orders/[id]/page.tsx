@@ -1,6 +1,4 @@
-import { OrderService } from "@/services";
-import type { OrderWithDetails } from "@/types";
-import { auth } from "@clerk/nextjs/server";
+import { getOrderById } from "@/actions";
 import type { Metadata } from "next";
 
 import { MobileHeader } from "@/components/layout";
@@ -29,19 +27,10 @@ export async function generateMetadata({
 export default async function OrderDetailPage({
   params,
 }: OrderDetailPageProps) {
-  const { userId } = await auth();
   const { id } = await params;
 
-  // Fetch order if user is authenticated
-  let order: OrderWithDetails | null = null;
-  if (userId) {
-    try {
-      order = await OrderService.getOrderByIdForAuthUser(id, userId);
-    } catch {
-      // Order not found or access denied
-      order = null;
-    }
-  }
+  const result = await getOrderById(id);
+  const order = result.success ? result.data : null;
 
   return (
     <>

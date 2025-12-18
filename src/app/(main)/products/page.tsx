@@ -1,4 +1,4 @@
-import { ProductService } from "@/services";
+import { getProducts } from "@/actions";
 import type { ProductFilterParams } from "@/types";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -96,7 +96,7 @@ async function ProductsContent({
   };
 
   // Fetch products from database
-  const result = await ProductService.getProducts(filterParams);
+  const result = await getProducts(filterParams);
 
   // Format categories for the filter UI
   const categories = result.categories.map((cat) => ({

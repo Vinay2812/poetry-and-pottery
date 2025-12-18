@@ -1,4 +1,4 @@
-import { EventService } from "@/services";
+import { getUpcomingEvents } from "@/actions";
 import type { Metadata } from "next";
 
 import { UpcomingEventsClient } from "@/components/events";
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default async function UpcomingEventsPage() {
-  const events = await EventService.getUpcomingEvents();
+  const events = await getUpcomingEvents();
 
   return <UpcomingEventsClient events={events} />;
 }

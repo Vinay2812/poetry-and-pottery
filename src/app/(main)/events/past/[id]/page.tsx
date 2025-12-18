@@ -1,4 +1,4 @@
-import { EventService } from "@/services";
+import { getEventById, getEventBySlug, getUpcomingEvents } from "@/actions";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -12,7 +12,7 @@ export async function generateMetadata({
   params,
 }: PastWorkshopDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const workshop = await EventService.getEventBySlug(id);
+  const workshop = await getEventBySlug(id);
 
   if (!workshop) {
     return {
@@ -53,9 +53,9 @@ export default async function PastWorkshopDetailPage({
   const { id } = await params;
 
   // Try to fetch by slug first, then by ID
-  let workshop = await EventService.getEventBySlug(id);
+  let workshop = await getEventBySlug(id);
   if (!workshop) {
-    workshop = await EventService.getEventById(id);
+    workshop = await getEventById(id);
   }
 
   if (!workshop) {
@@ -63,7 +63,7 @@ export default async function PastWorkshopDetailPage({
   }
 
   // Get upcoming events for recommendations
-  const upcomingEvents = await EventService.getUpcomingEvents(2);
+  const upcomingEvents = await getUpcomingEvents(2);
 
   return (
     <PastWorkshopDetailClient

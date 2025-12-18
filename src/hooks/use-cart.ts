@@ -13,7 +13,7 @@ import { useCallback, useState } from "react";
 export function useCart() {
   const { isSignedIn } = useAuth();
   const cartStore = useCartStore();
-  const { addToast } = useUIStore();
+  const { addToast, setSignInModalOpen, setSignInRedirectUrl } = useUIStore();
   const [loadingProducts, setLoadingProducts] = useState<Set<number>>(
     new Set(),
   );
@@ -37,24 +37,26 @@ export function useCart() {
 
   const addToCart = useCallback(
     async (productId: number, quantity: number = 1) => {
+      if (!isSignedIn) {
+        setSignInRedirectUrl(window.location.pathname);
+        setSignInModalOpen(true);
+        return false;
+      }
+
       setLoading(productId, true);
 
-      // Optimistically update local store
-      cartStore.addItem(productId, quantity);
-
-      if (isSignedIn) {
-        const result = await addToCartAction(productId, quantity);
-        if (!result.success) {
-          // Rollback on failure
-          cartStore.removeItem(productId);
-          addToast({
-            type: "error",
-            message: result.error || "Failed to add to cart",
-          });
-          setLoading(productId, false);
-          return false;
-        }
+      const result = await addToCartAction(productId, quantity);
+      if (!result.success) {
+        addToast({
+          type: "error",
+          message: result.error || "Failed to add to cart",
+        });
+        setLoading(productId, false);
+        return false;
       }
+
+      // Update store with server response
+      cartStore.addItem(result.data);
 
       addToast({
         type: "success",
@@ -63,33 +65,42 @@ export function useCart() {
       setLoading(productId, false);
       return true;
     },
-    [isSignedIn, cartStore, addToast, setLoading],
+    [
+      isSignedIn,
+      cartStore,
+      addToast,
+      setLoading,
+      setSignInModalOpen,
+      setSignInRedirectUrl,
+    ],
   );
 
   const removeFromCart = useCallback(
     async (productId: number) => {
+      if (!isSignedIn) return false;
+
       setLoading(productId, true);
 
-      // Store current quantity for rollback
-      const currentQuantity = cartStore.getQuantity(productId);
+      // Store current item for rollback
+      const currentItem = cartStore.items.find(
+        (i) => i.product_id === productId,
+      );
 
-      // Optimistically update local store
+      // Optimistically update
       cartStore.removeItem(productId);
 
-      if (isSignedIn) {
-        const result = await removeFromCartAction(productId);
-        if (!result.success) {
-          // Rollback on failure
-          if (currentQuantity > 0) {
-            cartStore.addItem(productId, currentQuantity);
-          }
-          addToast({
-            type: "error",
-            message: result.error || "Failed to remove from cart",
-          });
-          setLoading(productId, false);
-          return false;
+      const result = await removeFromCartAction(productId);
+      if (!result.success) {
+        // Rollback on failure
+        if (currentItem) {
+          cartStore.addItem(currentItem);
         }
+        addToast({
+          type: "error",
+          message: result.error || "Failed to remove from cart",
+        });
+        setLoading(productId, false);
+        return false;
       }
 
       addToast({
@@ -104,26 +115,26 @@ export function useCart() {
 
   const updateQuantity = useCallback(
     async (productId: number, quantity: number) => {
+      if (!isSignedIn) return false;
+
       setLoading(productId, true);
 
       // Store current quantity for rollback
       const currentQuantity = cartStore.getQuantity(productId);
 
-      // Optimistically update local store
+      // Optimistically update
       cartStore.updateQuantity(productId, quantity);
 
-      if (isSignedIn) {
-        const result = await updateCartQuantityAction(productId, quantity);
-        if (!result.success) {
-          // Rollback on failure
-          cartStore.updateQuantity(productId, currentQuantity);
-          addToast({
-            type: "error",
-            message: result.error || "Failed to update cart",
-          });
-          setLoading(productId, false);
-          return false;
-        }
+      const result = await updateCartQuantityAction(productId, quantity);
+      if (!result.success) {
+        // Rollback on failure
+        cartStore.updateQuantity(productId, currentQuantity);
+        addToast({
+          type: "error",
+          message: result.error || "Failed to update cart",
+        });
+        setLoading(productId, false);
+        return false;
       }
 
       setLoading(productId, false);
@@ -135,6 +146,8 @@ export function useCart() {
   return {
     items: cartStore.items,
     totalItems: cartStore.getTotalItems(),
+    totalPrice: cartStore.getTotalPrice(),
+    isHydrated: cartStore.isHydrated,
     addToCart,
     removeFromCart,
     updateQuantity,
