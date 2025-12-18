@@ -7,4 +7,3 @@ export { RegisteredEventCard } from "./registered-event-card";
 export { ReviewCard } from "./review-card";
 export { TeamMemberCard } from "./team-member-card";
 export { ValueCard } from "./value-card";
-export { WishlistItemCard } from "./wishlist-item-card";

@@ -45,6 +45,18 @@ export function useCart() {
 
       setLoading(productId, true);
 
+      const existingProduct = cartStore.items.find(
+        (i) => i.product_id === productId,
+      );
+
+      if (existingProduct) {
+        // Optimistically update
+        cartStore.updateQuantity(
+          productId,
+          existingProduct.quantity + quantity,
+        );
+      }
+
       const result = await addToCartAction(productId, quantity);
       if (!result.success) {
         addToast({

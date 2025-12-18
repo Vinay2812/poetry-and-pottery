@@ -1,5 +1,6 @@
 "use client";
 
+import { useOrderStore } from "@/store";
 import { useClerk, useUser } from "@clerk/nextjs";
 import {
   HelpCircle,
@@ -30,6 +31,7 @@ export function AccountDropdown() {
   const { openUserProfile, signOut } = useClerk();
   const { user } = useUser();
   const router = useRouter();
+  const pendingOrdersCount = useOrderStore((state) => state.getPendingCount());
 
   const handleProfileSettings = useCallback(() => {
     openUserProfile();
@@ -51,7 +53,7 @@ export function AccountDropdown() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "hover:bg-muted focus-visible:ring-primary/30 flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none",
+            "hover:bg-muted focus-visible:ring-primary/30 relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none",
           )}
         >
           {user?.imageUrl ? (
@@ -64,6 +66,11 @@ export function AccountDropdown() {
             />
           ) : (
             <Settings className={cn("text-muted-foreground h-6 w-6")} />
+          )}
+          {pendingOrdersCount > 0 && (
+            <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
+              {pendingOrdersCount}
+            </span>
           )}
         </button>
       </DropdownMenuTrigger>
@@ -95,7 +102,12 @@ export function AccountDropdown() {
           className="cursor-pointer"
         >
           <Package className="mr-2 h-4 w-4" />
-          My Orders
+          <span className="flex-1">My Orders</span>
+          {pendingOrdersCount > 0 && (
+            <span className="bg-primary ml-auto flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-bold text-white">
+              {pendingOrdersCount}
+            </span>
+          )}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

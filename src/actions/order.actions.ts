@@ -157,6 +157,24 @@ export async function createOrder(data: {
   }
 }
 
+export async function getPendingOrdersCount(): Promise<number> {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    return 0;
+  }
+
+  const count = await prisma.productOrder.count({
+    where: {
+      user_id: userId,
+      status: {
+        notIn: ["delivered", "cancelled"],
+      },
+    },
+  });
+
+  return count;
+}
+
 export async function cancelOrder(orderId: string) {
   const userId = await getCurrentUserId();
   if (!userId) {

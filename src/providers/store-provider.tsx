@@ -2,9 +2,11 @@
 
 import { getCart } from "@/actions/cart.actions";
 import { getRegistrationCount } from "@/actions/event.actions";
+import { getPendingOrdersCount } from "@/actions/order.actions";
 import { getWishlistIds } from "@/actions/wishlist.actions";
 import { useCartStore } from "@/store/cart.store";
 import { useEventStore } from "@/store/event.store";
+import { useOrderStore } from "@/store/order.store";
 import { useWishlistStore } from "@/store/wishlist.store";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef } from "react";
@@ -14,6 +16,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const cartStore = useCartStore();
   const wishlistStore = useWishlistStore();
   const eventStore = useEventStore();
+  const orderStore = useOrderStore();
   const hasFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -24,6 +27,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (cartStore.isHydrated) cartStore.reset();
       if (wishlistStore.isHydrated) wishlistStore.reset();
       if (eventStore.isHydrated) eventStore.reset();
+      if (orderStore.isHydrated) orderStore.reset();
       hasFetchedRef.current = false;
       return;
     }
@@ -50,8 +54,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       getRegistrationCount().then((count) => {
         eventStore.hydrateCount(count);
       });
+
+      // Fetch pending orders count for badge
+      getPendingOrdersCount().then((count) => {
+        orderStore.hydrateCount(count);
+      });
     }
-  }, [user, isLoaded, cartStore, wishlistStore, eventStore]);
+  }, [user, isLoaded, cartStore, wishlistStore, eventStore, orderStore]);
 
   return <>{children}</>;
 }

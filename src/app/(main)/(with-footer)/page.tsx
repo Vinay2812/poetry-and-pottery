@@ -1,12 +1,10 @@
-import { getFeaturedProducts } from "@/actions";
-import { ArrowRight, Circle, Coffee, Flower2, Leaf } from "lucide-react";
+import { getCategories, getFeaturedProducts } from "@/actions";
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 
 import { ProductCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
-import { CTASection } from "@/components/sections";
+import { CTASection, CategorySection } from "@/components/sections";
 import { Button } from "@/components/ui/button";
 
 import { HERO_IMAGES } from "@/lib/constants";
@@ -38,15 +36,11 @@ export const metadata: Metadata = {
   },
 };
 
-const CATEGORIES = [
-  { id: "vases", name: "Vases", icon: Flower2 },
-  { id: "plates", name: "Plates", icon: Circle },
-  { id: "mugs", name: "Mugs", icon: Coffee },
-  { id: "planters", name: "Planters", icon: Leaf },
-];
-
 export default async function Home() {
-  const featuredProducts = await getFeaturedProducts(4);
+  const [featuredProducts, categories] = await Promise.all([
+    getFeaturedProducts(4),
+    getCategories(),
+  ]);
 
   return (
     <>
@@ -85,34 +79,7 @@ export default async function Home() {
         </section>
 
         {/* Shop by Category */}
-        <section className="px-4 py-6 lg:px-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Shop by Category</h2>
-            <Link
-              href="/products"
-              className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm transition-colors duration-150"
-            >
-              SEE ALL <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-          <div className="scrollbar-hide flex gap-4 overflow-x-auto pb-2">
-            {CATEGORIES.map((category) => {
-              const Icon = category.icon;
-              return (
-                <Link
-                  key={category.id}
-                  href={`/products?category=${category.id}`}
-                  className="flex min-w-[72px] flex-col items-center gap-2 focus-visible:outline-none"
-                >
-                  <div className="bg-subtle-green hover:bg-accent flex h-16 w-16 items-center justify-center rounded-2xl transition-colors duration-150">
-                    <Icon className="text-primary h-6 w-6" />
-                  </div>
-                  <span className="text-xs font-medium">{category.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+        <CategorySection categories={categories.slice(0, 8)} />
 
         {/* Curated Favorites */}
         <section className="px-4 py-6 lg:px-8">

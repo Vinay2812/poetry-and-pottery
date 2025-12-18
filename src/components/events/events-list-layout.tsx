@@ -1,6 +1,7 @@
 "use client";
 
 import { useEventStore } from "@/store/event.store";
+import { Calendar, History, Ticket } from "lucide-react";
 import { redirect, usePathname } from "next/navigation";
 
 import { EventsTabs } from "@/components/events";
@@ -22,18 +23,21 @@ export const EVENTS_TABS_MAP = {
     type: TabType.REGISTERED,
     mobileLabel: "Registered",
     desktopLabel: "My Registrations",
+    icon: Ticket,
   },
   [TabType.UPCOMING]: {
     href: "/events/upcoming",
     type: TabType.UPCOMING,
     mobileLabel: "Upcoming",
     desktopLabel: "Upcoming Sessions",
+    icon: Calendar,
   },
   [TabType.PAST]: {
     href: "/events/past",
     type: TabType.PAST,
     mobileLabel: "Past",
     desktopLabel: "Past Events",
+    icon: History,
   },
 };
 
@@ -58,7 +62,7 @@ export function EventsListLayout({ children }: EventsListLayoutProps) {
       <main className="pt-14 pb-24 lg:pt-0 lg:pb-12">
         <div className="container mx-auto px-4 py-6 lg:px-8">
           {/* Header */}
-          <div className="mb-6">
+          <div className="mb-6 hidden lg:block">
             <h1 className="mb-2 text-2xl font-bold lg:text-3xl">
               Pottery Workshops
             </h1>

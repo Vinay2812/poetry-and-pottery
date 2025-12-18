@@ -71,9 +71,19 @@ export function Navbar() {
             {/* Wishlist */}
             <Link
               href="/wishlist"
-              className="hover:bg-muted relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150"
+              className={cn(
+                "relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150",
+                isActiveRoute("/wishlist") ? "bg-primary/10" : "hover:bg-muted",
+              )}
             >
-              <Heart className="text-muted-foreground h-6 w-6" />
+              <Heart
+                className={cn(
+                  "h-6 w-6 transition-colors",
+                  isActiveRoute("/wishlist")
+                    ? "text-primary fill-primary/20"
+                    : "text-muted-foreground",
+                )}
+              />
               {wishlistCount > 0 && (
                 <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
                   {wishlistCount}
@@ -84,9 +94,19 @@ export function Navbar() {
             {/* Cart */}
             <Link
               href="/cart"
-              className="hover:bg-muted relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150"
+              className={cn(
+                "relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150",
+                isActiveRoute("/cart") ? "bg-primary/10" : "hover:bg-muted",
+              )}
             >
-              <ShoppingCartIcon className="text-muted-foreground h-6 w-6" />
+              <ShoppingCartIcon
+                className={cn(
+                  "h-6 w-6 transition-colors",
+                  isActiveRoute("/cart")
+                    ? "text-primary"
+                    : "text-muted-foreground",
+                )}
+              />
               {cartCount > 0 && (
                 <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
                   {cartCount}

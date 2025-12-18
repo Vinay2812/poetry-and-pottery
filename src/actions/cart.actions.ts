@@ -23,7 +23,7 @@ export async function getCart() {
     orderBy: { created_at: "desc" },
   });
 
-  return { success: true as const, data: items as CartWithProduct[] };
+  return { success: true as const, data: items };
 }
 
 export async function addToCart(productId: number, quantity: number = 1) {
@@ -31,6 +31,8 @@ export async function addToCart(productId: number, quantity: number = 1) {
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
+
+  console.log("Adding to cart:", productId, quantity);
 
   try {
     const item = await prisma.cart.upsert({
@@ -54,6 +56,8 @@ export async function addToCart(productId: number, quantity: number = 1) {
         },
       },
     });
+
+    console.log("Item added to cart:", item);
 
     revalidatePath("/cart");
     return { success: true as const, data: item as CartWithProduct };

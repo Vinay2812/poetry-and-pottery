@@ -13,3 +13,15 @@ export const NAV_LINKS = [
   { href: "/events", label: "Events" },
   { href: "/about", label: "About" },
 ];
+
+export const CATEGORY_ICONS: Record<string, string> = {
+  mugs: "Coffee",
+  plates: "Circle",
+  vases: "Flower2",
+  planters: "Leaf",
+  bowls: "Circle",
+  cups: "Coffee",
+  pots: "Flower2",
+  accessories: "Sparkles",
+  serveware: "Sparkles",
+};

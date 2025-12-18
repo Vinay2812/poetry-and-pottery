@@ -133,7 +133,7 @@ export default function AboutPage() {
         {/* Story Section */}
         <section className="container mx-auto px-4 pb-8 lg:px-8 lg:py-16">
           {/* Mobile Layout */}
-          <div className="mx-auto max-w-3xl p-8 lg:hidden">
+          <div className="mx-auto max-w-3xl p-4 lg:hidden lg:p-8">
             <h2 className="mb-6 w-full text-center text-2xl font-bold">
               Where Clay Meets Soul
             </h2>

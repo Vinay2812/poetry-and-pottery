@@ -3,11 +3,13 @@
 import { getWishlist } from "@/actions";
 import { useWishlist } from "@/hooks";
 import type { ProductWithCategories, WishlistWithProduct } from "@/types";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { Heart, Loader2 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { useInView } from "react-intersection-observer";
 
-import { ProductCard, WishlistItemCard } from "@/components/cards";
+import { ProductCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
 import { EmptyState } from "@/components/sections";
 
@@ -26,99 +28,80 @@ export function WishlistClient({
   recommendations,
   initialPagination,
 }: WishlistClientProps) {
-  const [wishlistItems, setWishlistItems] = useState(initialWishlistItems);
-  const [movedToCartIds, setMovedToCartIds] = useState<Set<number>>(new Set());
-  const [pagination, setPagination] = useState(initialPagination);
-  const [isLoadingMore, startLoadingMore] = useTransition();
+  const { removeFromWishlist, isLoading } = useWishlist();
+  const queryClient = useQueryClient();
 
-  const { removeFromWishlist, moveToCart, isLoading } = useWishlist();
-
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-
-  const handleLoadMore = useCallback(() => {
-    if (isLoadingMore) return;
-    startLoadingMore(async () => {
-      const nextPage = pagination.page + 1;
-      const result = await getWishlist(nextPage);
-      if (result.success) {
-        setWishlistItems((prev) => {
-          const existingIds = new Set(prev.map((item) => item.product_id));
-          const newItems = result.data.data.filter(
-            (item) => !existingIds.has(item.product_id),
-          );
-          return [...prev, ...newItems];
-        });
-        setPagination({
-          page: result.data.page,
-          totalPages: result.data.totalPages,
-          total: result.data.total,
-        });
-      }
-    });
-  }, [pagination.page, isLoadingMore]);
-
-  // Infinite scroll observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (
-          entries[0].isIntersecting &&
-          pagination.page < pagination.totalPages &&
-          !isLoadingMore
-        ) {
-          handleLoadMore();
+  // Infinite query for wishlist items
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["wishlist"],
+      queryFn: async ({ pageParam = 1 }) => {
+        const result = await getWishlist(pageParam);
+        if (!result.success) {
+          throw new Error("Failed to fetch wishlist");
         }
+        return result.data;
       },
-      { threshold: 0.1 },
-    );
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.page < lastPage.totalPages) {
+          return lastPage.page + 1;
+        }
+        return undefined;
+      },
+      initialData: {
+        pages: [
+          {
+            data: initialWishlistItems,
+            total: initialPagination.total,
+            page: 1,
+            totalPages: initialPagination.totalPages,
+          },
+        ],
+        pageParams: [1],
+      },
+    });
 
-    const currentRef = loadMoreRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
+  // Intersection observer for auto-loading
+  const { ref: loadMoreRef, inView } = useInView({
+    threshold: 0,
+    rootMargin: "100px",
+  });
+
+  // Auto-fetch next page when scrolling near bottom
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
+  // Flatten all pages into single array and deduplicate
+  const wishlistItems = useMemo(() => {
+    const allItems = data?.pages.flatMap((page) => page.data) ?? [];
+    const seen = new Set<number>();
+    return allItems.filter((item) => {
+      if (seen.has(item.product_id)) {
+        return false;
       }
-    };
-  }, [pagination.page, pagination.totalPages, isLoadingMore, handleLoadMore]);
+      seen.add(item.product_id);
+      return true;
+    });
+  }, [data]);
+
+  const currentTotal = data?.pages[0]?.total ?? initialPagination.total;
 
   const handleRemove = useCallback(
     async (productId: number) => {
       const success = await removeFromWishlist(productId);
       if (success) {
-        setWishlistItems((items) =>
-          items.filter((item) => item.product_id !== productId),
-        );
-        setPagination((prev) => ({ ...prev, total: prev.total - 1 }));
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
       }
     },
-    [removeFromWishlist],
-  );
-
-  const handleMoveToCart = useCallback(
-    async (productId: number) => {
-      const success = await moveToCart(productId);
-      if (success) {
-        setMovedToCartIds((prev) => new Set(prev).add(productId));
-        setTimeout(() => {
-          setWishlistItems((items) =>
-            items.filter((item) => item.product_id !== productId),
-          );
-          setMovedToCartIds((prev) => {
-            const next = new Set(prev);
-            next.delete(productId);
-            return next;
-          });
-          setPagination((prev) => ({ ...prev, total: prev.total - 1 }));
-        }, 1500);
-      }
-    },
-    [moveToCart],
+    [removeFromWishlist, queryClient],
   );
 
   const hasRecommendations = recommendations.length > 0;
+  const showRecommendations = hasRecommendations && !hasNextPage;
 
   return (
     <>
@@ -129,60 +112,66 @@ export function WishlistClient({
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <p className="text-muted-foreground text-sm">
-              {pagination.total} Items saved
+              {currentTotal} Items saved
             </p>
           </div>
 
           {/* Wishlist Items */}
           {wishlistItems.length > 0 ? (
-            <div
-              className={hasRecommendations ? "mb-12 space-y-4" : "space-y-4"}
-            >
-              <AnimatePresence mode="popLayout">
-                {wishlistItems.map((item) => (
-                  <WishlistItemCard
-                    key={item.product_id}
-                    product={item.product}
-                    onRemove={() => handleRemove(item.product_id)}
-                    onMoveToCart={() => handleMoveToCart(item.product_id)}
-                    isRemoving={isLoading(item.product_id)}
-                    isMovingToCart={
-                      isLoading(item.product_id) &&
-                      !movedToCartIds.has(item.product_id)
-                    }
-                    movedToCart={movedToCartIds.has(item.product_id)}
-                  />
-                ))}
-              </AnimatePresence>
+            <>
+              <div
+                className={
+                  showRecommendations
+                    ? "mb-12 grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6"
+                    : "grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6"
+                }
+              >
+                <AnimatePresence mode="popLayout">
+                  {wishlistItems.map((item) => (
+                    <ProductCard
+                      key={item.product_id}
+                      product={item.product}
+                      variant="wishlist"
+                      onRemoveFromWishlist={() => handleRemove(item.product_id)}
+                      isRemovingFromWishlist={isLoading(item.product_id)}
+                    />
+                  ))}
+                </AnimatePresence>
+              </div>
 
               {/* Infinite scroll trigger */}
-              {pagination.page < pagination.totalPages && (
-                <div ref={loadMoreRef} className="flex justify-center py-6">
-                  {isLoadingMore && (
-                    <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
+              {hasNextPage && (
+                <div ref={loadMoreRef} className="mt-8 flex justify-center">
+                  {isFetchingNextPage && (
+                    <div className="text-muted-foreground flex items-center gap-2">
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span className="text-sm">Loading more...</span>
+                    </div>
                   )}
                 </div>
               )}
-            </div>
+            </>
           ) : (
-            <div className="mb-8 flex min-h-[40vh] items-center justify-center lg:min-h-[50vh]">
-              <EmptyState
-                icon={Heart}
-                title="Your wishlist is empty"
-                description="Save items you love to your wishlist"
-                actionText="Start Shopping"
-                actionHref="/products"
-              />
+            <div className={showRecommendations ? "mb-8" : ""}>
+              <div className="flex min-h-[40vh] items-center justify-center lg:min-h-[50vh]">
+                <EmptyState
+                  icon={Heart}
+                  title="Your wishlist is empty"
+                  description="Save items you love to your wishlist"
+                  actionText="Start Shopping"
+                  actionHref="/products"
+                />
+              </div>
             </div>
           )}
 
-          {/* Recommendations */}
-          {hasRecommendations && (
+          {/* Recommendations - only show when all items are loaded */}
+          {showRecommendations && (
             <section>
               <h2 className="mb-4 text-lg font-semibold">
                 You might also like
               </h2>
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
                 {recommendations.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

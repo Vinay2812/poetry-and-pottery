@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore } from "@/store";
+import { useCartStore, useEventStore } from "@/store";
 import { CalendarDaysIcon, Home, ShoppingCartIcon, Store } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,12 +11,13 @@ const NAV_ITEMS = [
   { href: "/", icon: Home },
   { href: "/products", icon: Store },
   { href: "/cart", icon: ShoppingCartIcon, badgeKey: "cart" as const },
-  { href: "/events", icon: CalendarDaysIcon },
+  { href: "/events", icon: CalendarDaysIcon, badgeKey: "events" as const },
 ];
 
 export function MobileNav() {
   const pathname = usePathname();
   const cartCount = useCartStore((state) => state.getTotalItems());
+  const eventRegistrationCount = useEventStore((state) => state.getCount());
 
   // Check if current path starts with any nav item's href (for nested routes)
   const isActiveRoute = (href: string) => {
@@ -24,8 +25,9 @@ export function MobileNav() {
     return pathname.startsWith(href);
   };
 
-  const getBadgeCount = (badgeKey?: "cart") => {
+  const getBadgeCount = (badgeKey?: "cart" | "events") => {
     if (badgeKey === "cart") return cartCount;
+    if (badgeKey === "events") return eventRegistrationCount;
     return 0;
   };
 

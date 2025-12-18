@@ -12,16 +12,31 @@ import {
   Star,
   User,
   Users,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ReviewCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
 import { ReviewsSheet } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Helper function to calculate duration from DateTime objects
 function calculateDuration(startsAt: Date, endsAt: Date): string {
@@ -56,6 +71,38 @@ export function PastWorkshopDetailClient({
   const imageUrl = workshop.image || "/placeholder.jpg";
   const attendees = workshop._count?.event_registrations || 0;
   const highlights = workshop.highlights || [];
+  const gallery = workshop.gallery || [];
+  const maxVisibleImages = 4;
+  const remainingImages = gallery.length - maxVisibleImages;
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Track carousel slide changes
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    };
+
+    onSelect();
+    carouselApi.on("select", onSelect);
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi]);
+
+  const handleOpenGallery = useCallback((index: number) => {
+    setSelectedImageIndex(index);
+  }, []);
+
+  const handleCloseGallery = useCallback(() => {
+    setSelectedImageIndex(null);
+  }, []);
 
   // Format reviews for the ReviewCard and ReviewsSheet components
   const formattedReviews = useMemo(() => {
@@ -127,10 +174,10 @@ export function PastWorkshopDetailClient({
                     <CheckCircle className="text-primary mr-1 h-3 w-3" />
                     Completed
                   </Badge>
-                  {highlights.length > 0 && (
+                  {gallery.length > 0 && (
                     <Badge className="text-foreground flex items-center gap-1 bg-white/90 backdrop-blur-sm">
                       <Images className="h-3 w-3" />
-                      {highlights.length} highlights
+                      {gallery.length} photos
                     </Badge>
                   )}
                 </div>
@@ -245,6 +292,130 @@ export function PastWorkshopDetailClient({
                   </div>
                 </div>
               )}
+
+              {/* Workshop Highlights */}
+              {highlights.length > 0 && (
+                <div className="mb-6">
+                  <h2 className="mb-3 text-lg font-semibold">
+                    Workshop Highlights
+                  </h2>
+                  <div className="shadow-soft rounded-xl bg-white p-4">
+                    <ul className="space-y-3">
+                      {highlights.map((highlight, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <div className="bg-primary/10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                            <Star className="text-primary h-4 w-4" />
+                          </div>
+                          <span className="text-sm">{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              {/* Gallery Section */}
+              {gallery.length > 0 && (
+                <div className="mb-8">
+                  <div className="mb-4 flex items-center gap-2">
+                    <h2 className="text-lg font-semibold">Gallery</h2>
+                    <span className="text-muted-foreground text-sm">
+                      ({gallery.length} photos)
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {gallery.slice(0, maxVisibleImages).map((image, index) => {
+                      const isLastVisible =
+                        index === maxVisibleImages - 1 && remainingImages > 0;
+
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => handleOpenGallery(index)}
+                          className="group focus:ring-primary relative aspect-square overflow-hidden rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                        >
+                          <Image
+                            src={image}
+                            alt={`Workshop gallery image ${index + 1}`}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
+
+                          {/* Show +X overlay on last visible image */}
+                          {isLastVisible && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                              <span className="text-2xl font-bold text-white">
+                                +{remainingImages}
+                              </span>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Gallery Lightbox with Carousel */}
+              <Dialog
+                open={selectedImageIndex !== null}
+                onOpenChange={(open) => !open && handleCloseGallery()}
+              >
+                <DialogContent
+                  className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0"
+                  showCloseButton={false}
+                >
+                  <div className="flex flex-col p-4">
+                    {/* Header with close button */}
+                    <div className="mb-4 flex items-center justify-between">
+                      <DialogTitle className="text-base font-medium">
+                        Gallery
+                      </DialogTitle>
+                      <DialogClose className="text-muted-foreground hover:text-foreground rounded-sm transition-colors">
+                        <X className="h-5 w-5" />
+                        <span className="sr-only">Close</span>
+                      </DialogClose>
+                    </div>
+
+                    {/* Carousel */}
+                    <Carousel
+                      className="w-full"
+                      opts={{ startIndex: selectedImageIndex ?? 0, loop: true }}
+                      setApi={setCarouselApi}
+                    >
+                      <CarouselContent>
+                        {gallery.map((image, index) => (
+                          <CarouselItem key={index}>
+                            <div className="bg-muted relative aspect-square max-h-[60vh] w-full overflow-hidden rounded-lg">
+                              <Image
+                                src={image}
+                                alt={`Workshop gallery image ${index + 1}`}
+                                fill
+                                className="object-contain"
+                                priority
+                              />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      {gallery.length > 1 && (
+                        <>
+                          <CarouselPrevious className="left-2" />
+                          <CarouselNext className="right-2" />
+                        </>
+                      )}
+                    </Carousel>
+
+                    {/* Counter */}
+                    {gallery.length > 1 && (
+                      <div className="text-muted-foreground mt-4 text-center text-sm">
+                        {currentSlide + 1} / {gallery.length}
+                      </div>
+                    )}
+                  </div>
+                </DialogContent>
+              </Dialog>
 
               {/* Reviews Section */}
               {formattedReviews && formattedReviews.length > 0 && (

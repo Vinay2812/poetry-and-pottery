@@ -4,11 +4,13 @@ import { useWishlistStore } from "@/store";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { ArrowLeft, Heart, Search, User, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { AccountDropdown } from "@/components/layout/account-dropdown";
 import { Input } from "@/components/ui/input";
+
+import { cn } from "@/lib/utils";
 
 interface MobileHeaderProps {
   title?: string;
@@ -18,8 +20,10 @@ interface MobileHeaderProps {
 
 export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const wishlistCount = useWishlistStore((state) => state.getCount());
+  const isWishlistActive = pathname.startsWith("/wishlist");
 
   const handleBack = () => {
     if (backHref) {
@@ -88,9 +92,19 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
           </button>
           <Link
             href="/wishlist"
-            className="hover:bg-muted focus-visible:ring-primary/30 relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
+            className={cn(
+              "focus-visible:ring-primary/30 relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none",
+              isWishlistActive ? "bg-primary/10" : "hover:bg-muted",
+            )}
           >
-            <Heart className="text-muted-foreground h-6 w-6" />
+            <Heart
+              className={cn(
+                "h-6 w-6 transition-colors",
+                isWishlistActive
+                  ? "text-primary fill-primary/20"
+                  : "text-muted-foreground",
+              )}
+            />
             {wishlistCount > 0 && (
               <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
                 {wishlistCount}

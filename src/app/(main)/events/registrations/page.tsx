@@ -1,4 +1,4 @@
-import { getUserRegistrations } from "@/actions";
+import { getUpcomingEvents, getUserRegistrations } from "@/actions";
 import type { Metadata } from "next";
 
 import { RegistrationsClient } from "@/components/events";
@@ -14,8 +14,19 @@ export const metadata: Metadata = {
 };
 
 export default async function RegistrationsPage() {
-  const result = await getUserRegistrations();
-  const registrations = result.success ? result.data.data : [];
+  const [registrationsResult, upcomingEvents] = await Promise.all([
+    getUserRegistrations(),
+    getUpcomingEvents(4),
+  ]);
 
-  return <RegistrationsClient registrations={registrations} />;
+  const registrations = registrationsResult.success
+    ? registrationsResult.data.data
+    : [];
+
+  return (
+    <RegistrationsClient
+      registrations={registrations}
+      upcomingEvents={upcomingEvents}
+    />
+  );
 }

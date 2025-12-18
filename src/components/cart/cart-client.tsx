@@ -1,23 +1,19 @@
 "use client";
 
 import { useCart } from "@/hooks";
-import type { ProductWithCategories } from "@/types";
+import { useCartStore } from "@/store/cart.store";
+import type { CartWithProduct, ProductWithCategories } from "@/types";
 import { AnimatePresence } from "framer-motion";
 import { ShoppingCartIcon } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { CartItemCard, ProductCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
 import { OrderSummary } from "@/components/orders";
 import { EmptyState } from "@/components/sections";
 
-interface CartItem {
-  product: ProductWithCategories;
-  quantity: number;
-}
-
 interface CartClientProps {
-  initialCartItems: CartItem[];
+  initialCartItems: CartWithProduct[];
   recommendedProducts: ProductWithCategories[];
 }
 
@@ -25,27 +21,25 @@ export function CartClient({
   initialCartItems,
   recommendedProducts,
 }: CartClientProps) {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const cartStore = useCartStore();
+  const cartItems = cartStore.items;
+  // const [cartItems, setCartItems] = useState(initialCartItems);
   const {
     updateQuantity: updateCartQuantity,
     removeFromCart,
     isLoading,
   } = useCart();
 
+  useEffect(() => {
+    if (initialCartItems.length > 0 && !cartStore.isHydrated) {
+      cartStore.hydrate(initialCartItems);
+    }
+  }, [initialCartItems, cartStore]);
+
   const handleUpdateQuantity = useCallback(
     async (productId: number, newQuantity: number) => {
       if (newQuantity < 1) return;
 
-      // Optimistically update UI
-      setCartItems((items) =>
-        items.map((item) =>
-          item.product.id === productId
-            ? { ...item, quantity: newQuantity }
-            : item,
-        ),
-      );
-
-      // Sync with server
       await updateCartQuantity(productId, newQuantity);
     },
     [updateCartQuantity],
@@ -53,11 +47,6 @@ export function CartClient({
 
   const handleRemoveItem = useCallback(
     async (productId: number) => {
-      // Optimistically update UI
-      setCartItems((items) =>
-        items.filter((item) => item.product.id !== productId),
-      );
-
       // Sync with server
       await removeFromCart(productId);
     },
@@ -129,7 +118,7 @@ export function CartClient({
 
           {/* Recommendations */}
           {hasRecommendations && (
-            <section>
+            <section className="mb-42 lg:mb-0">
               <h2 className="mb-4 text-lg font-semibold">
                 You might also like
               </h2>
