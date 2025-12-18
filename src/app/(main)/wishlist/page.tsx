@@ -19,12 +19,23 @@ export default async function WishlistPage() {
     getFeaturedProducts(4),
   ]);
 
+  const defaultPagination = { page: 1, totalPages: 1, total: 0 };
+
   return (
     <WishlistClient
       initialWishlistItems={
         wishlistResult.success ? wishlistResult.data.data : []
       }
       recommendations={recommendations}
+      initialPagination={
+        wishlistResult.success
+          ? {
+              page: wishlistResult.data.page,
+              totalPages: wishlistResult.data.totalPages,
+              total: wishlistResult.data.total,
+            }
+          : defaultPagination
+      }
     />
   );
 }

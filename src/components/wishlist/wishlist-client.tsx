@@ -1,10 +1,11 @@
 "use client";
 
+import { getWishlist } from "@/actions";
 import { useWishlist } from "@/hooks";
 import type { ProductWithCategories, WishlistWithProduct } from "@/types";
 import { AnimatePresence } from "framer-motion";
-import { Heart } from "lucide-react";
-import { useCallback, useState } from "react";
+import { Heart, Loader2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 import { ProductCard, WishlistItemCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
@@ -13,16 +14,75 @@ import { EmptyState } from "@/components/sections";
 interface WishlistClientProps {
   initialWishlistItems: WishlistWithProduct[];
   recommendations: ProductWithCategories[];
+  initialPagination: {
+    page: number;
+    totalPages: number;
+    total: number;
+  };
 }
 
 export function WishlistClient({
   initialWishlistItems,
   recommendations,
+  initialPagination,
 }: WishlistClientProps) {
   const [wishlistItems, setWishlistItems] = useState(initialWishlistItems);
   const [movedToCartIds, setMovedToCartIds] = useState<Set<number>>(new Set());
+  const [pagination, setPagination] = useState(initialPagination);
+  const [isLoadingMore, startLoadingMore] = useTransition();
 
   const { removeFromWishlist, moveToCart, isLoading } = useWishlist();
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  const handleLoadMore = useCallback(() => {
+    if (isLoadingMore) return;
+    startLoadingMore(async () => {
+      const nextPage = pagination.page + 1;
+      const result = await getWishlist(nextPage);
+      if (result.success) {
+        setWishlistItems((prev) => {
+          const existingIds = new Set(prev.map((item) => item.product_id));
+          const newItems = result.data.data.filter(
+            (item) => !existingIds.has(item.product_id),
+          );
+          return [...prev, ...newItems];
+        });
+        setPagination({
+          page: result.data.page,
+          totalPages: result.data.totalPages,
+          total: result.data.total,
+        });
+      }
+    });
+  }, [pagination.page, isLoadingMore]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          pagination.page < pagination.totalPages &&
+          !isLoadingMore
+        ) {
+          handleLoadMore();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [pagination.page, pagination.totalPages, isLoadingMore, handleLoadMore]);
 
   const handleRemove = useCallback(
     async (productId: number) => {
@@ -31,6 +91,7 @@ export function WishlistClient({
         setWishlistItems((items) =>
           items.filter((item) => item.product_id !== productId),
         );
+        setPagination((prev) => ({ ...prev, total: prev.total - 1 }));
       }
     },
     [removeFromWishlist],
@@ -50,6 +111,7 @@ export function WishlistClient({
             next.delete(productId);
             return next;
           });
+          setPagination((prev) => ({ ...prev, total: prev.total - 1 }));
         }, 1500);
       }
     },
@@ -67,7 +129,7 @@ export function WishlistClient({
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <p className="text-muted-foreground text-sm">
-              {wishlistItems.length} Items saved
+              {pagination.total} Items saved
             </p>
           </div>
 
@@ -79,7 +141,7 @@ export function WishlistClient({
               <AnimatePresence mode="popLayout">
                 {wishlistItems.map((item) => (
                   <WishlistItemCard
-                    key={item.id}
+                    key={item.product_id}
                     product={item.product}
                     onRemove={() => handleRemove(item.product_id)}
                     onMoveToCart={() => handleMoveToCart(item.product_id)}
@@ -92,6 +154,15 @@ export function WishlistClient({
                   />
                 ))}
               </AnimatePresence>
+
+              {/* Infinite scroll trigger */}
+              {pagination.page < pagination.totalPages && (
+                <div ref={loadMoreRef} className="flex justify-center py-6">
+                  {isLoadingMore && (
+                    <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
+                  )}
+                </div>
+              )}
             </div>
           ) : (
             <div className="mb-8 flex min-h-[40vh] items-center justify-center lg:min-h-[50vh]">
