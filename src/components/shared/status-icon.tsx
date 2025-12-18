@@ -1,11 +1,10 @@
 import { ClassValue } from "clsx";
 import { CheckCircle2, Clock, Package, Truck } from "lucide-react";
 
-import { OrderStatus } from "@/lib/orders";
 import { cn } from "@/lib/utils";
 
 type StatusIconProps = {
-  status: OrderStatus;
+  status: string | null;
   className?: ClassValue;
 };
 

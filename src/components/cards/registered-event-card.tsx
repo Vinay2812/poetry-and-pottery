@@ -1,35 +1,66 @@
+import type { RegistrationWithEvent } from "@/types";
 import { Calendar, CheckCircle2, Clock, Ticket } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 
-import { Event } from "@/lib/constants";
-
 interface RegisteredEventCardProps {
-  registrationId: string;
-  event: Event;
-  status: "confirmed" | "pending" | "completed";
-  ticketNumber: string;
-  registrationDate: string;
+  registration: RegistrationWithEvent;
+}
+
+// Helper function to calculate duration from DateTime objects
+function calculateDuration(startsAt: Date, endsAt: Date): string {
+  const diffMs = new Date(endsAt).getTime() - new Date(startsAt).getTime();
+  const hours = Math.floor(diffMs / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (hours === 0) return `${minutes}min`;
+  if (minutes === 0) return `${hours}hr`;
+  return `${hours}hr ${minutes}min`;
 }
 
 export function RegisteredEventCard({
-  registrationId,
-  event,
-  status,
-  ticketNumber,
-  registrationDate,
+  registration,
 }: RegisteredEventCardProps) {
+  const { event } = registration;
+  // Registrations are always confirmed once they exist
+  const isConfirmed = true;
+
+  // Format date and time from DateTime
+  const eventDate = new Date(event.starts_at);
+  const formattedDate = eventDate.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const formattedTime = eventDate.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const duration = calculateDuration(event.starts_at, event.ends_at);
+  const registrationDate = new Date(registration.created_at).toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
+
+  const imageUrl = event.image || "/placeholder.jpg";
+
   return (
     <Link
-      href={`/events/registrations/${registrationId}`}
+      href={`/events/registrations/${registration.id}`}
       className="group shadow-soft hover:shadow-card block overflow-hidden rounded-2xl bg-white transition-shadow duration-200"
     >
       {/* Image */}
       <div className="relative aspect-4/3 overflow-hidden">
         <Image
-          src={event.image}
+          src={imageUrl}
           alt={event.title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -38,7 +69,7 @@ export function RegisteredEventCard({
         <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
 
         {/* Status Badge */}
-        {status === "confirmed" && (
+        {isConfirmed && (
           <div className="absolute top-3 right-3">
             <Badge className="flex items-center gap-1 bg-white/90 text-green-600 backdrop-blur-sm hover:bg-white">
               <CheckCircle2 className="h-3 w-3" />
@@ -54,7 +85,7 @@ export function RegisteredEventCard({
           </h3>
           <div className="flex items-center gap-1 text-sm text-white/90">
             <Calendar className="h-3.5 w-3.5" />
-            {event.date}
+            {formattedDate}
           </div>
         </div>
       </div>
@@ -65,14 +96,12 @@ export function RegisteredEventCard({
         <div className="text-muted-foreground mb-3 flex items-center gap-4 text-sm">
           <div className="flex items-center gap-1.5">
             <Clock className="h-4 w-4" />
-            <span>{event.time}</span>
+            <span>{formattedTime}</span>
           </div>
-          {event.duration && (
-            <div className="flex items-center gap-1.5">
-              <span>•</span>
-              <span>{event.duration}</span>
-            </div>
-          )}
+          <div className="flex items-center gap-1.5">
+            <span>•</span>
+            <span>{duration}</span>
+          </div>
         </div>
 
         {/* Registration Info */}
@@ -82,7 +111,8 @@ export function RegisteredEventCard({
             className="bg-primary/10 text-primary flex items-center gap-1 text-xs"
           >
             <Ticket className="h-3 w-3" />
-            {ticketNumber}
+            {registration.seats_reserved} seat
+            {registration.seats_reserved > 1 ? "s" : ""}
           </Badge>
           <Badge variant="secondary" className="text-muted-foreground text-xs">
             Registered {registrationDate}

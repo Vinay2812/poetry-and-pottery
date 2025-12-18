@@ -1,13 +1,42 @@
+import { ProductService } from "@/services";
 import { ArrowRight, Circle, Coffee, Flower2, Leaf } from "lucide-react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { ProductCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
-import { ProductCard } from "@/components/product-card";
 import { CTASection } from "@/components/sections";
 import { Button } from "@/components/ui/button";
 
-import { HERO_IMAGES, PRODUCTS } from "@/lib/constants";
+import { HERO_IMAGES } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Poetry & Pottery | Handcrafted Ceramics",
+  description:
+    "Discover beautifully handcrafted pottery and ceramics. From vases to mugs, each piece is uniquely crafted by artisan potters. Shop our collection today.",
+  openGraph: {
+    title: "Poetry & Pottery | Handcrafted Ceramics",
+    description:
+      "Discover beautifully handcrafted pottery and ceramics. From vases to mugs, each piece is uniquely crafted by artisan potters.",
+    type: "website",
+    url: "/",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Poetry & Pottery Collection",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Poetry & Pottery | Handcrafted Ceramics",
+    description:
+      "Discover beautifully handcrafted pottery and ceramics. Shop our collection today.",
+  },
+};
 
 const CATEGORIES = [
   { id: "vases", name: "Vases", icon: Flower2 },
@@ -16,8 +45,8 @@ const CATEGORIES = [
   { id: "planters", name: "Planters", icon: Leaf },
 ];
 
-export default function Home() {
-  const featuredProducts = PRODUCTS.slice(0, 4);
+export default async function Home() {
+  const featuredProducts = await ProductService.getFeaturedProducts(4);
 
   return (
     <>

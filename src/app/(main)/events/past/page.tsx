@@ -1,36 +1,37 @@
-"use client";
+import { EventService } from "@/services";
+import type { Metadata } from "next";
 
-import { History } from "lucide-react";
+import { PastWorkshopsClient } from "@/components/events";
 
-import { PastWorkshopCard } from "@/components/cards";
-import { EventsListLayout } from "@/components/events-list-layout";
+export const metadata: Metadata = {
+  title: "Past Workshops Gallery | Poetry & Pottery",
+  description:
+    "Explore our previous pottery workshops and see the amazing pieces created by our community. Browse photos and reviews from past sessions.",
+  openGraph: {
+    title: "Past Workshops Gallery | Poetry & Pottery",
+    description:
+      "Explore our previous pottery workshops and see the amazing pieces created by our community.",
+    type: "website",
+    url: "/events/past",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Past Workshop Gallery",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Past Workshops Gallery | Poetry & Pottery",
+    description:
+      "Explore our previous pottery workshops and see the amazing pieces created by our community.",
+  },
+};
 
-import { PAST_WORKSHOPS } from "@/lib/constants";
+export default async function PastWorkshopsPage() {
+  const { data: events } = await EventService.getPastEvents();
 
-export default function PastWorkshopsPage() {
-  return (
-    <EventsListLayout>
-      <div className="text-muted-foreground mb-6 flex items-center gap-2">
-        <History className="h-5 w-5" />
-        <p className="text-sm">
-          Explore our previous workshops and the amazing pieces created by our
-          community.
-        </p>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {PAST_WORKSHOPS.map((workshop) => (
-          <PastWorkshopCard
-            key={workshop.id}
-            id={workshop.id}
-            title={workshop.title}
-            date={workshop.date}
-            attendees={workshop.attendees}
-            image={workshop.image}
-            galleryCount={workshop.galleryImages?.length}
-            highlights={workshop.highlights}
-          />
-        ))}
-      </div>
-    </EventsListLayout>
-  );
+  return <PastWorkshopsClient events={events} />;
 }

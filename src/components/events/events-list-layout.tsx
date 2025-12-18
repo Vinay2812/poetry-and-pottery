@@ -2,7 +2,7 @@
 
 import { redirect, usePathname } from "next/navigation";
 
-import { EventsTabs } from "@/components/events-tabs";
+import { EventsTabs } from "@/components/events";
 import { MobileHeader } from "@/components/layout";
 
 import { REGISTERED_EVENTS } from "@/lib/constants";

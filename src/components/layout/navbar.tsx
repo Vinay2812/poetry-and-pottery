@@ -1,5 +1,6 @@
 "use client";
 
+import { useCartStore, useWishlistStore } from "@/store";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Heart, Search, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
@@ -14,6 +15,8 @@ import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const pathname = usePathname();
+  const cartCount = useCartStore((state) => state.getTotalItems());
+  const wishlistCount = useWishlistStore((state) => state.getCount());
 
   const isActiveRoute = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -71,9 +74,11 @@ export function Navbar() {
               className="hover:bg-muted relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150"
             >
               <Heart className="text-muted-foreground h-6 w-6" />
-              <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
-                3
-              </span>
+              {wishlistCount > 0 && (
+                <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
+                  {wishlistCount}
+                </span>
+              )}
             </Link>
 
             {/* Cart */}
@@ -82,9 +87,11 @@ export function Navbar() {
               className="hover:bg-muted relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150"
             >
               <ShoppingCartIcon className="text-muted-foreground h-6 w-6" />
-              <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
-                2
-              </span>
+              {cartCount > 0 && (
+                <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             {/* Auth */}

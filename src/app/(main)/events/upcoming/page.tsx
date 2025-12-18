@@ -1,26 +1,37 @@
-"use client";
+import { EventService } from "@/services";
+import type { Metadata } from "next";
 
-import { Sparkles } from "lucide-react";
+import { UpcomingEventsClient } from "@/components/events";
 
-import { EventCard } from "@/components/cards";
-import { EventsListLayout } from "@/components/events-list-layout";
+export const metadata: Metadata = {
+  title: "Upcoming Pottery Workshops | Poetry & Pottery",
+  description:
+    "Join our upcoming pottery workshops and learn the art of ceramics. From wheel throwing to glazing, discover hands-on experiences for all skill levels.",
+  openGraph: {
+    title: "Upcoming Pottery Workshops | Poetry & Pottery",
+    description:
+      "Join our upcoming pottery workshops and learn the art of ceramics. From wheel throwing to glazing, discover hands-on experiences for all skill levels.",
+    type: "website",
+    url: "/events/upcoming",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=630&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Pottery Workshop",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Upcoming Pottery Workshops | Poetry & Pottery",
+    description:
+      "Join our upcoming pottery workshops and learn the art of ceramics.",
+  },
+};
 
-import { EVENTS } from "@/lib/constants";
+export default async function UpcomingEventsPage() {
+  const events = await EventService.getUpcomingEvents();
 
-export default function UpcomingEventsPage() {
-  return (
-    <EventsListLayout>
-      <div className="text-muted-foreground mb-6 flex items-center gap-2">
-        <Sparkles className="h-5 w-5" />
-        <p className="text-sm">
-          Reserve your spot in one of our upcoming pottery sessions.
-        </p>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {EVENTS.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </div>
-    </EventsListLayout>
-  );
+  return <UpcomingEventsClient events={events} />;
 }

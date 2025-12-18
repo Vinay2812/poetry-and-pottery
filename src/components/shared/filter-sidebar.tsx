@@ -4,18 +4,16 @@ import { useCallback } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { CATEGORIES } from "@/lib/constants";
-
-export const MATERIALS = [
-  "Stoneware",
-  "Terracotta",
-  "Porcelain",
-  "Earthenware",
-];
+interface Category {
+  id: string;
+  name: string;
+}
 
 interface FilterSidebarProps {
   activeCategory: string;
   selectedMaterials: string[];
+  categories: Category[];
+  materials: string[];
   onCategoryChange: (category: string) => void;
   onMaterialToggle: (material: string) => void;
 }
@@ -23,6 +21,8 @@ interface FilterSidebarProps {
 export function FilterSidebar({
   activeCategory,
   selectedMaterials,
+  categories,
+  materials,
   onCategoryChange,
   onMaterialToggle,
 }: FilterSidebarProps) {
@@ -45,7 +45,7 @@ export function FilterSidebar({
       <div>
         <h3 className="mb-3 font-semibold">Categories</h3>
         <div className="space-y-2">
-          {[{ id: "all", name: "All" }, ...CATEGORIES].map((category) => (
+          {[{ id: "all", name: "All" }, ...categories].map((category) => (
             <label
               key={category.id}
               className="flex cursor-pointer items-center gap-2"
@@ -60,23 +60,25 @@ export function FilterSidebar({
         </div>
       </div>
 
-      <div>
-        <h3 className="mb-3 font-semibold">Material</h3>
-        <div className="space-y-2">
-          {MATERIALS.map((material) => (
-            <label
-              key={material}
-              className="flex cursor-pointer items-center gap-2"
-            >
-              <Checkbox
-                checked={selectedMaterials.includes(material)}
-                onCheckedChange={() => handleMaterialToggle(material)}
-              />
-              <span className="text-sm">{material}</span>
-            </label>
-          ))}
+      {materials.length > 0 && (
+        <div>
+          <h3 className="mb-3 font-semibold">Material</h3>
+          <div className="space-y-2">
+            {materials.map((material) => (
+              <label
+                key={material}
+                className="flex cursor-pointer items-center gap-2"
+              >
+                <Checkbox
+                  checked={selectedMaterials.includes(material)}
+                  onCheckedChange={() => handleMaterialToggle(material)}
+                />
+                <span className="text-sm">{material}</span>
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

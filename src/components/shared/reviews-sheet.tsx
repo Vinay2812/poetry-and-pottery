@@ -4,8 +4,8 @@ import { Star } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { Rating } from "@/components/rating";
-import { ReviewCard } from "@/components/review-card";
+import { ReviewCard } from "@/components/cards";
+import { Rating } from "@/components/shared/rating";
 import {
   Carousel,
   CarouselApi,
@@ -30,7 +30,17 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { Review } from "@/lib/constants";
+// Review interface for the sheet component
+interface Review {
+  id: string;
+  author: string;
+  avatar: string;
+  rating: number;
+  content: string;
+  date: string;
+  likes?: number;
+  images?: string[];
+}
 
 type SortOption = "recent" | "highest" | "lowest" | "top";
 

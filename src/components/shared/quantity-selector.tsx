@@ -10,6 +10,7 @@ interface QuantitySelectorProps {
   onDecrease: () => void;
   min?: number;
   max?: number;
+  disabled?: boolean;
 }
 
 export function QuantitySelector({
@@ -18,6 +19,7 @@ export function QuantitySelector({
   onDecrease,
   min = 1,
   max = 99,
+  disabled = false,
 }: QuantitySelectorProps) {
   return (
     <div className="flex items-center gap-2">
@@ -26,7 +28,7 @@ export function QuantitySelector({
         size="icon"
         className="h-8 w-8 rounded-lg"
         onClick={onDecrease}
-        disabled={quantity <= min}
+        disabled={disabled || quantity <= min}
       >
         <Minus className="h-3 w-3" />
       </Button>
@@ -36,7 +38,7 @@ export function QuantitySelector({
         size="icon"
         className="h-8 w-8 rounded-lg"
         onClick={onIncrease}
-        disabled={quantity >= max}
+        disabled={disabled || quantity >= max}
       >
         <Plus className="h-3 w-3" />
       </Button>

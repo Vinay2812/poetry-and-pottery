@@ -1,5 +1,6 @@
 "use client";
 
+import { useWishlistStore } from "@/store";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { ArrowLeft, Heart, Search, User, X } from "lucide-react";
 import Link from "next/link";
@@ -18,6 +19,7 @@ interface MobileHeaderProps {
 export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const wishlistCount = useWishlistStore((state) => state.getCount());
 
   const handleBack = () => {
     if (backHref) {
@@ -89,9 +91,11 @@ export function MobileHeader({ title, showBack, backHref }: MobileHeaderProps) {
             className="hover:bg-muted focus-visible:ring-primary/30 relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
           >
             <Heart className="text-muted-foreground h-6 w-6" />
-            <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
-              3
-            </span>
+            {wishlistCount > 0 && (
+              <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
           <SignedIn>
             <AccountDropdown />

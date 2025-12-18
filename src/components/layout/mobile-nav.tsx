@@ -1,5 +1,6 @@
 "use client";
 
+import { useCartStore } from "@/store";
 import { CalendarDaysIcon, Home, ShoppingCartIcon, Store } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,17 +10,23 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/", icon: Home },
   { href: "/products", icon: Store },
-  { href: "/cart", icon: ShoppingCartIcon, badge: 2 },
-  { href: "/events", icon: CalendarDaysIcon, badge: 2 },
+  { href: "/cart", icon: ShoppingCartIcon, badgeKey: "cart" as const },
+  { href: "/events", icon: CalendarDaysIcon },
 ];
 
 export function MobileNav() {
   const pathname = usePathname();
+  const cartCount = useCartStore((state) => state.getTotalItems());
 
   // Check if current path starts with any nav item's href (for nested routes)
   const isActiveRoute = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
+  };
+
+  const getBadgeCount = (badgeKey?: "cart") => {
+    if (badgeKey === "cart") return cartCount;
+    return 0;
   };
 
   return (
@@ -28,6 +35,7 @@ export function MobileNav() {
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = isActiveRoute(item.href);
+          const badgeCount = getBadgeCount(item.badgeKey);
 
           return (
             <Link
@@ -45,9 +53,9 @@ export function MobileNav() {
                 )}
               >
                 <Icon className={cn("h-6 w-6", isActive && "stroke-[2.5px]")} />
-                {item.badge && (
+                {badgeCount > 0 && (
                   <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
-                    {item.badge}
+                    {badgeCount}
                   </span>
                 )}
               </div>

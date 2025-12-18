@@ -136,3 +136,5 @@ Visual components render UI and should be isolated from application state, API d
   rules/DESIGN-PRINCIPLES, rules/DESIGNS
 
 - Always format the files after writing the code
+
+- Use bun as package manager

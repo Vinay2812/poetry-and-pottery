@@ -3,7 +3,7 @@
 import { ThumbsUp } from "lucide-react";
 import Image from "next/image";
 
-import { Rating } from "@/components/rating";
+import { Rating } from "@/components/shared";
 
 interface ReviewCardProps {
   author: string;

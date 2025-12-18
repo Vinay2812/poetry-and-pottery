@@ -2,14 +2,16 @@
 
 import { CheckCircle2, Clock, Package, Truck } from "lucide-react";
 
-import { ORDER_STEPS, type OrderStatus } from "@/lib/orders";
+import { ORDER_STEPS } from "@/lib/orders";
 import { cn } from "@/lib/utils";
 
+type OrderStatusType = "processing" | "shipped" | "delivered";
+
 interface OrderProgressProps {
-  status: OrderStatus;
-  createdAt: string;
-  shippedAt?: string;
-  deliveredAt?: string;
+  status: string;
+  createdAt: Date | string;
+  shippedAt?: Date | string | null;
+  deliveredAt?: Date | string | null;
 }
 
 const STATUS_ICONS = {
@@ -18,8 +20,8 @@ const STATUS_ICONS = {
   delivered: CheckCircle2,
 } as const;
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
+function formatDate(dateValue: Date | string): string {
+  const date = new Date(dateValue);
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -31,7 +33,7 @@ function formatDate(dateString: string): string {
 function getStepDate(
   step: (typeof ORDER_STEPS)[number],
   props: OrderProgressProps,
-): string | null {
+): Date | string | null {
   switch (step.status) {
     case "processing":
       return props.createdAt;
@@ -46,10 +48,10 @@ function getStepDate(
 
 function getStepStatus(
   step: (typeof ORDER_STEPS)[number],
-  currentStatus: OrderStatus,
+  currentStatus: string,
 ): "completed" | "current" | "upcoming" {
-  const statusOrder: OrderStatus[] = ["processing", "shipped", "delivered"];
-  const currentIndex = statusOrder.indexOf(currentStatus);
+  const statusOrder: OrderStatusType[] = ["processing", "shipped", "delivered"];
+  const currentIndex = statusOrder.indexOf(currentStatus as OrderStatusType);
   const stepIndex = statusOrder.indexOf(step.status);
 
   if (stepIndex < currentIndex) return "completed";
