@@ -1,7 +1,6 @@
 "use client";
 
-import { OrderStatus } from "@/prisma/generated/client";
-import type { OrderWithDetails } from "@/types";
+import { OrderStatus, type OrderWithDetails } from "@/types";
 import { Package, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,17 +24,7 @@ function formatOrderDate(dateString: Date | string): string {
 }
 
 function getStatusLabel(status: OrderStatus | null): string {
-  const labels: Record<OrderStatus, string> = {
-    [OrderStatus.PENDING]: "Pending",
-    [OrderStatus.PROCESSING]: "Processing",
-    [OrderStatus.PAID]: "Paid",
-    [OrderStatus.SHIPPED]: "Shipped",
-    [OrderStatus.DELIVERED]: "Delivered",
-    [OrderStatus.CANCELLED]: "Cancelled",
-    [OrderStatus.RETURNED]: "Returned",
-    [OrderStatus.REFUNDED]: "Refunded",
-  };
-  return labels[status || OrderStatus.PROCESSING] || "Processing";
+  return status?.toString() || "Processing";
 }
 
 interface ReviewFormProps {
@@ -280,7 +269,7 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
                 order.status === OrderStatus.PROCESSING && "text-yellow-700",
               )}
             >
-              {getStatusLabel(order.status)}
+              {getStatusLabel(order.status as OrderStatus)}
             </span>
           </div>
 
@@ -388,7 +377,7 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
                 status={order.status}
                 className="h-4 w-4 text-white"
               />
-              {getStatusLabel(order.status)}
+              {getStatusLabel(order.status as OrderStatus)}
             </div>
           </div>
         </div>

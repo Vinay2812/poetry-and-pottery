@@ -32,8 +32,6 @@ export async function addToCart(productId: number, quantity: number = 1) {
     return { success: false as const, error: "Not authenticated" };
   }
 
-  console.log("Adding to cart:", productId, quantity);
-
   try {
     const item = await prisma.cart.upsert({
       where: {

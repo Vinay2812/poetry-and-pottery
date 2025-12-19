@@ -27,9 +27,17 @@ export const useCartStore = create<CartState>()((set, get) => ({
 
   addItem: (item) =>
     set((state) => {
-      const updatedItems = state.items.map((i) =>
-        i.product_id === item.product_id ? item : i,
+      const itemIndex = state.items.findIndex(
+        (i) => i.product_id === item.product_id,
       );
+
+      const updatedItems = [...state.items];
+
+      if (itemIndex !== -1) {
+        updatedItems[itemIndex] = item;
+      } else {
+        updatedItems.push(item);
+      }
 
       return { items: updatedItems };
     }),

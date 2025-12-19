@@ -5,7 +5,7 @@ import { useCartStore } from "@/store/cart.store";
 import type { CartWithProduct, ProductWithCategories } from "@/types";
 import { AnimatePresence } from "framer-motion";
 import { ShoppingCartIcon } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { CartItemCard, ProductCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";

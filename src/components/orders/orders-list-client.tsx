@@ -1,7 +1,6 @@
 "use client";
 
-import { OrderStatus } from "@/prisma/generated/client";
-import type { OrderWithItems } from "@/types";
+import { OrderStatus, type OrderWithItems } from "@/types";
 import { ChevronRight, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +8,7 @@ import Link from "next/link";
 import { StatusIcon } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
-import { cn } from "@/lib/utils";
+import { capitalize, cn } from "@/lib/utils";
 
 // Helper functions for order formatting
 function formatOrderDate(dateString: Date | string): string {
@@ -21,18 +20,8 @@ function formatOrderDate(dateString: Date | string): string {
   });
 }
 
-function getStatusLabel(status: OrderStatus | null): string {
-  const labels: Record<OrderStatus, string> = {
-    [OrderStatus.PENDING]: "Pending",
-    [OrderStatus.PROCESSING]: "Processing",
-    [OrderStatus.PAID]: "Paid",
-    [OrderStatus.SHIPPED]: "Shipped",
-    [OrderStatus.DELIVERED]: "Delivered",
-    [OrderStatus.CANCELLED]: "Cancelled",
-    [OrderStatus.RETURNED]: "Returned",
-    [OrderStatus.REFUNDED]: "Refunded",
-  };
-  return labels[status || OrderStatus.PROCESSING] || "Processing";
+function getStatusLabel(status: OrderStatus): string {
+  return capitalize(status.toString());
 }
 
 interface OrdersListClientProps {
@@ -96,7 +85,7 @@ export function OrdersListClient({ orders }: OrdersListClientProps) {
                         "text-yellow-600",
                     )}
                   >
-                    {getStatusLabel(order.status)}
+                    {getStatusLabel(order.status as OrderStatus)}
                   </span>
                   <p className="text-muted-foreground text-xs">
                     {formatOrderDate(order.created_at)}
@@ -144,7 +133,7 @@ export function OrdersListClient({ orders }: OrdersListClientProps) {
             {/* Order ID & Total */}
             <div className="border-border flex items-center justify-between border-t pt-4">
               <p className="text-muted-foreground text-xs font-medium">
-                {order.id}
+                Order: #{order.id}
               </p>
               <p className="text-primary text-lg font-bold">
                 ₹{order.total.toFixed(2)}

@@ -1,13 +1,15 @@
 "use server";
 
-import { EventLevel, EventStatus, Prisma } from "@/prisma/generated/client";
-import type {
-  EventFilterParams,
-  EventWithDetails,
-  EventWithRegistrationCount,
-  EventsResponse,
-  PaginatedResponse,
-  RegistrationWithEvent,
+import { Prisma } from "@/prisma/generated/client";
+import {
+  type EventFilterParams,
+  EventLevel,
+  EventStatus,
+  type EventWithDetails,
+  type EventWithRegistrationCount,
+  type EventsResponse,
+  type PaginatedResponse,
+  type RegistrationWithEvent,
 } from "@/types";
 import { revalidatePath } from "next/cache";
 
@@ -56,7 +58,7 @@ export async function getEvents(
     total,
     page,
     totalPages: Math.ceil(total / limit),
-    levels: levelsResult.map((l) => l.level),
+    levels: levelsResult.map((l) => l.level as EventLevel),
   };
 }
 
