@@ -17,19 +17,19 @@ export function EventsTabs({
   registeredCount = 0,
 }: EventsTabsProps) {
   return (
-    <div className="mb-6 flex justify-between gap-2 sm:gap-4 md:justify-start">
+    <div className="mb-6 flex justify-start gap-2 sm:gap-4">
       {EVENTS_TABS.map((tab) => {
         const isActive = tab.type === activeTab;
         const Icon = tab.icon;
         const showBadge =
-          tab.type === TabType.REGISTERED && registeredCount > 0;
+          tab.type === TabType.REGISTRATIONS && registeredCount > 0;
 
         return (
           <Link
             key={tab.type}
             href={tab.href}
             className={cn(
-              "group relative flex min-w-24 flex-col items-center gap-2 rounded-2xl px-4 py-3 transition-all duration-200 sm:min-w-32 sm:px-6 sm:py-4 lg:min-w-48",
+              "group relative flex min-w-32 flex-col items-center gap-2 rounded-2xl px-4 py-3 transition-all duration-200 sm:min-w-32 sm:px-6 sm:py-4 lg:min-w-48",
               isActive
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",

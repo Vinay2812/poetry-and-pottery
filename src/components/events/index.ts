@@ -1,3 +1,4 @@
+export { AllEventsClient } from "./all-events-client";
 export { EventDetailClient } from "./event-detail-client";
 export { EventsListLayout } from "./events-list-layout";
 export { EventsTabs } from "./events-tabs";

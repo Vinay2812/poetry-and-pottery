@@ -1,7 +1,7 @@
 "use client";
 
 import { useEventStore } from "@/store/event.store";
-import { Calendar, History, Ticket } from "lucide-react";
+import { Calendar, Ticket } from "lucide-react";
 import { redirect, usePathname } from "next/navigation";
 
 import { EventsTabs } from "@/components/events";
@@ -12,32 +12,24 @@ interface EventsListLayoutProps {
 }
 
 export enum TabType {
-  UPCOMING = "upcoming",
-  REGISTERED = "registered",
-  PAST = "past",
+  EVENTS = "events",
+  REGISTRATIONS = "registrations",
 }
 
 export const EVENTS_TABS_MAP = {
-  [TabType.REGISTERED]: {
-    href: "/events/registrations",
-    type: TabType.REGISTERED,
-    mobileLabel: "Registered",
-    desktopLabel: "My Registrations",
-    icon: Ticket,
-  },
-  [TabType.UPCOMING]: {
-    href: "/events/upcoming",
-    type: TabType.UPCOMING,
-    mobileLabel: "Upcoming",
-    desktopLabel: "Upcoming Sessions",
+  [TabType.EVENTS]: {
+    href: "/events",
+    type: TabType.EVENTS,
+    mobileLabel: "All Workshops",
+    desktopLabel: "All Workshops",
     icon: Calendar,
   },
-  [TabType.PAST]: {
-    href: "/events/past",
-    type: TabType.PAST,
-    mobileLabel: "Past",
-    desktopLabel: "Past Events",
-    icon: History,
+  [TabType.REGISTRATIONS]: {
+    href: "/events/registrations",
+    type: TabType.REGISTRATIONS,
+    mobileLabel: "My Registrations",
+    desktopLabel: "My Registrations",
+    icon: Ticket,
   },
 };
 
@@ -47,12 +39,17 @@ export function EventsListLayout({ children }: EventsListLayoutProps) {
   const pathname = usePathname();
   const registrationCount = useEventStore((state) => state.getCount());
 
-  const activeTab = EVENTS_TABS.find(
-    (tab) => pathname === tab.href || pathname.startsWith(`${tab.href}/`),
-  )?.type;
+  // Match exact paths or paths starting with the tab href (but not for /events which is exact match only)
+  const activeTab = EVENTS_TABS.find((tab) => {
+    if (tab.type === TabType.EVENTS) {
+      // For events tab, only match exact /events path
+      return pathname === tab.href;
+    }
+    return pathname === tab.href || pathname.startsWith(`${tab.href}/`);
+  })?.type;
 
   if (!activeTab) {
-    return redirect(EVENTS_TABS_MAP[TabType.UPCOMING].href);
+    return redirect(EVENTS_TABS_MAP[TabType.EVENTS].href);
   }
 
   return (
