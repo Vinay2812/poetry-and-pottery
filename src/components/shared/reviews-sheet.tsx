@@ -1,5 +1,6 @@
 "use client";
 
+import { toggleReviewLike } from "@/actions";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -33,12 +34,14 @@ import {
 // Review interface for the sheet component
 interface Review {
   id: string;
+  authorId: number;
   author: string;
   avatar: string;
   rating: number;
   content: string;
   date: string;
   likes?: number;
+  isLikedByCurrentUser?: boolean;
   images?: string[];
 }
 
@@ -74,6 +77,8 @@ interface ReviewsSheetProps {
   reviews: Review[];
   averageRating: number;
   totalReviews: number;
+  currentUserId?: number | null;
+  onLikeUpdate?: (reviewId: string, likes: number, isLiked: boolean) => void;
   children: React.ReactNode;
 }
 
@@ -81,10 +86,21 @@ export function ReviewsSheet({
   reviews,
   averageRating,
   totalReviews,
+  currentUserId,
+  onLikeUpdate,
   children,
 }: ReviewsSheetProps) {
   const [sortBy, setSortBy] = useState<SortOption>("recent");
-  const [likedReviews, setLikedReviews] = useState<Set<string>>(new Set());
+  const [likedReviews, setLikedReviews] = useState<Set<string>>(() => {
+    // Initialize from reviews data
+    const likedSet = new Set<string>();
+    reviews.forEach((review) => {
+      if (review.isLikedByCurrentUser) {
+        likedSet.add(review.id);
+      }
+    });
+    return likedSet;
+  });
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>(() =>
     reviews.reduce(
       (acc, review) => {
@@ -96,7 +112,14 @@ export function ReviewsSheet({
   );
 
   const handleLike = useCallback(
-    (reviewId: string) => {
+    async (reviewId: string) => {
+      // Optimistically update UI
+      const wasLiked = likedReviews.has(reviewId);
+      const newIsLiked = !wasLiked;
+      const newLikesCount = wasLiked
+        ? (likeCounts[reviewId] ?? 0) - 1
+        : (likeCounts[reviewId] ?? 0) + 1;
+
       setLikedReviews((prev) => {
         const newSet = new Set(prev);
         if (newSet.has(reviewId)) {
@@ -108,12 +131,46 @@ export function ReviewsSheet({
       });
       setLikeCounts((prev) => ({
         ...prev,
-        [reviewId]: likedReviews.has(reviewId)
-          ? (prev[reviewId] ?? 0) - 1
-          : (prev[reviewId] ?? 0) + 1,
+        [reviewId]: newLikesCount,
       }));
+
+      // Notify parent of optimistic update
+      onLikeUpdate?.(reviewId, newLikesCount, newIsLiked);
+
+      // Call server action
+      const result = await toggleReviewLike(Number(reviewId));
+
+      // Revert on failure
+      if (!result.success) {
+        setLikedReviews((prev) => {
+          const newSet = new Set(prev);
+          if (wasLiked) {
+            newSet.add(reviewId);
+          } else {
+            newSet.delete(reviewId);
+          }
+          return newSet;
+        });
+        const revertedCount = wasLiked
+          ? (likeCounts[reviewId] ?? 0) + 1
+          : (likeCounts[reviewId] ?? 0) - 1;
+        setLikeCounts((prev) => ({
+          ...prev,
+          [reviewId]: revertedCount,
+        }));
+        // Notify parent of revert
+        onLikeUpdate?.(reviewId, revertedCount, wasLiked);
+      } else if (result.likesCount !== undefined) {
+        // Sync with server count
+        setLikeCounts((prev) => ({
+          ...prev,
+          [reviewId]: result.likesCount,
+        }));
+        // Notify parent of server-synced count
+        onLikeUpdate?.(reviewId, result.likesCount, newIsLiked);
+      }
     },
-    [likedReviews],
+    [likedReviews, likeCounts, onLikeUpdate],
   );
 
   const ratingCounts = useMemo(() => {
@@ -306,6 +363,9 @@ export function ReviewsSheet({
                 date={review.date}
                 likes={likeCounts[review.id] ?? 0}
                 isLiked={likedReviews.has(review.id)}
+                isOwnReview={
+                  currentUserId != null && review.authorId === currentUserId
+                }
                 images={review.images}
                 onLike={() => handleLike(review.id)}
                 onImageClick={handleImageClick}

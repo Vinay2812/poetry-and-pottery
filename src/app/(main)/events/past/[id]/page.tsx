@@ -1,4 +1,9 @@
-import { getEventById, getEventBySlug, getUpcomingEvents } from "@/actions";
+import {
+  getCurrentUserId,
+  getEventById,
+  getEventBySlug,
+  getUpcomingEvents,
+} from "@/actions";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -62,6 +67,9 @@ export default async function PastWorkshopDetailPage({
     notFound();
   }
 
+  // Get current user ID for review like functionality
+  const currentUserId = await getCurrentUserId();
+
   // Get upcoming events for recommendations
   const upcomingEvents = await getUpcomingEvents(2);
 
@@ -69,6 +77,7 @@ export default async function PastWorkshopDetailPage({
     <PastWorkshopDetailClient
       workshop={workshop}
       upcomingEvents={upcomingEvents}
+      currentUserId={currentUserId}
     />
   );
 }

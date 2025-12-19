@@ -2,23 +2,14 @@
 
 import type { RegistrationWithReviewStatus } from "@/actions";
 import { createEventReview } from "@/actions";
-import {
-  Calendar,
-  CheckCircle2,
-  Clock,
-  MapPin,
-  Star,
-  Ticket,
-} from "lucide-react";
+import { Calendar, CheckCircle2, Clock, MapPin, Ticket } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback } from "react";
 
+import { ReviewForm } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-
-import { cn } from "@/lib/utils";
 
 interface CompletedEventCardProps {
   registration: RegistrationWithReviewStatus;
@@ -27,12 +18,6 @@ interface CompletedEventCardProps {
 export function CompletedEventCard({ registration }: CompletedEventCardProps) {
   const { event, hasReviewed } = registration;
   const router = useRouter();
-
-  const [isReviewing, setIsReviewing] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [reviewText, setReviewText] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Format date and time
   const eventDate = new Date(event.ends_at);
@@ -48,24 +33,25 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
 
   const imageUrl = event.image || "/placeholder.jpg";
 
-  const handleSubmitReview = async () => {
-    if (rating === 0 || !reviewText.trim()) return;
+  const handleReviewSubmit = useCallback(
+    async (rating: number, review?: string) => {
+      const result = await createEventReview({
+        eventId: event.id,
+        rating,
+        review,
+      });
 
-    setIsSubmitting(true);
-    const result = await createEventReview({
-      eventId: event.id,
-      rating,
-      review: reviewText.trim(),
-    });
+      if (result.success) {
+        router.refresh();
+      }
 
-    if (result.success) {
-      setIsReviewing(false);
-      setRating(0);
-      setReviewText("");
-      router.refresh();
-    }
-    setIsSubmitting(false);
-  };
+      return {
+        success: result.success,
+        error: result.success ? undefined : result.error,
+      };
+    },
+    [event.id, router],
+  );
 
   return (
     <div className="shadow-soft flex flex-col gap-2 overflow-hidden rounded-xl border border-gray-100 bg-white p-3">
@@ -80,7 +66,7 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
           />
           {/* Completed Badge */}
           <div className="absolute top-1.5 left-1.5">
-            <Badge className="bg-primary-light flex items-center gap-0.5 border-0 px-1.5 py-0.5 text-[10px] text-white shadow-sm">
+            <Badge className="flex items-center gap-0.5 border-0 bg-emerald-500 px-1.5 py-0.5 text-[10px] text-white shadow-sm">
               <CheckCircle2 className="h-2.5 w-2.5" />
               Completed
             </Badge>
@@ -140,90 +126,11 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
       </div>
 
       {/* Review Section */}
-      <div className="flex items-center justify-end border-t border-gray-100 pt-2">
-        {hasReviewed ? (
-          <Badge
-            variant="secondary"
-            className="flex items-center gap-1 bg-amber-50 text-[10px] text-amber-600"
-          >
-            <Star className="h-2.5 w-2.5 fill-amber-500" />
-            Reviewed
-          </Badge>
-        ) : (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-primary hover:bg-primary/10 h-6 px-2 text-[11px]"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsReviewing(true);
-            }}
-          >
-            <Star className="mr-1 h-3 w-3" />
-            Add Review
-          </Button>
-        )}
-      </div>
-
-      {/* Review Form */}
-      {isReviewing && (
-        <div className="border-t border-gray-100 pt-3">
-          {/* Star Rating */}
-          <div className="mb-3 flex items-center gap-1">
-            <span className="mr-2 text-xs text-gray-600">Your rating:</span>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                className="p-0.5"
-                onMouseEnter={() => setHoverRating(star)}
-                onMouseLeave={() => setHoverRating(0)}
-                onClick={() => setRating(star)}
-              >
-                <Star
-                  className={cn(
-                    "h-5 w-5 transition-colors",
-                    (hoverRating || rating) >= star
-                      ? "fill-amber-400 text-amber-400"
-                      : "text-gray-300",
-                  )}
-                />
-              </button>
-            ))}
-          </div>
-
-          {/* Review Text */}
-          <textarea
-            placeholder="Share your experience..."
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-            className="focus:border-primary focus:ring-primary mb-3 w-full resize-none rounded-lg border border-gray-200 p-2 text-sm focus:ring-1 focus:outline-none"
-            rows={3}
-          />
-
-          {/* Action Buttons */}
-          <div className="flex justify-end gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setIsReviewing(false);
-                setRating(0);
-                setReviewText("");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              disabled={rating === 0 || !reviewText.trim() || isSubmitting}
-              onClick={handleSubmitReview}
-            >
-              {isSubmitting ? "Submitting..." : "Submit Review"}
-            </Button>
-          </div>
-        </div>
-      )}
+      <ReviewForm
+        title={`Review ${event.title}`}
+        hasReviewed={hasReviewed}
+        onSubmit={handleReviewSubmit}
+      />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import {
+  getCurrentUserId,
   getProductById,
   getProductBySlug,
   getRelatedProducts,
@@ -80,6 +81,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  // Get current user ID for review like functionality
+  const currentUserId = await getCurrentUserId();
+
   // Get related products (same category, excluding current)
   const category = product.product_categories[0]?.category || "";
   const relatedProducts = category
@@ -92,6 +96,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <ProductDetailClient
         product={product}
         relatedProducts={relatedProducts}
+        currentUserId={currentUserId}
       />
     </>
   );

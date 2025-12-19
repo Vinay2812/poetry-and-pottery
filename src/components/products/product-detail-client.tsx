@@ -1,5 +1,6 @@
 "use client";
 
+import { toggleReviewLike } from "@/actions";
 import { useAuthAction, useCart, useWishlist } from "@/hooks";
 import type { ProductWithCategories, ProductWithDetails } from "@/types";
 import { motion } from "framer-motion";
@@ -22,14 +23,19 @@ import { cn } from "@/lib/utils";
 interface ProductDetailClientProps {
   product: ProductWithDetails;
   relatedProducts: ProductWithCategories[];
+  currentUserId?: number | null;
 }
 
 export function ProductDetailClient({
   product,
   relatedProducts,
+  currentUserId,
 }: ProductDetailClientProps) {
   const [selectedColor, setSelectedColor] = useState(product.color_name || "");
   const [addedToCart, setAddedToCart] = useState(false);
+  const [reviewLikeUpdates, setReviewLikeUpdates] = useState<
+    Record<string, { likes: number; isLiked: boolean }>
+  >({});
 
   const { requireAuth } = useAuthAction();
   const { addToCart, isLoading: isCartLoading } = useCart();
@@ -57,6 +63,37 @@ export function ProductDetailClient({
     requireAuth(() => toggleWishlist(product.id));
   }, [requireAuth, toggleWishlist, product.id]);
 
+  const handleLikeUpdate = useCallback(
+    (reviewId: string, likes: number, isLiked: boolean) => {
+      setReviewLikeUpdates((prev) => ({
+        ...prev,
+        [reviewId]: { likes, isLiked },
+      }));
+    },
+    [],
+  );
+
+  const handleReviewLike = useCallback(
+    async (reviewId: string, currentLikes: number, currentIsLiked: boolean) => {
+      // Optimistically update UI
+      const newIsLiked = !currentIsLiked;
+      const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
+      handleLikeUpdate(reviewId, newLikes, newIsLiked);
+
+      // Call server action
+      const result = await toggleReviewLike(Number(reviewId));
+
+      if (!result.success) {
+        // Revert on failure
+        handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
+      } else if (result.likesCount !== undefined) {
+        // Sync with server count
+        handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
+      }
+    },
+    [handleLikeUpdate],
+  );
+
   // Calculate average rating from reviews
   const averageRating = useMemo(() => {
     if (!product.reviews || product.reviews.length === 0) return 0;
@@ -68,23 +105,35 @@ export function ProductDetailClient({
 
   // Convert reviews to the format expected by ReviewCard
   const formattedReviews = useMemo(() => {
-    return (product.reviews || []).map((review) => ({
-      id: String(review.id),
-      author: review.user?.name || "Anonymous",
-      avatar:
-        review.user?.image ||
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-      rating: review.rating,
-      content: review.review,
-      date: new Date(review.created_at).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      }),
-      likes: review.likes?.length || 0,
-      images: review.image_urls || [],
-    }));
-  }, [product.reviews]);
+    return (product.reviews || []).map((review) => {
+      const reviewId = String(review.id);
+      const likeUpdate = reviewLikeUpdates[reviewId];
+      const baseLikes = review.likes?.length || 0;
+      const baseIsLiked = currentUserId
+        ? (review.likes?.some((like) => like.user_id === currentUserId) ??
+          false)
+        : false;
+
+      return {
+        id: reviewId,
+        authorId: review.user_id,
+        author: review.user?.name || "Anonymous",
+        avatar:
+          review.user?.image ||
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+        rating: review.rating,
+        content: review.review || "",
+        date: new Date(review.created_at).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }),
+        likes: likeUpdate?.likes ?? baseLikes,
+        isLikedByCurrentUser: likeUpdate?.isLiked ?? baseIsLiked,
+        images: review.image_urls || [],
+      };
+    });
+  }, [product.reviews, currentUserId, reviewLikeUpdates]);
 
   const images = product.image_urls || [];
 
@@ -184,6 +233,8 @@ export function ProductDetailClient({
                       reviews={formattedReviews}
                       averageRating={averageRating}
                       totalReviews={totalReviews}
+                      currentUserId={currentUserId}
+                      onLikeUpdate={handleLikeUpdate}
                     >
                       <button className="text-primary text-sm hover:underline">
                         View All &rarr;
@@ -200,8 +251,22 @@ export function ProductDetailClient({
                         content={review.content}
                         date={review.date}
                         likes={review.likes}
+                        isLiked={review.isLikedByCurrentUser}
+                        isOwnReview={
+                          currentUserId != null &&
+                          review.authorId === currentUserId
+                        }
                         images={review.images}
                         isCompact
+                        onLike={() =>
+                          requireAuth(() =>
+                            handleReviewLike(
+                              review.id,
+                              review.likes,
+                              review.isLikedByCurrentUser,
+                            ),
+                          )
+                        }
                       />
                     ))}
                   </div>

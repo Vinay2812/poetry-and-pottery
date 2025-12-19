@@ -401,19 +401,28 @@ export async function getCompletedRegistrations(): Promise<
     orderBy: { event: { ends_at: "desc" } },
   });
 
+  // If no registrations, return early
+  if (registrations.length === 0) {
+    return { success: true, data: [] };
+  }
+
   // Check if user has reviewed each event
   const eventIds = registrations.map((r) => r.event_id);
   const userReviews = await prisma.review.findMany({
     where: {
       user_id: userId,
-      event_id: { in: eventIds, not: null },
+      event_id: { in: eventIds },
     },
     select: { event_id: true },
   });
 
-  const reviewedEventIds = new Set(
-    userReviews.filter((r) => r.event_id !== null).map((r) => r.event_id),
-  );
+  // Create a Set of event IDs that have been reviewed
+  const reviewedEventIds = new Set<string>();
+  for (const review of userReviews) {
+    if (review.event_id) {
+      reviewedEventIds.add(review.event_id);
+    }
+  }
 
   const registrationsWithReviewStatus = registrations.map((reg) => ({
     ...reg,

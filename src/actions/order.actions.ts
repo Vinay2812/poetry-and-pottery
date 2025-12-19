@@ -53,6 +53,18 @@ export async function getOrders(
   };
 }
 
+export type OrderItemWithReviewStatus =
+  OrderWithDetails["ordered_products"][number] & {
+    hasReviewed: boolean;
+  };
+
+export type OrderWithReviewStatus = Omit<
+  OrderWithDetails,
+  "ordered_products"
+> & {
+  ordered_products: OrderItemWithReviewStatus[];
+};
+
 export async function getOrderById(orderId: string) {
   const userId = await getCurrentUserId();
   if (!userId) {
@@ -80,7 +92,42 @@ export async function getOrderById(orderId: string) {
     return { success: false as const, error: "Order not found" };
   }
 
-  return { success: true as const, data: order as OrderWithDetails };
+  // Get product IDs from order
+  const productIds = order.ordered_products.map((item) => item.product_id);
+
+  // Check which products the user has reviewed
+  const userReviews = await prisma.review.findMany({
+    where: {
+      user_id: userId,
+      product_id: { in: productIds },
+    },
+    select: { product_id: true },
+  });
+
+  const reviewedProductIds = new Set<number>();
+  for (const review of userReviews) {
+    if (review.product_id) {
+      reviewedProductIds.add(review.product_id);
+    }
+  }
+
+  // Add review status to each ordered product
+  const orderedProductsWithReviewStatus = order.ordered_products.map(
+    (item) => ({
+      ...item,
+      hasReviewed: reviewedProductIds.has(item.product_id),
+    }),
+  );
+
+  const orderWithReviewStatus = {
+    ...order,
+    ordered_products: orderedProductsWithReviewStatus,
+  };
+
+  return {
+    success: true as const,
+    data: orderWithReviewStatus as OrderWithReviewStatus,
+  };
 }
 
 export async function createOrder(data: {

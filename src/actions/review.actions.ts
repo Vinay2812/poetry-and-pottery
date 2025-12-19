@@ -66,7 +66,7 @@ export async function getEventReviews(
 export async function createProductReview(data: {
   productId: number;
   rating: number;
-  review: string;
+  review?: string;
   imageUrls?: string[];
 }) {
   const userId = await getCurrentUserId();
@@ -97,7 +97,7 @@ export async function createProductReview(data: {
         user_id: userId,
         product_id: data.productId,
         rating: data.rating,
-        review: data.review,
+        review: data.review?.trim() || null,
         image_urls: data.imageUrls ?? [],
       },
       include: {
@@ -119,7 +119,7 @@ export async function createProductReview(data: {
 export async function createEventReview(data: {
   eventId: string;
   rating: number;
-  review: string;
+  review?: string;
   imageUrls?: string[];
 }) {
   const userId = await getCurrentUserId();
@@ -150,7 +150,7 @@ export async function createEventReview(data: {
         user_id: userId,
         event_id: data.eventId,
         rating: data.rating,
-        review: data.review,
+        review: data.review?.trim() || null,
         image_urls: data.imageUrls ?? [],
       },
       include: {

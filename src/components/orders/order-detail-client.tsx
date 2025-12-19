@@ -1,15 +1,20 @@
 "use client";
 
-import { OrderStatus, type OrderWithDetails } from "@/types";
-import { Package, Star } from "lucide-react";
+import {
+  type OrderItemWithReviewStatus,
+  type OrderWithReviewStatus,
+  createProductReview,
+} from "@/actions";
+import { OrderStatus } from "@/types";
+import { Package } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 import { OrderProgress } from "@/components/orders";
-import { StatusIcon } from "@/components/shared";
+import { ReviewForm, StatusIcon } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 
 import { cn } from "@/lib/utils";
 
@@ -27,134 +32,38 @@ function getStatusLabel(status: OrderStatus | null): string {
   return status?.toString() || "Processing";
 }
 
-interface ReviewFormProps {
-  productId: number;
-  productName: string;
-  onSubmit: () => void;
-  onCancel: () => void;
-}
-
-function ReviewForm({
-  productId,
-  productName,
-  onSubmit,
-  onCancel,
-}: ReviewFormProps) {
-  const [rating, setRating] = useState(5);
-  const [content, setContent] = useState("");
-  const [hoveredRating, setHoveredRating] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-
-      if (!content.trim()) return;
-
-      setIsSubmitting(true);
-
-      // TODO: Implement server action to submit review
-      console.log("Submitting review:", { productId, rating, content });
-
-      setTimeout(() => {
-        onSubmit();
-        setIsSubmitting(false);
-      }, 500);
-    },
-    [content, rating, productId, onSubmit],
-  );
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-primary/5 border-primary/10 mt-4 rounded-xl border p-4"
-    >
-      <p className="mb-4 text-sm font-semibold">Review {productName}</p>
-
-      <div className="mb-4">
-        <p className="text-muted-foreground mb-2 text-xs font-medium">Rating</p>
-        <div className="flex gap-1">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              type="button"
-              onClick={() => setRating(star)}
-              onMouseEnter={() => setHoveredRating(star)}
-              onMouseLeave={() => setHoveredRating(0)}
-              className="transition-transform hover:scale-110 focus:outline-none"
-            >
-              <Star
-                className={cn(
-                  "h-7 w-7 transition-colors",
-                  (hoveredRating || rating) >= star
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-neutral-300",
-                )}
-              />
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <label
-          htmlFor="review-content"
-          className="text-muted-foreground mb-2 block text-xs font-medium"
-        >
-          Your review
-        </label>
-        <Textarea
-          id="review-content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Share your experience with this product..."
-          className="h-24 resize-none rounded-xl text-sm"
-          required
-        />
-      </div>
-
-      <div className="flex gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={onCancel}
-          disabled={isSubmitting}
-          className="rounded-full"
-        >
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          size="sm"
-          disabled={isSubmitting || !content.trim()}
-          className="rounded-full"
-        >
-          {isSubmitting ? "Submitting..." : "Submit Review"}
-        </Button>
-      </div>
-    </form>
-  );
-}
-
 interface OrderItemCardProps {
-  item: OrderWithDetails["ordered_products"][number];
+  item: OrderItemWithReviewStatus;
   canReview: boolean;
 }
 
 function OrderItemCard({ item, canReview }: OrderItemCardProps) {
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [reviewed, setReviewed] = useState(false);
+  const router = useRouter();
 
   const product = item.product;
   const productImage = product?.image_urls?.[0] || "/placeholder.jpg";
   const productName = product?.name || "Product";
   const productSlug = product?.slug || String(item.product_id);
 
-  const handleReviewSubmit = useCallback(() => {
-    setReviewed(true);
-    setShowReviewForm(false);
-  }, []);
+  const handleReviewSubmit = useCallback(
+    async (rating: number, review?: string) => {
+      const result = await createProductReview({
+        productId: item.product_id,
+        rating,
+        review,
+      });
+
+      if (result.success) {
+        router.refresh();
+      }
+
+      return {
+        success: result.success,
+        error: result.success ? undefined : result.error,
+      };
+    },
+    [item.product_id, router],
+  );
 
   return (
     <div className="shadow-soft rounded-2xl bg-white p-4">
@@ -189,31 +98,12 @@ function OrderItemCard({ item, canReview }: OrderItemCardProps) {
         </div>
       </div>
 
-      {canReview && !reviewed && !showReviewForm && (
-        <Button
-          variant="outline"
-          size="sm"
-          className="mt-4 w-full rounded-full"
-          onClick={() => setShowReviewForm(true)}
-        >
-          <Star className="mr-2 h-4 w-4" />
-          Leave a Review
-        </Button>
-      )}
-
-      {reviewed && (
-        <div className="mt-4 flex items-center gap-2 text-sm text-green-600">
-          <Star className="h-4 w-4 fill-green-600" />
-          Thank you for your review!
-        </div>
-      )}
-
-      {showReviewForm && (
+      {canReview && (
         <ReviewForm
-          productId={item.product_id}
-          productName={productName}
+          title={`Review ${productName}`}
+          hasReviewed={item.hasReviewed}
+          variant="full-width"
           onSubmit={handleReviewSubmit}
-          onCancel={() => setShowReviewForm(false)}
         />
       )}
     </div>
@@ -221,7 +111,7 @@ function OrderItemCard({ item, canReview }: OrderItemCardProps) {
 }
 
 interface OrderDetailClientProps {
-  order: OrderWithDetails | null;
+  order: OrderWithReviewStatus | null;
 }
 
 export function OrderDetailClient({ order }: OrderDetailClientProps) {

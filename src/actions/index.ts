@@ -34,6 +34,8 @@ export {
   getOrderById,
   createOrder,
   cancelOrder,
+  type OrderItemWithReviewStatus,
+  type OrderWithReviewStatus,
 } from "./order.actions";
 
 // Event actions

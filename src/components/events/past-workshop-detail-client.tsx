@@ -1,5 +1,7 @@
 "use client";
 
+import { toggleReviewLike } from "@/actions";
+import { useAuthAction } from "@/hooks";
 import type { EventWithDetails, EventWithRegistrationCount } from "@/types";
 import {
   Calendar,
@@ -52,11 +54,13 @@ function calculateDuration(startsAt: Date, endsAt: Date): string {
 interface PastWorkshopDetailClientProps {
   workshop: EventWithDetails;
   upcomingEvents: EventWithRegistrationCount[];
+  currentUserId?: number | null;
 }
 
 export function PastWorkshopDetailClient({
   workshop,
   upcomingEvents,
+  currentUserId,
 }: PastWorkshopDetailClientProps) {
   // Format date and time from DateTime
   const workshopDate = new Date(workshop.starts_at);
@@ -84,6 +88,11 @@ export function PastWorkshopDetailClient({
   );
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [reviewLikeUpdates, setReviewLikeUpdates] = useState<
+    Record<string, { likes: number; isLiked: boolean }>
+  >({});
+
+  const { requireAuth } = useAuthAction();
 
   // Track carousel slide changes
   useEffect(() => {
@@ -108,23 +117,66 @@ export function PastWorkshopDetailClient({
     setSelectedImageIndex(null);
   }, []);
 
+  const handleLikeUpdate = useCallback(
+    (reviewId: string, likes: number, isLiked: boolean) => {
+      setReviewLikeUpdates((prev) => ({
+        ...prev,
+        [reviewId]: { likes, isLiked },
+      }));
+    },
+    [],
+  );
+
+  const handleReviewLike = useCallback(
+    async (reviewId: string, currentLikes: number, currentIsLiked: boolean) => {
+      // Optimistically update UI
+      const newIsLiked = !currentIsLiked;
+      const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
+      handleLikeUpdate(reviewId, newLikes, newIsLiked);
+
+      // Call server action
+      const result = await toggleReviewLike(Number(reviewId));
+
+      if (!result.success) {
+        // Revert on failure
+        handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
+      } else if (result.likesCount !== undefined) {
+        // Sync with server count
+        handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
+      }
+    },
+    [handleLikeUpdate],
+  );
+
   // Format reviews for the ReviewCard and ReviewsSheet components
   const formattedReviews = useMemo(() => {
-    return (workshop.reviews || []).map((review) => ({
-      id: String(review.id),
-      author: review.user?.name || "Anonymous",
-      avatar: review.user?.image || "",
-      rating: review.rating,
-      content: review.review || "",
-      date: new Date(review.created_at).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      likes: review.likes?.length || 0,
-      images: [],
-    }));
-  }, [workshop.reviews]);
+    return (workshop.reviews || []).map((review) => {
+      const reviewId = String(review.id);
+      const likeUpdate = reviewLikeUpdates[reviewId];
+      const baseLikes = review.likes?.length || 0;
+      const baseIsLiked = currentUserId
+        ? (review.likes?.some((like) => like.user_id === currentUserId) ??
+          false)
+        : false;
+
+      return {
+        id: reviewId,
+        authorId: review.user_id,
+        author: review.user?.name || "Anonymous",
+        avatar: review.user?.image || "",
+        rating: review.rating,
+        content: review.review || "",
+        date: new Date(review.created_at).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+        likes: likeUpdate?.likes ?? baseLikes,
+        isLikedByCurrentUser: likeUpdate?.isLiked ?? baseIsLiked,
+        images: [] as string[],
+      };
+    });
+  }, [workshop.reviews, currentUserId, reviewLikeUpdates]);
 
   // Calculate average rating
   const averageRating = useMemo(() => {
@@ -466,6 +518,8 @@ export function PastWorkshopDetailClient({
                         reviews={formattedReviews}
                         averageRating={averageRating}
                         totalReviews={formattedReviews.length}
+                        currentUserId={currentUserId}
+                        onLikeUpdate={handleLikeUpdate}
                       >
                         <button className="text-primary text-sm hover:underline">
                           View All →
@@ -483,7 +537,21 @@ export function PastWorkshopDetailClient({
                         content={review.content}
                         date={review.date}
                         likes={review.likes}
+                        isLiked={review.isLikedByCurrentUser}
+                        isOwnReview={
+                          currentUserId != null &&
+                          review.authorId === currentUserId
+                        }
                         images={review.images}
+                        onLike={() =>
+                          requireAuth(() =>
+                            handleReviewLike(
+                              review.id,
+                              review.likes,
+                              review.isLikedByCurrentUser,
+                            ),
+                          )
+                        }
                       />
                     ))}
                   </div>

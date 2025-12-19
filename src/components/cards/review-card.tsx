@@ -13,6 +13,7 @@ interface ReviewCardProps {
   date: string;
   likes?: number;
   isLiked?: boolean;
+  isOwnReview?: boolean;
   isCompact?: boolean;
   images?: string[];
   onLike?: () => void;
@@ -27,6 +28,7 @@ export function ReviewCard({
   date,
   likes,
   isLiked = false,
+  isOwnReview = false,
   isCompact = false,
   images,
   onLike,
@@ -50,11 +52,13 @@ export function ReviewCard({
           <Rating rating={rating} showCount={false} size="sm" />
         </div>
       </div>
-      <p
-        className={`text-muted-foreground text-sm ${isCompact ? "line-clamp-3" : ""}`}
-      >
-        {content}
-      </p>
+      {content && (
+        <p
+          className={`text-muted-foreground text-sm ${isCompact ? "line-clamp-3" : ""}`}
+        >
+          {content}
+        </p>
+      )}
       {!isCompact && images && images.length > 0 && (
         <div className="mt-3 flex gap-2 overflow-x-auto">
           {images.map((image, index) => (
@@ -74,7 +78,7 @@ export function ReviewCard({
           ))}
         </div>
       )}
-      {!isCompact && (
+      {!isOwnReview && (
         <div className="mt-3 flex items-center gap-1.5">
           <button
             type="button"
