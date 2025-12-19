@@ -28,7 +28,7 @@ export function WishlistClient({
   recommendations,
   initialPagination,
 }: WishlistClientProps) {
-  const { removeFromWishlist, isLoading } = useWishlist();
+  const { removeFromWishlist } = useWishlist();
   const queryClient = useQueryClient();
 
   // Infinite query for wishlist items
@@ -122,8 +122,8 @@ export function WishlistClient({
               <div
                 className={
                   showRecommendations
-                    ? "mb-12 grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6"
-                    : "grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6"
+                    ? "mb-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+                    : "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
                 }
               >
                 <AnimatePresence mode="popLayout">
@@ -133,7 +133,6 @@ export function WishlistClient({
                       product={item.product}
                       variant="wishlist"
                       onRemoveFromWishlist={() => handleRemove(item.product_id)}
-                      isRemovingFromWishlist={isLoading(item.product_id)}
                     />
                   ))}
                 </AnimatePresence>

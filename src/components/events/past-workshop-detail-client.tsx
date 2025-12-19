@@ -3,15 +3,15 @@
 import type { EventWithDetails, EventWithRegistrationCount } from "@/types";
 import {
   Calendar,
-  CheckCircle,
+  Check,
+  CheckCircle2,
   Clock,
   History,
-  Images,
+  IndianRupee,
   MapPin,
   Share2,
   Star,
   User,
-  Users,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -58,13 +58,17 @@ export function PastWorkshopDetailClient({
   workshop,
   upcomingEvents,
 }: PastWorkshopDetailClientProps) {
-  // Format date from DateTime
-  const workshopDate = new Date(workshop.ends_at);
+  // Format date and time from DateTime
+  const workshopDate = new Date(workshop.starts_at);
   const formattedDate = workshopDate.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
-    year: "numeric",
+  });
+  const formattedTime = workshopDate.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
 
   const duration = calculateDuration(workshop.starts_at, workshop.ends_at);
@@ -168,16 +172,18 @@ export function PastWorkshopDetailClient({
                   <Share2 className="text-foreground h-5 w-5" />
                 </button>
 
-                {/* Badges on Image */}
+                {/* Status Badge on Image */}
                 <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                  <Badge className="text-foreground bg-white/90 backdrop-blur-sm">
-                    <CheckCircle className="text-primary mr-1 h-3 w-3" />
+                  <Badge className="flex items-center gap-1 bg-emerald-500 text-white">
+                    <CheckCircle2 className="h-3 w-3" />
                     Completed
                   </Badge>
-                  {gallery.length > 0 && (
-                    <Badge className="text-foreground flex items-center gap-1 bg-white/90 backdrop-blur-sm">
-                      <Images className="h-3 w-3" />
-                      {gallery.length} photos
+                  {workshop.level && (
+                    <Badge
+                      variant="secondary"
+                      className="text-foreground bg-white/90"
+                    >
+                      {workshop.level}
                     </Badge>
                   )}
                 </div>
@@ -185,26 +191,39 @@ export function PastWorkshopDetailClient({
 
               {/* Workshop Title */}
               <div className="mb-6">
-                <div className="flex items-start justify-between gap-4">
-                  <h1 className="text-2xl font-bold lg:text-3xl">
-                    {workshop.title}
-                  </h1>
-                  {formattedReviews && formattedReviews.length > 0 && (
-                    <div className="flex shrink-0 items-center gap-1">
-                      <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                      <span className="text-lg font-bold">
-                        {averageRating.toFixed(1)}
-                      </span>
-                      <span className="text-muted-foreground text-sm">
-                        ({formattedReviews.length})
-                      </span>
-                    </div>
-                  )}
+                <h1 className="text-2xl font-bold lg:text-3xl">
+                  {workshop.title}
+                </h1>
+              </div>
+
+              {/* Event Summary Card */}
+              <div className="bg-primary-light mb-6 rounded-2xl p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <CheckCircle2 className="text-primary h-5 w-5" />
+                  <span className="font-semibold">Event Summary</span>
+                </div>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                  <div>
+                    <p className="text-muted-foreground text-xs">Attendees</p>
+                    <p className="font-semibold">{attendees} participants</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground text-xs">Level</p>
+                    <p className="font-semibold capitalize">
+                      {workshop.level || "All Levels"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground text-xs">Status</p>
+                    <p className="text-primary-active font-semibold">
+                      Completed
+                    </p>
+                  </div>
                 </div>
               </div>
 
               {/* Workshop Info Cards */}
-              <div className="mb-6 grid grid-cols-3 gap-3">
+              <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
                 <div className="shadow-soft rounded-xl bg-white p-4">
                   <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
                     <Calendar className="text-primary h-5 w-5" />
@@ -216,16 +235,23 @@ export function PastWorkshopDetailClient({
                   <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
                     <Clock className="text-primary h-5 w-5" />
                   </div>
+                  <p className="text-muted-foreground text-xs">Time</p>
+                  <p className="text-sm font-semibold">{formattedTime}</p>
+                </div>
+                <div className="shadow-soft rounded-xl bg-white p-4">
+                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
+                    <Clock className="text-primary h-5 w-5" />
+                  </div>
                   <p className="text-muted-foreground text-xs">Duration</p>
                   <p className="text-sm font-semibold">{duration}</p>
                 </div>
                 <div className="shadow-soft rounded-xl bg-white p-4">
                   <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Users className="text-primary h-5 w-5" />
+                    <IndianRupee className="text-primary h-5 w-5" />
                   </div>
-                  <p className="text-muted-foreground text-xs">Attendees</p>
+                  <p className="text-muted-foreground text-xs">Price</p>
                   <p className="text-primary text-sm font-semibold">
-                    {attendees} participated
+                    ₹{workshop.price.toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -283,7 +309,7 @@ export function PastWorkshopDetailClient({
                       {workshop.includes.map((highlight, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <div className="bg-primary/10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                            <CheckCircle className="text-primary h-4 w-4" />
+                            <Check className="text-primary h-4 w-4" />
                           </div>
                           <span className="text-sm">{highlight}</span>
                         </li>
@@ -468,6 +494,44 @@ export function PastWorkshopDetailClient({
             {/* Desktop Sidebar */}
             <div className="hidden lg:block">
               <div className="shadow-soft sticky top-24 rounded-2xl bg-white p-6">
+                <div className="mb-4 flex items-center gap-2 rounded-xl bg-emerald-50 p-3">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                  <span className="font-medium text-emerald-700">
+                    Workshop Completed
+                  </span>
+                </div>
+
+                <div className="mb-4 space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Attendees</span>
+                    <span className="font-medium">{attendees}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Date</span>
+                    <span>{formattedDate}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Duration</span>
+                    <span>{duration}</span>
+                  </div>
+                  {formattedReviews.length > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Rating</span>
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="font-medium">
+                          {averageRating.toFixed(1)}
+                        </span>
+                        <span className="text-muted-foreground">
+                          ({formattedReviews.length})
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="border-border my-4 border-t" />
+
                 <h3 className="mb-2 font-semibold">
                   Interested in similar workshops?
                 </h3>

@@ -59,8 +59,13 @@ export type {
 
 // Product with relations
 export type ProductWithCategories = Prisma.ProductGetPayload<{
-  include: { product_categories: true };
-}>;
+  include: {
+    product_categories: true;
+  };
+}> & {
+  _count?: { reviews: number };
+  averageRating?: number | null;
+};
 
 export type ProductWithDetails = Prisma.ProductGetPayload<{
   include: {
@@ -100,9 +105,11 @@ export type EventWithDetails = Prisma.EventGetPayload<{
 
 export type EventWithRegistrationCount = Prisma.EventGetPayload<{
   include: {
-    _count: { select: { event_registrations: true } };
+    _count: { select: { event_registrations: true; reviews: true } };
   };
-}>;
+}> & {
+  averageRating?: number | null;
+};
 
 // Registration with event
 export type RegistrationWithEvent = Prisma.EventRegistrationGetPayload<{

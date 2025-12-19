@@ -39,8 +39,9 @@ export async function getEvents(
       where,
       include: {
         _count: {
-          select: { event_registrations: true },
+          select: { event_registrations: true, reviews: true },
         },
+        reviews: { select: { rating: true } },
       },
       orderBy: { starts_at: "asc" },
       skip: (page - 1) * limit,
@@ -53,8 +54,18 @@ export async function getEvents(
     }),
   ]);
 
+  // Calculate average rating for each event
+  const eventsWithRating = events.map((event) => {
+    const { reviews, ...rest } = event;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return { ...rest, averageRating };
+  });
+
   return {
-    data: events as EventWithRegistrationCount[],
+    data: eventsWithRating as EventWithRegistrationCount[],
     total,
     page,
     totalPages: Math.ceil(total / limit),
@@ -94,7 +105,7 @@ export async function getUpcomingEvents(
     },
     include: {
       _count: {
-        select: { event_registrations: true },
+        select: { event_registrations: true, reviews: true },
       },
     },
     orderBy: { starts_at: "asc" },
@@ -115,8 +126,9 @@ export async function getPastEvents(
       where,
       include: {
         _count: {
-          select: { event_registrations: true },
+          select: { event_registrations: true, reviews: true },
         },
+        reviews: { select: { rating: true } },
       },
       orderBy: { starts_at: "desc" },
       skip: (page - 1) * limit,
@@ -125,8 +137,18 @@ export async function getPastEvents(
     prisma.event.count({ where }),
   ]);
 
+  // Calculate average rating for each event
+  const eventsWithRating = events.map((event) => {
+    const { reviews, ...rest } = event;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return { ...rest, averageRating };
+  });
+
   return {
-    data: events as EventWithRegistrationCount[],
+    data: eventsWithRating as EventWithRegistrationCount[],
     total,
     page,
     totalPages: Math.ceil(total / limit),
@@ -323,4 +345,83 @@ export async function getRegistrationCount(): Promise<number> {
   }
 
   return prisma.eventRegistration.count({ where: { user_id: userId } });
+}
+
+export type RegistrationWithReviewStatus = RegistrationWithEvent & {
+  hasReviewed: boolean;
+};
+
+export async function getUpcomingRegistrations(): Promise<
+  | { success: true; data: RegistrationWithEvent[] }
+  | { success: false; error: string }
+> {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  const now = new Date();
+
+  const registrations = await prisma.eventRegistration.findMany({
+    where: {
+      user_id: userId,
+      event: {
+        ends_at: { gt: now },
+      },
+    },
+    include: { event: true, user: true },
+    orderBy: { event: { starts_at: "asc" } },
+  });
+
+  return {
+    success: true,
+    data: registrations as RegistrationWithEvent[],
+  };
+}
+
+export async function getCompletedRegistrations(): Promise<
+  | { success: true; data: RegistrationWithReviewStatus[] }
+  | { success: false; error: string }
+> {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  const now = new Date();
+
+  const registrations = await prisma.eventRegistration.findMany({
+    where: {
+      user_id: userId,
+      event: {
+        ends_at: { lte: now },
+      },
+    },
+    include: { event: true, user: true },
+    orderBy: { event: { ends_at: "desc" } },
+  });
+
+  // Check if user has reviewed each event
+  const eventIds = registrations.map((r) => r.event_id);
+  const userReviews = await prisma.review.findMany({
+    where: {
+      user_id: userId,
+      event_id: { in: eventIds, not: null },
+    },
+    select: { event_id: true },
+  });
+
+  const reviewedEventIds = new Set(
+    userReviews.filter((r) => r.event_id !== null).map((r) => r.event_id),
+  );
+
+  const registrationsWithReviewStatus = registrations.map((reg) => ({
+    ...reg,
+    hasReviewed: reviewedEventIds.has(reg.event_id),
+  }));
+
+  return {
+    success: true,
+    data: registrationsWithReviewStatus as RegistrationWithReviewStatus[],
+  };
 }

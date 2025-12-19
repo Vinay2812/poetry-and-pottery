@@ -48,6 +48,9 @@ export {
   getUserRegistrations,
   getRegistrationById,
   getRegistrationCount,
+  getUpcomingRegistrations,
+  getCompletedRegistrations,
+  type RegistrationWithReviewStatus,
 } from "./event.actions";
 
 // Review actions

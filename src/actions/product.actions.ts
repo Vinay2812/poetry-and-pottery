@@ -70,7 +70,11 @@ export async function getProducts(
     await Promise.all([
       prisma.product.findMany({
         where,
-        include: { product_categories: true },
+        include: {
+          product_categories: true,
+          _count: { select: { reviews: true } },
+          reviews: { select: { rating: true } },
+        },
         orderBy,
         skip: (page - 1) * limit,
         take: limit,
@@ -87,8 +91,18 @@ export async function getProducts(
       }),
     ]);
 
+  // Calculate average rating for each product
+  const productsWithRating = products.map((product) => {
+    const { reviews, ...rest } = product;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return { ...rest, averageRating };
+  });
+
   return {
-    data: products as ProductWithCategories[],
+    data: productsWithRating as ProductWithCategories[],
     total,
     page,
     totalPages: Math.ceil(total / limit),
@@ -144,15 +158,28 @@ export async function getProductById(
 export async function getFeaturedProducts(
   limit: number = 8,
 ): Promise<ProductWithCategories[]> {
-  return prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where: {
       is_active: true,
       available_quantity: { gt: 0 },
     },
-    include: { product_categories: true },
+    include: {
+      product_categories: true,
+      _count: { select: { reviews: true } },
+      reviews: { select: { rating: true } },
+    },
     take: limit,
     orderBy: { created_at: "desc" },
-  }) as Promise<ProductWithCategories[]>;
+  });
+
+  return products.map((product) => {
+    const { reviews, ...rest } = product;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return { ...rest, averageRating };
+  }) as ProductWithCategories[];
 }
 
 export async function getRelatedProducts(
@@ -160,7 +187,7 @@ export async function getRelatedProducts(
   category: string,
   limit: number = 4,
 ): Promise<ProductWithCategories[]> {
-  return prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where: {
       is_active: true,
       id: { not: productId },
@@ -168,10 +195,23 @@ export async function getRelatedProducts(
         some: { category },
       },
     },
-    include: { product_categories: true },
+    include: {
+      product_categories: true,
+      _count: { select: { reviews: true } },
+      reviews: { select: { rating: true } },
+    },
     take: limit,
     orderBy: { created_at: "desc" },
-  }) as Promise<ProductWithCategories[]>;
+  });
+
+  return products.map((product) => {
+    const { reviews, ...rest } = product;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return { ...rest, averageRating };
+  }) as ProductWithCategories[];
 }
 
 export async function getCategories(): Promise<string[]> {

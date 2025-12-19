@@ -1,4 +1,5 @@
 export { CartItemCard } from "./cart-item-card";
+export { CompletedEventCard } from "./completed-event-card";
 export { EventCard } from "./event-card";
 export { PastWorkshopCard } from "./past-workshop-card";
 export { ProcessStepCard } from "./process-step-card";

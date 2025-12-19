@@ -285,7 +285,7 @@ export function ProductsClient({
 
             {products.length > 0 ? (
               <>
-                <div className="grid grid-cols-2 gap-x-3 gap-y-6 lg:grid-cols-3 lg:gap-4">
+                <div className="grid grid-cols-1 gap-x-3 gap-y-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}

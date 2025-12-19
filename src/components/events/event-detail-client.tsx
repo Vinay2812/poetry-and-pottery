@@ -157,75 +157,69 @@ export function EventDetailClient({
                 </div>
               </div>
 
-              {/* Event Info Cards */}
-              <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Calendar className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Date</p>
-                  <p className="text-sm font-semibold">{formattedDate}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Clock className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Time</p>
-                  <p className="text-sm font-semibold">{formattedTime}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Clock className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Duration</p>
-                  <p className="text-sm font-semibold">{duration}</p>
-                </div>
-                {event.available_seats && (
-                  <div className="shadow-soft rounded-xl bg-white p-4">
-                    <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                      <Users className="text-primary h-5 w-5" />
+              {/* Event Info - Compact Layout */}
+              <div className="shadow-soft mb-6 divide-y rounded-xl bg-white">
+                {/* Date & Time Row */}
+                <div className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary/10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+                      <Calendar className="text-primary h-4 w-4" />
                     </div>
-                    <p className="text-muted-foreground text-xs">
-                      Availability
-                    </p>
-                    <p className="text-primary text-sm font-semibold">
-                      {event.available_seats} spots left
-                    </p>
+                    <div>
+                      <p className="text-sm font-semibold">{formattedDate}</p>
+                      <p className="text-muted-foreground text-xs">
+                        {formattedTime} • {duration}
+                      </p>
+                    </div>
+                  </div>
+                  {event.available_seats !== undefined && (
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        "text-xs",
+                        event.available_seats <= 5
+                          ? "bg-orange-100 text-orange-700"
+                          : "bg-primary/10 text-primary",
+                      )}
+                    >
+                      <Users className="mr-1 h-3 w-3" />
+                      {event.available_seats} spots
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Location Row */}
+                {event.location && (
+                  <div className="flex items-center gap-3 p-4">
+                    <div className="bg-primary/10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+                      <MapPin className="text-primary h-4 w-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold">
+                        {event.location}
+                      </p>
+                      <p className="text-muted-foreground text-xs">Location</p>
+                    </div>
                   </div>
                 )}
-              </div>
 
-              {/* Location */}
-              {event.location && (
-                <div className="shadow-soft mb-6 rounded-xl bg-white p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                      <MapPin className="text-primary h-5 w-5" />
+                {/* Instructor Row */}
+                {event.instructor && (
+                  <div className="flex items-center gap-3 p-4">
+                    <div className="bg-primary/10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+                      <User className="text-primary h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-muted-foreground text-xs">Location</p>
-                      <p className="font-semibold">{event.location}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Instructor */}
-              {event.instructor && (
-                <div className="shadow-soft mb-6 rounded-xl bg-white p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                      <User className="text-primary h-5 w-5" />
-                    </div>
-                    <div>
+                      <p className="text-sm font-semibold">
+                        {event.instructor}
+                      </p>
                       <p className="text-muted-foreground text-xs">
                         Instructor
                       </p>
-                      <p className="font-semibold">{event.instructor}</p>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Description */}
               <div className="mb-6">

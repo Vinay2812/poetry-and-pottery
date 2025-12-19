@@ -1,29 +1,40 @@
 "use client";
 
+import type { RegistrationWithReviewStatus } from "@/actions";
 import type {
   EventWithRegistrationCount,
   RegistrationWithEvent,
 } from "@/types";
-import { Calendar, Ticket } from "lucide-react";
+import { Calendar, CheckCircle2, Ticket } from "lucide-react";
 
-import { EventCard, RegisteredEventCard } from "@/components/cards";
+import {
+  CompletedEventCard,
+  EventCard,
+  RegisteredEventCard,
+} from "@/components/cards";
 import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 
 interface RegistrationsClientProps {
-  registrations: RegistrationWithEvent[];
+  upcomingRegistrations: RegistrationWithEvent[];
+  completedRegistrations: RegistrationWithReviewStatus[];
   upcomingEvents?: EventWithRegistrationCount[];
 }
 
 export function RegistrationsClient({
-  registrations,
+  upcomingRegistrations,
+  completedRegistrations,
   upcomingEvents = [],
 }: RegistrationsClientProps) {
+  const hasUpcomingRegistrations = upcomingRegistrations.length > 0;
+  const hasCompletedRegistrations = completedRegistrations.length > 0;
+  const hasAnyRegistrations =
+    hasUpcomingRegistrations || hasCompletedRegistrations;
   const hasUpcomingEvents = upcomingEvents.length > 0;
 
   return (
     <EventsListLayout>
-      {registrations.length === 0 ? (
+      {!hasAnyRegistrations ? (
         <div className="grid gap-8 lg:grid-cols-5">
           {/* Empty State */}
           <div
@@ -53,20 +64,61 @@ export function RegistrationsClient({
           )}
         </div>
       ) : (
-        <>
-          <div className="text-muted-foreground mb-6 flex items-center gap-2">
-            <Ticket className="h-5 w-5" />
-            <p className="text-sm">Your registered workshops and tickets.</p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {registrations.map((registration) => (
-              <RegisteredEventCard
-                key={registration.id}
-                registration={registration}
-              />
-            ))}
-          </div>
-        </>
+        <div className="space-y-8">
+          {/* Upcoming Registrations Section */}
+          {hasUpcomingRegistrations && (
+            <section>
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-50">
+                  <Ticket className="h-4 w-4 text-sky-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Upcoming Events
+                  </h2>
+                  <p className="text-xs text-gray-500">
+                    Your registered workshops that haven&apos;t started yet
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {upcomingRegistrations.map((registration) => (
+                  <RegisteredEventCard
+                    key={registration.id}
+                    registration={registration}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Completed Registrations Section */}
+          {hasCompletedRegistrations && (
+            <section>
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Completed Events
+                  </h2>
+                  <p className="text-xs text-gray-500">
+                    Past workshops you attended - share your experience!
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {completedRegistrations.map((registration) => (
+                  <CompletedEventCard
+                    key={registration.id}
+                    registration={registration}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
       )}
     </EventsListLayout>
   );
