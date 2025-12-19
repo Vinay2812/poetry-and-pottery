@@ -10,16 +10,21 @@ import type {
 
 import { prisma } from "@/lib/prisma";
 
-function getOrderBy(sortBy: string): Prisma.ProductOrderByWithRelationInput {
+function getOrderBy(sortBy: string): Prisma.ProductOrderByWithRelationInput[] {
+  // Always sort by available_quantity desc first (in-stock items first, out of stock at bottom)
+  const stockSort: Prisma.ProductOrderByWithRelationInput = {
+    available_quantity: "desc",
+  };
+
   switch (sortBy) {
     case "price-low":
-      return { price: "asc" };
+      return [stockSort, { price: "asc" }];
     case "price-high":
-      return { price: "desc" };
+      return [stockSort, { price: "desc" }];
     case "newest":
-      return { created_at: "desc" };
+      return [stockSort, { created_at: "desc" }];
     default:
-      return { created_at: "desc" };
+      return [stockSort, { created_at: "desc" }];
   }
 }
 

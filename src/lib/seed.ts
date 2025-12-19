@@ -378,6 +378,15 @@ async function main() {
       "Delhi Art Space",
       "Jaipur Craft Hub",
     ];
+
+    const fullLocations = [
+      "Mumbai Studio, Mumbai, Maharashtra, India",
+      "Pune Workshop, Pune, Maharashtra, India",
+      "Bengaluru Clay Lab, Bengaluru, Karnataka, India",
+      "Delhi Art Space, Delhi, Delhi, India",
+      "Jaipur Craft Hub, Jaipur, Rajasthan, India",
+    ];
+
     const eventTitles = [
       "Wheel Throwing Basics",
       "Glazing 101",
@@ -475,6 +484,10 @@ async function main() {
         EventLevel.ADVANCED,
       ]);
 
+      const locationIndex = randInt(0, locations.length - 1);
+      const location = locations[locationIndex];
+      const fullLocation = fullLocations[locationIndex];
+
       return {
         slug: `event-${i + 1}-${pick(eventTitles)
           .toLowerCase()
@@ -483,7 +496,8 @@ async function main() {
         description: pick(descriptions),
         starts_at: starts,
         ends_at: ends,
-        location: pick(locations),
+        location: location,
+        full_location: fullLocation,
         total_seats,
         available_seats,
         instructor: pick(instructors),

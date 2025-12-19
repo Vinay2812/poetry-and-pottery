@@ -66,21 +66,21 @@ export function RegistrationsClient({
       ) : (
         <div className="space-y-8">
           {/* Upcoming Registrations Section */}
-          {hasUpcomingRegistrations && (
-            <section>
-              <div className="mb-4 flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-50">
-                  <Ticket className="h-4 w-4 text-sky-600" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Upcoming Events
-                  </h2>
-                  <p className="text-xs text-gray-500">
-                    Your registered workshops that haven&apos;t started yet
-                  </p>
-                </div>
+          <section>
+            <div className="mb-4 flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-50">
+                <Ticket className="h-4 w-4 text-sky-600" />
               </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Upcoming Events
+                </h2>
+                <p className="text-xs text-gray-500">
+                  Your registered workshops that haven&apos;t started yet
+                </p>
+              </div>
+            </div>
+            {hasUpcomingRegistrations ? (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {upcomingRegistrations.map((registration) => (
                   <RegisteredEventCard
@@ -89,8 +89,18 @@ export function RegistrationsClient({
                   />
                 ))}
               </div>
-            </section>
-          )}
+            ) : (
+              <div className="border-border bg-muted/30 flex min-h-[150px] items-center justify-center rounded-2xl border border-dashed p-6">
+                <EmptyState
+                  icon={Calendar}
+                  title="No Active Registrations"
+                  description="You don't have any upcoming workshop registrations. Browse our workshops to find your next creative experience!"
+                  actionText="Browse Workshops"
+                  actionHref="/events/upcoming"
+                />
+              </div>
+            )}
+          </section>
 
           {/* Completed Registrations Section */}
           {hasCompletedRegistrations && (

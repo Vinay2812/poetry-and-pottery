@@ -83,6 +83,9 @@ export async function getOrderById(orderId: string) {
             include: { product_categories: true },
           },
         },
+        orderBy: {
+          product: { available_quantity: "desc" },
+        },
       },
       user: true,
     },

@@ -118,7 +118,7 @@ CREATE TABLE "reviews" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "rating" INTEGER NOT NULL,
-    "review" TEXT NOT NULL,
+    "review" TEXT,
     "image_urls" TEXT[],
     "product_id" INTEGER,
     "event_id" TEXT,

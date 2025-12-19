@@ -119,13 +119,14 @@ enum EventStatus {
 }
 
 model Event {
-  id              String      @id @default(ulid())
+  id              String      @id @default(nanoid(16))
   slug            String      @unique @db.Text
   title           String
   description     String
   starts_at       DateTime
   ends_at         DateTime
   location        String
+  full_location   String?
   total_seats     Int         @default(10)
   available_seats Int         @default(10)
   instructor      String
@@ -155,7 +156,7 @@ enum EventRegistrationStatus {
 }
 
 model EventRegistration {
-  id             String                  @id @default(ulid())
+  id             String                  @id @default(nanoid(16))
   event_id       String
   user_id        Int
   seats_reserved Int                     @default(1)
@@ -265,7 +266,7 @@ enum OrderStatus {
 }
 
 model ProductOrder {
-  id           String      @id @default(ulid())
+  id           String      @id @default(nanoid(16))
   user_id      Int
   shipping_fee Int
   subtotal     Int

@@ -29,7 +29,10 @@ export async function getWishlist(
           include: { product_categories: true },
         },
       },
-      orderBy: { created_at: "desc" },
+      orderBy: [
+        { product: { available_quantity: "desc" } },
+        { created_at: "desc" },
+      ],
       skip: (page - 1) * limit,
       take: limit,
     }),

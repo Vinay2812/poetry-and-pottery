@@ -70,10 +70,6 @@ export function useCart() {
       // Update store with server response
       cartStore.addItem(result.data);
 
-      addToast({
-        type: "success",
-        message: "Added to cart",
-      });
       setLoading(productId, false);
       return true;
     },
@@ -115,10 +111,6 @@ export function useCart() {
         return false;
       }
 
-      addToast({
-        type: "success",
-        message: "Removed from cart",
-      });
       setLoading(productId, false);
       return true;
     },

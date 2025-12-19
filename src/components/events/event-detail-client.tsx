@@ -190,15 +190,21 @@ export function EventDetailClient({
 
                 {/* Location Row */}
                 {event.location && (
-                  <div className="flex items-center gap-3 p-4">
-                    <div className="bg-primary/10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+                  <div className="flex items-start gap-3 p-4">
+                    <div className="bg-primary/10 mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
                       <MapPin className="text-primary h-4 w-4" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold">
-                        {event.location}
-                      </p>
-                      <p className="text-muted-foreground text-xs">Location</p>
+                      <p className="text-sm font-semibold">{event.location}</p>
+                      {event.full_location ? (
+                        <p className="text-muted-foreground text-xs leading-relaxed">
+                          {event.full_location}
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground text-xs">
+                          Location
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}

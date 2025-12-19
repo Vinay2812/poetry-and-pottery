@@ -45,7 +45,6 @@ export function useWishlist() {
       }
 
       setLoading(productId, true);
-      const wasInWishlist = wishlistStore.isInWishlist(productId);
 
       const result = await toggleWishlistAction(productId);
       if (!result.success) {
@@ -65,10 +64,6 @@ export function useWishlist() {
         wishlistStore.removeItem(productId);
       }
 
-      addToast({
-        type: "success",
-        message: wasInWishlist ? "Removed from wishlist" : "Added to wishlist",
-      });
       setLoading(productId, false);
       return true;
     },
@@ -109,10 +104,6 @@ export function useWishlist() {
       // Update store with server response
       wishlistStore.addItem(result.data);
 
-      addToast({
-        type: "success",
-        message: "Added to wishlist",
-      });
       setLoading(productId, false);
       return true;
     },
@@ -157,10 +148,6 @@ export function useWishlist() {
         return false;
       }
 
-      addToast({
-        type: "success",
-        message: "Removed from wishlist",
-      });
       setLoading(productId, false);
       return true;
     },
@@ -187,10 +174,6 @@ export function useWishlist() {
       wishlistStore.removeItem(productId);
       // Cart will be updated on next fetch, or we can refetch
 
-      addToast({
-        type: "success",
-        message: "Moved to cart",
-      });
       setLoading(productId, false);
       return true;
     },

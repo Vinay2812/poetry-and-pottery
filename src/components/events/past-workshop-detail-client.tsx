@@ -316,8 +316,16 @@ export function PastWorkshopDetailClient({
                       <MapPin className="text-primary h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-muted-foreground text-xs">Location</p>
                       <p className="font-semibold">{workshop.location}</p>
+                      {workshop.full_location ? (
+                        <p className="text-muted-foreground text-xs leading-relaxed">
+                          {workshop.full_location}
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground text-xs">
+                          Location
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -209,8 +209,16 @@ export function RegistrationDetailClient({
                       <MapPin className="text-primary h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-muted-foreground text-xs">Location</p>
                       <p className="font-semibold">{event.location}</p>
+                      {event.full_location ? (
+                        <p className="text-muted-foreground text-xs leading-relaxed">
+                          {event.full_location}
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground text-xs">
+                          Location
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

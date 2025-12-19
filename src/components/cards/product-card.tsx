@@ -35,6 +35,7 @@ export function ProductCard({
   const { addToCart } = useCart();
 
   const inWishlist = isInWishlist(product.id);
+  const isWishlistVariant = variant === "wishlist";
 
   const handleWishlistClick = useCallback(
     (e: React.MouseEvent) => {
@@ -53,9 +54,19 @@ export function ProductCard({
       if (success) {
         setAddedToCart(true);
         setTimeout(() => setAddedToCart(false), 2000);
+        // Remove from wishlist when adding to cart from wishlist page
+        if (isWishlistVariant) {
+          onRemoveFromWishlist?.();
+        }
       }
     },
-    [requireAuth, addToCart, product.id],
+    [
+      requireAuth,
+      addToCart,
+      product.id,
+      isWishlistVariant,
+      onRemoveFromWishlist,
+    ],
   );
 
   const handleRemoveFromWishlist = useCallback(
@@ -66,8 +77,6 @@ export function ProductCard({
     },
     [onRemoveFromWishlist],
   );
-
-  const isWishlistVariant = variant === "wishlist";
 
   return (
     <motion.div
