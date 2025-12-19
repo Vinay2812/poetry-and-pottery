@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
-import { getCurrentUserId } from "./auth.action";
+import { getAuthenticatedUserId } from "./auth.action";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -16,7 +16,7 @@ export async function getWishlist(
   | { success: true; data: PaginatedResponse<WishlistWithProduct> }
   | { success: false; error: string }
 > {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };
   }
@@ -51,7 +51,7 @@ export async function getWishlist(
 }
 
 export async function getWishlistIds() {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, data: [] };
   }
@@ -65,7 +65,7 @@ export async function getWishlistIds() {
 }
 
 export async function addToWishlist(productId: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -90,7 +90,7 @@ export async function addToWishlist(productId: number) {
 }
 
 export async function removeFromWishlist(productId: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -109,7 +109,7 @@ export async function removeFromWishlist(productId: number) {
 }
 
 export async function toggleWishlist(productId: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -139,7 +139,7 @@ export async function toggleWishlist(productId: number) {
 }
 
 export async function moveToCart(productId: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }

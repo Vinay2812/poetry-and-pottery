@@ -1,31 +1,63 @@
 "use server";
 
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 
+import { ENVIRONMENT } from "@/lib/env.consts";
 import { prisma } from "@/lib/prisma";
 
-export async function getCurrentUser() {
-  const authenticatedUser = await currentUser();
-  if (!authenticatedUser) return null;
+async function createUserInDatabase() {
+  const [clerkUser, clerk] = await Promise.all([currentUser(), clerkClient()]);
+  if (!clerkUser) throw new Error("User not found");
 
-  const clerkEmailAddressId = authenticatedUser.primaryEmailAddressId;
-  const email = authenticatedUser.emailAddresses.find(
-    (emailAddress) => emailAddress.id === clerkEmailAddressId,
+  const email = clerkUser.emailAddresses.find(
+    (emailAddress) => emailAddress.id === clerkUser.primaryEmailAddressId,
   )?.emailAddress;
 
-  if (!email) return null;
+  if (!email) throw new Error("Email not found");
 
-  const user = await prisma.user.findUnique({
-    where: { email },
+  return await prisma.$transaction(async (tx) => {
+    const user = await tx.user.upsert({
+      where: { email },
+      update: {
+        auth_id: clerkUser.id,
+        name: clerkUser.fullName ?? clerkUser.firstName ?? null,
+        image: clerkUser.imageUrl ?? null,
+        phone: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
+      },
+      create: {
+        auth_id: clerkUser.id,
+        email,
+        name: clerkUser.fullName ?? clerkUser.firstName ?? null,
+        image: clerkUser.imageUrl ?? null,
+        phone: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
+      },
+    });
+
+    await clerk.users.updateUserMetadata(clerkUser.id, {
+      publicMetadata: {
+        db_user_id: user.id,
+        environment: ENVIRONMENT,
+      },
+    });
+
+    return user;
   });
-
-  return user;
 }
 
-export async function getCurrentUserId() {
-  const user = await getCurrentUser();
+export async function getAuthenticatedUserId() {
+  const { sessionClaims, isAuthenticated } = await auth();
 
-  if (!user) return null;
+  if (!isAuthenticated) {
+    return null;
+  }
 
-  return user.id;
+  const dbUserId = sessionClaims?.dbUserId;
+  const environment = sessionClaims?.environment;
+
+  if (!dbUserId || environment !== ENVIRONMENT) {
+    const user = await createUserInDatabase();
+    return user.id;
+  }
+
+  return dbUserId;
 }

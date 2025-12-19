@@ -15,7 +15,7 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
-import { getCurrentUserId } from "./auth.action";
+import { getAuthenticatedUserId } from "./auth.action";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -178,7 +178,7 @@ export async function getEventById(
 }
 
 export async function registerForEvent(eventId: string, seats: number = 1) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -248,7 +248,7 @@ export async function registerForEvent(eventId: string, seats: number = 1) {
 }
 
 export async function cancelRegistration(registrationId: string) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -294,7 +294,7 @@ export async function getUserRegistrations(
   | { success: true; data: PaginatedResponse<RegistrationWithEvent> }
   | { success: false; error: string }
 > {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };
   }
@@ -324,7 +324,7 @@ export async function getUserRegistrations(
 export async function getRegistrationById(
   registrationId: string,
 ): Promise<RegistrationWithEvent | null> {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return null;
   }
@@ -339,7 +339,7 @@ export async function getRegistrationById(
 }
 
 export async function getRegistrationCount(): Promise<number> {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return 0;
   }
@@ -355,7 +355,7 @@ export async function getUpcomingRegistrations(): Promise<
   | { success: true; data: RegistrationWithEvent[] }
   | { success: false; error: string }
 > {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };
   }
@@ -383,7 +383,7 @@ export async function getCompletedRegistrations(): Promise<
   | { success: true; data: RegistrationWithReviewStatus[] }
   | { success: false; error: string }
 > {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };
   }

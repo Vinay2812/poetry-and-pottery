@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
-import { getCurrentUserId } from "./auth.action";
+import { getAuthenticatedUserId } from "./auth.action";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -69,7 +69,7 @@ export async function createProductReview(data: {
   review?: string;
   imageUrls?: string[];
 }) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -122,7 +122,7 @@ export async function createEventReview(data: {
   review?: string;
   imageUrls?: string[];
 }) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -170,7 +170,7 @@ export async function createEventReview(data: {
 }
 
 export async function deleteReview(reviewId: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -193,7 +193,7 @@ export async function deleteReview(reviewId: number) {
 }
 
 export async function toggleReviewLike(reviewId: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }

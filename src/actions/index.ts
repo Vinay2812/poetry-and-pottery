@@ -66,4 +66,8 @@ export {
 } from "./review.actions";
 
 // Auth actions
-export { getCurrentUser, getCurrentUserId } from "./auth.action";
+export {
+  getCurrentUser,
+  getAuthenticatedUserId,
+  syncUserOnSignIn,
+} from "./auth.action";

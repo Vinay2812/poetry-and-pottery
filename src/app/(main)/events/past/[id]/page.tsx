@@ -1,5 +1,5 @@
 import {
-  getCurrentUserId,
+  getAuthenticatedUserId,
   getEventById,
   getEventBySlug,
   getUpcomingEvents,
@@ -68,7 +68,7 @@ export default async function PastWorkshopDetailPage({
   }
 
   // Get current user ID for review like functionality
-  const currentUserId = await getCurrentUserId();
+  const currentUserId = await getAuthenticatedUserId();
 
   // Get upcoming events for recommendations
   const upcomingEvents = await getUpcomingEvents(2);

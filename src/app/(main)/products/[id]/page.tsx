@@ -1,5 +1,5 @@
 import {
-  getCurrentUserId,
+  getAuthenticatedUserId,
   getProductById,
   getProductBySlug,
   getRelatedProducts,
@@ -82,7 +82,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   // Get current user ID for review like functionality
-  const currentUserId = await getCurrentUserId();
+  const currentUserId = await getAuthenticatedUserId();
 
   // Get related products (same category, excluding current)
   const category = product.product_categories[0]?.category || "";

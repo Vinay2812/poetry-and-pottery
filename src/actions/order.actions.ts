@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
-import { getCurrentUserId } from "./auth.action";
+import { getAuthenticatedUserId } from "./auth.action";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -21,7 +21,7 @@ export async function getOrders(
   | { success: true; data: PaginatedResponse<OrderWithItems> }
   | { success: false; error: string }
 > {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };
   }
@@ -66,7 +66,7 @@ export type OrderWithReviewStatus = Omit<
 };
 
 export async function getOrderById(orderId: string) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -145,7 +145,7 @@ export async function createOrder(data: {
     contactNumber?: string;
   };
 }) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -209,7 +209,7 @@ export async function createOrder(data: {
 }
 
 export async function getPendingOrdersCount(): Promise<number> {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return 0;
   }
@@ -227,7 +227,7 @@ export async function getPendingOrdersCount(): Promise<number> {
 }
 
 export async function cancelOrder(orderId: string) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }

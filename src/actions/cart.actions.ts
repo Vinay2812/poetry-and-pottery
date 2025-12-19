@@ -5,10 +5,10 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
-import { getCurrentUserId } from "./auth.action";
+import { getAuthenticatedUserId } from "./auth.action";
 
 export async function getCart() {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated", data: [] };
   }
@@ -27,7 +27,7 @@ export async function getCart() {
 }
 
 export async function addToCart(productId: number, quantity: number = 1) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -55,8 +55,6 @@ export async function addToCart(productId: number, quantity: number = 1) {
       },
     });
 
-    console.log("Item added to cart:", item);
-
     revalidatePath("/cart");
     return { success: true as const, data: item as CartWithProduct };
   } catch (error) {
@@ -66,7 +64,7 @@ export async function addToCart(productId: number, quantity: number = 1) {
 }
 
 export async function updateCartQuantity(productId: number, quantity: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -109,7 +107,7 @@ export async function updateCartQuantity(productId: number, quantity: number) {
 }
 
 export async function removeFromCart(productId: number) {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
@@ -132,7 +130,7 @@ export async function removeFromCart(productId: number) {
 }
 
 export async function clearCart() {
-  const userId = await getCurrentUserId();
+  const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false as const, error: "Not authenticated" };
   }
