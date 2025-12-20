@@ -35,9 +35,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 | Script                    | Description                               |
 | ------------------------- | ----------------------------------------- |
-| `npm run dev`             | Start development server on port 3000     |
+| `npm run dev`             | Start development server on port 3002     |
 | `npm run build`           | Build for production (includes codegen)   |
-| `npm start`               | Start production server on port 3001      |
+| `npm start`               | Start production server on port 3002      |
 | `npm run lint`            | Run ESLint                                |
 | `npm run tsc`             | TypeScript type checking without emitting |
 | `npm run prettier`        | Check code formatting                     |

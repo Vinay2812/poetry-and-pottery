@@ -69,22 +69,20 @@ Visual components render UI and should be isolated from application state, API d
 
 **Setup and Development:**
 
-- `npm install` - Install dependencies
-- `npm run dev` - Start development server on port 3000(requires .env setup)
+- `bun install` - Install dependencies
+- `bun run dev` - Start development server on port 3000(requires .env setup)
 
 **Build and Production:**
 
-- `npm run build` - Build for production (includes codegen and verification)
-- `npm start` - Start production server on port 3001
+- `bun run build` - Build for production (includes codegen and verification)
+- `bun start` - Start production server on port 3001
 
 **Code Quality:**
 
-- `npm run lint` - Run ESLint
-- `npm run prettier` - Check code formatting
-- `npm run prettier:format` - Format code with Prettier
-- `npm run tsc` - TypeScript type checking without emitting files
-
-**Storybook:**
+- `bun run lint` - Run ESLint
+- `bun run prettier` - Check code formatting
+- `bun run prettier:format` - Format code with Prettier
+- `bun run tsc` - TypeScript type checking without emitting files
 
 ## Architecture Overview
 

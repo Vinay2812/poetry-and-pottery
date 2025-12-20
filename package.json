@@ -6,7 +6,7 @@
     "build": "next build",
     "db:init": "bunx tsx src/lib/seed.ts",
     "db:reset": "bun prisma:reset && bunx prisma migrate deploy && bun db:init",
-    "dev": "next dev --port 3001",
+    "dev": "next dev --port 3002",
     "husky": "husky",
     "lint": "eslint .",
     "migration:apply": "bunx prisma migrate deploy",
@@ -16,7 +16,7 @@
     "prisma:generate": "bunx prisma generate",
     "prisma:reset": "bunx prisma migrate reset",
     "prisma:studio": "bunx prisma studio",
-    "start": "next start --port 3001",
+    "start": "next start --port 3002",
     "tsc": "bunx tsc --noEmit"
   },
   "dependencies": {
