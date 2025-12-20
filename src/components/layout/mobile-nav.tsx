@@ -1,6 +1,7 @@
 "use client";
 
 import { useCartStore, useEventStore } from "@/store";
+import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDaysIcon, Home, ShoppingCartIcon, Store } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,8 +33,11 @@ export function MobileNav() {
   };
 
   return (
-    <nav className="border-border shadow-nav fixed right-0 bottom-0 left-0 z-50 h-16 border-t bg-white lg:hidden">
-      <div className="grid h-full grid-cols-4 items-center">
+    <nav className="fixed right-0 bottom-0 left-0 isolate z-50 lg:hidden">
+      {/* Background with Blur */}
+      <div className="absolute inset-0 border-t border-white/20 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-black/80" />
+
+      <div className="relative grid h-16 grid-cols-4 items-center px-2 py-2">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = isActiveRoute(item.href);
@@ -43,23 +47,38 @@ export function MobileNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={cn(
-                "flex items-center justify-center transition-colors duration-150 focus-visible:outline-none",
-                isActive ? "text-primary" : "text-muted-foreground",
-              )}
+              className="relative flex h-full flex-col items-center justify-center gap-1 focus-visible:outline-none"
             >
-              <div
-                className={cn(
-                  "relative flex h-11 w-11 items-center justify-center rounded-full transition-all duration-150",
-                  isActive && "bg-primary/10",
-                )}
-              >
-                <Icon className={cn("h-6 w-6", isActive && "stroke-[2.5px]")} />
-                {badgeCount > 0 && (
-                  <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
-                    {badgeCount}
-                  </span>
-                )}
+              {isActive && (
+                <motion.div
+                  layoutId="mobile-nav-active"
+                  className="absolute inset-x-2 top-1 bottom-1 rounded-2xl bg-neutral-100 dark:bg-neutral-800"
+                  transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                />
+              )}
+
+              <div className="relative z-10 flex flex-col items-center justify-center">
+                <div className="relative">
+                  <Icon
+                    className={cn(
+                      "h-5 w-5 transition-colors duration-200",
+                      isActive ? "text-primary" : "text-muted-foreground",
+                    )}
+                    strokeWidth={isActive ? 2.5 : 2}
+                  />
+                  <AnimatePresence>
+                    {badgeCount > 0 && (
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        className="bg-primary absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-white dark:ring-black"
+                      >
+                        {badgeCount}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </Link>
           );

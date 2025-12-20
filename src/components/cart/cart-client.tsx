@@ -67,7 +67,7 @@ export function CartClient({
     <>
       <MobileHeader title="My Cart" showBack backHref="/products" />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         <div className="container mx-auto px-4 py-6 lg:px-8">
           {/* Cart Items or Empty State */}
           {cartItems.length > 0 ? (
@@ -100,7 +100,7 @@ export function CartClient({
                   tax={tax}
                   total={total}
                   freeShippingThreshold={2000}
-                  buttonText="Proceed to Checkout"
+                  buttonText="Request Order"
                 />
               </div>
             </div>
@@ -122,7 +122,7 @@ export function CartClient({
               <h2 className="mb-4 text-lg font-semibold">
                 You might also like
               </h2>
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-4 lg:gap-8">
                 {recommendedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

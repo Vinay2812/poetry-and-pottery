@@ -271,7 +271,10 @@ model ProductOrder {
   shipping_fee Int
   subtotal     Int
   total        Int
-  status       OrderStatus @default(PROCESSING)
+  status       OrderStatus @default(PENDING)
+  request_at   DateTime?
+  approved_at  DateTime?
+  paid_at      DateTime?
   shipped_at   DateTime?
   delivered_at DateTime?
   cancelled_at DateTime?

@@ -70,7 +70,7 @@ export function ReviewForm({
   if (reviewed) {
     if (variant === "full-width") {
       return (
-        <div className="text-primary mt-4 flex items-center gap-2 text-sm font-medium">
+        <div className="text-primary flex items-center gap-2 text-sm font-medium">
           <Star className="fill-primary h-4 w-4" />
           {justReviewed
             ? "Thank you for your review!"
@@ -79,7 +79,7 @@ export function ReviewForm({
       );
     }
     return (
-      <div className="text-primary mt-4 flex items-center justify-center gap-2 text-sm font-medium">
+      <div className="text-primary mt-2 flex items-center justify-center gap-2 text-sm font-medium">
         <Star className="fill-primary h-4 w-4" />
         {justReviewed ? "Thank you for your review!" : "Reviewed"}
       </div>
@@ -93,7 +93,7 @@ export function ReviewForm({
         <Button
           variant="outline"
           size="sm"
-          className="mt-4 w-full rounded-full"
+          className="mt-1 w-full rounded-full"
           onClick={() => setIsOpen(true)}
         >
           <Star className="mr-2 h-4 w-4" />
@@ -102,7 +102,7 @@ export function ReviewForm({
       );
     }
     return (
-      <div className="flex items-center justify-center border-t border-gray-100 pt-2">
+      <div className="flex items-center justify-center border-t border-gray-100">
         <Button
           variant="ghost"
           size="sm"
@@ -123,7 +123,7 @@ export function ReviewForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="shadow-soft mt-4 rounded-xl border border-gray-100 bg-white p-4"
+      className="shadow-soft mt-1 rounded-xl border border-gray-100 bg-white p-4"
     >
       <p className="mb-4 text-sm font-semibold text-gray-900">{title}</p>
 

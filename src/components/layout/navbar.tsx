@@ -2,9 +2,11 @@
 
 import { useCartStore, useWishlistStore } from "@/store";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { motion } from "framer-motion";
 import { Heart, Search, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 import { AccountDropdown } from "@/components/layout/account-dropdown";
 import { Button } from "@/components/ui/button";
@@ -17,6 +19,7 @@ export function Navbar() {
   const pathname = usePathname();
   const cartCount = useCartStore((state) => state.getTotalItems());
   const wishlistCount = useWishlistStore((state) => state.getCount());
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const isActiveRoute = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -24,47 +27,72 @@ export function Navbar() {
   };
 
   return (
-    <header className="border-border/50 sticky top-0 z-50 hidden border-b bg-white/95 backdrop-blur-md lg:block">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-8">
+    <header className="fixed top-0 z-50 hidden w-full transition-all duration-300 lg:block">
+      <div className="absolute inset-0 border-b border-white/20 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-black/70" />
+      <div className="relative container mx-auto px-4 lg:px-8">
+        <div className="flex items-center justify-between gap-8 py-2">
           {/* Logo */}
           <Link
             href="/"
-            className="flex shrink-0 items-center gap-2 transition-opacity duration-150 hover:opacity-80"
+            className="group flex shrink-0 items-center gap-3 transition-opacity duration-150"
           >
-            <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
-              <span className="text-sm font-bold text-white">P</span>
+            <div className="bg-primary shadow-primary/20 flex h-10 w-10 items-center justify-center rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+              <span className="text-lg font-bold text-white">P</span>
             </div>
-            <span className="text-lg font-semibold">Poetry & Pottery</span>
+            <span className="text-foreground text-xl font-bold tracking-tight">
+              Poetry & Pottery
+            </span>
           </Link>
 
           {/* Navigation Pills */}
-          <nav className="bg-muted/80 flex items-center gap-1 rounded-full px-1.5 py-1.5">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-all duration-150",
-                  isActiveRoute(link.href)
-                    ? "text-foreground bg-white shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-white/50",
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav className="hidden items-center gap-1 rounded-full bg-neutral-100/50 p-1.5 backdrop-blur-sm lg:flex dark:bg-neutral-800/50">
+            {NAV_LINKS.map((link) => {
+              const isActive = isActiveRoute(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "relative z-10 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-200",
+                    isActive
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="navbar-active"
+                      className="absolute inset-0 rounded-full bg-white shadow-sm dark:bg-neutral-700"
+                      transition={{
+                        type: "spring",
+                        bounce: 0.2,
+                        duration: 0.6,
+                      }}
+                      style={{ zIndex: -1 }}
+                    />
+                  )}
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {/* Search */}
-            <div className="relative">
-              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+            <div
+              className={cn(
+                "relative hidden transition-all duration-300 xl:block",
+                isSearchFocused ? "w-64" : "w-48",
+              )}
+            >
+              <Search className="text-muted-foreground absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
               <Input
                 type="search"
                 placeholder="Search..."
-                className="bg-muted h-9 w-40 rounded-full border-0 pl-9 text-sm xl:w-48"
+                className="focus:border-cancel focus:ring-primary/20 h-10 w-full rounded-full border-transparent bg-neutral-100/50 pl-10 text-sm focus:bg-white dark:bg-neutral-800/50 dark:focus:bg-neutral-800"
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
               />
             </div>
 
@@ -72,20 +100,22 @@ export function Navbar() {
             <Link
               href="/wishlist"
               className={cn(
-                "relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150",
-                isActiveRoute("/wishlist") ? "bg-primary/10" : "hover:bg-muted",
+                "group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105",
+                isActiveRoute("/wishlist")
+                  ? "bg-primary/10"
+                  : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
               )}
             >
               <Heart
                 className={cn(
-                  "h-6 w-6 transition-colors",
+                  "h-5 w-5 transition-colors",
                   isActiveRoute("/wishlist")
                     ? "text-primary fill-primary/20"
-                    : "text-muted-foreground",
+                    : "text-muted-foreground group-hover:text-foreground",
                 )}
               />
               {wishlistCount > 0 && (
-                <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
+                <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
                   {wishlistCount}
                 </span>
               )}
@@ -95,29 +125,38 @@ export function Navbar() {
             <Link
               href="/cart"
               className={cn(
-                "relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150",
-                isActiveRoute("/cart") ? "bg-primary/10" : "hover:bg-muted",
+                "group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105",
+                isActiveRoute("/cart")
+                  ? "bg-primary/10"
+                  : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
               )}
             >
               <ShoppingCartIcon
                 className={cn(
-                  "h-6 w-6 transition-colors",
+                  "h-5 w-5 transition-colors",
                   isActiveRoute("/cart")
                     ? "text-primary"
-                    : "text-muted-foreground",
+                    : "text-muted-foreground group-hover:text-foreground",
                 )}
               />
               {cartCount > 0 && (
-                <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
+                <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
                   {cartCount}
                 </span>
               )}
             </Link>
 
+            <div className="mx-1 h-6 w-px bg-neutral-200 dark:bg-neutral-700" />
+
             {/* Auth */}
             <SignedOut>
               <SignInButton mode="modal">
-                <Button size="sm">Sign In</Button>
+                <Button
+                  size="sm"
+                  className="shadow-primary/20 hover:shadow-primary/30 rounded-full px-6 font-medium"
+                >
+                  Sign In
+                </Button>
               </SignInButton>
             </SignedOut>
             <SignedIn>

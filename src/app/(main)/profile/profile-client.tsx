@@ -12,7 +12,7 @@ export function ProfileClient() {
         </div>
       </header>
 
-      <main className="pb-20 lg:pb-0">
+      <main className="pt-14 pb-20 lg:pt-20 lg:pb-0">
         <div className="container mx-auto px-4 py-6 lg:px-8">
           <div className="flex justify-center">
             <UserProfile

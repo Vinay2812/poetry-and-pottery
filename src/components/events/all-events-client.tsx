@@ -29,19 +29,21 @@ export function AllEventsClient({
           description="Check back soon for new workshops and events."
         />
       ) : (
-        <div className="space-y-10">
+        <div className="space-y-8 lg:space-y-16">
           {/* Upcoming Events Section */}
           <section>
-            <div className="mb-4 flex items-center gap-2">
+            <div className="mb-3 flex items-center gap-2 lg:mb-6">
               <Sparkles className="text-primary h-5 w-5" />
-              <h2 className="text-lg font-semibold">Upcoming Events</h2>
+              <h2 className="text-xl font-bold tracking-tight lg:text-3xl">
+                Upcoming Events
+              </h2>
             </div>
             {hasUpcoming ? (
               <>
-                <p className="text-muted-foreground mb-4 text-sm">
+                <p className="text-muted-foreground mb-4 text-sm lg:mb-8 lg:text-base">
                   Reserve your spot in one of our upcoming pottery sessions.
                 </p>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                   {upcomingEvents.map((event) => (
                     <EventCard key={event.id} event={event} />
                   ))}
@@ -60,17 +62,17 @@ export function AllEventsClient({
           {/* Past Events Section */}
           {hasPast && (
             <section>
-              <div className="mb-4 flex items-center gap-2">
-                <History className="text-muted-foreground h-5 w-5" />
-                <h2 className="text-muted-foreground text-lg font-semibold">
+              <div className="mb-3 flex items-center gap-2 lg:mb-6">
+                <History className="h-5 w-5 text-neutral-400" />
+                <h2 className="text-xl font-bold tracking-tight text-neutral-400 lg:text-3xl">
                   Past Events
                 </h2>
               </div>
-              <p className="text-muted-foreground mb-4 text-sm">
+              <p className="mb-4 text-sm text-neutral-400 lg:mb-8 lg:text-base">
                 Explore our previous workshops and the amazing pieces created by
                 our community.
               </p>
-              <div className="grid gap-4 opacity-75 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-y-6 opacity-75 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                 {pastEvents.map((event) => (
                   <PastWorkshopCard key={event.id} event={event} />
                 ))}

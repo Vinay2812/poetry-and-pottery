@@ -71,7 +71,30 @@ export async function getProducts(
 
   const orderBy = getOrderBy(sortBy);
 
-  const [products, total, categoriesResult, materialsResult] =
+  // Create a separate where clause for price stats that ignores the price filter itself
+  // but respects other filters (category, materials, search) to show relevant price range
+  const priceStatsWhere: Prisma.ProductWhereInput = {
+    is_active: true,
+  };
+
+  if (category && category !== "all") {
+    priceStatsWhere.product_categories = {
+      some: { category },
+    };
+  }
+
+  if (materials && materials.length > 0) {
+    priceStatsWhere.material = { in: materials };
+  }
+
+  if (search) {
+    priceStatsWhere.OR = [
+      { name: { contains: search, mode: "insensitive" } },
+      { description: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  const [products, total, categoriesResult, materialsResult, priceStats] =
     await Promise.all([
       prisma.product.findMany({
         where,
@@ -94,6 +117,10 @@ export async function getProducts(
         distinct: ["material"],
         select: { material: true },
       }),
+      prisma.product.findMany({
+        where: priceStatsWhere,
+        select: { price: true },
+      }),
     ]);
 
   // Calculate average rating for each product
@@ -106,6 +133,28 @@ export async function getProducts(
     return { ...rest, averageRating };
   });
 
+  // Calculate price range and histogram
+  const prices = priceStats.map((p) => p.price);
+  const minPriceVal = prices.length > 0 ? Math.min(...prices) : 0;
+  const maxPriceVal = prices.length > 0 ? Math.max(...prices) : 1000; // Default max if no products
+  const priceRange = { min: minPriceVal, max: maxPriceVal };
+
+  // Generate histogram
+  const bucketCount = 30; // Number of bars
+  const range = maxPriceVal - minPriceVal || 1; // Avoid division by zero
+  const step = range / bucketCount;
+
+  const priceHistogram = Array.from({ length: bucketCount }, (_, i) => {
+    const bucketMin = minPriceVal + i * step;
+    const bucketMax = minPriceVal + (i + 1) * step;
+    const count = prices.filter(
+      (p) =>
+        p >= bucketMin &&
+        (i === bucketCount - 1 ? p <= bucketMax : p < bucketMax),
+    ).length;
+    return { min: bucketMin, max: bucketMax, count };
+  });
+
   return {
     data: productsWithRating as ProductWithCategories[],
     total,
@@ -113,6 +162,8 @@ export async function getProducts(
     totalPages: Math.ceil(total / limit),
     categories: categoriesResult.map((c) => c.category),
     materials: materialsResult.map((m) => m.material),
+    priceRange,
+    priceHistogram,
   };
 }
 

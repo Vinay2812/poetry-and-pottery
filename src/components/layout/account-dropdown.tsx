@@ -53,22 +53,25 @@ export function AccountDropdown() {
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "hover:bg-muted focus-visible:ring-primary/30 relative flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none",
+            "focus-visible:ring-primary/30 relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/5 focus-visible:ring-2 focus-visible:outline-none active:bg-black/10 dark:hover:bg-white/10",
           )}
         >
           {user?.imageUrl ? (
-            <Image
-              width={24}
-              height={24}
-              src={user.imageUrl}
-              alt={user.firstName || "User avatar"}
-              className={cn("h-6 w-6 rounded-full")}
-            />
+            <div className="relative h-5 w-5">
+              <Image
+                src={user.imageUrl}
+                alt={user.firstName || "User avatar"}
+                fill
+                className={cn("rounded-full object-cover")}
+              />
+            </div>
           ) : (
-            <Settings className={cn("text-muted-foreground h-6 w-6")} />
+            <User
+              className={cn("h-5 w-5 text-neutral-600 dark:text-neutral-300")}
+            />
           )}
           {pendingOrdersCount > 0 && (
-            <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-[22px] min-w-[22px] items-center justify-center rounded-full text-xs font-bold text-white">
+            <span className="bg-primary absolute top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
               {pendingOrdersCount}
             </span>
           )}

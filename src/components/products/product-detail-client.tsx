@@ -136,27 +136,53 @@ export function ProductDetailClient({
   }, [product.reviews, currentUserId, reviewLikeUpdates]);
 
   const images = product.image_urls || [];
+  const category =
+    product.product_categories[0]?.category || product.material || "Pottery";
 
   return (
     <>
-      <main className="pt-14 pb-40 lg:pt-0 lg:pb-0">
-        <div className="container mx-auto px-4 py-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-2">
+      <main className="pt-14 pb-40 lg:pt-20 lg:pb-0">
+        <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
+          <div className="grid gap-0 lg:grid-cols-2 lg:gap-10">
             {/* Image Gallery */}
             <ProductImageGallery images={images} productName={product.name} />
 
             {/* Product Info */}
-            <div className="min-w-0">
-              <h1 className="mb-2 text-2xl font-semibold lg:text-3xl">
-                {product.name}
-                {selectedColor && ` - ${selectedColor}`}
-              </h1>
+            <div className="flex flex-col px-4 pt-6 lg:px-0 lg:pt-0">
+              <div className="mb-6 border-b border-neutral-100 pb-6 dark:border-neutral-800">
+                <div className="mb-2">
+                  <span className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">
+                    {category}
+                  </span>
+                </div>
 
-              <div className="mb-4 flex items-center justify-between">
-                <span className="text-2xl font-bold">
-                  ₹{product.price.toFixed(2)}
-                </span>
-                <Rating rating={averageRating} reviewCount={totalReviews} />
+                <h1 className="mb-3 text-2xl font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
+                  {product.name}
+                  {selectedColor && (
+                    <span className="font-medium text-neutral-400">
+                      {" "}
+                      — {selectedColor}
+                    </span>
+                  )}
+                </h1>
+
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-neutral-900 dark:text-white">
+                      ₹{product.price.toLocaleString()}
+                    </span>
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Incl. Taxes
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Rating
+                      rating={averageRating}
+                      reviewCount={totalReviews}
+                      size="sm"
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Stock Status */}
@@ -164,11 +190,9 @@ export function ProductDetailClient({
                 product.available_quantity <= 5 &&
                 product.available_quantity > 0 && (
                   <div className="mb-4">
-                    <span className="inline-flex items-center gap-1.5 text-sm">
-                      <span className="bg-in-stock h-2 w-2 rounded-full"></span>
-                      <span className="text-primary font-medium">
-                        ONLY {product.available_quantity} PIECES LEFT
-                      </span>
+                    <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-wider text-amber-600 uppercase">
+                      <span className="h-1 w-1 rounded-full bg-amber-600"></span>
+                      Only {product.available_quantity} left
                     </span>
                   </div>
                 )}
@@ -176,47 +200,44 @@ export function ProductDetailClient({
               {/* Out of Stock */}
               {product.available_quantity === 0 && (
                 <div className="mb-4">
-                  <span className="inline-flex items-center gap-1.5 text-sm">
-                    <span className="h-2 w-2 rounded-full bg-red-500"></span>
-                    <span className="font-medium text-red-600">
-                      OUT OF STOCK
-                    </span>
+                  <span className="inline-flex items-center gap-2 text-[10px] font-bold tracking-wider text-red-500 uppercase">
+                    <span className="h-1 w-1 rounded-full bg-red-500"></span>
+                    Sold Out
                   </span>
                 </div>
               )}
 
               {/* Description */}
-              <p className="text-muted-foreground mb-6">
-                {product.description}
-              </p>
+              <div className="mb-6">
+                <p className="text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
+                  {product.description}
+                </p>
+              </div>
 
               {/* Color Display */}
               {product.color_name && product.color_code && (
-                <div className="mb-6">
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="text-sm font-medium">Color</span>
-                    <span className="text-muted-foreground text-sm">
+                <div className="mb-4">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Color
+                    </span>
+                    <span className="text-[11px] font-medium text-neutral-500">
                       {selectedColor}
                     </span>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     <button
                       onClick={() => setSelectedColor(product.color_name)}
                       className={cn(
-                        "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all",
+                        "flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 transition-all",
                       )}
                       style={{
                         backgroundColor: product.color_code,
-                        outlineColor:
+                        outline:
                           selectedColor === product.color_name
-                            ? product.color_code
-                            : "transparent",
-                        outlineWidth:
-                          selectedColor === product.color_name ? "2px" : "0px",
-                        outlineStyle:
-                          selectedColor === product.color_name
-                            ? "solid"
+                            ? `2px solid ${product.color_code}`
                             : "none",
+                        outlineOffset: "2px",
                       }}
                       title={product.color_name}
                     />
@@ -274,11 +295,20 @@ export function ProductDetailClient({
               )}
 
               {/* Accordion sections */}
-              <Accordion type="single" collapsible className="mb-6">
-                <AccordionItem value="materials">
-                  <AccordionTrigger>Materials & Care</AccordionTrigger>
+              <Accordion
+                type="single"
+                collapsible
+                className="mb-8 border-t border-neutral-100 dark:border-neutral-800"
+              >
+                <AccordionItem
+                  value="materials"
+                  className="border-b border-neutral-100 dark:border-neutral-800"
+                >
+                  <AccordionTrigger className="py-4 text-sm font-semibold tracking-wider uppercase hover:no-underline">
+                    Materials & Care
+                  </AccordionTrigger>
                   <AccordionContent>
-                    <ul className="text-muted-foreground list-disc space-y-1 pl-4 text-sm">
+                    <ul className="list-disc space-y-2 pl-4 text-xs leading-relaxed text-neutral-500">
                       <li>Made from high-quality {product.material}</li>
                       {product.instructions &&
                       product.instructions.length > 0 ? (
@@ -295,10 +325,15 @@ export function ProductDetailClient({
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="shipping">
-                  <AccordionTrigger>Shipping & Returns</AccordionTrigger>
+                <AccordionItem
+                  value="shipping"
+                  className="border-b border-neutral-100 dark:border-neutral-800"
+                >
+                  <AccordionTrigger className="py-4 text-sm font-semibold tracking-wider uppercase hover:no-underline">
+                    Shipping & Returns
+                  </AccordionTrigger>
                   <AccordionContent>
-                    <ul className="text-muted-foreground list-disc space-y-1 pl-4 text-sm">
+                    <ul className="list-disc space-y-2 pl-4 text-xs leading-relaxed text-neutral-500">
                       <li>Free shipping on orders over ₹2,000</li>
                       <li>Standard delivery 5-7 business days</li>
                       <li>Express delivery 2-3 business days</li>
@@ -380,11 +415,11 @@ export function ProductDetailClient({
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (
-            <section className="mt-12">
-              <h2 className="mb-6 text-xl font-semibold">
+            <section className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16 dark:border-neutral-800">
+              <h2 className="mb-6 text-2xl font-bold text-neutral-900 lg:mb-8 dark:text-white">
                 You might also like
               </h2>
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 {relatedProducts.map((relatedProduct) => (
                   <ProductCard
                     key={relatedProduct.id}

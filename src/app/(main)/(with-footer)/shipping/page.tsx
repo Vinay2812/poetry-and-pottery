@@ -75,7 +75,7 @@ export default function ShippingPage() {
     <>
       <MobileHeader title="Shipping & Returns" showBack backHref="/" />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Shipping Options */}
         <section className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
           <SectionHeader

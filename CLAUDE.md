@@ -133,6 +133,12 @@ Visual components render UI and should be isolated from application state, API d
 - Always follow the design principles written in
   rules/DESIGN-PRINCIPLES, rules/DESIGNS
 
+- **Design Philosophy**:
+  - **Flat Design**: Avoid borders where possible; use soft shadows (`shadow-soft`, `shadow-card`) and spacing to define hierarchy.
+  - **Premium & Professional**: Use generous whitespace but tight component spacing (`gap-3`/`gap-4`). Use high-quality typography (neutral-900 for heads, neutral-500 for secondary).
+  - **Visual Consistency**: All product/event images must be `aspect-square` (1:1).
+  - **Interactive Elements**: Carousels should support drag/swipe. dots must be always visible.
+
 - Always format the files after writing the code
 
 - Use bun as package manager

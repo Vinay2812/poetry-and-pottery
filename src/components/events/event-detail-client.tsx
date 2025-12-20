@@ -13,6 +13,7 @@ import {
   MapPin,
   Share2,
   Sparkles,
+  Timer,
   User,
   Users,
 } from "lucide-react";
@@ -92,24 +93,13 @@ export function EventDetailClient({
         backHref="/events/upcoming"
       />
 
-      <main className="pt-14 pb-40 lg:pt-0 lg:pb-12">
-        <div className="container mx-auto px-4 py-6 lg:px-8">
-          {/* Category Header */}
-          <div className="mb-6">
-            <Link
-              href="/events/upcoming"
-              className="bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors"
-            >
-              <Sparkles className="h-4 w-4" />
-              Upcoming Session
-            </Link>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-3">
+      <main className="pt-14 pb-40 lg:pt-20 lg:pb-12">
+        <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
+          <div className="grid gap-0 lg:grid-cols-3 lg:gap-10">
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Hero Image */}
-              <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-2xl lg:rounded-3xl">
+              <div className="relative mb-0 aspect-square w-full overflow-hidden lg:mb-4 lg:aspect-video lg:rounded-2xl">
                 <Image
                   src={imageUrl}
                   alt={event.title}
@@ -145,228 +135,226 @@ export function EventDetailClient({
                 </div>
               </div>
 
-              {/* Event Title & Price */}
-              <div className="mb-6">
-                <div className="flex items-start justify-between gap-4">
-                  <h1 className="text-2xl font-bold lg:text-3xl">
+              <div className="px-4 pt-8 lg:px-0 lg:pt-0">
+                {/* Event Header & Price */}
+                <div className="mb-8 border-b border-neutral-100 pb-6 dark:border-neutral-800">
+                  <div className="mb-3">
+                    <span className="bg-primary/10 text-primary inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-widest uppercase">
+                      <Sparkles className="h-3 w-3" />
+                      Upcoming Session
+                    </span>
+                  </div>
+
+                  <h1 className="mb-4 text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
                     {event.title}
                   </h1>
-                  <span className="text-primary shrink-0 text-2xl font-bold lg:text-3xl">
-                    ₹{event.price.toFixed(2)}
-                  </span>
-                </div>
-              </div>
 
-              {/* Event Info - Compact Layout */}
-              <div className="shadow-soft mb-6 divide-y rounded-xl bg-white">
-                {/* Date & Time Row */}
-                <div className="flex items-center justify-between p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-primary/10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-                      <Calendar className="text-primary h-4 w-4" />
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-neutral-900 dark:text-white">
+                        ₹{event.price.toLocaleString()}
+                      </span>
+                      <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Per Seat
+                      </span>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <Badge
+                        variant="secondary"
+                        className="bg-neutral-100 px-3 py-1 text-[10px] font-bold tracking-widest text-neutral-600 uppercase dark:bg-neutral-800 dark:text-neutral-400"
+                      >
+                        {event.level}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Event Quick Info */}
+                <div className="mb-6 grid grid-cols-2 gap-x-8 gap-y-6 border-b border-neutral-100 pb-6 sm:grid-cols-4 dark:border-neutral-800">
+                  <div className="flex items-start gap-3">
+                    <Calendar className="mt-1 h-4 w-4 text-neutral-400" />
                     <div>
-                      <p className="text-sm font-semibold">{formattedDate}</p>
-                      <p className="text-muted-foreground text-xs">
-                        {formattedTime} • {duration}
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Date
+                      </p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {formattedDate}
                       </p>
                     </div>
                   </div>
-                  {event.available_seats !== undefined && (
-                    <Badge
-                      variant="secondary"
-                      className={cn(
-                        "text-xs",
-                        event.available_seats <= 5
-                          ? "bg-orange-100 text-orange-700"
-                          : "bg-primary/10 text-primary",
-                      )}
-                    >
-                      <Users className="mr-1 h-3 w-3" />
-                      {event.available_seats} spots
-                    </Badge>
+                  <div className="flex items-start gap-3">
+                    <Clock className="mt-1 h-4 w-4 text-neutral-400" />
+                    <div>
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Time
+                      </p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {formattedTime}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Timer className="mt-1 h-4 w-4 text-neutral-400" />
+                    <div>
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Duration
+                      </p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {duration}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Users className="mt-1 h-4 w-4 text-neutral-400" />
+                    <div>
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Availability
+                      </p>
+                      <p className="text-sm font-semibold tracking-tight text-emerald-600 uppercase">
+                        {event.available_seats} spots
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Location & Instructor */}
+                <div className="mb-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
+                  {event.location && (
+                    <div className="flex items-start gap-3">
+                      <MapPin className="mt-1 h-4 w-4 text-neutral-400" />
+                      <div>
+                        <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                          Location
+                        </p>
+                        <p className="text-sm leading-snug font-semibold text-neutral-900 dark:text-neutral-100">
+                          {event.location}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-neutral-400">
+                          {event.full_location}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {event.instructor && (
+                    <div className="flex items-start gap-3">
+                      <User className="mt-1 h-4 w-4 text-neutral-400" />
+                      <div>
+                        <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                          Instructor
+                        </p>
+                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                          {event.instructor}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-neutral-400">
+                          Lead Facilitator
+                        </p>
+                      </div>
+                    </div>
                   )}
                 </div>
 
-                {/* Location Row */}
-                {event.location && (
-                  <div className="flex items-start gap-3 p-4">
-                    <div className="bg-primary/10 mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-                      <MapPin className="text-primary h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold">{event.location}</p>
-                      {event.full_location ? (
-                        <p className="text-muted-foreground text-xs leading-relaxed">
-                          {event.full_location}
-                        </p>
-                      ) : (
-                        <p className="text-muted-foreground text-xs">
-                          Location
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
+                {/* Description */}
+                <div className="mb-10">
+                  <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-500 uppercase">
+                    About this workshop
+                  </h2>
+                  <p className="text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
+                    {event.description}
+                  </p>
+                </div>
 
-                {/* Instructor Row */}
-                {event.instructor && (
-                  <div className="flex items-center gap-3 p-4">
-                    <div className="bg-primary/10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-                      <User className="text-primary h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">
-                        {event.instructor}
-                      </p>
-                      <p className="text-muted-foreground text-xs">
-                        Instructor
-                      </p>
+                {/* What's Included */}
+                {event.includes && event.includes.length > 0 && (
+                  <div className="mb-10">
+                    <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-500 uppercase">
+                      What&apos;s included
+                    </h2>
+                    <div className="shadow-soft rounded-2xl border border-neutral-50 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+                      <ul className="grid gap-4 sm:grid-cols-2">
+                        {event.includes.map((item, index) => (
+                          <li key={index} className="flex items-center gap-3">
+                            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+                              <Check className="h-3.5 w-3.5 text-emerald-500" />
+                            </div>
+                            <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                              {item}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 )}
               </div>
-
-              {/* Description */}
-              <div className="mb-6">
-                <h2 className="mb-3 text-lg font-semibold">
-                  About this workshop
-                </h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  {event.description}
-                </p>
-              </div>
-
-              {/* What's Included */}
-              {event.includes && event.includes.length > 0 && (
-                <div className="mb-6">
-                  <h2 className="mb-3 text-lg font-semibold">
-                    What&apos;s included
-                  </h2>
-                  <div className="shadow-soft rounded-xl bg-white p-4">
-                    <ul className="space-y-3">
-                      {event.includes.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <div className="bg-primary/10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                            <Check className="text-primary h-4 w-4" />
-                          </div>
-                          <span className="text-sm">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {/* Other Events */}
-              {otherEvents.length > 0 && (
-                <div className="mt-8">
-                  <h2 className="mb-4 text-lg font-semibold">
-                    Other workshops you might like
-                  </h2>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {otherEvents.map((otherEvent) => {
-                      const otherEventDate = new Date(otherEvent.starts_at);
-                      const otherFormattedDate =
-                        otherEventDate.toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        });
-                      const otherFormattedTime =
-                        otherEventDate.toLocaleTimeString("en-US", {
-                          hour: "numeric",
-                          minute: "2-digit",
-                          hour12: true,
-                        });
-                      const otherImageUrl =
-                        otherEvent.image || "/placeholder.jpg";
-
-                      return (
-                        <Link
-                          key={otherEvent.id}
-                          href={`/events/upcoming/${otherEvent.slug}`}
-                          className="group shadow-soft hover:shadow-card rounded-2xl bg-white p-4 transition-all"
-                        >
-                          <div className="flex gap-4">
-                            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl">
-                              <Image
-                                src={otherImageUrl}
-                                alt={otherEvent.title}
-                                fill
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                              />
-                            </div>
-                            <div className="flex-1">
-                              <h3 className="mb-1 line-clamp-1 text-sm font-semibold">
-                                {otherEvent.title}
-                              </h3>
-                              <p className="text-muted-foreground mb-2 text-xs">
-                                {otherFormattedDate} • {otherFormattedTime}
-                              </p>
-                              <span className="text-primary text-sm font-semibold">
-                                ₹{otherEvent.price.toFixed(2)}
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Desktop Sidebar */}
             <div className="hidden lg:block">
-              <div className="shadow-soft sticky top-24 rounded-2xl bg-white p-6">
-                <h2 className="mb-4 text-lg font-semibold">
+              <div className="shadow-soft sticky top-24 rounded-2xl border border-neutral-50 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+                <h2 className="mb-4 text-lg font-bold text-neutral-900 dark:text-neutral-100">
                   Reserve Your Spot
                 </h2>
 
-                <div className="mb-4 space-y-3">
+                <div className="mb-6 space-y-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Workshop</span>
-                    <span className="text-right font-medium">
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">
+                      Workshop
+                    </span>
+                    <span className="text-right font-bold text-neutral-900 dark:text-neutral-100">
                       {event.title}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Date</span>
-                    <span>{formattedDate}</span>
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">
+                      Date
+                    </span>
+                    <span className="font-bold text-neutral-900 dark:text-neutral-100">
+                      {formattedDate}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Time</span>
-                    <span>{formattedTime}</span>
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">
+                      Time
+                    </span>
+                    <span className="font-bold text-neutral-900 dark:text-neutral-100">
+                      {formattedTime}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Duration</span>
-                    <span>{duration}</span>
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">
+                      Duration
+                    </span>
+                    <span className="font-bold text-neutral-900 dark:text-neutral-100">
+                      {duration}
+                    </span>
                   </div>
                   {event.available_seats && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">
+                      <span className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">
                         Availability
                       </span>
-                      <span className="text-primary">
-                        {event.available_seats} spots left
+                      <span className="text-xs font-bold tracking-wider text-emerald-600 uppercase">
+                        {event.available_seats} seats left
                       </span>
                     </div>
                   )}
                 </div>
 
-                <div className="border-border my-4 border-t" />
+                <div className="border-border my-6 border-t" />
 
-                <div className="mb-6 flex justify-between">
-                  <span className="font-semibold">Total</span>
-                  <span className="text-primary text-xl font-bold">
-                    ₹{event.price.toFixed(2)}
+                <div className="mb-8 flex items-baseline justify-between">
+                  <span className="font-bold text-neutral-900 dark:text-neutral-100">
+                    Total
+                  </span>
+                  <span className="text-primary text-2xl font-black">
+                    ₹{event.price.toLocaleString()}
                   </span>
                 </div>
 
                 <motion.div whileTap={{ scale: 0.98 }}>
                   <Button
                     className={cn(
-                      "h-12 w-full rounded-xl transition-all",
+                      "h-14 w-full rounded-2xl text-base font-bold shadow-lg transition-all",
                       registered && "bg-green-600 hover:bg-green-700",
                     )}
                     size="lg"
@@ -397,6 +385,58 @@ export function EventDetailClient({
               </div>
             </div>
           </div>
+
+          {/* Other Events */}
+          {otherEvents.length > 0 && (
+            <div className="mt-16 border-t border-neutral-100 px-4 pt-12 lg:mt-24 lg:px-0 lg:pt-16 dark:border-neutral-800">
+              <h2 className="mb-8 text-2xl font-bold tracking-tight text-neutral-900 lg:text-3xl dark:text-white">
+                Other workshops you might like
+              </h2>
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                {otherEvents.map((otherEvent) => {
+                  const otherEventDate = new Date(otherEvent.starts_at);
+                  const otherFormattedDate = otherEventDate.toLocaleDateString(
+                    "en-US",
+                    {
+                      month: "short",
+                      day: "numeric",
+                    },
+                  );
+                  const otherImageUrl = otherEvent.image || "/placeholder.jpg";
+
+                  return (
+                    <Link
+                      key={otherEvent.id}
+                      href={`/events/upcoming/${otherEvent.slug}`}
+                      className="group flex flex-col gap-4"
+                    >
+                      <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">
+                        <Image
+                          src={otherImageUrl}
+                          alt={otherEvent.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1 px-1">
+                        <h3 className="line-clamp-1 text-base font-bold text-neutral-900 dark:text-neutral-100">
+                          {otherEvent.title}
+                        </h3>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs font-medium text-neutral-500">
+                            {otherFormattedDate}
+                          </p>
+                          <span className="font-bold text-neutral-900 dark:text-neutral-100">
+                            ₹{otherEvent.price.toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </main>
 

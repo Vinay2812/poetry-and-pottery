@@ -13,7 +13,9 @@ import {
   MapPin,
   Share2,
   Star,
+  Timer,
   User,
+  Users,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -23,16 +25,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ReviewCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
 import { ReviewsSheet } from "@/components/shared";
+import { ImageCarousel } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Carousel,
-  type CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { CarouselApi } from "@/components/ui/carousel";
 import {
   Dialog,
   DialogClose,
@@ -86,28 +82,11 @@ export function PastWorkshopDetailClient({
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [reviewLikeUpdates, setReviewLikeUpdates] = useState<
     Record<string, { likes: number; isLiked: boolean }>
   >({});
 
   const { requireAuth } = useAuthAction();
-
-  // Track carousel slide changes
-  useEffect(() => {
-    if (!carouselApi) return;
-
-    const onSelect = () => {
-      setCurrentSlide(carouselApi.selectedScrollSnap());
-    };
-
-    onSelect();
-    carouselApi.on("select", onSelect);
-    return () => {
-      carouselApi.off("select", onSelect);
-    };
-  }, [carouselApi]);
 
   const handleOpenGallery = useCallback((index: number) => {
     setSelectedImageIndex(index);
@@ -189,24 +168,13 @@ export function PastWorkshopDetailClient({
     <>
       <MobileHeader title="Past Workshop" showBack backHref="/events/past" />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-12">
-        <div className="container mx-auto px-4 py-6 lg:px-8">
-          {/* Category Header */}
-          <div className="mb-6">
-            <Link
-              href="/events/past"
-              className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-            >
-              <History className="h-4 w-4" />
-              Past Workshop
-            </Link>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-3">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
+        <div className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
+          <div className="grid gap-4 lg:grid-cols-3 lg:gap-10">
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Hero Image */}
-              <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-2xl lg:rounded-3xl">
+              <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-2xl lg:aspect-video">
                 <Image
                   src={imageUrl}
                   alt={workshop.title}
@@ -226,158 +194,162 @@ export function PastWorkshopDetailClient({
 
                 {/* Status Badge on Image */}
                 <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                  <Badge className="flex items-center gap-1 bg-emerald-500 text-white">
-                    <CheckCircle2 className="h-3 w-3" />
+                  <Badge className="border-none bg-emerald-500 px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-lg backdrop-blur-md">
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
                     Completed
                   </Badge>
                   {workshop.level && (
-                    <Badge
-                      variant="secondary"
-                      className="text-foreground bg-white/90"
-                    >
+                    <Badge className="border-none bg-white/90 px-3 py-1 text-[10px] font-bold tracking-wider text-neutral-900 uppercase shadow-lg backdrop-blur-md">
                       {workshop.level}
                     </Badge>
                   )}
                 </div>
               </div>
 
-              {/* Workshop Title */}
-              <div className="mb-6">
-                <h1 className="text-2xl font-bold lg:text-3xl">
+              {/* Workshop Header & Price */}
+              <div className="mb-8 border-b border-neutral-100 pb-6 dark:border-neutral-800">
+                <div className="mb-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-emerald-600 uppercase">
+                    <History className="h-3 w-3" />
+                    Past Workshop
+                  </span>
+                </div>
+
+                <h1 className="mb-4 text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
                   {workshop.title}
                 </h1>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-neutral-900 dark:text-white">
+                      ₹{workshop.price.toLocaleString()}
+                    </span>
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Original Price
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 items-center justify-center rounded-full bg-neutral-100 px-4 text-[10px] font-bold tracking-widest text-neutral-500 uppercase dark:bg-neutral-800">
+                      {attendees} Participants
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Event Summary Card */}
-              <div className="bg-primary-light mb-6 rounded-2xl p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <CheckCircle2 className="text-primary h-5 w-5" />
-                  <span className="font-semibold">Event Summary</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {/* Workshop Quick Info */}
+              <div className="mb-6 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-neutral-100 py-6 sm:grid-cols-4 dark:border-neutral-800">
+                <div className="flex items-start gap-3">
+                  <Calendar className="mt-1 h-4 w-4 text-neutral-400" />
                   <div>
-                    <p className="text-muted-foreground text-xs">Attendees</p>
-                    <p className="font-semibold">{attendees} participants</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-xs">Level</p>
-                    <p className="font-semibold capitalize">
-                      {workshop.level || "All Levels"}
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Date
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      {formattedDate}
                     </p>
                   </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Clock className="mt-1 h-4 w-4 text-neutral-400" />
                   <div>
-                    <p className="text-muted-foreground text-xs">Status</p>
-                    <p className="text-primary-active font-semibold">
-                      Completed
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Time
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      {formattedTime}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Timer className="mt-1 h-4 w-4 text-neutral-400" />
+                  <div>
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Duration
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      {duration}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Users className="mt-1 h-4 w-4 text-neutral-400" />
+                  <div>
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Price
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      ₹{workshop.price.toLocaleString()}
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Workshop Info Cards */}
-              <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Calendar className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Date</p>
-                  <p className="text-sm font-semibold">{formattedDate}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Clock className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Time</p>
-                  <p className="text-sm font-semibold">{formattedTime}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Clock className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Duration</p>
-                  <p className="text-sm font-semibold">{duration}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <IndianRupee className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Price</p>
-                  <p className="text-primary text-sm font-semibold">
-                    ₹{workshop.price.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-
-              {/* Location */}
-              {workshop.location && (
-                <div className="shadow-soft mb-6 rounded-xl bg-white p-4">
+              {/* Location & Instructor */}
+              <div className="mb-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
+                {workshop.location && (
                   <div className="flex items-start gap-3">
-                    <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                      <MapPin className="text-primary h-5 w-5" />
-                    </div>
+                    <MapPin className="mt-1 h-4 w-4 text-neutral-400" />
                     <div>
-                      <p className="font-semibold">{workshop.location}</p>
-                      {workshop.full_location ? (
-                        <p className="text-muted-foreground text-xs leading-relaxed">
-                          {workshop.full_location}
-                        </p>
-                      ) : (
-                        <p className="text-muted-foreground text-xs">
-                          Location
-                        </p>
-                      )}
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Location
+                      </p>
+                      <p className="text-sm leading-snug font-semibold text-neutral-900 dark:text-neutral-100">
+                        {workshop.location}
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-neutral-400">
+                        {workshop.full_location}
+                      </p>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {/* Instructor */}
-              {workshop.instructor && (
-                <div className="shadow-soft mb-6 rounded-xl bg-white p-4">
+                )}
+                {workshop.instructor && (
                   <div className="flex items-start gap-3">
-                    <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                      <User className="text-primary h-5 w-5" />
-                    </div>
+                    <User className="mt-1 h-4 w-4 text-neutral-400" />
                     <div>
-                      <p className="text-muted-foreground text-xs">
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
                         Instructor
                       </p>
-                      <p className="font-semibold">{workshop.instructor}</p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {workshop.instructor}
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-neutral-400">
+                        Lead Facilitator
+                      </p>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {/* Description */}
-              <div className="mb-6">
-                <h2 className="mb-3 text-lg font-semibold">
-                  About this workshop
-                </h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  {workshop.description}
-                </p>
+                )}
               </div>
 
-              {/* Highlights / What was covered */}
-              {workshop.includes && workshop.includes.length > 0 && (
-                <div className="mb-6">
-                  <h2 className="mb-3 text-lg font-semibold">
-                    What was covered
+              {/* Description & Covered */}
+              <div className="mb-10 grid gap-10 md:grid-cols-2">
+                <div>
+                  <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    About this workshop
                   </h2>
-                  <div className="shadow-soft rounded-xl bg-white p-4">
-                    <ul className="space-y-3">
+                  <p className="text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+                    {workshop.description}
+                  </p>
+                </div>
+                {workshop.includes && workshop.includes.length > 0 && (
+                  <div>
+                    <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                      What was covered
+                    </h2>
+                    <ul className="grid gap-3">
                       {workshop.includes.map((highlight, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <div className="bg-primary/10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                            <Check className="text-primary h-4 w-4" />
+                        <li key={index} className="flex items-center gap-3">
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+                            <Check className="h-3 w-3 text-emerald-500" />
                           </div>
-                          <span className="text-sm">{highlight}</span>
+                          <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                            {highlight}
+                          </span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Workshop Highlights */}
               {highlights.length > 0 && (
@@ -465,40 +437,16 @@ export function PastWorkshopDetailClient({
                     </div>
 
                     {/* Carousel */}
-                    <Carousel
-                      className="w-full"
-                      opts={{ startIndex: selectedImageIndex ?? 0, loop: true }}
-                      setApi={setCarouselApi}
-                    >
-                      <CarouselContent>
-                        {gallery.map((image, index) => (
-                          <CarouselItem key={index}>
-                            <div className="bg-muted relative aspect-square max-h-[60vh] w-full overflow-hidden rounded-lg">
-                              <Image
-                                src={image}
-                                alt={`Workshop gallery image ${index + 1}`}
-                                fill
-                                className="object-contain"
-                                priority
-                              />
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                      {gallery.length > 1 && (
-                        <>
-                          <CarouselPrevious className="left-2" />
-                          <CarouselNext className="right-2" />
-                        </>
-                      )}
-                    </Carousel>
-
-                    {/* Counter */}
-                    {gallery.length > 1 && (
-                      <div className="text-muted-foreground mt-4 text-center text-sm">
-                        {currentSlide + 1} / {gallery.length}
-                      </div>
-                    )}
+                    <div className="relative">
+                      <ImageCarousel
+                        images={gallery}
+                        alt="Workshop gallery image"
+                        startIndex={selectedImageIndex ?? 0}
+                        imageClassName="object-contain"
+                        showDots={false}
+                        showCounter={true}
+                      />
+                    </div>
                   </div>
                 </DialogContent>
               </Dialog>
