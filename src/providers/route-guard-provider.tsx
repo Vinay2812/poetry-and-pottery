@@ -2,34 +2,23 @@
 
 import { useAuth } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
-import { Skeleton } from "@/components/ui/skeleton";
+import { PageSkeleton } from "@/components/skeletons";
 
 interface RouteGuardProviderProps {
   children: ReactNode;
   fallbackUrl?: string;
 }
 
-function LoadingSkeleton() {
-  return (
-    <div className="flex min-h-[50vh] flex-col items-center justify-center px-4">
-      <div className="w-full max-w-md space-y-4">
-        <Skeleton className="mx-auto h-12 w-12 rounded-full" />
-        <Skeleton className="mx-auto h-4 w-48" />
-        <Skeleton className="mx-auto h-4 w-32" />
-      </div>
-    </div>
-  );
-}
-
 export function RouteGuardProvider({
   children,
   fallbackUrl = "/sign-in",
 }: RouteGuardProviderProps) {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn, sessionClaims } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const hasRefreshed = useRef(false);
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -39,14 +28,24 @@ export function RouteGuardProvider({
     }
   }, [isLoaded, isSignedIn, router, pathname, fallbackUrl]);
 
+  // Refresh when user is signed in on initial mount to ensure fresh data
+  // This handles the case where user is redirected back after login
+  useEffect(() => {
+    if (isLoaded && isSignedIn && !hasRefreshed.current && sessionClaims) {
+      hasRefreshed.current = true;
+
+      router.refresh();
+    }
+  }, [isLoaded, isSignedIn, router, sessionClaims]);
+
   // Show loading while checking auth status
   if (!isLoaded) {
-    return <LoadingSkeleton />;
+    return <PageSkeleton />;
   }
 
   // Show loading while redirecting
   if (!isSignedIn) {
-    return <LoadingSkeleton />;
+    return <PageSkeleton />;
   }
 
   return <>{children}</>;
