@@ -140,6 +140,12 @@ This document outlines the design system rules and guidelines for the Poetry & P
 
 ## 3. Spacing & Layout
 
+### Premium Spacing Philosophy
+
+- **Outer**: Use generous margins (`my-12`+) for section breaks to create a breathable, extensive feel.
+- **Inner**: Use tight, deliberate spacing (`gap-3` or `gap-4`) within components (cards, lists) to group related content strongly.
+- **Micro**: Use minimal gaps (`gap-1` or `gap-1.5`) for metadata like ratings or tags.
+
 ### Spacing Token System (4px base)
 
 | Token      | Value | Tailwind | Use Case                                    |
@@ -555,35 +561,36 @@ This document outlines the design system rules and guidelines for the Poetry & P
 
 ### Product Cards
 
-#### Variants
+#### Layout & Style
 
-- **Default**: `aspect-square` - Square format for grid layouts
-- **Compact**: `aspect-4/3` - Landscape format for compact views
+- **Style**: "Flat Design" - No borders, use `shadow-soft` for depth.
+- **Hover**: `hover:-translate-y-1` and `hover:shadow-card`.
+- **Corner Radius**: `rounded-[2rem]` (32px) for card, `rounded-2xl` (16px) for image container.
+- **Background**: `bg-white` (Light) / `bg-neutral-900` (Dark).
 
-#### Image
+#### Image Carousel
 
-- **Aspect Ratio**: `aspect-square` (default) or `aspect-4/3` (compact variant)
-- **Border Radius**: `rounded-xl md:rounded-2xl`
-- **Background**: `bg-muted`
-- **Hover Effect**: `group-hover:scale-105` with `transition-transform duration-300`
-
-#### Wishlist Button
-
-- **Position**: `absolute top-2 right-2 md:top-3 md:right-3`
-- **Size**: `h-8 w-8` (all breakpoints)
-- **Style**: `bg-white/90 backdrop-blur-sm hover:bg-white shadow-sm`
-- **Border Radius**: `rounded-full`
-- **Visibility**: Always visible (no opacity toggle on hover)
-- **Icon**: Heart icon `h-4 w-4 text-muted-foreground`
-- **Hover Effect**: `hover:scale-105` with `transition-transform duration-200`
+- **Aspect Ratio**: STRICTLY `aspect-square` (1:1) for all variants.
+- **Behavior**:
+  - Support native `drag` and `swipe` gestures (Embla Carousel).
+  - **Navigation**:
+    - **Clicking Image**: Navigates to Product Detail Page (use `useRouter` on `onClick`).
+    - **Swipe/Drag**: Changes slide, does NOT navigate.
+  - **Pagination Dots**:
+    - **Visibility**: Always visible.
+    - **Style**: White dots inside a `bg-black/40` backdrop-blur pill.
+    - **Position**: Bottom center, moves up on hover to accommodate Cart button.
+  - **Controls**:
+    - Arrows: Show on hover (Desktop) / Always (Mobile). High z-index (`z-20`).
+    - Wishlist Heart: Always visible, top-right.
 
 #### Content
 
-- **Container**: `mt-2 md:mt-3 space-y-0.5`
-- **Layout**: Flex row with `items-start justify-between gap-2`
-- **Title**: `font-medium text-sm leading-tight line-clamp-1`
-- **Price**: `font-semibold text-sm text-primary shrink-0`
-- **Vendor**: `text-xs text-muted-foreground`
+- **Spacing**: `gap-3` between image and text.
+- **Typography**:
+  - **Title**: `text-base font-semibold text-neutral-900` (line-clamp-2).
+  - **Category**: `text-xs font-bold uppercase tracking-wider text-neutral-500`.
+  - **Price**: `text-base font-bold text-neutral-900`.
 
 ### Category Pills (Filter Pills)
 

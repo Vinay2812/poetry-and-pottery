@@ -3,22 +3,17 @@ import { CheckCircle2, Clock, Package, Truck } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+import { ORDER_STEPS } from "../orders/order-progress";
+
 type StatusIconProps = {
   status: string | null;
   className?: ClassValue;
 };
 
 export function StatusIcon({ status, className }: StatusIconProps) {
-  switch (status) {
-    case "delivered":
-      return (
-        <CheckCircle2 className={cn("h-5 w-5 text-green-600", className)} />
-      );
-    case "shipped":
-      return <Truck className={cn("h-5 w-5 text-blue-600", className)} />;
-    case "processing":
-      return <Clock className={cn("h-5 w-5 text-yellow-600", className)} />;
-    default:
-      return <Package className={cn("h-5 w-5 text-gray-600", className)} />;
-  }
+  const step =
+    ORDER_STEPS.find((step) => step.status === status) || ORDER_STEPS[0];
+
+  const StepIcon = step.icon;
+  return <StepIcon className={cn("h-4 w-4", className)} />;
 }

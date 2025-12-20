@@ -48,96 +48,103 @@ export function OrdersListClient({ orders }: OrdersListClientProps) {
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {orders.map((order) => {
         const items = order.ordered_products;
-        const firstProductImage =
-          items[0]?.product?.image_urls?.[0] || "/placeholder.jpg";
         const firstProductName = items[0]?.product?.name || "Product";
 
         return (
           <Link
             key={order.id}
             href={`/orders/${order.id}`}
-            className="group border-border bg-card hover:border-primary/30 block rounded-2xl border p-5 shadow-sm transition-all duration-200 hover:shadow-md"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-neutral-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-800 dark:bg-neutral-900"
           >
             {/* Status Badge & Date */}
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
+            <div className="mb-5 flex items-start justify-between">
+              <div className="flex items-center gap-3">
                 <div
                   className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full",
-                    order.status === OrderStatus.DELIVERED && "bg-green-100",
-                    order.status === OrderStatus.SHIPPED && "bg-blue-100",
-                    order.status === OrderStatus.PROCESSING && "bg-yellow-100",
+                    "flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors dark:bg-neutral-800",
+                    order.status === OrderStatus.DELIVERED &&
+                      "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
+                    order.status === OrderStatus.SHIPPED &&
+                      "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
+                    order.status === OrderStatus.PROCESSING &&
+                      "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
+                    order.status === OrderStatus.PENDING &&
+                      "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
+                    order.status === OrderStatus.PAID &&
+                      "text-primary bg-primary-light dark:text-primary-foreground",
+                    order.status === OrderStatus.CANCELLED &&
+                      "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
+                    order.status === OrderStatus.RETURNED &&
+                      "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400",
+                    order.status === OrderStatus.REFUNDED &&
+                      "bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-400",
                   )}
                 >
-                  <StatusIcon status={order.status} className="h-4 w-4" />
+                  <StatusIcon status={order.status} className="h-5 w-5" />
                 </div>
-                <div>
-                  <span
-                    className={cn(
-                      "text-sm font-medium",
-                      order.status === OrderStatus.DELIVERED &&
-                        "text-green-600",
-                      order.status === OrderStatus.SHIPPED && "text-blue-600",
-                      order.status === OrderStatus.PROCESSING &&
-                        "text-yellow-600",
-                    )}
-                  >
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-neutral-900 dark:text-white">
                     {getStatusLabel(order.status as OrderStatus)}
                   </span>
-                  <p className="text-muted-foreground text-xs">
+                  <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
                     {formatOrderDate(order.created_at)}
-                  </p>
+                  </span>
                 </div>
               </div>
-              <ChevronRight className="text-muted-foreground h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+              <ChevronRight className="h-5 w-5 text-neutral-400 transition-transform duration-300 group-hover:translate-x-1" />
             </div>
 
-            {/* Product Images */}
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex -space-x-3">
-                {items.slice(0, 3).map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="relative h-14 w-14 overflow-hidden rounded-xl border-2 border-white shadow-sm"
-                    style={{ zIndex: items.length - index }}
-                  >
-                    <Image
-                      src={item.product?.image_urls?.[0] || "/placeholder.jpg"}
-                      alt={item.product?.name || "Product"}
-                      width={56}
-                      height={56}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                ))}
-                {items.length > 3 && (
-                  <div className="bg-muted text-muted-foreground flex h-14 w-14 items-center justify-center rounded-xl border-2 border-white text-xs font-semibold shadow-sm">
-                    +{items.length - 3}
-                  </div>
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">
-                  {firstProductName}
-                  {items.length > 1 && ` +${items.length - 1} more`}
-                </p>
-                <p className="text-muted-foreground text-xs">
-                  {items.length} {items.length === 1 ? "item" : "items"}
-                </p>
+            {/* Product Images Preview */}
+            <div className="mb-5">
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-4 pl-1">
+                  {items.slice(0, 3).map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-white shadow-sm ring-1 ring-black/5 dark:border-neutral-900 dark:ring-white/10"
+                      style={{ zIndex: items.length - index }}
+                    >
+                      <Image
+                        src={
+                          item.product?.image_urls?.[0] || "/placeholder.jpg"
+                        }
+                        alt={item.product?.name || "Product"}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                  {items.length > 3 && (
+                    <div className="relative z-0 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white bg-neutral-100 text-xs font-bold text-neutral-600 dark:border-neutral-900 dark:bg-neutral-800 dark:text-neutral-300">
+                      +{items.length - 3}
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-neutral-900 dark:text-white">
+                    {firstProductName}
+                  </p>
+                  {items.length > 1 && (
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                      & {items.length - 1} other item
+                      {items.length > 2 ? "s" : ""}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Order ID & Total */}
-            <div className="border-border flex items-center justify-between border-t pt-4">
-              <p className="text-muted-foreground text-xs font-medium">
-                Order: #{order.id}
-              </p>
-              <p className="text-primary text-lg font-bold">
-                ₹{order.total.toFixed(2)}
-              </p>
+            {/* Order Footer */}
+            <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-4 dark:border-neutral-800">
+              <span className="text-xs font-medium tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
+                Order #{order.id}
+              </span>
+              <span className="text-base font-bold text-neutral-900 dark:text-white">
+                ₹{order.total.toLocaleString()}
+              </span>
             </div>
           </Link>
         );

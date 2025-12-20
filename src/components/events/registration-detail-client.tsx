@@ -10,7 +10,9 @@ import {
   MapPin,
   Share2,
   Ticket,
+  Timer,
   User,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -76,24 +78,13 @@ export function RegistrationDetailClient({
         backHref="/events/registrations"
       />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-12">
-        <div className="container mx-auto px-4 py-6 lg:px-8">
-          {/* Category Header */}
-          <div className="mb-6">
-            <Link
-              href="/events/registrations"
-              className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1.5 text-sm font-medium text-green-700 transition-colors hover:bg-green-100"
-            >
-              <Ticket className="h-4 w-4" />
-              My Registration
-            </Link>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-3">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
+        <div className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
+          <div className="grid gap-4 lg:grid-cols-3 lg:gap-10">
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Hero Image */}
-              <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-2xl lg:rounded-3xl">
+              <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-2xl lg:aspect-video">
                 <Image
                   src={imageUrl}
                   alt={event.title}
@@ -113,158 +104,167 @@ export function RegistrationDetailClient({
 
                 {/* Status Badge on Image */}
                 <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                  {status === "confirmed" && (
-                    <Badge className="bg-primary flex items-center gap-1 text-white">
-                      <CheckCircle2 className="h-3 w-3" />
-                      Confirmed
-                    </Badge>
-                  )}
+                  <Badge className="border-none bg-emerald-500 px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-lg backdrop-blur-md">
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                    Confirmed
+                  </Badge>
                   {event.level && (
-                    <Badge
-                      variant="secondary"
-                      className="text-foreground bg-white/90"
-                    >
+                    <Badge className="border-none bg-white/90 px-3 py-1 text-[10px] font-bold tracking-wider text-neutral-900 uppercase shadow-lg backdrop-blur-md">
                       {event.level}
                     </Badge>
                   )}
                 </div>
               </div>
 
-              {/* Event Title */}
-              <div className="mb-6">
-                <h1 className="text-2xl font-bold lg:text-3xl">
+              {/* Registration Header & Price */}
+              <div className="mb-8 border-b border-neutral-100 pb-6 dark:border-neutral-800">
+                <div className="mb-3">
+                  <span className="bg-primary/10 text-primary inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold tracking-widest uppercase">
+                    <Ticket className="h-3 w-3" />
+                    My Registration
+                  </span>
+                </div>
+
+                <h1 className="mb-4 text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
                   {event.title}
                 </h1>
-              </div>
 
-              {/* Registration Info Card */}
-              <div className="bg-primary/5 mb-6 rounded-2xl p-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <Ticket className="text-primary h-5 w-5" />
-                  <span className="font-semibold">Your Registration</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  <div>
-                    <p className="text-muted-foreground text-xs">Seats</p>
-                    <p className="font-semibold">
-                      {registration.seats_reserved} seat
-                      {registration.seats_reserved > 1 ? "s" : ""}
-                    </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-neutral-900 dark:text-white">
+                      ₹
+                      {(
+                        event.price * registration.seats_reserved
+                      ).toLocaleString()}
+                    </span>
+                    <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Amount Paid
+                    </span>
                   </div>
-                  <div>
-                    <p className="text-muted-foreground text-xs">
-                      Registered On
-                    </p>
-                    <p className="font-semibold">{registrationDate}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-xs">Status</p>
-                    <p className="text-primary font-semibold capitalize">
+                  <div className="flex items-center gap-2">
+                    <Badge className="border-none bg-emerald-500 px-3 py-1 text-[10px] font-bold tracking-widest text-white capitalize uppercase shadow-sm">
                       {status}
+                    </Badge>
+                  </div>
+                </div>
+                <p className="mt-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                  Order ID: #{registration.id.toUpperCase()}
+                </p>
+              </div>
+
+              {/* Registration & Quick Info */}
+              <div className="mb-6 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-neutral-100 py-6 sm:grid-cols-4 dark:border-neutral-800">
+                <div className="flex items-start gap-3">
+                  <Users className="mt-1 h-4 w-4 text-neutral-400" />
+                  <div>
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Seats
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      {registration.seats_reserved}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Calendar className="mt-1 h-4 w-4 text-neutral-400" />
+                  <div>
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Date
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      {formattedDate}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Clock className="mt-1 h-4 w-4 text-neutral-400" />
+                  <div>
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Time
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      {formattedTime}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Timer className="mt-1 h-4 w-4 text-neutral-400" />
+                  <div>
+                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                      Total Paid
+                    </p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                      ₹
+                      {(
+                        event.price * registration.seats_reserved
+                      ).toLocaleString()}
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Event Info Cards */}
-              <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Calendar className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Date</p>
-                  <p className="text-sm font-semibold">{formattedDate}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Clock className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Time</p>
-                  <p className="text-sm font-semibold">{formattedTime}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Clock className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Duration</p>
-                  <p className="text-sm font-semibold">{duration}</p>
-                </div>
-                <div className="shadow-soft rounded-xl bg-white p-4">
-                  <div className="bg-primary/10 mb-2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <CheckCircle2 className="text-primary h-5 w-5" />
-                  </div>
-                  <p className="text-muted-foreground text-xs">Payment</p>
-                  <p className="text-primary text-sm font-semibold">
-                    ₹{(event.price * registration.seats_reserved).toFixed(2)}{" "}
-                    Paid
-                  </p>
-                </div>
-              </div>
-
-              {/* Location */}
-              {event.location && (
-                <div className="shadow-soft mb-6 rounded-xl bg-white p-4">
+              {/* Location & Instructor */}
+              <div className="mb-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
+                {event.location && (
                   <div className="flex items-start gap-3">
-                    <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                      <MapPin className="text-primary h-5 w-5" />
-                    </div>
+                    <MapPin className="mt-1 h-4 w-4 text-neutral-400" />
                     <div>
-                      <p className="font-semibold">{event.location}</p>
-                      {event.full_location ? (
-                        <p className="text-muted-foreground text-xs leading-relaxed">
-                          {event.full_location}
-                        </p>
-                      ) : (
-                        <p className="text-muted-foreground text-xs">
-                          Location
-                        </p>
-                      )}
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Location
+                      </p>
+                      <p className="text-sm leading-snug font-semibold text-neutral-900 dark:text-neutral-100">
+                        {event.location}
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-neutral-400">
+                        {event.full_location}
+                      </p>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {/* Instructor */}
-              {event.instructor && (
-                <div className="shadow-soft mb-6 rounded-xl bg-white p-4">
+                )}
+                {event.instructor && (
                   <div className="flex items-start gap-3">
-                    <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                      <User className="text-primary h-5 w-5" />
-                    </div>
+                    <User className="mt-1 h-4 w-4 text-neutral-400" />
                     <div>
-                      <p className="text-muted-foreground text-xs">
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
                         Instructor
                       </p>
-                      <p className="font-semibold">{event.instructor}</p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {event.instructor}
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-neutral-400">
+                        Lead Artist
+                      </p>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Description */}
-              <div className="mb-6">
-                <h2 className="mb-3 text-lg font-semibold">
+              <div className="mb-10">
+                <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-500 uppercase">
                   About this workshop
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
                   {event.description}
                 </p>
               </div>
 
               {/* What's Included */}
               {event.includes && event.includes.length > 0 && (
-                <div className="mb-6">
-                  <h2 className="mb-3 text-lg font-semibold">
+                <div className="mb-10">
+                  <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-500 uppercase">
                     What&apos;s included
                   </h2>
-                  <div className="shadow-soft rounded-xl bg-white p-4">
-                    <ul className="space-y-3">
+                  <div className="shadow-soft rounded-2xl border border-neutral-50 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+                    <ul className="grid gap-4 sm:grid-cols-2">
                       {event.includes.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <div className="bg-primary/10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                            <Check className="text-primary h-4 w-4" />
+                        <li key={index} className="flex items-center gap-3">
+                          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+                            <Check className="h-3.5 w-3.5 text-emerald-500" />
                           </div>
-                          <span className="text-sm">{item}</span>
+                          <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                            {item}
+                          </span>
                         </li>
                       ))}
                     </ul>

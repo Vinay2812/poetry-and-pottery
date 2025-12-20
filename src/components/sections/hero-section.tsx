@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { ReactNode } from "react";
 
@@ -23,44 +26,77 @@ export function HeroSection({
   badge,
   children,
   aspectRatio = "portrait",
-  overlayGradient = "bg-linear-to-t from-black/70 via-black/30 to-transparent",
+  overlayGradient = "bg-gradient-to-t from-black/80 via-black/20 to-transparent",
   className,
 }: HeroSectionProps) {
   return (
     <section
-      className={cn("container mx-auto px-4 py-6 lg:px-8 lg:py-12", className)}
+      className={cn("container mx-auto px-4 py-4 lg:px-8 lg:py-12", className)}
     >
       <div
         className={cn(
-          "relative overflow-hidden rounded-3xl",
+          "relative overflow-hidden rounded-[2.5rem] shadow-2xl",
           aspectRatio === "portrait"
-            ? "aspect-4/5 lg:aspect-21/9"
-            : "aspect-4/3 lg:aspect-21/9",
+            ? "aspect-square lg:aspect-[21/9]"
+            : "aspect-[4/3] lg:aspect-[21/9]",
         )}
       >
-        <Image
-          src={image}
-          alt={imageAlt}
-          fill
-          className="object-cover"
-          priority
-        />
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="relative h-full w-full"
+        >
+          <Image
+            src={image}
+            alt={imageAlt}
+            fill
+            className="object-cover"
+            priority
+          />
+        </motion.div>
+
         <div className={cn("absolute inset-0", overlayGradient)} />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
-          {badge && (
-            <span className="bg-primary text-primary-foreground mb-4 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium">
-              {badge}
-            </span>
-          )}
-          <h1 className="mb-2 text-4xl font-bold text-white lg:text-6xl">
-            {title}
-          </h1>
-          {subtitle && (
-            <p className="max-w-lg text-sm text-white/90 lg:text-lg">
-              {subtitle}
-            </p>
-          )}
-          {children && <div className="mt-6">{children}</div>}
+
+        {/* Content */}
+        <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="max-w-3xl"
+          >
+            {badge && (
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="mb-6 inline-flex items-center rounded-full bg-white/20 px-4 py-1.5 text-xs font-bold tracking-wider text-white backdrop-blur-md"
+              >
+                {badge}
+              </motion.span>
+            )}
+
+            <h1 className="mb-4 text-4xl leading-tight font-bold tracking-tight text-white lg:mb-6 lg:text-7xl">
+              {title}
+            </h1>
+
+            {subtitle && (
+              <p className="mb-6 max-w-xl text-lg leading-relaxed font-medium text-white/90 lg:mb-10 lg:text-xl">
+                {subtitle}
+              </p>
+            )}
+
+            {children && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 }}
+              >
+                {children}
+              </motion.div>
+            )}
+          </motion.div>
         </div>
       </div>
     </section>

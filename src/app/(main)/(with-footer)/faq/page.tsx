@@ -144,7 +144,7 @@ export default function FAQPage() {
     <>
       <MobileHeader title="FAQ" showBack backHref="/" />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
           <div className="mx-auto max-w-3xl text-center">

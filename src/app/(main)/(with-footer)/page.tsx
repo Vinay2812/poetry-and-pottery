@@ -4,7 +4,11 @@ import Image from "next/image";
 
 import { ProductCard } from "@/components/cards";
 import { MobileHeader } from "@/components/layout";
-import { CTASection, CategorySection } from "@/components/sections";
+import {
+  CTASection,
+  CategorySection,
+  HeroSection,
+} from "@/components/sections";
 import { Button } from "@/components/ui/button";
 
 import { HERO_IMAGES } from "@/lib/constants";
@@ -46,45 +50,39 @@ export default async function Home() {
     <>
       <MobileHeader />
 
-      <main className="container mx-auto pt-14 lg:pt-0">
+      <main className="min-h-screen pt-14 lg:pt-20">
         {/* Hero Section */}
-        <section className="px-4 py-4 lg:px-8 lg:py-12">
-          <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-[#5C6B4A] md:aspect-21/9">
-            <Image
-              src={HERO_IMAGES.springRituals}
-              alt="Spring Rituals Collection"
-              fill
-              className="object-cover opacity-80"
-              priority
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
-              <span className="bg-primary text-primary-foreground mb-4 inline-block w-fit rounded-full px-3 py-1 text-xs font-medium">
-                NEW ARRIVALS
-              </span>
-              <h1 className="mb-2 text-4xl font-bold text-white lg:text-6xl">
-                Spring
-                <br />
-                Rituals
-              </h1>
-              <p className="mb-6 max-w-md text-sm text-white/90 lg:text-base">
-                Hand-thrown porcelain designed to ground your daily moments in
-                nature.
-              </p>
-              <Button className="w-fit rounded-full px-6" size="lg">
-                Explore Collection
-              </Button>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          image={HERO_IMAGES.springRituals}
+          imageAlt="Spring Rituals Collection"
+          badge="NEW ARRIVALS"
+          title="Spring Rituals"
+          subtitle="Hand-thrown porcelain designed to ground your daily moments in nature."
+        >
+          <Button
+            className="h-12 rounded-full px-8 text-base shadow-lg transition-transform hover:scale-105"
+            size="lg"
+          >
+            Explore Collection
+          </Button>
+        </HeroSection>
 
         {/* Shop by Category */}
         <CategorySection categories={categories.slice(0, 8)} />
 
         {/* Curated Favorites */}
-        <section className="px-4 py-6 lg:px-8">
-          <h2 className="mb-4 text-lg font-semibold">Curated Favorites</h2>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <section className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
+          <div className="mb-4 flex items-end justify-between lg:mb-8">
+            <div>
+              <h2 className="text-xl font-bold tracking-tight lg:text-3xl">
+                Curated Favorites
+              </h2>
+              <p className="text-muted-foreground mt-2 text-sm lg:text-base">
+                Handpicked pieces for your home.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -100,6 +98,7 @@ export default async function Home() {
           secondaryButtonText="Browse Collection"
           secondaryButtonHref="/products"
           variant="solid"
+          className="py-12"
         />
 
         {/* Our Story CTA */}
@@ -111,6 +110,7 @@ export default async function Home() {
           image={HERO_IMAGES.ourStory}
           imageAlt="Our Story"
           variant="image"
+          className="pb-20 lg:pb-24"
         />
       </main>
     </>

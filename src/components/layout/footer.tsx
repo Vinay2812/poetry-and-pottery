@@ -17,7 +17,9 @@ export function Footer() {
               <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-full">
                 <span className="text-sm font-bold text-white">P</span>
               </div>
-              <span className="text-lg font-semibold">Poetry & Pottery</span>
+              <span className="bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-lg font-bold text-transparent dark:from-neutral-100 dark:to-neutral-400">
+                Poetry & Pottery
+              </span>
             </Link>
             <p className="text-muted-foreground text-sm">
               Hand-thrown porcelain designed to ground your daily moments in

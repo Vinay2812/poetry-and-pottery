@@ -5,6 +5,8 @@ import Image from "next/image";
 
 import { Rating } from "@/components/shared";
 
+import { cn } from "@/lib/utils";
+
 interface ReviewCardProps {
   author: string;
   avatar: string;
@@ -36,7 +38,10 @@ export function ReviewCard({
 }: ReviewCardProps) {
   return (
     <div
-      className={`border-border rounded-xl border bg-white ${isCompact ? "w-64 shrink-0 p-4" : "p-4"}`}
+      className={cn(
+        "shadow-soft rounded-[2rem] border border-neutral-100 bg-white p-5 transition-all duration-300 dark:border-neutral-800 dark:bg-neutral-900",
+        isCompact ? "w-[280px] shrink-0" : "w-full",
+      )}
     >
       <div className="mb-3 flex items-start gap-3">
         <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">

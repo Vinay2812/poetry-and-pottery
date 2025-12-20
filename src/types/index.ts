@@ -177,6 +177,8 @@ export interface PaginatedResponse<T> {
 export interface ProductsResponse extends PaginatedResponse<ProductWithCategories> {
   categories: string[];
   materials: string[];
+  priceRange: { min: number; max: number };
+  priceHistogram: { min: number; max: number; count: number }[];
 }
 
 export interface EventsResponse extends PaginatedResponse<EventWithRegistrationCount> {

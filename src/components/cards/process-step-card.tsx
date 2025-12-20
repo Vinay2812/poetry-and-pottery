@@ -10,12 +10,16 @@ export function ProcessStepCard({
   description,
 }: ProcessStepCardProps) {
   return (
-    <div className="shadow-soft hover:shadow-card rounded-2xl bg-white p-6 transition-shadow duration-200">
-      <span className="text-primary mb-2 block text-3xl font-bold opacity-30">
+    <div className="group shadow-soft hover:shadow-card rounded-[2rem] border border-neutral-100 bg-white p-6 transition-all duration-300 hover:-translate-y-1 lg:p-10 dark:border-neutral-800 dark:bg-neutral-900">
+      <span className="text-primary/20 group-hover:text-primary/40 mb-2 block text-5xl font-black transition-colors lg:mb-4">
         {step}
       </span>
-      <h3 className="mb-2 font-semibold">{title}</h3>
-      <p className="text-muted-foreground text-sm">{description}</p>
+      <h3 className="mb-3 text-lg font-bold text-neutral-900 dark:text-neutral-100">
+        {title}
+      </h3>
+      <p className="text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+        {description}
+      </p>
     </div>
   );
 }

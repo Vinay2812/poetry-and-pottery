@@ -5,7 +5,13 @@ import type { ProductFilterParams, ProductWithCategories } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2, Search, SlidersHorizontal } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { startTransition, useCallback, useEffect, useMemo } from "react";
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useInView } from "react-intersection-observer";
 
 import { ProductCard } from "@/components/cards";
@@ -39,11 +45,19 @@ interface Category {
   name: string;
 }
 
+interface PriceHistogram {
+  min: number;
+  max: number;
+  count: number;
+}
+
 interface ProductsClientProps {
   products: ProductWithCategories[];
   categories: Category[];
   materials: string[];
   totalProducts: number;
+  priceRange?: { min: number; max: number };
+  priceHistogram?: PriceHistogram[];
 }
 
 const PRODUCTS_PER_PAGE = 12;
@@ -53,6 +67,8 @@ export function ProductsClient({
   categories,
   materials,
   totalProducts,
+  priceRange,
+  priceHistogram,
 }: ProductsClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -65,6 +81,29 @@ export function ProductsClient({
   }, [searchParams]);
   const sortBy = searchParams.get("sort") || "featured";
 
+  // Price state
+  const minPriceParam = searchParams.get("minPrice");
+  const maxPriceParam = searchParams.get("maxPrice");
+
+  // Actual state
+  const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([
+    minPriceParam ? parseInt(minPriceParam) : (priceRange?.min ?? 0),
+    maxPriceParam ? parseInt(maxPriceParam) : (priceRange?.max ?? 1000),
+  ]);
+
+  // Sync state when URL params change (e.g. clear filters)
+  useEffect(() => {
+    const min = minPriceParam
+      ? parseInt(minPriceParam)
+      : (priceRange?.min ?? 0);
+    const max = maxPriceParam
+      ? parseInt(maxPriceParam)
+      : (priceRange?.max ?? 1000);
+    startTransition(() => {
+      setLocalPriceRange([min, max]);
+    });
+  }, [minPriceParam, maxPriceParam, priceRange]);
+
   // Build filter params for query
   const filterParams: ProductFilterParams = useMemo(
     () => ({
@@ -72,8 +111,10 @@ export function ProductsClient({
       materials: selectedMaterials.length > 0 ? selectedMaterials : undefined,
       sortBy: sortBy as ProductFilterParams["sortBy"],
       limit: PRODUCTS_PER_PAGE,
+      minPrice: minPriceParam ? parseInt(minPriceParam) : undefined,
+      maxPrice: maxPriceParam ? parseInt(maxPriceParam) : undefined,
     }),
-    [activeCategory, selectedMaterials, sortBy],
+    [activeCategory, selectedMaterials, sortBy, minPriceParam, maxPriceParam],
   );
 
   // Infinite query for products
@@ -99,6 +140,8 @@ export function ProductsClient({
             totalPages: Math.ceil(totalProducts / PRODUCTS_PER_PAGE),
             categories: categories.map((c) => c.id),
             materials,
+            priceRange: priceRange || { min: 0, max: 1000 },
+            priceHistogram: priceHistogram || [],
           },
         ],
         pageParams: [1],
@@ -173,6 +216,20 @@ export function ProductsClient({
     [selectedMaterials, updateParams],
   );
 
+  const handlePriceChange = useCallback((range: [number, number]) => {
+    setLocalPriceRange(range);
+  }, []);
+
+  const handlePriceCommit = useCallback(
+    (range: [number, number]) => {
+      updateParams({
+        minPrice: range[0].toString(),
+        maxPrice: range[1].toString(),
+      });
+    },
+    [updateParams],
+  );
+
   const handleSortChange = useCallback(
     (sort: string) => {
       updateParams({ sort: sort === "featured" ? null : sort });
@@ -181,10 +238,14 @@ export function ProductsClient({
   );
 
   const clearFilters = useCallback(() => {
+    // Reset local state first to feel responsive
+    if (priceRange) {
+      setLocalPriceRange([priceRange.min, priceRange.max]);
+    }
     startTransition(() => {
       router.push("/products", { scroll: false });
     });
-  }, [router]);
+  }, [router, priceRange]);
 
   return (
     <>
@@ -216,7 +277,7 @@ export function ProductsClient({
           </SheetTrigger>
           <SheetContent side="left" className="w-80">
             <SheetHeader className="px-6 pt-6">
-              <SheetTitle>Filters</SheetTitle>
+              <SheetTitle className="sr-only">Filters</SheetTitle>
             </SheetHeader>
             <div className="mt-2 px-6 pb-6">
               <FilterSidebar
@@ -226,6 +287,12 @@ export function ProductsClient({
                 materials={materials}
                 onCategoryChange={handleCategoryChange}
                 onMaterialToggle={handleMaterialToggle}
+                onClear={clearFilters}
+                priceRange={priceRange}
+                selectedPriceRange={localPriceRange}
+                onPriceChange={handlePriceChange}
+                onPriceChangeCommit={handlePriceCommit}
+                priceHistogram={priceHistogram}
               />
             </div>
           </SheetContent>
@@ -245,12 +312,11 @@ export function ProductsClient({
         </Select>
       </div>
 
-      <div className="container mx-auto px-4 py-2 lg:px-8 lg:py-6">
+      <div className="container mx-auto px-4 py-0 lg:px-8">
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
           <aside className="hidden w-64 shrink-0 lg:block">
-            <div className="sticky top-20">
-              <h2 className="mb-6 text-xl font-semibold">Filters</h2>
+            <div className="sticky top-28">
               <FilterSidebar
                 activeCategory={activeCategory}
                 selectedMaterials={selectedMaterials}
@@ -258,6 +324,12 @@ export function ProductsClient({
                 materials={materials}
                 onCategoryChange={handleCategoryChange}
                 onMaterialToggle={handleMaterialToggle}
+                onClear={clearFilters}
+                priceRange={priceRange}
+                selectedPriceRange={localPriceRange}
+                onPriceChange={handlePriceChange}
+                onPriceChangeCommit={handlePriceCommit}
+                priceHistogram={priceHistogram}
               />
             </div>
           </aside>
@@ -285,7 +357,7 @@ export function ProductsClient({
 
             {products.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 gap-x-3 gap-y-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+                <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}

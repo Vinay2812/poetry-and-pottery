@@ -105,7 +105,7 @@ export default function AboutPage() {
     <>
       <MobileHeader title="About Us" showBack backHref="/" />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
           <div className="relative aspect-[4/5] overflow-hidden rounded-3xl lg:aspect-21/9">

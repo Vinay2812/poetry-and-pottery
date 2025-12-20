@@ -44,51 +44,53 @@ export function CartItemCard({
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, x: -100 }}
+      exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.2 }}
-      className="shadow-soft hover:shadow-card rounded-2xl bg-white p-3 transition-shadow duration-200 lg:p-4"
+      className="group shadow-soft relative overflow-hidden rounded-[2rem] border border-neutral-100 bg-white p-3 transition-all duration-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
     >
       {/* Mobile Layout */}
-      <div className="flex gap-3 lg:hidden">
+      <div className="flex gap-4 lg:hidden">
         <Link
           href={`/products/${product.slug}`}
-          className="focus-visible:ring-primary/30 relative h-20 w-20 shrink-0 overflow-hidden rounded-xl focus-visible:ring-2 focus-visible:outline-none"
+          className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800"
         >
           <Image
             src={imageUrl}
             alt={product.name}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </Link>
 
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col justify-between py-0.5">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
               <Link href={`/products/${product.slug}`}>
-                <h3 className="hover:text-primary truncate text-sm font-medium transition-colors">
+                <h3 className="line-clamp-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                   {product.name}
                 </h3>
               </Link>
-              <p className="text-muted-foreground text-xs">{category}</p>
+              <p className="mt-1 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                {category}
+              </p>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 shrink-0 text-red-400 hover:bg-red-50 hover:text-red-500"
+              className="h-8 w-8 shrink-0 rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-red-500 dark:text-neutral-500 dark:hover:bg-neutral-800"
               onClick={onRemove}
               disabled={isLoading}
             >
               {isLoading ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                <Trash2 className="h-3.5 w-3.5" />
+                <Trash2 className="h-4 w-4" />
               )}
             </Button>
           </div>
 
-          <div className="mt-auto flex items-center justify-between pt-2">
-            <span className="text-sm font-semibold">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-bold text-neutral-900 dark:text-white">
               ₹{itemTotal.toLocaleString()}
             </span>
             <Select
@@ -96,7 +98,7 @@ export function CartItemCard({
               onValueChange={(value) => onQuantityChange(parseInt(value, 10))}
               disabled={isLoading}
             >
-              <SelectTrigger className="h-8 w-16 text-xs">
+              <SelectTrigger className="h-8 w-[4.5rem] rounded-full text-xs font-medium">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -115,7 +117,7 @@ export function CartItemCard({
       <div className="hidden gap-4 lg:flex">
         <Link
           href={`/products/${product.slug}`}
-          className="focus-visible:ring-primary/30 relative h-24 w-24 shrink-0 overflow-hidden rounded-xl focus-visible:ring-2 focus-visible:outline-none"
+          className="focus-visible:ring-primary/30 relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl focus-visible:ring-2 focus-visible:outline-none"
         >
           <Image
             src={imageUrl}

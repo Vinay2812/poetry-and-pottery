@@ -14,6 +14,7 @@ import { useCallback } from "react";
 
 import { OrderProgress } from "@/components/orders";
 import { ReviewForm, StatusIcon } from "@/components/shared";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
@@ -66,45 +67,47 @@ function OrderItemCard({ item, canReview }: OrderItemCardProps) {
   );
 
   return (
-    <div className="shadow-soft rounded-2xl bg-white p-4">
+    <div className="shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
       <div className="flex gap-4">
         <Link href={`/products/${productSlug}`}>
-          <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl transition-transform hover:scale-105">
+          <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
             <Image
               src={productImage}
               alt={productName}
               width={80}
               height={80}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform hover:scale-105"
             />
           </div>
         </Link>
 
-        <div className="min-w-0 flex-1">
-          <Link href={`/products/${productSlug}`}>
-            <h3 className="hover:text-primary text-sm font-medium transition-colors">
-              {productName}
-            </h3>
-          </Link>
-          {product?.color_name && (
-            <p className="text-muted-foreground text-xs">
-              {product.color_name}
-            </p>
-          )}
-          <p className="text-muted-foreground text-xs">Qty: {item.quantity}</p>
-          <p className="text-primary mt-1 text-sm font-bold">
-            ₹{(item.price * item.quantity).toFixed(2)}
+        <div className="flex min-w-0 flex-1 flex-col justify-between">
+          <div>
+            <Link href={`/products/${productSlug}`}>
+              <h3 className="hover:text-primary line-clamp-1 text-sm font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+                {productName}
+              </h3>
+            </Link>
+            {product?.color_name && (
+              <p className="text-xs text-neutral-500">{product.color_name}</p>
+            )}
+            <p className="text-xs text-neutral-500">Qty: {item.quantity}</p>
+          </div>
+          <p className="text-primary text-sm font-bold">
+            ₹{(item.price * item.quantity).toLocaleString()}
           </p>
         </div>
       </div>
 
       {canReview && (
-        <ReviewForm
-          title={`Review ${productName}`}
-          hasReviewed={item.hasReviewed}
-          variant="full-width"
-          onSubmit={handleReviewSubmit}
-        />
+        <div className="mt-4 border-t border-neutral-100 pt-4 dark:border-neutral-800">
+          <ReviewForm
+            title={`Review ${productName}`}
+            hasReviewed={item.hasReviewed}
+            variant="full-width"
+            onSubmit={handleReviewSubmit}
+          />
+        </div>
       )}
     </div>
   );
@@ -137,208 +140,204 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
   const items = order.ordered_products;
 
   return (
-    <div className="grid gap-8 lg:grid-cols-3">
-      {/* Left Sidebar - Order Details (Desktop) */}
-      <div className="hidden lg:block">
-        <div className="shadow-soft sticky top-24 space-y-6 rounded-2xl bg-white p-6">
-          {/* Status Badge */}
-          <div
-            className={cn(
-              "flex items-center gap-2 rounded-xl p-3",
-              order.status === OrderStatus.DELIVERED && "bg-green-50",
-              order.status === OrderStatus.SHIPPED && "bg-blue-50",
-              order.status === OrderStatus.PROCESSING && "bg-yellow-50",
+    <div className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Left Sidebar - Order Details (Desktop) */}
+        <div className="hidden lg:block">
+          <div className="sticky top-24 space-y-6">
+            {/* Status Card */}
+            <div className="shadow-soft rounded-2xl border border-neutral-100 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+              <p className="mb-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                Order Status
+              </p>
+              <div className="mb-6 flex items-center gap-3">
+                <div
+                  className={cn(
+                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
+                    order.status === OrderStatus.DELIVERED &&
+                      "bg-emerald-50 text-emerald-600",
+                    order.status === OrderStatus.SHIPPED &&
+                      "bg-blue-50 text-blue-600",
+                    order.status === OrderStatus.PROCESSING &&
+                      "bg-amber-50 text-amber-600",
+                  )}
+                >
+                  <StatusIcon status={order.status} className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                    {getStatusLabel(order.status as OrderStatus)}
+                  </p>
+                  <p className="mt-0.5 font-mono text-[9px] text-neutral-400">
+                    #{order.id.toUpperCase()}
+                  </p>
+                </div>
+              </div>
+
+              <OrderProgress
+                status={order.status || OrderStatus.PROCESSING}
+                createdAt={order.created_at}
+                shippedAt={order.shipped_at}
+                deliveredAt={order.delivered_at}
+                requestAt={order.request_at}
+                approvedAt={order.approved_at}
+                paidAt={order.paid_at}
+                cancelledAt={order.cancelled_at}
+              />
+            </div>
+
+            {/* Payment Summary Card */}
+            <div className="shadow-soft rounded-2xl border border-neutral-100 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+              <p className="mb-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                Payment Summary
+              </p>
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-500">Subtotal</span>
+                  <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                    ₹{order.subtotal.toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-500">Shipping</span>
+                  <span
+                    className={cn(
+                      "font-medium",
+                      order.shipping_fee === 0
+                        ? "text-emerald-600"
+                        : "text-neutral-900 dark:text-neutral-100",
+                    )}
+                  >
+                    {order.shipping_fee === 0
+                      ? "Free"
+                      : `₹${order.shipping_fee.toLocaleString()}`}
+                  </span>
+                </div>
+                <div className="flex items-baseline justify-between border-t border-neutral-100 pt-3 dark:border-neutral-800">
+                  <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+                    Total
+                  </span>
+                  <span className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+                    ₹{order.total.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {canReview && (
+              <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-950/20">
+                <p className="text-center text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                  Your order has been delivered! Leave reviews for your items.
+                </p>
+              </div>
             )}
-          >
-            <StatusIcon status={order.status} className="h-5 w-5" />
-            <span
-              className={cn(
-                "font-medium",
-                order.status === OrderStatus.DELIVERED && "text-green-700",
-                order.status === OrderStatus.SHIPPED && "text-blue-700",
-                order.status === OrderStatus.PROCESSING && "text-yellow-700",
-              )}
-            >
-              {getStatusLabel(order.status as OrderStatus)}
-            </span>
           </div>
+        </div>
 
-          {/* Order Info */}
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Order ID</span>
-              <span className="text-xs font-medium">{order.id}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Ordered On</span>
-              <span>{formatOrderDate(order.created_at)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Items</span>
-              <span>{items.length}</span>
-            </div>
-          </div>
-
-          <div className="border-border border-t" />
-
-          {/* Order Progress */}
-          <OrderProgress
-            status={order.status || OrderStatus.PROCESSING}
-            createdAt={order.created_at}
-            shippedAt={order.shipped_at}
-            deliveredAt={order.delivered_at}
-          />
-
-          <div className="border-border border-t" />
-
-          {/* Order Summary */}
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Subtotal</span>
-              <span className="font-medium">₹{order.subtotal.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Shipping</span>
-              <span
+        {/* Right Content - Items (Desktop) / Full Content (Mobile) */}
+        <div className="lg:col-span-2">
+          {/* Mobile Header */}
+          <div className="mb-8 lg:hidden">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="mb-1 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                  Order
+                </p>
+                <h1 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+                  #{order.id.toUpperCase()}
+                </h1>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Placed on {formatOrderDate(order.created_at)}
+                </p>
+              </div>
+              <Badge
                 className={cn(
-                  "font-medium",
-                  order.shipping_fee === 0 && "text-green-600",
+                  "border-none px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase",
+                  order.status === OrderStatus.DELIVERED &&
+                    "bg-emerald-50 text-emerald-600",
+                  order.status === OrderStatus.SHIPPED &&
+                    "bg-blue-50 text-blue-600",
+                  order.status === OrderStatus.PROCESSING &&
+                    "bg-amber-50 text-amber-600",
                 )}
               >
-                {order.shipping_fee === 0
-                  ? "Free"
-                  : `₹${order.shipping_fee.toFixed(2)}`}
-              </span>
+                {getStatusLabel(order.status as OrderStatus)}
+              </Badge>
             </div>
-            <div className="border-border flex justify-between border-t pt-3">
-              <span className="font-semibold">Total</span>
-              <span className="text-primary text-xl font-bold">
-                ₹{order.total.toFixed(2)}
-              </span>
+
+            {/* Mobile Progress */}
+            <div className="mt-6">
+              <OrderProgress
+                status={order.status || OrderStatus.PROCESSING}
+                createdAt={order.created_at}
+                shippedAt={order.shipped_at}
+                deliveredAt={order.delivered_at}
+              />
+            </div>
+          </div>
+
+          {/* Order Items */}
+          <div className="mb-8">
+            <h3 className="mb-4 text-sm font-semibold text-neutral-900 lg:text-lg dark:text-neutral-100">
+              Items ({items.length})
+            </h3>
+            <div className="space-y-4">
+              {items.map((item) => (
+                <OrderItemCard
+                  key={item.id}
+                  item={item}
+                  canReview={canReview}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile Payment Summary */}
+          <div className="shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 lg:hidden dark:border-neutral-800 dark:bg-neutral-900">
+            <p className="mb-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+              Payment Summary
+            </p>
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-neutral-500">Subtotal</span>
+                <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                  ₹{order.subtotal.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-neutral-500">Shipping</span>
+                <span
+                  className={cn(
+                    "font-medium",
+                    order.shipping_fee === 0
+                      ? "text-emerald-600"
+                      : "text-neutral-900 dark:text-neutral-100",
+                  )}
+                >
+                  {order.shipping_fee === 0
+                    ? "Free"
+                    : `₹${order.shipping_fee.toLocaleString()}`}
+                </span>
+              </div>
+              <div className="flex items-baseline justify-between border-t border-neutral-100 pt-3 dark:border-neutral-800">
+                <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+                  Total Paid
+                </span>
+                <span className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+                  ₹{order.total.toLocaleString()}
+                </span>
+              </div>
             </div>
           </div>
 
           {canReview && (
-            <>
-              <div className="border-border border-t" />
-              <div className="bg-primary/10 rounded-xl p-3 text-center">
-                <p className="text-primary text-sm font-medium">
-                  Leave reviews for your items!
-                </p>
-              </div>
-            </>
+            <div className="mt-6 rounded-2xl bg-emerald-50 p-4 text-center lg:hidden dark:bg-emerald-950/20">
+              <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                Your order has been delivered! Leave reviews for your items.
+              </p>
+            </div>
           )}
         </div>
-      </div>
-
-      {/* Right Content - Items (Desktop) / Full Content (Mobile) */}
-      <div className="lg:col-span-2">
-        {/* Product Images Hero - Mobile Only */}
-        <div className="relative mb-6 lg:hidden">
-          <div className="flex gap-2 overflow-hidden rounded-2xl">
-            {items.slice(0, 2).map((item) => (
-              <div
-                key={item.id}
-                className={cn(
-                  "relative aspect-square overflow-hidden",
-                  items.length === 1 ? "w-full" : "w-1/2",
-                )}
-              >
-                <Image
-                  src={item.product?.image_urls?.[0] || "/placeholder.jpg"}
-                  alt={item.product?.name || "Product"}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-          {/* Status Badge Overlay */}
-          <div className="absolute right-3 bottom-3">
-            <div
-              className={cn(
-                "flex items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-white",
-                order.status === OrderStatus.DELIVERED && "bg-green-600",
-                order.status === OrderStatus.SHIPPED && "bg-blue-600",
-                order.status === OrderStatus.PROCESSING && "bg-yellow-600",
-              )}
-            >
-              <StatusIcon
-                status={order.status}
-                className="h-4 w-4 text-white"
-              />
-              {getStatusLabel(order.status as OrderStatus)}
-            </div>
-          </div>
-        </div>
-
-        {/* Order Title - Mobile Only */}
-        <div className="mb-4 lg:hidden">
-          <h2 className="text-lg font-bold">Order {order.id}</h2>
-          <p className="text-muted-foreground text-sm">
-            Ordered on {formatOrderDate(order.created_at)}
-          </p>
-        </div>
-
-        {/* Order Progress - Mobile Only */}
-        <div className="mb-6 lg:hidden">
-          <OrderProgress
-            status={order.status || OrderStatus.PROCESSING}
-            createdAt={order.created_at}
-            shippedAt={order.shipped_at}
-            deliveredAt={order.delivered_at}
-          />
-        </div>
-
-        {/* Order Items */}
-        <div className="mb-6">
-          <h3 className="mb-4 text-sm font-semibold lg:text-lg">
-            Items ({items.length})
-          </h3>
-          <div className="space-y-4">
-            {items.map((item) => (
-              <OrderItemCard key={item.id} item={item} canReview={canReview} />
-            ))}
-          </div>
-        </div>
-
-        {/* Order Summary - Mobile Only */}
-        <div className="shadow-soft mb-6 rounded-2xl bg-white p-4 lg:hidden">
-          <h3 className="mb-4 text-sm font-semibold">Order Summary</h3>
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Subtotal</span>
-              <span className="font-medium">₹{order.subtotal.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Shipping</span>
-              <span
-                className={cn(
-                  "font-medium",
-                  order.shipping_fee === 0 && "text-green-600",
-                )}
-              >
-                {order.shipping_fee === 0
-                  ? "Free"
-                  : `₹${order.shipping_fee.toFixed(2)}`}
-              </span>
-            </div>
-            <div className="border-border flex justify-between border-t pt-3">
-              <span className="font-semibold">Total</span>
-              <span className="text-primary text-lg font-bold">
-                ₹{order.total.toFixed(2)}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {canReview && (
-          <div className="bg-primary/10 rounded-2xl p-4 text-center lg:hidden">
-            <p className="text-primary text-sm font-medium">
-              Your order has been delivered! Leave reviews for your items.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

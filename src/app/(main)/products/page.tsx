@@ -76,6 +76,8 @@ interface ProductsPageProps {
     materials?: string;
     sort?: string;
     page?: string;
+    minPrice?: string;
+    maxPrice?: string;
   }>;
 }
 
@@ -93,6 +95,8 @@ async function ProductsContent({
     sortBy: (params.sort as ProductFilterParams["sortBy"]) || "featured",
     page: params.page ? parseInt(params.page, 10) : 1,
     limit: 12,
+    minPrice: params.minPrice ? parseInt(params.minPrice) : undefined,
+    maxPrice: params.maxPrice ? parseInt(params.maxPrice) : undefined,
   };
 
   // Fetch products from database
@@ -110,6 +114,8 @@ async function ProductsContent({
       categories={categories}
       materials={result.materials}
       totalProducts={result.total}
+      priceRange={result.priceRange}
+      priceHistogram={result.priceHistogram}
     />
   );
 }
@@ -121,7 +127,7 @@ export default async function ProductsPage({
     <>
       <MobileHeader title="Shop Pottery" showBack backHref="/" />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         <Suspense fallback={<ProductsLoading />}>
           <ProductsContent searchParams={searchParams} />
         </Suspense>

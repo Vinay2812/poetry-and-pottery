@@ -11,7 +11,7 @@ export default function ContactPage() {
     <>
       <MobileHeader title="Contact Us" showBack backHref="/" />
 
-      <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section - Mobile only */}
         <section className="container mx-auto px-4 py-6 lg:hidden">
           <div className="text-center">
