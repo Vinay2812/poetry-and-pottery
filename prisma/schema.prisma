@@ -151,6 +151,9 @@ model Event {
 
 enum EventRegistrationStatus {
   PENDING
+  APPROVED
+  REJECTED
+  PAID
   CONFIRMED
   CANCELLED
 }
@@ -162,6 +165,11 @@ model EventRegistration {
   seats_reserved Int                     @default(1)
   price          Int
   status         EventRegistrationStatus @default(PENDING)
+  request_at     DateTime?
+  approved_at    DateTime?
+  paid_at        DateTime?
+  confirmed_at   DateTime?
+  cancelled_at   DateTime?
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
