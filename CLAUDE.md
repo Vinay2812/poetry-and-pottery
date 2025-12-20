@@ -70,12 +70,12 @@ Visual components render UI and should be isolated from application state, API d
 **Setup and Development:**
 
 - `bun install` - Install dependencies
-- `bun run dev` - Start development server on port 3000(requires .env setup)
+- `bun run dev` - Start development server on port 3005(requires .env setup)
 
 **Build and Production:**
 
 - `bun run build` - Build for production (includes codegen and verification)
-- `bun start` - Start production server on port 3001
+- `bun start` - Start production server on port 3005
 
 **Code Quality:**
 
