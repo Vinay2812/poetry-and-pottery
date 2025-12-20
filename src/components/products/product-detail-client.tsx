@@ -1,10 +1,10 @@
 "use client";
 
 import { toggleReviewLike } from "@/actions";
-import { useAuthAction, useCart, useWishlist } from "@/hooks";
+import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
 import type { ProductWithCategories, ProductWithDetails } from "@/types";
 import { motion } from "framer-motion";
-import { Check, Heart, Loader2, ShoppingCartIcon } from "lucide-react";
+import { Check, Heart, Loader2, Share2, ShoppingCartIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 
 import { ProductCard, ReviewCard } from "@/components/cards";
@@ -45,9 +45,19 @@ export function ProductDetailClient({
     isLoading: isWishlistLoading,
   } = useWishlist();
 
+  const { share } = useShare();
+
   const inWishlist = isInWishlist(product.id);
   const cartLoading = isCartLoading(product.id);
   const wishlistLoading = isWishlistLoading(product.id);
+
+  const handleShare = useCallback(() => {
+    share({
+      title: product.name,
+      text: `Check out ${product.name} - ₹${product.price.toLocaleString()}`,
+      url: window.location.href,
+    });
+  }, [share, product.name, product.price]);
 
   const handleAddToCart = useCallback(() => {
     requireAuth(async () => {
@@ -349,6 +359,16 @@ export function ProductDetailClient({
                   <Button
                     variant="outline"
                     size="icon"
+                    className="h-12 w-12 rounded-xl transition-colors"
+                    onClick={handleShare}
+                  >
+                    <Share2 className="h-5 w-5" />
+                  </Button>
+                </motion.div>
+                <motion.div whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant="outline"
+                    size="icon"
                     className={cn(
                       "h-12 w-12 rounded-xl transition-colors",
                       inWishlist && "border-red-200 bg-red-50 hover:bg-red-100",
@@ -435,6 +455,16 @@ export function ProductDetailClient({
       {/* Mobile Fixed Bottom CTA */}
       <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
         <div className="flex gap-3">
+          <motion.div whileTap={{ scale: 0.95 }}>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-12 w-12 shrink-0 rounded-xl transition-colors"
+              onClick={handleShare}
+            >
+              <Share2 className="h-5 w-5" />
+            </Button>
+          </motion.div>
           <motion.div whileTap={{ scale: 0.95 }}>
             <Button
               variant="outline"

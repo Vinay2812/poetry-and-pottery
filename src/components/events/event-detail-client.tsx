@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthAction, useEventRegistration } from "@/hooks";
+import { useAuthAction, useEventRegistration, useShare } from "@/hooks";
 import type { EventWithDetails, EventWithRegistrationCount } from "@/types";
 import { motion } from "framer-motion";
 import {
@@ -53,6 +53,15 @@ export function EventDetailClient({
 
   const { requireAuth } = useAuthAction();
   const { registerForEvent, isLoading } = useEventRegistration();
+  const { share } = useShare();
+
+  const handleShare = useCallback(() => {
+    share({
+      title: event.title,
+      text: `Check out this workshop: ${event.title}`,
+      url: window.location.href,
+    });
+  }, [share, event.title]);
 
   const loading = isLoading(event.id);
   const soldOut = event.available_seats === 0;
@@ -60,14 +69,50 @@ export function EventDetailClient({
   const handleReserveSeat = useCallback(() => {
     requireAuth(async () => {
       const result = await registerForEvent(event.id, 1);
-      if (result.success) {
+      if (result.success && result.data) {
         setRegistered(true);
+
+        // Format date for WhatsApp message
+        const eventDateFormatted = new Date(event.starts_at).toLocaleDateString(
+          "en-US",
+          {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          },
+        );
+
+        // Create WhatsApp message
+        const message = encodeURIComponent(
+          `Hi! I would like to register for the following workshop:\n\n` +
+            `📍 *Workshop:* ${event.title}\n` +
+            `📅 *Date:* ${eventDateFormatted}\n` +
+            `👤 *Seats:* 1\n` +
+            `💰 *Amount:* ₹${event.price.toLocaleString()}\n` +
+            `🎫 *Registration ID:* ${result.data.id}\n\n` +
+            `Please confirm my registration.`,
+        );
+
+        // Open WhatsApp with pre-filled message
+        const whatsappUrl = `https://wa.me/919511874677?text=${message}`;
+        window.open(whatsappUrl, "_blank");
+
+        // Redirect to registrations after a delay
         setTimeout(() => {
           router.push("/events/registrations");
-        }, 2000);
+        }, 1000);
       }
     });
-  }, [requireAuth, registerForEvent, event.id, router]);
+  }, [
+    requireAuth,
+    registerForEvent,
+    event.id,
+    event.title,
+    event.starts_at,
+    event.price,
+    router,
+  ]);
 
   // Format date and time from DateTime
   const eventDate = new Date(event.starts_at);
@@ -111,6 +156,7 @@ export function EventDetailClient({
 
                 {/* Share Button */}
                 <button
+                  onClick={handleShare}
                   className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
                   aria-label="Share event"
                 >

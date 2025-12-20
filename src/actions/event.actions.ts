@@ -1,6 +1,6 @@
 "use server";
 
-import { Prisma } from "@/prisma/generated/client";
+import { EventRegistration, Prisma } from "@/prisma/generated/client";
 import {
   type EventFilterParams,
   EventLevel,
@@ -98,10 +98,26 @@ export async function getEventBySlug(
 export async function getUpcomingEvents(
   limit: number = 10,
 ): Promise<EventWithRegistrationCount[]> {
+  const userId = await getAuthenticatedUserId();
+
+  let userEventRegistrations: EventRegistration[] = [];
+  if (userId) {
+    userEventRegistrations = await prisma.eventRegistration.findMany({
+      where: {
+        user_id: userId,
+      },
+    });
+  }
+
+  const userEventRegistrationIds = userEventRegistrations.map(
+    (r) => r.event_id,
+  );
+
   return prisma.event.findMany({
     where: {
       starts_at: { gte: new Date() },
       status: { in: [EventStatus.UPCOMING, EventStatus.ACTIVE] },
+      id: { notIn: userEventRegistrationIds },
     },
     include: {
       _count: {
@@ -215,7 +231,7 @@ export async function registerForEvent(eventId: string, seats: number = 1) {
       return { success: false as const, error: "Not enough seats available" };
     }
 
-    // Create registration and update seats in transaction
+    // Create registration with PENDING status and request_at timestamp
     const [registration] = await prisma.$transaction([
       prisma.eventRegistration.create({
         data: {
@@ -223,6 +239,8 @@ export async function registerForEvent(eventId: string, seats: number = 1) {
           user_id: userId,
           seats_reserved: seats,
           price: event.price * seats,
+          status: "PENDING",
+          request_at: new Date(),
         },
         include: { event: true, user: true },
       }),

@@ -43,7 +43,8 @@ export function useEventRegistration() {
 
         addToast({
           type: "success",
-          message: "Successfully registered! Check your email for details.",
+          message:
+            "Registration request submitted! Complete your booking via WhatsApp.",
           duration: 5000,
         });
         setLoading(eventId, false);

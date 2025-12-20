@@ -1,7 +1,10 @@
 "use client";
 
+import { useAuthAction } from "@/hooks/use-auth-action";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -16,6 +19,24 @@ export function EventsTabs({
   activeTab,
   registeredCount = 0,
 }: EventsTabsProps) {
+  const router = useRouter();
+
+  const { requireAuth } = useAuthAction();
+
+  const handleTabClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, tab: TabType, href: string) => {
+      e.preventDefault();
+      if (tab === TabType.REGISTRATIONS) {
+        requireAuth(async () => {
+          router.push(href);
+        });
+      } else {
+        router.push(href);
+      }
+    },
+    [router, requireAuth],
+  );
+
   return (
     <div className="mb-6 flex justify-start gap-2 sm:gap-4">
       {EVENTS_TABS.map((tab) => {
@@ -34,6 +55,7 @@ export function EventsTabs({
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
+            onClick={(e) => handleTabClick(e, tab.type, tab.href)}
           >
             {/* Icon container */}
             <div className="relative">
