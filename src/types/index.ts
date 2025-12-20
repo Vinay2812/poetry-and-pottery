@@ -41,6 +41,15 @@ export enum OrderStatus {
   REFUNDED = "REFUNDED",
 }
 
+export enum EventRegistrationStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  PAID = "PAID",
+  CONFIRMED = "CONFIRMED",
+  CANCELLED = "CANCELLED",
+}
+
 // Re-export base Prisma types for convenience
 export type {
   Product,

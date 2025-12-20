@@ -169,12 +169,12 @@ export function PastWorkshopDetailClient({
       <MobileHeader title="Past Workshop" showBack backHref="/events/past" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
-        <div className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
-          <div className="grid gap-4 lg:grid-cols-3 lg:gap-10">
+        <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
+          <div className="grid gap-0 lg:grid-cols-3 lg:gap-10">
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Hero Image */}
-              <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-2xl lg:aspect-video">
+              <div className="relative mb-0 aspect-square w-full overflow-hidden lg:mb-4 lg:aspect-video lg:rounded-2xl">
                 <Image
                   src={imageUrl}
                   alt={workshop.title}
@@ -206,313 +206,318 @@ export function PastWorkshopDetailClient({
                 </div>
               </div>
 
-              {/* Workshop Header & Price */}
-              <div className="mb-8 border-b border-neutral-100 pb-6 dark:border-neutral-800">
-                <div className="mb-3">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-emerald-600 uppercase">
-                    <History className="h-3 w-3" />
-                    Past Workshop
-                  </span>
-                </div>
-
-                <h1 className="mb-4 text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
-                  {workshop.title}
-                </h1>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-neutral-900 dark:text-white">
-                      ₹{workshop.price.toLocaleString()}
-                    </span>
-                    <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
-                      Original Price
+              <div className="px-4 pt-8 lg:px-0 lg:pt-0">
+                {/* Workshop Header & Price */}
+                <div className="mb-8 border-b border-neutral-100 pb-6 dark:border-neutral-800">
+                  <div className="mb-3">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-emerald-600 uppercase">
+                      <History className="h-3 w-3" />
+                      Past Workshop
                     </span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-8 items-center justify-center rounded-full bg-neutral-100 px-4 text-[10px] font-bold tracking-widest text-neutral-500 uppercase dark:bg-neutral-800">
-                      {attendees} Participants
+
+                  <h1 className="mb-4 text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
+                    {workshop.title}
+                  </h1>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-neutral-900 dark:text-white">
+                        ₹{workshop.price.toLocaleString()}
+                      </span>
+                      <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Original Price
+                      </span>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Workshop Quick Info */}
-              <div className="mb-6 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-neutral-100 py-6 sm:grid-cols-4 dark:border-neutral-800">
-                <div className="flex items-start gap-3">
-                  <Calendar className="mt-1 h-4 w-4 text-neutral-400" />
-                  <div>
-                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                      Date
-                    </p>
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                      {formattedDate}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Clock className="mt-1 h-4 w-4 text-neutral-400" />
-                  <div>
-                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                      Time
-                    </p>
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                      {formattedTime}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Timer className="mt-1 h-4 w-4 text-neutral-400" />
-                  <div>
-                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                      Duration
-                    </p>
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                      {duration}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Users className="mt-1 h-4 w-4 text-neutral-400" />
-                  <div>
-                    <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                      Price
-                    </p>
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                      ₹{workshop.price.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Location & Instructor */}
-              <div className="mb-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
-                {workshop.location && (
-                  <div className="flex items-start gap-3">
-                    <MapPin className="mt-1 h-4 w-4 text-neutral-400" />
-                    <div>
-                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                        Location
-                      </p>
-                      <p className="text-sm leading-snug font-semibold text-neutral-900 dark:text-neutral-100">
-                        {workshop.location}
-                      </p>
-                      <p className="mt-0.5 text-[11px] text-neutral-400">
-                        {workshop.full_location}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {workshop.instructor && (
-                  <div className="flex items-start gap-3">
-                    <User className="mt-1 h-4 w-4 text-neutral-400" />
-                    <div>
-                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                        Instructor
-                      </p>
-                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                        {workshop.instructor}
-                      </p>
-                      <p className="mt-0.5 text-[11px] text-neutral-400">
-                        Lead Facilitator
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Description & Covered */}
-              <div className="mb-10 grid gap-10 md:grid-cols-2">
-                <div>
-                  <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                    About this workshop
-                  </h2>
-                  <p className="text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-                    {workshop.description}
-                  </p>
-                </div>
-                {workshop.includes && workshop.includes.length > 0 && (
-                  <div>
-                    <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                      What was covered
-                    </h2>
-                    <ul className="grid gap-3">
-                      {workshop.includes.map((highlight, index) => (
-                        <li key={index} className="flex items-center gap-3">
-                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
-                            <Check className="h-3 w-3 text-emerald-500" />
-                          </div>
-                          <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                            {highlight}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              {/* Workshop Highlights */}
-              {highlights.length > 0 && (
-                <div className="mb-6">
-                  <h2 className="mb-3 text-lg font-semibold">
-                    Workshop Highlights
-                  </h2>
-                  <div className="shadow-soft rounded-xl bg-white p-4">
-                    <ul className="space-y-3">
-                      {highlights.map((highlight, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <div className="bg-primary/10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                            <Star className="text-primary h-4 w-4" />
-                          </div>
-                          <span className="text-sm">{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {/* Gallery Section */}
-              {gallery.length > 0 && (
-                <div className="mb-8">
-                  <div className="mb-4 flex items-center gap-2">
-                    <h2 className="text-lg font-semibold">Gallery</h2>
-                    <span className="text-muted-foreground text-sm">
-                      ({gallery.length} photos)
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    {gallery.slice(0, maxVisibleImages).map((image, index) => {
-                      const isLastVisible =
-                        index === maxVisibleImages - 1 && remainingImages > 0;
-
-                      return (
-                        <button
-                          key={index}
-                          onClick={() => handleOpenGallery(index)}
-                          className="group focus:ring-primary relative aspect-square overflow-hidden rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
-                        >
-                          <Image
-                            src={image}
-                            alt={`Workshop gallery image ${index + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
-
-                          {/* Show +X overlay on last visible image */}
-                          {isLastVisible && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                              <span className="text-2xl font-bold text-white">
-                                +{remainingImages}
-                              </span>
-                            </div>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Gallery Lightbox with Carousel */}
-              <Dialog
-                open={selectedImageIndex !== null}
-                onOpenChange={(open) => !open && handleCloseGallery()}
-              >
-                <DialogContent
-                  className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0"
-                  showCloseButton={false}
-                >
-                  <div className="flex flex-col p-4">
-                    {/* Header with close button */}
-                    <div className="mb-4 flex items-center justify-between">
-                      <DialogTitle className="text-base font-medium">
-                        Gallery
-                      </DialogTitle>
-                      <DialogClose className="text-muted-foreground hover:text-foreground rounded-sm transition-colors">
-                        <X className="h-5 w-5" />
-                        <span className="sr-only">Close</span>
-                      </DialogClose>
-                    </div>
-
-                    {/* Carousel */}
-                    <div className="relative">
-                      <ImageCarousel
-                        images={gallery}
-                        alt="Workshop gallery image"
-                        startIndex={selectedImageIndex ?? 0}
-                        imageClassName="object-contain"
-                        showDots={false}
-                        showCounter={true}
-                      />
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              {/* Reviews Section */}
-              {formattedReviews && formattedReviews.length > 0 && (
-                <div className="mb-8">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-lg font-semibold">
-                        Participant Reviews
-                      </h2>
-                      <div className="flex items-center gap-1 text-sm">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-medium">
-                          {averageRating.toFixed(1)}
-                        </span>
-                        <span className="text-muted-foreground">
-                          ({formattedReviews.length})
-                        </span>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 items-center justify-center rounded-full bg-neutral-100 px-4 text-[10px] font-bold tracking-widest text-neutral-500 uppercase dark:bg-neutral-800">
+                        {attendees} Participants
                       </div>
                     </div>
-                    {formattedReviews.length > 2 && (
-                      <ReviewsSheet
-                        reviews={formattedReviews}
-                        averageRating={averageRating}
-                        totalReviews={formattedReviews.length}
-                        currentUserId={currentUserId}
-                        onLikeUpdate={handleLikeUpdate}
-                      >
-                        <button className="text-primary text-sm hover:underline">
-                          View All →
-                        </button>
-                      </ReviewsSheet>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    {formattedReviews.slice(0, 2).map((review) => (
-                      <ReviewCard
-                        key={review.id}
-                        author={review.author}
-                        avatar={review.avatar}
-                        rating={review.rating}
-                        content={review.content}
-                        date={review.date}
-                        likes={review.likes}
-                        isLiked={review.isLikedByCurrentUser}
-                        isOwnReview={
-                          currentUserId != null &&
-                          review.authorId === currentUserId
-                        }
-                        images={review.images}
-                        onLike={() =>
-                          requireAuth(() =>
-                            handleReviewLike(
-                              review.id,
-                              review.likes,
-                              review.isLikedByCurrentUser,
-                            ),
-                          )
-                        }
-                      />
-                    ))}
                   </div>
                 </div>
-              )}
+
+                {/* Workshop Quick Info */}
+                <div className="mb-6 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-neutral-100 py-6 sm:grid-cols-4 dark:border-neutral-800">
+                  <div className="flex items-start gap-3">
+                    <Calendar className="mt-1 h-4 w-4 text-neutral-400" />
+                    <div>
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Date
+                      </p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {formattedDate}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Clock className="mt-1 h-4 w-4 text-neutral-400" />
+                    <div>
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Time
+                      </p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {formattedTime}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Timer className="mt-1 h-4 w-4 text-neutral-400" />
+                    <div>
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Duration
+                      </p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        {duration}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Users className="mt-1 h-4 w-4 text-neutral-400" />
+                    <div>
+                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                        Price
+                      </p>
+                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        ₹{workshop.price.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Location & Instructor */}
+                <div className="mb-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
+                  {workshop.location && (
+                    <div className="flex items-start gap-3">
+                      <MapPin className="mt-1 h-4 w-4 text-neutral-400" />
+                      <div>
+                        <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                          Location
+                        </p>
+                        <p className="text-sm leading-snug font-semibold text-neutral-900 dark:text-neutral-100">
+                          {workshop.location}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-neutral-400">
+                          {workshop.full_location}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {workshop.instructor && (
+                    <div className="flex items-start gap-3">
+                      <User className="mt-1 h-4 w-4 text-neutral-400" />
+                      <div>
+                        <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
+                          Instructor
+                        </p>
+                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                          {workshop.instructor}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-neutral-400">
+                          Lead Facilitator
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Description & Covered */}
+                <div className="mb-10 grid gap-10 md:grid-cols-2">
+                  <div>
+                    <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                      About this workshop
+                    </h2>
+                    <p className="text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+                      {workshop.description}
+                    </p>
+                  </div>
+                  {workshop.includes && workshop.includes.length > 0 && (
+                    <div>
+                      <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                        What was covered
+                      </h2>
+                      <ul className="grid gap-3">
+                        {workshop.includes.map((highlight, index) => (
+                          <li key={index} className="flex items-center gap-3">
+                            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+                              <Check className="h-3 w-3 text-emerald-500" />
+                            </div>
+                            <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                              {highlight}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* Workshop Highlights */}
+                {highlights.length > 0 && (
+                  <div className="mb-6">
+                    <h2 className="mb-3 text-lg font-semibold">
+                      Workshop Highlights
+                    </h2>
+                    <div className="shadow-soft rounded-xl bg-white p-4">
+                      <ul className="space-y-3">
+                        {highlights.map((highlight, index) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <div className="bg-primary/10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                              <Star className="text-primary h-4 w-4" />
+                            </div>
+                            <span className="text-sm">{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {/* Gallery Section */}
+                {gallery.length > 0 && (
+                  <div className="mb-8">
+                    <div className="mb-4 flex items-center gap-2">
+                      <h2 className="text-lg font-semibold">Gallery</h2>
+                      <span className="text-muted-foreground text-sm">
+                        ({gallery.length} photos)
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {gallery
+                        .slice(0, maxVisibleImages)
+                        .map((image, index) => {
+                          const isLastVisible =
+                            index === maxVisibleImages - 1 &&
+                            remainingImages > 0;
+
+                          return (
+                            <button
+                              key={index}
+                              onClick={() => handleOpenGallery(index)}
+                              className="group focus:ring-primary relative aspect-square overflow-hidden rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                            >
+                              <Image
+                                src={image}
+                                alt={`Workshop gallery image ${index + 1}`}
+                                fill
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                              <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
+
+                              {/* Show +X overlay on last visible image */}
+                              {isLastVisible && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                                  <span className="text-2xl font-bold text-white">
+                                    +{remainingImages}
+                                  </span>
+                                </div>
+                              )}
+                            </button>
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Gallery Lightbox with Carousel */}
+                <Dialog
+                  open={selectedImageIndex !== null}
+                  onOpenChange={(open) => !open && handleCloseGallery()}
+                >
+                  <DialogContent
+                    className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0"
+                    showCloseButton={false}
+                  >
+                    <div className="flex flex-col p-4">
+                      {/* Header with close button */}
+                      <div className="mb-4 flex items-center justify-between">
+                        <DialogTitle className="text-base font-medium">
+                          Gallery
+                        </DialogTitle>
+                        <DialogClose className="text-muted-foreground hover:text-foreground rounded-sm transition-colors">
+                          <X className="h-5 w-5" />
+                          <span className="sr-only">Close</span>
+                        </DialogClose>
+                      </div>
+
+                      {/* Carousel */}
+                      <div className="relative">
+                        <ImageCarousel
+                          images={gallery}
+                          alt="Workshop gallery image"
+                          startIndex={selectedImageIndex ?? 0}
+                          imageClassName="object-contain"
+                          showDots={false}
+                          showCounter={true}
+                        />
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                {/* Reviews Section */}
+                {formattedReviews && formattedReviews.length > 0 && (
+                  <div className="mb-8">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-lg font-semibold">
+                          Participant Reviews
+                        </h2>
+                        <div className="flex items-center gap-1 text-sm">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium">
+                            {averageRating.toFixed(1)}
+                          </span>
+                          <span className="text-muted-foreground">
+                            ({formattedReviews.length})
+                          </span>
+                        </div>
+                      </div>
+                      {formattedReviews.length > 2 && (
+                        <ReviewsSheet
+                          reviews={formattedReviews}
+                          averageRating={averageRating}
+                          totalReviews={formattedReviews.length}
+                          currentUserId={currentUserId}
+                          onLikeUpdate={handleLikeUpdate}
+                        >
+                          <button className="text-primary text-sm hover:underline">
+                            View All →
+                          </button>
+                        </ReviewsSheet>
+                      )}
+                    </div>
+                    <div className="space-y-3">
+                      {formattedReviews.slice(0, 2).map((review) => (
+                        <ReviewCard
+                          key={review.id}
+                          author={review.author}
+                          avatar={review.avatar}
+                          rating={review.rating}
+                          content={review.content}
+                          date={review.date}
+                          likes={review.likes}
+                          isLiked={review.isLikedByCurrentUser}
+                          isOwnReview={
+                            currentUserId != null &&
+                            review.authorId === currentUserId
+                          }
+                          images={review.images}
+                          onLike={() =>
+                            requireAuth(() =>
+                              handleReviewLike(
+                                review.id,
+                                review.likes,
+                                review.isLikedByCurrentUser,
+                              ),
+                            )
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Desktop Sidebar */}
