@@ -6,18 +6,34 @@ import {
   createProductReview,
 } from "@/actions";
 import { OrderStatus } from "@/types";
-import { Package } from "lucide-react";
+import { MapPin, Package, Phone, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 import { OrderProgress } from "@/components/orders";
-import { ReviewForm, StatusIcon } from "@/components/shared";
+import {
+  ReviewForm,
+  StatusIcon,
+  WhatsAppContactButton,
+} from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { openWhatsAppFollowUp } from "@/lib/contact-business";
 import { cn } from "@/lib/utils";
+
+// Type for shipping address JSON field
+interface ShippingAddress {
+  name: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  zip: string;
+  contactNumber?: string;
+}
 
 // Helper functions for order formatting
 function formatOrderDate(dateString: Date | string): string {
@@ -118,6 +134,23 @@ interface OrderDetailClientProps {
 }
 
 export function OrderDetailClient({ order }: OrderDetailClientProps) {
+  const canReview = order?.status === OrderStatus.DELIVERED;
+  const items = order?.ordered_products;
+  const showWhatsAppButton = order?.status !== OrderStatus.DELIVERED;
+  const shippingAddress = order?.shipping_address as ShippingAddress | null;
+
+  const handleWhatsAppContact = useCallback(() => {
+    if (!order) return;
+    openWhatsAppFollowUp({
+      type: "order-followup",
+      orderId: order.id.toUpperCase(),
+      orderStatus: getStatusLabel(order.status as OrderStatus),
+      orderTotal: order.total,
+      customerName: order.user.name || order.user.email,
+      customerEmail: order.user.email,
+    });
+  }, [order]);
+
   if (!order) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -135,9 +168,6 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
       </div>
     );
   }
-
-  const canReview = order.status === OrderStatus.DELIVERED;
-  const items = order.ordered_products;
 
   return (
     <div className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
@@ -224,12 +254,52 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
               </div>
             </div>
 
+            {/* Shipping Address Card */}
+            {shippingAddress && (
+              <div className="shadow-soft rounded-2xl border border-neutral-100 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+                <p className="mb-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                  Shipping Address
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <User className="text-primary h-4 w-4 shrink-0" />
+                    <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+                      {shippingAddress.name}
+                    </span>
+                  </div>
+                  {shippingAddress.contactNumber && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 shrink-0 text-neutral-400" />
+                      <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                        {shippingAddress.contactNumber}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-start gap-2">
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-neutral-400" />
+                    <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                      {shippingAddress.addressLine1}
+                      {shippingAddress.addressLine2 &&
+                        `, ${shippingAddress.addressLine2}`}
+                      {`, ${shippingAddress.city}`}
+                      {`, ${shippingAddress.state}`}
+                      {` - ${shippingAddress.zip}`}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {canReview && (
               <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-950/20">
                 <p className="text-center text-xs font-medium text-emerald-700 dark:text-emerald-400">
                   Your order has been delivered! Leave reviews for your items.
                 </p>
               </div>
+            )}
+
+            {showWhatsAppButton && (
+              <WhatsAppContactButton onClick={handleWhatsAppContact} />
             )}
           </div>
         </div>
@@ -279,10 +349,10 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
           {/* Order Items */}
           <div className="mb-8">
             <h3 className="mb-4 text-sm font-semibold text-neutral-900 lg:text-lg dark:text-neutral-100">
-              Items ({items.length})
+              Items ({items?.length || 0})
             </h3>
             <div className="space-y-4">
-              {items.map((item) => (
+              {items?.map((item) => (
                 <OrderItemCard
                   key={item.id}
                   item={item}
@@ -330,11 +400,53 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
             </div>
           </div>
 
+          {/* Mobile Shipping Address */}
+          {shippingAddress && (
+            <div className="shadow-soft mt-4 rounded-2xl border border-neutral-100 bg-white p-4 lg:hidden dark:border-neutral-800 dark:bg-neutral-900">
+              <p className="mb-3 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
+                Shipping Address
+              </p>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <User className="text-primary h-4 w-4 shrink-0" />
+                  <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+                    {shippingAddress.name}
+                  </span>
+                </div>
+                {shippingAddress.contactNumber && (
+                  <div className="flex items-center gap-2">
+                    <Phone className="h-4 w-4 shrink-0 text-neutral-400" />
+                    <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                      {shippingAddress.contactNumber}
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-start gap-2">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-neutral-400" />
+                  <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                    {shippingAddress.addressLine1}
+                    {shippingAddress.addressLine2 &&
+                      `, ${shippingAddress.addressLine2}`}
+                    {`, ${shippingAddress.city}`}
+                    {`, ${shippingAddress.state}`}
+                    {` - ${shippingAddress.zip}`}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {canReview && (
             <div className="mt-6 rounded-2xl bg-emerald-50 p-4 text-center lg:hidden dark:bg-emerald-950/20">
               <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
                 Your order has been delivered! Leave reviews for your items.
               </p>
+            </div>
+          )}
+
+          {showWhatsAppButton && (
+            <div className="mt-6 lg:hidden">
+              <WhatsAppContactButton onClick={handleWhatsAppContact} />
             </div>
           )}
         </div>

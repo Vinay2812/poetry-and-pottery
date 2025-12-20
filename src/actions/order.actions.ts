@@ -176,7 +176,8 @@ export async function createOrder(data: {
           shipping_fee: data.shippingFee,
           subtotal,
           total,
-          status: OrderStatus.PROCESSING,
+          status: OrderStatus.PENDING,
+          request_at: new Date(),
           shipping_address: data.shippingAddress,
           ordered_products: {
             create: cartItems.map((item) => ({

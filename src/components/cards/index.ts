@@ -1,3 +1,4 @@
+export { AddressCard } from "./address-card";
 export { CartItemCard } from "./cart-item-card";
 export { CompletedEventCard } from "./completed-event-card";
 export { EventCard } from "./event-card";

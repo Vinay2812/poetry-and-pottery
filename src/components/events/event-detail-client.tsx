@@ -26,6 +26,7 @@ import { MobileHeader } from "@/components/layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { contactBusiness } from "@/lib/contact-business";
 import { cn } from "@/lib/utils";
 
 // Helper function to calculate duration from DateTime objects
@@ -72,31 +73,18 @@ export function EventDetailClient({
       if (result.success && result.data) {
         setRegistered(true);
 
-        // Format date for WhatsApp message
-        const eventDateFormatted = new Date(event.starts_at).toLocaleDateString(
-          "en-US",
-          {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          },
-        );
-
-        // Create WhatsApp message
-        const message = encodeURIComponent(
-          `Hi! I would like to register for the following workshop:\n\n` +
-            `📍 *Workshop:* ${event.title}\n` +
-            `📅 *Date:* ${eventDateFormatted}\n` +
-            `👤 *Seats:* 1\n` +
-            `💰 *Amount:* ₹${event.price.toLocaleString()}\n` +
-            `🎫 *Registration ID:* ${result.data.id}\n\n` +
-            `Please confirm my registration.`,
-        );
-
-        // Open WhatsApp with pre-filled message
-        const whatsappUrl = `https://wa.me/919511874677?text=${message}`;
-        window.open(whatsappUrl, "_blank");
+        // Send email and open WhatsApp
+        await contactBusiness({
+          type: "event",
+          registrationId: result.data.id,
+          eventTitle: event.title,
+          eventDate: event.starts_at,
+          seats: 1,
+          amount: event.price,
+          customerName: result.data.user.name || result.data.user.email,
+          customerEmail: result.data.user.email,
+          customerPhone: result.data.user.phone || undefined,
+        });
 
         // Redirect to registrations after a delay
         setTimeout(() => {
