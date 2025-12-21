@@ -109,9 +109,20 @@ function OrderItemCard({ item, canReview }: OrderItemCardProps) {
             )}
             <p className="text-xs text-neutral-500">Qty: {item.quantity}</p>
           </div>
-          <p className="text-primary text-sm font-bold">
-            ₹{(item.price * item.quantity).toLocaleString()}
-          </p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-primary text-sm font-bold">
+              ₹
+              {Math.max(
+                0,
+                item.price * item.quantity - item.discount,
+              ).toLocaleString()}
+            </p>
+            {item.discount > 0 && (
+              <span className="rounded bg-green-50 px-1.5 py-0.5 text-[10px] font-medium text-green-600">
+                -₹{item.discount.toLocaleString()}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -138,6 +149,8 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
   const items = order?.ordered_products;
   const showWhatsAppButton = order?.status !== OrderStatus.DELIVERED;
   const shippingAddress = order?.shipping_address as ShippingAddress | null;
+  const totalDiscount =
+    items?.reduce((sum, item) => sum + item.discount, 0) ?? 0;
 
   const handleWhatsAppContact = useCallback(() => {
     if (!order) return;
@@ -228,6 +241,14 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
                     ₹{order.subtotal.toLocaleString()}
                   </span>
                 </div>
+                {totalDiscount > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-neutral-500">Discount</span>
+                    <span className="font-medium text-emerald-600">
+                      -₹{totalDiscount.toLocaleString()}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
                   <span className="text-neutral-500">Shipping</span>
                   <span
@@ -374,6 +395,14 @@ export function OrderDetailClient({ order }: OrderDetailClientProps) {
                   ₹{order.subtotal.toLocaleString()}
                 </span>
               </div>
+              {totalDiscount > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-neutral-500">Discount</span>
+                  <span className="font-medium text-emerald-600">
+                    -₹{totalDiscount.toLocaleString()}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between text-sm">
                 <span className="text-neutral-500">Shipping</span>
                 <span
