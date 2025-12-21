@@ -68,7 +68,7 @@ model Product {
   id                 Int      @id @default(autoincrement())
   slug               String   @unique @db.Text
   name               String
-  description        String
+  description        String?
   instructions       String[]
   color_code         String
   color_name         String
@@ -126,7 +126,7 @@ model Event {
   starts_at       DateTime
   ends_at         DateTime
   location        String
-  full_location   String?
+  full_location   String
   total_seats     Int         @default(10)
   available_seats Int         @default(10)
   instructor      String
@@ -135,7 +135,7 @@ model Event {
   image           String
   highlights      String[]
   gallery         String[]
-  status          EventStatus @default(ACTIVE)
+  status          EventStatus @default(UPCOMING)
   level           EventLevel  @default(BEGINNER)
 
   created_at DateTime @default(now())
@@ -318,4 +318,32 @@ model PurchasedProductItem {
   @@index([order_id])
   @@index([product_id])
   @@map("purchased_product_items")
+}
+
+// CMS Models
+
+model SiteSetting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  /// [SettingValue]
+  value Json
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("site_settings")
+}
+
+model ContentPage {
+  id        Int     @id @default(autoincrement())
+  slug      String  @unique
+  title     String
+  /// [ContentBlocks]
+  content   Json
+  is_active Boolean @default(true)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("content_pages")
 }

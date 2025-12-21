@@ -37,6 +37,7 @@ async function createUserInDatabase() {
       publicMetadata: {
         db_user_id: user.id,
         environment: ENVIRONMENT,
+        role: user.role,
       },
     });
 
@@ -53,8 +54,9 @@ export async function getAuthenticatedUserId() {
 
   const dbUserId = sessionClaims?.dbUserId;
   const environment = sessionClaims?.environment;
+  const role = sessionClaims?.role;
 
-  if (!dbUserId || environment !== ENVIRONMENT) {
+  if (!dbUserId || environment !== ENVIRONMENT || !role) {
     const user = await createUserInDatabase();
     return user.id;
   }
