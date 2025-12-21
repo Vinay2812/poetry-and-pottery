@@ -1,5 +1,6 @@
 "use client";
 
+import { ClassValue } from "clsx";
 import { useCallback } from "react";
 
 import {
@@ -34,14 +35,15 @@ interface FilterSidebarProps {
   materials: string[];
   onCategoryChange: (category: string) => void;
   onMaterialToggle: (material: string) => void;
-  onClear?: () => void;
+  onClear: () => void;
   // Price props
   priceRange?: { min: number; max: number };
   selectedPriceRange?: [number, number];
   onPriceChange?: (range: [number, number]) => void;
   onPriceChangeCommit?: (range: [number, number]) => void;
   priceHistogram?: PriceHistogram[];
-  className?: string;
+  className?: ClassValue;
+  filtersClassName?: ClassValue;
 }
 
 export function FilterSidebar({
@@ -58,6 +60,7 @@ export function FilterSidebar({
   onPriceChangeCommit,
   priceHistogram,
   className,
+  filtersClassName,
 }: FilterSidebarProps) {
   const handleCategoryChange = useCallback(
     (categoryId: string) => {
@@ -73,26 +76,23 @@ export function FilterSidebar({
     [onMaterialToggle],
   );
 
-  const clearAll = useCallback(() => {
-    if (activeCategory !== "all") onCategoryChange("all");
-    // We would need a way to clear materials too if we want a true clear all here,
-    // but the props currently only allow toggling single material.
-    // For now, let's just keep the section logic clean.
-    // Ideally, the parent should handle "Clear All", but we can visually reset here if we had the handler.
-  }, [activeCategory, onCategoryChange]);
-
   const hasActiveFilters =
     activeCategory !== "all" || selectedMaterials.length > 0;
 
   return (
-    <div className={cn("space-y-6", className)}>
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold tracking-tight">Filters</h3>
-        {hasActiveFilters && onClear && (
+    <div className="relative">
+      <div
+        className={cn(
+          "flex h-12 items-center justify-between px-4 py-2",
+          filtersClassName,
+        )}
+      >
+        <div className="text-lg font-semibold">Filters</div>
+        {hasActiveFilters && (
           <Button
             variant="ghost"
             size="sm"
-            className="text-muted-foreground hover:text-foreground h-8 px-2 text-xs"
+            className="text-primary hover:text-primary-hover h-8 px-2 text-xs"
             onClick={onClear}
           >
             Reset
@@ -105,7 +105,7 @@ export function FilterSidebar({
       <Accordion
         type="multiple"
         defaultValue={["categories", "materials", "price"]}
-        className="w-full"
+        className={cn("w-full", className)}
       >
         <AccordionItem value="price" className="border-none">
           <AccordionTrigger className="py-3 text-sm font-medium hover:no-underline">

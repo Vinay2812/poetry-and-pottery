@@ -155,7 +155,9 @@ export function ProductDetailClient({
         <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
           <div className="grid gap-0 lg:grid-cols-2 lg:gap-10">
             {/* Image Gallery */}
-            <ProductImageGallery images={images} productName={product.name} />
+            <div className="min-w-0 overflow-hidden">
+              <ProductImageGallery images={images} productName={product.name} />
+            </div>
 
             {/* Product Info */}
             <div className="flex flex-col px-4 pt-6 lg:px-0 lg:pt-0">
@@ -185,13 +187,15 @@ export function ProductDetailClient({
                       Incl. Taxes
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Rating
-                      rating={averageRating}
-                      reviewCount={totalReviews}
-                      size="sm"
-                    />
-                  </div>
+                  {totalReviews > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Rating
+                        rating={averageRating}
+                        reviewCount={totalReviews}
+                        size="sm"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
