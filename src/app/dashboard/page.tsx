@@ -38,7 +38,8 @@ export default async function DashboardPage() {
     stats.orders.processing > 0 ||
     stats.registrations.pending > 0 ||
     stats.products.outOfStock > 0 ||
-    stats.products.lowStock > 0;
+    stats.products.lowStock > 0 ||
+    stats.events.upcomingIn7Days > 0;
 
   return (
     <div className="space-y-12">
@@ -182,6 +183,22 @@ export default async function DashboardPage() {
               <div>
                 <p className="text-terracotta font-medium">Low Stock</p>
                 <p className="text-terracotta/80 text-sm">Check inventory →</p>
+              </div>
+            </Link>
+          )}
+          {stats.events.upcomingIn7Days > 0 && (
+            <Link
+              href="/dashboard/events"
+              className="group flex items-center gap-3 rounded-2xl bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
+            >
+              <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 group-hover:bg-emerald-200">
+                <span className="text-lg font-bold">
+                  {stats.events.upcomingIn7Days}
+                </span>
+              </div>
+              <div>
+                <p className="font-medium text-emerald-900">Events This Week</p>
+                <p className="text-sm text-emerald-600">Starting soon →</p>
               </div>
             </Link>
           )}
