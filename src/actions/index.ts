@@ -67,3 +67,13 @@ export {
 
 // Auth actions
 export { getAuthenticatedUserId } from "./auth.action";
+
+// Address actions
+export {
+  getUserAddresses,
+  getAddressById,
+  createAddress,
+  updateAddress,
+  deleteAddress,
+  type AddressFormData,
+} from "./address.actions";

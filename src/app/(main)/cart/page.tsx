@@ -1,4 +1,4 @@
-import { getCart, getFeaturedProducts } from "@/actions";
+import { getCart, getFeaturedProducts, getUserAddresses } from "@/actions";
 import type { Metadata } from "next";
 
 import { CartClient } from "@/components/cart";
@@ -14,15 +14,17 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
-  const [cartResult, recommendedProducts] = await Promise.all([
+  const [cartResult, recommendedProducts, addressResult] = await Promise.all([
     getCart(),
     getFeaturedProducts(4),
+    getUserAddresses(),
   ]);
 
   return (
     <CartClient
       initialCartItems={cartResult.success ? cartResult.data : []}
       recommendedProducts={recommendedProducts}
+      initialAddresses={addressResult.success ? addressResult.data : []}
     />
   );
 }

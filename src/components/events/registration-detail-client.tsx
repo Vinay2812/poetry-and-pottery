@@ -14,7 +14,6 @@ import {
   MapPin,
   Share2,
   ThumbsUp,
-  Ticket,
   Timer,
   User,
   Users,
@@ -25,9 +24,11 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 
 import { MobileHeader } from "@/components/layout";
+import { WhatsAppContactButton } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { openWhatsAppFollowUp } from "@/lib/contact-business";
 import { cn } from "@/lib/utils";
 
 import { EventRegistrationProgress } from "./event-registration-progress";
@@ -135,6 +136,20 @@ export function RegistrationDetailClient({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, [registration.id]);
+
+  const showWhatsAppButton = !isConfirmed;
+
+  const handleWhatsAppContact = useCallback(() => {
+    openWhatsAppFollowUp({
+      type: "event-followup",
+      registrationId: registration.id.toUpperCase(),
+      eventTitle: event.title,
+      eventDate: event.starts_at,
+      registrationStatus: statusConfig.label,
+      customerName: registration.user.name || registration.user.email,
+      customerEmail: registration.user.email,
+    });
+  }, [registration, event, statusConfig.label]);
 
   // Format date and time from DateTime
   const eventDate = new Date(event.starts_at);
@@ -476,6 +491,9 @@ export function RegistrationDetailClient({
                         Browse More Workshops
                       </Button>
                     </Link>
+                    {showWhatsAppButton && (
+                      <WhatsAppContactButton onClick={handleWhatsAppContact} />
+                    )}
                   </div>
                 </div>
               </div>
@@ -497,18 +515,23 @@ export function RegistrationDetailClient({
             }
           />
         ) : (
-          <div
-            className={cn(
-              "flex items-center justify-center gap-2 rounded-xl p-3",
-              isPending && "bg-amber-50 dark:bg-amber-950/20",
-              isApproved && "bg-blue-50 dark:bg-blue-950/20",
-              isPaid && "bg-teal-50 dark:bg-teal-950/20",
+          <div className="space-y-3">
+            <div
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-xl p-3",
+                isPending && "bg-amber-50 dark:bg-amber-950/20",
+                isApproved && "bg-blue-50 dark:bg-blue-950/20",
+                isPaid && "bg-teal-50 dark:bg-teal-950/20",
+              )}
+            >
+              <StatusIcon className={cn("h-5 w-5", statusConfig.textColor)} />
+              <span className={cn("font-medium", statusConfig.textColor)}>
+                {statusConfig.message}
+              </span>
+            </div>
+            {showWhatsAppButton && (
+              <WhatsAppContactButton onClick={handleWhatsAppContact} />
             )}
-          >
-            <StatusIcon className={cn("h-5 w-5", statusConfig.textColor)} />
-            <span className={cn("font-medium", statusConfig.textColor)}>
-              {statusConfig.message}
-            </span>
           </div>
         )}
       </div>

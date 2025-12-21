@@ -10,3 +10,4 @@ export { ReviewsSheet } from "./reviews-sheet";
 export { SignInModal } from "./sign-in-modal";
 export { StatusIcon } from "./status-icon";
 export { ToastContainer } from "./toast-container";
+export { WhatsAppContactButton } from "./whatsapp-contact-button";

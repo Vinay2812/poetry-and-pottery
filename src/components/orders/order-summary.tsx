@@ -11,6 +11,7 @@ interface OrderSummaryProps {
   freeShippingThreshold?: number;
   buttonText?: string;
   onCheckout?: () => void;
+  disabled?: boolean;
 }
 
 export function OrderSummary({
@@ -21,6 +22,7 @@ export function OrderSummary({
   freeShippingThreshold = 75,
   buttonText = "Proceed to Checkout",
   onCheckout,
+  disabled = false,
 }: OrderSummaryProps) {
   const amountToFreeShipping = freeShippingThreshold - subtotal;
   const showFreeShippingMessage = amountToFreeShipping > 0;
@@ -60,6 +62,7 @@ export function OrderSummary({
             className="h-12 w-full rounded-xl"
             size="lg"
             onClick={onCheckout}
+            disabled={disabled}
           >
             {buttonText}
             <ArrowRight className="ml-2 h-5 w-5" />
@@ -101,6 +104,7 @@ export function OrderSummary({
             className="h-12 w-full rounded-xl"
             size="lg"
             onClick={onCheckout}
+            disabled={disabled}
           >
             {buttonText}
             <ArrowRight className="ml-2 h-5 w-5" />
