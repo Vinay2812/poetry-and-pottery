@@ -13,7 +13,7 @@ todos:
     status: completed
   - id: phase3-users-and-boards
     content: Implement /dashboard/users list with search + role management; user detail with orders/registrations Kanban (drag/drop) + cart/wishlist views. Moving status backward clears timestamps for later steps.
-    status: pending
+    status: completed
   - id: phase4-products-categories
     content: Add /dashboard/products with full CRUD, category assignment, reviews list; /dashboard/categories for category CRUD with icon mapping.
     status: pending
