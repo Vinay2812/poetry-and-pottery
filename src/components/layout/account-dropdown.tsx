@@ -1,14 +1,15 @@
 "use client";
 
+import { UserRole } from "@/prisma/generated/enums";
 import { useOrderStore } from "@/store";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import {
   HelpCircle,
   Info,
+  LayoutDashboard,
   LogOut,
   Mail,
   Package,
-  Settings,
   Truck,
   User,
 } from "lucide-react";
@@ -30,8 +31,10 @@ import { cn } from "@/lib/utils";
 export function AccountDropdown() {
   const { openUserProfile, signOut } = useClerk();
   const { user } = useUser();
+  const { sessionClaims } = useAuth();
   const router = useRouter();
   const pendingOrdersCount = useOrderStore((state) => state.getPendingCount());
+  const isAdmin = sessionClaims?.role === UserRole.ADMIN;
 
   const handleProfileSettings = useCallback(() => {
     openUserProfile();
@@ -112,6 +115,15 @@ export function AccountDropdown() {
             </span>
           )}
         </DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem
+            onClick={() => handleNavigate("/dashboard")}
+            className="cursor-pointer"
+          >
+            <LayoutDashboard className="mr-2 h-4 w-4" />
+            Dashboard
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => handleNavigate("/about")}
