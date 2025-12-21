@@ -249,25 +249,8 @@ export function ProductsClient({
 
   return (
     <>
-      {/* Mobile Category Pills */}
-      <div className="scrollbar-hide border-border/50 flex gap-2 overflow-x-auto border-b px-4 py-3 lg:hidden">
-        <CategoryPill
-          label="All"
-          isActive={activeCategory === "all"}
-          onClick={() => handleCategoryChange("all")}
-        />
-        {categories.map((category) => (
-          <CategoryPill
-            key={category.id}
-            label={category.name}
-            isActive={activeCategory === category.id}
-            onClick={() => handleCategoryChange(category.id)}
-          />
-        ))}
-      </div>
-
       {/* Mobile Filter Bar */}
-      <div className="bg-background sticky top-14 z-40 flex items-center gap-2 px-4 py-3 lg:hidden">
+      <div className="bg-background sticky z-40 flex items-center gap-2 overflow-y-auto px-4 pt-1 pb-3 lg:hidden">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="sm" className="h-9 rounded-full">
@@ -276,25 +259,26 @@ export function ProductsClient({
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80">
-            <SheetHeader className="px-6 pt-6">
+            <SheetHeader className="hidden px-6 py-4 pb-0">
               <SheetTitle className="sr-only">Filters</SheetTitle>
             </SheetHeader>
-            <div className="mt-2 px-6 pb-6">
-              <FilterSidebar
-                activeCategory={activeCategory}
-                selectedMaterials={selectedMaterials}
-                categories={categories}
-                materials={materials}
-                onCategoryChange={handleCategoryChange}
-                onMaterialToggle={handleMaterialToggle}
-                onClear={clearFilters}
-                priceRange={priceRange}
-                selectedPriceRange={localPriceRange}
-                onPriceChange={handlePriceChange}
-                onPriceChangeCommit={handlePriceCommit}
-                priceHistogram={priceHistogram}
-              />
-            </div>
+
+            <FilterSidebar
+              activeCategory={activeCategory}
+              selectedMaterials={selectedMaterials}
+              categories={categories}
+              materials={materials}
+              onCategoryChange={handleCategoryChange}
+              onMaterialToggle={handleMaterialToggle}
+              onClear={clearFilters}
+              priceRange={priceRange}
+              selectedPriceRange={localPriceRange}
+              onPriceChange={handlePriceChange}
+              onPriceChangeCommit={handlePriceCommit}
+              priceHistogram={priceHistogram}
+              className="mt-0 h-[calc(100vh-4rem)] space-y-0 overflow-y-auto px-6"
+              filtersClassName="pr-8 pl-6"
+            />
           </SheetContent>
         </Sheet>
 
@@ -316,22 +300,22 @@ export function ProductsClient({
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
           <aside className="hidden w-64 shrink-0 lg:block">
-            <div className="sticky top-28">
-              <FilterSidebar
-                activeCategory={activeCategory}
-                selectedMaterials={selectedMaterials}
-                categories={categories}
-                materials={materials}
-                onCategoryChange={handleCategoryChange}
-                onMaterialToggle={handleMaterialToggle}
-                onClear={clearFilters}
-                priceRange={priceRange}
-                selectedPriceRange={localPriceRange}
-                onPriceChange={handlePriceChange}
-                onPriceChangeCommit={handlePriceCommit}
-                priceHistogram={priceHistogram}
-              />
-            </div>
+            <FilterSidebar
+              activeCategory={activeCategory}
+              selectedMaterials={selectedMaterials}
+              categories={categories}
+              materials={materials}
+              onCategoryChange={handleCategoryChange}
+              onMaterialToggle={handleMaterialToggle}
+              onClear={clearFilters}
+              priceRange={priceRange}
+              selectedPriceRange={localPriceRange}
+              onPriceChange={handlePriceChange}
+              onPriceChangeCommit={handlePriceCommit}
+              priceHistogram={priceHistogram}
+              filtersClassName="px-0"
+              className="max-h-[calc(100vh-10rem)] overflow-y-auto pr-6"
+            />
           </aside>
 
           {/* Product Grid */}
@@ -356,7 +340,7 @@ export function ProductsClient({
             </div>
 
             {products.length > 0 ? (
-              <>
+              <div className="max-h-[calc(100vh-10rem)] overflow-y-auto">
                 <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
@@ -380,7 +364,7 @@ export function ProductsClient({
                     </p>
                   )}
                 </div>
-              </>
+              </div>
             ) : (
               <EmptyState
                 icon={Search}

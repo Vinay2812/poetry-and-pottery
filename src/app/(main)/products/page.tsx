@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 import { MobileHeader } from "@/components/layout";
 import { ProductsClient } from "@/components/products";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ProductsSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
   title: "Shop Handcrafted Pottery | Poetry & Pottery",
@@ -33,42 +33,6 @@ export const metadata: Metadata = {
       "Discover our collection of handcrafted ceramic pieces. From vases to mugs, each piece is uniquely crafted by artisan potters.",
   },
 };
-
-function ProductsLoading() {
-  return (
-    <div className="container mx-auto px-4 py-6 lg:px-8">
-      <div className="flex gap-8">
-        {/* Desktop Sidebar Skeleton */}
-        <aside className="hidden w-64 shrink-0 lg:block">
-          <Skeleton className="mb-6 h-7 w-24" />
-          <div className="space-y-4">
-            <Skeleton className="h-5 w-32" />
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Skeleton key={i} className="h-4 w-full" />
-            ))}
-          </div>
-        </aside>
-
-        {/* Product Grid Skeleton */}
-        <div className="flex-1">
-          <div className="mb-6 hidden items-center justify-between lg:flex">
-            <Skeleton className="h-5 w-24" />
-            <Skeleton className="h-10 w-48" />
-          </div>
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="space-y-3">
-                <Skeleton className="aspect-square rounded-xl" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 interface ProductsPageProps {
   searchParams: Promise<{
@@ -128,7 +92,7 @@ export default async function ProductsPage({
       <MobileHeader title="Shop Pottery" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
-        <Suspense fallback={<ProductsLoading />}>
+        <Suspense fallback={<ProductsSkeleton />}>
           <ProductsContent searchParams={searchParams} />
         </Suspense>
       </main>
