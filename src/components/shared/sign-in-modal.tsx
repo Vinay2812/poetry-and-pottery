@@ -4,7 +4,7 @@ import { useUIStore } from "@/store/ui.store";
 import { SignIn } from "@clerk/nextjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -15,6 +15,14 @@ export function SignInModal() {
   const handleClose = useCallback(() => {
     setSignInModalOpen(false);
   }, [setSignInModalOpen]);
+
+  // Build post-login URL with original redirect preserved
+  const postLoginUrl = useMemo(() => {
+    if (signInRedirectUrl) {
+      return `/post-login?redirect_url=${encodeURIComponent(signInRedirectUrl)}`;
+    }
+    return "/post-login";
+  }, [signInRedirectUrl]);
 
   return (
     <AnimatePresence>
@@ -52,7 +60,7 @@ export function SignInModal() {
               {/* Clerk SignIn component */}
               <SignIn
                 routing="hash"
-                fallbackRedirectUrl={signInRedirectUrl || "/"}
+                forceRedirectUrl={postLoginUrl}
                 appearance={{
                   elements: {
                     rootBox: "mx-auto",

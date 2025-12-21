@@ -44,7 +44,7 @@ export async function generateMetadata({
     description: product.description,
     openGraph: {
       title: `${product.name} | Poetry & Pottery`,
-      description: product.description,
+      description: product.description ?? undefined,
       type: "website",
       url: `/products/${product.slug}`,
       images: [
@@ -59,7 +59,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: `${product.name} | Poetry & Pottery`,
-      description: product.description,
+      description: product.description ?? undefined,
       images: [imageUrl],
     },
   };

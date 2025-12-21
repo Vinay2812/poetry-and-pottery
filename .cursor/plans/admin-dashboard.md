@@ -7,10 +7,10 @@ todos:
     status: completed
   - id: phase1-auth-dashboard-shell
     content: Add /dashboard route group + layout with responsive sidebar + server-side admin guard + client RouteGuard. Add /post-login flow chooser for admins. (No Next.js middleware gating.)
-    status: pending
+    status: completed
   - id: phase2-dashboard-home-analytics
     content: Add /dashboard home page with Needs-Attention queues (orders, registrations, events), plus key stats and recent activity. Keep UI list/table-first with minimal cards.
-    status: pending
+    status: completed
   - id: phase3-users-and-boards
     content: Implement /dashboard/users list with search + role management; user detail with orders/registrations Kanban (drag/drop) + cart/wishlist views. Moving status backward clears timestamps for later steps.
     status: pending

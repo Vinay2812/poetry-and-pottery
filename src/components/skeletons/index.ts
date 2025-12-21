@@ -26,3 +26,4 @@ export {
 export { CartItemSkeleton, CartSkeleton } from "./cart-skeleton";
 export { WishlistSkeleton } from "./wishlist-skeleton";
 export { ProfileSkeleton } from "./profile-skeleton";
+export { DashboardSkeleton } from "./dashboard-skeleton";
