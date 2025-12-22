@@ -129,10 +129,6 @@ export function buildOrderItemViewModel(
   };
 }
 
-// ============================================
-// Orders List Types
-// ============================================
-
 /**
  * Pagination data for lists.
  */

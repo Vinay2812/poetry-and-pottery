@@ -1,6 +1,3 @@
-// ============================================
-// RegistrationsBoard Types
-// ============================================
 import type { UserRegistration } from "@/actions/admin";
 
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";

@@ -5,10 +5,6 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export interface AdminProduct {
   id: number;
   slug: string;
@@ -134,10 +130,6 @@ export interface GetProductReviewsResult {
   total: number;
   averageRating: number;
 }
-
-// ============================================================================
-// Actions
-// ============================================================================
 
 /**
  * Get paginated list of products with search and filters.

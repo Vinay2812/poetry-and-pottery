@@ -5,10 +5,6 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export interface HeroImages {
   home: string;
   ourStory: string;
@@ -74,10 +70,6 @@ const DEFAULT_SOCIAL_LINKS: SocialLinks = {
   pinterest: "https://pinterest.com/poetryandpottery",
 };
 
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
 async function getSetting<T>(key: string, defaultValue: T): Promise<T> {
   const setting = await prisma.siteSetting.findUnique({
     where: { key },
@@ -90,17 +82,16 @@ async function getSetting<T>(key: string, defaultValue: T): Promise<T> {
   return defaultValue;
 }
 
-async function saveSetting(key: string, value: unknown): Promise<void> {
+async function saveSetting(
+  key: string,
+  value: PrismaJson.SettingValue,
+): Promise<void> {
   await prisma.siteSetting.upsert({
     where: { key },
-    create: { key, value: value as object },
-    update: { value: value as object },
+    create: { key, value },
+    update: { value },
   });
 }
-
-// ============================================================================
-// Actions
-// ============================================================================
 
 /**
  * Get all site settings.

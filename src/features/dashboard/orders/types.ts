@@ -1,6 +1,3 @@
-// ============================================
-// OrdersBoard Types
-// ============================================
 import type { UserOrder } from "@/actions/admin";
 
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";

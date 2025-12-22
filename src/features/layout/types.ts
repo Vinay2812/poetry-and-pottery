@@ -46,10 +46,6 @@ export interface AccountDropdownProps {
   onNavigate: (path: string) => void;
 }
 
-// ============================================
-// MobileHeader Types
-// ============================================
-
 /**
  * View model for MobileHeader component.
  */
@@ -82,10 +78,6 @@ export interface MobileHeaderContainerProps {
   showBack?: boolean;
   backHref?: string;
 }
-
-// ============================================
-// MobileNav Types
-// ============================================
 
 /**
  * View model for MobileNav component.

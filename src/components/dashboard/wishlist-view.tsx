@@ -12,7 +12,6 @@ import { useInView } from "react-intersection-observer";
 import { ImageCarousel } from "@/components/shared/image-carousel";
 import { Badge } from "@/components/ui/badge";
 
-// TODO: Add product detail navigation later
 interface WishlistViewProps {
   userId: number;
   initialData: UserWishlistItem[];

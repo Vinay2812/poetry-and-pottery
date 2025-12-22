@@ -10,10 +10,6 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export interface AdminEvent {
   id: string;
   slug: string;
@@ -176,10 +172,6 @@ export interface GetEventReviewsResult {
   total: number;
   averageRating: number;
 }
-
-// ============================================================================
-// Actions
-// ============================================================================
 
 /**
  * Get paginated list of events with search and filters.

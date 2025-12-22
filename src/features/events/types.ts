@@ -152,10 +152,6 @@ export interface PastWorkshopDetailContainerProps {
   currentUserId?: number | null;
 }
 
-// ============================================
-// All Events Types
-// ============================================
-
 /**
  * Pagination data for lists.
  */
@@ -194,10 +190,6 @@ export interface AllEventsContainerProps {
   initialPastEvents: EventWithRegistrationCount[];
   initialPastPagination: PaginationData;
 }
-
-// ============================================
-// Registrations Types
-// ============================================
 
 /**
  * View model for the Registrations component.

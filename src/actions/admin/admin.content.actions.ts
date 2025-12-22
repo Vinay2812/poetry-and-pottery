@@ -5,10 +5,6 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-// ============================================================================
-// Types - Content Page Structures
-// ============================================================================
-
 // About Page Content
 export interface AboutValue {
   icon: string;
@@ -134,10 +130,6 @@ export interface ContentActionResult {
   success: boolean;
   error?: string;
 }
-
-// ============================================================================
-// Default Content
-// ============================================================================
 
 const DEFAULT_ABOUT_CONTENT: AboutPageContent = {
   storyTitle: "Where Clay Meets Soul",
@@ -549,10 +541,6 @@ const PAGE_CONFIG: Record<
   care: { title: "Care Instructions", defaultContent: DEFAULT_CARE_CONTENT },
 };
 
-// ============================================================================
-// Actions
-// ============================================================================
-
 /**
  * Get all content pages (list view).
  */
@@ -650,11 +638,11 @@ export async function updateContentPage(
       create: {
         slug,
         title: config.title,
-        content: content as object,
+        content,
         is_active: true,
       },
       update: {
-        content: content as object,
+        content,
       },
     });
 
@@ -697,7 +685,7 @@ export async function toggleContentPageActive(
         data: {
           slug,
           title: config.title,
-          content: config.defaultContent as object,
+          content: config.defaultContent,
           is_active: false,
         },
       });
@@ -712,10 +700,6 @@ export async function toggleContentPageActive(
     return { success: false, error: "Failed to toggle content page" };
   }
 }
-
-// ============================================================================
-// Public Actions (for frontend pages)
-// ============================================================================
 
 /**
  * Get about page content (public).

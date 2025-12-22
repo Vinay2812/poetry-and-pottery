@@ -5,10 +5,6 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export interface Category {
   name: string;
   icon: string;
@@ -47,10 +43,6 @@ const DEFAULT_CATEGORY_ICONS: Record<string, string> = {
 // Site setting key for category configuration
 const CATEGORY_CONFIG_KEY = "category_icons";
 
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
 async function getCategoryIconConfig(): Promise<Record<string, string>> {
   const setting = await prisma.siteSetting.findUnique({
     where: { key: CATEGORY_CONFIG_KEY },
@@ -72,10 +64,6 @@ async function saveCategoryIconConfig(
     update: { value: config },
   });
 }
-
-// ============================================================================
-// Actions
-// ============================================================================
 
 /**
  * Get all categories with their product counts and icons.
