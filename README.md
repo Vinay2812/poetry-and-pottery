@@ -7,12 +7,12 @@ A handcrafted pottery e-commerce website built with Next.js 16+, featuring a bea
 ### Prerequisites
 
 - Node.js >=18.17.0
-- npm >=9.6.7
+- Bun (recommended package manager)
 
 ### Installation
 
 ```bash
-npm install
+bun install
 ```
 
 ### Environment Setup
@@ -26,80 +26,104 @@ cp .env.example .env
 ### Development
 
 ```bash
-npm run dev
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser.
+Open [http://localhost:3005](http://localhost:3005) with your browser.
 
 ## Scripts
 
-| Script                    | Description                               |
-| ------------------------- | ----------------------------------------- |
-| `npm run dev`             | Start development server on port 3005     |
-| `npm run build`           | Build for production (includes codegen)   |
-| `npm start`               | Start production server on port 3005      |
-| `npm run lint`            | Run ESLint                                |
-| `npm run tsc`             | TypeScript type checking without emitting |
-| `npm run prettier`        | Check code formatting                     |
-| `npm run prettier:format` | Format code with Prettier                 |
+| Script                    | Description                           |
+| ------------------------- | ------------------------------------- |
+| `bun run dev`             | Start development server on port 3005 |
+| `bun run build`           | Build for production                  |
+| `bun start`               | Start production server on port 3005  |
+| `bun run lint`            | Run ESLint                            |
+| `bun run tsc`             | TypeScript type checking without emit |
+| `bun run prettier`        | Check code formatting                 |
+| `bun run prettier:format` | Format code with Prettier             |
+| `bun run db:init`         | Seed the database                     |
+| `bun run db:reset`        | Reset and reseed the database         |
+| `bun run prisma:studio`   | Open Prisma Studio                    |
 
 ## Directory Structure
 
 ```
 poetry-and-pottery/
-├── app/
-│   ├── layout.tsx                          # Root layout (ClerkProvider, fonts)
-│   ├── globals.css                         # Global styles
-│   └── (main)/                             # Main route group
-│       ├── layout.tsx                      # Shared layout (Navbar, MobileNav)
-│       ├── (with-footer)/                  # Pages with Footer
-│       │   ├── layout.tsx                  # Footer layout
-│       │   ├── page.tsx                    # Home page
-│       │   ├── about/page.tsx              # About page
-│       │   ├── contact/page.tsx            # Contact page
-│       │   ├── care/page.tsx               # Care instructions
-│       │   ├── faq/page.tsx                # FAQ page
-│       │   └── shipping/page.tsx           # Shipping & returns
-│       ├── products/                       # Products (no footer)
-│       │   ├── page.tsx                    # Products listing
-│       │   └── [id]/page.tsx               # Product detail
-│       ├── cart/page.tsx                   # Shopping cart
-│       ├── wishlist/page.tsx               # Wishlist
-│       ├── profile/page.tsx                # User profile
-│       └── events/                         # Events section
-│           ├── page.tsx                    # Redirect to registrations
-│           ├── registrations/
-│           │   ├── page.tsx                # My registrations
-│           │   └── [id]/page.tsx           # Registration detail
-│           ├── upcoming/
-│           │   ├── page.tsx                # Upcoming events
-│           │   └── [id]/page.tsx           # Event detail
-│           └── past/
-│               ├── page.tsx                # Past workshops
-│               └── [id]/page.tsx           # Past workshop detail
-├── components/
-│   ├── ui/                                 # UI primitives (shadcn/ui-style)
-│   ├── layout/                             # Layout components
-│   │   ├── navbar.tsx                      # Desktop navigation
-│   │   ├── mobile-header.tsx               # Mobile header
-│   │   ├── mobile-nav.tsx                  # Mobile bottom navigation
-│   │   └── footer.tsx                      # Footer component
-│   ├── cards/                              # Card components
-│   ├── forms/                              # Form components
-│   ├── sections/                           # Section components
-│   ├── events-list-layout.tsx              # Shared events list layout
-│   ├── events-tabs.tsx                     # Events navigation tabs
-│   └── ...                                 # Other components
-├── lib/
-│   ├── constants.ts                        # App constants and mock data
-│   └── utils.ts                            # Utility functions
-├── rules/
-│   ├── DESIGN-PRINCIPLES.md                # Design principles documentation
-│   └── DESIGNS.md                          # Design system rules
-└── CLAUDE.md                               # AI coding guidelines
+├── src/
+│   ├── app/                              # Next.js App Router
+│   │   ├── (main)/                       # Main route group
+│   │   │   ├── layout.tsx                # Shared layout (Navbar, MobileNav)
+│   │   │   ├── (with-footer)/            # Pages with Footer
+│   │   │   │   ├── page.tsx              # Home page
+│   │   │   │   ├── about/                # About page
+│   │   │   │   ├── contact/              # Contact page
+│   │   │   │   ├── care/                 # Care instructions
+│   │   │   │   ├── faq/                  # FAQ page
+│   │   │   │   └── shipping/             # Shipping & returns
+│   │   │   ├── products/                 # Products pages
+│   │   │   ├── cart/                     # Shopping cart
+│   │   │   ├── wishlist/                 # Wishlist
+│   │   │   ├── profile/                  # User profile
+│   │   │   ├── orders/                   # Order history
+│   │   │   └── events/                   # Events section
+│   │   ├── dashboard/                    # Admin dashboard
+│   │   │   ├── products/                 # Product management
+│   │   │   ├── categories/               # Category management
+│   │   │   ├── events/                   # Event management
+│   │   │   ├── users/                    # User management
+│   │   │   ├── content/                  # Content management
+│   │   │   └── settings/                 # Settings
+│   │   └── api/                          # API routes
+│   ├── features/                         # Feature modules (Container/Component pattern)
+│   │   ├── products/                     # Products feature
+│   │   │   ├── components/               # Presentational components
+│   │   │   ├── containers/               # State & logic containers
+│   │   │   └── hooks/                    # Custom hooks
+│   │   ├── cart/                         # Cart feature
+│   │   ├── wishlist/                     # Wishlist feature
+│   │   ├── orders/                       # Orders feature
+│   │   ├── events/                       # Events feature
+│   │   ├── layout/                       # Layout feature
+│   │   └── dashboard/                    # Dashboard features
+│   ├── components/                       # Shared components
+│   │   ├── ui/                           # UI primitives (shadcn/ui-style)
+│   │   ├── layout/                       # Layout components
+│   │   ├── cards/                        # Card components
+│   │   ├── forms/                        # Form components
+│   │   ├── sections/                     # Section components
+│   │   └── skeletons/                    # Loading skeletons
+│   ├── actions/                          # Server actions
+│   ├── hooks/                            # Global custom hooks
+│   ├── lib/                              # Utilities and helpers
+│   │   └── validations/                  # Zod validation schemas
+│   ├── store/                            # Zustand stores
+│   ├── providers/                        # React context providers
+│   └── types/                            # TypeScript types
+├── prisma/                               # Prisma schema and migrations
+├── public/                               # Static assets
+└── rules/                                # Design documentation
+    ├── DESIGN-PRINCIPLES.md
+    └── DESIGNS.md
 ```
 
 ## Architecture
+
+### Container/Component Pattern
+
+Features follow the Container/Component (Presentational) pattern:
+
+- **Containers** own state management, data fetching, business logic, and side effects
+- **Presentational Components** receive a `viewModel` prop and `on*` callbacks for pure UI rendering
+
+```
+src/features/<featureName>/
+├── components/          # Presentational UI components
+├── containers/          # State, logic, and data fetching
+├── hooks/               # Custom hooks (optional)
+├── types.ts             # ViewModels and Props
+└── index.ts             # Barrel exports
+```
 
 ### Route Groups
 
@@ -114,10 +138,12 @@ This keeps URLs clean while sharing layouts between related pages.
 
 - **Framework**: Next.js 16+ (App Router)
 - **UI**: React 19, TypeScript
-- **Styling**: Tailwind CSS, Emotion
+- **Styling**: Tailwind CSS 4
 - **State**: Zustand, React Query
+- **Database**: Prisma ORM with PostgreSQL
 - **Auth**: Clerk
 - **UI Components**: Radix UI, custom design system
+- **Forms**: React Hook Form with Zod validation
 
 ### Path Aliases
 
@@ -129,6 +155,7 @@ This keeps URLs clean while sharing layouts between related pages.
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [Clerk Authentication](https://clerk.com/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
 
 ## Deployment
 
