@@ -50,6 +50,7 @@ export interface ProductDetailProps {
   inWishlist: boolean;
   cartLoading: boolean;
   wishlistLoading: boolean;
+  atMaxQuantity: boolean;
   currentUserId?: number | null;
   onColorSelect: (color: string) => void;
   onShare: () => void;

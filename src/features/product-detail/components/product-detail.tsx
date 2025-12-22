@@ -273,6 +273,7 @@ function MaterialsAccordion({
 
 interface ActionButtonsProps {
   isOutOfStock: boolean;
+  atMaxQuantity: boolean;
   addedToCart: boolean;
   inWishlist: boolean;
   cartLoading: boolean;
@@ -285,6 +286,7 @@ interface ActionButtonsProps {
 
 function ActionButtons({
   isOutOfStock,
+  atMaxQuantity,
   addedToCart,
   inWishlist,
   cartLoading,
@@ -294,6 +296,7 @@ function ActionButtons({
   onToggleWishlist,
   className,
 }: ActionButtonsProps) {
+  const isDisabled = isOutOfStock || atMaxQuantity;
   return (
     <div className={cn("flex gap-3", className)}>
       <motion.div whileTap={{ scale: 0.95 }}>
@@ -343,7 +346,7 @@ function ActionButtons({
             addedToCart && "bg-green-600 hover:bg-green-700",
           )}
           size="lg"
-          disabled={isOutOfStock || cartLoading}
+          disabled={isDisabled || cartLoading}
           onClick={onAddToCart}
         >
           {cartLoading ? (
@@ -361,9 +364,11 @@ function ActionButtons({
           )}
           {isOutOfStock
             ? "Out of Stock"
-            : addedToCart
-              ? "Added!"
-              : "Add to Cart"}
+            : atMaxQuantity
+              ? "Max in Cart"
+              : addedToCart
+                ? "Added!"
+                : "Add to Cart"}
         </Button>
       </motion.div>
     </div>
@@ -399,6 +404,7 @@ export function ProductDetail({
   inWishlist,
   cartLoading,
   wishlistLoading,
+  atMaxQuantity,
   currentUserId,
   onColorSelect,
   onShare,
@@ -469,6 +475,7 @@ export function ProductDetail({
               {/* Desktop Add to Cart */}
               <ActionButtons
                 isOutOfStock={viewModel.isOutOfStock}
+                atMaxQuantity={atMaxQuantity}
                 addedToCart={addedToCart}
                 inWishlist={inWishlist}
                 cartLoading={cartLoading}
@@ -490,6 +497,7 @@ export function ProductDetail({
       <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
         <ActionButtons
           isOutOfStock={viewModel.isOutOfStock}
+          atMaxQuantity={atMaxQuantity}
           addedToCart={addedToCart}
           inWishlist={inWishlist}
           cartLoading={cartLoading}

@@ -1,7 +1,13 @@
 "use client";
 
 import { toggleReviewLike } from "@/actions";
-import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
+import {
+  useAuthAction,
+  useCart,
+  useDebounce,
+  useShare,
+  useWishlist,
+} from "@/hooks";
 import { useCallback, useMemo, useState } from "react";
 
 import { ProductDetail } from "../components/product-detail";
@@ -24,17 +30,19 @@ export function ProductDetailContainer({
   >({});
 
   const { requireAuth } = useAuthAction();
-  const { addToCart, isLoading: isCartLoading } = useCart();
+  const { addToCart, isLoading: isCartLoading, isAtMaxQuantity } = useCart();
   const {
     toggleWishlist,
     isInWishlist,
     isLoading: isWishlistLoading,
   } = useWishlist();
   const { share } = useShare();
+  const { debounce } = useDebounce();
 
   const inWishlist = isInWishlist(product.id);
   const cartLoading = isCartLoading(product.id);
   const wishlistLoading = isWishlistLoading(product.id);
+  const atMaxQuantity = isAtMaxQuantity(product.id);
 
   // Calculate average rating
   const averageRating = useMemo(
@@ -65,13 +73,13 @@ export function ProductDetailContainer({
 
   const handleAddToCart = useCallback(() => {
     requireAuth(async () => {
-      const success = await addToCart(product.id);
+      const success = await addToCart(product.id, 1, product);
       if (success) {
         setAddedToCart(true);
         setTimeout(() => setAddedToCart(false), 2000);
       }
     });
-  }, [requireAuth, addToCart, product.id]);
+  }, [requireAuth, addToCart, product]);
 
   const handleToggleWishlist = useCallback(() => {
     requireAuth(() => toggleWishlist(product.id));
@@ -93,25 +101,29 @@ export function ProductDetailContainer({
 
   const handleReviewLike = useCallback(
     async (reviewId: string, currentLikes: number, currentIsLiked: boolean) => {
-      requireAuth(async () => {
-        // Optimistically update UI
-        const newIsLiked = !currentIsLiked;
-        const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-        handleLikeUpdate(reviewId, newLikes, newIsLiked);
+      // Debounce check
+      const result = debounce(`like-${reviewId}`, async () => {
+        requireAuth(async () => {
+          // Optimistically update UI
+          const newIsLiked = !currentIsLiked;
+          const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
+          handleLikeUpdate(reviewId, newLikes, newIsLiked);
 
-        // Call server action
-        const result = await toggleReviewLike(Number(reviewId));
+          // Call server action
+          const result = await toggleReviewLike(Number(reviewId));
 
-        if (!result.success) {
-          // Revert on failure
-          handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
-        } else if (result.likesCount !== undefined) {
-          // Sync with server count
-          handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
-        }
+          if (!result.success) {
+            // Revert on failure
+            handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
+          } else if (result.likesCount !== undefined) {
+            // Sync with server count
+            handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
+          }
+        });
       });
+      return (await result) ?? false;
     },
-    [requireAuth, handleLikeUpdate],
+    [requireAuth, handleLikeUpdate, debounce],
   );
 
   return (
@@ -123,6 +135,7 @@ export function ProductDetailContainer({
       inWishlist={inWishlist}
       cartLoading={cartLoading}
       wishlistLoading={wishlistLoading}
+      atMaxQuantity={atMaxQuantity}
       currentUserId={currentUserId}
       onColorSelect={handleColorSelect}
       onShare={handleShare}

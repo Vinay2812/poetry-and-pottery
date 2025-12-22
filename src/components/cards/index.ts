@@ -4,7 +4,7 @@ export { CompletedEventCard } from "./completed-event-card";
 export { EventCard } from "./event-card";
 export { PastWorkshopCard } from "./past-workshop-card";
 export { ProcessStepCard } from "./process-step-card";
-export { ProductCard } from "./product-card";
+export { ProductCardContainer as ProductCard } from "@/features/product-card";
 export { RegisteredEventCard } from "./registered-event-card";
 export { ReviewCard } from "./review-card";
 export { TeamMemberCard } from "./team-member-card";

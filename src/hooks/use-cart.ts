@@ -7,8 +7,13 @@ import {
 } from "@/actions/cart.actions";
 import { useCartStore } from "@/store/cart.store";
 import { useUIStore } from "@/store/ui.store";
+import type { CartWithProduct, ProductWithCategories } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useState } from "react";
+
+import { MAX_CART_QUANTITY } from "@/lib/constants";
+
+import { useThrottle } from "./use-throttle";
 
 export function useCart() {
   const { isSignedIn } = useAuth();
@@ -16,6 +21,12 @@ export function useCart() {
   const { addToast, setSignInModalOpen, setSignInRedirectUrl } = useUIStore();
   const [loadingProducts, setLoadingProducts] = useState<Set<number>>(
     new Set(),
+  );
+  const { throttle, isThrottled } = useThrottle();
+
+  const isThrottling = useCallback(
+    (productId: number) => isThrottled(`add-${productId}`),
+    [isThrottled],
   );
 
   const setLoading = useCallback((productId: number, loading: boolean) => {
@@ -36,45 +47,83 @@ export function useCart() {
   );
 
   const addToCart = useCallback(
-    async (productId: number, quantity: number = 1) => {
+    async (
+      productId: number,
+      quantity: number = 1,
+      product?: ProductWithCategories,
+    ) => {
       if (!isSignedIn) {
         setSignInRedirectUrl(window.location.pathname);
         setSignInModalOpen(true);
         return false;
       }
 
-      setLoading(productId, true);
-
-      const existingProduct = cartStore.items.find(
+      const existingItem = cartStore.items.find(
         (i) => i.product_id === productId,
       );
+      const currentQuantity = existingItem?.quantity ?? 0;
 
-      if (existingProduct) {
-        // Optimistically update
-        cartStore.updateQuantity(
-          productId,
-          existingProduct.quantity + quantity,
-        );
-      }
-
-      const result = await addToCartAction(productId, quantity);
-      if (!result.success) {
+      if (currentQuantity >= MAX_CART_QUANTITY) {
         addToast({
           type: "error",
-          message: result.error || "Failed to add to cart",
+          message: `Maximum ${MAX_CART_QUANTITY} items per product allowed`,
         });
-        setLoading(productId, false);
         return false;
       }
 
-      // Update store with server response
-      cartStore.addItem(result.data);
+      const newQuantity = Math.min(
+        currentQuantity + quantity,
+        MAX_CART_QUANTITY,
+      );
+      const quantityToAdd = newQuantity - currentQuantity;
 
-      setLoading(productId, false);
-      return true;
+      if (quantityToAdd <= 0) {
+        return false;
+      }
+
+      // Optimistic update immediately
+      const previousItems = [...cartStore.items];
+
+      if (existingItem) {
+        cartStore.updateQuantity(productId, newQuantity);
+      } else if (product) {
+        const optimisticItem: CartWithProduct = {
+          id: -productId,
+          user_id: 0,
+          product_id: productId,
+          quantity: quantityToAdd,
+          created_at: new Date(),
+          updated_at: new Date(),
+          product: product,
+        };
+        cartStore.addItem(optimisticItem);
+      }
+
+      // Throttle API call
+      const result = throttle(`add-${productId}`, async () => {
+        setLoading(productId, true);
+
+        const actionResult = await addToCartAction(productId, quantityToAdd);
+        if (!actionResult.success) {
+          cartStore.hydrate(previousItems);
+          addToast({
+            type: "error",
+            message: actionResult.error || "Failed to add to cart",
+          });
+          setLoading(productId, false);
+          return false;
+        }
+
+        cartStore.addItem(actionResult.data);
+        setLoading(productId, false);
+        return true;
+      });
+
+      return (await result) ?? true; // Return true for throttled calls since UI already updated
     },
     [
       isSignedIn,
+      throttle,
       cartStore,
       addToast,
       setLoading,
@@ -87,64 +136,83 @@ export function useCart() {
     async (productId: number) => {
       if (!isSignedIn) return false;
 
-      setLoading(productId, true);
-
-      // Store current item for rollback
+      // Optimistic update immediately
       const currentItem = cartStore.items.find(
         (i) => i.product_id === productId,
       );
-
-      // Optimistically update
       cartStore.removeItem(productId);
 
-      const result = await removeFromCartAction(productId);
-      if (!result.success) {
-        // Rollback on failure
-        if (currentItem) {
-          cartStore.addItem(currentItem);
-        }
-        addToast({
-          type: "error",
-          message: result.error || "Failed to remove from cart",
-        });
-        setLoading(productId, false);
-        return false;
-      }
+      // Throttle API call
+      const result = throttle(`remove-${productId}`, async () => {
+        setLoading(productId, true);
 
-      setLoading(productId, false);
-      return true;
+        const actionResult = await removeFromCartAction(productId);
+        if (!actionResult.success) {
+          if (currentItem) {
+            cartStore.addItem(currentItem);
+          }
+          addToast({
+            type: "error",
+            message: actionResult.error || "Failed to remove from cart",
+          });
+          setLoading(productId, false);
+          return false;
+        }
+
+        setLoading(productId, false);
+        return true;
+      });
+
+      return (await result) ?? true;
     },
-    [isSignedIn, cartStore, addToast, setLoading],
+    [isSignedIn, throttle, cartStore, addToast, setLoading],
   );
 
   const updateQuantity = useCallback(
     async (productId: number, quantity: number) => {
       if (!isSignedIn) return false;
 
-      setLoading(productId, true);
-
-      // Store current quantity for rollback
+      const clampedQuantity = Math.min(
+        Math.max(quantity, 0),
+        MAX_CART_QUANTITY,
+      );
       const currentQuantity = cartStore.getQuantity(productId);
 
-      // Optimistically update
-      cartStore.updateQuantity(productId, quantity);
+      // Optimistic update immediately
+      cartStore.updateQuantity(productId, clampedQuantity);
 
-      const result = await updateCartQuantityAction(productId, quantity);
-      if (!result.success) {
-        // Rollback on failure
-        cartStore.updateQuantity(productId, currentQuantity);
-        addToast({
-          type: "error",
-          message: result.error || "Failed to update cart",
-        });
+      // Throttle API call
+      const result = throttle(`update-${productId}`, async () => {
+        setLoading(productId, true);
+
+        const actionResult = await updateCartQuantityAction(
+          productId,
+          clampedQuantity,
+        );
+        if (!actionResult.success) {
+          cartStore.updateQuantity(productId, currentQuantity);
+          addToast({
+            type: "error",
+            message: actionResult.error || "Failed to update cart",
+          });
+          setLoading(productId, false);
+          return false;
+        }
+
         setLoading(productId, false);
-        return false;
-      }
+        return true;
+      });
 
-      setLoading(productId, false);
-      return true;
+      return (await result) ?? true;
     },
-    [isSignedIn, cartStore, addToast, setLoading],
+    [isSignedIn, throttle, cartStore, addToast, setLoading],
+  );
+
+  const isAtMaxQuantity = useCallback(
+    (productId: number) => {
+      return cartStore.getQuantity(productId) >= MAX_CART_QUANTITY;
+    },
+    [cartStore],
   );
 
   return {
@@ -158,5 +226,7 @@ export function useCart() {
     getQuantity: cartStore.getQuantity,
     isLoading,
     isAnyLoading: loadingProducts.size > 0,
+    isAtMaxQuantity,
+    isThrottling,
   };
 }

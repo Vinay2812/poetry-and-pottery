@@ -15,13 +15,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { MAX_CART_QUANTITY } from "@/lib/constants";
+
 interface CartItemCardProps {
   product: ProductWithCategories;
   quantity: number;
   onQuantityChange: (quantity: number) => void;
   onRemove: () => void;
   isLoading?: boolean;
-  maxQuantity?: number;
 }
 
 export function CartItemCard({
@@ -30,13 +31,15 @@ export function CartItemCard({
   onQuantityChange,
   onRemove,
   isLoading = false,
-  maxQuantity = 5,
 }: CartItemCardProps) {
   const imageUrl = product.image_urls[0] || "/placeholder.jpg";
   const category =
     product.product_categories[0]?.category || product.material || "Pottery";
 
-  const quantityOptions = Array.from({ length: maxQuantity }, (_, i) => i + 1);
+  const quantityOptions = Array.from(
+    { length: MAX_CART_QUANTITY },
+    (_, i) => i + 1,
+  );
   const itemTotal = product.price * quantity;
 
   return (

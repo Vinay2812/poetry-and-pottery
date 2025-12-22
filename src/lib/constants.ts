@@ -1,3 +1,5 @@
+export const MAX_CART_QUANTITY = 5;
+
 export const HERO_IMAGES = {
   springRituals:
     "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&h=600&fit=crop",
