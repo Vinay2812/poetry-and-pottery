@@ -64,14 +64,11 @@ export function ProductCard({
                   whileTap={
                     viewModel.isWishlistDebouncing ? undefined : { scale: 0.9 }
                   }
-                  disabled={viewModel.isWishlistDebouncing}
                   className={cn(
                     "flex h-9 w-9 items-center justify-center rounded-full backdrop-blur-md transition-all duration-300",
                     viewModel.inWishlist
                       ? "bg-red-500/90 text-white shadow-lg shadow-red-500/20"
                       : "bg-white/70 text-neutral-700 shadow-sm hover:bg-white dark:bg-black/40 dark:text-white dark:hover:bg-black/60",
-                    viewModel.isWishlistDebouncing &&
-                      "cursor-not-allowed opacity-50",
                   )}
                   onClick={(e) => {
                     e.preventDefault();
