@@ -1,7 +1,14 @@
 "use client";
 
 import { OrderStatus } from "@/types";
-import { CheckCircle2, Clock, CreditCard, Package, Truck } from "lucide-react";
+import {
+  Ban,
+  CheckCircle2,
+  Clock,
+  CreditCard,
+  Package,
+  Truck,
+} from "lucide-react";
 import { useCallback } from "react";
 
 import {
@@ -71,6 +78,16 @@ interface OrderProgressProps {
   cancelledAt?: Date | string | null;
 }
 
+function formatDate(dateValue: Date | string): string {
+  const date = new Date(dateValue);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 export function OrderProgress({
   status,
   createdAt,
@@ -79,7 +96,10 @@ export function OrderProgress({
   paidAt,
   shippedAt,
   deliveredAt,
+  cancelledAt,
 }: OrderProgressProps) {
+  const isCancelled = status === OrderStatus.CANCELLED;
+
   const getStepDate = useCallback(
     (stepStatus: string): Date | string | null => {
       switch (stepStatus) {
@@ -99,6 +119,31 @@ export function OrderProgress({
     },
     [requestAt, createdAt, approvedAt, paidAt, shippedAt, deliveredAt],
   );
+
+  if (isCancelled) {
+    return (
+      <div className="rounded-2xl">
+        <h2 className="mb-6 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+          Order Status
+        </h2>
+        <div className="flex items-center gap-4 rounded-xl bg-red-50 p-4 dark:bg-red-950/20">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
+            <Ban className="h-5 w-5 text-red-600 dark:text-red-400" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-red-700 dark:text-red-400">
+              Order Cancelled
+            </p>
+            {cancelledAt && (
+              <time className="mt-0.5 block text-[10px] font-bold tracking-wider text-red-500 uppercase">
+                {formatDate(cancelledAt)}
+              </time>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ProgressStepper
