@@ -4,11 +4,10 @@ import {
   getProductBySlug,
   getRelatedProducts,
 } from "@/actions";
+import { MobileHeaderContainer } from "@/features/layout";
+import { ProductDetailContainer } from "@/features/product-detail";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-
-import { MobileHeader } from "@/components/layout";
-import { ProductDetailClient } from "@/components/products";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -92,8 +91,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <MobileHeader title="Product Detail" showBack backHref="/products" />
-      <ProductDetailClient
+      <MobileHeaderContainer
+        title="Product Detail"
+        showBack
+        backHref="/products"
+      />
+      <ProductDetailContainer
         product={product}
         relatedProducts={relatedProducts}
         currentUserId={currentUserId}

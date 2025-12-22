@@ -2,13 +2,34 @@
 
 import { useAuthAction } from "@/hooks/use-auth-action";
 import { motion } from "framer-motion";
+import { CalendarDays, Ticket } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 import { cn } from "@/lib/utils";
 
-import { EVENTS_TABS, TabType } from "./events-list-layout";
+export enum TabType {
+  ALL = "all",
+  REGISTRATIONS = "registrations",
+}
+
+export const EVENTS_TABS = [
+  {
+    type: TabType.ALL,
+    href: "/events",
+    icon: CalendarDays,
+    mobileLabel: "All",
+    desktopLabel: "All Events",
+  },
+  {
+    type: TabType.REGISTRATIONS,
+    href: "/events/registrations",
+    icon: Ticket,
+    mobileLabel: "Registrations",
+    desktopLabel: "My Registrations",
+  },
+];
 
 interface EventsTabsProps {
   activeTab: TabType;

@@ -1,8 +1,7 @@
 import { getOrderById } from "@/actions";
+import { MobileHeaderContainer } from "@/features/layout";
+import { OrderDetailContainer } from "@/features/orders";
 import type { Metadata } from "next";
-
-import { MobileHeader } from "@/components/layout";
-import { OrderDetailClient } from "@/components/orders";
 
 interface OrderDetailPageProps {
   params: Promise<{ id: string }>;
@@ -34,7 +33,11 @@ export default async function OrderDetailPage({
 
   return (
     <>
-      <MobileHeader title="Order Details" showBack backHref="/orders" />
+      <MobileHeaderContainer
+        title="Order Details"
+        showBack
+        backHref="/orders"
+      />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
         <div className="container mx-auto px-4 py-6 lg:px-8">
@@ -42,7 +45,7 @@ export default async function OrderDetailPage({
             Order Details
           </h1>
 
-          <OrderDetailClient order={order} />
+          <OrderDetailContainer order={order} />
         </div>
       </main>
     </>

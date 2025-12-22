@@ -1,10 +1,15 @@
-import { MobileHeader } from "@/components/layout";
+import { MobileHeaderContainer } from "@/features/layout";
+
 import { EventDetailSkeleton } from "@/components/skeletons";
 
 export default function PastEventDetailLoading() {
   return (
     <>
-      <MobileHeader title="Workshop Details" showBack backHref="/events/past" />
+      <MobileHeaderContainer
+        title="Workshop Details"
+        showBack
+        backHref="/events/past"
+      />
       <EventDetailSkeleton />
     </>
   );

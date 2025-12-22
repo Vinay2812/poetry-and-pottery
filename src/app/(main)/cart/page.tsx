@@ -1,7 +1,6 @@
 import { getCart, getFeaturedProducts, getUserAddresses } from "@/actions";
+import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
-
-import { CartClient } from "@/components/cart";
 
 export const metadata: Metadata = {
   title: "Shopping Cart | Poetry & Pottery",
@@ -21,7 +20,7 @@ export default async function CartPage() {
   ]);
 
   return (
-    <CartClient
+    <CartContainer
       initialCartItems={cartResult.success ? cartResult.data : []}
       recommendedProducts={recommendedProducts}
       initialAddresses={addressResult.success ? addressResult.data : []}

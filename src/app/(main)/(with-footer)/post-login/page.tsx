@@ -2,9 +2,9 @@ import { UserRole } from "@/prisma/generated/enums";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-import { ENVIRONMENT } from "@/lib/env.consts";
+import { FlowChooser } from "@/components/auth";
 
-import { FlowChooser } from "./_components/flow-chooser";
+import { ENVIRONMENT } from "@/lib/env.consts";
 
 interface PostLoginPageProps {
   searchParams: Promise<{ redirect_url?: string }>;

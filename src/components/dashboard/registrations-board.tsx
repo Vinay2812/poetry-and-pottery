@@ -5,6 +5,7 @@ import {
   updateRegistrationStatus,
 } from "@/actions/admin";
 import type { UserRegistration } from "@/actions/admin";
+import { RegistrationDetailDialogContainer } from "@/features/dashboard/registrations";
 import { EventRegistrationStatus } from "@/prisma/generated/enums";
 import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
 import Image from "next/image";
@@ -17,7 +18,6 @@ import {
 } from "react";
 
 import { KanbanBoard, KanbanColumn } from "./kanban-board";
-import { RegistrationDetailDialog } from "./registration-detail-dialog";
 
 interface RegistrationsBoardProps {
   registrations: UserRegistration[];
@@ -174,7 +174,7 @@ export function RegistrationsBoard({ registrations }: RegistrationsBoardProps) {
         renderCard={renderRegistrationCard}
         isLoading={isPending}
       />
-      <RegistrationDetailDialog
+      <RegistrationDetailDialogContainer
         registration={selectedRegistration}
         open={dialogOpen}
         onOpenChange={setDialogOpen}

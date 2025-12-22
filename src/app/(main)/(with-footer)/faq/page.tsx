@@ -1,8 +1,8 @@
 "use client";
 
+import { MobileHeaderContainer } from "@/features/layout";
 import { HelpCircle, Mail, MessageCircle, Phone } from "lucide-react";
 
-import { MobileHeader } from "@/components/layout";
 import { CTASection, SectionHeader } from "@/components/sections";
 import {
   Accordion,
@@ -142,7 +142,7 @@ const FAQ_CATEGORIES = [
 export default function FAQPage() {
   return (
     <>
-      <MobileHeader title="FAQ" showBack backHref="/" />
+      <MobileHeaderContainer title="FAQ" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section */}

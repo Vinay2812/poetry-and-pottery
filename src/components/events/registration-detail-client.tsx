@@ -1,5 +1,6 @@
 "use client";
 
+import { MobileHeaderContainer } from "@/features/layout";
 import { useShare } from "@/hooks";
 import { EventRegistrationStatus, type RegistrationWithEvent } from "@/types";
 import {
@@ -23,7 +24,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 
-import { MobileHeader } from "@/components/layout";
 import { WhatsAppContactButton } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -177,7 +177,7 @@ export function RegistrationDetailClient({
 
   return (
     <>
-      <MobileHeader
+      <MobileHeaderContainer
         title="Registration Details"
         showBack
         backHref="/events/registrations"

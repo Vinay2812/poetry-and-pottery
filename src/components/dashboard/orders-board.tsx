@@ -2,6 +2,7 @@
 
 import { getOrderStatusColor, updateOrderStatus } from "@/actions/admin";
 import type { UserOrder } from "@/actions/admin";
+import { OrderDetailDialogContainer } from "@/features/dashboard/orders";
 import { OrderStatus } from "@/prisma/generated/enums";
 import { PackageIcon } from "lucide-react";
 import Image from "next/image";
@@ -14,7 +15,6 @@ import {
 } from "react";
 
 import { KanbanBoard, KanbanColumn } from "./kanban-board";
-import { OrderDetailDialog } from "./order-detail-dialog";
 
 interface OrdersBoardProps {
   orders: UserOrder[];
@@ -185,7 +185,7 @@ export function OrdersBoard({ orders }: OrdersBoardProps) {
         renderCard={renderOrderCard}
         isLoading={isPending}
       />
-      <OrderDetailDialog
+      <OrderDetailDialogContainer
         order={selectedOrder}
         open={dialogOpen}
         onOpenChange={setDialogOpen}

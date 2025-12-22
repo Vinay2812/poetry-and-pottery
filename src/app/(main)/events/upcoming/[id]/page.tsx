@@ -1,8 +1,7 @@
 import { getEventById, getEventBySlug, getUpcomingEvents } from "@/actions";
+import { EventDetailContainer } from "@/features/events";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-
-import { EventDetailClient } from "@/components/events";
 
 interface EventDetailPageProps {
   params: Promise<{ id: string }>;
@@ -63,8 +62,8 @@ export default async function EventDetailPage({
   }
 
   // Get other upcoming events for recommendations (exclude current event)
-  const allUpcomingEvents = await getUpcomingEvents(3);
+  const { data: allUpcomingEvents } = await getUpcomingEvents(1, 3);
   const otherEvents = allUpcomingEvents.filter((e) => e.id !== event.id);
 
-  return <EventDetailClient event={event} otherEvents={otherEvents} />;
+  return <EventDetailContainer event={event} otherEvents={otherEvents} />;
 }

@@ -1,7 +1,6 @@
 import { getPastEvents, getUpcomingEvents } from "@/actions";
+import { AllEventsContainer } from "@/features/events";
 import type { Metadata } from "next";
-
-import { AllEventsClient } from "@/components/events";
 
 export const metadata: Metadata = {
   title: "Pottery Workshops | Poetry & Pottery",
@@ -31,15 +30,23 @@ export const metadata: Metadata = {
 };
 
 export default async function EventsPage() {
-  const [upcomingEvents, pastEventsResult] = await Promise.all([
+  const [upcomingEventsResult, pastEventsResult] = await Promise.all([
     getUpcomingEvents(),
     getPastEvents(),
   ]);
 
   return (
-    <AllEventsClient
-      upcomingEvents={upcomingEvents}
-      pastEvents={pastEventsResult.data}
+    <AllEventsContainer
+      initialUpcomingEvents={upcomingEventsResult.data}
+      initialUpcomingPagination={{
+        total: upcomingEventsResult.total,
+        totalPages: upcomingEventsResult.totalPages,
+      }}
+      initialPastEvents={pastEventsResult.data}
+      initialPastPagination={{
+        total: pastEventsResult.total,
+        totalPages: pastEventsResult.totalPages,
+      }}
     />
   );
 }

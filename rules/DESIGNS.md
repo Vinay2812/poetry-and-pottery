@@ -1541,6 +1541,183 @@ Wishlist button:
 
 ---
 
+## 24. Container/Component Architecture
+
+All features, pages, and components must follow the Container/Component (Presentational) pattern to maintain separation of concerns.
+
+### Folder Structure
+
+```
+src/features/<featureName>/
+├── components/              # Presentational UI components
+│   └── FeatureName.tsx
+├── containers/              # State, logic, and data fetching
+│   └── FeatureNameContainer.tsx
+├── hooks/                   # Custom hooks (optional)
+│   └── useFeatureLogic.ts
+├── types.ts                 # ViewModels, Props, helper functions
+└── index.ts                 # Barrel exports
+```
+
+### Container Responsibilities
+
+Containers handle all non-visual concerns:
+
+| Responsibility     | Example                                    |
+| ------------------ | ------------------------------------------ |
+| State management   | `useState`, `useReducer`, Zustand stores   |
+| Data fetching      | Server actions, React Query, API calls     |
+| Business logic     | Calculations, transformations, validations |
+| Side effects       | `useEffect`, subscriptions                 |
+| Event handlers     | API calls, navigation, store updates       |
+| ViewModel creation | `useMemo` to build display data            |
+
+### Presentational Component Responsibilities
+
+Presentational components are pure UI:
+
+| Receives         | Example                                 |
+| ---------------- | --------------------------------------- |
+| `viewModel` prop | Pre-formatted display data              |
+| `on*` callbacks  | `onSubmit`, `onClick`, `onFilterChange` |
+| Primitive props  | `isLoading`, `title`, `count`           |
+
+| Must NOT                   | Why                                 |
+| -------------------------- | ----------------------------------- |
+| Import from `@/actions/**` | Actions are side effects            |
+| Import from `@/store/**`   | Store access is state management    |
+| Use `useEffect` for data   | Data fetching belongs in containers |
+| Contain business logic     | Logic belongs in containers         |
+
+### Page and Layout Rules
+
+**Pages (Server Components):**
+
+```tsx
+// ✅ Good: Page only fetches and passes data
+export default async function ProductsPage() {
+  const products = await getProducts();
+  const categories = await getCategories();
+  return (
+    <ProductListContainer
+      initialProducts={products}
+      categories={categories}
+    />
+  );
+}
+
+// ❌ Bad: Page contains logic
+export default async function ProductsPage() {
+  const products = await getProducts();
+  const filtered = products.filter(p => p.inStock); // Logic in page!
+  return <ProductList products={filtered} />;
+}
+```
+
+**Layouts:**
+
+```tsx
+// ✅ Good: Layout only provides structure
+export default function MainLayout({ children }) {
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
+  );
+}
+
+// ❌ Bad: Layout contains state/logic
+export default function MainLayout({ children }) {
+  const [user, setUser] = useState(null); // State in layout!
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+}
+```
+
+### ViewModel Pattern
+
+ViewModels contain pre-formatted, display-ready data:
+
+```typescript
+// types.ts
+interface ProductListViewModel {
+  items: ProductItemViewModel[];
+  totalCount: number;
+  hasNextPage: boolean;
+  filterState: {
+    activeCategory: string;
+    sortBy: string;
+  };
+}
+
+interface ProductItemViewModel {
+  id: number;
+  name: string;
+  formattedPrice: string; // Pre-formatted: "₹1,299"
+  stockLabel: string; // Pre-computed: "In Stock" | "Low Stock"
+  stockColorClass: string; // Pre-determined: "text-emerald-600"
+}
+```
+
+### Callback Naming Convention
+
+| Location           | Prefix    | Example                                 |
+| ------------------ | --------- | --------------------------------------- |
+| Props (incoming)   | `on*`     | `onClick`, `onSubmit`, `onFilterChange` |
+| Container handlers | `handle*` | `handleClick`, `handleSubmit`           |
+
+```tsx
+// Container
+function ProductListContainer() {
+  const handleFilterChange = useCallback((filter) => {
+    // Logic here
+  }, []);
+
+  return <ProductList onFilterChange={handleFilterChange} />;
+}
+
+// Presentational
+function ProductList({ onFilterChange }) {
+  return <FilterBar onChange={onFilterChange} />;
+}
+```
+
+### When to Create a Feature Folder
+
+Create a feature folder in `src/features/` when:
+
+| Condition                       | Example                         |
+| ------------------------------- | ------------------------------- |
+| Component has client-side state | Filters, forms, infinite scroll |
+| Component fetches data          | React Query, server actions     |
+| Component has business logic    | Calculations, validations       |
+| Component is page-level         | Product list, cart, checkout    |
+
+Keep in `src/components/` when:
+
+| Condition              | Example                     |
+| ---------------------- | --------------------------- |
+| Pure presentational    | Cards, badges, buttons      |
+| No state or effects    | Static UI elements          |
+| Reused across features | `ProductCard`, `EmptyState` |
+
+### Migration Checklist
+
+When refactoring existing components:
+
+- [ ] Create feature folder structure
+- [ ] Define types.ts with ViewModels and Props
+- [ ] Extract logic to Container
+- [ ] Create pure Presentational component
+- [ ] Update page to use Container
+- [ ] Remove `@/actions` imports from UI component
+- [ ] Remove `@/store` imports from UI component
+- [ ] Rename handlers: `handle*` in containers, `on*` in props
+- [ ] Update barrel exports in index.ts
+
+---
+
 ## Checklist for New Components
 
 When creating new components, ensure:
@@ -1565,6 +1742,14 @@ When creating new components, ensure:
 
 ## Version History
 
+- **v1.3** (2025) - Container/Component Architecture:
+  - Added Section 24: Container/Component Architecture
+  - Defined feature folder structure pattern
+  - Added Container vs Presentational responsibilities
+  - Added Page and Layout rules
+  - Added ViewModel pattern documentation
+  - Added callback naming conventions
+  - Added migration checklist
 - **v1.2** (2025) - Comprehensive design token update:
   - Added complete neutral color scale (50-950)
   - Added secondary/accent colors (terracotta, cream, clay)

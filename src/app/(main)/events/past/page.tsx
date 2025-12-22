@@ -31,7 +31,12 @@ export const metadata: Metadata = {
 };
 
 export default async function PastWorkshopsPage() {
-  const { data: events } = await getPastEvents();
+  const { data: events, total, totalPages } = await getPastEvents();
 
-  return <PastWorkshopsClient events={events} />;
+  return (
+    <PastWorkshopsClient
+      initialEvents={events}
+      initialPagination={{ total, totalPages }}
+    />
+  );
 }

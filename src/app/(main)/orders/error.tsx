@@ -1,9 +1,9 @@
 "use client";
 
+import { MobileHeaderContainer } from "@/features/layout";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import { useEffect } from "react";
 
-import { MobileHeader } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 
 interface OrdersErrorProps {
@@ -18,7 +18,7 @@ export default function OrdersError({ error, reset }: OrdersErrorProps) {
 
   return (
     <>
-      <MobileHeader title="My Orders" showBack backHref="/" />
+      <MobileHeaderContainer title="My Orders" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-0 lg:pb-12">
         <div className="container mx-auto px-4 py-16 lg:px-8">

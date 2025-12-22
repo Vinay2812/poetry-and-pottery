@@ -1,10 +1,11 @@
-import { MobileHeader } from "@/components/layout";
+import { MobileHeaderContainer } from "@/features/layout";
+
 import { EventDetailSkeleton } from "@/components/skeletons";
 
 export default function EventDetailLoading() {
   return (
     <>
-      <MobileHeader
+      <MobileHeaderContainer
         title="Event Details"
         showBack
         backHref="/events/upcoming"

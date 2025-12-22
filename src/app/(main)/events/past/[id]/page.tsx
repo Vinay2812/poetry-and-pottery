@@ -4,10 +4,9 @@ import {
   getEventBySlug,
   getUpcomingEvents,
 } from "@/actions";
+import { PastWorkshopDetailContainer } from "@/features/events";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-
-import { PastWorkshopDetailClient } from "@/components/events";
 
 interface PastWorkshopDetailPageProps {
   params: Promise<{ id: string }>;
@@ -71,10 +70,10 @@ export default async function PastWorkshopDetailPage({
   const currentUserId = await getAuthenticatedUserId();
 
   // Get upcoming events for recommendations
-  const upcomingEvents = await getUpcomingEvents(2);
+  const { data: upcomingEvents } = await getUpcomingEvents(1, 2);
 
   return (
-    <PastWorkshopDetailClient
+    <PastWorkshopDetailContainer
       workshop={workshop}
       upcomingEvents={upcomingEvents}
       currentUserId={currentUserId}

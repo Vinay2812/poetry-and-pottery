@@ -1,8 +1,8 @@
 "use client";
 
+import { MobileHeaderContainer } from "@/features/layout";
 import { Clock, Package, RefreshCw, Shield, Truck } from "lucide-react";
 
-import { MobileHeader } from "@/components/layout";
 import { CTASection, SectionHeader } from "@/components/sections";
 
 const SHIPPING_OPTIONS = [
@@ -73,7 +73,7 @@ const RETURNS_POLICY = [
 export default function ShippingPage() {
   return (
     <>
-      <MobileHeader title="Shipping & Returns" showBack backHref="/" />
+      <MobileHeaderContainer title="Shipping & Returns" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Shipping Options */}

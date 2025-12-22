@@ -1,10 +1,15 @@
-import { MobileHeader } from "@/components/layout";
+import { MobileHeaderContainer } from "@/features/layout";
+
 import { WishlistSkeleton } from "@/components/skeletons";
 
 export default function WishlistLoading() {
   return (
     <>
-      <MobileHeader title="My Wishlist" showBack backHref="/products" />
+      <MobileHeaderContainer
+        title="My Wishlist"
+        showBack
+        backHref="/products"
+      />
       <WishlistSkeleton />
     </>
   );

@@ -1,4 +1,4 @@
-import { MobileHeader, MobileNav, Navbar } from "@/components/layout";
+import { MobileNavContainer, NavbarContainer } from "@/features/layout";
 
 export default function MainLayout({
   children,
@@ -7,10 +7,9 @@ export default function MainLayout({
 }) {
   return (
     <div className="bg-background min-h-screen">
-      <Navbar />
-      <MobileHeader />
+      <NavbarContainer />
       {children}
-      <MobileNav />
+      <MobileNavContainer />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { getFeaturedProducts, getWishlist } from "@/actions";
+import { WishlistContainer } from "@/features/wishlist";
 import type { Metadata } from "next";
-
-import { WishlistClient } from "@/components/wishlist";
 
 export const metadata: Metadata = {
   title: "My Wishlist | Poetry & Pottery",
@@ -22,7 +21,7 @@ export default async function WishlistPage() {
   const defaultPagination = { page: 1, totalPages: 1, total: 0 };
 
   return (
-    <WishlistClient
+    <WishlistContainer
       initialWishlistItems={
         wishlistResult.success ? wishlistResult.data.data : []
       }

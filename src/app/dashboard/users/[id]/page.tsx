@@ -5,6 +5,8 @@ import {
   getUserRegistrations,
   getUserWishlistPaginated,
 } from "@/actions/admin";
+import { OrdersBoardContainer } from "@/features/dashboard/orders";
+import { RegistrationsBoardContainer } from "@/features/dashboard/registrations";
 import { UserRole } from "@/prisma/generated/enums";
 import {
   ArrowLeftIcon,
@@ -17,8 +19,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { OrdersBoard } from "@/components/dashboard/orders-board";
-import { RegistrationsBoard } from "@/components/dashboard/registrations-board";
 import { UserDetailTabs } from "@/components/dashboard/user-detail-tabs";
 import { WishlistView } from "@/components/dashboard/wishlist-view";
 import { Badge } from "@/components/ui/badge";
@@ -116,9 +116,9 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
 
       {/* Tabs */}
       <UserDetailTabs
-        ordersContent={<OrdersBoard orders={orders} />}
+        ordersContent={<OrdersBoardContainer orders={orders} />}
         registrationsContent={
-          <RegistrationsBoard registrations={registrations} />
+          <RegistrationsBoardContainer registrations={registrations} />
         }
         cartContent={<CartView items={cart} />}
         wishlistContent={

@@ -1,12 +1,13 @@
-export { CategoryPill } from "./category-pill";
 export { FilterSidebar } from "./filter-sidebar";
 export { ImageCarousel } from "./image-carousel";
+export { InfiniteScrollTrigger } from "./infinite-scroll-trigger";
 export { PriceRangeSlider } from "./price-range-slider";
 export { ProgressStepper, type ProgressStep } from "./progress-stepper";
 export { QuantitySelector } from "./quantity-selector";
 export { Rating } from "./rating";
 export { ReviewForm } from "./review-form";
 export { ReviewsSheet } from "./reviews-sheet";
+export { SectionHeader } from "./section-header";
 export { SignInModal } from "./sign-in-modal";
 export { StatusIcon } from "./status-icon";
 export { ToastContainer } from "./toast-container";

@@ -1,11 +1,11 @@
 "use client";
 
+import { MobileHeaderContainer } from "@/features/layout";
 import { Flame, Heart, Leaf, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 import { ProcessStepCard, TeamMemberCard, ValueCard } from "@/components/cards";
 import { ContactForm } from "@/components/forms";
-import { MobileHeader } from "@/components/layout";
 import { CTASection, SectionHeader } from "@/components/sections";
 
 import { HERO_IMAGES } from "@/lib/constants";
@@ -103,7 +103,7 @@ const PROCESS_STEPS = [
 export default function AboutPage() {
   return (
     <>
-      <MobileHeader title="About Us" showBack backHref="/" />
+      <MobileHeaderContainer title="About Us" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section */}

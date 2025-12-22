@@ -1,10 +1,10 @@
 import { getProducts } from "@/actions";
+import { MobileHeaderContainer } from "@/features/layout";
+import { ProductListContainer } from "@/features/products";
 import type { ProductFilterParams } from "@/types";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { MobileHeader } from "@/components/layout";
-import { ProductsClient } from "@/components/products";
 import { ProductsSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
@@ -73,7 +73,7 @@ async function ProductsContent({
   }));
 
   return (
-    <ProductsClient
+    <ProductListContainer
       products={result.data}
       categories={categories}
       materials={result.materials}
@@ -89,7 +89,7 @@ export default async function ProductsPage({
 }: ProductsPageProps) {
   return (
     <>
-      <MobileHeader title="Shop Pottery" showBack backHref="/" />
+      <MobileHeaderContainer title="Shop Pottery" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         <Suspense fallback={<ProductsSkeleton />}>

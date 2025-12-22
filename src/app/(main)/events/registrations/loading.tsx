@@ -1,10 +1,11 @@
-import { MobileHeader } from "@/components/layout";
+import { MobileHeaderContainer } from "@/features/layout";
+
 import { RegistrationsSkeleton } from "@/components/skeletons";
 
 export default function RegistrationsLoading() {
   return (
     <>
-      <MobileHeader title="Pottery Workshops" showBack backHref="/" />
+      <MobileHeaderContainer title="Pottery Workshops" showBack backHref="/" />
       <RegistrationsSkeleton />
     </>
   );
