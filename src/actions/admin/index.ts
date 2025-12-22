@@ -71,6 +71,57 @@ export {
   type ActionResult as EventActionResult,
 } from "./admin.events.actions";
 
+// Settings - export everything except ActionResult (use SettingsActionResult)
+export {
+  getAllSettings,
+  getHeroImages,
+  updateHeroImages,
+  getContactInfo,
+  updateContactInfo,
+  getSocialLinks,
+  updateSocialLinks,
+  getPublicSetting,
+  getPublicHeroImages,
+  getPublicContactInfo,
+  getPublicSocialLinks,
+  type HeroImages,
+  type ContactInfo,
+  type SocialLinks,
+  type SiteSetting,
+  type SettingsActionResult,
+} from "./admin.settings.actions";
+
+// Content - export everything except ActionResult (use ContentActionResult)
+export {
+  getContentPages,
+  getContentPageBySlug,
+  updateContentPage,
+  toggleContentPageActive,
+  getPublicAboutContent,
+  getPublicFAQContent,
+  getPublicShippingContent,
+  getPublicCareContent,
+  type AboutValue,
+  type AboutTeamMember,
+  type AboutProcessStep,
+  type AboutPageContent,
+  type FAQItem,
+  type FAQCategory,
+  type FAQPageContent,
+  type ShippingOption,
+  type ShippingInfo,
+  type ReturnsPolicy,
+  type ReturnStep,
+  type ShippingPageContent,
+  type GlazeType,
+  type CareWarning,
+  type CarePageContent,
+  type ContentPageType,
+  type ContentPage,
+  type ContentPageListItem,
+  type ContentActionResult,
+} from "./admin.content.actions";
+
 // Re-export status utilities for convenience
 export {
   getOrderStatusColor,

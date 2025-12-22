@@ -22,7 +22,7 @@ todos:
     status: completed
   - id: phase6-site-settings-cms
     content: Add /dashboard/settings for site config (hero images, contact info) and /dashboard/content for static page content (FAQ, About team/values, Shipping, Care).
-    status: pending
+    status: completed
   - id: phase7-r2-uploads
     content: Add Cloudflare R2 presign API + typed uploader component; integrate into product/event/category forms.
     status: completed

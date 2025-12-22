@@ -199,3 +199,5 @@ export function ProductList({ viewModel, onFilterChange }) {
 - Always format the files after writing the code
 
 - Use bun as package manager
+
+- Do not use \_components, instead use src/components
