@@ -4,6 +4,13 @@ export const DATABASE_URL = process.env.DATABASE_URL;
 export const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
 export const ENVIRONMENT = process.env.NODE_ENV;
 
+// Business email
+export const BUSINESS_EMAIL = process.env.BUSINESS_EMAIL;
+
+// Gmail credentials
+export const GMAIL_USER = process.env.GMAIL_USER;
+export const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
+
 // Cloudflare R2 configuration
 export const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID;
 export const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;

@@ -1,11 +1,13 @@
 import nodemailer from "nodemailer";
 
+import { BUSINESS_EMAIL, GMAIL_APP_PASSWORD, GMAIL_USER } from "./env.consts";
+
 // Create Gmail transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
+    user: GMAIL_USER,
+    pass: GMAIL_APP_PASSWORD,
   },
 });
 
@@ -172,7 +174,7 @@ export async function sendRegistrationNotification(
 
     await transporter.sendMail({
       from: `"Poetry & Pottery" <${gmailUser}>`,
-      to: gmailUser, // Send to yourself
+      to: BUSINESS_EMAIL,
       subject,
       html,
     });

@@ -2,7 +2,7 @@
 
 import { useCallback, useRef } from "react";
 
-const DEFAULT_THROTTLE_MS = 1000;
+export const DEFAULT_THROTTLE_MS = 500;
 
 /**
  * Throttle hook - executes immediately, blocks subsequent calls for delay period.

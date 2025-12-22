@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthAction, useCart, useWishlist } from "@/hooks";
+import { DEFAULT_THROTTLE_MS } from "@/hooks/use-throttle";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
@@ -69,7 +70,7 @@ export function ProductCardContainer({
     const success = await requireAuth(() => addToCart(product.id, 1, product));
     if (success) {
       setAddedToCart(true);
-      setTimeout(() => setAddedToCart(false), 2000);
+      setTimeout(() => setAddedToCart(false), DEFAULT_THROTTLE_MS);
       if (isWishlistVariant) {
         onRemoveFromWishlist?.();
       }
