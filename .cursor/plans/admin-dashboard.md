@@ -25,7 +25,7 @@ todos:
     status: pending
   - id: phase7-r2-uploads
     content: Add Cloudflare R2 presign API + typed uploader component; integrate into product/event/category forms.
-    status: pending
+    status: completed
 ---
 
 # Admin Dashboard + Flow Chooser + Analytics + Kanban + CMS + R2 Uploads
