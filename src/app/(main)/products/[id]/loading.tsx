@@ -1,10 +1,15 @@
-import { MobileHeader } from "@/components/layout";
+import { MobileHeaderContainer } from "@/features/layout";
+
 import { ProductDetailSkeleton } from "@/components/skeletons";
 
 export default function ProductDetailLoading() {
   return (
     <>
-      <MobileHeader title="Product Detail" showBack backHref="/products" />
+      <MobileHeaderContainer
+        title="Product Detail"
+        showBack
+        backHref="/products"
+      />
       <ProductDetailSkeleton />
     </>
   );

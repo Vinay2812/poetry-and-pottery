@@ -1,5 +1,6 @@
 "use client";
 
+import { MobileHeaderContainer } from "@/features/layout";
 import {
   AlertTriangle,
   CheckCircle,
@@ -14,7 +15,6 @@ import {
   Zap,
 } from "lucide-react";
 
-import { MobileHeader } from "@/components/layout";
 import { CTASection, SectionHeader } from "@/components/sections";
 
 const GLAZE_TYPES = [
@@ -72,7 +72,7 @@ const WARNINGS = [
 export default function CarePage() {
   return (
     <>
-      <MobileHeader title="Care Instructions" showBack backHref="/" />
+      <MobileHeaderContainer title="Care Instructions" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section */}

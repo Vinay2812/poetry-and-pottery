@@ -1,10 +1,11 @@
-import { MobileHeader } from "@/components/layout";
+import { MobileHeaderContainer } from "@/features/layout";
+
 import { ProductsSkeleton } from "@/components/skeletons";
 
 export default function ProductsLoading() {
   return (
     <>
-      <MobileHeader title="Shop Pottery" showBack backHref="/" />
+      <MobileHeaderContainer title="Shop Pottery" showBack backHref="/" />
       <ProductsSkeleton />
     </>
   );

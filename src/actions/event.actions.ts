@@ -96,8 +96,9 @@ export async function getEventBySlug(
 }
 
 export async function getUpcomingEvents(
-  limit: number = 10,
-): Promise<EventWithRegistrationCount[]> {
+  page: number = 1,
+  limit: number = 12,
+): Promise<PaginatedResponse<EventWithRegistrationCount>> {
   const userId = await getAuthenticatedUserId();
 
   let userEventRegistrations: EventRegistration[] = [];
@@ -113,20 +114,33 @@ export async function getUpcomingEvents(
     (r) => r.event_id,
   );
 
-  return prisma.event.findMany({
-    where: {
-      starts_at: { gte: new Date() },
-      status: { in: [EventStatus.UPCOMING, EventStatus.ACTIVE] },
-      id: { notIn: userEventRegistrationIds },
-    },
-    include: {
-      _count: {
-        select: { event_registrations: true, reviews: true },
+  const where: Prisma.EventWhereInput = {
+    starts_at: { gte: new Date() },
+    status: { in: [EventStatus.UPCOMING, EventStatus.ACTIVE] },
+    id: { notIn: userEventRegistrationIds },
+  };
+
+  const [events, total] = await Promise.all([
+    prisma.event.findMany({
+      where,
+      include: {
+        _count: {
+          select: { event_registrations: true, reviews: true },
+        },
       },
-    },
-    orderBy: { starts_at: "asc" },
-    take: limit,
-  }) as Promise<EventWithRegistrationCount[]>;
+      orderBy: { starts_at: "asc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.event.count({ where }),
+  ]);
+
+  return {
+    data: events as EventWithRegistrationCount[],
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 }
 
 export async function getPastEvents(
@@ -369,8 +383,11 @@ export type RegistrationWithReviewStatus = RegistrationWithEvent & {
   hasReviewed: boolean;
 };
 
-export async function getUpcomingRegistrations(): Promise<
-  | { success: true; data: RegistrationWithEvent[] }
+export async function getUpcomingRegistrations(
+  page: number = 1,
+  limit: number = 12,
+): Promise<
+  | { success: true; data: PaginatedResponse<RegistrationWithEvent> }
   | { success: false; error: string }
 > {
   const userId = await getAuthenticatedUserId();
@@ -380,25 +397,40 @@ export async function getUpcomingRegistrations(): Promise<
 
   const now = new Date();
 
-  const registrations = await prisma.eventRegistration.findMany({
-    where: {
-      user_id: userId,
-      event: {
-        ends_at: { gt: now },
-      },
+  const where = {
+    user_id: userId,
+    event: {
+      ends_at: { gt: now },
     },
-    include: { event: true, user: true },
-    orderBy: { event: { starts_at: "asc" } },
-  });
+  };
+
+  const [registrations, total] = await Promise.all([
+    prisma.eventRegistration.findMany({
+      where,
+      include: { event: true, user: true },
+      orderBy: { event: { starts_at: "asc" } },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.eventRegistration.count({ where }),
+  ]);
 
   return {
     success: true,
-    data: registrations as RegistrationWithEvent[],
+    data: {
+      data: registrations as RegistrationWithEvent[],
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    },
   };
 }
 
-export async function getCompletedRegistrations(): Promise<
-  | { success: true; data: RegistrationWithReviewStatus[] }
+export async function getCompletedRegistrations(
+  page: number = 1,
+  limit: number = 12,
+): Promise<
+  | { success: true; data: PaginatedResponse<RegistrationWithReviewStatus> }
   | { success: false; error: string }
 > {
   const userId = await getAuthenticatedUserId();
@@ -408,20 +440,30 @@ export async function getCompletedRegistrations(): Promise<
 
   const now = new Date();
 
-  const registrations = await prisma.eventRegistration.findMany({
-    where: {
-      user_id: userId,
-      event: {
-        ends_at: { lte: now },
-      },
+  const where = {
+    user_id: userId,
+    event: {
+      ends_at: { lte: now },
     },
-    include: { event: true, user: true },
-    orderBy: { event: { ends_at: "desc" } },
-  });
+  };
+
+  const [registrations, total] = await Promise.all([
+    prisma.eventRegistration.findMany({
+      where,
+      include: { event: true, user: true },
+      orderBy: { event: { ends_at: "desc" } },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.eventRegistration.count({ where }),
+  ]);
 
   // If no registrations, return early
   if (registrations.length === 0) {
-    return { success: true, data: [] };
+    return {
+      success: true,
+      data: { data: [], total: 0, page, totalPages: 0 },
+    };
   }
 
   // Check if user has reviewed each event
@@ -449,6 +491,11 @@ export async function getCompletedRegistrations(): Promise<
 
   return {
     success: true,
-    data: registrationsWithReviewStatus as RegistrationWithReviewStatus[],
+    data: {
+      data: registrationsWithReviewStatus as RegistrationWithReviewStatus[],
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    },
   };
 }

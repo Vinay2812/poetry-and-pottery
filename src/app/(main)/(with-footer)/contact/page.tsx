@@ -1,15 +1,15 @@
 "use client";
 
+import { MobileHeaderContainer } from "@/features/layout";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/forms";
-import { MobileHeader } from "@/components/layout";
 import { CTASection } from "@/components/sections";
 
 export default function ContactPage() {
   return (
     <>
-      <MobileHeader title="Contact Us" showBack backHref="/" />
+      <MobileHeaderContainer title="Contact Us" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section - Mobile only */}

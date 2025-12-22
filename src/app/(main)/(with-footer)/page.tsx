@@ -1,9 +1,9 @@
 import { getCategories, getFeaturedProducts } from "@/actions";
+import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
 import Image from "next/image";
 
 import { ProductCard } from "@/components/cards";
-import { MobileHeader } from "@/components/layout";
 import {
   CTASection,
   CategorySection,
@@ -48,7 +48,7 @@ export default async function Home() {
 
   return (
     <>
-      <MobileHeader />
+      <MobileHeaderContainer />
 
       <main className="min-h-screen pt-14 lg:pt-20">
         {/* Hero Section */}

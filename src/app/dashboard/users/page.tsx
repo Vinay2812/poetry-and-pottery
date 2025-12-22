@@ -1,8 +1,8 @@
 import { getUsers } from "@/actions/admin";
+import { UsersTableContainer } from "@/features/dashboard/users";
 import { UserRole } from "@/prisma/generated/enums";
 import { Suspense } from "react";
 
-import { UsersTable } from "@/components/dashboard/users-table";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { requireAdminUser } from "@/lib/admin";
@@ -58,7 +58,7 @@ async function UsersTableContent({
     limit: 20,
   });
 
-  return <UsersTable data={data} currentUserId={currentUserId} />;
+  return <UsersTableContainer data={data} currentUserId={currentUserId} />;
 }
 
 function UsersTableSkeleton() {

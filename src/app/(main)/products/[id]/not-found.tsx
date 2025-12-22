@@ -1,13 +1,17 @@
+import { MobileHeaderContainer } from "@/features/layout";
 import { Search } from "lucide-react";
 import Link from "next/link";
 
-import { MobileHeader } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 
 export default function ProductNotFound() {
   return (
     <>
-      <MobileHeader title="Product Not Found" showBack backHref="/products" />
+      <MobileHeaderContainer
+        title="Product Not Found"
+        showBack
+        backHref="/products"
+      />
 
       <main className="pt-14 pb-24 lg:pt-0 lg:pb-0">
         <div className="container mx-auto px-4 py-16 lg:px-8">

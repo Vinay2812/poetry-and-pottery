@@ -31,7 +31,12 @@ export const metadata: Metadata = {
 };
 
 export default async function UpcomingEventsPage() {
-  const events = await getUpcomingEvents();
+  const { data: events, total, totalPages } = await getUpcomingEvents(1, 12);
 
-  return <UpcomingEventsClient events={events} />;
+  return (
+    <UpcomingEventsClient
+      initialEvents={events}
+      initialPagination={{ total, totalPages }}
+    />
+  );
 }

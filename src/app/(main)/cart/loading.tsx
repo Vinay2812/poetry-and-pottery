@@ -1,10 +1,11 @@
-import { MobileHeader } from "@/components/layout";
+import { MobileHeaderContainer } from "@/features/layout";
+
 import { CartSkeleton } from "@/components/skeletons";
 
 export default function CartLoading() {
   return (
     <>
-      <MobileHeader title="My Cart" showBack backHref="/products" />
+      <MobileHeaderContainer title="My Cart" showBack backHref="/products" />
       <CartSkeleton />
     </>
   );

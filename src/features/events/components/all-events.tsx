@@ -1,0 +1,92 @@
+"use client";
+
+import { Calendar, History, Sparkles } from "lucide-react";
+
+import { EventCard, PastWorkshopCard } from "@/components/cards";
+import { EventsListLayout } from "@/components/events";
+import { EmptyState } from "@/components/sections";
+import { InfiniteScrollTrigger, SectionHeader } from "@/components/shared";
+
+import type { AllEventsProps } from "../types";
+
+export function AllEvents({ viewModel, loadMoreRef }: AllEventsProps) {
+  const {
+    upcomingEvents,
+    pastEvents,
+    hasUpcoming,
+    hasPast,
+    hasNoEvents,
+    hasMore,
+    isLoading,
+  } = viewModel;
+
+  return (
+    <EventsListLayout>
+      {hasNoEvents ? (
+        <EmptyState
+          icon={Calendar}
+          title="No events available"
+          description="Check back soon for new workshops and events."
+        />
+      ) : (
+        <div className="space-y-8 lg:space-y-16">
+          {/* Upcoming Events Section */}
+          <section>
+            <SectionHeader
+              icon={Sparkles}
+              iconClassName="text-primary"
+              title="Upcoming Events"
+            />
+            {hasUpcoming ? (
+              <>
+                <p className="text-muted-foreground mb-4 text-sm lg:mb-8 lg:text-base">
+                  Reserve your spot in one of our upcoming pottery sessions.
+                </p>
+                <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+                  {upcomingEvents.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="bg-muted/50 rounded-xl border border-dashed p-8 text-center">
+                <Sparkles className="text-muted-foreground mx-auto mb-2 h-8 w-8" />
+                <p className="text-muted-foreground text-sm">
+                  No upcoming events at the moment. Check back soon!
+                </p>
+              </div>
+            )}
+          </section>
+
+          {/* Past Events Section */}
+          {hasPast && (
+            <section>
+              <SectionHeader
+                icon={History}
+                iconClassName="text-neutral-400"
+                title="Past Events"
+                titleClassName="text-neutral-400"
+              />
+              <p className="mb-4 text-sm text-neutral-400 lg:mb-8 lg:text-base">
+                Explore our previous workshops and the amazing pieces created by
+                our community.
+              </p>
+              <div className="grid grid-cols-1 gap-y-6 opacity-75 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+                {pastEvents.map((event) => (
+                  <PastWorkshopCard key={event.id} event={event} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Load more trigger */}
+          <InfiniteScrollTrigger
+            hasMore={hasMore}
+            isLoading={isLoading}
+            loadMoreRef={loadMoreRef}
+          />
+        </div>
+      )}
+    </EventsListLayout>
+  );
+}

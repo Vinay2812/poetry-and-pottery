@@ -6,6 +6,63 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Visual components render UI and should be isolated from application state, API data, and other non-visual concerns.
 
+### Container/Component Architecture
+
+All features must follow the Container/Component (Presentational) pattern:
+
+**Structure:**
+
+```
+src/features/<featureName>/
+├── components/          # Presentational UI components
+│   └── FeatureName.tsx
+├── containers/          # State, logic, and data fetching
+│   └── FeatureNameContainer.tsx
+├── hooks/               # Custom hooks (optional)
+├── types.ts             # ViewModels, Props, helper functions
+└── index.ts             # Barrel exports
+```
+
+**Containers** own:
+
+- State management (`useState`, `useReducer`, Zustand stores)
+- Data fetching (server actions, React Query, API calls)
+- Business logic and calculations
+- Side effects (`useEffect`)
+- Event handlers that call external APIs
+
+**Presentational Components** receive:
+
+- A `viewModel` prop containing pre-formatted display data
+- `on*` callback props for user interactions
+- NO direct imports from `@/actions/**`, `@/store/**`, or side-effect modules
+
+**Pages and Layouts:**
+
+- Pages fetch data and pass it to Containers
+- Pages should NOT contain business logic or complex state
+- Layouts only provide structural wrappers (nav, footer, etc.)
+
+```tsx
+// Page (Server Component) - Data fetching only
+export default async function ProductsPage() {
+  const products = await getProducts();
+  return <ProductListContainer initialProducts={products} />;
+}
+
+// Container - Owns state and logic
+export function ProductListContainer({ initialProducts }) {
+  const [filters, setFilters] = useState({});
+  const viewModel = useMemo(() => buildViewModel(products, filters), [...]);
+  return <ProductList viewModel={viewModel} onFilterChange={setFilters} />;
+}
+
+// Presentational - Pure UI
+export function ProductList({ viewModel, onFilterChange }) {
+  return <div>{viewModel.items.map(item => <Card key={item.id} {...item} />)}</div>;
+}
+```
+
 ### When to Build a Component
 
 - Figma components (purple outline) should become reusable visual components
@@ -13,7 +70,7 @@ Visual components render UI and should be isolated from application state, API d
 
 ### Props: Scalars and Callbacks Only
 
-- Pass simple scalars and callbacks, not objects
+- Pass simple scalars and callbacks, not objects (exception: `viewModel` prop for Container pattern)
 - Expand object values explicitly rather than spreading: avoid `<Component {...obj} />`
 - For lists, pass `children` and let containers handle array iteration with individual child components
 

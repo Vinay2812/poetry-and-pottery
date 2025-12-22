@@ -1,8 +1,7 @@
 import { getOrders } from "@/actions";
+import { MobileHeaderContainer } from "@/features/layout";
+import { OrdersListContainer } from "@/features/orders";
 import type { Metadata } from "next";
-
-import { MobileHeader } from "@/components/layout";
-import { OrdersListClient } from "@/components/orders";
 
 export const metadata: Metadata = {
   title: "My Orders | Poetry & Pottery",
@@ -19,22 +18,21 @@ export default async function OrdersPage() {
 
   const orders = result.success ? result.data.data : [];
   const pagination = result.success
-    ? {
-        page: result.data.page,
-        totalPages: result.data.totalPages,
-        total: result.data.total,
-      }
-    : { page: 1, totalPages: 1, total: 0 };
+    ? { total: result.data.total, totalPages: result.data.totalPages }
+    : { total: 0, totalPages: 0 };
 
   return (
     <>
-      <MobileHeader title="My Orders" showBack backHref="/" />
+      <MobileHeaderContainer title="My Orders" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
         <div className="container mx-auto px-4 py-6 lg:px-8">
           <h1 className="mb-6 hidden text-2xl font-bold lg:block">My Orders</h1>
 
-          <OrdersListClient orders={orders} />
+          <OrdersListContainer
+            initialOrders={orders}
+            initialPagination={pagination}
+          />
         </div>
       </main>
     </>

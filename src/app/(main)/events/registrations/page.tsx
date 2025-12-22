@@ -3,9 +3,8 @@ import {
   getUpcomingEvents,
   getUpcomingRegistrations,
 } from "@/actions";
+import { RegistrationsContainer } from "@/features/events";
 import type { Metadata } from "next";
-
-import { RegistrationsClient } from "@/components/events";
 
 export const metadata: Metadata = {
   title: "My Registrations | Poetry & Pottery",
@@ -21,26 +20,40 @@ export default async function RegistrationsPage() {
   const [
     upcomingRegistrationsResult,
     completedRegistrationsResult,
-    upcomingEvents,
+    upcomingEventsResult,
   ] = await Promise.all([
     getUpcomingRegistrations(),
     getCompletedRegistrations(),
-    getUpcomingEvents(4),
+    getUpcomingEvents(1, 4),
   ]);
 
   const upcomingRegistrations = upcomingRegistrationsResult.success
-    ? upcomingRegistrationsResult.data
+    ? upcomingRegistrationsResult.data.data
     : [];
+  const upcomingPagination = upcomingRegistrationsResult.success
+    ? {
+        total: upcomingRegistrationsResult.data.total,
+        totalPages: upcomingRegistrationsResult.data.totalPages,
+      }
+    : { total: 0, totalPages: 0 };
 
   const completedRegistrations = completedRegistrationsResult.success
-    ? completedRegistrationsResult.data
+    ? completedRegistrationsResult.data.data
     : [];
+  const completedPagination = completedRegistrationsResult.success
+    ? {
+        total: completedRegistrationsResult.data.total,
+        totalPages: completedRegistrationsResult.data.totalPages,
+      }
+    : { total: 0, totalPages: 0 };
 
   return (
-    <RegistrationsClient
-      upcomingRegistrations={upcomingRegistrations}
-      completedRegistrations={completedRegistrations}
-      upcomingEvents={upcomingEvents}
+    <RegistrationsContainer
+      initialUpcomingRegistrations={upcomingRegistrations}
+      initialUpcomingPagination={upcomingPagination}
+      initialCompletedRegistrations={completedRegistrations}
+      initialCompletedPagination={completedPagination}
+      upcomingEvents={upcomingEventsResult.data}
     />
   );
 }
