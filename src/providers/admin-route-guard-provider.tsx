@@ -7,6 +7,8 @@ import { type ReactNode, useEffect, useRef } from "react";
 
 import { DashboardSkeleton } from "@/components/skeletons";
 
+import { ENVIRONMENT } from "@/lib/env.consts";
+
 interface AdminRouteGuardProviderProps {
   children: ReactNode;
 }
@@ -28,9 +30,10 @@ export function AdminRouteGuardProvider({
   useEffect(() => {
     if (isLoaded && isSignedIn && sessionClaims) {
       const role = sessionClaims.role;
+      const environment = sessionClaims.environment;
 
       // If not admin, redirect to home
-      if (role !== UserRole.ADMIN) {
+      if (role !== UserRole.ADMIN || environment !== ENVIRONMENT) {
         router.push("/");
       }
     }
