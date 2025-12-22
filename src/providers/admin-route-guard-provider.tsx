@@ -26,8 +26,8 @@ export function AdminRouteGuardProvider({
   }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      const role = sessionClaims?.role;
+    if (isLoaded && isSignedIn && sessionClaims) {
+      const role = sessionClaims.role;
 
       // If not admin, redirect to home
       if (role !== UserRole.ADMIN) {
@@ -49,8 +49,8 @@ export function AdminRouteGuardProvider({
     return <DashboardSkeleton />;
   }
 
-  // Show loading while redirecting (not signed in or not admin)
-  if (!isSignedIn || sessionClaims?.role !== UserRole.ADMIN) {
+  // Show loading while redirecting (not signed in, claims not loaded, or not admin)
+  if (!isSignedIn || !sessionClaims || sessionClaims.role !== UserRole.ADMIN) {
     return <DashboardSkeleton />;
   }
 
