@@ -1,4 +1,4 @@
-import { getUsers } from "@/actions/admin";
+import { type UserSortOption, getUsers } from "@/actions/admin";
 import { UsersTableContainer } from "@/features/dashboard/users";
 import { UserRole } from "@/prisma/generated/enums";
 import { Suspense } from "react";
@@ -11,6 +11,7 @@ interface UsersPageProps {
   searchParams: Promise<{
     search?: string;
     role?: string;
+    sort?: string;
     page?: string;
   }>;
 }
@@ -32,6 +33,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
         <UsersTableContent
           search={params.search}
           role={params.role}
+          sort={params.sort}
           page={params.page}
           currentUserId={currentUser.id}
         />
@@ -43,17 +45,20 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
 async function UsersTableContent({
   search,
   role,
+  sort,
   page,
   currentUserId,
 }: {
   search?: string;
   role?: string;
+  sort?: string;
   page?: string;
   currentUserId: number;
 }) {
   const data = await getUsers({
     search,
     role: role as UserRole | undefined,
+    sort: (sort || "newest") as UserSortOption,
     page: page ? parseInt(page) : 1,
     limit: 20,
   });

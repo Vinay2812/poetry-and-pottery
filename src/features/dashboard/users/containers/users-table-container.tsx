@@ -1,6 +1,6 @@
 "use client";
 
-import { updateUserRole } from "@/actions/admin";
+import { type UserSortOption, updateUserRole } from "@/actions/admin";
 import type { UserRole } from "@/prisma/generated/enums";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
@@ -19,6 +19,8 @@ export function UsersTableContainer({
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
 
+  const sortValue = (searchParams.get("sort") || "newest") as UserSortOption;
+
   const viewModel = useMemo(
     () =>
       buildUsersTableViewModel(
@@ -26,8 +28,9 @@ export function UsersTableContainer({
         currentUserId,
         search,
         searchParams.get("role") || "ALL",
+        sortValue,
       ),
-    [data, currentUserId, search, searchParams],
+    [data, currentUserId, search, searchParams, sortValue],
   );
 
   const handleSearch = useCallback(
@@ -52,6 +55,20 @@ export function UsersTableContainer({
         params.set("role", value);
       } else {
         params.delete("role");
+      }
+      params.set("page", "1");
+      router.push(`/dashboard/users?${params.toString()}`);
+    },
+    [router, searchParams],
+  );
+
+  const handleSortChange = useCallback(
+    (value: UserSortOption) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value && value !== "newest") {
+        params.set("sort", value);
+      } else {
+        params.delete("sort");
       }
       params.set("page", "1");
       router.push(`/dashboard/users?${params.toString()}`);
@@ -87,6 +104,7 @@ export function UsersTableContainer({
       isPending={isPending}
       onSearch={handleSearch}
       onRoleFilter={handleRoleFilter}
+      onSortChange={handleSortChange}
       onPageChange={handlePageChange}
       onRoleChange={handleRoleChange}
     />

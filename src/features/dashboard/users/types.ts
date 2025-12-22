@@ -1,4 +1,8 @@
-import type { AdminUser, GetUsersResult } from "@/actions/admin";
+import type {
+  AdminUser,
+  GetUsersResult,
+  UserSortOption,
+} from "@/actions/admin";
 import type { UserRole } from "@/prisma/generated/enums";
 
 /**
@@ -12,6 +16,8 @@ export interface UserRowViewModel {
   role: UserRole;
   ordersCount: number;
   registrationsCount: number;
+  pendingOrdersCount: number;
+  pendingRegistrationsCount: number;
   createdAt: Date;
   isCurrentUser: boolean;
 }
@@ -36,6 +42,7 @@ export interface UsersTableViewModel {
   pagination: PaginationViewModel;
   searchValue: string;
   roleFilter: string;
+  sortValue: UserSortOption;
 }
 
 /**
@@ -46,6 +53,7 @@ export interface UsersTableProps {
   isPending: boolean;
   onSearch: (value: string) => void;
   onRoleFilter: (value: string) => void;
+  onSortChange: (value: UserSortOption) => void;
   onPageChange: (page: number) => void;
   onRoleChange: (userId: number, newRole: UserRole) => void;
 }
@@ -73,6 +81,8 @@ export function buildUserRowViewModel(
     role: user.role,
     ordersCount: user._count.product_orders,
     registrationsCount: user._count.event_registrations,
+    pendingOrdersCount: user.pendingOrdersCount,
+    pendingRegistrationsCount: user.pendingRegistrationsCount,
     createdAt: user.created_at,
     isCurrentUser: user.id === currentUserId,
   };
@@ -102,11 +112,13 @@ export function buildUsersTableViewModel(
   currentUserId: number,
   searchValue: string,
   roleFilter: string,
+  sortValue: UserSortOption,
 ): UsersTableViewModel {
   return {
     users: data.users.map((user) => buildUserRowViewModel(user, currentUserId)),
     pagination: buildPaginationViewModel(data),
     searchValue,
     roleFilter,
+    sortValue,
   };
 }

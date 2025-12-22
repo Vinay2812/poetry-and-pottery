@@ -20,11 +20,22 @@ export interface AdminUser {
     product_orders: number;
     event_registrations: number;
   };
+  pendingOrdersCount: number;
+  pendingRegistrationsCount: number;
 }
+
+export type UserSortOption =
+  | "newest"
+  | "oldest"
+  | "pending_orders"
+  | "pending_registrations"
+  | "most_orders"
+  | "most_registrations";
 
 export interface GetUsersParams {
   search?: string;
   role?: UserRole;
+  sort?: UserSortOption;
   page?: number;
   limit?: number;
 }
@@ -42,29 +53,45 @@ export async function getUsers(
 ): Promise<GetUsersResult> {
   await requireAdmin();
 
-  const { search = "", role, page = 1, limit = 20 } = params;
+  const { search = "", role, sort = "newest", page = 1, limit = 20 } = params;
   const skip = (page - 1) * limit;
 
+  const searchId = parseInt(search);
   const where = {
-    ...(search && {
-      OR: [
-        { email: { contains: search, mode: "insensitive" as const } },
-        { name: { contains: search, mode: "insensitive" as const } },
-        { id: !isNaN(parseInt(search)) ? parseInt(search) : undefined },
-      ].filter((condition) => {
-        if ("id" in condition) return condition.id !== undefined;
-        return true;
-      }),
-    }),
-    ...(role && { role }),
+    AND: [
+      search
+        ? {
+            OR: [
+              { email: { contains: search, mode: "insensitive" as const } },
+              { name: { contains: search, mode: "insensitive" as const } },
+              ...(isNaN(searchId) ? [] : [{ id: searchId }]),
+            ],
+          }
+        : {},
+      role ? { role } : {},
+    ],
+  };
+
+  // Determine orderBy based on sort option (for DB-sortable fields)
+  const getOrderBy = () => {
+    switch (sort) {
+      case "oldest":
+        return { created_at: "asc" as const };
+      case "most_orders":
+        return { product_orders: { _count: "desc" as const } };
+      case "most_registrations":
+        return { event_registrations: { _count: "desc" as const } };
+      default:
+        return { created_at: "desc" as const };
+    }
   };
 
   const [users, total] = await Promise.all([
     prisma.user.findMany({
       where,
+      orderBy: getOrderBy(),
       skip,
       take: limit,
-      orderBy: { created_at: "desc" },
       select: {
         id: true,
         auth_id: true,
@@ -85,8 +112,54 @@ export async function getUsers(
     prisma.user.count({ where }),
   ]);
 
+  // Get pending counts for fetched users
+  const userIds = users.map((u) => u.id);
+
+  const [pendingOrders, pendingRegistrations] = await Promise.all([
+    prisma.productOrder.groupBy({
+      by: ["user_id"],
+      where: {
+        user_id: { in: userIds },
+        status: { in: ["PENDING", "PROCESSING"] },
+      },
+      _count: true,
+    }),
+    prisma.eventRegistration.groupBy({
+      by: ["user_id"],
+      where: {
+        user_id: { in: userIds },
+        status: "PENDING",
+      },
+      _count: true,
+    }),
+  ]);
+
+  const pendingOrdersMap = new Map(
+    pendingOrders.map((p) => [p.user_id, p._count]),
+  );
+  const pendingRegistrationsMap = new Map(
+    pendingRegistrations.map((p) => [p.user_id, p._count]),
+  );
+
+  let adminUsers: AdminUser[] = users.map((user) => ({
+    ...user,
+    pendingOrdersCount: pendingOrdersMap.get(user.id) ?? 0,
+    pendingRegistrationsCount: pendingRegistrationsMap.get(user.id) ?? 0,
+  }));
+
+  // Sort by pending counts (client-side since these are computed values)
+  if (sort === "pending_orders") {
+    adminUsers = adminUsers.sort(
+      (a, b) => b.pendingOrdersCount - a.pendingOrdersCount,
+    );
+  } else if (sort === "pending_registrations") {
+    adminUsers = adminUsers.sort(
+      (a, b) => b.pendingRegistrationsCount - a.pendingRegistrationsCount,
+    );
+  }
+
   return {
-    users,
+    users: adminUsers,
     total,
     page,
     limit,
