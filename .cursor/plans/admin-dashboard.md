@@ -16,10 +16,10 @@ todos:
     status: completed
   - id: phase4-products-categories
     content: Add /dashboard/products with full CRUD, category assignment, reviews list; /dashboard/categories for category CRUD with icon mapping.
-    status: pending
+    status: completed
   - id: phase5-events-registrations
     content: Add /dashboard/events with full CRUD, gallery management, status transitions, reviews list; view event registrations.
-    status: pending
+    status: completed
   - id: phase6-site-settings-cms
     content: Add /dashboard/settings for site config (hero images, contact info) and /dashboard/content for static page content (FAQ, About team/values, Shipping, Care).
     status: pending

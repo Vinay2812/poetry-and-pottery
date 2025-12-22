@@ -11,6 +11,7 @@ import {
   R2_ACCESS_KEY_ID,
   R2_ACCOUNT_ID,
   R2_BUCKET,
+  R2_PUBLIC_URL,
   R2_SECRET_ACCESS_KEY,
 } from "@/lib/env.consts";
 
@@ -145,7 +146,13 @@ export function generateUniqueKey(filename: string, folder?: string): string {
 
 /**
  * Get the public URL for a file (requires R2 bucket to have public access enabled)
+ * Uses R2_PUBLIC_URL if set, otherwise falls back to default R2.dev subdomain
  */
 export function getPublicUrl(key: string): string {
+  if (R2_PUBLIC_URL) {
+    // Remove trailing slash if present
+    const baseUrl = R2_PUBLIC_URL.replace(/\/$/, "");
+    return `${baseUrl}/${key}`;
+  }
   return `https://${R2_BUCKET}.${R2_ACCOUNT_ID}.r2.dev/${key}`;
 }

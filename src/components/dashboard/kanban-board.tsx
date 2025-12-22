@@ -126,7 +126,7 @@ export function KanbanBoard<T extends { id: string }>({
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 250,
+        delay: 150,
         tolerance: 5,
       },
     }),

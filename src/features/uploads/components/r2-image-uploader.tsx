@@ -1,8 +1,34 @@
 "use client";
 
-import { AlertCircle, Loader2, Trash2, Upload, X } from "lucide-react";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import {
+  AlertCircle,
+  GripVertical,
+  Loader2,
+  Trash2,
+  Upload,
+  X,
+} from "lucide-react";
 import Image from "next/image";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -10,15 +36,41 @@ import { cn } from "@/lib/utils";
 
 import type { R2ImageUploaderProps, UploadItemViewModel } from "../types";
 
-interface UploadItemProps {
+interface SortableUploadItemProps {
   item: UploadItemViewModel;
   onRemove: (id: string) => void;
   onRetry: (id: string) => void;
 }
 
-function UploadItem({ item, onRemove, onRetry }: UploadItemProps) {
+function SortableUploadItem({
+  item,
+  onRemove,
+  onRetry,
+}: SortableUploadItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 10 : undefined,
+  };
+
   return (
-    <div className="group relative aspect-square overflow-hidden rounded-lg bg-neutral-100">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "group relative aspect-square overflow-hidden rounded-lg bg-neutral-100",
+        isDragging && "ring-primary opacity-50 ring-2",
+      )}
+    >
       <Image
         src={item.previewUrl}
         alt="Upload preview"
@@ -28,6 +80,18 @@ function UploadItem({ item, onRemove, onRetry }: UploadItemProps) {
           item.isUploading && "opacity-50",
         )}
       />
+
+      {/* Drag handle - always visible on mobile, hover on desktop */}
+      {!item.isUploading && !item.isError && (
+        <button
+          type="button"
+          {...attributes}
+          {...listeners}
+          className="absolute top-1 left-1 cursor-grab rounded-full bg-black/50 p-1 text-white opacity-100 transition-opacity hover:bg-black/70 active:cursor-grabbing md:opacity-0 md:group-hover:opacity-100"
+        >
+          <GripVertical className="size-4" />
+        </button>
+      )}
 
       {/* Upload progress overlay */}
       {item.isUploading && (
@@ -79,12 +143,12 @@ function UploadItem({ item, onRemove, onRetry }: UploadItemProps) {
         </div>
       )}
 
-      {/* Remove button */}
+      {/* Remove button - always visible on mobile, hover on desktop */}
       {!item.isUploading && (
         <button
           type="button"
           onClick={() => onRemove(item.id)}
-          className="absolute top-1 right-1 rounded-full bg-black/50 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100 hover:bg-black/70"
+          className="absolute top-1 right-1 rounded-full bg-black/50 p-1 text-white opacity-100 transition-opacity hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100"
         >
           <X className="size-4" />
         </button>
@@ -102,8 +166,36 @@ export function R2ImageUploader({
   onFilesSelect,
   onRemove,
   onRetry,
+  onReorder,
 }: R2ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  const activeItem = activeId
+    ? viewModel.items.find((item) => item.id === activeId)
+    : null;
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
+  }, []);
 
   const handleClick = useCallback(() => {
     inputRef.current?.click();
@@ -143,6 +235,25 @@ export function R2ImageUploader({
     [disabled, viewModel.canAddMore, onFilesSelect],
   );
 
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+
+      setActiveId(null);
+
+      if (over && active.id !== over.id && onReorder) {
+        const oldIndex = viewModel.items.findIndex(
+          (item) => item.id === active.id,
+        );
+        const newIndex = viewModel.items.findIndex(
+          (item) => item.id === over.id,
+        );
+        onReorder(oldIndex, newIndex);
+      }
+    },
+    [viewModel.items, onReorder],
+  );
+
   return (
     <div className="space-y-3">
       <input
@@ -155,35 +266,60 @@ export function R2ImageUploader({
         disabled={disabled}
       />
 
-      {/* Upload grid */}
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
-        {/* Existing uploads */}
-        {viewModel.items.map((item) => (
-          <UploadItem
-            key={item.id}
-            item={item}
-            onRemove={onRemove}
-            onRetry={onRetry}
-          />
-        ))}
+      {/* Upload grid with DnD */}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={viewModel.items.map((item) => item.id)}
+          strategy={rectSortingStrategy}
+        >
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+            {/* Existing uploads */}
+            {viewModel.items.map((item) => (
+              <SortableUploadItem
+                key={item.id}
+                item={item}
+                onRemove={onRemove}
+                onRetry={onRetry}
+              />
+            ))}
 
-        {/* Add more button */}
-        {viewModel.canAddMore && !disabled && (
-          <button
-            type="button"
-            onClick={handleClick}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            className={cn(
-              "hover:border-primary/50 hover:bg-primary/5 hover:text-primary flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 text-neutral-500 transition-colors",
-              viewModel.isAnyUploading && "pointer-events-none opacity-50",
+            {/* Add more button */}
+            {viewModel.canAddMore && !disabled && (
+              <button
+                type="button"
+                onClick={handleClick}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                className={cn(
+                  "hover:border-primary/50 hover:bg-primary/5 hover:text-primary flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 text-neutral-500 transition-colors",
+                  viewModel.isAnyUploading && "pointer-events-none opacity-50",
+                )}
+              >
+                <Upload className="size-6" />
+                <span className="text-xs font-medium">Add Image</span>
+              </button>
             )}
-          >
-            <Upload className="size-6" />
-            <span className="text-xs font-medium">Add Image</span>
-          </button>
-        )}
-      </div>
+          </div>
+        </SortableContext>
+
+        <DragOverlay>
+          {activeItem ? (
+            <div className="aspect-square w-24 scale-105 rotate-3 overflow-hidden rounded-lg shadow-xl">
+              <Image
+                src={activeItem.previewUrl}
+                alt="Dragging preview"
+                fill
+                className="object-cover"
+              />
+            </div>
+          ) : null}
+        </DragOverlay>
+      </DndContext>
 
       {/* Empty state */}
       {viewModel.items.length === 0 && (

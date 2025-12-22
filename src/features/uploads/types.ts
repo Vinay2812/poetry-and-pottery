@@ -55,6 +55,7 @@ export interface R2ImageUploaderProps {
   onFilesSelect: (files: FileList) => void;
   onRemove: (id: string) => void;
   onRetry: (id: string) => void;
+  onReorder?: (oldIndex: number, newIndex: number) => void;
 }
 
 /**

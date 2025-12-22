@@ -1,7 +1,8 @@
 "use client";
 
 import { getPresignedUploadUrl } from "@/actions/admin/admin.uploads.actions";
-import { useCallback, useMemo, useState } from "react";
+import { arrayMove } from "@dnd-kit/sortable";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { R2ImageUploader } from "../components/r2-image-uploader";
 import type { R2ImageUploaderContainerProps, UploadFile } from "../types";
@@ -40,18 +41,14 @@ export function R2ImageUploaderContainer({
     value.map(createUploadFileFromUrl),
   );
 
-  // Notify parent of URL changes
-  const notifyChange = useCallback(
-    (files: UploadFile[]) => {
-      if (onChange) {
-        const successUrls = files
-          .filter((f) => f.status === "success" && f.publicUrl)
-          .map((f) => f.publicUrl as string);
-        onChange(successUrls);
-      }
-    },
-    [onChange],
-  );
+  useEffect(() => {
+    if (onChange) {
+      const successUrls = uploadFiles
+        .filter((f) => f.status === "success" && f.publicUrl)
+        .map((f) => f.publicUrl as string);
+      onChange(successUrls);
+    }
+  }, [uploadFiles, onChange]);
 
   const uploadFile = useCallback(
     async (fileToUpload: UploadFile) => {
@@ -94,8 +91,8 @@ export function R2ImageUploaderContainer({
         await uploadToR2(result.presignedUrl, fileToUpload.file);
 
         // Mark as success
-        setUploadFiles((prev) => {
-          const updated = prev.map((f) =>
+        setUploadFiles((prev) =>
+          prev.map((f) =>
             f.id === fileToUpload.id
               ? {
                   ...f,
@@ -104,10 +101,8 @@ export function R2ImageUploaderContainer({
                   publicUrl: result.publicUrl ?? null,
                 }
               : f,
-          );
-          notifyChange(updated);
-          return updated;
-        });
+          ),
+        );
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "Upload failed";
@@ -121,7 +116,7 @@ export function R2ImageUploaderContainer({
         );
       }
     },
-    [folder, notifyChange],
+    [folder],
   );
 
   const handleFilesSelect = useCallback(
@@ -144,22 +139,17 @@ export function R2ImageUploaderContainer({
     [maxFiles, uploadFiles.length, uploadFile],
   );
 
-  const handleRemove = useCallback(
-    (id: string) => {
-      setUploadFiles((prev) => {
-        const fileToRemove = prev.find((f) => f.id === id);
-        if (fileToRemove?.previewUrl && !fileToRemove.publicUrl) {
-          // Revoke object URL for local previews
-          URL.revokeObjectURL(fileToRemove.previewUrl);
-        }
+  const handleRemove = useCallback((id: string) => {
+    setUploadFiles((prev) => {
+      const fileToRemove = prev.find((f) => f.id === id);
+      if (fileToRemove?.previewUrl && !fileToRemove.publicUrl) {
+        // Revoke object URL for local previews
+        URL.revokeObjectURL(fileToRemove.previewUrl);
+      }
 
-        const updated = prev.filter((f) => f.id !== id);
-        notifyChange(updated);
-        return updated;
-      });
-    },
-    [notifyChange],
-  );
+      return prev.filter((f) => f.id !== id);
+    });
+  }, []);
 
   const handleRetry = useCallback(
     (id: string) => {
@@ -170,6 +160,10 @@ export function R2ImageUploaderContainer({
     },
     [uploadFiles, uploadFile],
   );
+
+  const handleReorder = useCallback((oldIndex: number, newIndex: number) => {
+    setUploadFiles((prev) => arrayMove(prev, oldIndex, newIndex));
+  }, []);
 
   const viewModel = useMemo(
     () => buildR2ImageUploaderViewModel(uploadFiles, maxFiles),
@@ -186,6 +180,7 @@ export function R2ImageUploaderContainer({
       onFilesSelect={handleFilesSelect}
       onRemove={handleRemove}
       onRetry={handleRetry}
+      onReorder={handleReorder}
     />
   );
 }
