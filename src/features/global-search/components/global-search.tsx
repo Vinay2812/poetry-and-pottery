@@ -1,13 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Calendar,
-  Loader2,
-  Package,
-  Search,
-  ShoppingBag,
-} from "lucide-react";
+import { Calendar, Loader2, Package, Search, ShoppingBag } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { OptimizedImage, SearchInput } from "@/components/shared";
@@ -299,11 +293,13 @@ export function GlobalSearch({
                                 className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
                               >
                                 <div className="bg-primary/10 flex h-10 w-10 shrink-0 flex-col items-center justify-center rounded-lg">
-                                  <span className="text-primary text-[9px] font-bold uppercase leading-none">
+                                  <span className="text-primary text-[9px] leading-none font-bold uppercase">
                                     {event.startsAt.split(" ")[0]}
                                   </span>
-                                  <span className="text-primary text-sm font-bold leading-none">
-                                    {event.startsAt.split(" ")[1]?.replace(",", "")}
+                                  <span className="text-primary text-sm leading-none font-bold">
+                                    {event.startsAt
+                                      .split(" ")[1]
+                                      ?.replace(",", "")}
                                   </span>
                                 </div>
                                 <div className="min-w-0 flex-1">
@@ -364,8 +360,8 @@ export function GlobalSearch({
                                       Order #{order.orderNumber}
                                     </p>
                                     <p className="text-muted-foreground text-xs">
-                                      {order.createdAt} ·{" "}
-                                      {order.productCount} item
+                                      {order.createdAt} · {order.productCount}{" "}
+                                      item
                                       {order.productCount > 1 ? "s" : ""}
                                     </p>
                                   </div>
