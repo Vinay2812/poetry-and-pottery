@@ -33,6 +33,10 @@ export interface DashboardStats {
     totalOrders: number;
     totalRegistrations: number;
   };
+  newsletter: {
+    totalSubscribers: number;
+    newThisMonth: number;
+  };
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
@@ -58,6 +62,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     newUsersThisMonth,
     orderRevenue,
     registrationRevenue,
+    totalNewsletterSubscribers,
+    newNewsletterSubscribersThisMonth,
   ] = await Promise.all([
     // Orders
     prisma.productOrder.count({
@@ -121,6 +127,17 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         },
       },
     }),
+
+    // Newsletter
+    prisma.user.count({
+      where: { subscribed_to_newsletter: true },
+    }),
+    prisma.user.count({
+      where: {
+        subscribed_to_newsletter: true,
+        newsletter_subscribed_at: { gte: startOfMonth },
+      },
+    }),
   ]);
 
   return {
@@ -150,6 +167,10 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     revenue: {
       totalOrders: orderRevenue._sum.total ?? 0,
       totalRegistrations: registrationRevenue._sum.price ?? 0,
+    },
+    newsletter: {
+      totalSubscribers: totalNewsletterSubscribers,
+      newThisMonth: newNewsletterSubscribersThisMonth,
     },
   };
 }
@@ -306,4 +327,33 @@ export async function getUpcomingEvents(limit = 5): Promise<UpcomingEvent[]> {
   });
 
   return events;
+}
+
+export interface NewsletterSubscriber {
+  id: number;
+  name: string | null;
+  email: string;
+  image: string | null;
+  newsletter_subscribed_at: Date | null;
+}
+
+export async function getNewsletterSubscribers(
+  limit = 10,
+): Promise<NewsletterSubscriber[]> {
+  await requireAdmin();
+
+  const subscribers = await prisma.user.findMany({
+    where: { subscribed_to_newsletter: true },
+    take: limit,
+    orderBy: { newsletter_subscribed_at: "desc" },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      newsletter_subscribed_at: true,
+    },
+  });
+
+  return subscribers;
 }

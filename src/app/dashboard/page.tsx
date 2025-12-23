@@ -1,6 +1,7 @@
 import {
   getDashboardStats,
   getLowStockProducts,
+  getNewsletterSubscribers,
   getRecentOrders,
   getRecentRegistrations,
   getUpcomingEvents,
@@ -8,6 +9,7 @@ import {
 import {
   HeroStats,
   InventoryAlertsSection,
+  NewsletterSection,
   QuickActions,
   RecentOrdersSection,
   RecentRegistrationsSection,
@@ -22,12 +24,14 @@ export default async function DashboardPage() {
     recentRegistrations,
     lowStockProducts,
     upcomingEvents,
+    newsletterSubscribers,
   ] = await Promise.all([
     getDashboardStats(),
     getRecentOrders(5),
     getRecentRegistrations(5),
     getLowStockProducts(5),
     getUpcomingEvents(5),
+    getNewsletterSubscribers(5),
   ]);
 
   const totalRevenue =
@@ -75,6 +79,13 @@ export default async function DashboardPage() {
         registrationsTotal={stats.registrations.total}
         totalRevenue={totalRevenue}
         totalTransactions={totalTransactions}
+      />
+
+      {/* Newsletter Subscribers */}
+      <NewsletterSection
+        subscribers={newsletterSubscribers}
+        totalSubscribers={stats.newsletter.totalSubscribers}
+        newThisMonth={stats.newsletter.newThisMonth}
       />
     </div>
   );

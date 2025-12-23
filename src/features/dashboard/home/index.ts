@@ -1,6 +1,7 @@
 // Components
 export { HeroStats } from "./components/hero-stats";
 export { InventoryAlertsSection } from "./components/inventory-alerts-section";
+export { NewsletterSection } from "./components/newsletter-section";
 export { QuickActions } from "./components/quick-actions";
 export { RecentOrdersSection } from "./components/recent-orders-section";
 export { RecentRegistrationsSection } from "./components/recent-registrations-section";
@@ -14,6 +15,8 @@ export type {
   HeroStatsProps,
   InventoryAlertsSectionProps,
   LowStockProduct,
+  NewsletterSectionProps,
+  NewsletterSubscriber,
   QuickActionsProps,
   RecentOrder,
   RecentOrdersSectionProps,

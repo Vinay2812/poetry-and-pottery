@@ -94,3 +94,61 @@ export interface MobileNavProps {
   viewModel: MobileNavViewModel;
   currentPath: string;
 }
+
+/**
+ * Link item for footer navigation.
+ */
+export interface FooterLinkItem {
+  label: string;
+  href: string;
+}
+
+/**
+ * Link group for footer navigation.
+ */
+export interface FooterLinkGroup {
+  title: string;
+  links: FooterLinkItem[];
+}
+
+/**
+ * Social link for footer.
+ */
+export interface FooterSocialLink {
+  platform: "instagram" | "facebook" | "pinterest" | "twitter";
+  href: string;
+  label: string;
+}
+
+/**
+ * Contact info item for footer.
+ */
+export interface FooterContactItem {
+  type: "address" | "hours" | "email" | "phone";
+  value: string;
+  href?: string;
+}
+
+/**
+ * View model for Footer component.
+ */
+export interface FooterViewModel {
+  brandDescription: string;
+  linkGroups: FooterLinkGroup[];
+  contactInfo: FooterContactItem[];
+  socialLinks: FooterSocialLink[];
+  currentYear: number;
+  isAuthenticated: boolean;
+  isAlreadySubscribed: boolean;
+  isSubscribing: boolean;
+  subscriptionSuccess: boolean;
+  subscriptionError: string | null;
+}
+
+/**
+ * Props for the presentational Footer component.
+ */
+export interface FooterProps {
+  viewModel: FooterViewModel;
+  onNewsletterSubmit: () => void;
+}

@@ -1,0 +1,264 @@
+"use client";
+
+import {
+  ArrowRight,
+  Check,
+  Clock,
+  Facebook,
+  Instagram,
+  Loader2,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+
+import type { FooterProps, FooterSocialLink } from "../types";
+
+const socialIcons: Record<FooterSocialLink["platform"], React.ElementType> = {
+  instagram: Instagram,
+  facebook: Facebook,
+  pinterest: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="12" x2="12" y1="17" y2="22" />
+      <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" />
+    </svg>
+  ),
+  twitter: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  ),
+};
+
+const contactIcons = {
+  address: MapPin,
+  hours: Clock,
+  email: Mail,
+  phone: Phone,
+};
+
+function NewsletterContent({
+  viewModel,
+  onNewsletterSubmit,
+}: {
+  viewModel: FooterProps["viewModel"];
+  onNewsletterSubmit: () => void;
+}) {
+  // Already subscribed
+  if (viewModel.isAlreadySubscribed || viewModel.subscriptionSuccess) {
+    return (
+      <div className="flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 dark:bg-neutral-800">
+        <Check className="text-primary h-5 w-5" />
+        <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+          You&apos;re subscribed to our newsletter
+        </span>
+      </div>
+    );
+  }
+
+  // Not authenticated
+  if (!viewModel.isAuthenticated) {
+    return (
+      <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+        <p className="text-muted-foreground text-sm">
+          Sign in to subscribe to our newsletter
+        </p>
+        <Button asChild className="h-10 rounded-full">
+          <Link href="/sign-in">
+            Sign In
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
+  // Authenticated but not subscribed
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Button
+        onClick={onNewsletterSubmit}
+        disabled={viewModel.isSubscribing}
+        className="h-12 min-w-[180px] rounded-full"
+      >
+        {viewModel.isSubscribing ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <>
+            Subscribe to Newsletter
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </>
+        )}
+      </Button>
+      {viewModel.subscriptionError && (
+        <p className="text-sm text-red-500">{viewModel.subscriptionError}</p>
+      )}
+    </div>
+  );
+}
+
+export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
+  return (
+    <footer className="mt-auto bg-neutral-50 dark:bg-neutral-900">
+      {/* Newsletter Section */}
+      <div className="bg-primary/5 dark:bg-primary/10">
+        <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h3 className="mb-2 text-xl font-semibold text-neutral-900 lg:text-2xl dark:text-neutral-100">
+              Join Our Community
+            </h3>
+            <p className="text-muted-foreground mb-6 text-sm lg:text-base">
+              Subscribe to receive updates on new collections, workshops, and
+              exclusive offers.
+            </p>
+            <NewsletterContent
+              viewModel={viewModel}
+              onNewsletterSubmit={onNewsletterSubmit}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-12 lg:gap-12">
+          {/* Brand Section */}
+          <div className="col-span-2 lg:col-span-4">
+            <Link href="/" className="mb-4 inline-flex items-center gap-2">
+              <div className="bg-primary flex h-9 w-9 items-center justify-center rounded-full">
+                <span className="text-sm font-bold text-white">P</span>
+              </div>
+              <span className="bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-lg font-bold text-transparent dark:from-neutral-100 dark:to-neutral-400">
+                Poetry & Pottery
+              </span>
+            </Link>
+            <p className="text-muted-foreground mb-6 max-w-xs text-sm leading-relaxed">
+              {viewModel.brandDescription}
+            </p>
+
+            {/* Social Links */}
+            <div className="flex gap-2">
+              {viewModel.socialLinks.map((social) => {
+                const Icon = socialIcons[social.platform];
+                return (
+                  <a
+                    key={social.platform}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Link Groups */}
+          {viewModel.linkGroups.map((group) => (
+            <div key={group.title} className="lg:col-span-2">
+              <h4 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                {group.title}
+              </h4>
+              <ul className="space-y-3">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          {/* Contact Section */}
+          <div className="col-span-2 lg:col-span-2">
+            <h4 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+              Contact
+            </h4>
+            <ul className="space-y-3">
+              {viewModel.contactInfo.map((contact) => {
+                const Icon = contactIcons[contact.type];
+                const content = (
+                  <span className="flex items-start gap-2">
+                    <Icon className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                    <span className="text-muted-foreground text-sm">
+                      {contact.value}
+                    </span>
+                  </span>
+                );
+
+                if (contact.href) {
+                  return (
+                    <li key={contact.type}>
+                      <a
+                        href={contact.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors duration-150"
+                      >
+                        {content}
+                      </a>
+                    </li>
+                  );
+                }
+
+                return <li key={contact.type}>{content}</li>;
+              })}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-neutral-200 pt-8 lg:mt-16 lg:flex-row lg:pt-8 dark:border-neutral-800">
+          <p className="text-muted-foreground text-center text-sm">
+            © {viewModel.currentYear} Poetry & Pottery. All rights reserved.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 lg:gap-6">
+            <Link
+              href="/privacy"
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
+            >
+              Terms of Service
+            </Link>
+            <Link
+              href="/shipping"
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
+            >
+              Shipping Info
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

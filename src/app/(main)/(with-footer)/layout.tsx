@@ -1,4 +1,4 @@
-import { Footer } from "@/components/layout";
+import { FooterContainer } from "@/features/layout";
 
 export default function WithFooterLayout({
   children,
@@ -8,7 +8,7 @@ export default function WithFooterLayout({
   return (
     <>
       {children}
-      <Footer />
+      <FooterContainer />
     </>
   );
 }

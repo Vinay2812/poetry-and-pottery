@@ -26,6 +26,10 @@ export interface DashboardStats {
     totalOrders: number;
     totalRegistrations: number;
   };
+  newsletter: {
+    totalSubscribers: number;
+    newThisMonth: number;
+  };
 }
 
 /**
@@ -146,4 +150,24 @@ export interface RevenueBreakdownSectionProps {
   registrationsTotal: number;
   totalRevenue: number;
   totalTransactions: number;
+}
+
+/**
+ * Newsletter subscriber data for display.
+ */
+export interface NewsletterSubscriber {
+  id: number;
+  name: string | null;
+  email: string;
+  image: string | null;
+  newsletter_subscribed_at: Date | null;
+}
+
+/**
+ * Props for NewsletterSection component.
+ */
+export interface NewsletterSectionProps {
+  subscribers: NewsletterSubscriber[];
+  totalSubscribers: number;
+  newThisMonth: number;
 }

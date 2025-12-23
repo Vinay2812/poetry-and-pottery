@@ -77,3 +77,10 @@ export {
   deleteAddress,
   type AddressFormData,
 } from "./address.actions";
+
+// Newsletter actions
+export {
+  subscribeToNewsletter,
+  unsubscribeFromNewsletter,
+  getNewsletterSubscriptionStatus,
+} from "./newsletter.actions";
