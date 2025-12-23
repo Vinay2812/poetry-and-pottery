@@ -1,7 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Calendar, Loader2, Package, Search, ShoppingBag } from "lucide-react";
+import {
+  Calendar,
+  Loader2,
+  Package,
+  Search,
+  ShoppingBag,
+} from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { OptimizedImage, SearchInput } from "@/components/shared";
@@ -222,7 +228,7 @@ export function GlobalSearch({
                       </div>
 
                       {/* Products Tab */}
-                      <TabsContent value="products" className="mt-0 p-4">
+                      <TabsContent value="products" className="mt-0">
                         {viewModel.products.length === 0 ? (
                           <div className="py-8 text-center">
                             <ShoppingBag className="text-muted-foreground mx-auto mb-2 h-8 w-8" />
@@ -231,48 +237,44 @@ export function GlobalSearch({
                             </p>
                           </div>
                         ) : (
-                          <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                              {viewModel.products.map((product) => (
-                                <button
-                                  key={product.id}
-                                  onClick={() => onProductClick(product.slug)}
-                                  className="group shadow-soft hover:shadow-card overflow-hidden rounded-[2rem] border border-neutral-100 bg-white text-left transition-all dark:border-neutral-800 dark:bg-neutral-900"
-                                >
-                                  <div className="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                                    <OptimizedImage
-                                      src={product.imageUrl}
-                                      alt={product.name}
-                                      fill
-                                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                      sizes="(max-width: 640px) 50vw, 33vw"
-                                    />
-                                    {product.isOutOfStock && (
-                                      <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                                        <Badge variant="secondary">
-                                          Out of Stock
-                                        </Badge>
-                                      </div>
-                                    )}
-                                  </div>
-                                  <div className="p-3">
-                                    <p className="line-clamp-2 text-sm font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
-                                      {product.name}
+                          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+                            {viewModel.products.map((product) => (
+                              <button
+                                key={product.id}
+                                onClick={() => onProductClick(product.slug)}
+                                className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
+                              >
+                                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">
+                                  <OptimizedImage
+                                    src={product.imageUrl}
+                                    alt={product.name}
+                                    fill
+                                    className="object-cover"
+                                    sizes="40px"
+                                  />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <p className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                                    {product.name}
+                                  </p>
+                                  {product.isOutOfStock && (
+                                    <p className="text-xs text-neutral-500">
+                                      Out of stock
                                     </p>
-                                    <p className="text-primary mt-1 text-sm font-bold lg:text-base">
-                                      {formatPrice(product.price)}
-                                    </p>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
+                                  )}
+                                </div>
+                                <p className="text-primary shrink-0 text-sm font-semibold">
+                                  {formatPrice(product.price)}
+                                </p>
+                              </button>
+                            ))}
                             {viewModel.counts.products >
                               viewModel.products.length && (
                               <button
                                 onClick={onViewAllProducts}
-                                className="text-primary hover:text-primary/80 w-full py-2 text-center text-sm font-medium transition-colors"
+                                className="text-primary hover:bg-primary/5 w-full py-3 text-center text-sm font-medium transition-colors"
                               >
-                                View all {viewModel.counts.products} products
+                                View all {viewModel.counts.products} products →
                               </button>
                             )}
                           </div>
@@ -280,7 +282,7 @@ export function GlobalSearch({
                       </TabsContent>
 
                       {/* Events Tab */}
-                      <TabsContent value="events" className="mt-0 p-4">
+                      <TabsContent value="events" className="mt-0">
                         {viewModel.events.length === 0 ? (
                           <div className="py-8 text-center">
                             <Calendar className="text-muted-foreground mx-auto mb-2 h-8 w-8" />
@@ -289,44 +291,41 @@ export function GlobalSearch({
                             </p>
                           </div>
                         ) : (
-                          <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                              {viewModel.events.map((event) => (
-                                <button
-                                  key={event.id}
-                                  onClick={() => onEventClick(event.id)}
-                                  className="group shadow-soft hover:shadow-card overflow-hidden rounded-[2rem] border border-neutral-100 bg-white text-left transition-all dark:border-neutral-800 dark:bg-neutral-900"
-                                >
-                                  <div className="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                                    <OptimizedImage
-                                      src={event.imageUrl}
-                                      alt={event.title}
-                                      fill
-                                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                      sizes="(max-width: 640px) 50vw, 33vw"
-                                    />
-                                  </div>
-                                  <div className="p-3">
-                                    <p className="text-[10px] font-bold tracking-wider text-neutral-500 uppercase lg:text-xs dark:text-neutral-400">
-                                      {event.startsAt}
-                                    </p>
-                                    <p className="mt-1 line-clamp-2 text-sm font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
-                                      {event.title}
-                                    </p>
-                                    <p className="text-primary mt-1 text-sm font-bold lg:text-base">
-                                      {formatPrice(event.price)}
-                                    </p>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
+                          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+                            {viewModel.events.map((event) => (
+                              <button
+                                key={event.id}
+                                onClick={() => onEventClick(event.id)}
+                                className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
+                              >
+                                <div className="bg-primary/10 flex h-10 w-10 shrink-0 flex-col items-center justify-center rounded-lg">
+                                  <span className="text-primary text-[9px] font-bold uppercase leading-none">
+                                    {event.startsAt.split(" ")[0]}
+                                  </span>
+                                  <span className="text-primary text-sm font-bold leading-none">
+                                    {event.startsAt.split(" ")[1]?.replace(",", "")}
+                                  </span>
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <p className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                                    {event.title}
+                                  </p>
+                                  <p className="text-muted-foreground truncate text-xs">
+                                    {event.startsAtTime} · {event.location}
+                                  </p>
+                                </div>
+                                <p className="text-primary shrink-0 text-sm font-semibold">
+                                  {formatPrice(event.price)}
+                                </p>
+                              </button>
+                            ))}
                             {viewModel.counts.events >
                               viewModel.events.length && (
                               <button
                                 onClick={onViewAllEvents}
-                                className="text-primary hover:text-primary/80 w-full py-2 text-center text-sm font-medium transition-colors"
+                                className="text-primary hover:bg-primary/5 w-full py-3 text-center text-sm font-medium transition-colors"
                               >
-                                View all {viewModel.counts.events} events
+                                View all {viewModel.counts.events} events →
                               </button>
                             )}
                           </div>
@@ -335,7 +334,7 @@ export function GlobalSearch({
 
                       {/* Orders Tab */}
                       {viewModel.isAuthenticated && (
-                        <TabsContent value="orders" className="mt-0 p-4">
+                        <TabsContent value="orders" className="mt-0">
                           {viewModel.orders.length === 0 ? (
                             <div className="py-8 text-center">
                               <Package className="text-muted-foreground mx-auto mb-2 h-8 w-8" />
@@ -344,55 +343,49 @@ export function GlobalSearch({
                               </p>
                             </div>
                           ) : (
-                            <div className="space-y-4">
-                              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                                {viewModel.orders.map((order) => (
-                                  <button
-                                    key={order.id}
-                                    onClick={() => onOrderClick(order.id)}
-                                    className="group shadow-soft hover:shadow-card overflow-hidden rounded-[2rem] border border-neutral-100 bg-white text-left transition-all dark:border-neutral-800 dark:bg-neutral-900"
+                            <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+                              {viewModel.orders.map((order) => (
+                                <button
+                                  key={order.id}
+                                  onClick={() => onOrderClick(order.id)}
+                                  className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
+                                >
+                                  <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">
+                                    <OptimizedImage
+                                      src={order.firstProductImage}
+                                      alt={order.firstProductName}
+                                      fill
+                                      className="object-cover"
+                                      sizes="40px"
+                                    />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                                      Order #{order.orderNumber}
+                                    </p>
+                                    <p className="text-muted-foreground text-xs">
+                                      {order.createdAt} ·{" "}
+                                      {order.productCount} item
+                                      {order.productCount > 1 ? "s" : ""}
+                                    </p>
+                                  </div>
+                                  <Badge
+                                    className={cn(
+                                      "shrink-0 text-[10px]",
+                                      getStatusColor(order.status),
+                                    )}
                                   >
-                                    <div className="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                                      <OptimizedImage
-                                        src={order.firstProductImage}
-                                        alt={order.firstProductName}
-                                        fill
-                                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                        sizes="(max-width: 640px) 50vw, 33vw"
-                                      />
-                                      <div className="absolute top-2 right-2">
-                                        <Badge
-                                          className={cn(
-                                            "text-[10px]",
-                                            getStatusColor(order.status),
-                                          )}
-                                        >
-                                          {order.status}
-                                        </Badge>
-                                      </div>
-                                    </div>
-                                    <div className="p-3">
-                                      <p className="text-[10px] font-bold tracking-wider text-neutral-500 uppercase lg:text-xs dark:text-neutral-400">
-                                        {order.createdAt}
-                                      </p>
-                                      <p className="mt-1 text-sm font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
-                                        Order #{order.orderNumber}
-                                      </p>
-                                      <p className="text-muted-foreground mt-1 text-[10px] lg:text-xs">
-                                        {order.productCount} item
-                                        {order.productCount > 1 ? "s" : ""}
-                                      </p>
-                                    </div>
-                                  </button>
-                                ))}
-                              </div>
+                                    {order.status}
+                                  </Badge>
+                                </button>
+                              ))}
                               {viewModel.counts.orders >
                                 viewModel.orders.length && (
                                 <button
                                   onClick={onViewAllOrders}
-                                  className="text-primary hover:text-primary/80 w-full py-2 text-center text-sm font-medium transition-colors"
+                                  className="text-primary hover:bg-primary/5 w-full py-3 text-center text-sm font-medium transition-colors"
                                 >
-                                  View all {viewModel.counts.orders} orders
+                                  View all {viewModel.counts.orders} orders →
                                 </button>
                               )}
                             </div>

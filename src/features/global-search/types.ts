@@ -4,7 +4,7 @@ import type {
   ProductWithCategories,
 } from "@/types";
 
-import { formatOrderDate } from "@/lib/date";
+import { formatEventTime, formatOrderDate } from "@/lib/date";
 
 export type SearchTab = "products" | "events" | "orders";
 
@@ -22,8 +22,13 @@ export interface EventSearchItem {
   title: string;
   slug: string;
   startsAt: string;
+  startsAtTime: string;
+  location: string;
+  level: string;
   imageUrl: string;
   price: number;
+  availableSeats: number;
+  totalSeats: number;
 }
 
 export interface OrderSearchItem {
@@ -88,8 +93,13 @@ export function buildEventSearchItem(
     title: event.title,
     slug: event.slug,
     startsAt: formatOrderDate(event.starts_at),
+    startsAtTime: formatEventTime(event.starts_at),
+    location: event.location,
+    level: event.level,
     imageUrl: event.image || "/placeholder-event.jpg",
     price: event.price,
+    availableSeats: event.available_seats,
+    totalSeats: event.total_seats,
   };
 }
 
