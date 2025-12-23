@@ -102,8 +102,40 @@ export interface CarePageContent {
   avoid: string[];
 }
 
+// Privacy Policy Page Content
+export interface PrivacySection {
+  title: string;
+  content: string;
+}
+
+export interface PrivacyPageContent {
+  lastUpdated: string;
+  introduction: string;
+  sections: PrivacySection[];
+  contactEmail: string;
+}
+
+// Terms of Service Page Content
+export interface TermsSection {
+  title: string;
+  content: string;
+}
+
+export interface TermsPageContent {
+  lastUpdated: string;
+  introduction: string;
+  sections: TermsSection[];
+  contactEmail: string;
+}
+
 // Generic content page type
-export type ContentPageType = "about" | "faq" | "shipping" | "care";
+export type ContentPageType =
+  | "about"
+  | "faq"
+  | "shipping"
+  | "care"
+  | "privacy"
+  | "terms";
 
 export interface ContentPage {
   id: number;
@@ -113,7 +145,9 @@ export interface ContentPage {
     | AboutPageContent
     | FAQPageContent
     | ShippingPageContent
-    | CarePageContent;
+    | CarePageContent
+    | PrivacyPageContent
+    | TermsPageContent;
   is_active: boolean;
   created_at: Date;
   updated_at: Date;
@@ -520,6 +554,109 @@ const DEFAULT_CARE_CONTENT: CarePageContent = {
   ],
 };
 
+const DEFAULT_PRIVACY_CONTENT: PrivacyPageContent = {
+  lastUpdated: "December 2024",
+  introduction:
+    "At Poetry & Pottery, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or make a purchase.",
+  sections: [
+    {
+      title: "Information We Collect",
+      content:
+        "We collect information you provide directly to us, such as when you create an account, make a purchase, sign up for our newsletter, or contact us. This may include your name, email address, postal address, phone number, and payment information. We also automatically collect certain information when you visit our website, including your IP address, browser type, operating system, and browsing behavior.",
+    },
+    {
+      title: "How We Use Your Information",
+      content:
+        "We use the information we collect to process and fulfill your orders, communicate with you about your orders and our products, send you marketing communications (with your consent), improve our website and services, and comply with legal obligations. We may also use your information to personalize your shopping experience and recommend products that may interest you.",
+    },
+    {
+      title: "Information Sharing",
+      content:
+        "We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as necessary to fulfill your orders (such as shipping carriers), process payments, or comply with legal requirements. We may share aggregated, non-personal information with partners for analytics purposes.",
+    },
+    {
+      title: "Data Security",
+      content:
+        "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security.",
+    },
+    {
+      title: "Cookies and Tracking",
+      content:
+        "We use cookies and similar tracking technologies to enhance your browsing experience, analyze website traffic, and understand where our visitors come from. You can control cookies through your browser settings, but disabling cookies may affect your ability to use certain features of our website.",
+    },
+    {
+      title: "Your Rights",
+      content:
+        "You have the right to access, correct, or delete your personal information. You may also opt out of marketing communications at any time by clicking the unsubscribe link in our emails or contacting us directly. If you have any questions about your rights or wish to exercise them, please contact us using the information below.",
+    },
+    {
+      title: "Changes to This Policy",
+      content:
+        "We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any material changes by posting the new Privacy Policy on our website and updating the 'Last Updated' date.",
+    },
+  ],
+  contactEmail: "privacy@poetryandpottery.com",
+};
+
+const DEFAULT_TERMS_CONTENT: TermsPageContent = {
+  lastUpdated: "December 2024",
+  introduction:
+    "Welcome to Poetry & Pottery. By accessing or using our website, you agree to be bound by these Terms of Service. Please read them carefully before making a purchase or using our services.",
+  sections: [
+    {
+      title: "Acceptance of Terms",
+      content:
+        "By accessing and using this website, you accept and agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, please do not use our website or services.",
+    },
+    {
+      title: "Products and Pricing",
+      content:
+        "All products displayed on our website are handmade and may have slight variations in color, size, and finish. These variations are a natural characteristic of handcrafted pottery and are not considered defects. Prices are subject to change without notice. We reserve the right to modify or discontinue any product at any time.",
+    },
+    {
+      title: "Orders and Payment",
+      content:
+        "When you place an order, you are making an offer to purchase. We reserve the right to accept or decline your order for any reason. Payment must be received in full before your order is processed. We accept major credit cards and other payment methods as displayed at checkout.",
+    },
+    {
+      title: "Shipping and Delivery",
+      content:
+        "Shipping times and costs vary based on your location and selected shipping method. We are not responsible for delays caused by shipping carriers or customs. Risk of loss and title for items pass to you upon delivery to the carrier. Please refer to our Shipping page for detailed information.",
+    },
+    {
+      title: "Returns and Refunds",
+      content:
+        "We offer a 30-day return policy for unused items in their original condition. Items must be returned in their original packaging. Custom orders and sale items are final sale and cannot be returned. Refunds will be processed within 5-7 business days after we receive the returned item. Please refer to our Shipping & Returns page for detailed instructions.",
+    },
+    {
+      title: "Intellectual Property",
+      content:
+        "All content on this website, including images, text, designs, and logos, is the property of Poetry & Pottery and is protected by copyright and trademark laws. You may not reproduce, distribute, or create derivative works without our express written permission.",
+    },
+    {
+      title: "User Accounts",
+      content:
+        "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account. We reserve the right to suspend or terminate accounts that violate these terms.",
+    },
+    {
+      title: "Limitation of Liability",
+      content:
+        "To the fullest extent permitted by law, Poetry & Pottery shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our website or products. Our total liability shall not exceed the amount you paid for the specific product giving rise to the claim.",
+    },
+    {
+      title: "Governing Law",
+      content:
+        "These Terms of Service shall be governed by and construed in accordance with the laws of India, without regard to its conflict of law provisions. Any disputes arising from these terms shall be resolved in the courts of India.",
+    },
+    {
+      title: "Changes to Terms",
+      content:
+        "We reserve the right to modify these Terms of Service at any time. Changes will be effective immediately upon posting on our website. Your continued use of our website after changes are posted constitutes your acceptance of the modified terms.",
+    },
+  ],
+  contactEmail: "legal@poetryandpottery.com",
+};
+
 // Page configuration
 const PAGE_CONFIG: Record<
   ContentPageType,
@@ -529,7 +666,9 @@ const PAGE_CONFIG: Record<
       | AboutPageContent
       | FAQPageContent
       | ShippingPageContent
-      | CarePageContent;
+      | CarePageContent
+      | PrivacyPageContent
+      | TermsPageContent;
   }
 > = {
   about: { title: "About Us", defaultContent: DEFAULT_ABOUT_CONTENT },
@@ -539,6 +678,8 @@ const PAGE_CONFIG: Record<
     defaultContent: DEFAULT_SHIPPING_CONTENT,
   },
   care: { title: "Care Instructions", defaultContent: DEFAULT_CARE_CONTENT },
+  privacy: { title: "Privacy Policy", defaultContent: DEFAULT_PRIVACY_CONTENT },
+  terms: { title: "Terms of Service", defaultContent: DEFAULT_TERMS_CONTENT },
 };
 
 /**
@@ -623,7 +764,9 @@ export async function updateContentPage(
     | AboutPageContent
     | FAQPageContent
     | ShippingPageContent
-    | CarePageContent,
+    | CarePageContent
+    | PrivacyPageContent
+    | TermsPageContent,
 ): Promise<ContentActionResult> {
   await requireAdmin();
 
@@ -759,4 +902,34 @@ export async function getPublicCareContent(): Promise<CarePageContent> {
   }
 
   return DEFAULT_CARE_CONTENT;
+}
+
+/**
+ * Get privacy page content (public).
+ */
+export async function getPublicPrivacyContent(): Promise<PrivacyPageContent> {
+  const page = await prisma.contentPage.findUnique({
+    where: { slug: "privacy" },
+  });
+
+  if (page && page.is_active) {
+    return page.content as PrivacyPageContent;
+  }
+
+  return DEFAULT_PRIVACY_CONTENT;
+}
+
+/**
+ * Get terms page content (public).
+ */
+export async function getPublicTermsContent(): Promise<TermsPageContent> {
+  const page = await prisma.contentPage.findUnique({
+    where: { slug: "terms" },
+  });
+
+  if (page && page.is_active) {
+    return page.content as TermsPageContent;
+  }
+
+  return DEFAULT_TERMS_CONTENT;
 }

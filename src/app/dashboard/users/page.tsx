@@ -58,7 +58,7 @@ async function UsersTableContent({
   const data = await getUsers({
     search,
     role: role as UserRole | undefined,
-    sort: (sort || "newest") as UserSortOption,
+    sort: (sort || "pending_orders") as UserSortOption,
     page: page ? parseInt(page) : 1,
     limit: 20,
   });

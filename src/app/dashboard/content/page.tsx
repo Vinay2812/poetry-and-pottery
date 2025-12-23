@@ -10,7 +10,8 @@ export default async function ContentPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Content Pages</h1>
         <p className="text-muted-foreground">
-          Manage static page content for About, FAQ, Shipping, and Care pages.
+          Manage static page content for About, FAQ, Shipping, Care, Privacy,
+          and Terms pages.
         </p>
       </div>
 
@@ -30,7 +31,7 @@ async function ContentPagesListContent() {
 function ContentPagesListSkeleton() {
   return (
     <div className="space-y-4">
-      {[1, 2, 3, 4].map((i) => (
+      {[1, 2, 3, 4, 5, 6].map((i) => (
         <div
           key={i}
           className="flex items-center justify-between rounded-lg border p-4"

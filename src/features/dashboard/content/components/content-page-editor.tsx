@@ -11,11 +11,15 @@ import {
   type FAQItem,
   type FAQPageContent,
   type GlazeType,
+  type PrivacyPageContent,
+  type PrivacySection,
   type ReturnStep,
   type ReturnsPolicy,
   type ShippingInfo,
   type ShippingOption,
   type ShippingPageContent,
+  type TermsPageContent,
+  type TermsSection,
 } from "@/actions/admin";
 import { ArrowLeft, Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -89,6 +93,20 @@ export function ContentPageEditor({
         {viewModel.slug === "care" && (
           <CareEditor
             content={content as CarePageContent}
+            onChange={(c) => setContent(c)}
+          />
+        )}
+
+        {viewModel.slug === "privacy" && (
+          <PrivacyEditor
+            content={content as PrivacyPageContent}
+            onChange={(c) => setContent(c)}
+          />
+        )}
+
+        {viewModel.slug === "terms" && (
+          <TermsEditor
+            content={content as TermsPageContent}
             onChange={(c) => setContent(c)}
           />
         )}
@@ -1185,6 +1203,266 @@ function CareEditor({
           <p className="text-muted-foreground text-sm">
             Enter one item per line
           </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function PrivacyEditor({
+  content,
+  onChange,
+}: {
+  content: PrivacyPageContent;
+  onChange: (content: PrivacyPageContent) => void;
+}) {
+  const updateSection = (
+    index: number,
+    field: keyof PrivacySection,
+    value: string,
+  ) => {
+    const newSections = [...content.sections];
+    newSections[index] = { ...newSections[index], [field]: value };
+    onChange({ ...content, sections: newSections });
+  };
+
+  const addSection = () => {
+    onChange({
+      ...content,
+      sections: [...content.sections, { title: "", content: "" }],
+    });
+  };
+
+  const removeSection = (index: number) => {
+    onChange({
+      ...content,
+      sections: content.sections.filter((_, i) => i !== index),
+    });
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Meta Information */}
+      <section>
+        <h3 className="mb-4 text-lg font-semibold">Page Information</h3>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium">
+              Last Updated
+            </label>
+            <Input
+              value={content.lastUpdated}
+              onChange={(e) =>
+                onChange({ ...content, lastUpdated: e.target.value })
+              }
+              placeholder="e.g., December 2024"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium">
+              Contact Email
+            </label>
+            <Input
+              value={content.contactEmail}
+              onChange={(e) =>
+                onChange({ ...content, contactEmail: e.target.value })
+              }
+              placeholder="privacy@example.com"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Introduction */}
+      <section>
+        <h3 className="mb-4 text-lg font-semibold">Introduction</h3>
+        <Textarea
+          value={content.introduction}
+          onChange={(e) =>
+            onChange({ ...content, introduction: e.target.value })
+          }
+          rows={4}
+          placeholder="Introduction paragraph for the privacy policy..."
+        />
+      </section>
+
+      {/* Sections */}
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Policy Sections</h3>
+          <Button variant="outline" size="sm" onClick={addSection}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Section
+          </Button>
+        </div>
+        <div className="space-y-4">
+          {content.sections.map((section, index) => (
+            <div key={index} className="rounded-lg border p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-sm font-medium">Section {index + 1}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeSection(index)}
+                >
+                  <Trash2 className="h-4 w-4 text-red-500" />
+                </Button>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="mb-1 block text-sm">Title</label>
+                  <Input
+                    value={section.title}
+                    onChange={(e) =>
+                      updateSection(index, "title", e.target.value)
+                    }
+                    placeholder="Section title"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm">Content</label>
+                  <Textarea
+                    value={section.content}
+                    onChange={(e) =>
+                      updateSection(index, "content", e.target.value)
+                    }
+                    rows={4}
+                    placeholder="Section content..."
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function TermsEditor({
+  content,
+  onChange,
+}: {
+  content: TermsPageContent;
+  onChange: (content: TermsPageContent) => void;
+}) {
+  const updateSection = (
+    index: number,
+    field: keyof TermsSection,
+    value: string,
+  ) => {
+    const newSections = [...content.sections];
+    newSections[index] = { ...newSections[index], [field]: value };
+    onChange({ ...content, sections: newSections });
+  };
+
+  const addSection = () => {
+    onChange({
+      ...content,
+      sections: [...content.sections, { title: "", content: "" }],
+    });
+  };
+
+  const removeSection = (index: number) => {
+    onChange({
+      ...content,
+      sections: content.sections.filter((_, i) => i !== index),
+    });
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Meta Information */}
+      <section>
+        <h3 className="mb-4 text-lg font-semibold">Page Information</h3>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium">
+              Last Updated
+            </label>
+            <Input
+              value={content.lastUpdated}
+              onChange={(e) =>
+                onChange({ ...content, lastUpdated: e.target.value })
+              }
+              placeholder="e.g., December 2024"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium">
+              Contact Email
+            </label>
+            <Input
+              value={content.contactEmail}
+              onChange={(e) =>
+                onChange({ ...content, contactEmail: e.target.value })
+              }
+              placeholder="legal@example.com"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Introduction */}
+      <section>
+        <h3 className="mb-4 text-lg font-semibold">Introduction</h3>
+        <Textarea
+          value={content.introduction}
+          onChange={(e) =>
+            onChange({ ...content, introduction: e.target.value })
+          }
+          rows={4}
+          placeholder="Introduction paragraph for the terms of service..."
+        />
+      </section>
+
+      {/* Sections */}
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Terms Sections</h3>
+          <Button variant="outline" size="sm" onClick={addSection}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Section
+          </Button>
+        </div>
+        <div className="space-y-4">
+          {content.sections.map((section, index) => (
+            <div key={index} className="rounded-lg border p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-sm font-medium">Section {index + 1}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeSection(index)}
+                >
+                  <Trash2 className="h-4 w-4 text-red-500" />
+                </Button>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="mb-1 block text-sm">Title</label>
+                  <Input
+                    value={section.title}
+                    onChange={(e) =>
+                      updateSection(index, "title", e.target.value)
+                    }
+                    placeholder="Section title"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm">Content</label>
+                  <Textarea
+                    value={section.content}
+                    onChange={(e) =>
+                      updateSection(index, "content", e.target.value)
+                    }
+                    rows={4}
+                    placeholder="Section content..."
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>

@@ -19,7 +19,8 @@ export function UsersTableContainer({
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
 
-  const sortValue = (searchParams.get("sort") || "newest") as UserSortOption;
+  const sortValue = (searchParams.get("sort") ||
+    "pending_orders") as UserSortOption;
 
   const viewModel = useMemo(
     () =>
@@ -65,7 +66,7 @@ export function UsersTableContainer({
   const handleSortChange = useCallback(
     (value: UserSortOption) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "newest") {
+      if (value && value !== "pending_orders") {
         params.set("sort", value);
       } else {
         params.delete("sort");

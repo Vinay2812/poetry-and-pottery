@@ -4,7 +4,9 @@ import {
   type AboutPageContent,
   type CarePageContent,
   type FAQPageContent,
+  type PrivacyPageContent,
   type ShippingPageContent,
+  type TermsPageContent,
   updateContentPage,
 } from "@/actions/admin";
 import { useRouter } from "next/navigation";
@@ -36,7 +38,9 @@ export function ContentPageEditorContainer({
         | AboutPageContent
         | FAQPageContent
         | ShippingPageContent
-        | CarePageContent,
+        | CarePageContent
+        | PrivacyPageContent
+        | TermsPageContent,
     ) => {
       startTransition(async () => {
         const result = await updateContentPage(slug, newContent);

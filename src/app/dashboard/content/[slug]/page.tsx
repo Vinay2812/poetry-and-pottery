@@ -5,7 +5,14 @@ import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
-const VALID_SLUGS: ContentPageType[] = ["about", "faq", "shipping", "care"];
+const VALID_SLUGS: ContentPageType[] = [
+  "about",
+  "faq",
+  "shipping",
+  "care",
+  "privacy",
+  "terms",
+];
 
 interface ContentEditorPageProps {
   params: Promise<{ slug: string }>;

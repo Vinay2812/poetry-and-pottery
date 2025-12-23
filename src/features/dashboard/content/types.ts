@@ -4,7 +4,9 @@ import type {
   ContentPageListItem,
   ContentPageType,
   FAQPageContent,
+  PrivacyPageContent,
   ShippingPageContent,
+  TermsPageContent,
 } from "@/actions/admin";
 
 import { formatContentDate } from "@/lib/date";
@@ -49,7 +51,9 @@ export interface ContentPageEditorViewModel {
     | AboutPageContent
     | FAQPageContent
     | ShippingPageContent
-    | CarePageContent;
+    | CarePageContent
+    | PrivacyPageContent
+    | TermsPageContent;
 }
 
 /**
@@ -63,7 +67,9 @@ export interface ContentPageEditorProps {
       | AboutPageContent
       | FAQPageContent
       | ShippingPageContent
-      | CarePageContent,
+      | CarePageContent
+      | PrivacyPageContent
+      | TermsPageContent,
   ) => void;
   onCancel: () => void;
 }
@@ -78,7 +84,9 @@ export interface ContentPageEditorContainerProps {
     | AboutPageContent
     | FAQPageContent
     | ShippingPageContent
-    | CarePageContent;
+    | CarePageContent
+    | PrivacyPageContent
+    | TermsPageContent;
 }
 
 /**
@@ -107,7 +115,9 @@ export function buildContentPageEditorViewModel(
     | AboutPageContent
     | FAQPageContent
     | ShippingPageContent
-    | CarePageContent,
+    | CarePageContent
+    | PrivacyPageContent
+    | TermsPageContent,
 ): ContentPageEditorViewModel {
   return {
     slug,
@@ -124,6 +134,8 @@ export const PAGE_DESCRIPTIONS: Record<ContentPageType, string> = {
   faq: "Frequently asked questions and answers",
   shipping: "Shipping options, policies, and return process",
   care: "Product care instructions and glaze information",
+  privacy: "Privacy policy and data handling practices",
+  terms: "Terms of service and legal agreements",
 };
 
 /**

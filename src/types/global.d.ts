@@ -134,11 +134,37 @@ declare global {
       avoid: string[];
     }
 
+    interface PrivacySection {
+      title: string;
+      content: string;
+    }
+
+    interface PrivacyPageContent {
+      lastUpdated: string;
+      introduction: string;
+      sections: PrivacySection[];
+      contactEmail: string;
+    }
+
+    interface TermsSection {
+      title: string;
+      content: string;
+    }
+
+    interface TermsPageContent {
+      lastUpdated: string;
+      introduction: string;
+      sections: TermsSection[];
+      contactEmail: string;
+    }
+
     type ContentBlocks =
       | AboutPageContent
       | FAQPageContent
       | ShippingPageContent
-      | CarePageContent;
+      | CarePageContent
+      | PrivacyPageContent
+      | TermsPageContent;
   }
 }
 
