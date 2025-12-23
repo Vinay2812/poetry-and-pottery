@@ -21,7 +21,7 @@ export interface ProductRowViewModel {
   colorName: string;
   colorCode: string;
   material: string;
-  imageUrl: string | null;
+  imageUrls: string[];
   categories: string[];
   reviewsCount: number;
   wishlistCount: number;
@@ -155,7 +155,7 @@ export function buildProductRowViewModel(
     colorName: product.color_name,
     colorCode: product.color_code,
     material: product.material,
-    imageUrl: product.image_urls[0] || null,
+    imageUrls: product.image_urls,
     categories: product.categories,
     reviewsCount: product._count.reviews,
     wishlistCount: product._count.wishlists,

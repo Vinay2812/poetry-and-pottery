@@ -65,7 +65,7 @@ function EventCard({
               src={event.image}
               alt={event.title}
               fill
-              className="object-cover"
+              className="object-cover transition-transform hover:scale-105"
             />
           </div>
         ) : (

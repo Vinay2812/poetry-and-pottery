@@ -6,7 +6,7 @@ import {
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
-  MouseSensor,
+  PointerSensor,
   TouchSensor,
   closestCenter,
   useSensor,
@@ -19,18 +19,18 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import {
-  AlertCircle,
-  GripVertical,
-  Loader2,
-  Trash2,
-  Upload,
-  X,
-} from "lucide-react";
+import { AlertCircle, Loader2, Trash2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
 
+import { ImageCarousel } from "@/components/shared";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import { cn } from "@/lib/utils";
 
@@ -38,14 +38,18 @@ import type { R2ImageUploaderProps, UploadItemViewModel } from "../types";
 
 interface SortableUploadItemProps {
   item: UploadItemViewModel;
+  index: number;
   onRemove: (id: string) => void;
   onRetry: (id: string) => void;
+  onPreview: (index: number) => void;
 }
 
 function SortableUploadItem({
   item,
+  index,
   onRemove,
   onRetry,
+  onPreview,
 }: SortableUploadItemProps) {
   const {
     attributes,
@@ -62,13 +66,22 @@ function SortableUploadItem({
     zIndex: isDragging ? 10 : undefined,
   };
 
+  const handleClick = useCallback(() => {
+    if (!item.isUploading && !item.isError) {
+      onPreview(index);
+    }
+  }, [item.isUploading, item.isError, index, onPreview]);
+
   return (
     <div
       ref={setNodeRef}
       style={style}
+      {...attributes}
+      {...listeners}
       className={cn(
-        "group relative aspect-square overflow-hidden rounded-lg bg-neutral-100",
+        "group relative aspect-square cursor-grab touch-none overflow-hidden rounded-lg bg-neutral-100",
         isDragging && "ring-primary opacity-50 ring-2",
+        !item.isUploading && !item.isError && "active:cursor-grabbing",
       )}
     >
       <Image
@@ -76,26 +89,24 @@ function SortableUploadItem({
         alt="Upload preview"
         fill
         className={cn(
-          "object-cover transition-opacity",
+          "pointer-events-none object-cover transition-opacity",
           item.isUploading && "opacity-50",
         )}
       />
 
-      {/* Drag handle - always visible on mobile, hover on desktop */}
+      {/* Click overlay for preview - only on successful uploads */}
       {!item.isUploading && !item.isError && (
         <button
           type="button"
-          {...attributes}
-          {...listeners}
-          className="absolute top-1 left-1 cursor-grab rounded-full bg-black/50 p-1 text-white opacity-100 transition-opacity hover:bg-black/70 active:cursor-grabbing md:opacity-0 md:group-hover:opacity-100"
-        >
-          <GripVertical className="size-4" />
-        </button>
+          onClick={handleClick}
+          className="absolute inset-0 z-10 cursor-zoom-in"
+          aria-label="Preview image"
+        />
       )}
 
       {/* Upload progress overlay */}
       {item.isUploading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30">
           <div className="flex flex-col items-center gap-2">
             <Loader2 className="size-6 animate-spin text-white" />
             <span className="text-xs font-medium text-white">
@@ -107,7 +118,7 @@ function SortableUploadItem({
 
       {/* Error overlay */}
       {item.isError && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-red-500/20 p-2">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 bg-red-500/20 p-2">
           <AlertCircle className="size-6 text-red-600" />
           <span className="text-center text-xs text-red-700">
             {item.error || "Upload failed"}
@@ -116,7 +127,10 @@ function SortableUploadItem({
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => onRetry(item.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onRetry(item.id);
+            }}
             className="h-6 px-2 text-xs"
           >
             Retry
@@ -126,7 +140,7 @@ function SortableUploadItem({
 
       {/* Success indicator */}
       {item.isSuccess && (
-        <div className="absolute right-1 bottom-1 rounded-full bg-green-500 p-1">
+        <div className="absolute right-1 bottom-1 z-20 rounded-full bg-green-500 p-1">
           <svg
             className="size-3 text-white"
             fill="none"
@@ -147,8 +161,11 @@ function SortableUploadItem({
       {!item.isUploading && (
         <button
           type="button"
-          onClick={() => onRemove(item.id)}
-          className="absolute top-1 right-1 rounded-full bg-black/50 p-1 text-white opacity-100 transition-opacity hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(item.id);
+          }}
+          className="absolute top-1 right-1 z-30 rounded-full bg-black/50 p-1 text-white opacity-100 transition-opacity hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100"
         >
           <X className="size-4" />
         </button>
@@ -171,16 +188,19 @@ export function R2ImageUploader({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
+  // Use PointerSensor with distance constraint for desktop
+  // and TouchSensor with delay for mobile (long press to drag)
   const sensors = useSensors(
-    useSensor(MouseSensor, {
+    useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 10,
+        distance: 8,
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 150,
+        delay: 200,
         tolerance: 5,
       },
     }),
@@ -193,12 +213,24 @@ export function R2ImageUploader({
     ? viewModel.items.find((item) => item.id === activeId)
     : null;
 
+  const previewImages = viewModel.items
+    .filter((item) => item.isSuccess || item.previewUrl)
+    .map((item) => item.previewUrl);
+
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(event.active.id as string);
   }, []);
 
   const handleClick = useCallback(() => {
     inputRef.current?.click();
+  }, []);
+
+  const handlePreview = useCallback((index: number) => {
+    setPreviewIndex(index);
+  }, []);
+
+  const handleClosePreview = useCallback(() => {
+    setPreviewIndex(null);
   }, []);
 
   const handleFileChange = useCallback(
@@ -279,12 +311,14 @@ export function R2ImageUploader({
         >
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
             {/* Existing uploads */}
-            {viewModel.items.map((item) => (
+            {viewModel.items.map((item, index) => (
               <SortableUploadItem
                 key={item.id}
                 item={item}
+                index={index}
                 onRemove={onRemove}
                 onRetry={onRetry}
+                onPreview={handlePreview}
               />
             ))}
 
@@ -372,6 +406,51 @@ export function R2ImageUploader({
           )}
         </div>
       )}
+
+      {/* Image Preview Dialog */}
+      <Dialog
+        open={previewIndex !== null}
+        onOpenChange={(open) => !open && handleClosePreview()}
+      >
+        <DialogContent
+          className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0"
+          showCloseButton={false}
+        >
+          <div className="flex flex-col p-4">
+            <div className="mb-4 flex items-center justify-between">
+              <DialogTitle className="text-base font-medium">
+                Image Preview
+              </DialogTitle>
+              <DialogClose className="text-muted-foreground hover:text-foreground rounded-sm transition-colors">
+                <X className="h-5 w-5" />
+                <span className="sr-only">Close</span>
+              </DialogClose>
+            </div>
+
+            <div className="relative">
+              {previewImages.length > 1 ? (
+                <ImageCarousel
+                  images={previewImages}
+                  alt="Image preview"
+                  startIndex={previewIndex ?? 0}
+                  imageClassName="object-contain"
+                  showDots={false}
+                  showCounter={true}
+                />
+              ) : previewImages.length === 1 ? (
+                <div className="relative aspect-square w-full">
+                  <Image
+                    src={previewImages[0]}
+                    alt="Image preview"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
