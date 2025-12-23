@@ -2,7 +2,6 @@
 
 import { toggleReviewLike } from "@/actions";
 import { Star } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ReviewCard } from "@/components/cards";
@@ -30,6 +29,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
+import { OptimizedImage } from "./optimized-image";
 
 // Review interface for the sheet component
 interface Review {
@@ -321,7 +322,7 @@ export function ReviewsSheet({
                     onClick={() => handleImageClick(image)}
                     className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg"
                   >
-                    <Image
+                    <OptimizedImage
                       src={image}
                       alt={`Customer photo ${index + 1}`}
                       fill
@@ -394,7 +395,7 @@ export function ReviewsSheet({
                         {/* Reviewer info */}
                         <div className="flex items-center gap-3">
                           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
-                            <Image
+                            <OptimizedImage
                               src={item.review.avatar}
                               alt={item.review.author}
                               fill
@@ -415,7 +416,7 @@ export function ReviewsSheet({
 
                         {/* Image with aspect ratio */}
                         <div className="bg-muted relative aspect-square max-h-[50vh] w-full overflow-hidden rounded-lg">
-                          <Image
+                          <OptimizedImage
                             src={item.image}
                             alt={`Review image by ${item.review.author}`}
                             fill

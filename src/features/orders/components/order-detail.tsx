@@ -2,11 +2,11 @@
 
 import { OrderStatus } from "@/types";
 import { MapPin, Package, Phone, User } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { OrderProgress } from "@/components/orders";
 import {
+  OptimizedImage,
   ReviewForm,
   StatusIcon,
   WhatsAppContactButton,
@@ -45,7 +45,7 @@ function OrderItemCard({
       <div className="flex gap-4">
         <Link href={`/products/${item.productSlug}`}>
           <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
-            <Image
+            <OptimizedImage
               src={item.productImage}
               alt={item.productName}
               width={80}

@@ -7,9 +7,9 @@ import {
   Save,
   Share2,
 } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,7 +30,7 @@ function ImagePreview({ src, alt }: ImagePreviewProps) {
 
   return (
     <div className="relative mt-2 aspect-video w-full overflow-hidden rounded-lg border bg-neutral-100">
-      <Image
+      <OptimizedImage
         src={src}
         alt={alt}
         fill

@@ -13,9 +13,9 @@ import {
   Trash2Icon,
   UsersIcon,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,7 +61,7 @@ function EventCard({
       <Link href={`/dashboard/events/${event.id}`} className="block">
         {event.image ? (
           <div className="relative aspect-video w-full overflow-hidden bg-neutral-100">
-            <Image
+            <OptimizedImage
               src={event.image}
               alt={event.title}
               fill

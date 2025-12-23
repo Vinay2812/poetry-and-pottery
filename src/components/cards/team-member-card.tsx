@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { OptimizedImage } from "@/components/shared";
 
 interface TeamMemberCardProps {
   name: string;
@@ -16,7 +16,7 @@ export function TeamMemberCard({
   return (
     <div className="group shadow-soft hover:shadow-card overflow-hidden rounded-[2rem] border border-neutral-100 bg-white p-3 transition-all duration-300 hover:-translate-y-1 dark:border-neutral-800 dark:bg-neutral-900">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800">
-        <Image
+        <OptimizedImage
           src={image}
           alt={name}
           fill

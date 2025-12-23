@@ -7,9 +7,9 @@ import {
 } from "@/actions/admin";
 import type { UserOrder } from "@/actions/admin";
 import { PackageIcon } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -231,7 +231,7 @@ export function OrderDetailDialog({
                   {/* Product Image */}
                   {item.product.image_urls[0] ? (
                     <div className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-                      <Image
+                      <OptimizedImage
                         src={item.product.image_urls[0]}
                         alt={item.product.name}
                         fill

@@ -1,6 +1,7 @@
 import { type ProductReview } from "@/actions/admin";
 import { StarIcon, UserIcon } from "lucide-react";
-import Image from "next/image";
+
+import { OptimizedImage } from "@/components/shared";
 
 interface ProductReviewsSectionProps {
   productId: number;
@@ -57,7 +58,7 @@ export function ProductReviewsSection({
               <div className="flex items-start gap-4">
                 {review.user.image ? (
                   <div className="relative size-10 overflow-hidden rounded-full bg-neutral-100">
-                    <Image
+                    <OptimizedImage
                       src={review.user.image}
                       alt={review.user.name || ""}
                       fill
@@ -112,7 +113,7 @@ export function ProductReviewsSection({
                       key={i}
                       className="relative size-20 overflow-hidden rounded-lg bg-neutral-100"
                     >
-                      <Image
+                      <OptimizedImage
                         src={url}
                         alt={`Review image ${i + 1}`}
                         fill

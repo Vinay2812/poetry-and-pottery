@@ -1,5 +1,6 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
+
+import { OptimizedImage } from "@/components/shared";
 
 interface EventCardImageProps {
   src: string;
@@ -16,7 +17,7 @@ export function EventCardImage({
 }: EventCardImageProps) {
   return (
     <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-      <Image
+      <OptimizedImage
         src={src}
         alt={alt}
         fill

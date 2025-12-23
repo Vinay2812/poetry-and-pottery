@@ -2,10 +2,10 @@
 
 import type { UserOrder } from "@/actions/admin";
 import { PackageIcon } from "lucide-react";
-import Image from "next/image";
 import { useCallback } from "react";
 
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
+import { OptimizedImage } from "@/components/shared";
 
 import { OrderDetailDialogContainer } from "../containers/order-detail-dialog-container";
 import type { OrderCardProps, OrdersBoardProps } from "../types";
@@ -33,7 +33,7 @@ function OrderCard({ viewModel, isDragging, onClick }: OrderCardProps) {
               className="relative size-10 shrink-0 overflow-hidden rounded-full bg-neutral-100"
             >
               {img.imageUrl ? (
-                <Image
+                <OptimizedImage
                   src={img.imageUrl}
                   alt={img.name}
                   fill

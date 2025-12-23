@@ -1,9 +1,9 @@
 "use client";
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
 
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
@@ -100,7 +100,7 @@ export function CTASection({
     >
       <div className="group relative aspect-[4/3] overflow-hidden rounded-[2rem] lg:aspect-[21/9]">
         {image && (
-          <Image
+          <OptimizedImage
             src={image}
             alt={imageAlt || title}
             fill

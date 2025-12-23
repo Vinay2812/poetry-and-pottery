@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import {
@@ -13,6 +12,8 @@ import {
 } from "@/components/ui/carousel";
 
 import { cn } from "@/lib/utils";
+
+import { OptimizedImage } from "./optimized-image";
 
 interface ImageCarouselProps {
   images: string[];
@@ -81,7 +82,7 @@ export function ImageCarousel({
         )}
       >
         <div className="relative aspect-square w-full">
-          <Image
+          <OptimizedImage
             src="/placeholder.jpg"
             alt={alt}
             fill
@@ -111,7 +112,7 @@ export function ImageCarousel({
               )}
               onClick={() => onImageClick?.(index)}
             >
-              <Image
+              <OptimizedImage
                 src={url || "/placeholder.jpg"}
                 alt={alt}
                 fill

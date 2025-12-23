@@ -3,8 +3,8 @@
 import type { EventRegistration } from "@/actions/admin";
 import type { EventRegistrationStatus } from "@/prisma/generated/enums";
 import { UserIcon } from "lucide-react";
-import Image from "next/image";
 
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 
 import { getRegistrationStatusColor } from "@/lib/status-utils";
@@ -71,7 +71,7 @@ export function EventRegistrationsSection({
                     <div className="flex items-center gap-3">
                       {registration.user.image ? (
                         <div className="relative size-10 overflow-hidden rounded-full bg-neutral-100">
-                          <Image
+                          <OptimizedImage
                             src={registration.user.image}
                             alt={registration.user.name || ""}
                             fill

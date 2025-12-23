@@ -10,11 +10,11 @@ import {
   Sparkles,
   Star,
 } from "lucide-react";
-import Image from "next/image";
 
 import { ProcessStepCard, TeamMemberCard, ValueCard } from "@/components/cards";
 import { ContactForm } from "@/components/forms";
 import { CTASection, SectionHeader } from "@/components/sections";
+import { OptimizedImage } from "@/components/shared";
 
 interface AboutPageClientProps {
   content: AboutPageContent;
@@ -43,7 +43,7 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
           <div className="relative aspect-[4/5] overflow-hidden rounded-3xl lg:aspect-21/9">
-            <Image
+            <OptimizedImage
               src={heroImage}
               alt="Our Story"
               fill

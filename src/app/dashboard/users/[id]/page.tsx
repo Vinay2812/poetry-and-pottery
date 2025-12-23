@@ -15,12 +15,12 @@ import {
   ShoppingCartIcon,
   UserIcon,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { UserDetailTabs } from "@/components/dashboard/user-detail-tabs";
 import { WishlistView } from "@/components/dashboard/wishlist-view";
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -65,7 +65,7 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
           {user.image ? (
             <div className="relative size-20 shrink-0 overflow-hidden rounded-full bg-neutral-100 sm:size-16">
-              <Image
+              <OptimizedImage
                 src={user.image}
                 alt={user.name || ""}
                 fill
@@ -177,7 +177,7 @@ function CartView({ items }: { items: CartItem[] }) {
           <div key={item.id} className="flex items-center gap-4 p-4">
             {item.product.image_urls[0] ? (
               <div className="relative size-16 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-                <Image
+                <OptimizedImage
                   src={item.product.image_urls[0]}
                   alt={item.product.name}
                   fill

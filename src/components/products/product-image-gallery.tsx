@@ -1,8 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { ImageCarousel } from "@/components/shared";
 import { CarouselApi } from "@/components/ui/carousel";

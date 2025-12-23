@@ -2,11 +2,11 @@
 
 import { useClerk, useUser } from "@clerk/nextjs";
 import { HomeIcon, LogOutIcon, MenuIcon, StoreIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -157,7 +157,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 <button className="focus-visible:ring-primary/30 relative flex size-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105 hover:bg-neutral-100 focus-visible:ring-2 focus-visible:outline-none dark:hover:bg-neutral-800">
                   {user?.imageUrl ? (
                     <div className="relative size-8">
-                      <Image
+                      <OptimizedImage
                         src={user.imageUrl}
                         alt={user.fullName || "Profile"}
                         fill

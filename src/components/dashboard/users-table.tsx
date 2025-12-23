@@ -10,11 +10,11 @@ import {
   ShieldIcon,
   UserIcon,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState, useTransition } from "react";
 
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -231,7 +231,7 @@ function UserRow({
         >
           {user.image ? (
             <div className="relative size-10 overflow-hidden rounded-full bg-neutral-100">
-              <Image
+              <OptimizedImage
                 src={user.image}
                 alt={user.name || ""}
                 fill

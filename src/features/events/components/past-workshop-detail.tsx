@@ -16,11 +16,14 @@ import {
   Users,
   X,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { ReviewCard } from "@/components/cards";
-import { ImageCarousel, ReviewsSheet } from "@/components/shared";
+import {
+  ImageCarousel,
+  OptimizedImage,
+  ReviewsSheet,
+} from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,7 +61,7 @@ function GalleryGrid({ gallery, onOpenGallery }: GalleryGridProps) {
             onClick={() => onOpenGallery(index)}
             className="group focus:ring-primary relative aspect-square overflow-hidden rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
           >
-            <Image
+            <OptimizedImage
               src={image}
               alt={`Workshop gallery image ${index + 1}`}
               fill
@@ -169,7 +172,7 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
     >
       <div className="flex gap-3">
         <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg">
-          <Image
+          <OptimizedImage
             src={imageUrl}
             alt={event.title}
             fill
@@ -300,7 +303,7 @@ export function PastWorkshopDetail({
             <div className="lg:col-span-2">
               {/* Hero Image */}
               <div className="relative mb-0 aspect-square w-full overflow-hidden lg:mb-4 lg:aspect-video lg:rounded-2xl">
-                <Image
+                <OptimizedImage
                   src={imageUrl}
                   alt={title}
                   fill

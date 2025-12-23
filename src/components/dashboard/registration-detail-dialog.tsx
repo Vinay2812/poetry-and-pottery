@@ -9,9 +9,9 @@ import {
   TagIcon,
   UsersIcon,
 } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -131,7 +131,7 @@ export function RegistrationDetailDialog({
           {/* Event Image */}
           {registration.event.image ? (
             <div className="relative aspect-video w-full bg-neutral-100">
-              <Image
+              <OptimizedImage
                 src={registration.event.image}
                 alt={registration.event.title}
                 fill

@@ -8,7 +8,6 @@ import type { UserRegistration } from "@/actions/admin";
 import { RegistrationDetailDialogContainer } from "@/features/dashboard/registrations";
 import { EventRegistrationStatus } from "@/prisma/generated/enums";
 import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
-import Image from "next/image";
 import {
   useCallback,
   useMemo,
@@ -16,6 +15,8 @@ import {
   useState,
   useTransition,
 } from "react";
+
+import { OptimizedImage } from "@/components/shared";
 
 import { KanbanBoard, KanbanColumn } from "./kanban-board";
 
@@ -93,7 +94,7 @@ export function RegistrationsBoard({ registrations }: RegistrationsBoardProps) {
           {/* Event Image */}
           {registration.event.image ? (
             <div className="relative mb-3 aspect-4/3 w-full overflow-hidden rounded-xl bg-neutral-100">
-              <Image
+              <OptimizedImage
                 src={registration.event.image}
                 alt={registration.event.title}
                 fill

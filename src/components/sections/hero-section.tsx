@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { ReactNode } from "react";
+
+import { OptimizedImage } from "@/components/shared";
 
 import { cn } from "@/lib/utils";
 
@@ -47,7 +48,7 @@ export function HeroSection({
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="relative h-full w-full"
         >
-          <Image
+          <OptimizedImage
             src={image}
             alt={imageAlt}
             fill

@@ -1,6 +1,7 @@
 export { FilterSidebar } from "./filter-sidebar";
 export { ImageCarousel } from "./image-carousel";
 export { InfiniteScrollTrigger } from "./infinite-scroll-trigger";
+export { OptimizedImage, type OptimizedImageProps } from "./optimized-image";
 export { PriceRangeSlider } from "./price-range-slider";
 export { ProgressStepper, type ProgressStep } from "./progress-stepper";
 export { QuantitySelector } from "./quantity-selector";

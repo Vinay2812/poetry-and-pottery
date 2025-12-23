@@ -10,8 +10,8 @@ import {
   Truck,
   User,
 } from "lucide-react";
-import Image from "next/image";
 
+import { OptimizedImage } from "@/components/shared";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,7 +41,7 @@ export function AccountDropdown({
         >
           {viewModel.user?.imageUrl ? (
             <div className="relative h-5 w-5">
-              <Image
+              <OptimizedImage
                 src={viewModel.user.imageUrl}
                 alt={viewModel.user.firstName || "User avatar"}
                 fill

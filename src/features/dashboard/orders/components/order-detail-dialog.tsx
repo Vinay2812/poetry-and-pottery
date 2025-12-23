@@ -1,10 +1,10 @@
 "use client";
 
 import { PackageIcon } from "lucide-react";
-import Image from "next/image";
 
 import { EditablePrice } from "@/components/dashboard/editable-price";
 import { EditableQuantity } from "@/components/dashboard/editable-quantity";
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -45,7 +45,7 @@ export function OrderDetailDialog({
                 {/* Product Image */}
                 {item.productImage ? (
                   <div className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-                    <Image
+                    <OptimizedImage
                       src={item.productImage}
                       alt={item.productName}
                       fill

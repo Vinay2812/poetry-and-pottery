@@ -2,11 +2,13 @@
 
 import { OrderStatus } from "@/types";
 import { ChevronRight, ShoppingBag } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
-import { StatusIcon } from "@/components/shared";
-import { InfiniteScrollTrigger } from "@/components/shared";
+import {
+  InfiniteScrollTrigger,
+  OptimizedImage,
+  StatusIcon,
+} from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
@@ -91,7 +93,7 @@ export function OrdersList({ viewModel, loadMoreRef }: OrdersListProps) {
                       className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-white shadow-sm ring-1 ring-black/5 dark:border-neutral-900 dark:ring-white/10"
                       style={{ zIndex: order.productImages.length - index }}
                     >
-                      <Image
+                      <OptimizedImage
                         src={image.src}
                         alt={image.alt}
                         fill

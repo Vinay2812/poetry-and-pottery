@@ -12,9 +12,9 @@ import {
   StarIcon,
   Trash2Icon,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,7 +53,7 @@ function ProductCard({
       <Link href={`/dashboard/products/${product.id}`} className="block">
         {product.imageUrls.length > 0 ? (
           <div className="relative aspect-square w-full overflow-hidden bg-neutral-100">
-            <Image
+            <OptimizedImage
               src={product.imageUrls[0]}
               alt={product.name}
               fill

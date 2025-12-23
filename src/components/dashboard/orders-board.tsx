@@ -5,7 +5,6 @@ import type { UserOrder } from "@/actions/admin";
 import { OrderDetailDialogContainer } from "@/features/dashboard/orders";
 import { OrderStatus } from "@/prisma/generated/enums";
 import { PackageIcon } from "lucide-react";
-import Image from "next/image";
 import {
   useCallback,
   useMemo,
@@ -13,6 +12,8 @@ import {
   useState,
   useTransition,
 } from "react";
+
+import { OptimizedImage } from "@/components/shared";
 
 import { KanbanBoard, KanbanColumn } from "./kanban-board";
 
@@ -112,7 +113,7 @@ export function OrdersBoard({ orders }: OrdersBoardProps) {
                   className="relative size-10 shrink-0 overflow-hidden rounded-full bg-neutral-100"
                 >
                   {op.product.image_urls[0] ? (
-                    <Image
+                    <OptimizedImage
                       src={op.product.image_urls[0]}
                       alt={op.product.name}
                       fill

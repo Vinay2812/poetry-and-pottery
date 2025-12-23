@@ -10,9 +10,9 @@ import {
   ShieldIcon,
   UserIcon,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,7 +51,7 @@ function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
         <div className="flex items-center gap-3">
           {user.image ? (
             <div className="relative size-12 overflow-hidden rounded-full bg-neutral-100">
-              <Image
+              <OptimizedImage
                 src={user.image}
                 alt={user.name || ""}
                 fill
@@ -186,7 +186,7 @@ function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
         >
           {user.image ? (
             <div className="relative size-10 overflow-hidden rounded-full bg-neutral-100">
-              <Image
+              <OptimizedImage
                 src={user.image}
                 alt={user.name || ""}
                 fill

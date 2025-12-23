@@ -1,10 +1,9 @@
 "use client";
 
 import { ChevronLeftIcon, ChevronRightIcon, X } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useState } from "react";
 
-import { ImageCarousel } from "@/components/shared";
+import { ImageCarousel, OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -93,7 +92,7 @@ export function DashboardImagePreview({
         )}
         onClick={handleImageClick}
       >
-        <Image
+        <OptimizedImage
           src={images[currentIndex]}
           alt={alt}
           fill
@@ -167,7 +166,7 @@ export function DashboardImagePreview({
                 />
               ) : (
                 <div className="relative aspect-square w-full">
-                  <Image
+                  <OptimizedImage
                     src={images[0]}
                     alt={alt}
                     fill

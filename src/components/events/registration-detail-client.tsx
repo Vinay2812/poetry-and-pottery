@@ -20,11 +20,10 @@ import {
   Users,
   XCircle,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useState } from "react";
 
-import { WhatsAppContactButton } from "@/components/shared";
+import { OptimizedImage, WhatsAppContactButton } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -190,7 +189,7 @@ export function RegistrationDetailClient({
             <div className="lg:col-span-2">
               {/* Hero Image */}
               <div className="relative mb-0 aspect-square w-full overflow-hidden lg:mb-4 lg:aspect-video lg:rounded-2xl">
-                <Image
+                <OptimizedImage
                   src={imageUrl}
                   alt={event.title}
                   fill

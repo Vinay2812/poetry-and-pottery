@@ -4,9 +4,9 @@ import { MAX_CART_QUANTITY } from "@/consts/performance";
 import type { ProductWithCategories } from "@/types";
 import { motion } from "framer-motion";
 import { Loader2, Trash2 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -56,7 +56,7 @@ export function CartItemCard({
           href={`/products/${product.slug}`}
           className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800"
         >
-          <Image
+          <OptimizedImage
             src={imageUrl}
             alt={product.name}
             fill
@@ -121,7 +121,7 @@ export function CartItemCard({
           href={`/products/${product.slug}`}
           className="focus-visible:ring-primary/30 relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl focus-visible:ring-2 focus-visible:outline-none"
         >
-          <Image
+          <OptimizedImage
             src={imageUrl}
             alt={product.name}
             fill

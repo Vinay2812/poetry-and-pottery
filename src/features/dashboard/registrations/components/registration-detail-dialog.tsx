@@ -7,10 +7,10 @@ import {
   TagIcon,
   UsersIcon,
 } from "lucide-react";
-import Image from "next/image";
 
 import { EditableNumber } from "@/components/dashboard/editable-number";
 import { EditablePrice } from "@/components/dashboard/editable-price";
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -47,7 +47,7 @@ export function RegistrationDetailDialog({
           {/* Event Image */}
           {viewModel.eventImage ? (
             <div className="relative aspect-video w-full bg-neutral-100">
-              <Image
+              <OptimizedImage
                 src={viewModel.eventImage}
                 alt={viewModel.eventTitle}
                 fill

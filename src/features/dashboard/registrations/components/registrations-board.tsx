@@ -2,10 +2,10 @@
 
 import type { UserRegistration } from "@/actions/admin";
 import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
-import Image from "next/image";
 import { useCallback } from "react";
 
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
+import { OptimizedImage } from "@/components/shared";
 
 import { RegistrationDetailDialogContainer } from "../containers/registration-detail-dialog-container";
 import type { RegistrationCardProps, RegistrationsBoardProps } from "../types";
@@ -26,7 +26,7 @@ function RegistrationCard({
       {/* Event Image */}
       {viewModel.eventImage ? (
         <div className="relative mb-3 aspect-4/3 w-full overflow-hidden rounded-xl bg-neutral-100">
-          <Image
+          <OptimizedImage
             src={viewModel.eventImage}
             alt={viewModel.eventTitle}
             fill

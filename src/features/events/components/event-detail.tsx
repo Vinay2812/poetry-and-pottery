@@ -16,9 +16,9 @@ import {
   User,
   Users,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -71,7 +71,7 @@ export function EventDetail({
             <div className="lg:col-span-2">
               {/* Hero Image */}
               <div className="relative mb-0 aspect-square w-full overflow-hidden lg:mb-4 lg:aspect-video lg:rounded-2xl">
-                <Image
+                <OptimizedImage
                   src={imageUrl}
                   alt={title}
                   fill
@@ -376,7 +376,7 @@ export function EventDetail({
                       className="group flex flex-col gap-4"
                     >
                       <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">
-                        <Image
+                        <OptimizedImage
                           src={otherImageUrl}
                           alt={otherEvent.title}
                           fill

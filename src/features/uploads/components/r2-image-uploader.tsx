@@ -20,10 +20,9 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { AlertCircle, Loader2, Trash2, Upload, X } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
 
-import { ImageCarousel } from "@/components/shared";
+import { ImageCarousel, OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -84,7 +83,7 @@ function SortableUploadItem({
         !item.isUploading && !item.isError && "active:cursor-grabbing",
       )}
     >
-      <Image
+      <OptimizedImage
         src={item.previewUrl}
         alt="Upload preview"
         fill
@@ -344,7 +343,7 @@ export function R2ImageUploader({
         <DragOverlay>
           {activeItem ? (
             <div className="aspect-square w-24 scale-105 rotate-3 overflow-hidden rounded-lg shadow-xl">
-              <Image
+              <OptimizedImage
                 src={activeItem.previewUrl}
                 alt="Dragging preview"
                 fill
@@ -439,7 +438,7 @@ export function R2ImageUploader({
                 />
               ) : previewImages.length === 1 ? (
                 <div className="relative aspect-square w-full">
-                  <Image
+                  <OptimizedImage
                     src={previewImages[0]}
                     alt="Image preview"
                     fill
