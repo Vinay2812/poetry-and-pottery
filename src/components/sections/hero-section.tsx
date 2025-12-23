@@ -53,7 +53,6 @@ export function HeroSection({
             alt={imageAlt}
             fill
             className="object-cover"
-            priority
           />
         </motion.div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { getPastEvents, getUpcomingEvents } from "@/actions";
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import type { EventWithRegistrationCount } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
@@ -16,6 +17,7 @@ interface UseAllEventsQueryOptions {
   initialUpcomingPagination: PaginationData;
   initialPastEvents: EventWithRegistrationCount[];
   initialPastPagination: PaginationData;
+  searchQuery?: string;
 }
 
 export function useAllEventsQuery({
@@ -23,6 +25,7 @@ export function useAllEventsQuery({
   initialUpcomingPagination,
   initialPastEvents,
   initialPastPagination,
+  searchQuery,
 }: UseAllEventsQueryOptions) {
   // Upcoming events infinite query
   const {
@@ -31,9 +34,9 @@ export function useAllEventsQuery({
     hasNextPage: hasNextUpcoming,
     isFetchingNextPage: isFetchingNextUpcoming,
   } = useInfiniteQuery({
-    queryKey: ["all-events-upcoming"],
+    queryKey: ["all-events-upcoming", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
-      return getUpcomingEvents(pageParam);
+      return getUpcomingEvents(pageParam, DEFAULT_PAGE_SIZE, searchQuery);
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -62,9 +65,9 @@ export function useAllEventsQuery({
     hasNextPage: hasNextPast,
     isFetchingNextPage: isFetchingNextPast,
   } = useInfiniteQuery({
-    queryKey: ["all-events-past"],
+    queryKey: ["all-events-past", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
-      return getPastEvents(pageParam);
+      return getPastEvents(pageParam, 12, searchQuery);
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

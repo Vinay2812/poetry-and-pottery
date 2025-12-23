@@ -42,6 +42,7 @@ export interface ProductFilterState {
   selectedMaterials: string[];
   sortBy: string;
   localPriceRange: [number, number];
+  searchQuery: string;
 }
 
 /**
@@ -70,6 +71,7 @@ export interface ProductListProps {
   onPriceChange: (range: [number, number]) => void;
   onPriceCommit: (range: [number, number]) => void;
   onSortChange: (sort: string) => void;
+  onSearchChange: (query: string) => void;
   onClearFilters: () => void;
 }
 

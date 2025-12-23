@@ -1,4 +1,5 @@
 import { getPastEvents, getUpcomingEvents } from "@/actions";
+import { MAX_CART_QUANTITY } from "@/consts/performance";
 import { AllEventsContainer } from "@/features/events";
 import type { Metadata } from "next";
 
@@ -29,10 +30,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function EventsPage() {
+interface EventsPageProps {
+  searchParams: Promise<{
+    search?: string;
+  }>;
+}
+
+export default async function EventsPage({ searchParams }: EventsPageProps) {
+  const params = await searchParams;
+  const search = params.search || undefined;
+
   const [upcomingEventsResult, pastEventsResult] = await Promise.all([
-    getUpcomingEvents(),
-    getPastEvents(),
+    getUpcomingEvents(1, MAX_CART_QUANTITY, search),
+    getPastEvents(1, 12, search),
   ]);
 
   return (

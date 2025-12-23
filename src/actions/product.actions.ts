@@ -10,6 +10,8 @@ import type {
 
 import { prisma } from "@/lib/prisma";
 
+import { getAuthenticatedUserId } from "./auth.action";
+
 function getOrderBy(sortBy: string): Prisma.ProductOrderByWithRelationInput[] {
   // Always sort by available_quantity desc first (in-stock items first, out of stock at bottom)
   const stockSort: Prisma.ProductOrderByWithRelationInput = {
@@ -65,7 +67,7 @@ export async function getProducts(
   if (search) {
     where.OR = [
       { name: { contains: search, mode: "insensitive" } },
-      { description: { contains: search, mode: "insensitive" } },
+      // { description: { contains: search, mode: "insensitive" } },
     ];
   }
 
@@ -90,7 +92,7 @@ export async function getProducts(
   if (search) {
     priceStatsWhere.OR = [
       { name: { contains: search, mode: "insensitive" } },
-      { description: { contains: search, mode: "insensitive" } },
+      // { description: { contains: search, mode: "insensitive" } },
     ];
   }
 
@@ -285,4 +287,197 @@ export async function getMaterials(): Promise<string[]> {
     select: { material: true },
   });
   return materials.map((m) => m.material);
+}
+
+/**
+ * Get best-selling products (most ordered).
+ */
+export async function getBestSellers(
+  limit: number = 8,
+): Promise<ProductWithCategories[]> {
+  // Get product IDs sorted by total order count
+  const productOrderCounts = await prisma.purchasedProductItem.groupBy({
+    by: ["product_id"],
+    _sum: {
+      quantity: true,
+    },
+    orderBy: {
+      _sum: {
+        quantity: "desc",
+      },
+    },
+    take: limit * 2, // Get more in case some are inactive
+  });
+
+  const productIds = productOrderCounts.map(
+    (p: { product_id: number }) => p.product_id,
+  );
+
+  if (productIds.length === 0) {
+    // Fallback to featured products if no orders exist
+    return getFeaturedProducts(limit);
+  }
+
+  // Get product details for best sellers
+  const products = await prisma.product.findMany({
+    where: {
+      id: { in: productIds },
+      is_active: true,
+      available_quantity: { gt: 0 },
+    },
+    include: {
+      product_categories: true,
+      _count: { select: { reviews: true } },
+      reviews: { select: { rating: true } },
+    },
+    take: limit,
+  });
+
+  // Sort by order count to maintain the best-seller order
+  const sortedProducts = products.sort((a, b) => {
+    const aIndex = productIds.indexOf(a.id);
+    const bIndex = productIds.indexOf(b.id);
+    return aIndex - bIndex;
+  });
+
+  return sortedProducts.map((product) => {
+    const { reviews, ...rest } = product;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return { ...rest, averageRating };
+  }) as ProductWithCategories[];
+}
+
+/**
+ * Get smart recommendations based on user's cart, wishlist, and orders.
+ * Falls back to best sellers if user is not logged in or has no data.
+ */
+export async function getSmartRecommendations(
+  limit: number = 8,
+): Promise<ProductWithCategories[]> {
+  const userId = await getAuthenticatedUserId();
+
+  // If not logged in, return best sellers
+  if (!userId) {
+    return getBestSellers(limit);
+  }
+
+  // Get user's cart, wishlist, and order product IDs and categories
+  const [cartItems, wishlistItems, orderItems] = await Promise.all([
+    prisma.cart.findMany({
+      where: { user_id: userId },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    }),
+    prisma.wishlist.findMany({
+      where: { user_id: userId },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    }),
+    prisma.purchasedProductItem.findMany({
+      where: {
+        order: { user_id: userId },
+      },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+      take: 20, // Recent orders
+    }),
+  ]);
+
+  type CartItemType = (typeof cartItems)[number];
+  type WishlistItemType = (typeof wishlistItems)[number];
+  type OrderItemType = (typeof orderItems)[number];
+  type CategoryType = { category: string };
+
+  // Collect all product IDs to exclude from recommendations
+  const excludeProductIds = new Set<number>();
+  cartItems.forEach((item: CartItemType) =>
+    excludeProductIds.add(item.product_id),
+  );
+  wishlistItems.forEach((item: WishlistItemType) =>
+    excludeProductIds.add(item.product_id),
+  );
+
+  // Collect all categories from user's items
+  const userCategories = new Set<string>();
+  cartItems.forEach((item: CartItemType) => {
+    item.product.product_categories.forEach((cat: CategoryType) =>
+      userCategories.add(cat.category),
+    );
+  });
+  wishlistItems.forEach((item: WishlistItemType) => {
+    item.product.product_categories.forEach((cat: CategoryType) =>
+      userCategories.add(cat.category),
+    );
+  });
+  orderItems.forEach((item: OrderItemType) => {
+    item.product?.product_categories?.forEach((cat: CategoryType) =>
+      userCategories.add(cat.category),
+    );
+  });
+
+  // If user has no categories to recommend from, return best sellers
+  if (userCategories.size === 0) {
+    return getBestSellers(limit);
+  }
+
+  // Find products in similar categories, excluding already owned/wishlisted
+  const products = await prisma.product.findMany({
+    where: {
+      is_active: true,
+      available_quantity: { gt: 0 },
+      id: { notIn: Array.from(excludeProductIds) },
+      product_categories: {
+        some: {
+          category: { in: Array.from(userCategories) },
+        },
+      },
+    },
+    include: {
+      product_categories: true,
+      _count: { select: { reviews: true } },
+      reviews: { select: { rating: true } },
+    },
+    take: limit,
+    orderBy: { created_at: "desc" },
+  });
+
+  // If not enough recommendations, supplement with best sellers
+  if (products.length < limit) {
+    const bestSellers = await getBestSellers(limit - products.length);
+    const existingIds = new Set(products.map((p) => p.id));
+
+    for (const seller of bestSellers) {
+      if (!existingIds.has(seller.id) && !excludeProductIds.has(seller.id)) {
+        products.push(seller as never);
+        if (products.length >= limit) break;
+      }
+    }
+  }
+
+  return products.map((product) => {
+    if ("reviews" in product) {
+      const { reviews, ...rest } = product;
+      const averageRating =
+        reviews.length > 0
+          ? reviews.reduce(
+              (sum: number, r: { rating: number }) => sum + r.rating,
+              0,
+            ) / reviews.length
+          : null;
+      return { ...rest, averageRating };
+    }
+    return product;
+  }) as ProductWithCategories[];
 }

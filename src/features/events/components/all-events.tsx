@@ -9,7 +9,11 @@ import { InfiniteScrollTrigger, SectionHeader } from "@/components/shared";
 
 import type { AllEventsProps } from "../types";
 
-export function AllEvents({ viewModel, loadMoreRef }: AllEventsProps) {
+export function AllEvents({
+  viewModel,
+  loadMoreRef,
+  onSearchChange,
+}: AllEventsProps) {
   const {
     upcomingEvents,
     pastEvents,
@@ -18,10 +22,15 @@ export function AllEvents({ viewModel, loadMoreRef }: AllEventsProps) {
     hasNoEvents,
     hasMore,
     isLoading,
+    searchQuery,
   } = viewModel;
 
   return (
-    <EventsListLayout>
+    <EventsListLayout
+      onSearchChange={onSearchChange}
+      searchQuery={searchQuery}
+      searchPlaceholder="Search events..."
+    >
       {hasNoEvents ? (
         <EmptyState
           icon={Calendar}

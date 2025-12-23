@@ -42,7 +42,6 @@ export function ProductImageGallery({
           onImageClick={handleImageClick}
           className="w-full"
           imageClassName="object-cover cursor-zoom-in"
-          priority
         />
       </div>
 

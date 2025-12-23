@@ -46,35 +46,6 @@ export function PastWorkshopDetailContainer({
     [],
   );
 
-  const handleReviewLike = useCallback(
-    async (reviewId: string) => {
-      // Find the current review state
-      const review = formattedReviews.find((r) => r.id === reviewId);
-      if (!review) return;
-
-      const currentLikes = review.likes;
-      const currentIsLiked = review.isLikedByCurrentUser;
-
-      // Optimistically update UI
-      const newIsLiked = !currentIsLiked;
-      const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-      handleLikeUpdate(reviewId, newLikes, newIsLiked);
-
-      // Call server action
-      const result = await toggleReviewLike(Number(reviewId));
-
-      if (!result.success) {
-        // Revert on failure
-        handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
-      } else if (result.likesCount !== undefined) {
-        // Sync with server count
-        handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [handleLikeUpdate],
-  );
-
   // Format reviews for display
   const formattedReviews: FormattedReview[] = useMemo(() => {
     return (workshop.reviews || []).map((review) => {
@@ -104,6 +75,35 @@ export function PastWorkshopDetailContainer({
       };
     });
   }, [workshop.reviews, currentUserId, reviewLikeUpdates]);
+
+  const handleReviewLike = useCallback(
+    async (reviewId: string) => {
+      // Find the current review state
+      const review = formattedReviews.find((r) => r.id === reviewId);
+      if (!review) return;
+
+      const currentLikes = review.likes;
+      const currentIsLiked = review.isLikedByCurrentUser;
+
+      // Optimistically update UI
+      const newIsLiked = !currentIsLiked;
+      const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
+      handleLikeUpdate(reviewId, newLikes, newIsLiked);
+
+      // Call server action
+      const result = await toggleReviewLike(Number(reviewId));
+
+      if (!result.success) {
+        // Revert on failure
+        handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
+      } else if (result.likesCount !== undefined) {
+        // Sync with server count
+        handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
+      }
+    },
+
+    [handleLikeUpdate, formattedReviews],
+  );
 
   // Calculate average rating
   const averageRating = useMemo(() => {

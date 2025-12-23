@@ -7,20 +7,13 @@ import { Heart, Search, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 import { cn } from "@/lib/utils";
 
 import { AccountDropdownContainer } from "../containers/account-dropdown-container";
 import type { NavbarProps } from "../types";
 
-export function Navbar({
-  viewModel,
-  currentPath,
-  isSearchFocused,
-  onSearchFocus,
-  onSearchBlur,
-}: NavbarProps) {
+export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
   const isActiveRoute = (href: string) => {
     if (href === "/") return currentPath === "/";
     return currentPath.startsWith(href);
@@ -79,22 +72,14 @@ export function Navbar({
 
           {/* Right side */}
           <div className="flex items-center gap-3">
-            {/* Search */}
-            <div
-              className={cn(
-                "relative hidden transition-all duration-300 xl:block",
-                isSearchFocused ? "w-64" : "w-48",
-              )}
+            {/* Search Button */}
+            <button
+              onClick={onSearchClick}
+              className="hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100/50 px-4 text-sm transition-colors hover:bg-neutral-200/50 xl:flex dark:bg-neutral-800/50 dark:hover:bg-neutral-700/50"
             >
-              <Search className="text-muted-foreground absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
-              <Input
-                type="search"
-                placeholder="Search..."
-                className="focus:border-cancel focus:ring-primary/20 h-10 w-full rounded-full border-transparent bg-neutral-100/50 pl-10 text-sm focus:bg-white dark:bg-neutral-800/50 dark:focus:bg-neutral-800"
-                onFocus={onSearchFocus}
-                onBlur={onSearchBlur}
-              />
-            </div>
+              <Search className="text-muted-foreground h-4 w-4" />
+              <span className="text-muted-foreground">Search...</span>
+            </button>
 
             {/* Wishlist */}
             <Link

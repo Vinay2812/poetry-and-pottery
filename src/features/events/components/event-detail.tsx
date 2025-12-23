@@ -76,7 +76,6 @@ export function EventDetail({
                   alt={title}
                   fill
                   className="object-cover"
-                  priority
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
@@ -372,7 +371,7 @@ export function EventDetail({
                   return (
                     <Link
                       key={otherEvent.id}
-                      href={`/events/upcoming/${otherEvent.slug}`}
+                      href={`/events/${otherEvent.id}`}
                       className="group flex flex-col gap-4"
                     >
                       <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">

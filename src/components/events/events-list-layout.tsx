@@ -4,13 +4,22 @@ import { MobileHeaderContainer } from "@/features/layout";
 import { useEventStore } from "@/store/event.store";
 import { redirect, usePathname } from "next/navigation";
 
+import { SearchInput } from "../shared";
 import { EVENTS_TABS, EventsTabs, TabType } from "./events-tabs";
 
 interface EventsListLayoutProps {
   children: React.ReactNode;
+  onSearchChange?: (query: string) => void;
+  searchQuery?: string;
+  searchPlaceholder?: string;
 }
 
-export function EventsListLayout({ children }: EventsListLayoutProps) {
+export function EventsListLayout({
+  children,
+  onSearchChange,
+  searchQuery,
+  searchPlaceholder = "Search events...",
+}: EventsListLayoutProps) {
   const pathname = usePathname();
   const registrationCount = useEventStore((state) => state.getCount());
 
@@ -47,6 +56,18 @@ export function EventsListLayout({ children }: EventsListLayoutProps) {
             activeTab={activeTab}
             registeredCount={registrationCount}
           />
+
+          {/* Search Bar */}
+          {onSearchChange && searchQuery !== undefined && (
+            <div className="mb-6 flex justify-center">
+              <SearchInput
+                value={searchQuery}
+                onChange={onSearchChange}
+                placeholder={searchPlaceholder}
+                className="flex w-full max-w-md items-center justify-center"
+              />
+            </div>
+          )}
 
           {/* Page Content */}
           {children}

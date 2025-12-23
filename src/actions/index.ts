@@ -7,6 +7,8 @@ export {
   getCategories,
   getMaterials,
   getFeaturedProducts,
+  getBestSellers,
+  getSmartRecommendations,
 } from "./product.actions";
 
 // Cart actions
@@ -45,6 +47,7 @@ export {
   getPastEvents,
   getEventBySlug,
   getEventById,
+  getEventWithUserContext,
   registerForEvent,
   cancelRegistration,
   getUserRegistrations,
@@ -53,6 +56,7 @@ export {
   getUpcomingRegistrations,
   getCompletedRegistrations,
   type RegistrationWithReviewStatus,
+  type EventWithUserContext,
 } from "./event.actions";
 
 // Review actions
@@ -84,3 +88,6 @@ export {
   unsubscribeFromNewsletter,
   getNewsletterSubscriptionStatus,
 } from "./newsletter.actions";
+
+// Search actions
+export { globalSearch, type GlobalSearchResult } from "./search.actions";

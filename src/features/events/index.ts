@@ -9,6 +9,7 @@ export { AllEventsContainer } from "./containers/all-events-container";
 export { EventDetailContainer } from "./containers/event-detail-container";
 export { PastWorkshopDetailContainer } from "./containers/past-workshop-detail-container";
 export { RegistrationsContainer } from "./containers/registrations-container";
+export { UnifiedEventDetailContainer } from "./containers/unified-event-detail-container";
 
 // Hooks
 export { useAllEventsQuery } from "./hooks/use-all-events-query";

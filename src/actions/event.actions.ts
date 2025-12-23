@@ -1,5 +1,6 @@
 "use server";
 
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import { EventRegistration, Prisma } from "@/prisma/generated/client";
 import {
   type EventFilterParams,
@@ -16,8 +17,6 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 import { getAuthenticatedUserId } from "./auth.action";
-
-const DEFAULT_PAGE_SIZE = 10;
 
 export async function getEvents(
   params: EventFilterParams = {},
@@ -98,6 +97,7 @@ export async function getEventBySlug(
 export async function getUpcomingEvents(
   page: number = 1,
   limit: number = 12,
+  search?: string,
 ): Promise<PaginatedResponse<EventWithRegistrationCount>> {
   const userId = await getAuthenticatedUserId();
 
@@ -119,6 +119,14 @@ export async function getUpcomingEvents(
     status: { in: [EventStatus.UPCOMING, EventStatus.ACTIVE] },
     id: { notIn: userEventRegistrationIds },
   };
+
+  // Add search filter
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: "insensitive" } },
+      // { description: { contains: search, mode: "insensitive" } },
+    ];
+  }
 
   const [events, total] = await Promise.all([
     prisma.event.findMany({
@@ -146,10 +154,23 @@ export async function getUpcomingEvents(
 export async function getPastEvents(
   page: number = 1,
   limit: number = 12,
+  search?: string,
 ): Promise<PaginatedResponse<EventWithRegistrationCount>> {
   const where: Prisma.EventWhereInput = {
     OR: [{ status: EventStatus.COMPLETED }, { ends_at: { lt: new Date() } }],
   };
+
+  // Add search filter
+  if (search) {
+    where.AND = [
+      {
+        OR: [
+          { title: { contains: search, mode: "insensitive" } },
+          // { description: { contains: search, mode: "insensitive" } },
+        ],
+      },
+    ];
+  }
 
   const [events, total] = await Promise.all([
     prisma.event.findMany({
@@ -379,13 +400,73 @@ export async function getRegistrationCount(): Promise<number> {
   return prisma.eventRegistration.count({ where: { user_id: userId } });
 }
 
+export interface EventWithUserContext {
+  event: EventWithDetails;
+  registration: RegistrationWithEvent | null;
+  isPastEvent: boolean;
+  currentUserId: number | null;
+}
+
+export async function getEventWithUserContext(
+  eventId: string,
+): Promise<EventWithUserContext | null> {
+  const userId = await getAuthenticatedUserId();
+
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+    include: {
+      reviews: {
+        include: {
+          user: true,
+          likes: true,
+        },
+        orderBy: { created_at: "desc" },
+        take: 10,
+      },
+      event_registrations: true,
+      _count: {
+        select: { reviews: true, event_registrations: true },
+      },
+    },
+  });
+
+  if (!event) {
+    return null;
+  }
+
+  // Check if event is past
+  const now = new Date();
+  const isPastEvent =
+    event.status === EventStatus.COMPLETED || event.ends_at < now;
+
+  // Get user's registration for this event if authenticated
+  let registration: RegistrationWithEvent | null = null;
+  if (userId) {
+    registration = (await prisma.eventRegistration.findFirst({
+      where: {
+        event_id: eventId,
+        user_id: userId,
+      },
+      include: { event: true, user: true },
+    })) as RegistrationWithEvent | null;
+  }
+
+  return {
+    event: event as EventWithDetails,
+    registration,
+    isPastEvent,
+    currentUserId: userId,
+  };
+}
+
 export type RegistrationWithReviewStatus = RegistrationWithEvent & {
   hasReviewed: boolean;
 };
 
 export async function getUpcomingRegistrations(
   page: number = 1,
-  limit: number = 12,
+  limit: number = DEFAULT_PAGE_SIZE,
+  search?: string,
 ): Promise<
   | { success: true; data: PaginatedResponse<RegistrationWithEvent> }
   | { success: false; error: string }
@@ -397,12 +478,24 @@ export async function getUpcomingRegistrations(
 
   const now = new Date();
 
-  const where = {
+  const where: Prisma.EventRegistrationWhereInput = {
     user_id: userId,
     event: {
       ends_at: { gt: now },
     },
   };
+
+  // Add search filter
+  if (search) {
+    where.AND = [
+      {
+        OR: [
+          { event: { title: { contains: search, mode: "insensitive" } } },
+          // { event: { description: { contains: search, mode: "insensitive" } } },
+        ],
+      },
+    ];
+  }
 
   const [registrations, total] = await Promise.all([
     prisma.eventRegistration.findMany({

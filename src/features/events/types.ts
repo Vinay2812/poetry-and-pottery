@@ -143,6 +143,7 @@ export interface AllEventsViewModel {
   hasNoEvents: boolean;
   hasMore: boolean;
   isLoading: boolean;
+  searchQuery: string;
 }
 
 /**
@@ -151,6 +152,7 @@ export interface AllEventsViewModel {
 export interface AllEventsProps {
   viewModel: AllEventsViewModel;
   loadMoreRef: (node?: Element | null) => void;
+  onSearchChange: (query: string) => void;
 }
 
 /**
@@ -176,6 +178,7 @@ export interface RegistrationsViewModel {
   hasUpcomingEvents: boolean;
   hasMore: boolean;
   isLoading: boolean;
+  searchQuery: string;
 }
 
 /**
@@ -184,6 +187,7 @@ export interface RegistrationsViewModel {
 export interface RegistrationsProps {
   viewModel: RegistrationsViewModel;
   loadMoreRef: (node?: Element | null) => void;
+  onSearchChange: (query: string) => void;
 }
 
 /**

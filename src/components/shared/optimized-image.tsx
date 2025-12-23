@@ -31,7 +31,6 @@ export function OptimizedImage({
   showLoadingState = true,
   onError,
   sizes,
-  priority,
   loading = "lazy",
   ...props
 }: OptimizedImageProps) {
@@ -70,7 +69,6 @@ export function OptimizedImage({
         )}
         loading={loading}
         sizes={defaultSizes}
-        priority={priority}
         onError={handleError}
         onLoad={handleLoad}
         {...props}

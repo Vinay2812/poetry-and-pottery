@@ -1,13 +1,12 @@
 "use server";
 
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import type { PaginatedResponse, ReviewWithUser } from "@/types";
 import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
 import { getAuthenticatedUserId } from "./auth.action";
-
-const DEFAULT_PAGE_SIZE = 10;
 
 export async function getProductReviews(
   productId: number,

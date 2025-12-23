@@ -19,7 +19,6 @@ interface ImageCarouselProps {
   images: string[];
   alt: string;
   onImageClick?: (index: number) => void;
-  priority?: boolean;
   className?: string;
   imageClassName?: string;
   dotsClassName?: string;
@@ -35,7 +34,6 @@ export function ImageCarousel({
   images,
   alt,
   onImageClick,
-  priority = false,
   className,
   imageClassName,
   dotsClassName,
@@ -87,7 +85,6 @@ export function ImageCarousel({
             alt={alt}
             fill
             className={cn("object-cover", imageClassName)}
-            priority={priority}
           />
         </div>
       </div>
@@ -121,7 +118,6 @@ export function ImageCarousel({
                   imageClassName,
                 )}
                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                priority={priority && index === 0}
               />
             </CarouselItem>
           ))}

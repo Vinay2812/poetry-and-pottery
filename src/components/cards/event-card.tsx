@@ -33,7 +33,7 @@ export function EventCard({ event }: EventCardProps) {
   const isSoldOut = registrations >= totalSeats;
 
   return (
-    <EventCardWrapper href={`/events/upcoming/${event.slug}`}>
+    <EventCardWrapper href={`/events/${event.id}`}>
       <EventCardImage
         src={event.image}
         alt={event.title}

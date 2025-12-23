@@ -35,7 +35,7 @@ export function RegisteredEventCard({
   const imageUrl = event.image || "/placeholder.jpg";
 
   return (
-    <EventCardWrapper href={`/events/registrations/${registration.id}`}>
+    <EventCardWrapper href={`/events/${event.id}`}>
       <EventCardImage
         src={imageUrl}
         alt={event.title}

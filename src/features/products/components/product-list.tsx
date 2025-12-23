@@ -4,7 +4,7 @@ import { Loader2, Search, SlidersHorizontal } from "lucide-react";
 
 import { ProductCard } from "@/components/cards";
 import { EmptyState } from "@/components/sections";
-import { FilterSidebar } from "@/components/shared";
+import { FilterSidebar, SearchInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -33,6 +33,7 @@ export function ProductList({
   onPriceChange,
   onPriceCommit,
   onSortChange,
+  onSearchChange,
   onClearFilters,
 }: ProductListProps) {
   const {
@@ -47,11 +48,26 @@ export function ProductList({
     priceHistogram,
   } = viewModel;
 
-  const { activeCategory, selectedMaterials, sortBy, localPriceRange } =
-    filterState;
+  const {
+    activeCategory,
+    selectedMaterials,
+    sortBy,
+    localPriceRange,
+    searchQuery,
+  } = filterState;
 
   return (
     <>
+      {/* Search Bar - Mobile */}
+      <div className="px-4 pb-2 lg:hidden">
+        <SearchInput
+          value={searchQuery}
+          onChange={onSearchChange}
+          placeholder="Search products..."
+          className="mt-2 flex w-full items-center justify-center"
+        />
+      </div>
+
       {/* Mobile Filter Bar */}
       <div className="bg-background sticky z-40 flex items-center gap-2 overflow-y-auto px-4 pt-1 pb-3 lg:hidden">
         <Sheet>
@@ -123,23 +139,31 @@ export function ProductList({
 
           {/* Product Grid */}
           <div className="flex-1">
-            {/* Desktop Sort */}
-            <div className="mb-6 hidden items-center justify-between lg:flex">
-              <p className="text-muted-foreground text-sm">
-                {totalProducts} products
-              </p>
-              <Select value={sortBy} onValueChange={onSortChange}>
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  {SORT_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            {/* Desktop Search and Sort */}
+            <div className="mb-6 hidden flex-col gap-4 lg:flex">
+              <SearchInput
+                value={searchQuery}
+                onChange={onSearchChange}
+                placeholder="Search products..."
+                className="w-full max-w-md"
+              />
+              <div className="flex items-center justify-between">
+                <p className="text-muted-foreground text-sm">
+                  {totalProducts} products
+                </p>
+                <Select value={sortBy} onValueChange={onSortChange}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SORT_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {products.length > 0 ? (

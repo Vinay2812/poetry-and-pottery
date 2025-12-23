@@ -1,5 +1,6 @@
 "use server";
 
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import { OrderStatus } from "@/prisma/generated/client";
 import type {
   OrderWithDetails,
@@ -12,11 +13,10 @@ import { prisma } from "@/lib/prisma";
 
 import { getAuthenticatedUserId } from "./auth.action";
 
-const DEFAULT_PAGE_SIZE = 10;
-
 export async function getOrders(
   page: number = 1,
   limit: number = DEFAULT_PAGE_SIZE,
+  search?: string,
 ): Promise<
   | { success: true; data: PaginatedResponse<OrderWithItems> }
   | { success: false; error: string }
@@ -26,9 +26,24 @@ export async function getOrders(
     return { success: false, error: "Not authenticated" };
   }
 
+  const where: { user_id: number; ordered_products?: object } = {
+    user_id: userId,
+  };
+
+  // Search by product name in orders
+  if (search) {
+    where.ordered_products = {
+      some: {
+        product: {
+          name: { contains: search, mode: "insensitive" },
+        },
+      },
+    };
+  }
+
   const [orders, total] = await Promise.all([
     prisma.productOrder.findMany({
-      where: { user_id: userId },
+      where,
       include: {
         ordered_products: {
           include: { product: true },
@@ -39,7 +54,7 @@ export async function getOrders(
       skip: (page - 1) * limit,
       take: limit,
     }),
-    prisma.productOrder.count({ where: { user_id: userId } }),
+    prisma.productOrder.count({ where }),
   ]);
 
   return {

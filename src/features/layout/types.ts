@@ -22,9 +22,7 @@ export interface NavbarViewModel {
 export interface NavbarProps {
   viewModel: NavbarViewModel;
   currentPath: string;
-  isSearchFocused: boolean;
-  onSearchFocus: () => void;
-  onSearchBlur: () => void;
+  onSearchClick: () => void;
 }
 
 /**
@@ -63,11 +61,9 @@ export interface MobileHeaderProps {
   backHref?: string;
   viewModel: MobileHeaderViewModel;
   currentPath: string;
-  isSearchOpen: boolean;
   isHidden: boolean;
   onBack: () => void;
-  onSearchOpen: () => void;
-  onSearchClose: () => void;
+  onSearchClick: () => void;
 }
 
 /**

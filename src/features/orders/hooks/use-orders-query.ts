@@ -14,17 +14,19 @@ interface PaginationData {
 interface UseOrdersQueryOptions {
   initialOrders: OrderWithItems[];
   initialPagination: PaginationData;
+  searchQuery?: string;
 }
 
 export function useOrdersQuery({
   initialOrders,
   initialPagination,
+  searchQuery,
 }: UseOrdersQueryOptions) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["orders"],
+      queryKey: ["orders", searchQuery],
       queryFn: async ({ pageParam = 1 }) => {
-        const result = await getOrders(pageParam);
+        const result = await getOrders(pageParam, 10, searchQuery);
         if (!result.success) {
           throw new Error(result.error);
         }

@@ -66,7 +66,7 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
   return (
     <EventCardWrapperWithActions>
       <Link
-        href={`/events/past/${event.slug}`}
+        href={`/events/${event.id}`}
         className="flex flex-col gap-3 lg:gap-4"
       >
         <EventCardImage

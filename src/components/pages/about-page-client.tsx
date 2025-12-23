@@ -48,7 +48,6 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
               alt="Our Story"
               fill
               className="object-cover"
-              priority
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">

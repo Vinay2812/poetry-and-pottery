@@ -42,6 +42,7 @@ interface ProductsPageProps {
     page?: string;
     minPrice?: string;
     maxPrice?: string;
+    search?: string;
   }>;
 }
 
@@ -61,6 +62,7 @@ async function ProductsContent({
     limit: 12,
     minPrice: params.minPrice ? parseInt(params.minPrice) : undefined,
     maxPrice: params.maxPrice ? parseInt(params.maxPrice) : undefined,
+    search: params.search,
   };
 
   // Fetch products from database

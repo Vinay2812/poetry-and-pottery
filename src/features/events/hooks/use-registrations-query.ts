@@ -5,6 +5,7 @@ import {
   getCompletedRegistrations,
   getUpcomingRegistrations,
 } from "@/actions";
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import type { RegistrationWithEvent } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
@@ -17,6 +18,7 @@ interface UseRegistrationsQueryOptions {
   initialUpcomingPagination: PaginationData;
   initialCompletedRegistrations: RegistrationWithReviewStatus[];
   initialCompletedPagination: PaginationData;
+  searchQuery?: string;
 }
 
 export function useRegistrationsQuery({
@@ -24,6 +26,7 @@ export function useRegistrationsQuery({
   initialUpcomingPagination,
   initialCompletedRegistrations,
   initialCompletedPagination,
+  searchQuery,
 }: UseRegistrationsQueryOptions) {
   // Upcoming registrations infinite query
   const {
@@ -32,9 +35,13 @@ export function useRegistrationsQuery({
     hasNextPage: hasNextUpcoming,
     isFetchingNextPage: isFetchingNextUpcoming,
   } = useInfiniteQuery({
-    queryKey: ["registrations-upcoming"],
+    queryKey: ["registrations-upcoming", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
-      const result = await getUpcomingRegistrations(pageParam);
+      const result = await getUpcomingRegistrations(
+        pageParam,
+        DEFAULT_PAGE_SIZE,
+        searchQuery,
+      );
       if (!result.success) {
         throw new Error(result.error);
       }

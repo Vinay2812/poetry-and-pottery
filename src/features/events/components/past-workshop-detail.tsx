@@ -167,7 +167,7 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
 
   return (
     <Link
-      href={`/events/upcoming/${event.slug}`}
+      href={`/events/${event.id}`}
       className="group border-border hover:border-primary/30 block rounded-xl border bg-white p-3 transition-all"
     >
       <div className="flex gap-3">
@@ -308,7 +308,6 @@ export function PastWorkshopDetail({
                   alt={title}
                   fill
                   className="object-cover"
-                  priority
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 

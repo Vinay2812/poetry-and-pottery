@@ -19,12 +19,14 @@ export function ProductListContainer({
     selectedMaterials,
     sortBy,
     localPriceRange,
+    searchQuery,
     filterParams,
     onCategoryChange,
     onMaterialToggle,
     onPriceChange,
     onPriceCommit,
     onSortChange,
+    onSearchChange,
     onClearFilters,
   } = useProductFilters({ priceRange });
 
@@ -56,6 +58,7 @@ export function ProductListContainer({
       selectedMaterials,
       sortBy,
       localPriceRange,
+      searchQuery,
     },
     categories,
     materials,
@@ -72,6 +75,7 @@ export function ProductListContainer({
       onPriceChange={onPriceChange}
       onPriceCommit={onPriceCommit}
       onSortChange={onSortChange}
+      onSearchChange={onSearchChange}
       onClearFilters={onClearFilters}
     />
   );

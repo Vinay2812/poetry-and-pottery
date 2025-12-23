@@ -31,7 +31,7 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
   const gallery = event.gallery || [];
 
   return (
-    <EventCardWrapper href={`/events/past/${event.slug}`}>
+    <EventCardWrapper href={`/events/${event.id}`}>
       <EventCardImage
         src={imageUrl}
         alt={event.title}

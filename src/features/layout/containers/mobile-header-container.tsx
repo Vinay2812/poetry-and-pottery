@@ -1,5 +1,6 @@
 "use client";
 
+import { GlobalSearchContainer } from "@/features/global-search";
 import { useWishlistStore } from "@/store";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,8 +19,10 @@ export function MobileHeaderContainer({
 }: MobileHeaderContainerProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const wishlistCount = useWishlistStore((state) => state.getCount());
+
+  const { handleOpen: handleSearchOpen, GlobalSearchComponent } =
+    GlobalSearchContainer();
 
   // Scroll handling for hide/show effect
   const { scrollY } = useScroll();
@@ -50,26 +53,19 @@ export function MobileHeaderContainer({
     }
   }, [backHref, router]);
 
-  const handleSearchOpen = useCallback(() => {
-    setIsSearchOpen(true);
-  }, []);
-
-  const handleSearchClose = useCallback(() => {
-    setIsSearchOpen(false);
-  }, []);
-
   return (
-    <MobileHeader
-      title={title}
-      showBack={showBack}
-      backHref={backHref}
-      viewModel={viewModel}
-      currentPath={pathname}
-      isSearchOpen={isSearchOpen}
-      isHidden={hidden}
-      onBack={handleBack}
-      onSearchOpen={handleSearchOpen}
-      onSearchClose={handleSearchClose}
-    />
+    <>
+      <MobileHeader
+        title={title}
+        showBack={showBack}
+        backHref={backHref}
+        viewModel={viewModel}
+        currentPath={pathname}
+        isHidden={hidden}
+        onBack={handleBack}
+        onSearchClick={handleSearchOpen}
+      />
+      {GlobalSearchComponent}
+    </>
   );
 }

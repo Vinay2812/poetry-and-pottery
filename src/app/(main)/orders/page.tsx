@@ -13,8 +13,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function OrdersPage() {
-  const result = await getOrders();
+interface OrdersPageProps {
+  searchParams: Promise<{
+    search?: string;
+  }>;
+}
+
+export default async function OrdersPage({ searchParams }: OrdersPageProps) {
+  const params = await searchParams;
+  const search = params.search || undefined;
+
+  const result = await getOrders(1, 10, search);
 
   const orders = result.success ? result.data.data : [];
   const pagination = result.success

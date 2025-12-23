@@ -188,7 +188,7 @@ export async function getEvents(
     ...(search && {
       OR: [
         { title: { contains: search, mode: "insensitive" as const } },
-        { description: { contains: search, mode: "insensitive" as const } },
+        // { description: { contains: search, mode: "insensitive" as const } },
         { slug: { contains: search, mode: "insensitive" as const } },
         { instructor: { contains: search, mode: "insensitive" as const } },
         { location: { contains: search, mode: "insensitive" as const } },

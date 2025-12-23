@@ -1,4 +1,4 @@
-import { getFeaturedProducts, getWishlist } from "@/actions";
+import { getSmartRecommendations, getWishlist } from "@/actions";
 import { WishlistContainer } from "@/features/wishlist";
 import type { Metadata } from "next";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function WishlistPage() {
   const [wishlistResult, recommendations] = await Promise.all([
     getWishlist(),
-    getFeaturedProducts(4),
+    getSmartRecommendations(4),
   ]);
 
   const defaultPagination = { page: 1, totalPages: 1, total: 0 };

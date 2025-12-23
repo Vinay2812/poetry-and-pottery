@@ -8,6 +8,7 @@ export { QuantitySelector } from "./quantity-selector";
 export { Rating } from "./rating";
 export { ReviewForm } from "./review-form";
 export { ReviewsSheet } from "./reviews-sheet";
+export { SearchInput } from "./search-input";
 export { SectionHeader } from "./section-header";
 export { SignInModal } from "./sign-in-modal";
 export { StatusIcon } from "./status-icon";

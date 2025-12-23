@@ -28,6 +28,7 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
     return mats ? mats.split(",") : [];
   }, [searchParams]);
   const sortBy = searchParams.get("sort") || "featured";
+  const searchQuery = searchParams.get("search") || "";
 
   // Price state from URL
   const minPriceParam = searchParams.get("minPrice");
@@ -61,8 +62,16 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
       limit: PRODUCTS_PER_PAGE,
       minPrice: minPriceParam ? parseInt(minPriceParam) : undefined,
       maxPrice: maxPriceParam ? parseInt(maxPriceParam) : undefined,
+      search: searchQuery || undefined,
     }),
-    [activeCategory, selectedMaterials, sortBy, minPriceParam, maxPriceParam],
+    [
+      activeCategory,
+      selectedMaterials,
+      sortBy,
+      minPriceParam,
+      maxPriceParam,
+      searchQuery,
+    ],
   );
 
   // Update URL params without full page reload
@@ -126,6 +135,13 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
     [updateParams],
   );
 
+  const handleSearchChange = useCallback(
+    (query: string) => {
+      updateParams({ search: query || null });
+    },
+    [updateParams],
+  );
+
   const clearFilters = useCallback(() => {
     // Reset local state first to feel responsive
     if (priceRange) {
@@ -142,6 +158,7 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
     selectedMaterials,
     sortBy,
     localPriceRange,
+    searchQuery,
     filterParams,
     // Handlers
     onCategoryChange: handleCategoryChange,
@@ -149,6 +166,7 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
     onPriceChange: handlePriceChange,
     onPriceCommit: handlePriceCommit,
     onSortChange: handleSortChange,
+    onSearchChange: handleSearchChange,
     onClearFilters: clearFilters,
   };
 }

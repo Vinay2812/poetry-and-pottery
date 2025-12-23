@@ -157,6 +157,7 @@ export interface OrdersListViewModel {
   hasOrders: boolean;
   hasMore: boolean;
   isLoading: boolean;
+  searchQuery: string;
 }
 
 /**
@@ -165,6 +166,7 @@ export interface OrdersListViewModel {
 export interface OrdersListProps {
   viewModel: OrdersListViewModel;
   loadMoreRef: (node?: Element | null) => void;
+  onSearchChange: (query: string) => void;
 }
 
 /**
