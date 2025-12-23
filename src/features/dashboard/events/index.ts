@@ -1,5 +1,7 @@
 // Components
 export { EventForm } from "./components/event-form";
+export { EventRegistrationsSection } from "./components/event-registrations-section";
+export { EventReviewsSection } from "./components/event-reviews-section";
 export { EventsTable } from "./components/events-table";
 
 // Containers

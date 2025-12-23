@@ -1,5 +1,6 @@
 // Components
 export { ProductForm } from "./components/product-form";
+export { ProductReviewsSection } from "./components/product-reviews-section";
 export { ProductsTable } from "./components/products-table";
 
 // Containers

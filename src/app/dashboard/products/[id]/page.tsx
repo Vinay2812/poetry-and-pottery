@@ -3,7 +3,10 @@ import {
   getProductById,
   getProductReviews,
 } from "@/actions/admin";
-import { ProductFormContainer } from "@/features/dashboard/products";
+import {
+  ProductFormContainer,
+  ProductReviewsSection,
+} from "@/features/dashboard/products";
 import { ArrowLeftIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -11,8 +14,6 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { ProductReviewsSection } from "./_components/product-reviews-section";
 
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;

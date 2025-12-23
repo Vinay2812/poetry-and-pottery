@@ -5,7 +5,11 @@ import {
   getEventReviews,
   getEventStatusOptions,
 } from "@/actions/admin";
-import { EventFormContainer } from "@/features/dashboard/events";
+import {
+  EventFormContainer,
+  EventRegistrationsSection,
+  EventReviewsSection,
+} from "@/features/dashboard/events";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,9 +19,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { getEventStatusColor } from "@/lib/status-utils";
-
-import { EventRegistrationsSection } from "./_components/event-registrations-section";
-import { EventReviewsSection } from "./_components/event-reviews-section";
 
 interface EventDetailPageProps {
   params: Promise<{ id: string }>;
