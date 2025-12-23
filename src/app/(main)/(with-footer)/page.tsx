@@ -2,7 +2,6 @@ import { getCategories, getFeaturedProducts } from "@/actions";
 import { HERO_IMAGES } from "@/consts/client";
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
-import Image from "next/image";
 
 import { ProductCard } from "@/components/cards";
 import {

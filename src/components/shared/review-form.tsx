@@ -1,5 +1,7 @@
 "use client";
 
+import { MAX_REVIEW_IMAGES } from "@/consts/uploads";
+import { R2ImageUploaderContainer } from "@/features/uploads";
 import { Star } from "lucide-react";
 import { useCallback, useState } from "react";
 
@@ -16,6 +18,7 @@ interface ReviewFormProps {
   onSubmit: (
     rating: number,
     review?: string,
+    imageUrls?: string[],
   ) => Promise<{ success: boolean; error?: string }>;
 }
 
@@ -29,6 +32,7 @@ export function ReviewForm({
   const [justReviewed, setJustReviewed] = useState(false);
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState("");
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,25 +48,31 @@ export function ReviewForm({
       setIsSubmitting(true);
       setError(null);
 
-      const result = await onSubmit(rating, content.trim() || undefined);
+      const result = await onSubmit(
+        rating,
+        content.trim() || undefined,
+        imageUrls.length > 0 ? imageUrls : undefined,
+      );
 
       if (result.success) {
         setJustReviewed(true);
         setIsOpen(false);
         setRating(5);
         setContent("");
+        setImageUrls([]);
       } else {
         setError(result.error || "Failed to submit review");
       }
       setIsSubmitting(false);
     },
-    [content, rating, onSubmit],
+    [content, rating, imageUrls, onSubmit],
   );
 
   const handleCancel = useCallback(() => {
     setIsOpen(false);
     setRating(5);
     setContent("");
+    setImageUrls([]);
     setError(null);
   }, []);
 
@@ -167,6 +177,21 @@ export function ReviewForm({
           onChange={(e) => setContent(e.target.value)}
           placeholder="Share your experience..."
           className="focus:border-primary focus:ring-primary h-24 resize-none rounded-lg border-gray-200 text-sm focus:ring-1"
+        />
+      </div>
+
+      {/* Image Upload */}
+      <div className="mb-4">
+        <p className="text-muted-foreground mb-2 text-xs font-medium">
+          Add photos (optional, max {MAX_REVIEW_IMAGES})
+        </p>
+        <R2ImageUploaderContainer
+          folder="reviews"
+          multiple
+          maxFiles={MAX_REVIEW_IMAGES}
+          value={imageUrls}
+          onChange={setImageUrls}
+          disabled={isSubmitting}
         />
       </div>
 

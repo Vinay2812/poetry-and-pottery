@@ -31,6 +31,7 @@ interface OrderItemCardProps {
   onReviewSubmit: (
     rating: number,
     review?: string,
+    imageUrls?: string[],
   ) => Promise<{ success: boolean; error?: string }>;
 }
 
@@ -366,8 +367,8 @@ export function OrderDetail({
                   key={item.id}
                   item={item}
                   canReview={viewModel.canReview}
-                  onReviewSubmit={(rating, review) =>
-                    onReviewSubmit(item.productId, rating, review)
+                  onReviewSubmit={(rating, review, imageUrls) =>
+                    onReviewSubmit(item.productId, rating, review, imageUrls)
                   }
                 />
               ))}

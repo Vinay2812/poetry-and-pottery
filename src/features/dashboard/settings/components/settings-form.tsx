@@ -2,12 +2,12 @@
 
 import {
   Contact,
-  ExternalLink,
   Image as ImageIcon,
   Loader2,
   Save,
   Share2,
 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,32 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import type { SettingsFormProps, SettingsTab } from "../types";
+
+interface ImagePreviewProps {
+  src: string;
+  alt: string;
+}
+
+function ImagePreview({ src, alt }: ImagePreviewProps) {
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return null;
+  }
+
+  return (
+    <div className="relative mt-2 aspect-video w-full overflow-hidden rounded-lg border bg-neutral-100">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        onError={() => setHasError(true)}
+        unoptimized
+      />
+    </div>
+  );
+}
 
 export function SettingsForm({
   viewModel,
@@ -99,16 +125,7 @@ export function SettingsForm({
                   }
                   placeholder="https://example.com/image.jpg"
                 />
-                {heroImages.home && (
-                  <a
-                    href={heroImages.home}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary flex items-center gap-1 text-xs"
-                  >
-                    <ExternalLink className="h-3 w-3" /> Preview
-                  </a>
-                )}
+                <ImagePreview src={heroImages.home} alt="Home page hero" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">About Page Hero</label>
@@ -119,16 +136,7 @@ export function SettingsForm({
                   }
                   placeholder="https://example.com/image.jpg"
                 />
-                {heroImages.ourStory && (
-                  <a
-                    href={heroImages.ourStory}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary flex items-center gap-1 text-xs"
-                  >
-                    <ExternalLink className="h-3 w-3" /> Preview
-                  </a>
-                )}
+                <ImagePreview src={heroImages.ourStory} alt="About page hero" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">
@@ -141,16 +149,10 @@ export function SettingsForm({
                   }
                   placeholder="https://example.com/image.jpg"
                 />
-                {heroImages.products && (
-                  <a
-                    href={heroImages.products}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary flex items-center gap-1 text-xs"
-                  >
-                    <ExternalLink className="h-3 w-3" /> Preview
-                  </a>
-                )}
+                <ImagePreview
+                  src={heroImages.products}
+                  alt="Products page hero"
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Events Page Hero</label>
@@ -161,16 +163,7 @@ export function SettingsForm({
                   }
                   placeholder="https://example.com/image.jpg"
                 />
-                {heroImages.events && (
-                  <a
-                    href={heroImages.events}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary flex items-center gap-1 text-xs"
-                  >
-                    <ExternalLink className="h-3 w-3" /> Preview
-                  </a>
-                )}
+                <ImagePreview src={heroImages.events} alt="Events page hero" />
               </div>
             </div>
           </div>

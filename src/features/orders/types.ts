@@ -79,6 +79,7 @@ export interface OrderDetailProps {
     productId: number,
     rating: number,
     review?: string,
+    imageUrls?: string[],
   ) => Promise<{ success: boolean; error?: string }>;
   onWhatsAppContact: () => void;
 }

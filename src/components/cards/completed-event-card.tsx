@@ -43,11 +43,12 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
   const imageUrl = event.image || "/placeholder.jpg";
 
   const handleReviewSubmit = useCallback(
-    async (rating: number, review?: string) => {
+    async (rating: number, review?: string, imageUrls?: string[]) => {
       const result = await createEventReview({
         eventId: event.id,
         rating,
         review,
+        imageUrls,
       });
 
       if (result.success) {

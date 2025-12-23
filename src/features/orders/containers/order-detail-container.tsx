@@ -56,11 +56,17 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
   }, [order]);
 
   const handleReviewSubmit = useCallback(
-    async (productId: number, rating: number, review?: string) => {
+    async (
+      productId: number,
+      rating: number,
+      review?: string,
+      imageUrls?: string[],
+    ) => {
       const result = await createProductReview({
         productId,
         rating,
         review,
+        imageUrls,
       });
 
       if (result.success) {
