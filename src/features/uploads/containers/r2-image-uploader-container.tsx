@@ -3,7 +3,7 @@
 import { getPresignedUploadUrl } from "@/actions/admin/admin.uploads.actions";
 import { ACCEPTED_IMAGE_TYPES } from "@/consts/uploads";
 import { arrayMove } from "@dnd-kit/sortable";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { R2ImageUploader } from "../components/r2-image-uploader";
 import type { R2ImageUploaderContainerProps, UploadFile } from "../types";
@@ -40,14 +40,17 @@ export function R2ImageUploaderContainer({
     value.map(createUploadFileFromUrl),
   );
 
+  // Use ref to store onChange to avoid infinite loop
+  // (onChange causes parent re-render which creates new onChange reference)
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
   useEffect(() => {
-    if (onChange) {
-      const successUrls = uploadFiles
-        .filter((f) => f.status === "success" && f.publicUrl)
-        .map((f) => f.publicUrl as string);
-      onChange(successUrls);
-    }
-  }, [uploadFiles, onChange]);
+    const successUrls = uploadFiles
+      .filter((f) => f.status === "success" && f.publicUrl)
+      .map((f) => f.publicUrl as string);
+    onChangeRef.current?.(successUrls);
+  }, [uploadFiles]);
 
   const uploadFile = useCallback(
     async (fileToUpload: UploadFile) => {

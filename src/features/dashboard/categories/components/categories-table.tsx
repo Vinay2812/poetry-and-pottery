@@ -1,16 +1,21 @@
 "use client";
 
 import {
+  CircleDotIcon,
   CoffeeIcon,
   FlowerIcon,
   GemIcon,
   GiftIcon,
   HeartIcon,
   HomeIcon,
+  LeafIcon,
+  PackageIcon,
   PaletteIcon,
   PencilIcon,
   PlusIcon,
+  SaladIcon,
   ShapesIcon,
+  SoupIcon,
   SparklesIcon,
   StarIcon,
   TagIcon,
@@ -47,11 +52,15 @@ const iconComponents: Record<
   React.ComponentType<{ className?: string }>
 > = {
   tag: TagIcon,
+  bowl: SoupIcon,
   coffee: CoffeeIcon,
+  plate: CircleDotIcon,
   flower: FlowerIcon,
+  plant: LeafIcon,
   home: HomeIcon,
   gift: GiftIcon,
   utensils: UtensilsIcon,
+  serving: SaladIcon,
   palette: PaletteIcon,
   heart: HeartIcon,
   star: StarIcon,
@@ -71,7 +80,7 @@ function CategoryIcon({
   return <IconComponent className={className} />;
 }
 
-interface CategoryRowProps {
+interface CategoryCardProps {
   category: CategoryRowViewModel;
   iconOptions: { value: string; label: string }[];
   onIconChange: (name: string, icon: string) => void;
@@ -80,14 +89,14 @@ interface CategoryRowProps {
   isPending: boolean;
 }
 
-function CategoryRow({
+function CategoryCard({
   category,
   iconOptions,
   onIconChange,
   onRename,
   onDelete,
   isPending,
-}: CategoryRowProps) {
+}: CategoryCardProps) {
   const [isRenaming, setIsRenaming] = useState(false);
   const [newName, setNewName] = useState(category.name);
 
@@ -99,83 +108,11 @@ function CategoryRow({
   };
 
   return (
-    <tr className="transition-colors hover:bg-neutral-50/50">
-      <td className="px-4 py-3">
-        <div className="flex items-center gap-3">
-          <div className="bg-primary/10 text-primary flex size-10 items-center justify-center rounded-lg">
-            <CategoryIcon icon={category.icon} className="size-5" />
-          </div>
-          {isRenaming ? (
-            <div className="flex items-center gap-2">
-              <Input
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                className="h-8 w-40"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleRename();
-                  if (e.key === "Escape") {
-                    setNewName(category.name);
-                    setIsRenaming(false);
-                  }
-                }}
-                autoFocus
-              />
-              <Button size="sm" onClick={handleRename} disabled={isPending}>
-                Save
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => {
-                  setNewName(category.name);
-                  setIsRenaming(false);
-                }}
-              >
-                Cancel
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <span className="font-medium text-neutral-900">
-                {category.name}
-              </span>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="size-6"
-                onClick={() => setIsRenaming(true)}
-              >
-                <PencilIcon className="size-3 text-neutral-400" />
-              </Button>
-            </div>
-          )}
+    <div className="hover:shadow-soft overflow-hidden rounded-xl border border-neutral-200 bg-white p-4 transition-shadow">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="bg-primary/10 text-primary flex size-12 shrink-0 items-center justify-center rounded-xl">
+          <CategoryIcon icon={category.icon} className="size-6" />
         </div>
-      </td>
-      <td className="px-4 py-3">
-        <Select
-          value={category.icon}
-          onValueChange={(value) => onIconChange(category.name, value)}
-          disabled={isPending}
-        >
-          <SelectTrigger className="w-40">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {iconOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                <div className="flex items-center gap-2">
-                  <CategoryIcon icon={option.value} className="size-4" />
-                  {option.label}
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </td>
-      <td className="px-4 py-3">
-        <span className="text-neutral-600">{category.productCount}</span>
-      </td>
-      <td className="px-4 py-3 text-right">
         <Button
           variant="ghost"
           size="icon"
@@ -189,12 +126,96 @@ function CategoryRow({
             }
           }}
           disabled={isPending}
-          className="text-red-500 hover:text-red-600"
+          className="size-8 shrink-0 text-red-500 hover:text-red-600"
         >
           <Trash2Icon className="size-4" />
         </Button>
-      </td>
-    </tr>
+      </div>
+
+      <div className="mb-3">
+        {isRenaming ? (
+          <div className="flex flex-col gap-2">
+            <Input
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              className="h-9"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleRename();
+                if (e.key === "Escape") {
+                  setNewName(category.name);
+                  setIsRenaming(false);
+                }
+              }}
+              autoFocus
+            />
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                onClick={handleRename}
+                disabled={isPending}
+                className="flex-1"
+              >
+                Save
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setNewName(category.name);
+                  setIsRenaming(false);
+                }}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-neutral-900">{category.name}</h3>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="size-6"
+              onClick={() => setIsRenaming(true)}
+            >
+              <PencilIcon className="size-3 text-neutral-400" />
+            </Button>
+          </div>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Label className="mb-1.5 block text-xs text-neutral-500">Icon</Label>
+        <Select
+          value={category.icon}
+          onValueChange={(value) => onIconChange(category.name, value)}
+          disabled={isPending}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {iconOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                <div className="flex items-center gap-2">
+                  <CategoryIcon icon={option.value} className="size-4" />
+                  {option.label}
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex items-center gap-2 rounded-lg bg-neutral-50 px-3 py-2">
+        <PackageIcon className="size-4 text-neutral-400" />
+        <span className="text-sm text-neutral-600">
+          {category.productCount} product
+          {category.productCount !== 1 ? "s" : ""}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -291,52 +312,26 @@ export function CategoriesTable({
         </Dialog>
       </div>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-neutral-100 bg-neutral-50/50">
-                <th className="px-4 py-3 text-left text-sm font-semibold text-neutral-600">
-                  Category
-                </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-neutral-600">
-                  Icon
-                </th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-neutral-600">
-                  Products
-                </th>
-                <th className="px-4 py-3 text-right text-sm font-semibold text-neutral-600">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {viewModel.categories.map((category) => (
-                <CategoryRow
-                  key={category.name}
-                  category={category}
-                  iconOptions={iconOptions}
-                  onIconChange={onIconChange}
-                  onRename={onRename}
-                  onDelete={onDelete}
-                  isPending={isPending}
-                />
-              ))}
-              {viewModel.categories.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="py-12 text-center text-neutral-500"
-                  >
-                    No categories found. Add your first category.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+      {/* Cards Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {viewModel.categories.map((category) => (
+          <CategoryCard
+            key={category.name}
+            category={category}
+            iconOptions={iconOptions}
+            onIconChange={onIconChange}
+            onRename={onRename}
+            onDelete={onDelete}
+            isPending={isPending}
+          />
+        ))}
       </div>
+
+      {viewModel.categories.length === 0 && (
+        <div className="rounded-xl border border-neutral-200 bg-white py-12 text-center text-neutral-500">
+          No categories found. Add your first category.
+        </div>
+      )}
     </div>
   );
 }

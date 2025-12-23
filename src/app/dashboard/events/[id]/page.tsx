@@ -3,7 +3,6 @@ import {
   getEventLevelOptions,
   getEventRegistrations,
   getEventReviews,
-  getEventStatusColor,
   getEventStatusOptions,
 } from "@/actions/admin";
 import { EventFormContainer } from "@/features/dashboard/events";
@@ -14,6 +13,8 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { getEventStatusColor } from "@/lib/status-utils";
 
 import { EventRegistrationsSection } from "./_components/event-registrations-section";
 import { EventReviewsSection } from "./_components/event-reviews-section";
@@ -55,9 +56,8 @@ export default async function EventDetailPage({
               {event.status.toLowerCase().replace("_", " ")}
             </Badge>
           </div>
-          <p className="text-muted-foreground">
-            ID: {event.id} · Slug: {event.slug}
-          </p>
+          <p className="text-muted-foreground">ID: {event.id}</p>
+          <p className="text-muted-foreground">Slug: {event.slug}</p>
         </div>
       </div>
 

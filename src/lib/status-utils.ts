@@ -1,4 +1,9 @@
-import { EventRegistrationStatus, OrderStatus } from "@/prisma/generated/enums";
+import {
+  EventLevel,
+  EventRegistrationStatus,
+  EventStatus,
+  OrderStatus,
+} from "@/prisma/generated/enums";
 
 // Order status options
 export function getOrderStatusOptions(): {
@@ -67,4 +72,27 @@ export function getRegistrationStatusColor(
       "bg-neutral-100 text-neutral-700 border-neutral-200",
   };
   return colors[status];
+}
+
+// Event status color configuration
+export function getEventStatusColor(status: EventStatus): string {
+  const colors: Record<EventStatus, string> = {
+    [EventStatus.UPCOMING]: "bg-blue-100 text-blue-700 border-blue-200",
+    [EventStatus.ACTIVE]: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    [EventStatus.INACTIVE]:
+      "bg-neutral-100 text-neutral-700 border-neutral-200",
+    [EventStatus.COMPLETED]: "bg-primary/10 text-primary border-primary/20",
+    [EventStatus.CANCELLED]: "bg-red-100 text-red-700 border-red-200",
+  };
+  return colors[status];
+}
+
+// Event level color configuration
+export function getEventLevelColor(level: EventLevel): string {
+  const colors: Record<EventLevel, string> = {
+    [EventLevel.BEGINNER]: "bg-green-100 text-green-700 border-green-200",
+    [EventLevel.INTERMEDIATE]: "bg-amber-100 text-amber-700 border-amber-200",
+    [EventLevel.ADVANCED]: "bg-purple-100 text-purple-700 border-purple-200",
+  };
+  return colors[level];
 }
