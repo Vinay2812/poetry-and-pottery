@@ -53,11 +53,6 @@ export function AccountDropdown({
               className={cn("h-5 w-5 text-neutral-600 dark:text-neutral-300")}
             />
           )}
-          {viewModel.pendingOrdersCount > 0 && (
-            <span className="bg-primary absolute top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
-              {viewModel.pendingOrdersCount}
-            </span>
-          )}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -88,12 +83,7 @@ export function AccountDropdown({
           className="cursor-pointer"
         >
           <Package className="mr-2 h-4 w-4" />
-          <span className="flex-1">My Orders</span>
-          {viewModel.pendingOrdersCount > 0 && (
-            <span className="bg-primary ml-auto flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-bold text-white">
-              {viewModel.pendingOrdersCount}
-            </span>
-          )}
+          My Orders
         </DropdownMenuItem>
         {viewModel.isAdmin && (
           <DropdownMenuItem
