@@ -7,6 +7,8 @@ import type {
   ShippingPageContent,
 } from "@/actions/admin";
 
+import { formatContentDate } from "@/lib/date";
+
 /**
  * View model for the content pages list.
  */
@@ -90,7 +92,7 @@ export function buildContentPagesListViewModel(
       slug: page.slug,
       title: page.title,
       isActive: page.is_active,
-      lastUpdated: formatDate(page.updated_at),
+      lastUpdated: formatContentDate(page.updated_at),
     })),
   };
 }
@@ -112,19 +114,6 @@ export function buildContentPageEditorViewModel(
     title,
     content,
   };
-}
-
-/**
- * Format date for display.
- */
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(date));
 }
 
 /**

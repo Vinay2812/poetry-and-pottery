@@ -1,21 +1,13 @@
 "use server";
 
+import { ALLOWED_IMAGE_TYPES, MAX_FILE_SIZE } from "@/consts/uploads";
+
 import { requireAdmin } from "@/lib/admin";
 import {
   generateUniqueKey,
   getPublicUrl,
   getSignedUrlForUpload,
 } from "@/lib/r2";
-
-const ALLOWED_CONTENT_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "image/avif",
-];
-
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export interface GetPresignedUrlParams {
   filename: string;
@@ -48,10 +40,10 @@ export async function getPresignedUploadUrl(
   }
 
   // Validate content type
-  if (!ALLOWED_CONTENT_TYPES.includes(contentType)) {
+  if (!ALLOWED_IMAGE_TYPES.includes(contentType)) {
     return {
       success: false,
-      error: `Invalid content type. Allowed: ${ALLOWED_CONTENT_TYPES.join(", ")}`,
+      error: `Invalid content type. Allowed: ${ALLOWED_IMAGE_TYPES.join(", ")}`,
     };
   }
 

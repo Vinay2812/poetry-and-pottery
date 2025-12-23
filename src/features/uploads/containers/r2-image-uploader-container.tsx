@@ -1,8 +1,9 @@
 "use client";
 
 import { getPresignedUploadUrl } from "@/actions/admin/admin.uploads.actions";
+import { ACCEPTED_IMAGE_TYPES } from "@/consts/uploads";
 import { arrayMove } from "@dnd-kit/sortable";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { R2ImageUploader } from "../components/r2-image-uploader";
 import type { R2ImageUploaderContainerProps, UploadFile } from "../types";
@@ -11,8 +12,6 @@ import {
   createUploadFile,
   createUploadFileFromUrl,
 } from "../types";
-
-const ACCEPTED_TYPES = "image/jpeg,image/png,image/webp,image/gif,image/avif";
 
 async function uploadToR2(presignedUrl: string, file: File): Promise<void> {
   const response = await fetch(presignedUrl, {
@@ -176,7 +175,7 @@ export function R2ImageUploaderContainer({
       multiple={multiple}
       maxFiles={maxFiles}
       disabled={disabled}
-      acceptedTypes={ACCEPTED_TYPES}
+      acceptedTypes={ACCEPTED_IMAGE_TYPES}
       onFilesSelect={handleFilesSelect}
       onRemove={handleRemove}
       onRetry={handleRetry}

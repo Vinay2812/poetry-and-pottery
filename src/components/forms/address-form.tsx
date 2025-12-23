@@ -1,5 +1,6 @@
 "use client";
 
+import { INDIAN_STATES } from "@/consts/forms";
 import type { UserAddress } from "@/prisma/generated/client";
 import { useCallback, useState } from "react";
 
@@ -14,40 +15,6 @@ import {
 } from "@/components/ui/select";
 
 import { cn } from "@/lib/utils";
-
-const INDIAN_STATES = [
-  "Andhra Pradesh",
-  "Arunachal Pradesh",
-  "Assam",
-  "Bihar",
-  "Chhattisgarh",
-  "Goa",
-  "Gujarat",
-  "Haryana",
-  "Himachal Pradesh",
-  "Jharkhand",
-  "Karnataka",
-  "Kerala",
-  "Madhya Pradesh",
-  "Maharashtra",
-  "Manipur",
-  "Meghalaya",
-  "Mizoram",
-  "Nagaland",
-  "Odisha",
-  "Punjab",
-  "Rajasthan",
-  "Sikkim",
-  "Tamil Nadu",
-  "Telangana",
-  "Tripura",
-  "Uttar Pradesh",
-  "Uttarakhand",
-  "West Bengal",
-  "Delhi",
-  "Chandigarh",
-  "Puducherry",
-];
 
 interface AddressFormData {
   name: string;

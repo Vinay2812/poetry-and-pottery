@@ -1,4 +1,11 @@
 import {
+  R2_ACCESS_KEY_ID,
+  R2_ACCOUNT_ID,
+  R2_BUCKET,
+  R2_PUBLIC_URL,
+  R2_SECRET_ACCESS_KEY,
+} from "@/consts/env";
+import {
   DeleteObjectCommand,
   GetObjectCommand,
   ListObjectsV2Command,
@@ -6,14 +13,6 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-
-import {
-  R2_ACCESS_KEY_ID,
-  R2_ACCOUNT_ID,
-  R2_BUCKET,
-  R2_PUBLIC_URL,
-  R2_SECRET_ACCESS_KEY,
-} from "@/lib/env.consts";
 
 export interface FileObject {
   Key?: string;
@@ -53,9 +52,6 @@ function getS3Client() {
   return s3Client;
 }
 
-/**
- * Upload a file buffer directly to R2
- */
 export async function uploadFile(
   file: Buffer,
   key: string,
@@ -72,9 +68,6 @@ export async function uploadFile(
   return response;
 }
 
-/**
- * Get a presigned URL for uploading a file from the client
- */
 export async function getSignedUrlForUpload(
   key: string,
   contentType: string,
@@ -90,9 +83,6 @@ export async function getSignedUrlForUpload(
   return signedUrl;
 }
 
-/**
- * Get a presigned URL for downloading/viewing a file
- */
 export async function getSignedUrlForDownload(
   key: string,
   expiresIn = 3600,
@@ -106,9 +96,6 @@ export async function getSignedUrlForDownload(
   return signedUrl;
 }
 
-/**
- * List files in R2 bucket with optional prefix
- */
 export async function listFiles(prefix = ""): Promise<FileObject[]> {
   const command = new ListObjectsV2Command({
     Bucket: R2_BUCKET,
@@ -119,9 +106,6 @@ export async function listFiles(prefix = ""): Promise<FileObject[]> {
   return response.Contents || [];
 }
 
-/**
- * Delete a file from R2
- */
 export async function deleteFile(key: string) {
   const command = new DeleteObjectCommand({
     Bucket: R2_BUCKET,
@@ -132,9 +116,6 @@ export async function deleteFile(key: string) {
   return response;
 }
 
-/**
- * Generate a unique key for uploaded files
- */
 export function generateUniqueKey(filename: string, folder?: string): string {
   const timestamp = Date.now();
   const randomString = Math.random().toString(36).substring(2, 8);
@@ -144,10 +125,6 @@ export function generateUniqueKey(filename: string, folder?: string): string {
   return folder ? `${folder}/${key}` : key;
 }
 
-/**
- * Get the public URL for a file (requires R2 bucket to have public access enabled)
- * Uses R2_PUBLIC_URL if set, otherwise falls back to default R2.dev subdomain
- */
 export function getPublicUrl(key: string): string {
   if (R2_PUBLIC_URL) {
     // Remove trailing slash if present

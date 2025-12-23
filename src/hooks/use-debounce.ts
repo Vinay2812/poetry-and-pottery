@@ -1,8 +1,7 @@
 "use client";
 
+import { DEFAULT_DEBOUNCE_MS } from "@/consts/performance";
 import { useCallback, useRef } from "react";
-
-const DEFAULT_DEBOUNCE_MS = 1000;
 
 /**
  * Debounce hook - delays API call until user stops triggering for delay period.

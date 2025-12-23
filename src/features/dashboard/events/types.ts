@@ -1,6 +1,8 @@
 import type { AdminEvent, EventDetail, GetEventsResult } from "@/actions/admin";
 import type { EventLevel, EventStatus } from "@/prisma/generated/enums";
 
+import { formatDateTime } from "@/lib/date";
+
 /**
  * View model for a single event row in the table.
  */
@@ -284,18 +286,8 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
-/**
- * Format date and time.
- */
-export function formatDateTime(date: Date): string {
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(date));
-}
+// Re-export for backwards compatibility
+export { formatDateTime } from "@/lib/date";
 
 /**
  * Generate slug from title.

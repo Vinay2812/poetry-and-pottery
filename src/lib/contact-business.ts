@@ -1,5 +1,7 @@
 "use client";
 
+import { formatEventDateFull } from "./date";
+
 // Types for different notification scenarios
 export interface EventNotificationData {
   type: "event";
@@ -60,18 +62,6 @@ export interface EventFollowUpData {
 export type NotificationData = EventNotificationData | OrderNotificationData;
 export type FollowUpData = OrderFollowUpData | EventFollowUpData;
 
-function formatEventDate(date: Date): string {
-  return new Date(date).toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-/**
- * Send email notification via API
- */
 export async function sendEmailNotification(
   data: NotificationData,
 ): Promise<{ success: boolean; error?: string }> {
@@ -93,16 +83,13 @@ export async function sendEmailNotification(
   }
 }
 
-/**
- * Open WhatsApp with pre-filled message
- */
 export function openWhatsApp(data: NotificationData): void {
   const phoneNumber = process.env.NEXT_PUBLIC_MOBILE_NUMBER || "";
 
   let message: string;
 
   if (data.type === "event") {
-    const formattedDate = formatEventDate(data.eventDate);
+    const formattedDate = formatEventDateFull(data.eventDate);
     message =
       `Hi! I would like to register for the following workshop:\n\n` +
       `*Workshop:* ${data.eventTitle}\n` +
@@ -147,9 +134,6 @@ export function openWhatsApp(data: NotificationData): void {
   window.open(whatsappUrl, "_blank");
 }
 
-/**
- * Open WhatsApp for follow-up queries on existing orders/registrations
- */
 export function openWhatsAppFollowUp(data: FollowUpData): void {
   const phoneNumber = process.env.NEXT_PUBLIC_MOBILE_NUMBER || "";
 
@@ -166,7 +150,7 @@ export function openWhatsAppFollowUp(data: FollowUpData): void {
       `Email: ${data.customerEmail}\n\n` +
       `Please help me with an update on my order.`;
   } else {
-    const formattedDate = formatEventDate(data.eventDate);
+    const formattedDate = formatEventDateFull(data.eventDate);
     message =
       `Hi! I have a query about my workshop registration:\n\n` +
       `*Registration ID:* ${data.registrationId}\n` +
@@ -185,9 +169,6 @@ export function openWhatsAppFollowUp(data: FollowUpData): void {
   window.open(whatsappUrl, "_blank");
 }
 
-/**
- * Contact business - sends email first, then opens WhatsApp
- */
 export async function contactBusiness(
   data: NotificationData,
 ): Promise<{ success: boolean; error?: string }> {

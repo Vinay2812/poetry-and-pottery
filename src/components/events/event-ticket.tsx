@@ -2,18 +2,14 @@ import type { RegistrationWithEvent } from "@/types";
 import { Calendar, Clock, MapPin, Ticket, User } from "lucide-react";
 import { forwardRef } from "react";
 
+import {
+  calculateDuration,
+  formatEventTime,
+  formatTicketDate,
+} from "@/lib/date";
+
 interface EventTicketProps {
   registration: RegistrationWithEvent;
-}
-
-function calculateDuration(startsAt: Date, endsAt: Date): string {
-  const diffMs = new Date(endsAt).getTime() - new Date(startsAt).getTime();
-  const hours = Math.floor(diffMs / (1000 * 60 * 60));
-  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (hours === 0) return `${minutes}min`;
-  if (minutes === 0) return `${hours}hr`;
-  return `${hours}hr ${minutes}min`;
 }
 
 // Using inline styles with hex colors for print compatibility
@@ -34,19 +30,8 @@ export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
   function EventTicket({ registration }, ref) {
     const { event, user } = registration;
 
-    const eventDate = new Date(event.starts_at);
-    const formattedDate = eventDate.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-    const formattedTime = eventDate.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-
+    const formattedDate = formatTicketDate(event.starts_at);
+    const formattedTime = formatEventTime(event.starts_at);
     const duration = calculateDuration(event.starts_at, event.ends_at);
     const ticketId = registration.id.slice(-8).toUpperCase();
 

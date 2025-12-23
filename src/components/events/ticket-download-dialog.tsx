@@ -6,19 +6,15 @@ import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 
+import {
+  calculateDuration,
+  formatEventDateFull,
+  formatEventTime,
+} from "@/lib/date";
+
 interface TicketDownloadDialogProps {
   registration: RegistrationWithEvent;
   trigger?: React.ReactNode;
-}
-
-function calculateDuration(startsAt: Date, endsAt: Date): string {
-  const diffMs = new Date(endsAt).getTime() - new Date(startsAt).getTime();
-  const hours = Math.floor(diffMs / (1000 * 60 * 60));
-  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (hours === 0) return `${minutes}min`;
-  if (minutes === 0) return `${hours}hr`;
-  return `${hours}hr ${minutes}min`;
 }
 
 export function TicketDownloadDialog({
@@ -27,18 +23,8 @@ export function TicketDownloadDialog({
 }: TicketDownloadDialogProps) {
   const { event, user } = registration;
 
-  const eventDate = new Date(event.starts_at);
-  const formattedDate = eventDate.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-  const formattedTime = eventDate.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
+  const formattedDate = formatEventDateFull(event.starts_at);
+  const formattedTime = formatEventTime(event.starts_at);
   const duration = calculateDuration(event.starts_at, event.ends_at);
   const ticketId = registration.id.toUpperCase();
 

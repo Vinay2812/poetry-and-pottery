@@ -1,19 +1,12 @@
 "use client";
 
+import { CONTACT_SUBJECT_OPTIONS } from "@/consts/forms";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
-
-const SUBJECT_OPTIONS = [
-  { value: "products", label: "Product Inquiry" },
-  { value: "workshops", label: "Workshop Question" },
-  { value: "custom", label: "Custom Order" },
-  { value: "wholesale", label: "Wholesale Inquiry" },
-  { value: "other", label: "Other" },
-];
 
 export function ContactForm() {
   const handleSubmit = (e: React.FormEvent) => {
@@ -42,7 +35,7 @@ export function ContactForm() {
           label="Subject"
           name="subject"
           placeholder="Select a topic"
-          options={SUBJECT_OPTIONS}
+          options={CONTACT_SUBJECT_OPTIONS}
         />
         <FormInput
           as="textarea"

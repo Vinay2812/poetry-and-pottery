@@ -7,6 +7,8 @@ import {
 } from "@/actions/admin";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
+import { formatCreatedAt } from "@/lib/date";
+
 import { OrderDetailDialog } from "../components/order-detail-dialog";
 import type {
   EditedItem,
@@ -15,16 +17,6 @@ import type {
   OrderItemViewModel,
   OrderViewModel,
 } from "../types";
-
-function formatCreatedAt(date: Date): string {
-  return new Date(date).toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 export function OrderDetailDialogContainer({
   order,

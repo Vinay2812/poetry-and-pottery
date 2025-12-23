@@ -1,5 +1,6 @@
 "use client";
 
+import { MAX_CART_QUANTITY } from "@/consts/performance";
 import type { ProductWithCategories } from "@/types";
 import { motion } from "framer-motion";
 import { Loader2, Trash2 } from "lucide-react";
@@ -14,8 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import { MAX_CART_QUANTITY } from "@/lib/constants";
 
 interface CartItemCardProps {
   product: ProductWithCategories;

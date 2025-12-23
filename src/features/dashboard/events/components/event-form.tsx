@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import { formatDateTimeLocal } from "@/lib/date";
+
 import type { EventFormProps } from "../types";
 import { generateSlug } from "../types";
 
@@ -62,12 +64,6 @@ const eventFormSchema = z.object({
   status: z.string(),
   level: z.string(),
 });
-
-function formatDateTimeLocal(date: Date): string {
-  const d = new Date(date);
-  const pad = (n: number) => n.toString().padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
 
 export function EventForm({
   viewModel,

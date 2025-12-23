@@ -1,8 +1,10 @@
 "use client";
 
+import { DEFAULT_THROTTLE_MS } from "@/consts/performance";
 import { useCallback, useRef } from "react";
 
-export const DEFAULT_THROTTLE_MS = 500;
+// Re-export for backwards compatibility
+export { DEFAULT_THROTTLE_MS } from "@/consts/performance";
 
 /**
  * Throttle hook - executes immediately, blocks subsequent calls for delay period.

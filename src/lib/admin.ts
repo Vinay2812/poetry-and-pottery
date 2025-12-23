@@ -1,16 +1,12 @@
 "use server";
 
+import { ENVIRONMENT } from "@/consts/env";
 import { UserRole } from "@/prisma/generated/enums";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-import { ENVIRONMENT } from "@/lib/env.consts";
 import { prisma } from "@/lib/prisma";
 
-/**
- * Check if the current user is an admin based on session claims.
- * Returns false if not authenticated or not an admin.
- */
 export async function isAdmin(): Promise<boolean> {
   const { sessionClaims, isAuthenticated } = await auth();
 
@@ -29,10 +25,6 @@ export async function isAdmin(): Promise<boolean> {
   return role === UserRole.ADMIN;
 }
 
-/**
- * Get the authenticated database user with their role.
- * Returns null if not authenticated or user not found.
- */
 export async function getAuthenticatedDbUser() {
   const { sessionClaims, isAuthenticated } = await auth();
 
@@ -61,10 +53,6 @@ export async function getAuthenticatedDbUser() {
   return user;
 }
 
-/**
- * Require admin access - throws redirect if not admin.
- * Use this at the top of server actions that require admin access.
- */
 export async function requireAdmin(): Promise<void> {
   const user = await getAuthenticatedDbUser();
 
@@ -77,10 +65,6 @@ export async function requireAdmin(): Promise<void> {
   }
 }
 
-/**
- * Require admin access and return the user.
- * Redirects if not authenticated or not admin.
- */
 export async function requireAdminUser() {
   const user = await getAuthenticatedDbUser();
 
@@ -95,10 +79,6 @@ export async function requireAdminUser() {
   return user;
 }
 
-/**
- * Check admin status for client-side use.
- * Returns { isAuthenticated, isAdmin, role }
- */
 export async function getAdminStatus() {
   const { sessionClaims, isAuthenticated } = await auth();
 

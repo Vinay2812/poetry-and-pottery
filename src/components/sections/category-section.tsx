@@ -1,5 +1,6 @@
 "use client";
 
+import { CATEGORY_ICONS } from "@/consts/client";
 import {
   ArrowRight,
   Circle,
@@ -12,7 +13,6 @@ import {
 import Link from "next/link";
 import { useRef } from "react";
 
-import { CATEGORY_ICONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const ICON_MAP: Record<string, LucideIcon> = {

@@ -3,38 +3,13 @@
 import { updateRegistrationDetails } from "@/actions/admin";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
+import { formatCreatedAt, formatDateShort, formatTime } from "@/lib/date";
+
 import { RegistrationDetailDialog } from "../components/registration-detail-dialog";
 import type {
   RegistrationDetailDialogContainerProps,
   RegistrationViewModel,
 } from "../types";
-
-function formatDate(date: Date): string {
-  return new Date(date).toLocaleDateString("en-IN", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
-function formatTime(date: Date): string {
-  return new Date(date).toLocaleTimeString("en-IN", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-}
-
-function formatCreatedAt(date: Date): string {
-  return new Date(date).toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 export function RegistrationDetailDialogContainer({
   registration,
@@ -115,7 +90,7 @@ export function RegistrationDetailDialogContainer({
         eventImage: registration.event.image || null,
         eventLocation: registration.event.location || null,
         eventPricePerSeat: registration.event.price,
-        formattedDate: formatDate(registration.event.starts_at),
+        formattedDate: formatDateShort(registration.event.starts_at),
         formattedTime: formatTime(registration.event.starts_at),
         formattedCreatedAt: formatCreatedAt(registration.created_at),
         editedPrice,

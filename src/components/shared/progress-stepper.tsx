@@ -2,6 +2,7 @@
 
 import { LucideIcon } from "lucide-react";
 
+import { formatProgressDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 export interface ProgressStep {
@@ -19,16 +20,6 @@ interface ProgressStepperProps {
   currentStatus: string;
   statusOrder: readonly string[];
   getStepDate: (stepStatus: string) => Date | string | null;
-}
-
-function formatDate(dateValue: Date | string): string {
-  const date = new Date(dateValue);
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
 }
 
 function getStepStatus(
@@ -146,7 +137,7 @@ export function ProgressStepper({
 
                 {stepDate && stepStatus !== "upcoming" && (
                   <time className="text-primary mt-1.5 block text-[10px] font-bold tracking-wider uppercase">
-                    {formatDate(stepDate)}
+                    {formatProgressDate(stepDate)}
                   </time>
                 )}
               </div>

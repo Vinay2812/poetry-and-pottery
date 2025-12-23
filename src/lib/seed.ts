@@ -6,7 +6,7 @@ import {
   UserRole,
 } from "@/prisma/generated/client";
 
-import { PEXELS_API_KEY } from "./env.consts";
+import { PEXELS_API_KEY } from "../consts/env";
 import { prisma } from "./prisma";
 
 if (!PEXELS_API_KEY) {

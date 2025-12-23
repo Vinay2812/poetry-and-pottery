@@ -1,8 +1,8 @@
 "use server";
 
+import { ENVIRONMENT } from "@/consts/env";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 
-import { ENVIRONMENT } from "@/lib/env.consts";
 import { prisma } from "@/lib/prisma";
 
 async function createUserInDatabase() {

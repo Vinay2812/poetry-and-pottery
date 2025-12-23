@@ -4,6 +4,8 @@ import type {
 } from "@/actions";
 import { OrderStatus } from "@/types";
 
+import { formatOrderDate } from "@/lib/date";
+
 /**
  * Type for shipping address JSON field.
  */
@@ -88,17 +90,8 @@ export interface OrderDetailContainerProps {
   order: OrderWithReviewStatus | null;
 }
 
-/**
- * Helper function to format order date for display.
- */
-export function formatOrderDate(dateString: Date | string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
+// Re-export date utilities for convenience
+export { formatOrderDate } from "@/lib/date";
 
 /**
  * Helper function to get status label.

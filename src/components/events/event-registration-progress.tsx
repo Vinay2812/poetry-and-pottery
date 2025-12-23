@@ -16,6 +16,8 @@ import {
   ProgressStepper,
 } from "@/components/shared/progress-stepper";
 
+import { formatProgressDate } from "@/lib/date";
+
 export const REGISTRATION_STEPS: readonly ProgressStep[] = [
   {
     status: EventRegistrationStatus.PENDING,
@@ -68,16 +70,6 @@ interface EventRegistrationProgressProps {
   createdAt: Date | string;
 }
 
-function formatDate(dateValue: Date | string): string {
-  const date = new Date(dateValue);
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
-}
-
 export function EventRegistrationProgress({
   status,
   requestAt,
@@ -124,7 +116,7 @@ export function EventRegistrationProgress({
             </p>
             {cancelledAt && (
               <time className="mt-0.5 block text-[10px] font-bold tracking-wider text-red-500 uppercase">
-                {formatDate(cancelledAt)}
+                {formatProgressDate(cancelledAt)}
               </time>
             )}
           </div>

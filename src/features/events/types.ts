@@ -53,40 +53,12 @@ export interface EventDetailContainerProps {
   otherEvents: EventWithRegistrationCount[];
 }
 
-/**
- * Helper function to calculate duration from DateTime objects
- */
-export function calculateDuration(startsAt: Date, endsAt: Date): string {
-  const diffMs = new Date(endsAt).getTime() - new Date(startsAt).getTime();
-  const hours = Math.floor(diffMs / (1000 * 60 * 60));
-  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (hours === 0) return `${minutes}min`;
-  if (minutes === 0) return `${hours}hr`;
-  return `${hours}hr ${minutes}min`;
-}
-
-/**
- * Format event date for display.
- */
-export function formatEventDate(date: Date): string {
-  return new Date(date).toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-/**
- * Format event time for display.
- */
-export function formatEventTime(date: Date): string {
-  return new Date(date).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-}
+// Re-export date utilities for convenience
+export {
+  calculateDuration,
+  formatEventDate,
+  formatEventTime,
+} from "@/lib/date";
 
 /**
  * Formatted review for display.

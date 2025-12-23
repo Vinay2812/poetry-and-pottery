@@ -5,13 +5,12 @@ import {
   removeFromCart as removeFromCartAction,
   updateCartQuantity as updateCartQuantityAction,
 } from "@/actions/cart.actions";
+import { MAX_CART_QUANTITY } from "@/consts/performance";
 import { useCartStore } from "@/store/cart.store";
 import { useUIStore } from "@/store/ui.store";
 import type { CartWithProduct, ProductWithCategories } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useState } from "react";
-
-import { MAX_CART_QUANTITY } from "@/lib/constants";
 
 import { useThrottle } from "./use-throttle";
 

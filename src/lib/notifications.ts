@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 
-import { BUSINESS_EMAIL, GMAIL_APP_PASSWORD, GMAIL_USER } from "./env.consts";
+import { BUSINESS_EMAIL, GMAIL_APP_PASSWORD, GMAIL_USER } from "../consts/env";
+import { formatEventDateFull } from "./date";
 
 // Create Gmail transporter
 const transporter = nodemailer.createTransport({
@@ -51,17 +52,8 @@ export interface OrderNotificationData {
 
 export type NotificationData = EventNotificationData | OrderNotificationData;
 
-function formatEventDate(date: Date): string {
-  return new Date(date).toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
 function generateEventEmailHtml(data: EventNotificationData): string {
-  const formattedDate = formatEventDate(data.eventDate);
+  const formattedDate = formatEventDateFull(data.eventDate);
 
   return `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
@@ -154,8 +146,8 @@ function generateOrderEmailHtml(data: OrderNotificationData): string {
 export async function sendRegistrationNotification(
   data: NotificationData,
 ): Promise<{ success: boolean; error?: string }> {
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+  const gmailUser = GMAIL_USER;
+  const gmailAppPassword = GMAIL_APP_PASSWORD;
 
   if (!gmailUser || !gmailAppPassword) {
     console.error("Gmail credentials not configured");

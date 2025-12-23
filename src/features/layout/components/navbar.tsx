@@ -1,5 +1,6 @@
 "use client";
 
+import { NAV_LINKS } from "@/consts/client";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { Heart, Search, ShoppingCartIcon } from "lucide-react";
@@ -8,7 +9,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { NAV_LINKS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 import { AccountDropdownContainer } from "../containers/account-dropdown-container";
