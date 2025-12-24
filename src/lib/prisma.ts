@@ -1,5 +1,6 @@
 import { PrismaClient } from "@/prisma/generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { readReplicas } from "@prisma/extension-read-replicas";
 
 import { DATABASE_URL } from "../consts/env";
 
@@ -9,7 +10,15 @@ if (!DATABASE_URL) {
 
 const connectionString = DATABASE_URL;
 
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
+const mainAdapter = new PrismaPg({ connectionString });
+const replicaAdapter = new PrismaPg({ connectionString });
+
+const replicaClient = new PrismaClient({ adapter: replicaAdapter });
+
+const prisma = new PrismaClient({ adapter: mainAdapter }).$extends(
+  readReplicas({
+    replicas: [replicaClient],
+  }),
+);
 
 export { prisma };
