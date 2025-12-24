@@ -417,7 +417,7 @@ export function ProductDetail({
     <>
       <main className="pt-14 pb-40 lg:pt-20 lg:pb-0">
         <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
-          <div className="grid gap-0 lg:grid-cols-2 lg:gap-10">
+          <div className="grid grid-cols-1 gap-0 lg:grid-cols-2 lg:gap-10">
             {/* Image Gallery */}
             <div className="min-w-0 overflow-hidden">
               <ProductImageGallery
