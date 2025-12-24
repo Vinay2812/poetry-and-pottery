@@ -72,18 +72,17 @@ export function ProductDetailContainer({
   }, [share, product.name, product.price]);
 
   const handleAddToCart = useCallback(() => {
-    requireAuth(async () => {
-      const success = await addToCart(product.id, 1, product);
+    addToCart(product.id, 1, product).then((success) => {
       if (success) {
         setAddedToCart(true);
         setTimeout(() => setAddedToCart(false), 2000);
       }
     });
-  }, [requireAuth, addToCart, product]);
+  }, [addToCart, product]);
 
   const handleToggleWishlist = useCallback(() => {
-    requireAuth(() => toggleWishlist(product.id));
-  }, [requireAuth, toggleWishlist, product.id]);
+    toggleWishlist(product.id);
+  }, [toggleWishlist, product.id]);
 
   const handleColorSelect = useCallback((color: string) => {
     setSelectedColor(color);

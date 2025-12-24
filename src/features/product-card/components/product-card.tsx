@@ -108,7 +108,7 @@ export function ProductCard({
                     whileTap={
                       viewModel.isCartThrottling ? undefined : { scale: 0.98 }
                     }
-                    disabled={viewModel.isCartThrottling}
+                    // disabled={viewModel.isCartThrottling}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();

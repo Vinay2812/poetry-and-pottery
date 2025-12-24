@@ -52,9 +52,7 @@ export function EventDetailContainer({
         });
 
         // Redirect to registrations after a delay
-        setTimeout(() => {
-          router.push("/events/registrations");
-        }, 1000);
+        router.push("/events/registrations");
       }
     });
   }, [

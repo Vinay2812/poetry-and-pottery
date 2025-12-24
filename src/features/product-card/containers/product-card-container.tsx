@@ -63,25 +63,18 @@ export function ProductCardContainer({
   }, [router, product.slug]);
 
   const handleWishlistClick = useCallback(() => {
-    requireAuth(() => toggleWishlist(product.id));
-  }, [requireAuth, toggleWishlist, product.id]);
+    toggleWishlist(product.id);
+  }, [toggleWishlist, product.id]);
 
   const handleAddToCart = useCallback(async () => {
-    const success = await requireAuth(() => addToCart(product.id, 1, product));
-    if (success) {
-      setAddedToCart(true);
-      setTimeout(() => setAddedToCart(false), DEFAULT_THROTTLE_MS);
-      if (isWishlistVariant) {
+    setAddedToCart(true);
+    addToCart(product.id, 1, product).then((success) => {
+      if (isWishlistVariant && success) {
         onRemoveFromWishlist?.();
       }
-    }
-  }, [
-    requireAuth,
-    addToCart,
-    product,
-    isWishlistVariant,
-    onRemoveFromWishlist,
-  ]);
+      setAddedToCart(false);
+    });
+  }, [addToCart, product, isWishlistVariant, onRemoveFromWishlist]);
 
   const handleRemove = useCallback(() => {
     onRemoveFromWishlist?.();
