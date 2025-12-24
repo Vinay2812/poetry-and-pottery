@@ -72,7 +72,7 @@ export function OptimizedImage({
           className,
         )}
         loading={loading}
-        sizes={sizes}
+        sizes={defaultSizes}
         onError={handleError}
         onLoad={handleLoad}
         {...props}
