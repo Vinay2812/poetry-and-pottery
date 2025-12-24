@@ -46,12 +46,10 @@ export function MobileHeaderContainer({
   );
 
   const handleBack = useCallback(() => {
-    if (backHref) {
-      router.push(backHref);
-    } else {
-      router.back();
-    }
-  }, [backHref, router]);
+    // Always use router.back() for better UX and to preserve browser history
+    // This prevents unnecessary page re-renders and data refetches
+    router.back();
+  }, [router]);
 
   return (
     <>

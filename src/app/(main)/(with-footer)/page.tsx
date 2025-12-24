@@ -2,6 +2,7 @@ import { getCategories, getFeaturedProducts } from "@/actions";
 import { HERO_IMAGES } from "@/consts/client";
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { ProductCard } from "@/components/cards";
 import {
@@ -57,12 +58,13 @@ export default async function Home() {
           title="Spring Rituals"
           subtitle="Hand-thrown porcelain designed to ground your daily moments in nature."
         >
-          <Button
-            className="h-12 rounded-full px-8 text-base shadow-lg transition-transform hover:scale-105"
-            size="lg"
+          <Link
+            className="bg-primary hover:bg-primary-hover h-12 rounded-full px-4 py-3 text-base font-bold text-white shadow-lg transition-transform hover:scale-105"
+            // size="lg"
+            href="/products"
           >
             Explore Collection
-          </Button>
+          </Link>
         </HeroSection>
 
         {/* Shop by Category */}
