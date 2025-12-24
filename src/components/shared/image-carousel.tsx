@@ -94,11 +94,15 @@ export function ImageCarousel({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800",
+        "relative w-full max-w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800",
         className,
       )}
     >
-      <Carousel setApi={setApi} opts={{ startIndex, loop }} className="w-full">
+      <Carousel
+        setApi={setApi}
+        opts={{ startIndex, loop }}
+        className="w-full max-w-full"
+      >
         <CarouselContent className="ml-0">
           {images.map((url, index) => (
             <CarouselItem

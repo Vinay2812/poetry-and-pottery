@@ -36,7 +36,6 @@ function ImagePreview({ src, alt }: ImagePreviewProps) {
         fill
         className="object-cover"
         onError={() => setHasError(true)}
-        unoptimized
       />
     </div>
   );

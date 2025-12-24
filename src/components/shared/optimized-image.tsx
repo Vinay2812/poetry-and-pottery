@@ -1,11 +1,14 @@
 "use client";
 
-import NextImage, { ImageProps } from "next/image";
 import { useCallback, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface OptimizedImageProps extends Omit<ImageProps, "onError"> {
+export interface OptimizedImageProps extends Omit<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  "onError"
+> {
+  fill?: boolean;
   fallbackSrc?: string;
   showLoadingState?: boolean;
   onError?: (error: Error) => void;
@@ -32,6 +35,7 @@ export function OptimizedImage({
   onError,
   sizes,
   loading = "lazy",
+  fill,
   ...props
 }: OptimizedImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
@@ -51,24 +55,28 @@ export function OptimizedImage({
   }, []);
 
   // Default sizes for responsive images if not provided and using fill
-  const defaultSizes =
-    props.fill && !sizes
-      ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      : sizes;
+  // const defaultSizes =
+  //   props.fill && !sizes
+  //     ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+  //     : sizes;
 
   return (
     <>
       {showLoadingState && isLoading && <ImageSkeleton />}
-      <NextImage
+      <img
         src={imgSrc}
         alt={alt}
         className={cn(
+          "object-cover",
+          // When fill is true, use absolute positioning to fill parent container
+          // This matches Next.js Image behavior with fill prop
+          fill ? "absolute inset-0 h-full w-full" : "h-full w-full",
           isLoading && "opacity-0",
           !isLoading && "opacity-100 transition-opacity duration-300",
           className,
         )}
         loading={loading}
-        sizes={defaultSizes}
+        sizes={sizes}
         onError={handleError}
         onLoad={handleLoad}
         {...props}
