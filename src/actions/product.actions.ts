@@ -50,7 +50,7 @@ export async function getProducts(
 
   if (category && category !== "all") {
     where.product_categories = {
-      some: { category },
+      some: { category: { equals: category, mode: "insensitive" } },
     };
   }
 
@@ -81,7 +81,7 @@ export async function getProducts(
 
   if (category && category !== "all") {
     priceStatsWhere.product_categories = {
-      some: { category },
+      some: { category: { equals: category, mode: "insensitive" } },
     };
   }
 
@@ -273,11 +273,20 @@ export async function getRelatedProducts(
 }
 
 export async function getCategories(): Promise<string[]> {
-  const categories = await prisma.productCategory.findMany({
-    distinct: ["category"],
-    select: { category: true },
+  // Group by category and count products, sorted by count descending
+  const categoryCounts = await prisma.productCategory.groupBy({
+    by: ["category"],
+    _count: {
+      product_id: true,
+    },
+    orderBy: {
+      _count: {
+        product_id: "desc",
+      },
+    },
   });
-  return categories.map((c) => c.category);
+
+  return categoryCounts.map((c) => c.category);
 }
 
 export async function getMaterials(): Promise<string[]> {
