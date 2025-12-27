@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathInfo } from "@/hooks/use-path-info";
 import { UserRole } from "@/prisma/generated/enums";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -17,24 +18,24 @@ export function AdminRouteGuardProvider({
   const { isLoaded, isSignedIn, sessionClaims } = useAuth();
   const router = useRouter();
   const hasRefreshed = useRef(false);
+  const { isAdminRoute } = usePathInfo();
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
+    if (!isLoaded) return;
+    if (!isAdminRoute) return;
+
+    if (!isSignedIn) {
       const returnUrl = encodeURIComponent("/dashboard");
       router.push(`/sign-in?redirect_url=${returnUrl}`);
+      return;
     }
-  }, [isLoaded, isSignedIn, router]);
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn && sessionClaims) {
-      const role = sessionClaims.role;
-
-      // If not admin, redirect to home
-      if (role !== UserRole.ADMIN) {
-        router.push("/");
-      }
+    const role = sessionClaims?.role;
+    if (role !== UserRole.ADMIN) {
+      router.push("/");
+      return;
     }
-  }, [isLoaded, isSignedIn, sessionClaims, router]);
+  }, [isLoaded, isSignedIn, router, isAdminRoute, sessionClaims?.role]);
 
   // Refresh when user is signed in on initial mount to ensure fresh data
   useEffect(() => {

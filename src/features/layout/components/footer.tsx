@@ -78,7 +78,7 @@ function NewsletterContent({
   // Not authenticated
   if (!viewModel.isAuthenticated) {
     return (
-      <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
         <p className="text-muted-foreground text-sm">
           Sign in to subscribe to our newsletter
         </p>

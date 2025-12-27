@@ -19,3 +19,8 @@ export const R2_BUCKET = process.env.R2_BUCKET;
 export const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL; // Optional: custom public URL for R2
 
 export const MOBILE_NUMBER = process.env.NEXT_PUBLIC_MOBILE_NUMBER;
+
+export const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT!;
+export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN!;
+
+export const GRAPHQL_ENDPOINT = `${API_ENDPOINT}/graphql`;

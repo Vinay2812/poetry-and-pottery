@@ -6,11 +6,6 @@ interface UIState {
   setFilterSheetOpen: (open: boolean) => void;
   toggleFilterSheet: () => void;
 
-  // Mobile cart sheet
-  isCartSheetOpen: boolean;
-  setCartSheetOpen: (open: boolean) => void;
-  toggleCartSheet: () => void;
-
   // Reviews sheet
   isReviewsSheetOpen: boolean;
   setReviewsSheetOpen: (open: boolean) => void;
@@ -44,12 +39,6 @@ export const useUIStore = create<UIState>((set) => ({
   setFilterSheetOpen: (isFilterSheetOpen) => set({ isFilterSheetOpen }),
   toggleFilterSheet: () =>
     set((state) => ({ isFilterSheetOpen: !state.isFilterSheetOpen })),
-
-  // Cart sheet
-  isCartSheetOpen: false,
-  setCartSheetOpen: (isCartSheetOpen) => set({ isCartSheetOpen }),
-  toggleCartSheet: () =>
-    set((state) => ({ isCartSheetOpen: !state.isCartSheetOpen })),
 
   // Reviews sheet
   isReviewsSheetOpen: false,

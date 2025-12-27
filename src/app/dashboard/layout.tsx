@@ -1,5 +1,3 @@
-import { AdminRouteGuardProvider } from "@/providers/admin-route-guard-provider";
-
 import { DashboardShell } from "@/components/dashboard";
 
 export default async function DashboardLayout({
@@ -7,9 +5,5 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <AdminRouteGuardProvider>
-      <DashboardShell>{children}</DashboardShell>
-    </AdminRouteGuardProvider>
-  );
+  return <DashboardShell>{children}</DashboardShell>;
 }
