@@ -22,7 +22,7 @@
     "migration:create": "bunx prisma migrate dev --create-only",
     "prettier": "prettier --check .",
     "prettier:format": "prettier --write .",
-    "prisma:generate": "bunx prisma generate --sql",
+    "prisma:generate": "bunx prisma generate",
     "prisma:reset": "bunx prisma migrate reset",
     "prisma:studio": "bunx prisma studio",
     "start": "next start --port 3005",
