@@ -11,11 +11,11 @@
   "license": "ISC",
   "author": "",
   "scripts": {
-    "build": "bun run codegen && next build",
+    "build": "next build",
     "codegen": "graphql-codegen --require dotenv/config --config src/lib/codegen.ts dotenv_config_path=.env",
     "db:init": "bunx tsx src/lib/seed.ts",
     "db:reset": "bun prisma:reset && bunx prisma migrate deploy && bun db:init",
-    "dev": "bun run codegen && next dev --port 3005",
+    "dev": "next dev --port 3005",
     "husky": "husky",
     "lint": "eslint .",
     "migration:apply": "bunx prisma migrate deploy",
