@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export const DATABASE_URL = process.env.DATABASE_URL;
 export const REPLICA_URL = process.env.REPLICA_URL;
 

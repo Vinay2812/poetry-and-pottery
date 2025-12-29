@@ -5,9 +5,9 @@ import { AnimatePresence } from "framer-motion";
 import { ShoppingCartIcon } from "lucide-react";
 
 import { AddressSelector } from "@/components/address";
-import { CartItemCard, ProductCard } from "@/components/cards";
+import { CartItemCard } from "@/components/cards";
 import { OrderSummary } from "@/components/orders";
-import { EmptyState } from "@/components/sections";
+import { EmptyState, ProductCarousel } from "@/components/sections";
 
 import type { CartProps } from "../types";
 
@@ -102,16 +102,11 @@ export function Cart({
 
           {/* Recommendations */}
           {hasRecommendations && (
-            <section className="mb-42 lg:mb-0">
-              <h2 className="mb-4 text-lg font-semibold">
-                You might also like
-              </h2>
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-4 lg:gap-8">
-                {recommendedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </section>
+            <ProductCarousel
+              products={recommendedProducts}
+              title="You might also like"
+              className="mb-42 lg:mb-0"
+            />
           )}
         </div>
       </main>

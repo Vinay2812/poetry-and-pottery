@@ -4,13 +4,12 @@ import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { ProductCard } from "@/components/cards";
 import {
   CTASection,
   CategorySection,
   HeroSection,
+  ProductCarousel,
 } from "@/components/sections";
-import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Poetry & Pottery | Handcrafted Ceramics",
@@ -71,23 +70,12 @@ export default async function Home() {
         <CategorySection categories={categories.slice(0, 8)} />
 
         {/* Curated Favorites */}
-        <section className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
-          <div className="mb-4 flex items-end justify-between lg:mb-8">
-            <div>
-              <h2 className="text-xl font-bold tracking-tight lg:text-3xl">
-                Curated Favorites
-              </h2>
-              <p className="text-muted-foreground mt-2 text-sm lg:text-base">
-                Handpicked pieces for your home.
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </section>
+        <ProductCarousel
+          products={featuredProducts}
+          title="Curated Favorites"
+          subtitle="Handpicked pieces for your home."
+          className="container mx-auto px-4 py-4 lg:px-8 lg:py-12"
+        />
 
         {/* Studio Visit CTA */}
         <CTASection

@@ -50,10 +50,5 @@ export function AdminRouteGuardProvider({
     return <DashboardSkeleton />;
   }
 
-  // Show loading while redirecting (not signed in, claims not loaded, or not admin)
-  if (!isSignedIn || !sessionClaims || sessionClaims.role !== UserRole.ADMIN) {
-    return <DashboardSkeleton />;
-  }
-
   return <>{children}</>;
 }

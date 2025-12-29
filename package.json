@@ -18,8 +18,13 @@
     "dev": "bun run codegen && next dev --port 3005",
     "husky": "husky",
     "lint": "eslint .",
+    "migration:apply": "bunx prisma migrate deploy",
+    "migration:create": "bunx prisma migrate dev --create-only",
     "prettier": "prettier --check .",
     "prettier:format": "prettier --write .",
+    "prisma:generate": "bunx prisma generate --sql",
+    "prisma:reset": "bunx prisma migrate reset",
+    "prisma:studio": "bunx prisma studio",
     "start": "next start --port 3005",
     "tsc": "bunx tsc --noEmit"
   },

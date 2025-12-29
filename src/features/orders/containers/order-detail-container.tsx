@@ -40,7 +40,15 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
       paidAt: order.paid_at,
       cancelledAt: order.cancelled_at,
       items: items.map(buildOrderItemViewModel),
-      shippingAddress,
+      shippingAddress: {
+        name: shippingAddress?.name || "",
+        addressLine1: shippingAddress?.addressLine1 || "",
+        addressLine2: shippingAddress?.addressLine2 || "",
+        city: shippingAddress?.city || "",
+        state: shippingAddress?.state || "",
+        zip: shippingAddress?.zip || "",
+        contactNumber: shippingAddress?.contactNumber || "",
+      },
       paymentSummary: {
         subtotal: order.subtotal,
         totalDiscount,

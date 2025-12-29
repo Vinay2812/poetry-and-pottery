@@ -40,10 +40,5 @@ export function RouteGuardProvider({ children }: RouteGuardProviderProps) {
     return <PageSkeleton />;
   }
 
-  // Show loading while redirecting
-  if (!isSignedIn) {
-    return <PageSkeleton />;
-  }
-
   return <>{children}</>;
 }
