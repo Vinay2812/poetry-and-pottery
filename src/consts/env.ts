@@ -2,6 +2,7 @@ import "dotenv/config";
 
 export const DATABASE_URL = process.env.DATABASE_URL;
 export const REPLICA_URL = process.env.REPLICA_URL;
+export const OPTIMIZE_API_KEY = process.env.OPTIMIZE_API_KEY;
 
 export const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
 export const ENVIRONMENT = process.env.NODE_ENV;

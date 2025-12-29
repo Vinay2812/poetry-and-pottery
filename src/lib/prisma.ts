@@ -1,8 +1,8 @@
+import { DATABASE_URL, OPTIMIZE_API_KEY, REPLICA_URL } from "@/consts/env";
 import { PrismaClient } from "@/prisma/generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { withOptimize } from "@prisma/extension-optimize";
 import { readReplicas } from "@prisma/extension-read-replicas";
-
-import { DATABASE_URL, REPLICA_URL } from "../consts/env";
 
 if (!DATABASE_URL) {
   throw new Error("DATABASE_URL is not set");
@@ -18,10 +18,26 @@ const replicaAdapter = new PrismaPg({
 
 const replicaClient = new PrismaClient({ adapter: replicaAdapter });
 
-const prisma = new PrismaClient({ adapter: mainAdapter }).$extends(
-  readReplicas({
-    replicas: [replicaClient],
-  }),
-);
+let prisma: PrismaClient;
+
+if (OPTIMIZE_API_KEY) {
+  prisma = new PrismaClient({ adapter: mainAdapter })
+    .$extends(
+      readReplicas({
+        replicas: [replicaClient],
+      }),
+    )
+    .$extends(
+      withOptimize({
+        apiKey: OPTIMIZE_API_KEY,
+      }),
+    ) as PrismaClient;
+} else {
+  prisma = new PrismaClient({ adapter: mainAdapter }).$extends(
+    readReplicas({
+      replicas: [replicaClient],
+    }),
+  ) as unknown as PrismaClient;
+}
 
 export { prisma };
