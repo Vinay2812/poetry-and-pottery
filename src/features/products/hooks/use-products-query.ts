@@ -1,23 +1,22 @@
 "use client";
 
-import { getProducts } from "@/actions";
-import type { ProductFilterParams, ProductWithCategories } from "@/types";
+import { getProducts } from "@/data/products/gateway/server";
+import type { ProductBase, ProductsFilterParams } from "@/data/products/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
-import type { Category, PriceHistogram } from "../types";
+import type { Category } from "../types";
 
 const PRODUCTS_PER_PAGE = 12;
 
 interface UseProductsQueryOptions {
-  filterParams: ProductFilterParams;
-  initialProducts: ProductWithCategories[];
+  filterParams: ProductsFilterParams;
+  initialProducts: ProductBase[];
   totalProducts: number;
   categories: Category[];
   materials: string[];
   priceRange?: { min: number; max: number };
-  priceHistogram?: PriceHistogram[];
 }
 
 export function useProductsQuery({
@@ -27,14 +26,21 @@ export function useProductsQuery({
   categories,
   materials,
   priceRange,
-  priceHistogram,
 }: UseProductsQueryOptions) {
-  // Infinite query for products
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["products", filterParams],
       queryFn: async ({ pageParam = 1 }) => {
-        return getProducts({ ...filterParams, page: pageParam });
+        const result = await getProducts({ ...filterParams, page: pageParam });
+        return {
+          data: result.products,
+          total: result.total_products,
+          page: result.filter.page ?? pageParam,
+          totalPages: result.total_pages,
+          categories: result.meta.categories,
+          materials: result.meta.materials,
+          priceRange: result.meta.price_range,
+        };
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
@@ -53,27 +59,23 @@ export function useProductsQuery({
             categories: categories.map((c) => c.id),
             materials,
             priceRange: priceRange || { min: 0, max: 1000 },
-            priceHistogram: priceHistogram || [],
           },
         ],
         pageParams: [1],
       },
     });
 
-  // Intersection observer for auto-loading
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
     rootMargin: "100px",
   });
 
-  // Auto-fetch next page when scrolling near bottom
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Flatten all pages into single products array and deduplicate by id
   const products = useMemo(() => {
     const allProducts = data?.pages.flatMap((page) => page.data) ?? [];
     const seen = new Set<number>();

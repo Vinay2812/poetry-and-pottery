@@ -6,13 +6,13 @@ import { usePathname } from "next/navigation";
 import { useCallback } from "react";
 
 export function useAuthAction() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, sessionClaims } = useAuth();
   const pathname = usePathname();
   const { setSignInModalOpen, setSignInRedirectUrl } = useUIStore();
 
   const requireAuth = useCallback(
     <T>(callback: () => T | Promise<T>): T | Promise<T> | undefined => {
-      if (isSignedIn) {
+      if (isSignedIn && sessionClaims?.dbUserId) {
         return callback();
       } else {
         setSignInRedirectUrl(pathname);
@@ -20,8 +20,14 @@ export function useAuthAction() {
         return undefined;
       }
     },
-    [isSignedIn, pathname, setSignInModalOpen, setSignInRedirectUrl],
+    [
+      isSignedIn,
+      sessionClaims?.dbUserId,
+      pathname,
+      setSignInModalOpen,
+      setSignInRedirectUrl,
+    ],
   );
 
-  return { isSignedIn, requireAuth };
+  return { isSignedIn, requireAuth, userId: sessionClaims?.dbUserId };
 }

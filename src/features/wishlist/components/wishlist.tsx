@@ -1,7 +1,7 @@
 "use client";
 
+import type { ProductBase } from "@/data/products/types";
 import { MobileHeaderContainer } from "@/features/layout";
-import type { ProductWithCategories } from "@/types";
 import { AnimatePresence } from "framer-motion";
 import { Heart, Loader2 } from "lucide-react";
 
@@ -11,7 +11,7 @@ import { EmptyState } from "@/components/sections";
 import type { WishlistProps } from "../types";
 
 interface RecommendationsSectionProps {
-  recommendations: ProductWithCategories[];
+  recommendations: ProductBase[];
 }
 
 function RecommendationsSection({

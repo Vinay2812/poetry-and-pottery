@@ -12,16 +12,11 @@ import { useCallback, useMemo, useState } from "react";
 
 import { ProductDetail } from "../components/product-detail";
 import type { ProductDetailContainerProps } from "../types";
-import {
-  buildFormattedReviews,
-  buildProductDetailViewModel,
-  calculateAverageRating,
-} from "../types";
+import { buildFormattedReviews } from "../types";
 
 export function ProductDetailContainer({
   product,
   relatedProducts,
-  currentUserId,
 }: ProductDetailContainerProps) {
   const [selectedColor, setSelectedColor] = useState(product.color_name || "");
   const [addedToCart, setAddedToCart] = useState(false);
@@ -29,38 +24,31 @@ export function ProductDetailContainer({
     Record<string, { likes: number; isLiked: boolean }>
   >({});
 
-  const { requireAuth } = useAuthAction();
+  const { requireAuth, userId: currentUserId } = useAuthAction();
   const { addToCart, isLoading: isCartLoading, isAtMaxQuantity } = useCart();
   const {
     toggleWishlist,
     isInWishlist,
+    isHydrated: isWishlistHydrated,
     isLoading: isWishlistLoading,
   } = useWishlist();
   const { share } = useShare();
   const { debounce } = useDebounce();
 
-  const inWishlist = isInWishlist(product.id);
+  // Use server's in_wishlist for initial/SSR, then hook state after hydration
+  const inWishlist = isWishlistHydrated
+    ? isInWishlist(product.id)
+    : product.in_wishlist;
+
   const cartLoading = isCartLoading(product.id);
   const wishlistLoading = isWishlistLoading(product.id);
   const atMaxQuantity = isAtMaxQuantity(product.id);
-
-  // Calculate average rating
-  const averageRating = useMemo(
-    () => calculateAverageRating(product.reviews),
-    [product.reviews],
-  );
 
   // Build formatted reviews with like updates
   const formattedReviews = useMemo(
     () =>
       buildFormattedReviews(product.reviews, currentUserId, reviewLikeUpdates),
     [product.reviews, currentUserId, reviewLikeUpdates],
-  );
-
-  // Build view model
-  const viewModel = useMemo(
-    () => buildProductDetailViewModel(product, formattedReviews, averageRating),
-    [product, formattedReviews, averageRating],
   );
 
   const handleShare = useCallback(() => {
@@ -72,13 +60,13 @@ export function ProductDetailContainer({
   }, [share, product.name, product.price]);
 
   const handleAddToCart = useCallback(() => {
-    addToCart(product.id, 1, product).then((success) => {
+    addToCart(product.id, 1).then((success) => {
       if (success) {
         setAddedToCart(true);
         setTimeout(() => setAddedToCart(false), 2000);
       }
     });
-  }, [addToCart, product]);
+  }, [addToCart, product.id]);
 
   const handleToggleWishlist = useCallback(() => {
     toggleWishlist(product.id);
@@ -127,8 +115,9 @@ export function ProductDetailContainer({
 
   return (
     <ProductDetail
-      viewModel={viewModel}
+      product={product}
       relatedProducts={relatedProducts}
+      formattedReviews={formattedReviews}
       selectedColor={selectedColor}
       addedToCart={addedToCart}
       inWishlist={inWishlist}

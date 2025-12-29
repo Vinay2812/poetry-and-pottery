@@ -1,11 +1,11 @@
-import { getProducts } from "@/actions";
 import { MobileHeaderContainer } from "@/features/layout";
 import { ProductListContainer } from "@/features/products";
-import type { ProductFilterParams } from "@/types";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { ProductsSkeleton } from "@/components/skeletons";
+import { getProducts } from "@/data/products/gateway/server";
+import type { ProductsFilterParams } from "@/data/products/types";
 
 export const metadata: Metadata = {
   title: "Shop Handcrafted Pottery | Poetry & Pottery",
@@ -46,6 +46,21 @@ interface ProductsPageProps {
   }>;
 }
 
+function mapSortToOrderBy(
+  sort?: string
+): ProductsFilterParams["order_by"] | undefined {
+  switch (sort) {
+    case "price-low":
+      return "price_low_to_high";
+    case "price-high":
+      return "price_high_to_low";
+    case "newest":
+      return "new";
+    default:
+      return "featured";
+  }
+}
+
 async function ProductsContent({
   searchParams,
 }: {
@@ -53,35 +68,39 @@ async function ProductsContent({
 }) {
   const params = await searchParams;
 
-  // Build filter params from URL search params
-  const filterParams: ProductFilterParams = {
-    category: params.category,
+  const filterParams: ProductsFilterParams = {
+    categories: params.category ? [params.category] : undefined,
     materials: params.materials?.split(","),
-    sortBy: (params.sort as ProductFilterParams["sortBy"]) || "featured",
+    order_by: mapSortToOrderBy(params.sort),
     page: params.page ? parseInt(params.page, 10) : 1,
     limit: 12,
-    minPrice: params.minPrice ? parseInt(params.minPrice) : undefined,
-    maxPrice: params.maxPrice ? parseInt(params.maxPrice) : undefined,
+    min_price: params.minPrice ? parseInt(params.minPrice) : undefined,
+    max_price: params.maxPrice ? parseInt(params.maxPrice) : undefined,
     search: params.search,
   };
 
-  // Fetch products from database
   const result = await getProducts(filterParams);
 
-  // Format categories for the filter UI
-  const categories = result.categories.map((cat) => ({
+  const categories = result.meta.categories.map((cat) => ({
     id: cat,
     name: cat.charAt(0).toUpperCase() + cat.slice(1),
   }));
 
+  const minPrice = result.meta.price_range.min;
+  const maxPrice = result.meta.price_range.max;
+  const priceRange =
+    minPrice != null && maxPrice != null
+      ? { min: minPrice, max: maxPrice }
+      : undefined;
+
   return (
     <ProductListContainer
-      products={result.data}
+      products={result.products}
       categories={categories}
-      materials={result.materials}
-      totalProducts={result.total}
-      priceRange={result.priceRange}
-      priceHistogram={result.priceHistogram}
+      materials={result.meta.materials}
+      totalProducts={result.total_products}
+      priceRange={priceRange}
+      priceHistogram={result.meta.price_histogram}
     />
   );
 }

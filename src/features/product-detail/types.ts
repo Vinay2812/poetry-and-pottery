@@ -1,7 +1,11 @@
-import type { ProductWithCategories, ProductWithDetails } from "@/types";
+import type {
+  ProductBase,
+  ProductDetail,
+  ProductReview,
+} from "@/data/products/types";
 
 /**
- * Formatted review for display.
+ * Formatted review for display (with optimistic update support).
  */
 export interface FormattedReview {
   id: string;
@@ -17,34 +21,12 @@ export interface FormattedReview {
 }
 
 /**
- * View model for product detail.
- */
-export interface ProductDetailViewModel {
-  id: number;
-  name: string;
-  slug: string;
-  description: string | null;
-  price: number;
-  category: string;
-  material: string | null;
-  colorName: string | null;
-  colorCode: string | null;
-  availableQuantity: number;
-  instructions: string[];
-  images: string[];
-  averageRating: number;
-  totalReviews: number;
-  reviews: FormattedReview[];
-  isOutOfStock: boolean;
-  isLowStock: boolean;
-}
-
-/**
  * Props for the presentational ProductDetail component.
  */
 export interface ProductDetailProps {
-  viewModel: ProductDetailViewModel;
-  relatedProducts: ProductWithCategories[];
+  product: ProductDetail;
+  relatedProducts: ProductBase[];
+  formattedReviews: FormattedReview[];
   selectedColor: string;
   addedToCart: boolean;
   inWishlist: boolean;
@@ -64,16 +46,15 @@ export interface ProductDetailProps {
  * Props for the ProductDetailContainer.
  */
 export interface ProductDetailContainerProps {
-  product: ProductWithDetails;
-  relatedProducts: ProductWithCategories[];
-  currentUserId?: number | null;
+  product: ProductDetail;
+  relatedProducts: ProductBase[];
 }
 
 /**
- * Build formatted reviews from raw review data.
+ * Build formatted reviews from raw review data (with optimistic update support).
  */
 export function buildFormattedReviews(
-  reviews: ProductWithDetails["reviews"],
+  reviews: ProductReview[],
   currentUserId: number | null | undefined,
   reviewLikeUpdates: Record<string, { likes: number; isLiked: boolean }>,
 ): FormattedReview[] {
@@ -104,49 +85,4 @@ export function buildFormattedReviews(
       images: review.image_urls || [],
     };
   });
-}
-
-/**
- * Calculate average rating from reviews.
- */
-export function calculateAverageRating(
-  reviews: ProductWithDetails["reviews"],
-): number {
-  if (!reviews || reviews.length === 0) return 0;
-  const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-  return sum / reviews.length;
-}
-
-/**
- * Build product detail view model from raw data.
- */
-export function buildProductDetailViewModel(
-  product: ProductWithDetails,
-  reviews: FormattedReview[],
-  averageRating: number,
-): ProductDetailViewModel {
-  const images = product.image_urls || [];
-  const category =
-    product.product_categories[0]?.category || product.material || "Pottery";
-  const availableQuantity = product.available_quantity ?? 0;
-
-  return {
-    id: product.id,
-    name: product.name,
-    slug: product.slug,
-    description: product.description,
-    price: product.price,
-    category,
-    material: product.material,
-    colorName: product.color_name,
-    colorCode: product.color_code,
-    availableQuantity,
-    instructions: product.instructions || [],
-    images,
-    averageRating,
-    totalReviews: product._count?.reviews || 0,
-    reviews,
-    isOutOfStock: availableQuantity === 0,
-    isLowStock: availableQuantity > 0 && availableQuantity <= 5,
-  };
 }

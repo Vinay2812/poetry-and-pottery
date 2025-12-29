@@ -1,9 +1,8 @@
 import {
-  getAuthenticatedUserId,
   getProductById,
   getProductBySlug,
   getRelatedProducts,
-} from "@/actions";
+} from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { ProductDetailContainer } from "@/features/product-detail";
 import type { Metadata } from "next";
@@ -19,7 +18,6 @@ export async function generateMetadata({
 }: ProductPageProps): Promise<Metadata> {
   const { id } = await params;
 
-  // Try to find by slug first, then by ID
   let product = await getProductBySlug(id);
   if (!product) {
     const numericId = parseInt(id, 10);
@@ -67,24 +65,11 @@ export async function generateMetadata({
 export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
 
-  // Try to find by slug first, then by ID
-  let product = await getProductBySlug(id);
-  if (!product) {
-    const numericId = parseInt(id, 10);
-    if (!isNaN(numericId)) {
-      product = await getProductById(numericId);
-    }
-  }
-
+  const product = await getProductById(parseInt(id, 10));
   if (!product) {
     notFound();
   }
-
-  // Get current user ID for review like functionality
-  const currentUserId = await getAuthenticatedUserId();
-
-  // Get related products (same category, excluding current)
-  const category = product.product_categories[0]?.category || "";
+  const category = product.categories[0] || "";
   const relatedProducts = category
     ? await getRelatedProducts(product.id, category, 4)
     : [];
@@ -99,7 +84,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <ProductDetailContainer
         product={product}
         relatedProducts={relatedProducts}
-        currentUserId={currentUserId}
       />
     </>
   );

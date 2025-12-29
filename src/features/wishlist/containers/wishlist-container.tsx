@@ -1,13 +1,35 @@
 "use client";
 
 import { getWishlist } from "@/actions";
+import type { ProductBase } from "@/data/products/types";
 import { useWishlist } from "@/hooks";
+import type { WishlistWithProduct } from "@/types";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { Wishlist } from "../components/wishlist";
 import type { WishlistContainerProps, WishlistViewModel } from "../types";
+
+function mapToProductBase(
+  wishlistItem: WishlistWithProduct
+): ProductBase {
+  return {
+    id: wishlistItem.product.id,
+    slug: wishlistItem.product.slug,
+    name: wishlistItem.product.name,
+    price: wishlistItem.product.price,
+    image_urls: wishlistItem.product.image_urls,
+    material: wishlistItem.product.material,
+    available_quantity: wishlistItem.product.available_quantity,
+    total_quantity: wishlistItem.product.total_quantity,
+    color_code: wishlistItem.product.color_code,
+    color_name: wishlistItem.product.color_name,
+    avg_rating: 0,
+    reviews_count: 0,
+    in_wishlist: true,
+  };
+}
 
 export function WishlistContainer({
   initialWishlistItems,
@@ -91,7 +113,7 @@ export function WishlistContainer({
     () => ({
       items: wishlistItems.map((item) => ({
         productId: item.product_id,
-        product: item.product,
+        product: mapToProductBase(item),
       })),
       totalItems: currentTotal,
       hasNextPage: hasNextPage ?? false,

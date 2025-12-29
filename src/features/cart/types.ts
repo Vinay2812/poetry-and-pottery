@@ -1,5 +1,6 @@
+import type { ProductBase } from "@/data/products/types";
 import type { UserAddress } from "@/prisma/generated/client";
-import type { CartWithProduct, ProductWithCategories } from "@/types";
+import type { CartWithProduct } from "@/types";
 
 /**
  * View model for a single cart item.
@@ -30,7 +31,7 @@ export interface CartViewModel {
   orderSummary: OrderSummaryViewModel;
   selectedAddress: UserAddress | null;
   addresses: UserAddress[];
-  recommendedProducts: ProductWithCategories[];
+  recommendedProducts: ProductBase[];
   isOrdering: boolean;
   canCheckout: boolean;
   checkoutButtonText: string;
@@ -52,6 +53,6 @@ export interface CartProps {
  */
 export interface CartContainerProps {
   initialCartItems: CartWithProduct[];
-  recommendedProducts: ProductWithCategories[];
+  recommendedProducts: ProductBase[];
   initialAddresses: UserAddress[];
 }

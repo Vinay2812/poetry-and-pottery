@@ -1,6 +1,6 @@
 "use client";
 
-import type { ProductFilterParams } from "@/types";
+import type { ProductsFilterParams } from "@/data/products/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   startTransition,
@@ -12,6 +12,22 @@ import {
 
 const PRODUCTS_PER_PAGE = 12;
 
+function mapSortToOrderBy(
+  sort: string
+): ProductsFilterParams["order_by"] | undefined {
+  switch (sort) {
+    case "price-low":
+      return "price_low_to_high";
+    case "price-high":
+      return "price_high_to_low";
+    case "newest":
+      return "new";
+    case "featured":
+    default:
+      return "featured";
+  }
+}
+
 interface UseProductFiltersOptions {
   priceRange?: { min: number; max: number };
 }
@@ -21,7 +37,6 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
   const searchParams = useSearchParams();
   const { priceRange } = options;
 
-  // Read filter state from URL params
   const activeCategory = searchParams.get("category") || "all";
   const selectedMaterials = useMemo(() => {
     const mats = searchParams.get("materials");
@@ -30,17 +45,14 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
   const sortBy = searchParams.get("sort") || "featured";
   const searchQuery = searchParams.get("search") || "";
 
-  // Price state from URL
   const minPriceParam = searchParams.get("minPrice");
   const maxPriceParam = searchParams.get("maxPrice");
 
-  // Local price range state (for slider dragging)
   const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([
     minPriceParam ? parseInt(minPriceParam) : (priceRange?.min ?? 0),
     maxPriceParam ? parseInt(maxPriceParam) : (priceRange?.max ?? 1000),
   ]);
 
-  // Sync state when URL params change (e.g. clear filters)
   useEffect(() => {
     const min = minPriceParam
       ? parseInt(minPriceParam)
@@ -53,15 +65,15 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
     });
   }, [minPriceParam, maxPriceParam, priceRange]);
 
-  // Build filter params for query
-  const filterParams: ProductFilterParams = useMemo(
+  const filterParams: ProductsFilterParams = useMemo(
     () => ({
-      category: activeCategory === "all" ? undefined : activeCategory,
+      categories:
+        activeCategory === "all" ? undefined : [activeCategory],
       materials: selectedMaterials.length > 0 ? selectedMaterials : undefined,
-      sortBy: sortBy as ProductFilterParams["sortBy"],
+      order_by: mapSortToOrderBy(sortBy),
       limit: PRODUCTS_PER_PAGE,
-      minPrice: minPriceParam ? parseInt(minPriceParam) : undefined,
-      maxPrice: maxPriceParam ? parseInt(maxPriceParam) : undefined,
+      min_price: minPriceParam ? parseInt(minPriceParam) : undefined,
+      max_price: maxPriceParam ? parseInt(maxPriceParam) : undefined,
       search: searchQuery || undefined,
     }),
     [

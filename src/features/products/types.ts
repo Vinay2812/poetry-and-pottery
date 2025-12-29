@@ -1,25 +1,16 @@
-import type { ProductWithCategories } from "@/types";
+import type { ProductBase } from "@/data/products/types";
 
-/**
- * Category data for filtering.
- */
 export interface Category {
   id: string;
   name: string;
 }
 
-/**
- * Price histogram bucket for the filter UI.
- */
 export interface PriceHistogram {
   min: number;
   max: number;
   count: number;
 }
 
-/**
- * Sort options for products.
- */
 export type SortOption = "featured" | "price-low" | "price-high" | "newest";
 
 export interface SortOptionConfig {
@@ -34,9 +25,6 @@ export const SORT_OPTIONS: SortOptionConfig[] = [
   { value: "newest", label: "Newest" },
 ];
 
-/**
- * Filter state managed by the container.
- */
 export interface ProductFilterState {
   activeCategory: string;
   selectedMaterials: string[];
@@ -45,11 +33,8 @@ export interface ProductFilterState {
   searchQuery: string;
 }
 
-/**
- * View model for the ProductList component.
- */
 export interface ProductListViewModel {
-  products: ProductWithCategories[];
+  products: ProductBase[];
   totalProducts: number;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -60,9 +45,6 @@ export interface ProductListViewModel {
   priceHistogram: PriceHistogram[] | undefined;
 }
 
-/**
- * Props for the presentational ProductList component.
- */
 export interface ProductListProps {
   viewModel: ProductListViewModel;
   loadMoreRef: (node?: Element | null) => void;
@@ -75,11 +57,8 @@ export interface ProductListProps {
   onClearFilters: () => void;
 }
 
-/**
- * Props for the ProductListContainer.
- */
 export interface ProductListContainerProps {
-  products: ProductWithCategories[];
+  products: ProductBase[];
   categories: Category[];
   materials: string[];
   totalProducts: number;

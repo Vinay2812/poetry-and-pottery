@@ -1,11 +1,12 @@
-import type { ProductWithCategories, WishlistWithProduct } from "@/types";
+import type { ProductBase } from "@/data/products/types";
+import type { WishlistWithProduct } from "@/types";
 
 /**
  * View model for a single wishlist item.
  */
 export interface WishlistItemViewModel {
   productId: number;
-  product: ProductWithCategories;
+  product: ProductBase;
 }
 
 /**
@@ -24,7 +25,7 @@ export interface WishlistViewModel {
  */
 export interface WishlistProps {
   viewModel: WishlistViewModel;
-  recommendations: ProductWithCategories[];
+  recommendations: ProductBase[];
   loadMoreRef: (node?: Element | null) => void;
   onRemoveItem: (productId: number) => void;
 }
@@ -34,7 +35,7 @@ export interface WishlistProps {
  */
 export interface WishlistContainerProps {
   initialWishlistItems: WishlistWithProduct[];
-  recommendations: ProductWithCategories[];
+  recommendations: ProductBase[];
   initialPagination: {
     page: number;
     totalPages: number;

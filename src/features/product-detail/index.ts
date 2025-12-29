@@ -9,10 +9,5 @@ export type {
   FormattedReview,
   ProductDetailContainerProps,
   ProductDetailProps,
-  ProductDetailViewModel,
 } from "./types";
-export {
-  buildFormattedReviews,
-  buildProductDetailViewModel,
-  calculateAverageRating,
-} from "./types";
+export { buildFormattedReviews } from "./types";

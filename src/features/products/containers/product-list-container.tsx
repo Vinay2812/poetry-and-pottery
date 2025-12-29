@@ -44,7 +44,6 @@ export function ProductListContainer({
     categories,
     materials,
     priceRange,
-    priceHistogram,
   });
 
   // Build the view model

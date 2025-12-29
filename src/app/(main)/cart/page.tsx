@@ -1,4 +1,5 @@
-import { getCart, getSmartRecommendations, getUserAddresses } from "@/actions";
+import { getCart, getUserAddresses } from "@/actions";
+import { getRecommendedProducts } from "@/data/products/gateway/server";
 import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 export default async function CartPage() {
   const [cartResult, recommendedProducts, addressResult] = await Promise.all([
     getCart(),
-    getSmartRecommendations(4),
+    getRecommendedProducts(4),
     getUserAddresses(),
   ]);
 

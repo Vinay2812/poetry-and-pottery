@@ -1,13 +1,11 @@
 "use client";
 
 import { useAuthAction, useCart, useWishlist } from "@/hooks";
-import { DEFAULT_THROTTLE_MS } from "@/hooks/use-throttle";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { ProductCard } from "../components/product-card";
 import type { ProductCardContainerProps } from "../types";
-import { buildProductCardViewModel } from "../types";
 
 export function ProductCardContainer({
   product,
@@ -22,6 +20,7 @@ export function ProductCardContainer({
   const {
     toggleWishlist,
     isInWishlist,
+    isHydrated: isWishlistHydrated,
     isDebouncing: isWishlistDebouncing,
   } = useWishlist();
   const {
@@ -30,33 +29,17 @@ export function ProductCardContainer({
     isThrottling: isCartThrottling,
   } = useCart();
 
-  const inWishlist = isInWishlist(product.id);
+  // Use server's in_wishlist for initial/SSR, then hook state after hydration
+  const inWishlist = isWishlistHydrated
+    ? isInWishlist(product.id)
+    : product.in_wishlist;
+
   const atMaxQuantity = isAtMaxQuantity(product.id);
   const inStock = product.available_quantity > 0;
   const canAddToCart = inStock && !atMaxQuantity;
   const isWishlistVariant = variant === "wishlist";
   const cartThrottling = isCartThrottling(product.id);
   const wishlistDebouncing = isWishlistDebouncing(product.id);
-
-  const viewModel = useMemo(
-    () =>
-      buildProductCardViewModel(
-        product,
-        inWishlist,
-        addedToCart,
-        canAddToCart,
-        cartThrottling,
-        wishlistDebouncing,
-      ),
-    [
-      product,
-      inWishlist,
-      addedToCart,
-      canAddToCart,
-      cartThrottling,
-      wishlistDebouncing,
-    ],
-  );
 
   const handleImageClick = useCallback(() => {
     router.push(`/products/${product.slug}`);
@@ -68,13 +51,13 @@ export function ProductCardContainer({
 
   const handleAddToCart = useCallback(async () => {
     setAddedToCart(true);
-    addToCart(product.id, 1, product).then((success) => {
+    addToCart(product.id, 1).then((success) => {
       if (isWishlistVariant && success) {
         onRemoveFromWishlist?.();
       }
       setAddedToCart(false);
     });
-  }, [addToCart, product, isWishlistVariant, onRemoveFromWishlist]);
+  }, [addToCart, product.id, isWishlistVariant, onRemoveFromWishlist]);
 
   const handleRemove = useCallback(() => {
     onRemoveFromWishlist?.();
@@ -86,9 +69,14 @@ export function ProductCardContainer({
 
   return (
     <ProductCard
-      viewModel={viewModel}
+      product={product}
       variant={variant}
       className={className}
+      inWishlist={inWishlist}
+      addedToCart={addedToCart}
+      canAddToCart={canAddToCart}
+      isCartThrottling={cartThrottling}
+      isWishlistDebouncing={wishlistDebouncing}
       onImageClick={handleImageClick}
       onWishlistClick={handleWishlistClick}
       onAddToCart={handleAddToCart}

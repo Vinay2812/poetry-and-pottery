@@ -12,15 +12,23 @@ import { cn } from "@/lib/utils";
 import type { ProductCardProps } from "../types";
 
 export function ProductCard({
-  viewModel,
+  product,
   variant = "default",
   className,
+  inWishlist,
+  addedToCart,
+  canAddToCart,
+  isCartThrottling,
+  isWishlistDebouncing,
   onImageClick,
   onWishlistClick,
   onAddToCart,
   onRemove,
 }: ProductCardProps) {
   const isWishlistVariant = variant === "wishlist";
+  const inStock = product.available_quantity > 0;
+  const formattedPrice = `₹${product.price.toLocaleString()}`;
+  const category = product.material || "Pottery";
 
   return (
     <motion.div
@@ -38,15 +46,15 @@ export function ProductCard({
           {/* Image Container */}
           <div className="relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
             <ImageCarousel
-              images={viewModel.images}
-              alt={viewModel.name}
+              images={product.image_urls}
+              alt={product.name}
               onImageClick={onImageClick}
               className="w-full"
               dotsClassName="bottom-16 lg:bottom-3 lg:group-hover:bottom-16"
             />
 
             {/* Out of stock overlay */}
-            {!viewModel.inStock && (
+            {!inStock && (
               <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-white/60 backdrop-blur-[2px] dark:bg-black/60">
                 <span className="rounded-full bg-neutral-900/90 px-4 py-1.5 text-xs font-semibold tracking-wide text-white dark:bg-white/90 dark:text-neutral-900">
                   Out of Stock
@@ -58,15 +66,11 @@ export function ProductCard({
             <div className="absolute top-3 right-3 z-20">
               {!isWishlistVariant ? (
                 <motion.button
-                  whileHover={
-                    viewModel.isWishlistDebouncing ? undefined : { scale: 1.1 }
-                  }
-                  whileTap={
-                    viewModel.isWishlistDebouncing ? undefined : { scale: 0.9 }
-                  }
+                  whileHover={isWishlistDebouncing ? undefined : { scale: 1.1 }}
+                  whileTap={isWishlistDebouncing ? undefined : { scale: 0.9 }}
                   className={cn(
                     "flex h-9 w-9 items-center justify-center rounded-full backdrop-blur-md transition-all duration-300",
-                    viewModel.inWishlist
+                    inWishlist
                       ? "bg-red-500/90 text-white shadow-lg shadow-red-500/20"
                       : "bg-white/70 text-neutral-700 shadow-sm hover:bg-white dark:bg-black/40 dark:text-white dark:hover:bg-black/60",
                   )}
@@ -79,7 +83,7 @@ export function ProductCard({
                   <Heart
                     className={cn(
                       "h-4 w-4 transition-transform",
-                      viewModel.inWishlist ? "fill-current" : "",
+                      inWishlist ? "fill-current" : "",
                     )}
                   />
                 </motion.button>
@@ -101,14 +105,11 @@ export function ProductCard({
 
             {/* Add to Cart Button */}
             <AnimatePresence>
-              {viewModel.canAddToCart && (
+              {canAddToCart && (
                 <div className="absolute right-3 bottom-3 left-3 z-20 transform transition-all duration-300 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
                   <motion.button
                     initial={false}
-                    whileTap={
-                      viewModel.isCartThrottling ? undefined : { scale: 0.98 }
-                    }
-                    // disabled={viewModel.isCartThrottling}
+                    whileTap={isCartThrottling ? undefined : { scale: 0.98 }}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -116,20 +117,18 @@ export function ProductCard({
                     }}
                     className={cn(
                       "flex w-full items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium shadow-lg backdrop-blur-md transition-all duration-300",
-                      viewModel.addedToCart
+                      addedToCart
                         ? "bg-primary text-primary-foreground"
                         : "bg-white/90 text-neutral-900 hover:bg-white dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-900",
-                      viewModel.isCartThrottling && "cursor-not-allowed",
+                      isCartThrottling && "cursor-not-allowed",
                     )}
                   >
-                    {viewModel.addedToCart ? (
+                    {addedToCart ? (
                       <Check className="h-4 w-4" />
                     ) : (
                       <ShoppingCartIcon className="h-4 w-4" />
                     )}
-                    <span>
-                      {viewModel.addedToCart ? "Added" : "Add to Cart"}
-                    </span>
+                    <span>{addedToCart ? "Added" : "Add to Cart"}</span>
                   </motion.button>
                 </div>
               )}
@@ -138,26 +137,26 @@ export function ProductCard({
 
           {/* Product Details */}
           <Link
-            href={`/products/${viewModel.slug}`}
+            href={`/products/${product.slug}`}
             className="flex flex-col gap-1 p-5 lg:gap-1.5"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex flex-col gap-1">
                 <h3 className="line-clamp-2 text-sm leading-tight font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
-                  {viewModel.name}
+                  {product.name}
                 </h3>
                 <p className="text-[10px] font-bold tracking-wider text-neutral-500 uppercase lg:text-xs dark:text-neutral-400">
-                  {viewModel.category}
+                  {category}
                 </p>
               </div>
               <div className="flex shrink-0 flex-col items-end gap-1">
                 <span className="text-sm font-bold text-neutral-900 lg:text-base dark:text-neutral-100">
-                  {viewModel.formattedPrice}
+                  {formattedPrice}
                 </span>
-                {viewModel.averageRating && viewModel.reviewCount > 0 && (
+                {product.avg_rating && product.reviews_count > 0 && (
                   <Rating
-                    rating={viewModel.averageRating}
-                    reviewCount={viewModel.reviewCount}
+                    rating={product.avg_rating}
+                    reviewCount={product.reviews_count}
                     size="sm"
                     className="origin-right scale-90"
                   />

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ProductWithCategories } from "@/types";
+import type { ProductBase, ProductDetail as ProductDetailType } from "@/data/products/types";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { Check, Heart, Loader2, Share2, ShoppingCartIcon } from "lucide-react";
@@ -8,7 +8,6 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ProductCard, ReviewCard } from "@/components/cards";
 import { ProductImageGallery } from "@/components/products";
-import { ProductCarousel } from "@/components/sections";
 import { Rating, ReviewsSheet } from "@/components/shared";
 import {
   Accordion,
@@ -20,31 +19,26 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
-import type {
-  FormattedReview,
-  ProductDetailProps,
-  ProductDetailViewModel,
-} from "../types";
+import type { FormattedReview, ProductDetailProps } from "../types";
 
 interface ProductInfoHeaderProps {
-  viewModel: ProductDetailViewModel;
+  product: ProductDetailType;
   selectedColor: string;
 }
 
-function ProductInfoHeader({
-  viewModel,
-  selectedColor,
-}: ProductInfoHeaderProps) {
+function ProductInfoHeader({ product, selectedColor }: ProductInfoHeaderProps) {
+  const category = product.categories[0] || product.material || "Pottery";
+
   return (
     <div className="mb-6 border-b border-neutral-100 pb-6 dark:border-neutral-800">
       <div className="mb-2">
         <span className="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">
-          {viewModel.category}
+          {category}
         </span>
       </div>
 
       <h1 className="mb-3 text-2xl font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
-        {viewModel.name}
+        {product.name}
         {selectedColor && (
           <span className="font-medium text-neutral-400">
             {" "}
@@ -56,17 +50,17 @@ function ProductInfoHeader({
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-baseline gap-2">
           <span className="text-2xl font-bold text-neutral-900 dark:text-white">
-            ₹{viewModel.price.toLocaleString()}
+            ₹{product.price.toLocaleString()}
           </span>
           <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
             Incl. Taxes
           </span>
         </div>
-        {viewModel.totalReviews > 0 && (
+        {product.reviews_count > 0 && (
           <div className="flex items-center gap-2">
             <Rating
-              rating={viewModel.averageRating}
-              reviewCount={viewModel.totalReviews}
+              rating={product.avg_rating}
+              reviewCount={product.reviews_count}
               size="sm"
             />
           </div>
@@ -379,7 +373,7 @@ function ActionButtons({
 }
 
 interface RelatedProductsProps {
-  products: ProductWithCategories[];
+  products: ProductBase[];
 }
 
 function RelatedProducts({ products }: RelatedProductsProps) {
@@ -460,8 +454,9 @@ function RelatedProducts({ products }: RelatedProductsProps) {
 }
 
 export function ProductDetail({
-  viewModel,
+  product,
   relatedProducts,
+  formattedReviews,
   selectedColor,
   addedToCart,
   inWishlist,
@@ -476,6 +471,10 @@ export function ProductDetail({
   onReviewLike,
   onLikeUpdate,
 }: ProductDetailProps) {
+  const availableQuantity = product.available_quantity ?? 0;
+  const isOutOfStock = availableQuantity === 0;
+  const isLowStock = availableQuantity > 0 && availableQuantity <= 5;
+
   return (
     <>
       <main className="pt-14 pb-40 lg:pt-20 lg:pb-0">
@@ -484,36 +483,33 @@ export function ProductDetail({
             {/* Image Gallery */}
             <div className="min-w-0 overflow-hidden">
               <ProductImageGallery
-                images={viewModel.images}
-                productName={viewModel.name}
+                images={product.image_urls}
+                productName={product.name}
               />
             </div>
 
             {/* Product Info */}
             <div className="flex flex-col px-4 pt-6 lg:px-0 lg:pt-0">
-              <ProductInfoHeader
-                viewModel={viewModel}
-                selectedColor={selectedColor}
-              />
+              <ProductInfoHeader product={product} selectedColor={selectedColor} />
 
               <StockStatus
-                isOutOfStock={viewModel.isOutOfStock}
-                isLowStock={viewModel.isLowStock}
-                availableQuantity={viewModel.availableQuantity}
+                isOutOfStock={isOutOfStock}
+                isLowStock={isLowStock}
+                availableQuantity={availableQuantity}
               />
 
               {/* Description */}
               <div className="mb-6">
                 <p className="text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
-                  {viewModel.description}
+                  {product.description}
                 </p>
               </div>
 
               {/* Color Display */}
-              {viewModel.colorName && viewModel.colorCode && (
+              {product.color_name && product.color_code && (
                 <ColorSelector
-                  colorName={viewModel.colorName}
-                  colorCode={viewModel.colorCode}
+                  colorName={product.color_name}
+                  colorCode={product.color_code}
                   selectedColor={selectedColor}
                   onColorSelect={onColorSelect}
                 />
@@ -521,9 +517,9 @@ export function ProductDetail({
 
               {/* Reviews Preview */}
               <ReviewsPreview
-                reviews={viewModel.reviews}
-                averageRating={viewModel.averageRating}
-                totalReviews={viewModel.totalReviews}
+                reviews={formattedReviews}
+                averageRating={product.avg_rating}
+                totalReviews={product.reviews_count}
                 currentUserId={currentUserId}
                 onReviewLike={onReviewLike}
                 onLikeUpdate={onLikeUpdate}
@@ -531,13 +527,13 @@ export function ProductDetail({
 
               {/* Accordion sections */}
               <MaterialsAccordion
-                material={viewModel.material}
-                instructions={viewModel.instructions}
+                material={product.material}
+                instructions={product.instructions}
               />
 
               {/* Desktop Add to Cart */}
               <ActionButtons
-                isOutOfStock={viewModel.isOutOfStock}
+                isOutOfStock={isOutOfStock}
                 atMaxQuantity={atMaxQuantity}
                 addedToCart={addedToCart}
                 inWishlist={inWishlist}
@@ -559,7 +555,7 @@ export function ProductDetail({
       {/* Mobile Fixed Bottom CTA */}
       <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
         <ActionButtons
-          isOutOfStock={viewModel.isOutOfStock}
+          isOutOfStock={isOutOfStock}
           atMaxQuantity={atMaxQuantity}
           addedToCart={addedToCart}
           inWishlist={inWishlist}

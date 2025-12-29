@@ -1,6 +1,6 @@
 "use client";
 
-import type { ProductWithCategories } from "@/types";
+import type { ProductBase } from "@/data/products/types";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -9,7 +9,7 @@ import { ProductCard } from "@/components/cards";
 import { cn } from "@/lib/utils";
 
 interface ProductCarouselProps {
-  products: ProductWithCategories[];
+  products: ProductBase[];
   title?: string;
   subtitle?: string;
   className?: string;
