@@ -552,7 +552,7 @@ export function ProductDetail({
           </div>
 
           {/* Related Products */}
-          <ProductCarousel products={relatedProducts} />
+          <RelatedProducts products={relatedProducts} />
         </div>
       </main>
 
