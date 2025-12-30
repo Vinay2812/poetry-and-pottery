@@ -1,11 +1,12 @@
 "use server";
 
 import { isGraphQL } from "@/consts/env";
+
 import type {
   ProductBase,
   ProductDetail,
   ProductsResponse,
-} from "@/graphql/generated/graphql";
+} from "@/graphql/generated/types";
 
 import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";

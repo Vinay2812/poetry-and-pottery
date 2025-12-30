@@ -1,6 +1,9 @@
 "use client";
 
-import type { ProductBase, ProductDetail as ProductDetailType } from "@/data/products/types";
+import type {
+  ProductBase,
+  ProductDetail as ProductDetailType,
+} from "@/data/products/types";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { Check, Heart, Loader2, Share2, ShoppingCartIcon } from "lucide-react";
@@ -490,7 +493,10 @@ export function ProductDetail({
 
             {/* Product Info */}
             <div className="flex flex-col px-4 pt-6 lg:px-0 lg:pt-0">
-              <ProductInfoHeader product={product} selectedColor={selectedColor} />
+              <ProductInfoHeader
+                product={product}
+                selectedColor={selectedColor}
+              />
 
               <StockStatus
                 isOutOfStock={isOutOfStock}

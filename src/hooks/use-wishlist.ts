@@ -5,13 +5,36 @@ import {
   moveToCart as moveToCartAction,
   removeFromWishlist as removeFromWishlistAction,
   toggleWishlist as toggleWishlistAction,
-} from "@/actions/wishlist.actions";
+} from "@/data/wishlist/gateway/server";
 import { useUIStore } from "@/store/ui.store";
 import { useWishlistStore } from "@/store/wishlist.store";
+import type { WishlistWithProduct } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useState } from "react";
 
+import type { WishlistItem } from "@/graphql/generated/graphql";
+
 import { useDebounce } from "./use-debounce";
+
+// Map GraphQL WishlistItem to store-compatible WishlistWithProduct
+function mapToWishlistWithProduct(item: WishlistItem): WishlistWithProduct {
+  return {
+    id: item.id,
+    user_id: item.user_id,
+    product_id: item.product_id,
+    created_at: new Date(item.created_at),
+    updated_at: new Date(item.updated_at),
+    product: {
+      ...item.product,
+      description: null,
+      instructions: [],
+      is_active: true,
+      created_at: new Date(),
+      updated_at: new Date(),
+      product_categories: [],
+    },
+  };
+}
 
 export function useWishlist() {
   const { isSignedIn } = useAuth();
@@ -119,7 +142,7 @@ export function useWishlist() {
             message: actionResult.error || "Failed to add to wishlist",
           });
         } else {
-          wishlistStore.addItem(actionResult.data);
+          wishlistStore.addItem(mapToWishlistWithProduct(actionResult.data));
         }
 
         setLoading(productId, false);

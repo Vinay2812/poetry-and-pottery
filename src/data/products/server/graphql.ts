@@ -21,7 +21,7 @@ import type {
   RecommendedProductsQueryVariables,
   RelatedProductsQuery,
   RelatedProductsQueryVariables,
-} from "@/graphql/generated/graphql";
+} from "@/graphql/generated/types";
 import {
   BEST_SELLERS_QUERY,
   FEATURED_PRODUCTS_QUERY,

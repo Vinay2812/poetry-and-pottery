@@ -1,18 +1,41 @@
 "use client";
 
+import { MAX_CART_QUANTITY } from "@/consts/performance";
 import {
   addToCart as addToCartAction,
   removeFromCart as removeFromCartAction,
   updateCartQuantity as updateCartQuantityAction,
-} from "@/actions/cart.actions";
-import { MAX_CART_QUANTITY } from "@/consts/performance";
+} from "@/data/cart/gateway/server";
 import { useCartStore } from "@/store/cart.store";
 import { useUIStore } from "@/store/ui.store";
 import type { CartWithProduct, ProductWithCategories } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useState } from "react";
 
+import type { CartItem } from "@/graphql/generated/graphql";
+
 import { useThrottle } from "./use-throttle";
+
+// Map GraphQL CartItem to store-compatible CartWithProduct
+function mapToCartWithProduct(item: CartItem): CartWithProduct {
+  return {
+    id: item.id,
+    user_id: item.user_id,
+    product_id: item.product_id,
+    quantity: item.quantity,
+    created_at: new Date(item.created_at),
+    updated_at: new Date(item.updated_at),
+    product: {
+      ...item.product,
+      description: null,
+      instructions: [],
+      is_active: true,
+      created_at: new Date(),
+      updated_at: new Date(),
+      product_categories: [],
+    },
+  };
+}
 
 export function useCart() {
   const { isSignedIn } = useAuth();
@@ -113,7 +136,7 @@ export function useCart() {
           return false;
         }
 
-        cartStore.addItem(actionResult.data);
+        cartStore.addItem(mapToCartWithProduct(actionResult.data));
         setLoading(productId, false);
         return true;
       });

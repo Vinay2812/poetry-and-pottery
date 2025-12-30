@@ -11,7 +11,7 @@ export type {
   ProductsFilter,
   ProductsFilterInput,
   ProductOrderBy,
-} from "@/graphql/generated/graphql";
+} from "@/graphql/generated/types";
 
 // Filter params - uses plain types for easier usage in components
 export interface ProductsFilterParams {

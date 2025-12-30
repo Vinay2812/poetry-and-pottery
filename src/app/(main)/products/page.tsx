@@ -1,11 +1,11 @@
+import { getProducts } from "@/data/products/gateway/server";
+import type { ProductsFilterParams } from "@/data/products/types";
 import { MobileHeaderContainer } from "@/features/layout";
 import { ProductListContainer } from "@/features/products";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { ProductsSkeleton } from "@/components/skeletons";
-import { getProducts } from "@/data/products/gateway/server";
-import type { ProductsFilterParams } from "@/data/products/types";
 
 export const metadata: Metadata = {
   title: "Shop Handcrafted Pottery | Poetry & Pottery",
@@ -47,7 +47,7 @@ interface ProductsPageProps {
 }
 
 function mapSortToOrderBy(
-  sort?: string
+  sort?: string,
 ): ProductsFilterParams["order_by"] | undefined {
   switch (sort) {
     case "price-low":

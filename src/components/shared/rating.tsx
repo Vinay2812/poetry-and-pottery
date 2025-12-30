@@ -36,7 +36,7 @@ export function Rating({
       >
         {rating.toFixed(1)}
       </span>
-      {showCount && reviewCount && (
+      {showCount && reviewCount != null && reviewCount > 0 && (
         <span
           className={cn(
             "text-muted-foreground",

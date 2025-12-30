@@ -11,9 +11,7 @@ import { useInView } from "react-intersection-observer";
 import { Wishlist } from "../components/wishlist";
 import type { WishlistContainerProps, WishlistViewModel } from "../types";
 
-function mapToProductBase(
-  wishlistItem: WishlistWithProduct
-): ProductBase {
+function mapToProductBase(wishlistItem: WishlistWithProduct): ProductBase {
   return {
     id: wishlistItem.product.id,
     slug: wishlistItem.product.slug,
@@ -100,12 +98,26 @@ export function WishlistContainer({
 
   const handleRemove = useCallback(
     async (productId: number) => {
-      const success = await removeFromWishlist(productId);
-      if (success) {
-        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
-      }
+      // Optimistically update the query cache to remove the item immediately
+      queryClient.setQueryData(
+        ["wishlist"],
+        (oldData: typeof data | undefined) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page, index) => ({
+              ...page,
+              data: page.data.filter((item) => item.product_id !== productId),
+              total: index === 0 ? Math.max(0, page.total - 1) : page.total,
+            })),
+          };
+        },
+      );
+
+      // Then trigger the actual removal (which also updates zustand store)
+      await removeFromWishlist(productId);
     },
-    [removeFromWishlist, queryClient],
+    [removeFromWishlist, queryClient, data],
   );
 
   // Build view model

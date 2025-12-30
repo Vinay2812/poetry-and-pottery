@@ -153,7 +153,7 @@ export function ProductCard({
                 <span className="text-sm font-bold text-neutral-900 lg:text-base dark:text-neutral-100">
                   {formattedPrice}
                 </span>
-                {product.avg_rating && product.reviews_count > 0 && (
+                {product.avg_rating > 0 && product.reviews_count > 0 && (
                   <Rating
                     rating={product.avg_rating}
                     reviewCount={product.reviews_count}

@@ -13,7 +13,7 @@ import {
 const PRODUCTS_PER_PAGE = 12;
 
 function mapSortToOrderBy(
-  sort: string
+  sort: string,
 ): ProductsFilterParams["order_by"] | undefined {
   switch (sort) {
     case "price-low":
@@ -67,8 +67,7 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
 
   const filterParams: ProductsFilterParams = useMemo(
     () => ({
-      categories:
-        activeCategory === "all" ? undefined : [activeCategory],
+      categories: activeCategory === "all" ? undefined : [activeCategory],
       materials: selectedMaterials.length > 0 ? selectedMaterials : undefined,
       order_by: mapSortToOrderBy(sortBy),
       limit: PRODUCTS_PER_PAGE,

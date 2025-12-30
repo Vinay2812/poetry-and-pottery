@@ -1,12 +1,12 @@
 "use server";
 
 import {
-  getProducts as getProductsAction,
-  getProductBySlug as getProductBySlugAction,
-  getProductById as getProductByIdAction,
-  getRelatedProducts as getRelatedProductsAction,
-  getFeaturedProducts as getFeaturedProductsAction,
   getBestSellers as getBestSellersAction,
+  getFeaturedProducts as getFeaturedProductsAction,
+  getProductById as getProductByIdAction,
+  getProductBySlug as getProductBySlugAction,
+  getProducts as getProductsAction,
+  getRelatedProducts as getRelatedProductsAction,
   getSmartRecommendations as getSmartRecommendationsAction,
 } from "@/actions/product.actions";
 
@@ -15,7 +15,7 @@ import type {
   ProductDetail,
   ProductReview,
   ProductsResponse,
-} from "@/graphql/generated/graphql";
+} from "@/graphql/generated/types";
 
 // Map server action product to GraphQL ProductBase type
 function mapToProductBase(product: {
@@ -178,7 +178,7 @@ export async function getProducts(params: {
       categories: result.categories,
       materials: result.materials,
       price_range: result.priceRange,
-      price_histogram: result.priceHistogram
+      price_histogram: result.priceHistogram,
     },
   };
 }
@@ -217,7 +217,9 @@ export async function getFeaturedProducts(
   return products.map(mapToProductBase);
 }
 
-export async function getBestSellers(limit: number = 8): Promise<ProductBase[]> {
+export async function getBestSellers(
+  limit: number = 8,
+): Promise<ProductBase[]> {
   const products = await getBestSellersAction(limit);
   if (!products) return [];
   return products.map(mapToProductBase);
