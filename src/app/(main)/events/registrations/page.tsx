@@ -2,7 +2,7 @@ import {
   getCompletedRegistrations,
   getUpcomingEvents,
   getUpcomingRegistrations,
-} from "@/actions";
+} from "@/data/events/gateway/server";
 import { RegistrationsContainer } from "@/features/events";
 import type { Metadata } from "next";
 
@@ -24,7 +24,7 @@ export default async function RegistrationsPage() {
   ] = await Promise.all([
     getUpcomingRegistrations(),
     getCompletedRegistrations(),
-    getUpcomingEvents(1, 4),
+    getUpcomingEvents({ page: 1, limit: 4 }),
   ]);
 
   const upcomingRegistrations = upcomingRegistrationsResult.success
@@ -33,7 +33,7 @@ export default async function RegistrationsPage() {
   const upcomingPagination = upcomingRegistrationsResult.success
     ? {
         total: upcomingRegistrationsResult.data.total,
-        totalPages: upcomingRegistrationsResult.data.totalPages,
+        totalPages: upcomingRegistrationsResult.data.total_pages,
       }
     : { total: 0, totalPages: 0 };
 
@@ -43,9 +43,13 @@ export default async function RegistrationsPage() {
   const completedPagination = completedRegistrationsResult.success
     ? {
         total: completedRegistrationsResult.data.total,
-        totalPages: completedRegistrationsResult.data.totalPages,
+        totalPages: completedRegistrationsResult.data.total_pages,
       }
     : { total: 0, totalPages: 0 };
+
+  const upcomingEvents = upcomingEventsResult.success
+    ? upcomingEventsResult.data.data
+    : [];
 
   return (
     <RegistrationsContainer
@@ -53,7 +57,7 @@ export default async function RegistrationsPage() {
       initialUpcomingPagination={upcomingPagination}
       initialCompletedRegistrations={completedRegistrations}
       initialCompletedPagination={completedPagination}
-      upcomingEvents={upcomingEventsResult.data}
+      upcomingEvents={upcomingEvents}
     />
   );
 }

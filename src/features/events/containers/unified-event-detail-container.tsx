@@ -1,10 +1,10 @@
 "use client";
 
 import type {
-  EventWithDetails,
-  EventWithRegistrationCount,
-  RegistrationWithEvent,
-} from "@/types";
+  EventBase,
+  EventDetail,
+  EventRegistration,
+} from "@/data/events/types";
 
 import { RegistrationDetailClient } from "@/components/events/registration-detail-client";
 
@@ -12,11 +12,11 @@ import { EventDetailContainer } from "./event-detail-container";
 import { PastWorkshopDetailContainer } from "./past-workshop-detail-container";
 
 interface UnifiedEventDetailContainerProps {
-  event: EventWithDetails;
-  registration: RegistrationWithEvent | null;
+  event: EventDetail;
+  registration: EventRegistration | null;
   isPastEvent: boolean;
   currentUserId: number | null;
-  upcomingEvents: EventWithRegistrationCount[];
+  upcomingEvents: EventBase[];
 }
 
 export function UnifiedEventDetailContainer({

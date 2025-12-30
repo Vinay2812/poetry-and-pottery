@@ -1,7 +1,7 @@
 "use client";
 
-import type { RegistrationWithReviewStatus } from "@/actions";
 import { createEventReview } from "@/actions";
+import type { EventRegistration } from "@/data/events/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
@@ -22,11 +22,11 @@ import {
 } from "./event";
 
 interface CompletedEventCardProps {
-  registration: RegistrationWithReviewStatus;
+  registration: EventRegistration;
 }
 
 export function CompletedEventCard({ registration }: CompletedEventCardProps) {
-  const { event, hasReviewed } = registration;
+  const { event, has_reviewed: hasReviewed } = registration;
   const router = useRouter();
 
   const eventDate = new Date(event.ends_at);

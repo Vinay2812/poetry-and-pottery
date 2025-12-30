@@ -1,12 +1,11 @@
 "use client";
 
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import {
-  type RegistrationWithReviewStatus,
   getCompletedRegistrations,
   getUpcomingRegistrations,
-} from "@/actions";
-import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
-import type { RegistrationWithEvent } from "@/types";
+} from "@/data/events/gateway/server";
+import type { EventRegistration } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -14,9 +13,9 @@ import { useInView } from "react-intersection-observer";
 import type { PaginationData } from "../types";
 
 interface UseRegistrationsQueryOptions {
-  initialUpcomingRegistrations: RegistrationWithEvent[];
+  initialUpcomingRegistrations: EventRegistration[];
   initialUpcomingPagination: PaginationData;
-  initialCompletedRegistrations: RegistrationWithReviewStatus[];
+  initialCompletedRegistrations: EventRegistration[];
   initialCompletedPagination: PaginationData;
   searchQuery?: string;
 }
@@ -37,15 +36,20 @@ export function useRegistrationsQuery({
   } = useInfiniteQuery({
     queryKey: ["registrations-upcoming", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
-      const result = await getUpcomingRegistrations(
-        pageParam,
-        DEFAULT_PAGE_SIZE,
-        searchQuery,
-      );
+      const result = await getUpcomingRegistrations({
+        page: pageParam,
+        limit: DEFAULT_PAGE_SIZE,
+        search: searchQuery,
+      });
       if (!result.success) {
         throw new Error(result.error);
       }
-      return result.data;
+      return {
+        data: result.data.data,
+        total: result.data.total,
+        page: result.data.page,
+        totalPages: result.data.total_pages,
+      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -76,11 +80,16 @@ export function useRegistrationsQuery({
   } = useInfiniteQuery({
     queryKey: ["registrations-completed"],
     queryFn: async ({ pageParam = 1 }) => {
-      const result = await getCompletedRegistrations(pageParam);
+      const result = await getCompletedRegistrations({ page: pageParam });
       if (!result.success) {
         throw new Error(result.error);
       }
-      return result.data;
+      return {
+        data: result.data.data,
+        total: result.data.total,
+        page: result.data.page,
+        totalPages: result.data.total_pages,
+      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

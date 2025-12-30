@@ -1,7 +1,7 @@
 "use client";
 
+import type { EventBase } from "@/data/events/types";
 import { MobileHeaderContainer } from "@/features/layout";
-import type { EventWithRegistrationCount } from "@/types";
 import {
   Calendar,
   Check,
@@ -149,7 +149,7 @@ function ReviewsSection({
 }
 
 interface UpcomingEventCardProps {
-  event: EventWithRegistrationCount;
+  event: EventBase;
 }
 
 function UpcomingEventCard({ event }: UpcomingEventCardProps) {
@@ -197,7 +197,7 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
 
 interface DesktopSidebarProps {
   viewModel: PastWorkshopDetailViewModel;
-  upcomingEvents: EventWithRegistrationCount[];
+  upcomingEvents: EventBase[];
 }
 
 function DesktopSidebar({ viewModel, upcomingEvents }: DesktopSidebarProps) {

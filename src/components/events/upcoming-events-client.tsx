@@ -1,7 +1,7 @@
 "use client";
 
-import { getUpcomingEvents } from "@/actions";
-import type { EventWithRegistrationCount } from "@/types";
+import { getUpcomingEvents } from "@/data/events/gateway/server";
+import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
 import { useEffect, useMemo } from "react";
@@ -12,7 +12,7 @@ import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 
 interface UpcomingEventsClientProps {
-  initialEvents: EventWithRegistrationCount[];
+  initialEvents: EventBase[];
   initialPagination: {
     total: number;
     totalPages: number;
@@ -27,7 +27,16 @@ export function UpcomingEventsClient({
     useInfiniteQuery({
       queryKey: ["upcoming-events"],
       queryFn: async ({ pageParam = 1 }) => {
-        return getUpcomingEvents(pageParam);
+        const result = await getUpcomingEvents({ page: pageParam });
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        return {
+          data: result.data.data,
+          total: result.data.total,
+          page: result.data.page,
+          totalPages: result.data.total_pages,
+        };
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {

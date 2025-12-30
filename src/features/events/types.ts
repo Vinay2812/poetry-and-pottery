@@ -1,9 +1,8 @@
-import type { RegistrationWithReviewStatus } from "@/actions";
 import type {
-  EventWithDetails,
-  EventWithRegistrationCount,
-  RegistrationWithEvent,
-} from "@/types";
+  EventBase,
+  EventDetail,
+  EventRegistration,
+} from "@/data/events/types";
 
 /**
  * View model for event quick info.
@@ -40,7 +39,7 @@ export interface EventDetailViewModel {
  */
 export interface EventDetailProps {
   viewModel: EventDetailViewModel;
-  otherEvents: EventWithRegistrationCount[];
+  otherEvents: EventBase[];
   onReserveSeat: () => void;
   onShare: () => void;
 }
@@ -49,8 +48,8 @@ export interface EventDetailProps {
  * Props for the EventDetailContainer.
  */
 export interface EventDetailContainerProps {
-  event: EventWithDetails;
-  otherEvents: EventWithRegistrationCount[];
+  event: EventDetail;
+  otherEvents: EventBase[];
 }
 
 // Re-export date utilities for convenience
@@ -107,7 +106,7 @@ export interface PastWorkshopDetailViewModel {
  */
 export interface PastWorkshopDetailProps {
   viewModel: PastWorkshopDetailViewModel;
-  upcomingEvents: EventWithRegistrationCount[];
+  upcomingEvents: EventBase[];
   selectedImageIndex: number | null;
   onOpenGallery: (index: number) => void;
   onCloseGallery: () => void;
@@ -119,8 +118,8 @@ export interface PastWorkshopDetailProps {
  * Props for the PastWorkshopDetailContainer.
  */
 export interface PastWorkshopDetailContainerProps {
-  workshop: EventWithDetails;
-  upcomingEvents: EventWithRegistrationCount[];
+  workshop: EventDetail;
+  upcomingEvents: EventBase[];
   currentUserId?: number | null;
 }
 
@@ -136,8 +135,8 @@ export interface PaginationData {
  * View model for the AllEvents component.
  */
 export interface AllEventsViewModel {
-  upcomingEvents: EventWithRegistrationCount[];
-  pastEvents: EventWithRegistrationCount[];
+  upcomingEvents: EventBase[];
+  pastEvents: EventBase[];
   hasUpcoming: boolean;
   hasPast: boolean;
   hasNoEvents: boolean;
@@ -159,9 +158,9 @@ export interface AllEventsProps {
  * Props for the AllEventsContainer.
  */
 export interface AllEventsContainerProps {
-  initialUpcomingEvents: EventWithRegistrationCount[];
+  initialUpcomingEvents: EventBase[];
   initialUpcomingPagination: PaginationData;
-  initialPastEvents: EventWithRegistrationCount[];
+  initialPastEvents: EventBase[];
   initialPastPagination: PaginationData;
 }
 
@@ -169,9 +168,9 @@ export interface AllEventsContainerProps {
  * View model for the Registrations component.
  */
 export interface RegistrationsViewModel {
-  upcomingRegistrations: RegistrationWithEvent[];
-  completedRegistrations: RegistrationWithReviewStatus[];
-  upcomingEvents: EventWithRegistrationCount[];
+  upcomingRegistrations: EventRegistration[];
+  completedRegistrations: EventRegistration[];
+  upcomingEvents: EventBase[];
   hasUpcomingRegistrations: boolean;
   hasCompletedRegistrations: boolean;
   hasAnyRegistrations: boolean;
@@ -194,9 +193,9 @@ export interface RegistrationsProps {
  * Props for the RegistrationsContainer.
  */
 export interface RegistrationsContainerProps {
-  initialUpcomingRegistrations: RegistrationWithEvent[];
+  initialUpcomingRegistrations: EventRegistration[];
   initialUpcomingPagination: PaginationData;
-  initialCompletedRegistrations: RegistrationWithReviewStatus[];
+  initialCompletedRegistrations: EventRegistration[];
   initialCompletedPagination: PaginationData;
-  upcomingEvents?: EventWithRegistrationCount[];
+  upcomingEvents?: EventBase[];
 }

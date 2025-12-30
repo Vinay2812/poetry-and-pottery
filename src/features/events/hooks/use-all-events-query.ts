@@ -1,8 +1,8 @@
 "use client";
 
-import { getPastEvents, getUpcomingEvents } from "@/actions";
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
-import type { EventWithRegistrationCount } from "@/types";
+import { getPastEvents, getUpcomingEvents } from "@/data/events/gateway/server";
+import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -13,9 +13,9 @@ interface PaginationData {
 }
 
 interface UseAllEventsQueryOptions {
-  initialUpcomingEvents: EventWithRegistrationCount[];
+  initialUpcomingEvents: EventBase[];
   initialUpcomingPagination: PaginationData;
-  initialPastEvents: EventWithRegistrationCount[];
+  initialPastEvents: EventBase[];
   initialPastPagination: PaginationData;
   searchQuery?: string;
 }
@@ -36,7 +36,20 @@ export function useAllEventsQuery({
   } = useInfiniteQuery({
     queryKey: ["all-events-upcoming", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
-      return getUpcomingEvents(pageParam, DEFAULT_PAGE_SIZE, searchQuery);
+      const result = await getUpcomingEvents({
+        page: pageParam,
+        limit: DEFAULT_PAGE_SIZE,
+        search: searchQuery,
+      });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return {
+        data: result.data.data,
+        total: result.data.total,
+        page: result.data.page,
+        totalPages: result.data.total_pages,
+      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -67,7 +80,20 @@ export function useAllEventsQuery({
   } = useInfiniteQuery({
     queryKey: ["all-events-past", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
-      return getPastEvents(pageParam, 12, searchQuery);
+      const result = await getPastEvents({
+        page: pageParam,
+        limit: DEFAULT_PAGE_SIZE,
+        search: searchQuery,
+      });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return {
+        data: result.data.data,
+        total: result.data.total,
+        page: result.data.page,
+        totalPages: result.data.total_pages,
+      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

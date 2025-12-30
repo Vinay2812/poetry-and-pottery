@@ -1,4 +1,4 @@
-import { EventRegistrationStatus } from "@/types";
+import { EventRegistrationStatus } from "@/data/events/types";
 import {
   Ban,
   Check,
@@ -23,25 +23,25 @@ interface StatusConfig {
 
 export function getStatusConfig(status: EventRegistrationStatus): StatusConfig {
   switch (status) {
-    case EventRegistrationStatus.PENDING:
+    case EventRegistrationStatus.Pending:
       return {
         label: "PENDING",
         icon: HourglassIcon,
         bgColor: "bg-amber-500/90",
       };
-    case EventRegistrationStatus.APPROVED:
+    case EventRegistrationStatus.Approved:
       return { label: "APPROVED", icon: ThumbsUp, bgColor: "bg-blue-500/90" };
-    case EventRegistrationStatus.PAID:
+    case EventRegistrationStatus.Paid:
       return { label: "PAID", icon: Check, bgColor: "bg-teal-500/90" };
-    case EventRegistrationStatus.CONFIRMED:
+    case EventRegistrationStatus.Confirmed:
       return {
         label: "CONFIRMED",
         icon: CheckCircle2,
         bgColor: "bg-emerald-500/90",
       };
-    case EventRegistrationStatus.REJECTED:
+    case EventRegistrationStatus.Rejected:
       return { label: "REJECTED", icon: XCircle, bgColor: "bg-red-500/90" };
-    case EventRegistrationStatus.CANCELLED:
+    case EventRegistrationStatus.Cancelled:
       return { label: "CANCELLED", icon: Ban, bgColor: "bg-neutral-500/90" };
     default:
       return { label: "UNKNOWN", icon: Clock, bgColor: "bg-neutral-500/90" };

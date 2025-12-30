@@ -1,6 +1,6 @@
 "use client";
 
-import type { RegistrationWithEvent } from "@/types";
+import type { EventRegistration } from "@/data/events/types";
 import { Download } from "lucide-react";
 import { useCallback } from "react";
 
@@ -13,7 +13,7 @@ import {
 } from "@/lib/date";
 
 interface TicketDownloadDialogProps {
-  registration: RegistrationWithEvent;
+  registration: EventRegistration;
   trigger?: React.ReactNode;
 }
 

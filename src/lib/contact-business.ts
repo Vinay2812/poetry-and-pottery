@@ -7,7 +7,7 @@ export interface EventNotificationData {
   type: "event";
   registrationId: string;
   eventTitle: string;
-  eventDate: Date;
+  eventDate: Date | string;
   seats: number;
   amount: number;
   customerName: string;
@@ -53,7 +53,7 @@ export interface EventFollowUpData {
   type: "event-followup";
   registrationId: string;
   eventTitle: string;
-  eventDate: Date;
+  eventDate: Date | string;
   registrationStatus: string;
   customerName: string;
   customerEmail: string;

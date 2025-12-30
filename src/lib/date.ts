@@ -2,7 +2,10 @@
  * Calculate duration between two dates in hours and minutes.
  * @example "2hr 30min", "45min", "3hr"
  */
-export function calculateDuration(startsAt: Date, endsAt: Date): string {
+export function calculateDuration(
+  startsAt: Date | string,
+  endsAt: Date | string,
+): string {
   const diffMs = new Date(endsAt).getTime() - new Date(startsAt).getTime();
   const hours = Math.floor(diffMs / (1000 * 60 * 60));
   const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
@@ -16,7 +19,7 @@ export function calculateDuration(startsAt: Date, endsAt: Date): string {
  * Format event date in short format.
  * @example "Mon, Jan 15"
  */
-export function formatEventDate(date: Date): string {
+export function formatEventDate(date: Date | string): string {
   return new Date(date).toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
@@ -28,7 +31,7 @@ export function formatEventDate(date: Date): string {
  * Format event date in full format with year.
  * @example "Monday, January 15, 2025"
  */
-export function formatEventDateFull(date: Date): string {
+export function formatEventDateFull(date: Date | string): string {
   return new Date(date).toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -41,7 +44,7 @@ export function formatEventDateFull(date: Date): string {
  * Format event date for tickets (short weekday, long month).
  * @example "Sat, Jan 15, 2025"
  */
-export function formatTicketDate(date: Date): string {
+export function formatTicketDate(date: Date | string): string {
   return new Date(date).toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
@@ -54,7 +57,7 @@ export function formatTicketDate(date: Date): string {
  * Format event time in 12-hour format.
  * @example "2:30 PM"
  */
-export function formatEventTime(date: Date): string {
+export function formatEventTime(date: Date | string): string {
   return new Date(date).toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",

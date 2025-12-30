@@ -1,4 +1,4 @@
-import type { EventWithRegistrationCount } from "@/types";
+import type { EventBase } from "@/data/events/types";
 
 import {
   EventCardContent,
@@ -13,7 +13,7 @@ import {
 } from "./event";
 
 interface EventCardProps {
-  event: EventWithRegistrationCount;
+  event: EventBase;
 }
 
 export function EventCard({ event }: EventCardProps) {
@@ -29,7 +29,7 @@ export function EventCard({ event }: EventCardProps) {
   });
 
   const totalSeats = event.total_seats;
-  const registrations = event._count?.event_registrations || 0;
+  const registrations = event.registrations_count;
   const isSoldOut = registrations >= totalSeats;
 
   return (

@@ -128,7 +128,7 @@ export function PastWorkshopDetailContainer({
         formattedDate: formatEventDate(workshop.starts_at),
         formattedTime: formatEventTime(workshop.starts_at),
         duration: calculateDuration(workshop.starts_at, workshop.ends_at),
-        attendees: workshop._count?.event_registrations || 0,
+        attendees: workshop.registrations_count,
         location: workshop.location,
         fullLocation: workshop.full_location,
         instructor: workshop.instructor,

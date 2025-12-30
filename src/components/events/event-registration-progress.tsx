@@ -1,6 +1,6 @@
 "use client";
 
-import { EventRegistrationStatus } from "@/types";
+import { EventRegistrationStatus } from "@/data/events/types";
 import {
   Ban,
   CheckCircle2,
@@ -20,7 +20,7 @@ import { formatProgressDate } from "@/lib/date";
 
 export const REGISTRATION_STEPS: readonly ProgressStep[] = [
   {
-    status: EventRegistrationStatus.PENDING,
+    status: EventRegistrationStatus.Pending,
     label: "Requested",
     pastDescription: "Request was received",
     currentDescription: "Request received",
@@ -28,7 +28,7 @@ export const REGISTRATION_STEPS: readonly ProgressStep[] = [
     icon: Clock,
   },
   {
-    status: EventRegistrationStatus.APPROVED,
+    status: EventRegistrationStatus.Approved,
     label: "Approved",
     pastDescription: "Registration was approved",
     currentDescription: "Registration approved",
@@ -36,7 +36,7 @@ export const REGISTRATION_STEPS: readonly ProgressStep[] = [
     icon: ThumbsUp,
   },
   {
-    status: EventRegistrationStatus.PAID,
+    status: EventRegistrationStatus.Paid,
     label: "Payment Received",
     pastDescription: "Payment was received",
     currentDescription: "Payment received",
@@ -44,7 +44,7 @@ export const REGISTRATION_STEPS: readonly ProgressStep[] = [
     icon: CreditCard,
   },
   {
-    status: EventRegistrationStatus.CONFIRMED,
+    status: EventRegistrationStatus.Confirmed,
     label: "Confirmed",
     pastDescription: "Registration was confirmed",
     currentDescription: "Registration confirmed",
@@ -54,10 +54,10 @@ export const REGISTRATION_STEPS: readonly ProgressStep[] = [
 ] as const;
 
 const REGISTRATION_STATUS_ORDER: readonly string[] = [
-  EventRegistrationStatus.PENDING,
-  EventRegistrationStatus.APPROVED,
-  EventRegistrationStatus.PAID,
-  EventRegistrationStatus.CONFIRMED,
+  EventRegistrationStatus.Pending,
+  EventRegistrationStatus.Approved,
+  EventRegistrationStatus.Paid,
+  EventRegistrationStatus.Confirmed,
 ] as const;
 
 interface EventRegistrationProgressProps {
@@ -79,19 +79,19 @@ export function EventRegistrationProgress({
   cancelledAt,
   createdAt,
 }: EventRegistrationProgressProps) {
-  const isCancelled = status === EventRegistrationStatus.CANCELLED;
-  const isRejected = status === EventRegistrationStatus.REJECTED;
+  const isCancelled = status === EventRegistrationStatus.Cancelled;
+  const isRejected = status === EventRegistrationStatus.Rejected;
 
   const getStepDate = useCallback(
     (stepStatus: string): Date | string | null => {
       switch (stepStatus) {
-        case EventRegistrationStatus.PENDING:
+        case EventRegistrationStatus.Pending:
           return requestAt ?? createdAt;
-        case EventRegistrationStatus.APPROVED:
+        case EventRegistrationStatus.Approved:
           return approvedAt ?? null;
-        case EventRegistrationStatus.PAID:
+        case EventRegistrationStatus.Paid:
           return paidAt ?? null;
-        case EventRegistrationStatus.CONFIRMED:
+        case EventRegistrationStatus.Confirmed:
           return confirmedAt ?? null;
         default:
           return null;

@@ -1,5 +1,5 @@
-import { getPastEvents, getUpcomingEvents } from "@/actions";
-import { MAX_CART_QUANTITY } from "@/consts/performance";
+import { DEFAULT_PAGE_SIZE, MAX_CART_QUANTITY } from "@/consts/performance";
+import { getPastEvents, getUpcomingEvents } from "@/data/events/gateway/server";
 import { AllEventsContainer } from "@/features/events";
 import type { Metadata } from "next";
 
@@ -41,22 +41,34 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   const search = params.search || undefined;
 
   const [upcomingEventsResult, pastEventsResult] = await Promise.all([
-    getUpcomingEvents(1, MAX_CART_QUANTITY, search),
-    getPastEvents(1, 12, search),
+    getUpcomingEvents({ page: 1, limit: MAX_CART_QUANTITY, search }),
+    getPastEvents({ page: 1, limit: DEFAULT_PAGE_SIZE, search }),
   ]);
+
+  const upcomingEvents = upcomingEventsResult.success
+    ? upcomingEventsResult.data.data
+    : [];
+  const upcomingPagination = upcomingEventsResult.success
+    ? {
+        total: upcomingEventsResult.data.total,
+        totalPages: upcomingEventsResult.data.total_pages,
+      }
+    : { total: 0, totalPages: 0 };
+
+  const pastEvents = pastEventsResult.success ? pastEventsResult.data.data : [];
+  const pastPagination = pastEventsResult.success
+    ? {
+        total: pastEventsResult.data.total,
+        totalPages: pastEventsResult.data.total_pages,
+      }
+    : { total: 0, totalPages: 0 };
 
   return (
     <AllEventsContainer
-      initialUpcomingEvents={upcomingEventsResult.data}
-      initialUpcomingPagination={{
-        total: upcomingEventsResult.total,
-        totalPages: upcomingEventsResult.totalPages,
-      }}
-      initialPastEvents={pastEventsResult.data}
-      initialPastPagination={{
-        total: pastEventsResult.total,
-        totalPages: pastEventsResult.totalPages,
-      }}
+      initialUpcomingEvents={upcomingEvents}
+      initialUpcomingPagination={upcomingPagination}
+      initialPastEvents={pastEvents}
+      initialPastPagination={pastPagination}
     />
   );
 }

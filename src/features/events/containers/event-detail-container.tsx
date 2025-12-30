@@ -48,7 +48,6 @@ export function EventDetailContainer({
           amount: event.price,
           customerName: result.data.user.name || result.data.user.email,
           customerEmail: result.data.user.email,
-          customerPhone: result.data.user.phone || undefined,
         });
 
         // Redirect to registrations after a delay

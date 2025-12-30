@@ -1,6 +1,6 @@
 "use client";
 
-import { registerForEvent as registerForEventAction } from "@/actions/event.actions";
+import { registerForEvent as registerForEventGateway } from "@/data/events/gateway/server";
 import { useUIStore } from "@/store/ui.store";
 import { useCallback, useState } from "react";
 
@@ -30,7 +30,7 @@ export function useEventRegistration() {
       setLoading(eventId, true);
 
       try {
-        const result = await registerForEventAction(eventId, seats);
+        const result = await registerForEventGateway({ eventId, seats });
 
         if (!result.success) {
           addToast({

@@ -1,4 +1,4 @@
-import type { EventWithRegistrationCount } from "@/types";
+import type { EventBase } from "@/data/events/types";
 
 import { Rating } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +14,7 @@ import {
 } from "./event";
 
 interface PastWorkshopCardProps {
-  event: EventWithRegistrationCount;
+  event: EventBase;
 }
 
 export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
@@ -26,7 +26,7 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
   });
 
   const imageUrl = event.image || "/placeholder.jpg";
-  const attendees = event._count?.event_registrations || 0;
+  const attendees = event.registrations_count;
   const highlights = event.highlights || [];
   const gallery = event.gallery || [];
 
@@ -61,10 +61,10 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
         <EventCardFooter
           attendees={attendees}
           rightContent={
-            event.averageRating ? (
+            event.avg_rating ? (
               <Rating
-                rating={event.averageRating}
-                reviewCount={event._count?.reviews || 0}
+                rating={event.avg_rating}
+                reviewCount={event.reviews_count}
                 size="sm"
                 className="origin-right scale-90"
               />

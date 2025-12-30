@@ -1,4 +1,4 @@
-import { getPastEvents } from "@/actions";
+import { getPastEvents } from "@/data/events/gateway/server";
 import type { Metadata } from "next";
 
 import { PastWorkshopsClient } from "@/components/events";
@@ -31,12 +31,17 @@ export const metadata: Metadata = {
 };
 
 export default async function PastWorkshopsPage() {
-  const { data: events, total, totalPages } = await getPastEvents();
+  const result = await getPastEvents();
+
+  const events = result.success ? result.data.data : [];
+  const pagination = result.success
+    ? { total: result.data.total, totalPages: result.data.total_pages }
+    : { total: 0, totalPages: 0 };
 
   return (
     <PastWorkshopsClient
       initialEvents={events}
-      initialPagination={{ total, totalPages }}
+      initialPagination={pagination}
     />
   );
 }

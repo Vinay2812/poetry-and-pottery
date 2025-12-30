@@ -1,4 +1,4 @@
-import { EventRegistrationStatus, type RegistrationWithEvent } from "@/types";
+import type { EventRegistration } from "@/data/events/types";
 
 import {
   EventCardContent,
@@ -12,14 +12,13 @@ import {
 } from "./event";
 
 interface RegisteredEventCardProps {
-  registration: RegistrationWithEvent;
+  registration: EventRegistration;
 }
 
 export function RegisteredEventCard({
   registration,
 }: RegisteredEventCardProps) {
-  const { event } = registration;
-  const status = registration.status as EventRegistrationStatus;
+  const { event, status } = registration;
 
   const eventDate = new Date(event.starts_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {

@@ -1,8 +1,11 @@
 "use client";
 
+import {
+  type EventRegistration,
+  EventRegistrationStatus,
+} from "@/data/events/types";
 import { MobileHeaderContainer } from "@/features/layout";
 import { useShare } from "@/hooks";
-import { EventRegistrationStatus, type RegistrationWithEvent } from "@/types";
 import {
   Ban,
   Calendar,
@@ -35,7 +38,7 @@ import { TicketDownloadDialog } from "./ticket-download-dialog";
 
 function getStatusConfig(status: EventRegistrationStatus) {
   switch (status) {
-    case EventRegistrationStatus.PENDING:
+    case EventRegistrationStatus.Pending:
       return {
         label: "Pending",
         icon: HourglassIcon,
@@ -44,7 +47,7 @@ function getStatusConfig(status: EventRegistrationStatus) {
         borderColor: "border-amber-500",
         message: "Awaiting approval",
       };
-    case EventRegistrationStatus.APPROVED:
+    case EventRegistrationStatus.Approved:
       return {
         label: "Approved",
         icon: ThumbsUp,
@@ -53,7 +56,7 @@ function getStatusConfig(status: EventRegistrationStatus) {
         borderColor: "border-blue-500",
         message: "Please complete payment",
       };
-    case EventRegistrationStatus.PAID:
+    case EventRegistrationStatus.Paid:
       return {
         label: "Paid",
         icon: Check,
@@ -62,7 +65,7 @@ function getStatusConfig(status: EventRegistrationStatus) {
         borderColor: "border-teal-500",
         message: "Payment received",
       };
-    case EventRegistrationStatus.CONFIRMED:
+    case EventRegistrationStatus.Confirmed:
       return {
         label: "Confirmed",
         icon: CheckCircle2,
@@ -71,7 +74,7 @@ function getStatusConfig(status: EventRegistrationStatus) {
         borderColor: "border-emerald-500",
         message: "You're registered!",
       };
-    case EventRegistrationStatus.REJECTED:
+    case EventRegistrationStatus.Rejected:
       return {
         label: "Rejected",
         icon: XCircle,
@@ -80,7 +83,7 @@ function getStatusConfig(status: EventRegistrationStatus) {
         borderColor: "border-red-500",
         message: "Registration rejected",
       };
-    case EventRegistrationStatus.CANCELLED:
+    case EventRegistrationStatus.Cancelled:
       return {
         label: "Cancelled",
         icon: Ban,
@@ -102,22 +105,21 @@ function getStatusConfig(status: EventRegistrationStatus) {
 }
 
 interface RegistrationDetailClientProps {
-  registration: RegistrationWithEvent;
+  registration: EventRegistration;
 }
 
 export function RegistrationDetailClient({
   registration,
 }: RegistrationDetailClientProps) {
-  const { event } = registration;
+  const { event, status } = registration;
   const { share } = useShare();
 
-  const status = registration.status as EventRegistrationStatus;
   const statusConfig = getStatusConfig(status);
   const StatusIcon = statusConfig.icon;
-  const isConfirmed = status === EventRegistrationStatus.CONFIRMED;
-  const isPending = status === EventRegistrationStatus.PENDING;
-  const isApproved = status === EventRegistrationStatus.APPROVED;
-  const isPaid = status === EventRegistrationStatus.PAID;
+  const isConfirmed = status === EventRegistrationStatus.Confirmed;
+  const isPending = status === EventRegistrationStatus.Pending;
+  const isApproved = status === EventRegistrationStatus.Approved;
+  const isPaid = status === EventRegistrationStatus.Paid;
   const showTicketDownload = isConfirmed;
 
   const [copied, setCopied] = useState(false);

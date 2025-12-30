@@ -1,4 +1,5 @@
-import { getUpcomingEvents } from "@/actions";
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { Metadata } from "next";
 
 import { UpcomingEventsClient } from "@/components/events";
@@ -31,12 +32,17 @@ export const metadata: Metadata = {
 };
 
 export default async function UpcomingEventsPage() {
-  const { data: events, total, totalPages } = await getUpcomingEvents(1, 12);
+  const result = await getUpcomingEvents({ page: 1, limit: DEFAULT_PAGE_SIZE });
+
+  const events = result.success ? result.data.data : [];
+  const pagination = result.success
+    ? { total: result.data.total, totalPages: result.data.total_pages }
+    : { total: 0, totalPages: 0 };
 
   return (
     <UpcomingEventsClient
       initialEvents={events}
-      initialPagination={{ total, totalPages }}
+      initialPagination={pagination}
     />
   );
 }
