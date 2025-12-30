@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "prisma/**",
+    // Generated files:
+    "src/graphql/generated/**",
   ]),
 ]);
 
