@@ -1,9 +1,10 @@
 "use server";
 
 import { getAuthenticatedUserId } from "@/actions/auth.action";
-import { prisma } from "@/lib/prisma";
 import { OrderStatus } from "@/prisma/generated/client";
 import { revalidatePath } from "next/cache";
+
+import { prisma } from "@/lib/prisma";
 
 import type {
   Order,
