@@ -33,7 +33,6 @@ interface UIState {
   setEventRegistrationsCount: (count: number) => void;
   pendingOrdersCount: number;
   setPendingOrdersCount: (count: number) => void;
-  fetchAllCounts: () => Promise<void>;
 }
 
 interface Toast {
@@ -86,15 +85,4 @@ export const useUIStore = create<UIState>((set) => ({
     set({ eventRegistrationsCount }),
   pendingOrdersCount: 0,
   setPendingOrdersCount: (pendingOrdersCount) => set({ pendingOrdersCount }),
-  fetchAllCounts: async () => {
-    const result = await getUserCounts();
-    if (result.success) {
-      set({
-        cartCount: result.data.cartCount,
-        wishlistCount: result.data.wishlistCount,
-        eventRegistrationsCount: result.data.eventRegistrationsCount,
-        pendingOrdersCount: result.data.pendingOrdersCount,
-      });
-    }
-  },
 }));

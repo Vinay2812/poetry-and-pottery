@@ -1,9 +1,6 @@
 "use client";
 
-import { getCartCount } from "@/actions/cart.actions";
-import { getRegistrationCount } from "@/actions/event.actions";
-import { getPendingOrdersCount } from "@/actions/order.actions";
-import { getWishlistCount } from "@/actions/wishlist.actions";
+import { getUserCounts } from "@/data/user/gateway/server";
 import { useUIStore } from "@/store";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef } from "react";
@@ -37,17 +34,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     if (user && !hasFetchedRef.current) {
       hasFetchedRef.current = true;
 
-      // Fetch counts in parallel
-      Promise.all([
-        getCartCount(),
-        getWishlistCount(),
-        getRegistrationCount(),
-        getPendingOrdersCount(),
-      ]).then(([cartCount, wishlistCount, eventCount, pendingOrdersCount]) => {
-        setCartCount(cartCount);
-        setWishlistCount(wishlistCount);
-        setEventRegistrationsCount(eventCount);
-        setPendingOrdersCount(pendingOrdersCount);
+      getUserCounts().then((result) => {
+        if (result.success) {
+          setCartCount(result.data.cartCount);
+          setWishlistCount(result.data.wishlistCount);
+          setEventRegistrationsCount(result.data.eventRegistrationsCount);
+          setPendingOrdersCount(result.data.pendingOrdersCount);
+        }
       });
     }
   }, [
