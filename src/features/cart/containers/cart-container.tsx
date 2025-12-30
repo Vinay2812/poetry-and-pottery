@@ -3,8 +3,7 @@
 import { createOrder } from "@/actions";
 import { useAuthAction, useCart } from "@/hooks";
 import type { UserAddress } from "@/prisma/generated/client";
-import { useCartStore } from "@/store/cart.store";
-import { useUIStore } from "@/store/ui.store";
+import { useUIStore } from "@/store";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -23,7 +22,6 @@ export function CartContainer({
   initialAddresses,
 }: CartContainerProps) {
   const router = useRouter();
-  const cartStore = useCartStore();
   const { addToast } = useUIStore();
   const { requireAuth } = useAuthAction();
   const [isOrdering, setIsOrdering] = useState(false);
@@ -31,19 +29,23 @@ export function CartContainer({
     initialAddresses[0] || null,
   );
 
-  const cartItems =
-    cartStore.items.length > 0 ? cartStore.items : initialCartItems;
   const {
+    items: cartItems,
     updateQuantity: updateCartQuantity,
     removeFromCart,
     isLoading,
+    hydrate,
+    clear,
   } = useCart();
 
+  // Use cart items from hook, fallback to initial if not hydrated yet
+  const displayItems = cartItems.length > 0 ? cartItems : initialCartItems;
+
   useEffect(() => {
-    if (initialCartItems.length > 0 && !cartStore.isHydrated) {
-      cartStore.hydrate(initialCartItems);
+    if (initialCartItems.length > 0 && cartItems.length === 0) {
+      hydrate(initialCartItems);
     }
-  }, [initialCartItems, cartStore]);
+  }, [initialCartItems, cartItems.length, hydrate]);
 
   const handleUpdateQuantity = useCallback(
     async (productId: number, newQuantity: number) => {
@@ -65,7 +67,7 @@ export function CartContainer({
   }, []);
 
   // Calculate order summary
-  const subtotal = cartItems.reduce(
+  const subtotal = displayItems.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0,
   );
@@ -75,7 +77,7 @@ export function CartContainer({
 
   const handleCheckout = useCallback(() => {
     requireAuth(async () => {
-      if (isOrdering || cartItems.length === 0) return;
+      if (isOrdering || displayItems.length === 0) return;
 
       if (!selectedAddress) {
         addToast({
@@ -110,7 +112,7 @@ export function CartContainer({
           return;
         }
 
-        cartStore.clear();
+        clear();
 
         addToast({
           type: "success",
@@ -142,9 +144,7 @@ export function CartContainer({
           })),
         });
 
-        setTimeout(() => {
-          router.push(`/orders/${result.data.id}`);
-        }, 1000);
+        router.push(`/orders/${result.data.id}`);
       } catch {
         addToast({
           type: "error",
@@ -157,23 +157,23 @@ export function CartContainer({
   }, [
     requireAuth,
     isOrdering,
-    cartItems.length,
+    displayItems.length,
     selectedAddress,
     subtotal,
     addToast,
-    cartStore,
+    clear,
     router,
   ]);
 
   // Build cart item view models
-  const cartItemViewModels: CartItemViewModel[] = cartItems.map((item) => ({
+  const cartItemViewModels: CartItemViewModel[] = displayItems.map((item) => ({
     productId: item.product.id,
     product: item.product,
     quantity: item.quantity,
     isLoading: isLoading(item.product.id),
   }));
 
-  const canCheckout = cartItems.length > 0 && selectedAddress !== null;
+  const canCheckout = displayItems.length > 0 && selectedAddress !== null;
 
   // Build checkout button text
   const checkoutButtonText = isOrdering

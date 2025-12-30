@@ -17,29 +17,17 @@ export function ProductCardContainer({
 
   const router = useRouter();
   const { requireAuth } = useAuthAction();
-  const {
-    toggleWishlist,
-    isInWishlist,
-    isHydrated: isWishlistHydrated,
-    isDebouncing: isWishlistDebouncing,
-  } = useWishlist();
-  const {
-    addToCart,
-    isAtMaxQuantity,
-    isThrottling: isCartThrottling,
-  } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const { addToCart, isAtMaxQuantity } = useCart();
 
-  // Use server's in_wishlist for initial/SSR, then hook state after hydration
-  const inWishlist = isWishlistHydrated
-    ? isInWishlist(product.id)
-    : product.in_wishlist;
+  // Use hook's local state if available, fallback to server's in_wishlist
+  const localWishlistState = isInWishlist(product.id);
+  const inWishlist = localWishlistState || product.in_wishlist;
 
   const atMaxQuantity = isAtMaxQuantity(product.id);
   const inStock = product.available_quantity > 0;
   const canAddToCart = inStock && !atMaxQuantity;
   const isWishlistVariant = variant === "wishlist";
-  const cartThrottling = isCartThrottling(product.id);
-  const wishlistDebouncing = isWishlistDebouncing(product.id);
 
   const handleImageClick = useCallback(() => {
     router.push(`/products/${product.slug}`);
@@ -75,8 +63,6 @@ export function ProductCardContainer({
       inWishlist={inWishlist}
       addedToCart={addedToCart}
       canAddToCart={canAddToCart}
-      isCartThrottling={cartThrottling}
-      isWishlistDebouncing={wishlistDebouncing}
       onImageClick={handleImageClick}
       onWishlistClick={handleWishlistClick}
       onAddToCart={handleAddToCart}

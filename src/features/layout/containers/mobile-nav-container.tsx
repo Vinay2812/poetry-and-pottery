@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore, useEventStore } from "@/store";
+import { useUIStore } from "@/store";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
@@ -9,8 +9,10 @@ import type { MobileNavViewModel } from "../types";
 
 export function MobileNavContainer() {
   const pathname = usePathname();
-  const cartCount = useCartStore((state) => state.getTotalItems());
-  const eventRegistrationCount = useEventStore((state) => state.getCount());
+  const cartCount = useUIStore((state) => state.cartCount);
+  const eventRegistrationCount = useUIStore(
+    (state) => state.eventRegistrationsCount,
+  );
 
   const viewModel: MobileNavViewModel = useMemo(
     () => ({

@@ -6,48 +6,24 @@ import {
   removeFromWishlist as removeFromWishlistAction,
   toggleWishlist as toggleWishlistAction,
 } from "@/data/wishlist/gateway/server";
-import { useUIStore } from "@/store/ui.store";
-import { useWishlistStore } from "@/store/wishlist.store";
-import type { WishlistWithProduct } from "@/types";
+import { useUIStore } from "@/store";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useState } from "react";
 
-import type { WishlistItem } from "@/graphql/generated/graphql";
-
-import { useDebounce } from "./use-debounce";
-
-// Map GraphQL WishlistItem to store-compatible WishlistWithProduct
-function mapToWishlistWithProduct(item: WishlistItem): WishlistWithProduct {
-  return {
-    id: item.id,
-    user_id: item.user_id,
-    product_id: item.product_id,
-    created_at: new Date(item.created_at),
-    updated_at: new Date(item.updated_at),
-    product: {
-      ...item.product,
-      description: null,
-      instructions: [],
-      is_active: true,
-      created_at: new Date(),
-      updated_at: new Date(),
-      product_categories: [],
-    },
-  };
-}
-
 export function useWishlist() {
   const { isSignedIn } = useAuth();
-  const wishlistStore = useWishlistStore();
-  const { addToast, setSignInModalOpen, setSignInRedirectUrl } = useUIStore();
+  const {
+    wishlistCount,
+    setWishlistCount,
+    setCartCount,
+    cartCount,
+    addToast,
+    setSignInModalOpen,
+    setSignInRedirectUrl,
+  } = useUIStore();
+  const [wishlistIds, setWishlistIds] = useState<Set<number>>(new Set());
   const [loadingProducts, setLoadingProducts] = useState<Set<number>>(
     new Set(),
-  );
-  const { debounce, isPending } = useDebounce();
-
-  const isDebouncing = useCallback(
-    (productId: number) => isPending(`toggle-${productId}`),
-    [isPending],
   );
 
   const setLoading = useCallback((productId: number, loading: boolean) => {
@@ -67,6 +43,11 @@ export function useWishlist() {
     [loadingProducts],
   );
 
+  const isInWishlist = useCallback(
+    (productId: number) => wishlistIds.has(productId),
+    [wishlistIds],
+  );
+
   const toggleWishlist = useCallback(
     async (productId: number) => {
       if (!isSignedIn) {
@@ -76,37 +57,43 @@ export function useWishlist() {
       }
 
       // Optimistic update immediately
-      const wasInWishlist = wishlistStore.isInWishlist(productId);
-      const previousProductIds = [...wishlistStore.productIds];
+      const wasInWishlist = wishlistIds.has(productId);
+      const previousIds = new Set(wishlistIds);
 
       if (wasInWishlist) {
-        wishlistStore.removeItem(productId);
+        setWishlistIds((prev) => {
+          const next = new Set(prev);
+          next.delete(productId);
+          return next;
+        });
+        setWishlistCount(wishlistCount - 1);
       } else {
-        wishlistStore.hydrateIds([...wishlistStore.productIds, productId]);
+        setWishlistIds((prev) => new Set(prev).add(productId));
+        setWishlistCount(wishlistCount + 1);
       }
 
-      // Debounce API call - waits until user stops clicking
-      debounce(`toggle-${productId}`, async () => {
-        setLoading(productId, true);
+      setLoading(productId, true);
 
-        const actionResult = await toggleWishlistAction(productId);
-        if (!actionResult.success) {
-          wishlistStore.hydrateIds(previousProductIds);
-          addToast({
-            type: "error",
-            message: actionResult.error || "Failed to update wishlist",
-          });
-        }
+      const actionResult = await toggleWishlistAction(productId);
+      if (!actionResult.success) {
+        // Rollback on error
+        setWishlistIds(previousIds);
+        setWishlistCount(previousIds.size);
+        addToast({
+          type: "error",
+          message: actionResult.error || "Failed to update wishlist",
+        });
+      }
 
-        setLoading(productId, false);
-      });
+      setLoading(productId, false);
 
-      return true; // Return true since UI already updated
+      return true;
     },
     [
       isSignedIn,
-      debounce,
-      wishlistStore,
+      wishlistIds,
+      wishlistCount,
+      setWishlistCount,
       addToast,
       setLoading,
       setSignInModalOpen,
@@ -116,7 +103,7 @@ export function useWishlist() {
 
   const addToWishlist = useCallback(
     async (productId: number) => {
-      if (wishlistStore.isInWishlist(productId)) {
+      if (wishlistIds.has(productId)) {
         return true;
       }
 
@@ -127,33 +114,30 @@ export function useWishlist() {
       }
 
       // Optimistic update immediately
-      const previousProductIds = [...wishlistStore.productIds];
-      wishlistStore.hydrateIds([...wishlistStore.productIds, productId]);
+      const previousIds = new Set(wishlistIds);
+      setWishlistIds((prev) => new Set(prev).add(productId));
+      setWishlistCount(wishlistCount + 1);
 
-      // Debounce API call
-      debounce(`add-${productId}`, async () => {
-        setLoading(productId, true);
+      setLoading(productId, true);
 
-        const actionResult = await addToWishlistAction(productId);
-        if (!actionResult.success) {
-          wishlistStore.hydrateIds(previousProductIds);
-          addToast({
-            type: "error",
-            message: actionResult.error || "Failed to add to wishlist",
-          });
-        } else {
-          wishlistStore.addItem(mapToWishlistWithProduct(actionResult.data));
-        }
-
-        setLoading(productId, false);
-      });
+      const actionResult = await addToWishlistAction(productId);
+      if (!actionResult.success) {
+        // Rollback on error
+        setWishlistIds(previousIds);
+        setWishlistCount(previousIds.size);
+        addToast({
+          type: "error",
+          message: actionResult.error || "Failed to add to wishlist",
+        });
+      }
 
       return true;
     },
     [
       isSignedIn,
-      debounce,
-      wishlistStore,
+      wishlistIds,
+      wishlistCount,
+      setWishlistCount,
       addToast,
       setLoading,
       setSignInModalOpen,
@@ -166,34 +150,37 @@ export function useWishlist() {
       if (!isSignedIn) return false;
 
       // Optimistic update immediately
-      const currentItem = wishlistStore.items.find(
-        (i) => i.product_id === productId,
-      );
-      wishlistStore.removeItem(productId);
-
-      // Debounce API call
-      debounce(`remove-${productId}`, async () => {
-        setLoading(productId, true);
-
-        const actionResult = await removeFromWishlistAction(productId);
-        if (!actionResult.success) {
-          if (currentItem) {
-            wishlistStore.addItem(currentItem);
-          } else {
-            wishlistStore.hydrateIds([...wishlistStore.productIds, productId]);
-          }
-          addToast({
-            type: "error",
-            message: actionResult.error || "Failed to remove from wishlist",
-          });
-        }
-
-        setLoading(productId, false);
+      const previousIds = new Set(wishlistIds);
+      setWishlistIds((prev) => {
+        const next = new Set(prev);
+        next.delete(productId);
+        return next;
       });
+      setWishlistCount(Math.max(0, wishlistCount - 1));
+
+      setLoading(productId, true);
+
+      const actionResult = await removeFromWishlistAction(productId);
+      if (!actionResult.success) {
+        // Rollback on error
+        setWishlistIds(previousIds);
+        setWishlistCount(previousIds.size);
+        addToast({
+          type: "error",
+          message: actionResult.error || "Failed to remove from wishlist",
+        });
+      }
 
       return true;
     },
-    [isSignedIn, debounce, wishlistStore, addToast, setLoading],
+    [
+      isSignedIn,
+      wishlistIds,
+      wishlistCount,
+      setWishlistCount,
+      addToast,
+      setLoading,
+    ],
   );
 
   const moveToCart = useCallback(
@@ -201,42 +188,43 @@ export function useWishlist() {
       if (!isSignedIn) return false;
 
       // Optimistic update immediately
-      wishlistStore.removeItem(productId);
-
-      // Debounce API call
-      debounce(`move-${productId}`, async () => {
-        setLoading(productId, true);
-
-        const actionResult = await moveToCartAction(productId);
-        if (!actionResult.success) {
-          // Rollback - add back to wishlist
-          wishlistStore.hydrateIds([...wishlistStore.productIds, productId]);
-          addToast({
-            type: "error",
-            message: actionResult.error || "Failed to move to cart",
-          });
-        }
-
-        setLoading(productId, false);
+      setWishlistIds((prev) => {
+        const next = new Set(prev);
+        next.delete(productId);
+        return next;
       });
+      setWishlistCount(Math.max(0, wishlistCount - 1));
+      setCartCount(cartCount + 1);
+
+      setLoading(productId, true);
 
       return true;
     },
-    [isSignedIn, debounce, wishlistStore, addToast, setLoading],
+    [
+      isSignedIn,
+      wishlistCount,
+      cartCount,
+      setWishlistCount,
+      setCartCount,
+      setLoading,
+    ],
   );
 
+  // Hydrate wishlist IDs (called on mount with initial data)
+  const hydrateIds = useCallback((ids: number[]) => {
+    setWishlistIds(new Set(ids));
+  }, []);
+
   return {
-    items: wishlistStore.items,
-    productIds: wishlistStore.productIds,
-    count: wishlistStore.getCount(),
-    isHydrated: wishlistStore.isHydrated,
+    productIds: Array.from(wishlistIds),
+    count: wishlistCount,
     toggleWishlist,
     addToWishlist,
     removeFromWishlist,
     moveToCart,
-    isInWishlist: wishlistStore.isInWishlist,
+    isInWishlist,
     isLoading,
     isAnyLoading: loadingProducts.size > 0,
-    isDebouncing,
+    hydrateIds,
   };
 }

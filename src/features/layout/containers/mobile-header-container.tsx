@@ -1,7 +1,7 @@
 "use client";
 
 import { GlobalSearchContainer } from "@/features/global-search";
-import { useWishlistStore } from "@/store";
+import { useUIStore } from "@/store";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
@@ -19,7 +19,7 @@ export function MobileHeaderContainer({
 }: MobileHeaderContainerProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const wishlistCount = useWishlistStore((state) => state.getCount());
+  const wishlistCount = useUIStore((state) => state.wishlistCount);
 
   const { handleOpen: handleSearchOpen, GlobalSearchComponent } =
     GlobalSearchContainer();

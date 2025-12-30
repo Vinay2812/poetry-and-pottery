@@ -63,6 +63,13 @@ export async function getWishlistIds() {
   return { success: true as const, data: wishlists.map((w) => w.product_id) };
 }
 
+export async function getWishlistCount(): Promise<number> {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) return 0;
+
+  return prisma.wishlist.count({ where: { user_id: userId } });
+}
+
 export async function addToWishlist(productId: number) {
   const userId = await getAuthenticatedUserId();
   if (!userId) {

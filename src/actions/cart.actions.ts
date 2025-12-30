@@ -26,6 +26,17 @@ export async function getCart() {
   return { success: true as const, data: items };
 }
 
+export async function getCartCount(): Promise<number> {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) return 0;
+
+  const result = await prisma.cart.count({
+    where: { user_id: userId },
+  });
+
+  return result;
+}
+
 export async function addToCart(productId: number, quantity: number = 1) {
   const userId = await getAuthenticatedUserId();
   if (!userId) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { MobileHeaderContainer } from "@/features/layout";
-import { useEventStore } from "@/store/event.store";
+import { useUIStore } from "@/store";
 import { redirect, usePathname } from "next/navigation";
 
 import { SearchInput } from "../shared";
@@ -21,7 +21,9 @@ export function EventsListLayout({
   searchPlaceholder = "Search events...",
 }: EventsListLayoutProps) {
   const pathname = usePathname();
-  const registrationCount = useEventStore((state) => state.getCount());
+  const registrationCount = useUIStore(
+    (state) => state.eventRegistrationsCount,
+  );
 
   // Match paths to determine active tab (check longer paths first)
   const sortedTabs = [...EVENTS_TABS].sort(

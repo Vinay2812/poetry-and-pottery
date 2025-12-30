@@ -8,8 +8,6 @@ export interface ProductCardProps {
   inWishlist: boolean;
   addedToCart: boolean;
   canAddToCart: boolean;
-  isCartThrottling: boolean;
-  isWishlistDebouncing: boolean;
   // Handlers
   onImageClick: () => void;
   onWishlistClick: () => void;

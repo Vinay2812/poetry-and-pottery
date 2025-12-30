@@ -18,8 +18,6 @@ export function ProductCard({
   inWishlist,
   addedToCart,
   canAddToCart,
-  isCartThrottling,
-  isWishlistDebouncing,
   onImageClick,
   onWishlistClick,
   onAddToCart,
@@ -66,8 +64,8 @@ export function ProductCard({
             <div className="absolute top-3 right-3 z-20">
               {!isWishlistVariant ? (
                 <motion.button
-                  whileHover={isWishlistDebouncing ? undefined : { scale: 1.1 }}
-                  whileTap={isWishlistDebouncing ? undefined : { scale: 0.9 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   className={cn(
                     "flex h-9 w-9 items-center justify-center rounded-full backdrop-blur-md transition-all duration-300",
                     inWishlist
@@ -109,7 +107,7 @@ export function ProductCard({
                 <div className="absolute right-3 bottom-3 left-3 z-20 transform transition-all duration-300 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
                   <motion.button
                     initial={false}
-                    whileTap={isCartThrottling ? undefined : { scale: 0.98 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -120,7 +118,6 @@ export function ProductCard({
                       addedToCart
                         ? "bg-primary text-primary-foreground"
                         : "bg-white/90 text-neutral-900 hover:bg-white dark:bg-neutral-900/90 dark:text-white dark:hover:bg-neutral-900",
-                      isCartThrottling && "cursor-not-allowed",
                     )}
                   >
                     {addedToCart ? (

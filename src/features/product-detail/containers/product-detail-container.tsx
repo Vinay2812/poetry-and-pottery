@@ -1,13 +1,7 @@
 "use client";
 
 import { toggleReviewLike } from "@/actions";
-import {
-  useAuthAction,
-  useCart,
-  useDebounce,
-  useShare,
-  useWishlist,
-} from "@/hooks";
+import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
 import { useCallback, useMemo, useState } from "react";
 
 import { ProductDetail } from "../components/product-detail";
@@ -29,16 +23,13 @@ export function ProductDetailContainer({
   const {
     toggleWishlist,
     isInWishlist,
-    isHydrated: isWishlistHydrated,
     isLoading: isWishlistLoading,
   } = useWishlist();
   const { share } = useShare();
-  const { debounce } = useDebounce();
 
-  // Use server's in_wishlist for initial/SSR, then hook state after hydration
-  const inWishlist = isWishlistHydrated
-    ? isInWishlist(product.id)
-    : product.in_wishlist;
+  // Use hook's local state if available, fallback to server's in_wishlist
+  const localWishlistState = isInWishlist(product.id);
+  const inWishlist = localWishlistState || product.in_wishlist;
 
   const cartLoading = isCartLoading(product.id);
   const wishlistLoading = isWishlistLoading(product.id);
@@ -63,7 +54,6 @@ export function ProductDetailContainer({
     addToCart(product.id, 1).then((success) => {
       if (success) {
         setAddedToCart(true);
-        setTimeout(() => setAddedToCart(false), 2000);
       }
     });
   }, [addToCart, product.id]);
@@ -89,28 +79,26 @@ export function ProductDetailContainer({
   const handleReviewLike = useCallback(
     async (reviewId: string, currentLikes: number, currentIsLiked: boolean) => {
       // Debounce check
-      const result = debounce(`like-${reviewId}`, async () => {
-        requireAuth(async () => {
-          // Optimistically update UI
-          const newIsLiked = !currentIsLiked;
-          const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-          handleLikeUpdate(reviewId, newLikes, newIsLiked);
+      const result = requireAuth(async () => {
+        // Optimistically update UI
+        const newIsLiked = !currentIsLiked;
+        const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
+        handleLikeUpdate(reviewId, newLikes, newIsLiked);
 
-          // Call server action
-          const result = await toggleReviewLike(Number(reviewId));
+        // Call server action
+        const result = await toggleReviewLike(Number(reviewId));
 
-          if (!result.success) {
-            // Revert on failure
-            handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
-          } else if (result.likesCount !== undefined) {
-            // Sync with server count
-            handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
-          }
-        });
+        if (!result.success) {
+          // Revert on failure
+          handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
+        } else if (result.likesCount !== undefined) {
+          // Sync with server count
+          handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
+        }
       });
       return (await result) ?? false;
     },
-    [requireAuth, handleLikeUpdate, debounce],
+    [requireAuth, handleLikeUpdate],
   );
 
   return (

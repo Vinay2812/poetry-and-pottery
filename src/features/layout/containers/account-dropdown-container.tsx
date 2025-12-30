@@ -1,7 +1,7 @@
 "use client";
 
 import { UserRole } from "@/prisma/generated/enums";
-import { useOrderStore } from "@/store";
+import { useUIStore } from "@/store";
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
@@ -14,7 +14,7 @@ export function AccountDropdownContainer() {
   const { user } = useUser();
   const { sessionClaims } = useAuth();
   const router = useRouter();
-  const pendingOrdersCount = useOrderStore((state) => state.getPendingCount());
+  const pendingOrdersCount = useUIStore((state) => state.pendingOrdersCount);
 
   const viewModel: AccountDropdownViewModel = useMemo(() => {
     const userInfo: UserInfo | null = user
