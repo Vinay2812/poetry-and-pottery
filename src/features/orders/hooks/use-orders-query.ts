@@ -1,10 +1,11 @@
 "use client";
 
-import { getOrders } from "@/actions";
-import type { OrderWithItems } from "@/types";
+import { getOrders } from "@/data/orders/gateway/server";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+
+import type { Order } from "@/graphql/generated/types";
 
 interface PaginationData {
   total: number;
@@ -12,7 +13,7 @@ interface PaginationData {
 }
 
 interface UseOrdersQueryOptions {
-  initialOrders: OrderWithItems[];
+  initialOrders: Order[];
   initialPagination: PaginationData;
   searchQuery?: string;
 }
@@ -34,7 +35,7 @@ export function useOrdersQuery({
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
-        if (lastPage.page < lastPage.totalPages) {
+        if (lastPage.page < lastPage.total_pages) {
           return lastPage.page + 1;
         }
         return undefined;
@@ -45,7 +46,7 @@ export function useOrdersQuery({
             data: initialOrders,
             total: initialPagination.total,
             page: 1,
-            totalPages: initialPagination.totalPages,
+            total_pages: initialPagination.totalPages,
           },
         ],
         pageParams: [1],

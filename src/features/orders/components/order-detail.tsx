@@ -1,6 +1,5 @@
 "use client";
 
-import { OrderStatus } from "@/types";
 import { MapPin, Package, Phone, User } from "lucide-react";
 import Link from "next/link";
 
@@ -16,6 +15,7 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
+import { OrderStatus } from "../types";
 import type {
   OrderDetailProps,
   OrderDetailViewModel,
@@ -213,11 +213,11 @@ function StatusCard({ viewModel }: StatusCardProps) {
         <div
           className={cn(
             "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
-            viewModel.status === OrderStatus.DELIVERED &&
+            viewModel.status === OrderStatus.Delivered &&
               "bg-emerald-50 text-emerald-600",
-            viewModel.status === OrderStatus.SHIPPED &&
+            viewModel.status === OrderStatus.Shipped &&
               "bg-blue-50 text-blue-600",
-            viewModel.status === OrderStatus.PROCESSING &&
+            viewModel.status === OrderStatus.Processing &&
               "bg-amber-50 text-amber-600",
           )}
         >
@@ -234,7 +234,7 @@ function StatusCard({ viewModel }: StatusCardProps) {
       </div>
 
       <OrderProgress
-        status={viewModel.status || OrderStatus.PROCESSING}
+        status={viewModel.status || OrderStatus.Processing}
         createdAt={viewModel.createdAt}
         shippedAt={viewModel.shippedAt}
         deliveredAt={viewModel.deliveredAt}
@@ -333,11 +333,11 @@ export function OrderDetail({
               <Badge
                 className={cn(
                   "border-none px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase",
-                  viewModel.status === OrderStatus.DELIVERED &&
+                  viewModel.status === OrderStatus.Delivered &&
                     "bg-emerald-50 text-emerald-600",
-                  viewModel.status === OrderStatus.SHIPPED &&
+                  viewModel.status === OrderStatus.Shipped &&
                     "bg-blue-50 text-blue-600",
-                  viewModel.status === OrderStatus.PROCESSING &&
+                  viewModel.status === OrderStatus.Processing &&
                     "bg-amber-50 text-amber-600",
                 )}
               >
@@ -348,7 +348,7 @@ export function OrderDetail({
             {/* Mobile Progress */}
             <div className="mt-6">
               <OrderProgress
-                status={viewModel.status || OrderStatus.PROCESSING}
+                status={viewModel.status || OrderStatus.Processing}
                 createdAt={viewModel.createdAt}
                 shippedAt={viewModel.shippedAt}
                 deliveredAt={viewModel.deliveredAt}

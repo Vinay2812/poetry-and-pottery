@@ -1,6 +1,5 @@
 "use client";
 
-import { OrderStatus } from "@/types";
 import { ChevronRight, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
@@ -14,6 +13,7 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
+import { OrderStatus } from "../types";
 import type { OrdersListProps } from "../types";
 
 export function OrdersList({
@@ -69,21 +69,21 @@ export function OrdersList({
                     <div
                       className={cn(
                         "flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors dark:bg-neutral-800",
-                        order.status === OrderStatus.DELIVERED &&
+                        order.status === OrderStatus.Delivered &&
                           "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
-                        order.status === OrderStatus.SHIPPED &&
+                        order.status === OrderStatus.Shipped &&
                           "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
-                        order.status === OrderStatus.PROCESSING &&
+                        order.status === OrderStatus.Processing &&
                           "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
-                        order.status === OrderStatus.PENDING &&
+                        order.status === OrderStatus.Pending &&
                           "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
-                        order.status === OrderStatus.PAID &&
+                        order.status === OrderStatus.Paid &&
                           "text-primary bg-primary-light dark:text-primary-foreground",
-                        order.status === OrderStatus.CANCELLED &&
+                        order.status === OrderStatus.Cancelled &&
                           "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
-                        order.status === OrderStatus.RETURNED &&
+                        order.status === OrderStatus.Returned &&
                           "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400",
-                        order.status === OrderStatus.REFUNDED &&
+                        order.status === OrderStatus.Refunded &&
                           "bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-400",
                       )}
                     >

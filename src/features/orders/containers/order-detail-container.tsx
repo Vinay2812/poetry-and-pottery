@@ -1,7 +1,6 @@
 "use client";
 
 import { createProductReview } from "@/actions";
-import { OrderStatus } from "@/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
@@ -13,7 +12,7 @@ import type {
   OrderDetailViewModel,
   ShippingAddress,
 } from "../types";
-import { buildOrderItemViewModel, getStatusLabel } from "../types";
+import { OrderStatus, buildOrderItemViewModel, getStatusLabel } from "../types";
 
 export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
   const router = useRouter();
@@ -25,30 +24,32 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
     const items = order.ordered_products || [];
     const shippingAddress = order.shipping_address as ShippingAddress | null;
     const totalDiscount = items.reduce((sum, item) => sum + item.discount, 0);
-    const canReview = order.status === OrderStatus.DELIVERED;
-    const showWhatsAppButton = order.status !== OrderStatus.DELIVERED;
+    const canReview = order.status === OrderStatus.Delivered;
+    const showWhatsAppButton = order.status !== OrderStatus.Delivered;
 
     return {
       orderId: order.id,
-      status: order.status as OrderStatus,
-      statusLabel: getStatusLabel(order.status as OrderStatus),
+      status: order.status,
+      statusLabel: getStatusLabel(order.status),
       createdAt: order.created_at,
-      shippedAt: order.shipped_at,
-      deliveredAt: order.delivered_at,
-      requestAt: order.request_at,
-      approvedAt: order.approved_at,
-      paidAt: order.paid_at,
-      cancelledAt: order.cancelled_at,
+      shippedAt: order.shipped_at ?? null,
+      deliveredAt: order.delivered_at ?? null,
+      requestAt: order.request_at ?? null,
+      approvedAt: order.approved_at ?? null,
+      paidAt: order.paid_at ?? null,
+      cancelledAt: order.cancelled_at ?? null,
       items: items.map(buildOrderItemViewModel),
-      shippingAddress: {
-        name: shippingAddress?.name || "",
-        addressLine1: shippingAddress?.addressLine1 || "",
-        addressLine2: shippingAddress?.addressLine2 || "",
-        city: shippingAddress?.city || "",
-        state: shippingAddress?.state || "",
-        zip: shippingAddress?.zip || "",
-        contactNumber: shippingAddress?.contactNumber || "",
-      },
+      shippingAddress: shippingAddress
+        ? {
+            name: shippingAddress.name || "",
+            addressLine1: shippingAddress.addressLine1 || "",
+            addressLine2: shippingAddress.addressLine2 || "",
+            city: shippingAddress.city || "",
+            state: shippingAddress.state || "",
+            zip: shippingAddress.zip || "",
+            contactNumber: shippingAddress.contactNumber || "",
+          }
+        : null,
       paymentSummary: {
         subtotal: order.subtotal,
         totalDiscount,
@@ -58,8 +59,6 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
       },
       canReview,
       showWhatsAppButton,
-      userName: order.user.name || order.user.email,
-      userEmail: order.user.email,
     };
   }, [order]);
 
@@ -91,13 +90,14 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
 
   const handleWhatsAppContact = useCallback(() => {
     if (!order || !viewModel) return;
+    const shippingAddress = order.shipping_address as ShippingAddress | null;
     openWhatsAppFollowUp({
       type: "order-followup",
       orderId: order.id.toUpperCase(),
       orderStatus: viewModel.statusLabel,
       orderTotal: order.total,
-      customerName: viewModel.userName,
-      customerEmail: viewModel.userEmail,
+      customerName: shippingAddress?.name || order.user.name || "Customer",
+      customerEmail: order.user.email,
     });
   }, [order, viewModel]);
 

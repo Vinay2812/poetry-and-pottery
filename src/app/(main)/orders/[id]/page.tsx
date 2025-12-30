@@ -1,4 +1,4 @@
-import { getOrderById } from "@/actions";
+import { getOrderById } from "@/data/orders/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { OrderDetailContainer } from "@/features/orders";
 import type { Metadata } from "next";

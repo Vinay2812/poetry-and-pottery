@@ -127,6 +127,7 @@ export function ProductList({ viewModel, onFilterChange }) {
 **Setup and Development:**
 
 - `bun install` - Install dependencies
+- `bun run codegen` - Generate gql types from api
 - `bun run dev` - Start development server on port 3005(requires .env setup)
 
 **Build and Production:**

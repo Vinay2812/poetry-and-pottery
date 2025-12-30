@@ -40,7 +40,7 @@ export {
   cancelOrder,
   type OrderItemWithReviewStatus,
   type OrderWithReviewStatus,
-} from "./order.actions";
+} from "@/data/orders/server/action";
 
 // Event actions
 export {

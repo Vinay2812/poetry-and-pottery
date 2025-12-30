@@ -1,10 +1,6 @@
-import type {
-  OrderItemWithReviewStatus,
-  OrderWithReviewStatus,
-} from "@/actions";
-import { OrderStatus } from "@/types";
-
 import { formatOrderDate } from "@/lib/date";
+
+import type { Order, OrderItem, OrderStatus } from "@/graphql/generated/types";
 
 /**
  * Type for shipping address JSON field.
@@ -54,20 +50,18 @@ export interface OrderDetailViewModel {
   orderId: string;
   status: OrderStatus;
   statusLabel: string;
-  createdAt: Date;
-  shippedAt: Date | null;
-  deliveredAt: Date | null;
-  requestAt: Date | null;
-  approvedAt: Date | null;
-  paidAt: Date | null;
-  cancelledAt: Date | null;
+  createdAt: Date | string;
+  shippedAt: Date | string | null;
+  deliveredAt: Date | string | null;
+  requestAt: Date | string | null;
+  approvedAt: Date | string | null;
+  paidAt: Date | string | null;
+  cancelledAt: Date | string | null;
   items: OrderItemViewModel[];
   shippingAddress: ShippingAddress | null;
   paymentSummary: PaymentSummaryViewModel;
   canReview: boolean;
   showWhatsAppButton: boolean;
-  userName: string;
-  userEmail: string;
 }
 
 /**
@@ -88,11 +82,14 @@ export interface OrderDetailProps {
  * Props for the OrderDetailContainer.
  */
 export interface OrderDetailContainerProps {
-  order: OrderWithReviewStatus | null;
+  order: Order | null;
 }
 
 // Re-export date utilities for convenience
 export { formatOrderDate } from "@/lib/date";
+
+// Re-export OrderStatus enum from generated types
+export { OrderStatus } from "@/graphql/generated/types";
 
 /**
  * Helper function to get status label.
@@ -104,9 +101,7 @@ export function getStatusLabel(status: OrderStatus | null): string {
 /**
  * Helper function to build order item view model.
  */
-export function buildOrderItemViewModel(
-  item: OrderItemWithReviewStatus,
-): OrderItemViewModel {
+export function buildOrderItemViewModel(item: OrderItem): OrderItemViewModel {
   const product = item.product;
   return {
     id: item.id,
@@ -119,7 +114,7 @@ export function buildOrderItemViewModel(
     price: item.price,
     discount: item.discount,
     finalPrice: Math.max(0, item.price * item.quantity - item.discount),
-    hasReviewed: item.hasReviewed,
+    hasReviewed: item.has_reviewed,
   };
 }
 
@@ -173,23 +168,21 @@ export interface OrdersListProps {
  * Props for the OrdersListContainer.
  */
 export interface OrdersListContainerProps {
-  initialOrders: import("@/types").OrderWithItems[];
+  initialOrders: Order[];
   initialPagination: OrdersListPaginationData;
 }
 
 /**
  * Helper function to build order card view model.
  */
-export function buildOrderCardViewModel(
-  order: import("@/types").OrderWithItems,
-): OrderCardViewModel {
+export function buildOrderCardViewModel(order: Order): OrderCardViewModel {
   const items = order.ordered_products;
   const firstProductName = items[0]?.product?.name || "Product";
 
   return {
     id: order.id,
-    status: order.status as OrderStatus,
-    statusLabel: getStatusLabel(order.status as OrderStatus),
+    status: order.status,
+    statusLabel: getStatusLabel(order.status),
     formattedDate: formatOrderDate(order.created_at),
     total: order.total,
     firstProductName,

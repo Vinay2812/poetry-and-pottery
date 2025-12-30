@@ -1,6 +1,7 @@
 "use client";
 
-import { createOrder } from "@/actions";
+import { createOrder } from "@/data/orders/gateway/server";
+import type { ShippingAddress } from "@/data/orders/types";
 import { useAuthAction, useCart } from "@/hooks";
 import type { UserAddress } from "@/prisma/generated/client";
 import { useUIStore } from "@/store";
@@ -157,14 +158,21 @@ export function CartContainer({
           duration: 5000,
         });
 
+        // Extract shipping address from the order
+        const orderShippingAddress = result.data
+          .shipping_address as ShippingAddress | null;
+
         await contactBusiness({
           type: "order",
           orderId: result.data.id,
           orderTotal: result.data.total,
           itemCount: result.data.ordered_products.length,
-          customerName: result.data.user.name || result.data.user.email,
+          customerName: orderShippingAddress?.name || selectedAddress.name,
           customerEmail: result.data.user.email,
-          customerPhone: result.data.user.phone || undefined,
+          customerPhone:
+            orderShippingAddress?.contactNumber ||
+            selectedAddress.contact_number ||
+            undefined,
           shippingAddress: {
             name: selectedAddress.name,
             addressLine1: selectedAddress.address_line_1,

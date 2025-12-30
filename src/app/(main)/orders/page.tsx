@@ -1,4 +1,4 @@
-import { getOrders } from "@/actions";
+import { getOrders } from "@/data/orders/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { OrdersListContainer } from "@/features/orders";
 import type { Metadata } from "next";
@@ -27,7 +27,7 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
 
   const orders = result.success ? result.data.data : [];
   const pagination = result.success
-    ? { total: result.data.total, totalPages: result.data.totalPages }
+    ? { total: result.data.total, totalPages: result.data.total_pages }
     : { total: 0, totalPages: 0 };
 
   return (
