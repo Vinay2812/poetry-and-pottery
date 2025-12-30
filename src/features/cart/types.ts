@@ -1,13 +1,14 @@
 import type { ProductBase } from "@/data/products/types";
 import type { UserAddress } from "@/prisma/generated/client";
-import type { CartWithProduct } from "@/types";
+
+import type { CartItem } from "@/graphql/generated/types";
 
 /**
  * View model for a single cart item.
  */
 export interface CartItemViewModel {
   productId: number;
-  product: CartWithProduct["product"];
+  product: ProductBase;
   quantity: number;
   isLoading: boolean;
 }
@@ -52,7 +53,7 @@ export interface CartProps {
  * Props for the CartContainer component.
  */
 export interface CartContainerProps {
-  initialCartItems: CartWithProduct[];
+  initialCartItems: CartItem[];
   recommendedProducts: ProductBase[];
   initialAddresses: UserAddress[];
 }

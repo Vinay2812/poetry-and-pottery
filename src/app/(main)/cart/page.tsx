@@ -1,4 +1,5 @@
-import { getCart, getUserAddresses } from "@/actions";
+import { getUserAddresses } from "@/actions";
+import { getCart } from "@/data/cart/server/action";
 import { getRecommendedProducts } from "@/data/products/gateway/server";
 import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
@@ -22,7 +23,7 @@ export default async function CartPage() {
 
   return (
     <CartContainer
-      initialCartItems={cartResult.success ? cartResult.data : []}
+      initialCartItems={cartResult.items}
       recommendedProducts={recommendedProducts}
       initialAddresses={addressResult.success ? addressResult.data : []}
     />

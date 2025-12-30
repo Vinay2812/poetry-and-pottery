@@ -1,7 +1,7 @@
 "use client";
 
 import { MAX_CART_QUANTITY } from "@/consts/performance";
-import type { ProductWithCategories } from "@/types";
+import type { ProductBase } from "@/data/products/types";
 import { motion } from "framer-motion";
 import { Loader2, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 
 interface CartItemCardProps {
-  product: ProductWithCategories;
+  product: ProductBase;
   quantity: number;
   onQuantityChange: (quantity: number) => void;
   onRemove: () => void;
@@ -32,8 +32,7 @@ export function CartItemCard({
   isLoading = false,
 }: CartItemCardProps) {
   const imageUrl = product.image_urls[0] || "/placeholder.jpg";
-  const category =
-    product.product_categories[0]?.category || product.material || "Pottery";
+  const category = product.material || "Pottery";
 
   const quantityOptions = Array.from(
     { length: MAX_CART_QUANTITY },

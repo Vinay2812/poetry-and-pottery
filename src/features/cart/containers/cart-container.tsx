@@ -4,10 +4,13 @@ import { createOrder } from "@/actions";
 import { useAuthAction, useCart } from "@/hooks";
 import type { UserAddress } from "@/prisma/generated/client";
 import { useUIStore } from "@/store";
+import type { CartWithProduct } from "@/types";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { contactBusiness } from "@/lib/contact-business";
+
+import type { CartItem } from "@/graphql/generated/types";
 
 import { Cart } from "../components/cart";
 import type {
@@ -16,11 +19,45 @@ import type {
   CartViewModel,
 } from "../types";
 
+function mapToCartWithProduct(item: CartItem): CartWithProduct {
+  return {
+    id: item.id,
+    user_id: item.user_id,
+    product_id: item.product_id,
+    quantity: item.quantity,
+    created_at: new Date(item.created_at),
+    updated_at: new Date(item.updated_at),
+    product: {
+      id: item.product.id,
+      slug: item.product.slug,
+      name: item.product.name,
+      price: item.product.price,
+      image_urls: item.product.image_urls,
+      material: item.product.material,
+      available_quantity: item.product.available_quantity,
+      total_quantity: item.product.total_quantity,
+      color_code: item.product.color_code,
+      color_name: item.product.color_name,
+      description: null,
+      instructions: [],
+      is_active: true,
+      created_at: new Date(),
+      updated_at: new Date(),
+      product_categories: [],
+    },
+  };
+}
+
 export function CartContainer({
   initialCartItems,
   recommendedProducts,
   initialAddresses,
 }: CartContainerProps) {
+  const mappedInitialItems = useMemo(
+    () => initialCartItems.map(mapToCartWithProduct),
+    [initialCartItems],
+  );
+
   const router = useRouter();
   const { addToast } = useUIStore();
   const { requireAuth } = useAuthAction();
@@ -39,13 +76,13 @@ export function CartContainer({
   } = useCart();
 
   // Use cart items from hook, fallback to initial if not hydrated yet
-  const displayItems = cartItems.length > 0 ? cartItems : initialCartItems;
+  const displayItems = cartItems.length > 0 ? cartItems : mappedInitialItems;
 
   useEffect(() => {
-    if (initialCartItems.length > 0 && cartItems.length === 0) {
-      hydrate(initialCartItems);
+    if (mappedInitialItems.length > 0 && cartItems.length === 0) {
+      hydrate(mappedInitialItems);
     }
-  }, [initialCartItems, cartItems.length, hydrate]);
+  }, [mappedInitialItems, cartItems.length, hydrate]);
 
   const handleUpdateQuantity = useCallback(
     async (productId: number, newQuantity: number) => {
@@ -168,7 +205,21 @@ export function CartContainer({
   // Build cart item view models
   const cartItemViewModels: CartItemViewModel[] = displayItems.map((item) => ({
     productId: item.product.id,
-    product: item.product,
+    product: {
+      id: item.product.id,
+      slug: item.product.slug,
+      name: item.product.name,
+      price: item.product.price,
+      image_urls: item.product.image_urls,
+      material: item.product.material,
+      available_quantity: item.product.available_quantity,
+      total_quantity: item.product.total_quantity,
+      color_code: item.product.color_code,
+      color_name: item.product.color_name,
+      avg_rating: 0,
+      reviews_count: 0,
+      in_wishlist: false,
+    },
     quantity: item.quantity,
     isLoading: isLoading(item.product.id),
   }));

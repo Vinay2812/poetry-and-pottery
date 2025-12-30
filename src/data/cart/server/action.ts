@@ -1,12 +1,9 @@
 "use server";
 
-import {
-  addToCart as addToCartAction,
-  clearCart as clearCartAction,
-  getCart as getCartAction,
-  removeFromCart as removeFromCartAction,
-  updateCartQuantity as updateCartQuantityAction,
-} from "@/actions/cart.actions";
+import { getAuthenticatedUserId } from "@/actions/auth.action";
+import { revalidatePath } from "next/cache";
+
+import { prisma } from "@/lib/prisma";
 
 import type {
   CartItem,
@@ -83,13 +80,22 @@ function mapToCartItem(item: {
 }
 
 export async function getCart(): Promise<CartResponse> {
-  const result = await getCartAction();
-
-  if (!result.success || !result.data) {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
     return { items: [], total: 0, subtotal: 0 };
   }
 
-  const items = result.data.map(mapToCartItem);
+  const cartItems = await prisma.cart.findMany({
+    where: { user_id: userId },
+    include: {
+      product: {
+        include: { product_categories: true },
+      },
+    },
+    orderBy: { created_at: "desc" },
+  });
+
+  const items = cartItems.map(mapToCartItem);
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0,
@@ -102,48 +108,144 @@ export async function getCart(): Promise<CartResponse> {
   };
 }
 
+export async function getCartCount(): Promise<number> {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) return 0;
+
+  return prisma.cart.count({
+    where: { user_id: userId },
+  });
+}
+
 export async function addToCart(
   productId: number,
   quantity: number = 1,
 ): Promise<CartMutationResponse> {
-  const result = await addToCartAction(productId, quantity);
-
-  if (!result.success || !result.data) {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
     return { success: false, item: null };
   }
 
-  return {
-    success: true,
-    item: mapToCartItem(result.data),
-  };
+  try {
+    const item = await prisma.cart.upsert({
+      where: {
+        user_id_product_id: {
+          user_id: userId,
+          product_id: productId,
+        },
+      },
+      update: {
+        quantity: { increment: quantity },
+      },
+      create: {
+        user_id: userId,
+        product_id: productId,
+        quantity,
+      },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    });
+
+    revalidatePath("/cart");
+    return {
+      success: true,
+      item: mapToCartItem(item),
+    };
+  } catch (error) {
+    console.error("Failed to add to cart:", error);
+    return { success: false, item: null };
+  }
 }
 
 export async function updateCartQuantity(
   productId: number,
   quantity: number,
 ): Promise<CartMutationResponse> {
-  const result = await updateCartQuantityAction(productId, quantity);
-
-  if (!result.success) {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
     return { success: false, item: null };
   }
 
-  if (!result.data) {
-    return { success: true, item: null };
-  }
+  try {
+    if (quantity <= 0) {
+      await prisma.cart.delete({
+        where: {
+          user_id_product_id: {
+            user_id: userId,
+            product_id: productId,
+          },
+        },
+      });
+      revalidatePath("/cart");
+      return { success: true, item: null };
+    }
 
-  return {
-    success: true,
-    item: mapToCartItem(result.data),
-  };
+    const item = await prisma.cart.update({
+      where: {
+        user_id_product_id: {
+          user_id: userId,
+          product_id: productId,
+        },
+      },
+      data: { quantity },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    });
+
+    revalidatePath("/cart");
+    return {
+      success: true,
+      item: mapToCartItem(item),
+    };
+  } catch (error) {
+    console.error("Failed to update cart:", error);
+    return { success: false, item: null };
+  }
 }
 
 export async function removeFromCart(productId: number): Promise<boolean> {
-  const result = await removeFromCartAction(productId);
-  return result.success;
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    return false;
+  }
+
+  try {
+    await prisma.cart.delete({
+      where: {
+        user_id_product_id: {
+          user_id: userId,
+          product_id: productId,
+        },
+      },
+    });
+    revalidatePath("/cart");
+    return true;
+  } catch (error) {
+    console.error("Failed to remove from cart:", error);
+    return false;
+  }
 }
 
 export async function clearCart(): Promise<boolean> {
-  const result = await clearCartAction();
-  return result.success;
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    return false;
+  }
+
+  try {
+    await prisma.cart.deleteMany({
+      where: { user_id: userId },
+    });
+    revalidatePath("/cart");
+    return true;
+  } catch (error) {
+    console.error("Failed to clear cart:", error);
+    return false;
+  }
 }

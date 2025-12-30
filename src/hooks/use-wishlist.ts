@@ -2,7 +2,6 @@
 
 import {
   addToWishlist as addToWishlistAction,
-  moveToCart as moveToCartAction,
   removeFromWishlist as removeFromWishlistAction,
   toggleWishlist as toggleWishlistAction,
 } from "@/data/wishlist/gateway/server";

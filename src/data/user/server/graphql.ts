@@ -2,8 +2,8 @@
 
 import { getClient } from "@/lib/apollo";
 
-import { USER_COUNTS_QUERY } from "@/graphql/user.query";
 import type { UserCounts, UserCountsQuery } from "@/graphql/generated/types";
+import { USER_COUNTS_QUERY } from "@/graphql/user.query";
 
 export async function getUserCounts(): Promise<UserCounts> {
   const client = getClient();

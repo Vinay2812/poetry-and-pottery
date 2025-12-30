@@ -4,31 +4,33 @@ export {
   getProductBySlug,
   getProductById,
   getRelatedProducts,
-  getCategories,
-  getMaterials,
   getFeaturedProducts,
   getBestSellers,
-  getSmartRecommendations,
-} from "./product.actions";
+  getRecommendedProducts as getSmartRecommendations,
+  getCategories,
+  getMaterials,
+} from "@/data/products/server/action";
 
 // Cart actions
 export {
   getCart,
+  getCartCount,
   addToCart,
   updateCartQuantity,
   removeFromCart,
   clearCart,
-} from "./cart.actions";
+} from "@/data/cart/server/action";
 
 // Wishlist actions
 export {
   getWishlist,
   getWishlistIds,
+  getWishlistCount,
   toggleWishlist,
   addToWishlist,
   removeFromWishlist,
   moveToCart,
-} from "./wishlist.actions";
+} from "@/data/wishlist/server/action";
 
 // Order actions
 export {

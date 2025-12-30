@@ -1,5 +1,6 @@
 import type { ProductBase } from "@/data/products/types";
-import type { WishlistWithProduct } from "@/types";
+
+import type { WishlistItem } from "@/graphql/generated/types";
 
 /**
  * View model for a single wishlist item.
@@ -34,7 +35,7 @@ export interface WishlistProps {
  * Props for the WishlistContainer.
  */
 export interface WishlistContainerProps {
-  initialWishlistItems: WishlistWithProduct[];
+  initialWishlistItems: WishlistItem[];
   recommendations: ProductBase[];
   initialPagination: {
     page: number;

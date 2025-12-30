@@ -5,8 +5,10 @@ import { getClient } from "@/lib/apollo";
 import type {
   BestSellersQuery,
   BestSellersQueryVariables,
+  CategoriesQuery,
   FeaturedProductsQuery,
   FeaturedProductsQueryVariables,
+  MaterialsQuery,
   ProductBase,
   ProductByIdQuery,
   ProductByIdQueryVariables,
@@ -24,7 +26,9 @@ import type {
 } from "@/graphql/generated/types";
 import {
   BEST_SELLERS_QUERY,
+  CATEGORIES_QUERY,
   FEATURED_PRODUCTS_QUERY,
+  MATERIALS_QUERY,
   PRODUCTS_QUERY,
   PRODUCT_BY_ID_QUERY,
   PRODUCT_BY_SLUG_QUERY,
@@ -209,4 +213,32 @@ export async function getRecommendedProducts(
   }
 
   return result.data?.recommendedProducts ?? [];
+}
+
+export async function getCategories(): Promise<string[]> {
+  const client = getClient();
+
+  const result = await client.query<CategoriesQuery>({
+    query: CATEGORIES_QUERY,
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  return result.data?.categories ?? [];
+}
+
+export async function getMaterials(): Promise<string[]> {
+  const client = getClient();
+
+  const result = await client.query<MaterialsQuery>({
+    query: MATERIALS_QUERY,
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  return result.data?.materials ?? [];
 }

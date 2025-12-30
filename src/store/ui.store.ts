@@ -1,4 +1,3 @@
-import { getUserCounts } from "@/data/user/gateway/server";
 import { create } from "zustand";
 
 interface UIState {

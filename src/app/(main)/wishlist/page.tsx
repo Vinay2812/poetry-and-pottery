@@ -1,5 +1,5 @@
-import { getWishlist } from "@/actions";
 import { getRecommendedProducts } from "@/data/products/gateway/server";
+import { getWishlist } from "@/data/wishlist/server/action";
 import { WishlistContainer } from "@/features/wishlist";
 import type { Metadata } from "next";
 
@@ -19,23 +19,15 @@ export default async function WishlistPage() {
     getRecommendedProducts(4),
   ]);
 
-  const defaultPagination = { page: 1, totalPages: 1, total: 0 };
-
   return (
     <WishlistContainer
-      initialWishlistItems={
-        wishlistResult.success ? wishlistResult.data.data : []
-      }
+      initialWishlistItems={wishlistResult.data}
       recommendations={recommendations}
-      initialPagination={
-        wishlistResult.success
-          ? {
-              page: wishlistResult.data.page,
-              totalPages: wishlistResult.data.totalPages,
-              total: wishlistResult.data.total,
-            }
-          : defaultPagination
-      }
+      initialPagination={{
+        page: wishlistResult.page,
+        totalPages: wishlistResult.total_pages,
+        total: wishlistResult.total,
+      }}
     />
   );
 }

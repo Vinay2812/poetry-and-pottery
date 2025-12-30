@@ -1,13 +1,10 @@
 "use server";
 
-import {
-  addToWishlist as addToWishlistAction,
-  getWishlist as getWishlistAction,
-  getWishlistIds as getWishlistIdsAction,
-  moveToCart as moveToCartAction,
-  removeFromWishlist as removeFromWishlistAction,
-  toggleWishlist as toggleWishlistAction,
-} from "@/actions/wishlist.actions";
+import { getAuthenticatedUserId } from "@/actions/auth.action";
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { revalidatePath } from "next/cache";
+
+import { prisma } from "@/lib/prisma";
 
 import type {
   ToggleWishlistResponse,
@@ -85,70 +82,167 @@ function mapToWishlistItem(item: {
 
 export async function getWishlist(
   page: number = 1,
-  limit: number = 12,
+  limit: number = DEFAULT_PAGE_SIZE,
 ): Promise<WishlistResponse> {
-  const result = await getWishlistAction(page, limit);
-
-  if (!result.success || !result.data) {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
     return { data: [], total: 0, page: 1, total_pages: 0 };
   }
 
+  const [items, total] = await Promise.all([
+    prisma.wishlist.findMany({
+      where: { user_id: userId },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+      orderBy: [
+        { product: { available_quantity: "desc" } },
+        { created_at: "desc" },
+      ],
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.wishlist.count({ where: { user_id: userId } }),
+  ]);
+
   return {
-    data: result.data.data.map(mapToWishlistItem),
-    total: result.data.total,
-    page: result.data.page,
-    total_pages: result.data.totalPages,
+    data: items.map(mapToWishlistItem),
+    total,
+    page,
+    total_pages: Math.ceil(total / limit),
   };
 }
 
 export async function getWishlistIds(): Promise<number[]> {
-  const result = await getWishlistIdsAction();
-
-  if (!result.success) {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
     return [];
   }
 
-  return result.data;
+  const wishlists = await prisma.wishlist.findMany({
+    where: { user_id: userId },
+    select: { product_id: true },
+  });
+
+  return wishlists.map((w) => w.product_id);
+}
+
+export async function getWishlistCount(): Promise<number> {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) return 0;
+
+  return prisma.wishlist.count({ where: { user_id: userId } });
 }
 
 export async function addToWishlist(
   productId: number,
 ): Promise<WishlistMutationResponse> {
-  const result = await addToWishlistAction(productId);
-
-  if (!result.success || !result.data) {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
     return { success: false, item: null };
   }
 
-  return {
-    success: true,
-    item: mapToWishlistItem(result.data),
-  };
+  try {
+    const item = await prisma.wishlist.create({
+      data: { user_id: userId, product_id: productId },
+      include: {
+        product: {
+          include: { product_categories: true },
+        },
+      },
+    });
+
+    revalidatePath("/wishlist");
+    revalidatePath("/products");
+    return {
+      success: true,
+      item: mapToWishlistItem(item),
+    };
+  } catch (error) {
+    console.error("Failed to add to wishlist:", error);
+    return { success: false, item: null };
+  }
 }
 
 export async function removeFromWishlist(productId: number): Promise<boolean> {
-  const result = await removeFromWishlistAction(productId);
-  return result.success;
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    return false;
+  }
+
+  try {
+    await prisma.wishlist.delete({
+      where: { user_id_product_id: { user_id: userId, product_id: productId } },
+    });
+    revalidatePath("/wishlist");
+    revalidatePath("/products");
+    return true;
+  } catch (error) {
+    console.error("Failed to remove from wishlist:", error);
+    return false;
+  }
 }
 
 export async function toggleWishlist(
   productId: number,
 ): Promise<ToggleWishlistResponse> {
-  const result = await toggleWishlistAction(productId);
-
-  if (!result.success) {
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
     return { success: false, action: ToggleAction.Removed, item: null };
   }
 
-  return {
-    success: true,
-    action:
-      result.action === "added" ? ToggleAction.Added : ToggleAction.Removed,
-    item: null,
-  };
+  try {
+    const existing = await prisma.wishlist.findUnique({
+      where: { user_id_product_id: { user_id: userId, product_id: productId } },
+    });
+
+    if (existing) {
+      await prisma.wishlist.delete({ where: { id: existing.id } });
+      revalidatePath("/wishlist");
+      revalidatePath("/products");
+      return { success: true, action: ToggleAction.Removed, item: null };
+    }
+
+    await prisma.wishlist.create({
+      data: { user_id: userId, product_id: productId },
+    });
+    revalidatePath("/wishlist");
+    revalidatePath("/products");
+    return { success: true, action: ToggleAction.Added, item: null };
+  } catch (error) {
+    console.error("Failed to toggle wishlist:", error);
+    return { success: false, action: ToggleAction.Removed, item: null };
+  }
 }
 
 export async function moveToCart(productId: number): Promise<boolean> {
-  const result = await moveToCartAction(productId);
-  return result.success;
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    return false;
+  }
+
+  try {
+    await prisma.$transaction([
+      prisma.cart.upsert({
+        where: {
+          user_id_product_id: { user_id: userId, product_id: productId },
+        },
+        update: { quantity: { increment: 1 } },
+        create: { user_id: userId, product_id: productId, quantity: 1 },
+      }),
+      prisma.wishlist.delete({
+        where: {
+          user_id_product_id: { user_id: userId, product_id: productId },
+        },
+      }),
+    ]);
+    revalidatePath("/wishlist");
+    revalidatePath("/cart");
+    return true;
+  } catch (error) {
+    console.error("Failed to move to cart:", error);
+    return false;
+  }
 }

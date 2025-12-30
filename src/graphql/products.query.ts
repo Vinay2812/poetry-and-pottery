@@ -212,3 +212,15 @@ export const RECOMMENDED_PRODUCTS_QUERY = gql`
     }
   }
 `;
+
+export const CATEGORIES_QUERY = gql`
+  query Categories {
+    categories
+  }
+`;
+
+export const MATERIALS_QUERY = gql`
+  query Materials {
+    materials
+  }
+`;

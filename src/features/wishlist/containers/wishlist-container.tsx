@@ -1,17 +1,18 @@
 "use client";
 
-import { getWishlist } from "@/actions";
 import type { ProductBase } from "@/data/products/types";
+import { getWishlist } from "@/data/wishlist/server/action";
 import { useWishlist } from "@/hooks";
-import type { WishlistWithProduct } from "@/types";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
+import type { WishlistItem } from "@/graphql/generated/types";
+
 import { Wishlist } from "../components/wishlist";
 import type { WishlistContainerProps, WishlistViewModel } from "../types";
 
-function mapToProductBase(wishlistItem: WishlistWithProduct): ProductBase {
+function mapToProductBase(wishlistItem: WishlistItem): ProductBase {
   return {
     id: wishlistItem.product.id,
     slug: wishlistItem.product.slug,
@@ -23,8 +24,8 @@ function mapToProductBase(wishlistItem: WishlistWithProduct): ProductBase {
     total_quantity: wishlistItem.product.total_quantity,
     color_code: wishlistItem.product.color_code,
     color_name: wishlistItem.product.color_name,
-    avg_rating: 0,
-    reviews_count: 0,
+    avg_rating: wishlistItem.product.avg_rating ?? 0,
+    reviews_count: wishlistItem.product.reviews_count ?? 0,
     in_wishlist: true,
   };
 }
@@ -43,14 +44,11 @@ export function WishlistContainer({
       queryKey: ["wishlist"],
       queryFn: async ({ pageParam = 1 }) => {
         const result = await getWishlist(pageParam);
-        if (!result.success) {
-          throw new Error("Failed to fetch wishlist");
-        }
-        return result.data;
+        return result;
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
-        if (lastPage.page < lastPage.totalPages) {
+        if (lastPage.page < lastPage.total_pages) {
           return lastPage.page + 1;
         }
         return undefined;
@@ -61,7 +59,7 @@ export function WishlistContainer({
             data: initialWishlistItems,
             total: initialPagination.total,
             page: 1,
-            totalPages: initialPagination.totalPages,
+            total_pages: initialPagination.totalPages,
           },
         ],
         pageParams: [1],
@@ -117,7 +115,7 @@ export function WishlistContainer({
       // Then trigger the actual removal (which also updates zustand store)
       await removeFromWishlist(productId);
     },
-    [removeFromWishlist, queryClient, data],
+    [removeFromWishlist, queryClient],
   );
 
   // Build view model
