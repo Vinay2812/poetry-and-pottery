@@ -188,6 +188,44 @@ export async function getEventWithUserContext(
   return result.data?.eventWithUserContext ?? null;
 }
 
+// ============ USER CONTEXT QUERIES ============
+
+export interface UserEventContext {
+  registration: EventRegistration | null;
+  currentUserId: number | null;
+  isPastEvent: boolean;
+}
+
+export async function getUserEventContext(
+  eventId: string,
+): Promise<UserEventContext | null> {
+  const client = getClient();
+
+  // Reuse eventWithUserContext query but only extract user context
+  const result = await client.query<
+    EventWithUserContextQuery,
+    EventWithUserContextQueryVariables
+  >({
+    query: EVENT_WITH_USER_CONTEXT_QUERY,
+    variables: { eventId },
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  const context = result.data?.eventWithUserContext;
+  if (!context) {
+    return null;
+  }
+
+  return {
+    registration: context.registration ?? null,
+    currentUserId: context.current_user_id ?? null,
+    isPastEvent: context.is_past_event,
+  };
+}
+
 // ============ REGISTRATION QUERIES ============
 
 export async function getUserRegistrations(

@@ -94,6 +94,18 @@ export function EventsSkeleton() {
   );
 }
 
+export function PastEventsSkeleton({ count = 3 }: { count?: number }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-5 w-16 rounded-full" />
+      </div>
+      <EventsGridSkeleton count={count} />
+    </div>
+  );
+}
+
 export function EventDetailSkeleton() {
   return (
     <main className="pt-14 pb-40 lg:pt-20 lg:pb-12">

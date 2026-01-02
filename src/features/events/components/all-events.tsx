@@ -13,6 +13,8 @@ export function AllEvents({
   viewModel,
   loadMoreRef,
   onSearchChange,
+  pastEventsLoading,
+  pastEventsSkeleton,
 }: AllEventsProps) {
   const {
     upcomingEvents,
@@ -68,7 +70,8 @@ export function AllEvents({
           </section>
 
           {/* Past Events Section */}
-          {hasPast && (
+          {pastEventsLoading && pastEventsSkeleton}
+          {!pastEventsLoading && hasPast && (
             <section>
               <SectionHeader
                 icon={History}

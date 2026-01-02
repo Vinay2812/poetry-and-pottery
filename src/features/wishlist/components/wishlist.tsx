@@ -32,6 +32,8 @@ function RecommendationsSection({
 export function Wishlist({
   viewModel,
   recommendations,
+  recommendationsLoading,
+  recommendationsSkeleton,
   loadMoreRef,
   onRemoveItem,
 }: WishlistProps) {
@@ -45,6 +47,8 @@ export function Wishlist({
 
   const hasRecommendations = recommendations.length > 0;
   const displayRecommendations = showRecommendations && hasRecommendations;
+  const showRecommendationsSkeleton =
+    showRecommendations && recommendationsLoading && !hasRecommendations;
 
   return (
     <>
@@ -112,6 +116,7 @@ export function Wishlist({
           )}
 
           {/* Recommendations - only show when all items are loaded */}
+          {showRecommendationsSkeleton && recommendationsSkeleton}
           {displayRecommendations && (
             <RecommendationsSection recommendations={recommendations} />
           )}

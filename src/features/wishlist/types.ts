@@ -27,6 +27,8 @@ export interface WishlistViewModel {
 export interface WishlistProps {
   viewModel: WishlistViewModel;
   recommendations: ProductBase[];
+  recommendationsLoading?: boolean;
+  recommendationsSkeleton?: React.ReactNode;
   loadMoreRef: (node?: Element | null) => void;
   onRemoveItem: (productId: number) => void;
 }
@@ -36,7 +38,6 @@ export interface WishlistProps {
  */
 export interface WishlistContainerProps {
   initialWishlistItems: WishlistItem[];
-  recommendations: ProductBase[];
   initialPagination: {
     page: number;
     totalPages: number;

@@ -2,11 +2,12 @@
 
 import { isGraphQL } from "@/consts/env";
 import { getOrders } from "@/data/orders/gateway/server";
-import { useOrdersLazyQuery } from "@/graphql/generated/graphql";
-import type { Order } from "@/graphql/generated/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+
+import { useOrdersLazyQuery } from "@/graphql/generated/graphql";
+import type { Order } from "@/graphql/generated/types";
 
 interface PaginationData {
   total: number;
@@ -55,7 +56,11 @@ export function useOrdersQuery({
           };
         } else {
           // Server action mode
-          const result = await getOrders(pageParam, ORDERS_PER_PAGE, searchQuery);
+          const result = await getOrders(
+            pageParam,
+            ORDERS_PER_PAGE,
+            searchQuery,
+          );
           if (!result.success) {
             throw new Error(result.error);
           }

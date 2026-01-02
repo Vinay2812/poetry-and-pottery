@@ -547,3 +547,54 @@ export async function getMaterials(): Promise<string[]> {
   });
   return materials.map((m) => m.material);
 }
+
+export interface FilterMetadata {
+  categories: string[];
+  materials: string[];
+  priceRange: { min: number; max: number };
+  priceHistogram: { min: number; max: number; count: number }[];
+}
+
+export async function getFilterMetadata(): Promise<FilterMetadata> {
+  const [categoriesResult, materialsResult, priceStats] = await Promise.all([
+    prisma.productCategory.findMany({
+      distinct: ["category"],
+      select: { category: true },
+    }),
+    prisma.product.findMany({
+      where: { is_active: true },
+      distinct: ["material"],
+      select: { material: true },
+    }),
+    prisma.product.findMany({
+      where: { is_active: true },
+      select: { price: true },
+    }),
+  ]);
+
+  const prices = priceStats.map((p) => p.price);
+  const minPriceVal = prices.length > 0 ? Math.min(...prices) : 0;
+  const maxPriceVal = prices.length > 0 ? Math.max(...prices) : 1000;
+
+  const bucketCount = 30;
+  const range = maxPriceVal - minPriceVal || 1;
+  const step = range / bucketCount;
+
+  const priceHistogram = Array.from({ length: bucketCount }, (_, i) => {
+    const bucketMin = minPriceVal + i * step;
+    const bucketMax = minPriceVal + (i + 1) * step;
+    const count = prices.filter(
+      (p) =>
+        p >= bucketMin &&
+        (i === bucketCount - 1 ? p <= bucketMax : p < bucketMax),
+    ).length;
+    return { min: bucketMin, max: bucketMax, count };
+  });
+
+  return {
+    categories: categoriesResult.map((c) => c.category),
+    materials: materialsResult.map((m) => m.material),
+    priceRange: { min: minPriceVal, max: maxPriceVal },
+    priceHistogram,
+  };
+}

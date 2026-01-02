@@ -146,7 +146,14 @@ export async function getBestSellers(params: {
     throw new Error(`GraphQL error: ${result.error.message}`);
   }
 
-  return result.data?.bestSellers ?? { products: [], total: 0, page: 1, total_pages: 0 };
+  return (
+    result.data?.bestSellers ?? {
+      products: [],
+      total: 0,
+      page: 1,
+      total_pages: 0,
+    }
+  );
 }
 
 export async function getRecommendedProducts(params: {
@@ -172,7 +179,14 @@ export async function getRecommendedProducts(params: {
     throw new Error(`GraphQL error: ${result.error.message}`);
   }
 
-  return result.data?.recommendedProducts ?? { products: [], total: 0, page: 1, total_pages: 0 };
+  return (
+    result.data?.recommendedProducts ?? {
+      products: [],
+      total: 0,
+      page: 1,
+      total_pages: 0,
+    }
+  );
 }
 
 export async function getCategories(): Promise<string[]> {
@@ -201,4 +215,30 @@ export async function getMaterials(): Promise<string[]> {
   }
 
   return result.data?.materials ?? [];
+}
+
+export interface FilterMetadata {
+  categories: string[];
+  materials: string[];
+  priceRange: { min: number; max: number };
+  priceHistogram: { min: number; max: number; count: number }[];
+}
+
+export async function getFilterMetadata(): Promise<FilterMetadata> {
+  // Use getProducts with minimal params to get meta
+  const result = await getProducts({ page: 1, limit: 1 });
+
+  return {
+    categories: result.meta.categories,
+    materials: result.meta.materials,
+    priceRange: {
+      min: result.meta.price_range.min ?? 0,
+      max: result.meta.price_range.max ?? 1000,
+    },
+    priceHistogram: result.meta.price_histogram.map((bucket) => ({
+      min: bucket.min,
+      max: bucket.max,
+      count: bucket.count,
+    })),
+  };
 }

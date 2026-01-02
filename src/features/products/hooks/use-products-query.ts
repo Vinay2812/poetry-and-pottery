@@ -12,8 +12,6 @@ import {
   useProductsLazyQuery,
 } from "@/graphql/generated/graphql";
 
-import type { Category } from "../types";
-
 function mapOrderBy(orderBy?: string): ProductOrderBy {
   switch (orderBy) {
     case "new":
@@ -34,18 +32,12 @@ interface UseProductsQueryOptions {
   filterParams: ProductsFilterParams;
   initialProducts: ProductBase[];
   totalProducts: number;
-  categories: Category[];
-  materials: string[];
-  priceRange?: { min: number; max: number };
 }
 
 export function useProductsQuery({
   filterParams,
   initialProducts,
   totalProducts,
-  categories,
-  materials,
-  priceRange,
 }: UseProductsQueryOptions) {
   const [fetchGraphQL, { loading: isGraphQLLoading }] = useProductsLazyQuery({
     fetchPolicy: "network-only",
@@ -88,9 +80,6 @@ export function useProductsQuery({
             total: products?.total_products ?? 0,
             page: products?.filter.page ?? pageParam,
             totalPages: products?.total_pages ?? 0,
-            categories: products?.meta.categories ?? [],
-            materials: products?.meta.materials ?? [],
-            priceRange: products?.meta.price_range ?? { min: 0, max: 1000 },
           };
         } else {
           const result = await getProducts({
@@ -102,9 +91,6 @@ export function useProductsQuery({
             total: result.total_products,
             page: result.filter.page ?? pageParam,
             totalPages: result.total_pages,
-            categories: result.meta.categories,
-            materials: result.meta.materials,
-            priceRange: result.meta.price_range,
           };
         }
       } catch (err) {
@@ -126,9 +112,6 @@ export function useProductsQuery({
           total: totalProducts,
           page: 1,
           totalPages: Math.ceil(totalProducts / PRODUCTS_PER_PAGE),
-          categories: categories.map((c) => c.id),
-          materials,
-          priceRange: priceRange || { min: 0, max: 1000 },
         },
       ],
       pageParams: [1],

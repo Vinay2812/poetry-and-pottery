@@ -1,20 +1,44 @@
-import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
-import React from "react";
+"use client";
 
-// import { useRecommendedProductsQuery } from "@/graphql/generated/graphql";
+import { ProductCarousel } from "@/components/sections";
+import { ProductCarouselSkeleton } from "@/components/skeletons";
 
-export function RecommendedProductsContainer() {
-  // const {
-  //   data: recommendedProducts,
-  //   loading: isLoading,
-  //   error,
-  // } = useRecommendedProductsQuery({
-  //   variables: {
-  //     limit: DEFAULT_PAGE_SIZE,
-  //   },
-  // });
+import { useRecommendedProductsQuery } from "../hooks/use-recommended-products-query";
 
-  // if (isLoading) return null;
+interface RecommendedProductsContainerProps {
+  title?: string;
+  subtitle?: string;
+  className?: string;
+  limit?: number;
+  productId?: number;
+}
 
-  return <div>RecommendedProductsContainer</div>;
+export function RecommendedProductsContainer({
+  title = "Curated Favorites",
+  subtitle = "Handpicked pieces for your home.",
+  className,
+  limit = 4,
+  productId,
+}: RecommendedProductsContainerProps) {
+  const { products, isLoading } = useRecommendedProductsQuery({
+    limit,
+    productId,
+  });
+
+  if (isLoading) {
+    return <ProductCarouselSkeleton className={className} />;
+  }
+
+  if (products.length === 0) {
+    return null;
+  }
+
+  return (
+    <ProductCarousel
+      products={products}
+      title={title}
+      subtitle={subtitle}
+      className={className}
+    />
+  );
 }

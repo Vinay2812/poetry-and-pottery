@@ -82,22 +82,24 @@ export function ProductList({
               <SheetTitle className="sr-only">Filters</SheetTitle>
             </SheetHeader>
 
-            <FilterSidebar
-              activeCategory={activeCategory}
-              selectedMaterials={selectedMaterials}
-              categories={categories}
-              materials={materials}
-              onCategoryChange={onCategoryChange}
-              onMaterialToggle={onMaterialToggle}
-              onClear={onClearFilters}
-              priceRange={priceRange}
-              selectedPriceRange={localPriceRange}
-              onPriceChange={onPriceChange}
-              onPriceChangeCommit={onPriceCommit}
-              priceHistogram={priceHistogram}
-              className="mt-0 h-[calc(100vh-4rem)] space-y-0 overflow-y-auto px-6"
-              filtersClassName="pr-8 pl-6"
-            />
+            <div className="mt-0 h-[calc(100vh-4rem)] space-y-0 overflow-y-auto px-6">
+              <FilterSidebar
+                activeCategory={activeCategory}
+                selectedMaterials={selectedMaterials}
+                categories={categories}
+                materials={materials}
+                onCategoryChange={onCategoryChange}
+                onMaterialToggle={onMaterialToggle}
+                onClear={onClearFilters}
+                priceRange={priceRange}
+                selectedPriceRange={localPriceRange}
+                onPriceChange={onPriceChange}
+                onPriceChangeCommit={onPriceCommit}
+                priceHistogram={priceHistogram}
+                className="mt-0 space-y-0"
+                filtersClassName="pr-8 pl-6"
+              />
+            </div>
           </SheetContent>
         </Sheet>
 

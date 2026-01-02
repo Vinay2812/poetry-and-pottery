@@ -152,6 +152,8 @@ export interface AllEventsProps {
   viewModel: AllEventsViewModel;
   loadMoreRef: (node?: Element | null) => void;
   onSearchChange: (query: string) => void;
+  pastEventsLoading?: boolean;
+  pastEventsSkeleton?: React.ReactNode;
 }
 
 /**
@@ -160,8 +162,6 @@ export interface AllEventsProps {
 export interface AllEventsContainerProps {
   initialUpcomingEvents: EventBase[];
   initialUpcomingPagination: PaginationData;
-  initialPastEvents: EventBase[];
-  initialPastPagination: PaginationData;
 }
 
 /**

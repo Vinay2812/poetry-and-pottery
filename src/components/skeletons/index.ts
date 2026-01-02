@@ -17,6 +17,7 @@ export {
   EventsListLayoutSkeleton,
   EventsSkeleton,
   EventDetailSkeleton,
+  PastEventsSkeleton,
 } from "./events-skeleton";
 export {
   RegistrationCardSkeleton,
@@ -27,3 +28,5 @@ export { CartItemSkeleton, CartSkeleton } from "./cart-skeleton";
 export { WishlistSkeleton } from "./wishlist-skeleton";
 export { ProfileSkeleton } from "./profile-skeleton";
 export { DashboardSkeleton } from "./dashboard-skeleton";
+export { ProductCarouselSkeleton } from "./product-carousel-skeleton";
+export { ReviewsSkeleton } from "./reviews-skeleton";

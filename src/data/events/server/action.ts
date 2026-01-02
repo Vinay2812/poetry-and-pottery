@@ -691,6 +691,74 @@ export async function getEventWithUserContext(
   };
 }
 
+// ============ USER CONTEXT QUERIES ============
+
+export interface UserEventContext {
+  registration: EventRegistration | null;
+  currentUserId: number | null;
+  isPastEvent: boolean;
+}
+
+export async function getUserEventContext(
+  eventId: string,
+): Promise<UserEventContext | null> {
+  const userId = await getAuthenticatedUserId();
+
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+    select: {
+      id: true,
+      ends_at: true,
+      status: true,
+    },
+  });
+
+  if (!event) {
+    return null;
+  }
+
+  // Check if event is past
+  const now = new Date();
+  const isPastEvent =
+    event.status === PrismaEventStatus.COMPLETED || event.ends_at < now;
+
+  // Get user's registration for this event if authenticated
+  let registration: EventRegistration | null = null;
+  let hasReviewed = false;
+  if (userId) {
+    const reg = await prisma.eventRegistration.findFirst({
+      where: {
+        event_id: eventId,
+        user_id: userId,
+      },
+      include: {
+        event: true,
+        user: {
+          select: { id: true, email: true, name: true, image: true },
+        },
+      },
+    });
+
+    if (reg) {
+      // Check if user has reviewed this event
+      const review = await prisma.review.findFirst({
+        where: {
+          user_id: userId,
+          event_id: eventId,
+        },
+      });
+      hasReviewed = !!review;
+      registration = mapRegistration(reg, hasReviewed);
+    }
+  }
+
+  return {
+    registration,
+    currentUserId: userId,
+    isPastEvent,
+  };
+}
+
 // ============ REGISTRATION QUERIES ============
 
 export async function getUserRegistrations(

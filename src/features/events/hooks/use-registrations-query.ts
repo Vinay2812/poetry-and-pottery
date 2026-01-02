@@ -7,13 +7,14 @@ import {
   getUpcomingRegistrations,
 } from "@/data/events/gateway/server";
 import type { EventRegistration } from "@/data/events/types";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect, useMemo } from "react";
+import { useInView } from "react-intersection-observer";
+
 import {
   useCompletedRegistrationsLazyQuery,
   useUpcomingRegistrationsLazyQuery,
 } from "@/graphql/generated/graphql";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
-import { useInView } from "react-intersection-observer";
 
 import type { PaginationData } from "../types";
 

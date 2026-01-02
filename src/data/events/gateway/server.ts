@@ -175,6 +175,39 @@ export async function getEventWithUserContext(
   }
 }
 
+// ============ USER CONTEXT QUERIES ============
+
+export type { UserEventContext } from "../server/action";
+
+export type GetUserEventContextResult =
+  | { success: true; data: actionImpl.UserEventContext }
+  | { success: false; error: string };
+
+export async function getUserEventContext(
+  eventId: string,
+): Promise<GetUserEventContextResult> {
+  try {
+    if (isGraphQL) {
+      const result = await graphqlImpl.getUserEventContext(eventId);
+      if (!result) {
+        return { success: false, error: "Event not found" };
+      }
+      return { success: true, data: result };
+    }
+    const result = await actionImpl.getUserEventContext(eventId);
+    if (!result) {
+      return { success: false, error: "Event not found" };
+    }
+    return { success: true, data: result };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to get user context",
+    };
+  }
+}
+
 // ============ REGISTRATION QUERIES ============
 
 export async function getUserRegistrations(

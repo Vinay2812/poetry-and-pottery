@@ -3,12 +3,16 @@
 import { isGraphQL } from "@/consts/env";
 import type { ProductBase } from "@/data/products/types";
 import { getWishlist } from "@/data/wishlist/server/action";
-import { useWishlistLazyQuery } from "@/graphql/generated/graphql";
-import type { WishlistItem } from "@/graphql/generated/types";
+import { useRecommendedProductsQuery } from "@/features/recommended-products";
 import { useWishlist } from "@/hooks";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+
+import { ProductCarouselSkeleton } from "@/components/skeletons";
+
+import { useWishlistLazyQuery } from "@/graphql/generated/graphql";
+import type { WishlistItem } from "@/graphql/generated/types";
 
 import { Wishlist } from "../components/wishlist";
 import type { WishlistContainerProps, WishlistViewModel } from "../types";
@@ -35,12 +39,15 @@ const WISHLIST_PAGE_SIZE = 10;
 
 export function WishlistContainer({
   initialWishlistItems,
-  recommendations,
   initialPagination,
 }: WishlistContainerProps) {
   const { removeFromWishlist } = useWishlist();
   const queryClient = useQueryClient();
   const [fetchGraphQL] = useWishlistLazyQuery();
+
+  // Recommendations fetched client-side
+  const { products: recommendations, isLoading: isRecommendationsLoading } =
+    useRecommendedProductsQuery({ limit: 4 });
 
   // Infinite query for wishlist items
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -162,6 +169,8 @@ export function WishlistContainer({
     <Wishlist
       viewModel={viewModel}
       recommendations={recommendations}
+      recommendationsLoading={isRecommendationsLoading}
+      recommendationsSkeleton={<ProductCarouselSkeleton showTitle={false} />}
       loadMoreRef={loadMoreRef}
       onRemoveItem={handleRemove}
     />

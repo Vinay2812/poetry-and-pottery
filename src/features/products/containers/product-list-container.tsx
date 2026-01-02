@@ -41,9 +41,6 @@ export function ProductListContainer({
     filterParams,
     initialProducts,
     totalProducts,
-    categories,
-    materials,
-    priceRange,
   });
 
   // Build the view model

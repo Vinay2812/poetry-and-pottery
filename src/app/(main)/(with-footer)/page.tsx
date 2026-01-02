@@ -1,9 +1,7 @@
 import { HERO_IMAGES } from "@/consts/client";
-import {
-  getCategories,
-  getRecommendedProducts,
-} from "@/data/products/gateway/server";
+import { getCategories } from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
+import { RecommendedProductsContainer } from "@/features/recommended-products";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -11,7 +9,6 @@ import {
   CTASection,
   CategorySection,
   HeroSection,
-  ProductCarousel,
 } from "@/components/sections";
 
 export const metadata: Metadata = {
@@ -42,10 +39,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [recommendedResult, categories] = await Promise.all([
-    getRecommendedProducts({ limit: 4 }),
-    getCategories(),
-  ]);
+  const categories = await getCategories();
 
   return (
     <>
@@ -73,8 +67,7 @@ export default async function Home() {
         <CategorySection categories={categories.slice(0, 8)} />
 
         {/* Curated Favorites */}
-        <ProductCarousel
-          products={recommendedResult.products}
+        <RecommendedProductsContainer
           title="Curated Favorites"
           subtitle="Handpicked pieces for your home."
           className="container mx-auto px-4 py-4 lg:px-8 lg:py-12"

@@ -1,4 +1,3 @@
-import { getRecommendedProducts } from "@/data/products/gateway/server";
 import { getWishlist } from "@/data/wishlist/server/action";
 import { WishlistContainer } from "@/features/wishlist";
 import type { Metadata } from "next";
@@ -14,15 +13,13 @@ export const metadata: Metadata = {
 };
 
 export default async function WishlistPage() {
-  const [wishlistResult, recommendedResult] = await Promise.all([
-    getWishlist(),
-    getRecommendedProducts({ limit: 4 }),
-  ]);
+  // Only fetch wishlist items server-side
+  // Recommendations will be fetched client-side for faster initial load
+  const wishlistResult = await getWishlist();
 
   return (
     <WishlistContainer
       initialWishlistItems={wishlistResult.data}
-      recommendations={recommendedResult.products}
       initialPagination={{
         page: wishlistResult.page,
         totalPages: wishlistResult.total_pages,

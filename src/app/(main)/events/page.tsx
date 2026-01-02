@@ -1,5 +1,5 @@
-import { DEFAULT_PAGE_SIZE, MAX_CART_QUANTITY } from "@/consts/performance";
-import { getPastEvents, getUpcomingEvents } from "@/data/events/gateway/server";
+import { MAX_CART_QUANTITY } from "@/consts/performance";
+import { getUpcomingEvents } from "@/data/events/gateway/server";
 import { AllEventsContainer } from "@/features/events";
 import type { Metadata } from "next";
 
@@ -40,10 +40,13 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   const params = await searchParams;
   const search = params.search || undefined;
 
-  const [upcomingEventsResult, pastEventsResult] = await Promise.all([
-    getUpcomingEvents({ page: 1, limit: MAX_CART_QUANTITY, search }),
-    getPastEvents({ page: 1, limit: DEFAULT_PAGE_SIZE, search }),
-  ]);
+  // Only fetch upcoming events server-side
+  // Past events will be fetched client-side for faster initial load
+  const upcomingEventsResult = await getUpcomingEvents({
+    page: 1,
+    limit: MAX_CART_QUANTITY,
+    search,
+  });
 
   const upcomingEvents = upcomingEventsResult.success
     ? upcomingEventsResult.data.data
@@ -55,20 +58,10 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       }
     : { total: 0, totalPages: 0 };
 
-  const pastEvents = pastEventsResult.success ? pastEventsResult.data.data : [];
-  const pastPagination = pastEventsResult.success
-    ? {
-        total: pastEventsResult.data.total,
-        totalPages: pastEventsResult.data.total_pages,
-      }
-    : { total: 0, totalPages: 0 };
-
   return (
     <AllEventsContainer
       initialUpcomingEvents={upcomingEvents}
       initialUpcomingPagination={upcomingPagination}
-      initialPastEvents={pastEvents}
-      initialPastPagination={pastPagination}
     />
   );
 }
