@@ -1,6 +1,8 @@
-import { getCategories } from "@/actions";
 import { HERO_IMAGES } from "@/consts/client";
-import { getFeaturedProducts } from "@/data/products/gateway/server";
+import {
+  getCategories,
+  getFeaturedProducts,
+} from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
 import Link from "next/link";

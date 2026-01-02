@@ -1,4 +1,4 @@
-import { getUserAddresses } from "@/actions";
+import { getUserAddresses } from "@/data/address/gateway/server";
 import { getCart } from "@/data/cart/server/action";
 import { getRecommendedProducts } from "@/data/products/gateway/server";
 import { CartContainer } from "@/features/cart";

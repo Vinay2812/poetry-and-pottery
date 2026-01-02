@@ -3,7 +3,6 @@
 import { createOrder } from "@/data/orders/gateway/server";
 import type { ShippingAddress } from "@/data/orders/types";
 import { useAuthAction, useCart } from "@/hooks";
-import type { UserAddress } from "@/prisma/generated/client";
 import { useUIStore } from "@/store";
 import type { CartWithProduct } from "@/types";
 import { useRouter } from "next/navigation";
@@ -11,7 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { contactBusiness } from "@/lib/contact-business";
 
-import type { CartItem } from "@/graphql/generated/types";
+import type { CartItem, UserAddress } from "@/graphql/generated/types";
 
 import { Cart } from "../components/cart";
 import type {

@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserAddress } from "@/prisma/generated/client";
+import type { UserAddress } from "@/graphql/generated/types";
 import { Check, MapPin, Pencil, Phone, Trash2, User } from "lucide-react";
 import { useCallback } from "react";
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { getAuthenticatedUserId } from "@/actions";
+import { getAuthenticatedUserId } from "@/actions/auth.action";
 
 import { prisma } from "@/lib/prisma";
 

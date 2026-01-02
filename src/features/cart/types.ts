@@ -1,7 +1,5 @@
 import type { ProductBase } from "@/data/products/types";
-import type { UserAddress } from "@/prisma/generated/client";
-
-import type { CartItem } from "@/graphql/generated/types";
+import type { CartItem, UserAddress } from "@/graphql/generated/types";
 
 /**
  * View model for a single cart item.

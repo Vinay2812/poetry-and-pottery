@@ -1,8 +1,12 @@
 "use client";
 
-import { type GlobalSearchResult, globalSearch } from "@/actions";
+import {
+  type GlobalSearchResponse,
+  globalSearch,
+} from "@/data/search/gateway/server";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 import {
   type GlobalSearchViewModel,
@@ -24,48 +28,50 @@ export function useGlobalSearch(options: UseGlobalSearchOptions = {}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<SearchTab>("products");
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<GlobalSearchResult | null>(null);
+  const [results, setResults] = useState<GlobalSearchResponse | null>(null);
+
+  const [debouncedSearchQuery] = useDebounce(searchQuery, debounceMs);
 
   // Debounced search
   useEffect(() => {
-    if (!searchQuery.trim()) {
+    function resetResults() {
       setResults(null);
       setIsLoading(false);
+    }
+
+    function setLoading(loading: boolean) {
+      setIsLoading(loading);
+    }
+
+    if (!debouncedSearchQuery.trim()) {
+      resetResults();
       return;
     }
 
-    setIsLoading(true);
+    setLoading(true);
 
-    const timer = setTimeout(async () => {
-      try {
-        const data = await globalSearch(searchQuery);
+    globalSearch(debouncedSearchQuery)
+      .then((data) => {
         setResults(data);
-
-        // Auto-select first tab with results
-        if (data.counts.products > 0) {
-          setActiveTab("products");
-        } else if (data.counts.events > 0) {
-          setActiveTab("events");
-        } else if (data.counts.orders > 0 && isSignedIn) {
-          setActiveTab("orders");
-        }
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Search error:", error);
         setResults(null);
-      } finally {
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    }, debounceMs);
-
-    return () => clearTimeout(timer);
-  }, [searchQuery, debounceMs, isSignedIn]);
+      });
+  }, [debouncedSearchQuery, debounceMs, isSignedIn]);
 
   // Reset when closed
   useEffect(() => {
-    if (!isOpen) {
+    function resetSearch() {
       setSearchQuery("");
       setResults(null);
       setActiveTab("products");
+    }
+    if (!isOpen) {
+      resetSearch();
     }
   }, [isOpen]);
 

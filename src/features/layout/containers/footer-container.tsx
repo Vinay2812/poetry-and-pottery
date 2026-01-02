@@ -3,7 +3,7 @@
 import {
   getNewsletterSubscriptionStatus,
   subscribeToNewsletter,
-} from "@/actions";
+} from "@/data/newsletter/gateway/server";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 

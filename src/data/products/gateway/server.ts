@@ -82,3 +82,17 @@ export async function getRecommendedProducts(
   }
   return actionImpl.getRecommendedProducts(limit);
 }
+
+export async function getCategories(): Promise<string[]> {
+  if (isGraphQL) {
+    return graphqlImpl.getCategories();
+  }
+  return actionImpl.getCategories();
+}
+
+export async function getMaterials(): Promise<string[]> {
+  if (isGraphQL) {
+    return graphqlImpl.getMaterials();
+  }
+  return actionImpl.getMaterials();
+}

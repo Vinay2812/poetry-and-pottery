@@ -4,8 +4,8 @@ import {
   createAddress,
   deleteAddress,
   updateAddress,
-} from "@/actions/address.actions";
-import type { UserAddress } from "@/prisma/generated/client";
+} from "@/data/address/gateway/server";
+import type { UserAddress } from "@/graphql/generated/types";
 import { MapPin, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 

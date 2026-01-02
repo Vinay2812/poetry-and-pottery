@@ -1,7 +1,7 @@
 "use client";
 
 import { INDIAN_STATES } from "@/consts/forms";
-import type { UserAddress } from "@/prisma/generated/client";
+import type { UserAddress } from "@/graphql/generated/types";
 import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";

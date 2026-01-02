@@ -20,7 +20,10 @@ export type {
   RegisterForEventInput,
   RegisterForEventResponse,
   CancelRegistrationResponse,
-  // Event types
+} from "@/graphql/generated/types";
+
+// Re-export enums as values (not types) so they can be used at runtime
+export {
   EventLevel,
   EventStatus,
   EventRegistrationStatus,

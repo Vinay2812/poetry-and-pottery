@@ -1,8 +1,8 @@
 import type {
-  EventWithRegistrationCount,
-  OrderWithItems,
-  ProductWithCategories,
-} from "@/types";
+  EventBase,
+  Order,
+  ProductBase,
+} from "@/graphql/generated/types";
 
 import { formatEventTime, formatOrderDate } from "@/lib/date";
 
@@ -72,9 +72,7 @@ export interface GlobalSearchProps {
   onViewAllOrders: () => void;
 }
 
-export function buildProductSearchItem(
-  product: ProductWithCategories,
-): ProductSearchItem {
+export function buildProductSearchItem(product: ProductBase): ProductSearchItem {
   return {
     id: product.id,
     name: product.name,
@@ -85,9 +83,7 @@ export function buildProductSearchItem(
   };
 }
 
-export function buildEventSearchItem(
-  event: EventWithRegistrationCount,
-): EventSearchItem {
+export function buildEventSearchItem(event: EventBase): EventSearchItem {
   return {
     id: event.id,
     title: event.title,
@@ -103,7 +99,7 @@ export function buildEventSearchItem(
   };
 }
 
-export function buildOrderSearchItem(order: OrderWithItems): OrderSearchItem {
+export function buildOrderSearchItem(order: Order): OrderSearchItem {
   const firstProduct = order.ordered_products[0]?.product;
   return {
     id: order.id,
