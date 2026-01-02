@@ -15,13 +15,13 @@ export function ProductListContainer({
 }: ProductListContainerProps) {
   // Use the filter hook for URL param management
   const {
-    activeCategory,
+    selectedCategories,
     selectedMaterials,
     sortBy,
     localPriceRange,
     searchQuery,
     filterParams,
-    onCategoryChange,
+    onCategoryToggle,
     onMaterialToggle,
     onPriceChange,
     onPriceCommit,
@@ -50,7 +50,7 @@ export function ProductListContainer({
     hasNextPage,
     isFetchingNextPage,
     filterState: {
-      activeCategory,
+      selectedCategories,
       selectedMaterials,
       sortBy,
       localPriceRange,
@@ -66,7 +66,7 @@ export function ProductListContainer({
     <ProductList
       viewModel={viewModel}
       loadMoreRef={loadMoreRef}
-      onCategoryChange={onCategoryChange}
+      onCategoryToggle={onCategoryToggle}
       onMaterialToggle={onMaterialToggle}
       onPriceChange={onPriceChange}
       onPriceCommit={onPriceCommit}

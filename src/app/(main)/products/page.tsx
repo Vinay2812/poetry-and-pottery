@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
 interface ProductsPageProps {
   searchParams: Promise<{
-    category?: string;
+    categories?: string;
     materials?: string;
     sort?: string;
     page?: string;
@@ -69,7 +69,7 @@ async function ProductsContent({
   const params = await searchParams;
 
   const filterParams: ProductsFilterParams = {
-    categories: params.category ? [params.category] : undefined,
+    categories: params.categories?.split(","),
     materials: params.materials?.split(","),
     order_by: mapSortToOrderBy(params.sort),
     page: params.page ? parseInt(params.page, 10) : 1,

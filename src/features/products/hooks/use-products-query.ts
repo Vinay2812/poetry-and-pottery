@@ -118,6 +118,7 @@ export function useProductsQuery({
     },
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    staleTime: 0, // Always consider data stale so filter changes trigger refetch
   });
 
   const { ref: loadMoreRef, inView } = useInView({

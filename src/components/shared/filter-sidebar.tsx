@@ -29,11 +29,11 @@ interface PriceHistogram {
 }
 
 interface FilterSidebarProps {
-  activeCategory: string;
+  selectedCategories: string[];
   selectedMaterials: string[];
   categories: Category[];
   materials: string[];
-  onCategoryChange: (category: string) => void;
+  onCategoryToggle: (category: string) => void;
   onMaterialToggle: (material: string) => void;
   onClear: () => void;
   // Price props
@@ -47,11 +47,11 @@ interface FilterSidebarProps {
 }
 
 export function FilterSidebar({
-  activeCategory,
+  selectedCategories,
   selectedMaterials,
   categories,
   materials,
-  onCategoryChange,
+  onCategoryToggle,
   onMaterialToggle,
   onClear,
   priceRange,
@@ -62,11 +62,11 @@ export function FilterSidebar({
   className,
   filtersClassName,
 }: FilterSidebarProps) {
-  const handleCategoryChange = useCallback(
+  const handleCategoryToggle = useCallback(
     (categoryId: string) => {
-      onCategoryChange(categoryId);
+      onCategoryToggle(categoryId);
     },
-    [onCategoryChange],
+    [onCategoryToggle],
   );
 
   const handleMaterialToggle = useCallback(
@@ -77,7 +77,7 @@ export function FilterSidebar({
   );
 
   const hasActiveFilters =
-    activeCategory !== "all" || selectedMaterials.length > 0;
+    selectedCategories.length > 0 || selectedMaterials.length > 0;
 
   return (
     <div className="relative">
@@ -136,30 +136,28 @@ export function FilterSidebar({
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-3 pt-2">
-              {[{ id: "all", name: "All Products" }, ...categories].map(
-                (category) => (
-                  <label
-                    key={category.id}
-                    className="group hover:text-primary flex cursor-pointer items-center gap-3 rounded-lg py-1 transition-colors"
+              {categories.map((category) => (
+                <label
+                  key={category.id}
+                  className="group hover:text-primary flex cursor-pointer items-center gap-3 rounded-lg py-1 transition-colors"
+                >
+                  <Checkbox
+                    checked={selectedCategories.includes(category.id)}
+                    onCheckedChange={() => handleCategoryToggle(category.id)}
+                    className="data-[state=checked]:border-primary data-[state=checked]:bg-primary border-neutral-300"
+                  />
+                  <span
+                    className={cn(
+                      "text-sm transition-colors",
+                      selectedCategories.includes(category.id)
+                        ? "text-foreground font-medium"
+                        : "text-muted-foreground group-hover:text-foreground",
+                    )}
                   >
-                    <Checkbox
-                      checked={activeCategory === category.id}
-                      onCheckedChange={() => handleCategoryChange(category.id)}
-                      className="data-[state=checked]:border-primary data-[state=checked]:bg-primary border-neutral-300"
-                    />
-                    <span
-                      className={cn(
-                        "text-sm transition-colors",
-                        activeCategory === category.id
-                          ? "text-foreground font-medium"
-                          : "text-muted-foreground group-hover:text-foreground",
-                      )}
-                    >
-                      {category.name}
-                    </span>
-                  </label>
-                ),
-              )}
+                    {category.name}
+                  </span>
+                </label>
+              ))}
             </div>
           </AccordionContent>
         </AccordionItem>

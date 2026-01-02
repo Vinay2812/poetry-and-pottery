@@ -37,16 +37,23 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
   const searchParams = useSearchParams();
   const { priceRange } = options;
 
-  const activeCategory = searchParams.get("category") || "all";
-  const selectedMaterials = useMemo(() => {
-    const mats = searchParams.get("materials");
-    return mats ? mats.split(",") : [];
+  const {
+    selectedCategories,
+    selectedMaterials,
+    sortBy,
+    searchQuery,
+    minPriceParam,
+    maxPriceParam,
+  } = useMemo(() => {
+    return {
+      selectedCategories: searchParams.get("categories")?.split(",") || [],
+      selectedMaterials: searchParams.get("materials")?.split(",") || [],
+      sortBy: searchParams.get("sort") || "featured",
+      searchQuery: searchParams.get("search") || "",
+      minPriceParam: searchParams.get("minPrice"),
+      maxPriceParam: searchParams.get("maxPrice"),
+    };
   }, [searchParams]);
-  const sortBy = searchParams.get("sort") || "featured";
-  const searchQuery = searchParams.get("search") || "";
-
-  const minPriceParam = searchParams.get("minPrice");
-  const maxPriceParam = searchParams.get("maxPrice");
 
   const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([
     minPriceParam ? parseInt(minPriceParam) : (priceRange?.min ?? 0),
@@ -67,7 +74,8 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
 
   const filterParams: ProductsFilterParams = useMemo(
     () => ({
-      categories: activeCategory === "all" ? undefined : [activeCategory],
+      categories:
+        selectedCategories.length > 0 ? selectedCategories : undefined,
       materials: selectedMaterials.length > 0 ? selectedMaterials : undefined,
       order_by: mapSortToOrderBy(sortBy),
       limit: PRODUCTS_PER_PAGE,
@@ -76,7 +84,7 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
       search: searchQuery || undefined,
     }),
     [
-      activeCategory,
+      selectedCategories,
       selectedMaterials,
       sortBy,
       minPriceParam,
@@ -105,11 +113,17 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
     [router, searchParams],
   );
 
-  const handleCategoryChange = useCallback(
+  const handleCategoryToggle = useCallback(
     (category: string) => {
-      updateParams({ category: category === "all" ? null : category });
+      const newCategories = selectedCategories.includes(category)
+        ? selectedCategories.filter((c) => c !== category)
+        : [...selectedCategories, category];
+
+      updateParams({
+        categories: newCategories.length > 0 ? newCategories.join(",") : null,
+      });
     },
-    [updateParams],
+    [selectedCategories, updateParams],
   );
 
   const handleMaterialToggle = useCallback(
@@ -165,14 +179,14 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
 
   return {
     // Filter state
-    activeCategory,
+    selectedCategories,
     selectedMaterials,
     sortBy,
     localPriceRange,
     searchQuery,
     filterParams,
     // Handlers
-    onCategoryChange: handleCategoryChange,
+    onCategoryToggle: handleCategoryToggle,
     onMaterialToggle: handleMaterialToggle,
     onPriceChange: handlePriceChange,
     onPriceCommit: handlePriceCommit,

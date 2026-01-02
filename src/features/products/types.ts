@@ -26,7 +26,7 @@ export const SORT_OPTIONS: SortOptionConfig[] = [
 ];
 
 export interface ProductFilterState {
-  activeCategory: string;
+  selectedCategories: string[];
   selectedMaterials: string[];
   sortBy: string;
   localPriceRange: [number, number];
@@ -48,7 +48,7 @@ export interface ProductListViewModel {
 export interface ProductListProps {
   viewModel: ProductListViewModel;
   loadMoreRef: (node?: Element | null) => void;
-  onCategoryChange: (category: string) => void;
+  onCategoryToggle: (category: string) => void;
   onMaterialToggle: (material: string) => void;
   onPriceChange: (range: [number, number]) => void;
   onPriceCommit: (range: [number, number]) => void;

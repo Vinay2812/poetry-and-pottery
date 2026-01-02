@@ -28,7 +28,7 @@ const PRODUCTS_PER_PAGE = 12;
 export function ProductList({
   viewModel,
   loadMoreRef,
-  onCategoryChange,
+  onCategoryToggle,
   onMaterialToggle,
   onPriceChange,
   onPriceCommit,
@@ -49,7 +49,7 @@ export function ProductList({
   } = viewModel;
 
   const {
-    activeCategory,
+    selectedCategories,
     selectedMaterials,
     sortBy,
     localPriceRange,
@@ -84,11 +84,11 @@ export function ProductList({
 
             <div className="mt-0 h-[calc(100vh-4rem)] space-y-0 overflow-y-auto px-6">
               <FilterSidebar
-                activeCategory={activeCategory}
+                selectedCategories={selectedCategories}
                 selectedMaterials={selectedMaterials}
                 categories={categories}
                 materials={materials}
-                onCategoryChange={onCategoryChange}
+                onCategoryToggle={onCategoryToggle}
                 onMaterialToggle={onMaterialToggle}
                 onClear={onClearFilters}
                 priceRange={priceRange}
@@ -122,11 +122,11 @@ export function ProductList({
           {/* Desktop Sidebar */}
           <aside className="hidden w-64 shrink-0 lg:block">
             <FilterSidebar
-              activeCategory={activeCategory}
+              selectedCategories={selectedCategories}
               selectedMaterials={selectedMaterials}
               categories={categories}
               materials={materials}
-              onCategoryChange={onCategoryChange}
+              onCategoryToggle={onCategoryToggle}
               onMaterialToggle={onMaterialToggle}
               onClear={onClearFilters}
               priceRange={priceRange}
