@@ -5,11 +5,9 @@ import { getClient } from "@/lib/apollo";
 import type {
   BestSellersQuery,
   BestSellersQueryVariables,
+  BestSellersResponse,
   CategoriesQuery,
-  FeaturedProductsQuery,
-  FeaturedProductsQueryVariables,
   MaterialsQuery,
-  ProductBase,
   ProductByIdQuery,
   ProductByIdQueryVariables,
   ProductBySlugQuery,
@@ -21,19 +19,16 @@ import type {
   ProductsResponse,
   RecommendedProductsQuery,
   RecommendedProductsQueryVariables,
-  RelatedProductsQuery,
-  RelatedProductsQueryVariables,
+  RecommendedProductsResponse,
 } from "@/graphql/generated/types";
 import {
   BEST_SELLERS_QUERY,
   CATEGORIES_QUERY,
-  FEATURED_PRODUCTS_QUERY,
   MATERIALS_QUERY,
   PRODUCTS_QUERY,
   PRODUCT_BY_ID_QUERY,
   PRODUCT_BY_SLUG_QUERY,
   RECOMMENDED_PRODUCTS_QUERY,
-  RELATED_PRODUCTS_QUERY,
 } from "@/graphql/products.query";
 
 function mapOrderBy(
@@ -133,51 +128,10 @@ export async function getProductById(
   return result.data?.productById ?? null;
 }
 
-export async function getRelatedProducts(
-  productId: number,
-  _category: string,
-  limit: number = 8,
-): Promise<ProductBase[]> {
-  const client = getClient();
-
-  const result = await client.query<
-    RelatedProductsQuery,
-    RelatedProductsQueryVariables
-  >({
-    query: RELATED_PRODUCTS_QUERY,
-    variables: { productId, limit },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.relatedProducts ?? [];
-}
-
-export async function getFeaturedProducts(
-  limit: number = 8,
-): Promise<ProductBase[]> {
-  const client = getClient();
-
-  const result = await client.query<
-    FeaturedProductsQuery,
-    FeaturedProductsQueryVariables
-  >({
-    query: FEATURED_PRODUCTS_QUERY,
-    variables: { limit },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.featuredProducts ?? [];
-}
-
-export async function getBestSellers(
-  limit: number = 8,
-): Promise<ProductBase[]> {
+export async function getBestSellers(params: {
+  limit?: number;
+  page?: number;
+}): Promise<BestSellersResponse> {
   const client = getClient();
 
   const result = await client.query<
@@ -185,19 +139,21 @@ export async function getBestSellers(
     BestSellersQueryVariables
   >({
     query: BEST_SELLERS_QUERY,
-    variables: { limit },
+    variables: { limit: params.limit ?? 8, page: params.page ?? 1 },
   });
 
   if (result.error) {
     throw new Error(`GraphQL error: ${result.error.message}`);
   }
 
-  return result.data?.bestSellers ?? [];
+  return result.data?.bestSellers ?? { products: [], total: 0, page: 1, total_pages: 0 };
 }
 
-export async function getRecommendedProducts(
-  limit: number = 10,
-): Promise<ProductBase[]> {
+export async function getRecommendedProducts(params: {
+  limit?: number;
+  page?: number;
+  productId?: number;
+}): Promise<RecommendedProductsResponse> {
   const client = getClient();
 
   const result = await client.query<
@@ -205,14 +161,18 @@ export async function getRecommendedProducts(
     RecommendedProductsQueryVariables
   >({
     query: RECOMMENDED_PRODUCTS_QUERY,
-    variables: { limit },
+    variables: {
+      limit: params.limit ?? 10,
+      page: params.page ?? 1,
+      productId: params.productId,
+    },
   });
 
   if (result.error) {
     throw new Error(`GraphQL error: ${result.error.message}`);
   }
 
-  return result.data?.recommendedProducts ?? [];
+  return result.data?.recommendedProducts ?? { products: [], total: 0, page: 1, total_pages: 0 };
 }
 
 export async function getCategories(): Promise<string[]> {

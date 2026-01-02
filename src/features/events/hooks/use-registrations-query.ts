@@ -1,11 +1,16 @@
 "use client";
 
+import { isGraphQL } from "@/consts/env";
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import {
   getCompletedRegistrations,
   getUpcomingRegistrations,
 } from "@/data/events/gateway/server";
 import type { EventRegistration } from "@/data/events/types";
+import {
+  useCompletedRegistrationsLazyQuery,
+  useUpcomingRegistrationsLazyQuery,
+} from "@/graphql/generated/graphql";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -27,6 +32,9 @@ export function useRegistrationsQuery({
   initialCompletedPagination,
   searchQuery,
 }: UseRegistrationsQueryOptions) {
+  const [fetchUpcomingGraphQL] = useUpcomingRegistrationsLazyQuery();
+  const [fetchCompletedGraphQL] = useCompletedRegistrationsLazyQuery();
+
   // Upcoming registrations infinite query
   const {
     data: upcomingData,
@@ -34,22 +42,44 @@ export function useRegistrationsQuery({
     hasNextPage: hasNextUpcoming,
     isFetchingNextPage: isFetchingNextUpcoming,
   } = useInfiniteQuery({
-    queryKey: ["registrations-upcoming", searchQuery],
+    queryKey: ["registrations-upcoming", searchQuery, isGraphQL],
     queryFn: async ({ pageParam = 1 }) => {
-      const result = await getUpcomingRegistrations({
-        page: pageParam,
-        limit: DEFAULT_PAGE_SIZE,
-        search: searchQuery,
-      });
-      if (!result.success) {
-        throw new Error(result.error);
+      if (isGraphQL) {
+        // GraphQL mode: use Apollo lazy query
+        const { data: gqlData } = await fetchUpcomingGraphQL({
+          variables: {
+            filter: {
+              page: pageParam,
+              limit: DEFAULT_PAGE_SIZE,
+              search: searchQuery,
+            },
+          },
+        });
+
+        const registrations = gqlData?.upcomingRegistrations;
+        return {
+          data: (registrations?.data ?? []) as EventRegistration[],
+          total: registrations?.total ?? 0,
+          page: registrations?.page ?? pageParam,
+          totalPages: registrations?.total_pages ?? 0,
+        };
+      } else {
+        // Server action mode
+        const result = await getUpcomingRegistrations({
+          page: pageParam,
+          limit: DEFAULT_PAGE_SIZE,
+          search: searchQuery,
+        });
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        return {
+          data: result.data.data,
+          total: result.data.total,
+          page: result.data.page,
+          totalPages: result.data.total_pages,
+        };
       }
-      return {
-        data: result.data.data,
-        total: result.data.total,
-        page: result.data.page,
-        totalPages: result.data.total_pages,
-      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -78,18 +108,39 @@ export function useRegistrationsQuery({
     hasNextPage: hasNextCompleted,
     isFetchingNextPage: isFetchingNextCompleted,
   } = useInfiniteQuery({
-    queryKey: ["registrations-completed"],
+    queryKey: ["registrations-completed", isGraphQL],
     queryFn: async ({ pageParam = 1 }) => {
-      const result = await getCompletedRegistrations({ page: pageParam });
-      if (!result.success) {
-        throw new Error(result.error);
+      if (isGraphQL) {
+        // GraphQL mode: use Apollo lazy query
+        const { data: gqlData } = await fetchCompletedGraphQL({
+          variables: {
+            filter: {
+              page: pageParam,
+              limit: DEFAULT_PAGE_SIZE,
+            },
+          },
+        });
+
+        const registrations = gqlData?.completedRegistrations;
+        return {
+          data: (registrations?.data ?? []) as EventRegistration[],
+          total: registrations?.total ?? 0,
+          page: registrations?.page ?? pageParam,
+          totalPages: registrations?.total_pages ?? 0,
+        };
+      } else {
+        // Server action mode
+        const result = await getCompletedRegistrations({ page: pageParam });
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        return {
+          data: result.data.data,
+          total: result.data.total,
+          page: result.data.page,
+          totalPages: result.data.total_pages,
+        };
       }
-      return {
-        data: result.data.data,
-        total: result.data.total,
-        page: result.data.page,
-        totalPages: result.data.total_pages,
-      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

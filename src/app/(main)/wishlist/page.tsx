@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 };
 
 export default async function WishlistPage() {
-  const [wishlistResult, recommendations] = await Promise.all([
+  const [wishlistResult, recommendedResult] = await Promise.all([
     getWishlist(),
-    getRecommendedProducts(4),
+    getRecommendedProducts({ limit: 4 }),
   ]);
 
   return (
     <WishlistContainer
       initialWishlistItems={wishlistResult.data}
-      recommendations={recommendations}
+      recommendations={recommendedResult.products}
       initialPagination={{
         page: wishlistResult.page,
         totalPages: wishlistResult.total_pages,

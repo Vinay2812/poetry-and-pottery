@@ -1,13 +1,14 @@
 "use client";
 
+import { isGraphQL } from "@/consts/env";
 import type { ProductBase } from "@/data/products/types";
 import { getWishlist } from "@/data/wishlist/server/action";
+import { useWishlistLazyQuery } from "@/graphql/generated/graphql";
+import type { WishlistItem } from "@/graphql/generated/types";
 import { useWishlist } from "@/hooks";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-
-import type { WishlistItem } from "@/graphql/generated/types";
 
 import { Wishlist } from "../components/wishlist";
 import type { WishlistContainerProps, WishlistViewModel } from "../types";
@@ -30,6 +31,8 @@ function mapToProductBase(wishlistItem: WishlistItem): ProductBase {
   };
 }
 
+const WISHLIST_PAGE_SIZE = 10;
+
 export function WishlistContainer({
   initialWishlistItems,
   recommendations,
@@ -37,14 +40,36 @@ export function WishlistContainer({
 }: WishlistContainerProps) {
   const { removeFromWishlist } = useWishlist();
   const queryClient = useQueryClient();
+  const [fetchGraphQL] = useWishlistLazyQuery();
 
   // Infinite query for wishlist items
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["wishlist"],
+      queryKey: ["wishlist", isGraphQL],
       queryFn: async ({ pageParam = 1 }) => {
-        const result = await getWishlist(pageParam);
-        return result;
+        if (isGraphQL) {
+          // GraphQL mode: use Apollo lazy query
+          const { data: gqlData } = await fetchGraphQL({
+            variables: {
+              filter: {
+                page: pageParam,
+                limit: WISHLIST_PAGE_SIZE,
+              },
+            },
+          });
+
+          const wishlist = gqlData?.wishlist;
+          return {
+            data: (wishlist?.data ?? []) as WishlistItem[],
+            total: wishlist?.total ?? 0,
+            page: wishlist?.page ?? pageParam,
+            total_pages: wishlist?.total_pages ?? 0,
+          };
+        } else {
+          // Server action mode
+          const result = await getWishlist(pageParam);
+          return result;
+        }
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {

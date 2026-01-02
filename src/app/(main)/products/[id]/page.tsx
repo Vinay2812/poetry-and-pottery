@@ -1,7 +1,7 @@
 import {
   getProductById,
   getProductBySlug,
-  getRelatedProducts,
+  getRecommendedProducts,
 } from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { ProductDetailContainer } from "@/features/product-detail";
@@ -69,10 +69,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) {
     notFound();
   }
-  const category = product.categories[0] || "";
-  const relatedProducts = category
-    ? await getRelatedProducts(product.id, category, 4)
-    : [];
+
+  // Get recommendations based on the current product
+  const recommendedResult = await getRecommendedProducts({
+    productId: product.id,
+    limit: 4,
+  });
 
   return (
     <>
@@ -83,7 +85,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       />
       <ProductDetailContainer
         product={product}
-        relatedProducts={relatedProducts}
+        relatedProducts={recommendedResult.products}
       />
     </>
   );

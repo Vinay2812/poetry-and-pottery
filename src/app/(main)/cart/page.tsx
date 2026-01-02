@@ -15,16 +15,16 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
-  const [cartResult, recommendedProducts, addressResult] = await Promise.all([
+  const [cartResult, recommendedResult, addressResult] = await Promise.all([
     getCart(),
-    getRecommendedProducts(4),
+    getRecommendedProducts({ limit: 4 }),
     getUserAddresses(),
   ]);
 
   return (
     <CartContainer
       initialCartItems={cartResult.items}
-      recommendedProducts={recommendedProducts}
+      recommendedProducts={recommendedResult.products}
       initialAddresses={addressResult.success ? addressResult.data : []}
     />
   );

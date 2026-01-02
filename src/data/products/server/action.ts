@@ -6,10 +6,12 @@ import { Prisma } from "@/prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 
 import type {
+  BestSellersResponse,
   ProductBase,
   ProductDetail,
   ProductReview,
   ProductsResponse,
+  RecommendedProductsResponse,
 } from "@/graphql/generated/types";
 
 // Helper to get order by clause
@@ -347,238 +349,178 @@ export async function getProductById(
   return mapToProductDetail(product);
 }
 
-export async function getRelatedProducts(
-  productId: number,
-  category: string,
-  limit: number = 8,
-): Promise<ProductBase[]> {
-  const products = await prisma.product.findMany({
-    where: {
-      is_active: true,
-      id: { not: productId },
-      product_categories: {
-        some: { category },
-      },
-    },
-    include: {
-      product_categories: true,
-      _count: { select: { reviews: true } },
-      reviews: { select: { rating: true } },
-    },
-    take: limit,
-    orderBy: { created_at: "desc" },
-  });
+export async function getBestSellers(params: {
+  limit?: number;
+  page?: number;
+}): Promise<BestSellersResponse> {
+  const limit = params.limit ?? 8;
+  const page = params.page ?? 1;
+  const offset = (page - 1) * limit;
 
-  return products.map((product) => {
-    const { reviews, ...rest } = product;
-    const averageRating =
-      reviews.length > 0
-        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-        : null;
-    return mapToProductBase({ ...rest, averageRating });
-  });
-}
+  const where = {
+    is_active: true,
+    available_quantity: { gt: 0 },
+  };
 
-export async function getFeaturedProducts(
-  limit: number = 8,
-): Promise<ProductBase[]> {
-  const products = await prisma.product.findMany({
-    where: {
-      is_active: true,
-      available_quantity: { gt: 0 },
-    },
-    include: {
-      product_categories: true,
-      _count: { select: { reviews: true } },
-      reviews: { select: { rating: true } },
-    },
-    take: limit,
-    orderBy: { created_at: "desc" },
-  });
-
-  return products.map((product) => {
-    const { reviews, ...rest } = product;
-    const averageRating =
-      reviews.length > 0
-        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-        : null;
-    return mapToProductBase({ ...rest, averageRating });
-  });
-}
-
-export async function getBestSellers(
-  limit: number = 8,
-): Promise<ProductBase[]> {
-  const productOrderCounts = await prisma.purchasedProductItem.groupBy({
-    by: ["product_id"],
-    _sum: {
-      quantity: true,
-    },
-    orderBy: {
-      _sum: {
-        quantity: "desc",
-      },
-    },
-    take: limit * 2,
-  });
-
-  const productIds = productOrderCounts.map(
-    (p: { product_id: number }) => p.product_id,
-  );
-
-  if (productIds.length === 0) {
-    return getFeaturedProducts(limit);
-  }
-
-  const products = await prisma.product.findMany({
-    where: {
-      id: { in: productIds },
-      is_active: true,
-      available_quantity: { gt: 0 },
-    },
-    include: {
-      product_categories: true,
-      _count: { select: { reviews: true } },
-      reviews: { select: { rating: true } },
-    },
-    take: limit,
-  });
-
-  const sortedProducts = products.sort((a, b) => {
-    const aIndex = productIds.indexOf(a.id);
-    const bIndex = productIds.indexOf(b.id);
-    return aIndex - bIndex;
-  });
-
-  return sortedProducts.map((product) => {
-    const { reviews, ...rest } = product;
-    const averageRating =
-      reviews.length > 0
-        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-        : null;
-    return mapToProductBase({ ...rest, averageRating });
-  });
-}
-
-export async function getRecommendedProducts(
-  limit: number = 10,
-): Promise<ProductBase[]> {
-  const userId = await getAuthenticatedUserId();
-
-  if (!userId) {
-    return getBestSellers(limit);
-  }
-
-  const [cartItems, wishlistItems, orderItems] = await Promise.all([
-    prisma.cart.findMany({
-      where: { user_id: userId },
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      where,
       include: {
-        product: {
-          include: { product_categories: true },
-        },
+        product_categories: true,
+        _count: { select: { reviews: true } },
+        reviews: { select: { rating: true } },
       },
+      skip: offset,
+      take: limit,
+      orderBy: { created_at: "desc" },
     }),
-    prisma.wishlist.findMany({
-      where: { user_id: userId },
-      include: {
-        product: {
-          include: { product_categories: true },
-        },
-      },
-    }),
-    prisma.purchasedProductItem.findMany({
-      where: {
-        order: { user_id: userId },
-      },
-      include: {
-        product: {
-          include: { product_categories: true },
-        },
-      },
-      take: 20,
-    }),
+    prisma.product.count({ where }),
   ]);
 
-  type CartItemType = (typeof cartItems)[number];
-  type WishlistItemType = (typeof wishlistItems)[number];
-  type OrderItemType = (typeof orderItems)[number];
-  type CategoryType = { category: string };
-
-  const excludeProductIds = new Set<number>();
-  cartItems.forEach((item: CartItemType) =>
-    excludeProductIds.add(item.product_id),
-  );
-  wishlistItems.forEach((item: WishlistItemType) =>
-    excludeProductIds.add(item.product_id),
-  );
-
-  const userCategories = new Set<string>();
-  cartItems.forEach((item: CartItemType) => {
-    item.product.product_categories.forEach((cat: CategoryType) =>
-      userCategories.add(cat.category),
-    );
-  });
-  wishlistItems.forEach((item: WishlistItemType) => {
-    item.product.product_categories.forEach((cat: CategoryType) =>
-      userCategories.add(cat.category),
-    );
-  });
-  orderItems.forEach((item: OrderItemType) => {
-    item.product?.product_categories?.forEach((cat: CategoryType) =>
-      userCategories.add(cat.category),
-    );
+  const mappedProducts = products.map((product) => {
+    const { reviews, ...rest } = product;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return mapToProductBase({ ...rest, averageRating });
   });
 
-  if (userCategories.size === 0) {
-    return getBestSellers(limit);
-  }
+  return {
+    products: mappedProducts,
+    total,
+    page,
+    total_pages: Math.ceil(total / limit),
+  };
+}
 
-  const products = await prisma.product.findMany({
-    where: {
-      is_active: true,
-      available_quantity: { gt: 0 },
-      id: { notIn: Array.from(excludeProductIds) },
-      product_categories: {
-        some: {
-          category: { in: Array.from(userCategories) },
+export async function getRecommendedProducts(params: {
+  limit?: number;
+  page?: number;
+  productId?: number;
+}): Promise<RecommendedProductsResponse> {
+  const limit = params.limit ?? 10;
+  const page = params.page ?? 1;
+  const offset = (page - 1) * limit;
+  const productId = params.productId;
+
+  const userId = await getAuthenticatedUserId();
+  let categoryPreferences: string[] = [];
+  const excludeProductIds: number[] = [];
+
+  // If productId is provided, use category-based recommendations
+  if (productId) {
+    excludeProductIds.push(productId);
+    const productCategories = await prisma.productCategory.findMany({
+      where: { product_id: productId },
+      select: { category: true },
+    });
+    categoryPreferences = productCategories.map((c) => c.category);
+  } else if (userId) {
+    // Use personalized recommendations based on user's history
+    const [cartItems, wishlistItems, orderItems] = await Promise.all([
+      prisma.cart.findMany({
+        where: { user_id: userId },
+        include: {
+          product: {
+            include: { product_categories: true },
+          },
         },
-      },
-    },
-    include: {
-      product_categories: true,
-      _count: { select: { reviews: true } },
-      reviews: { select: { rating: true } },
-    },
-    take: limit,
-    orderBy: { created_at: "desc" },
-  });
+      }),
+      prisma.wishlist.findMany({
+        where: { user_id: userId },
+        include: {
+          product: {
+            include: { product_categories: true },
+          },
+        },
+      }),
+      prisma.purchasedProductItem.findMany({
+        where: {
+          order: { user_id: userId },
+        },
+        include: {
+          product: {
+            include: { product_categories: true },
+          },
+        },
+        take: 20,
+      }),
+    ]);
 
-  if (products.length < limit) {
-    const bestSellers = await getBestSellers(limit - products.length);
-    const existingIds = new Set(products.map((p) => p.id));
+    type CartItemType = (typeof cartItems)[number];
+    type WishlistItemType = (typeof wishlistItems)[number];
+    type OrderItemType = (typeof orderItems)[number];
+    type CategoryType = { category: string };
 
-    for (const seller of bestSellers) {
-      if (!existingIds.has(seller.id) && !excludeProductIds.has(seller.id)) {
-        products.push(seller as never);
-        if (products.length >= limit) break;
-      }
-    }
+    const userCategories = new Set<string>();
+    cartItems.forEach((item: CartItemType) => {
+      item.product.product_categories.forEach((cat: CategoryType) =>
+        userCategories.add(cat.category),
+      );
+    });
+    wishlistItems.forEach((item: WishlistItemType) => {
+      item.product.product_categories.forEach((cat: CategoryType) =>
+        userCategories.add(cat.category),
+      );
+    });
+    orderItems.forEach((item: OrderItemType) => {
+      item.product?.product_categories?.forEach((cat: CategoryType) =>
+        userCategories.add(cat.category),
+      );
+    });
+    categoryPreferences = Array.from(userCategories);
   }
 
-  return products.map((product) => {
-    if ("reviews" in product) {
-      const { reviews, ...rest } = product;
-      const averageRating =
-        reviews.length > 0
-          ? reviews.reduce(
-              (sum: number, r: { rating: number }) => sum + r.rating,
-              0,
-            ) / reviews.length
-          : null;
-      return mapToProductBase({ ...rest, averageRating });
-    }
-    return product as ProductBase;
+  // Build where clause
+  const baseWhere = {
+    is_active: true,
+    available_quantity: { gt: 0 },
+    ...(excludeProductIds.length > 0 && { id: { notIn: excludeProductIds } }),
+  };
+
+  let whereClause;
+  if (categoryPreferences.length > 0) {
+    whereClause = {
+      ...baseWhere,
+      product_categories: {
+        some: { category: { in: categoryPreferences } },
+      },
+    };
+  } else {
+    whereClause = baseWhere;
+  }
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      where: whereClause,
+      include: {
+        product_categories: true,
+        _count: { select: { reviews: true } },
+        reviews: { select: { rating: true } },
+      },
+      skip: offset,
+      take: limit,
+      orderBy: { created_at: "desc" },
+    }),
+    prisma.product.count({ where: whereClause }),
+  ]);
+
+  const mappedProducts = products.map((product) => {
+    const { reviews, ...rest } = product;
+    const averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+        : null;
+    return mapToProductBase({ ...rest, averageRating });
   });
+
+  return {
+    products: mappedProducts,
+    total,
+    page,
+    total_pages: Math.ceil(total / limit) || 1,
+  };
 }
 
 export async function getCategories(): Promise<string[]> {

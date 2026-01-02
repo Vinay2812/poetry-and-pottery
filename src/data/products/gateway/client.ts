@@ -5,12 +5,10 @@ import { isGraphQL } from "@/consts/env";
 import {
   ProductOrderBy,
   useBestSellersQuery as useBestSellersGraphQL,
-  useFeaturedProductsQuery as useFeaturedProductsGraphQL,
   useProductByIdQuery as useProductByIdGraphQL,
   useProductBySlugQuery as useProductBySlugGraphQL,
   useProductsQuery as useProductsGraphQL,
   useRecommendedProductsQuery as useRecommendedProductsGraphQL,
-  useRelatedProductsQuery as useRelatedProductsGraphQL,
 } from "@/graphql/generated/graphql";
 
 import type {
@@ -173,93 +171,42 @@ export function useProductById(id: number): UseProductByIdResult {
   };
 }
 
-interface UseRelatedProductsResult {
-  products: ProductBase[];
-  loading: boolean;
-  error: Error | undefined;
-}
-
-export function useRelatedProducts(
-  productId: number,
-  limit: number = 8,
-): UseRelatedProductsResult {
-  const skip = !isGraphQL;
-
-  const { data, loading, error } = useRelatedProductsGraphQL({
-    variables: { productId, limit },
-    skip,
-  });
-
-  if (!isGraphQL || skip) {
-    return {
-      products: [],
-      loading: false,
-      error: undefined,
-    };
-  }
-
-  return {
-    products: data?.relatedProducts ?? [],
-    loading,
-    error: error as Error | undefined,
-  };
-}
-
-interface UseFeaturedProductsResult {
-  products: ProductBase[];
-  loading: boolean;
-  error: Error | undefined;
-}
-
-export function useFeaturedProducts(
-  limit: number = 8,
-): UseFeaturedProductsResult {
-  const skip = !isGraphQL;
-
-  const { data, loading, error } = useFeaturedProductsGraphQL({
-    variables: { limit },
-    skip,
-  });
-
-  if (!isGraphQL || skip) {
-    return {
-      products: [],
-      loading: false,
-      error: undefined,
-    };
-  }
-
-  return {
-    products: data?.featuredProducts ?? [],
-    loading,
-    error: error as Error | undefined,
-  };
-}
-
 interface UseBestSellersResult {
   products: ProductBase[];
+  total: number;
+  page: number;
+  totalPages: number;
   loading: boolean;
   error: Error | undefined;
 }
 
-export function useBestSellers(limit: number = 8): UseBestSellersResult {
+export function useBestSellers(params: {
+  limit?: number;
+  page?: number;
+}): UseBestSellersResult {
   const skip = !isGraphQL;
 
   const { data, loading, error } = useBestSellersGraphQL({
-    variables: { limit },
+    variables: { limit: params.limit ?? 8, page: params.page ?? 1 },
     skip,
   });
 
   if (!isGraphQL || skip) {
     return {
       products: [],
+      total: 0,
+      page: 1,
+      totalPages: 0,
       loading: false,
       error: undefined,
     };
   }
 
   return {
-    products: data?.bestSellers ?? [],
+    products: data?.bestSellers.products ?? [],
+    total: data?.bestSellers.total ?? 0,
+    page: data?.bestSellers.page ?? 1,
+    totalPages: data?.bestSellers.total_pages ?? 0,
     loading,
     error: error as Error | undefined,
   };
@@ -267,30 +214,45 @@ export function useBestSellers(limit: number = 8): UseBestSellersResult {
 
 interface UseRecommendedProductsResult {
   products: ProductBase[];
+  total: number;
+  page: number;
+  totalPages: number;
   loading: boolean;
   error: Error | undefined;
 }
 
-export function useRecommendedProducts(
-  limit: number = 10,
-): UseRecommendedProductsResult {
+export function useRecommendedProducts(params: {
+  limit?: number;
+  page?: number;
+  productId?: number;
+}): UseRecommendedProductsResult {
   const skip = !isGraphQL;
 
   const { data, loading, error } = useRecommendedProductsGraphQL({
-    variables: { limit },
+    variables: {
+      limit: params.limit ?? 10,
+      page: params.page ?? 1,
+      productId: params.productId,
+    },
     skip,
   });
 
   if (!isGraphQL || skip) {
     return {
       products: [],
+      total: 0,
+      page: 1,
+      totalPages: 0,
       loading: false,
       error: undefined,
     };
   }
 
   return {
-    products: data?.recommendedProducts ?? [],
+    products: data?.recommendedProducts.products ?? [],
+    total: data?.recommendedProducts.total ?? 0,
+    page: data?.recommendedProducts.page ?? 1,
+    totalPages: data?.recommendedProducts.total_pages ?? 0,
     loading,
     error: error as Error | undefined,
   };

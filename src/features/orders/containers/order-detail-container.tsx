@@ -42,12 +42,12 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
       shippingAddress: shippingAddress
         ? {
             name: shippingAddress.name || "",
-            addressLine1: shippingAddress.addressLine1 || "",
-            addressLine2: shippingAddress.addressLine2 || "",
+            address_line_1: shippingAddress.address_line_1 || "",
+            address_line_2: shippingAddress.address_line_2 || "",
             city: shippingAddress.city || "",
             state: shippingAddress.state || "",
             zip: shippingAddress.zip || "",
-            contactNumber: shippingAddress.contactNumber || "",
+            contact_number: shippingAddress.contact_number || "",
           }
         : null,
       paymentSummary: {

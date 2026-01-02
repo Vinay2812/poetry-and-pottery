@@ -1,8 +1,13 @@
 "use client";
 
+import { isGraphQL } from "@/consts/env";
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import { getPastEvents, getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
+import {
+  usePastEventsLazyQuery,
+  useUpcomingEventsLazyQuery,
+} from "@/graphql/generated/graphql";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -27,6 +32,9 @@ export function useAllEventsQuery({
   initialPastPagination,
   searchQuery,
 }: UseAllEventsQueryOptions) {
+  const [fetchUpcomingGraphQL] = useUpcomingEventsLazyQuery();
+  const [fetchPastGraphQL] = usePastEventsLazyQuery();
+
   // Upcoming events infinite query
   const {
     data: upcomingData,
@@ -34,22 +42,44 @@ export function useAllEventsQuery({
     hasNextPage: hasNextUpcoming,
     isFetchingNextPage: isFetchingNextUpcoming,
   } = useInfiniteQuery({
-    queryKey: ["all-events-upcoming", searchQuery],
+    queryKey: ["all-events-upcoming", searchQuery, isGraphQL],
     queryFn: async ({ pageParam = 1 }) => {
-      const result = await getUpcomingEvents({
-        page: pageParam,
-        limit: DEFAULT_PAGE_SIZE,
-        search: searchQuery,
-      });
-      if (!result.success) {
-        throw new Error(result.error);
+      if (isGraphQL) {
+        // GraphQL mode: use Apollo lazy query
+        const { data: gqlData } = await fetchUpcomingGraphQL({
+          variables: {
+            filter: {
+              page: pageParam,
+              limit: DEFAULT_PAGE_SIZE,
+              search: searchQuery,
+            },
+          },
+        });
+
+        const events = gqlData?.upcomingEvents;
+        return {
+          data: (events?.data ?? []) as EventBase[],
+          total: events?.total ?? 0,
+          page: events?.page ?? pageParam,
+          totalPages: events?.total_pages ?? 0,
+        };
+      } else {
+        // Server action mode
+        const result = await getUpcomingEvents({
+          page: pageParam,
+          limit: DEFAULT_PAGE_SIZE,
+          search: searchQuery,
+        });
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        return {
+          data: result.data.data,
+          total: result.data.total,
+          page: result.data.page,
+          totalPages: result.data.total_pages,
+        };
       }
-      return {
-        data: result.data.data,
-        total: result.data.total,
-        page: result.data.page,
-        totalPages: result.data.total_pages,
-      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -78,22 +108,44 @@ export function useAllEventsQuery({
     hasNextPage: hasNextPast,
     isFetchingNextPage: isFetchingNextPast,
   } = useInfiniteQuery({
-    queryKey: ["all-events-past", searchQuery],
+    queryKey: ["all-events-past", searchQuery, isGraphQL],
     queryFn: async ({ pageParam = 1 }) => {
-      const result = await getPastEvents({
-        page: pageParam,
-        limit: DEFAULT_PAGE_SIZE,
-        search: searchQuery,
-      });
-      if (!result.success) {
-        throw new Error(result.error);
+      if (isGraphQL) {
+        // GraphQL mode: use Apollo lazy query
+        const { data: gqlData } = await fetchPastGraphQL({
+          variables: {
+            filter: {
+              page: pageParam,
+              limit: DEFAULT_PAGE_SIZE,
+              search: searchQuery,
+            },
+          },
+        });
+
+        const events = gqlData?.pastEvents;
+        return {
+          data: (events?.data ?? []) as EventBase[],
+          total: events?.total ?? 0,
+          page: events?.page ?? pageParam,
+          totalPages: events?.total_pages ?? 0,
+        };
+      } else {
+        // Server action mode
+        const result = await getPastEvents({
+          page: pageParam,
+          limit: DEFAULT_PAGE_SIZE,
+          search: searchQuery,
+        });
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        return {
+          data: result.data.data,
+          total: result.data.total,
+          page: result.data.page,
+          totalPages: result.data.total_pages,
+        };
       }
-      return {
-        data: result.data.data,
-        total: result.data.total,
-        page: result.data.page,
-        totalPages: result.data.total_pages,
-      };
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

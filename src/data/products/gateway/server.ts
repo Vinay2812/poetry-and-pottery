@@ -3,9 +3,10 @@
 import { isGraphQL } from "@/consts/env";
 
 import type {
-  ProductBase,
+  BestSellersResponse,
   ProductDetail,
   ProductsResponse,
+  RecommendedProductsResponse,
 } from "@/graphql/generated/types";
 
 import * as actionImpl from "../server/action";
@@ -45,42 +46,25 @@ export async function getProductById(
   return actionImpl.getProductById(id);
 }
 
-export async function getRelatedProducts(
-  productId: number,
-  category: string,
-  limit: number = 8,
-): Promise<ProductBase[]> {
+export async function getBestSellers(params: {
+  limit?: number;
+  page?: number;
+}): Promise<BestSellersResponse> {
   if (isGraphQL) {
-    return graphqlImpl.getRelatedProducts(productId, category, limit);
+    return graphqlImpl.getBestSellers(params);
   }
-  return actionImpl.getRelatedProducts(productId, category, limit);
+  return actionImpl.getBestSellers(params);
 }
 
-export async function getFeaturedProducts(
-  limit: number = 8,
-): Promise<ProductBase[]> {
+export async function getRecommendedProducts(params: {
+  limit?: number;
+  page?: number;
+  productId?: number;
+}): Promise<RecommendedProductsResponse> {
   if (isGraphQL) {
-    return graphqlImpl.getFeaturedProducts(limit);
+    return graphqlImpl.getRecommendedProducts(params);
   }
-  return actionImpl.getFeaturedProducts(limit);
-}
-
-export async function getBestSellers(
-  limit: number = 8,
-): Promise<ProductBase[]> {
-  if (isGraphQL) {
-    return graphqlImpl.getBestSellers(limit);
-  }
-  return actionImpl.getBestSellers(limit);
-}
-
-export async function getRecommendedProducts(
-  limit: number = 10,
-): Promise<ProductBase[]> {
-  if (isGraphQL) {
-    return graphqlImpl.getRecommendedProducts(limit);
-  }
-  return actionImpl.getRecommendedProducts(limit);
+  return actionImpl.getRecommendedProducts(params);
 }
 
 export async function getCategories(): Promise<string[]> {

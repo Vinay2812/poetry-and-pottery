@@ -1,7 +1,7 @@
 import { HERO_IMAGES } from "@/consts/client";
 import {
   getCategories,
-  getFeaturedProducts,
+  getRecommendedProducts,
 } from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [featuredProducts, categories] = await Promise.all([
-    getFeaturedProducts(4),
+  const [recommendedResult, categories] = await Promise.all([
+    getRecommendedProducts({ limit: 4 }),
     getCategories(),
   ]);
 
@@ -74,7 +74,7 @@ export default async function Home() {
 
         {/* Curated Favorites */}
         <ProductCarousel
-          products={featuredProducts}
+          products={recommendedResult.products}
           title="Curated Favorites"
           subtitle="Handpicked pieces for your home."
           className="container mx-auto px-4 py-4 lg:px-8 lg:py-12"

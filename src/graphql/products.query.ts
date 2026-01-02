@@ -133,82 +133,52 @@ export const PRODUCT_BY_ID_QUERY = gql`
   }
 `;
 
-export const RELATED_PRODUCTS_QUERY = gql`
-  query RelatedProducts($productId: Int!, $limit: Int) {
-    relatedProducts(productId: $productId, limit: $limit) {
-      id
-      slug
-      name
-      price
-      image_urls
-      reviews_count
-      avg_rating
-      material
-      in_wishlist
-      available_quantity
-      total_quantity
-      color_code
-      color_name
-    }
-  }
-`;
-
-export const FEATURED_PRODUCTS_QUERY = gql`
-  query FeaturedProducts($limit: Int) {
-    featuredProducts(limit: $limit) {
-      id
-      slug
-      name
-      price
-      image_urls
-      reviews_count
-      avg_rating
-      material
-      in_wishlist
-      available_quantity
-      total_quantity
-      color_code
-      color_name
-    }
-  }
-`;
-
 export const BEST_SELLERS_QUERY = gql`
-  query BestSellers($limit: Int) {
-    bestSellers(limit: $limit) {
-      id
-      slug
-      name
-      price
-      image_urls
-      reviews_count
-      avg_rating
-      material
-      in_wishlist
-      available_quantity
-      total_quantity
-      color_code
-      color_name
+  query BestSellers($limit: Int, $page: Int) {
+    bestSellers(limit: $limit, page: $page) {
+      products {
+        id
+        slug
+        name
+        price
+        image_urls
+        reviews_count
+        avg_rating
+        material
+        in_wishlist
+        available_quantity
+        total_quantity
+        color_code
+        color_name
+      }
+      total
+      page
+      total_pages
     }
   }
 `;
 
 export const RECOMMENDED_PRODUCTS_QUERY = gql`
-  query RecommendedProducts($limit: Int) {
-    recommendedProducts(limit: $limit) {
-      id
-      slug
-      name
-      price
-      image_urls
-      reviews_count
-      avg_rating
-      material
-      in_wishlist
-      available_quantity
-      total_quantity
-      color_code
-      color_name
+  query RecommendedProducts($limit: Int, $page: Int, $productId: Int) {
+    recommendedProducts(limit: $limit, page: $page, productId: $productId) {
+      products {
+        id
+        slug
+        name
+        price
+        image_urls
+        reviews_count
+        avg_rating
+        material
+        in_wishlist
+        available_quantity
+        total_quantity
+        color_code
+        color_name
+      }
+      total
+      page
+      total_pages
     }
   }
 `;
