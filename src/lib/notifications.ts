@@ -1,7 +1,7 @@
+import type { ShippingAddress } from "@/data/orders/types";
 import nodemailer from "nodemailer";
 
 import { BUSINESS_EMAIL, GMAIL_APP_PASSWORD, GMAIL_USER } from "../consts/env";
-import type { ShippingAddress } from "@/data/orders/types";
 import { formatEventDateFull } from "./date";
 
 // Create Gmail transporter

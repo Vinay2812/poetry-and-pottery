@@ -1,6 +1,7 @@
 "use client";
 
 import type { ShippingAddress } from "@/data/orders/types";
+
 import { formatEventDateFull } from "./date";
 
 // Types for different notification scenarios

@@ -7,10 +7,10 @@ import type {
   OrderMutationResponse,
   OrdersResponse,
 } from "@/graphql/generated/types";
-import type { ShippingAddress } from "../types";
 
 import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
+import type { ShippingAddress } from "../types";
 
 // Result types for consistent error handling
 export type GetOrdersResult =

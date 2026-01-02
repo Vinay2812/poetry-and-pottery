@@ -1,6 +1,7 @@
 "use server";
 
 import { getAuthenticatedUserId } from "@/actions/auth.action";
+import type { ShippingAddress } from "@/data/orders/types";
 import { OrderStatus } from "@/prisma/generated/client";
 import { revalidatePath } from "next/cache";
 
@@ -12,7 +13,6 @@ import type {
   OrderMutationResponse,
   OrdersResponse,
 } from "@/graphql/generated/types";
-import type { ShippingAddress } from "@/data/orders/types";
 
 const DEFAULT_PAGE_SIZE = 10;
 
