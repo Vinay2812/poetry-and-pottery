@@ -39,9 +39,9 @@ export interface RecentOrder {
   id: string;
   status: string;
   total: number;
-  created_at: Date;
+  created_at: Date | string;
   user: {
-    name: string | null;
+    name?: string | null;
     email: string;
   };
 }
@@ -54,7 +54,7 @@ export interface RecentRegistration {
   status: string;
   price: number;
   user: {
-    name: string | null;
+    name?: string | null;
     email: string;
   };
   event: {
@@ -78,7 +78,7 @@ export interface LowStockProduct {
 export interface UpcomingEvent {
   id: string;
   title: string;
-  starts_at: Date;
+  starts_at: Date | string;
   available_seats: number;
   total_seats: number;
   _count: {
@@ -157,10 +157,10 @@ export interface RevenueBreakdownSectionProps {
  */
 export interface NewsletterSubscriber {
   id: number;
-  name: string | null;
+  name?: string | null;
   email: string;
-  image: string | null;
-  newsletter_subscribed_at: Date | null;
+  image?: string | null;
+  newsletter_subscribed_at?: Date | string | null;
 }
 
 /**

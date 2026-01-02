@@ -1,0 +1,51 @@
+import { gql } from "@apollo/client";
+
+export const ADMIN_CREATE_EVENT_MUTATION = gql`
+  mutation AdminCreateEvent($input: CreateEventInput!) {
+    adminCreateEvent(input: $input) {
+      success
+      eventId
+      error
+    }
+  }
+`;
+
+export const ADMIN_UPDATE_EVENT_MUTATION = gql`
+  mutation AdminUpdateEvent($id: String!, $input: UpdateEventInput!) {
+    adminUpdateEvent(id: $id, input: $input) {
+      success
+      eventId
+      error
+    }
+  }
+`;
+
+export const ADMIN_DELETE_EVENT_MUTATION = gql`
+  mutation AdminDeleteEvent($id: String!) {
+    adminDeleteEvent(id: $id) {
+      success
+      eventId
+      error
+    }
+  }
+`;
+
+export const ADMIN_UPDATE_EVENT_STATUS_MUTATION = gql`
+  mutation AdminUpdateEventStatus($id: String!, $status: String!) {
+    adminUpdateEventStatus(id: $id, status: $status) {
+      success
+      eventId
+      error
+    }
+  }
+`;
+
+export const ADMIN_DELETE_EVENT_REVIEW_MUTATION = gql`
+  mutation AdminDeleteEventReview($reviewId: Int!) {
+    adminDeleteEventReview(reviewId: $reviewId) {
+      success
+      eventId
+      error
+    }
+  }
+`;

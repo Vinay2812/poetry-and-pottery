@@ -1,6 +1,5 @@
 "use client";
 
-import type { EventRegistration } from "@/actions/admin";
 import type { EventRegistrationStatus } from "@/prisma/generated/enums";
 import { UserIcon } from "lucide-react";
 
@@ -9,9 +8,11 @@ import { Badge } from "@/components/ui/badge";
 
 import { getRegistrationStatusColor } from "@/lib/status-utils";
 
+import type { AdminEventRegistration } from "@/graphql/generated/types";
+
 interface EventRegistrationsSectionProps {
   eventId: string;
-  registrations: EventRegistration[];
+  registrations: AdminEventRegistration[];
   total: number;
   statusCounts: Record<EventRegistrationStatus, number>;
 }

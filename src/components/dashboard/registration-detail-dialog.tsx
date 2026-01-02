@@ -1,7 +1,6 @@
 "use client";
 
-import { updateRegistrationDetails } from "@/actions/admin";
-import type { UserRegistration } from "@/actions/admin";
+import { updateRegistrationDetails } from "@/data/admin/registrations/gateway/server";
 import {
   CalendarIcon,
   ClockIcon,
@@ -20,11 +19,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+import type { AdminUserRegistration } from "@/graphql/generated/types";
+
 import { EditableNumber } from "./editable-number";
 import { EditablePrice } from "./editable-price";
 
 interface RegistrationDetailDialogProps {
-  registration: UserRegistration | null;
+  registration: AdminUserRegistration | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

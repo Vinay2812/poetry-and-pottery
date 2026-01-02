@@ -1,6 +1,6 @@
-import type { UserRegistration } from "@/actions/admin";
-
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";
+
+import type { AdminUserRegistration } from "@/graphql/generated/types";
 
 /**
  * View model for the registration detail dialog.
@@ -42,38 +42,16 @@ export interface RegistrationDetailDialogProps {
  * Receives raw data from parent and manages state internally.
  */
 export interface RegistrationDetailDialogContainerProps {
-  registration: RegistrationData | null;
+  registration: AdminUserRegistration | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 /**
  * Raw registration data from the server.
- * Re-export from actions for type safety.
+ * Type alias for AdminUserRegistration.
  */
-export interface RegistrationData {
-  id: string;
-  status: string;
-  seats_reserved: number;
-  price: number;
-  discount: number;
-  created_at: Date;
-  request_at: Date | null;
-  approved_at: Date | null;
-  paid_at: Date | null;
-  confirmed_at: Date | null;
-  cancelled_at: Date | null;
-  event: {
-    id: string;
-    title: string;
-    slug: string;
-    starts_at: Date;
-    ends_at: Date;
-    location: string;
-    image: string;
-    price: number;
-  };
-}
+export type RegistrationData = AdminUserRegistration;
 
 /**
  * View model for a single registration card in the board.
@@ -83,7 +61,7 @@ export interface RegistrationCardViewModel {
   eventTitle: string;
   eventLocation: string | null;
   eventImage: string | null;
-  eventStartsAt: Date;
+  eventStartsAt: Date | string;
   price: number;
   discount: number;
   finalAmount: number;
@@ -103,16 +81,16 @@ export interface RegistrationCardProps {
  * Props for the RegistrationsBoard presentational component.
  */
 export interface RegistrationsBoardProps {
-  columns: KanbanColumn<UserRegistration>[];
+  columns: KanbanColumn<AdminUserRegistration>[];
   isLoading: boolean;
-  selectedRegistration: UserRegistration | null;
+  selectedRegistration: AdminUserRegistration | null;
   dialogOpen: boolean;
   onMove: (
     itemId: string,
     fromColumn: string,
     toColumn: string,
   ) => Promise<void>;
-  onCardClick: (registration: UserRegistration) => void;
+  onCardClick: (registration: AdminUserRegistration) => void;
   onDialogOpenChange: (open: boolean) => void;
 }
 
@@ -120,14 +98,14 @@ export interface RegistrationsBoardProps {
  * Props for the RegistrationsBoardContainer.
  */
 export interface RegistrationsBoardContainerProps {
-  registrations: UserRegistration[];
+  registrations: AdminUserRegistration[];
 }
 
 /**
  * Build registration card view model from raw registration data.
  */
 export function buildRegistrationCardViewModel(
-  registration: UserRegistration,
+  registration: AdminUserRegistration,
 ): RegistrationCardViewModel {
   return {
     id: registration.id,

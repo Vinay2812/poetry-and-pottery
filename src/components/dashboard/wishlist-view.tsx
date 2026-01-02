@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  type UserWishlistItem,
-  getUserWishlistPaginated,
-} from "@/actions/admin";
+import { getUserWishlistPaginated } from "@/data/admin/users/gateway/server";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { HeartIcon, Loader2, PackageIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
@@ -12,9 +9,11 @@ import { useInView } from "react-intersection-observer";
 import { ImageCarousel } from "@/components/shared/image-carousel";
 import { Badge } from "@/components/ui/badge";
 
+import type { AdminUserWishlistItem } from "@/graphql/generated/types";
+
 interface WishlistViewProps {
   userId: number;
-  initialData: UserWishlistItem[];
+  initialData: AdminUserWishlistItem[];
   initialPagination: {
     total: number;
     page: number;
@@ -32,11 +31,7 @@ export function WishlistView({
     useInfiniteQuery({
       queryKey: ["admin-user-wishlist", userId],
       queryFn: async ({ pageParam = 1 }) => {
-        const result = await getUserWishlistPaginated({
-          userId,
-          page: pageParam,
-          limit: 12,
-        });
+        const result = await getUserWishlistPaginated(userId, pageParam, 12);
         return result;
       },
       initialPageParam: 1,

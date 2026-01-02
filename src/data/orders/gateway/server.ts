@@ -6,8 +6,8 @@ import type {
   Order,
   OrderMutationResponse,
   OrdersResponse,
-  ShippingAddressInput,
 } from "@/graphql/generated/types";
+import type { ShippingAddress } from "../types";
 
 import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
@@ -73,7 +73,7 @@ export async function getOrderById(orderId: string): Promise<GetOrderResult> {
 
 export async function createOrder(data: {
   shippingFee: number;
-  shippingAddress: ShippingAddressInput;
+  shippingAddress: ShippingAddress;
 }): Promise<CreateOrderResult> {
   try {
     let result: OrderMutationResponse;

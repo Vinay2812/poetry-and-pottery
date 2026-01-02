@@ -1,4 +1,7 @@
-import type { Category, GetCategoriesResult } from "@/actions/admin";
+import type {
+  AdminCategoriesResponse,
+  AdminCategory,
+} from "@/graphql/generated/types";
 
 /**
  * View model for a single category row.
@@ -34,7 +37,7 @@ export interface CategoriesTableProps {
  * Props for the CategoriesTableContainer.
  */
 export interface CategoriesTableContainerProps {
-  data: GetCategoriesResult;
+  data: AdminCategoriesResponse;
   iconOptions: { value: string; label: string }[];
 }
 
@@ -42,7 +45,7 @@ export interface CategoriesTableContainerProps {
  * Build category row view model from raw data.
  */
 export function buildCategoryRowViewModel(
-  category: Category,
+  category: AdminCategory,
 ): CategoryRowViewModel {
   return {
     name: category.name,
@@ -55,7 +58,7 @@ export function buildCategoryRowViewModel(
  * Build categories table view model.
  */
 export function buildCategoriesTableViewModel(
-  data: GetCategoriesResult,
+  data: AdminCategoriesResponse,
 ): CategoriesTableViewModel {
   return {
     categories: data.categories.map(buildCategoryRowViewModel),

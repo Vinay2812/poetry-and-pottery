@@ -1,8 +1,8 @@
 import type {
   AdminProduct,
-  GetProductsResult,
-  ProductDetail,
-} from "@/actions/admin";
+  AdminProductDetail,
+  AdminProductsResponse,
+} from "@/graphql/generated/types";
 
 /**
  * View model for a single product row in the table.
@@ -26,7 +26,7 @@ export interface ProductRowViewModel {
   reviewsCount: number;
   wishlistCount: number;
   cartCount: number;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 /**
@@ -71,7 +71,7 @@ export interface ProductsTableProps {
  * Props for the ProductsTableContainer.
  */
 export interface ProductsTableContainerProps {
-  data: GetProductsResult;
+  data: AdminProductsResponse;
   categories: string[];
 }
 
@@ -131,7 +131,7 @@ export interface ProductFormData {
  * Props for the ProductFormContainer.
  */
 export interface ProductFormContainerProps {
-  product?: ProductDetail;
+  product?: AdminProductDetail;
   categories: string[];
 }
 
@@ -145,7 +145,7 @@ export function buildProductRowViewModel(
     id: product.id,
     slug: product.slug,
     name: product.name,
-    description: product.description,
+    description: product.description ?? null,
     price: product.price,
     priceFormatted: formatPrice(product.price),
     totalQuantity: product.total_quantity,
@@ -168,7 +168,7 @@ export function buildProductRowViewModel(
  * Build pagination view model from result data.
  */
 export function buildPaginationViewModel(
-  data: GetProductsResult,
+  data: AdminProductsResponse,
 ): PaginationViewModel {
   return {
     page: data.page,
@@ -184,7 +184,7 @@ export function buildPaginationViewModel(
  * Build products table view model.
  */
 export function buildProductsTableViewModel(
-  data: GetProductsResult,
+  data: AdminProductsResponse,
   searchValue: string,
   categoryFilter: string,
   activeFilter: string,
@@ -202,7 +202,7 @@ export function buildProductsTableViewModel(
  * Build product form view model from product detail.
  */
 export function buildProductFormViewModel(
-  product?: ProductDetail,
+  product?: AdminProductDetail,
 ): ProductFormViewModel {
   if (!product) {
     return {

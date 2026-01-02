@@ -82,7 +82,7 @@ export function formatOrderDate(dateString: Date | string): string {
  * Format date and time for admin dashboard (Indian locale).
  * @example "15 Jan 2025, 02:30 PM"
  */
-export function formatDateTime(date: Date): string {
+export function formatDateTime(date: Date | string): string {
   return new Intl.DateTimeFormat("en-IN", {
     day: "numeric",
     month: "short",
@@ -110,7 +110,7 @@ export function formatProgressDate(dateValue: Date | string): string {
  * Format date in Indian locale (short format).
  * @example "Sat, 15 Jan, 2025"
  */
-export function formatDateShort(date: Date): string {
+export function formatDateShort(date: Date | string): string {
   return new Date(date).toLocaleDateString("en-IN", {
     weekday: "short",
     day: "numeric",
@@ -123,7 +123,7 @@ export function formatDateShort(date: Date): string {
  * Format time in Indian locale.
  * @example "2:30 PM"
  */
-export function formatTime(date: Date): string {
+export function formatTime(date: Date | string): string {
   return new Date(date).toLocaleTimeString("en-IN", {
     hour: "numeric",
     minute: "2-digit",
@@ -135,7 +135,7 @@ export function formatTime(date: Date): string {
  * Format created at timestamp in Indian locale.
  * @example "15 Jan 2025, 02:30 PM"
  */
-export function formatCreatedAt(date: Date): string {
+export function formatCreatedAt(date: Date | string): string {
   return new Date(date).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
@@ -149,7 +149,7 @@ export function formatCreatedAt(date: Date): string {
  * Format date for HTML datetime-local inputs.
  * @example "2025-01-15T14:30"
  */
-export function formatDateTimeLocal(date: Date): string {
+export function formatDateTimeLocal(date: Date | string): string {
   const d = new Date(date);
   const pad = (n: number) => n.toString().padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
@@ -159,7 +159,7 @@ export function formatDateTimeLocal(date: Date): string {
  * Format date for content pages (US locale with time).
  * @example "Jan 15, 2025 02:30 PM"
  */
-export function formatContentDate(date: Date): string {
+export function formatContentDate(date: Date | string): string {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "short",

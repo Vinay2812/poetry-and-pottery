@@ -1,6 +1,5 @@
 "use client";
 
-import type { EventLevel, EventStatus } from "@/prisma/generated/enums";
 import {
   CalendarIcon,
   ChevronLeftIcon,
@@ -39,11 +38,14 @@ import {
 
 import { getEventLevelColor, getEventStatusColor } from "@/lib/status-utils";
 
+import { EventLevel, EventStatus } from "@/graphql/generated/types";
+import type { AdminStatusOption } from "@/graphql/generated/types";
+
 import type { EventRowViewModel, EventsTableProps } from "../types";
 
 interface EventCardProps {
   event: EventRowViewModel;
-  statusOptions: { value: EventStatus; label: string }[];
+  statusOptions: AdminStatusOption[];
   onStatusChange: (eventId: string, status: EventStatus) => void;
   onDelete: (eventId: string) => void;
   isPending: boolean;
@@ -101,7 +103,9 @@ function EventCard({
                   {statusOptions.map((option) => (
                     <DropdownMenuItem
                       key={option.value}
-                      onClick={() => onStatusChange(event.id, option.value)}
+                      onClick={() =>
+                        onStatusChange(event.id, option.value as EventStatus)
+                      }
                       disabled={event.status === option.value}
                     >
                       {option.label}

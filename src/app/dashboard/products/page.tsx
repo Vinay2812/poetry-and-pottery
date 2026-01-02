@@ -1,4 +1,7 @@
-import { getAllCategories, getProducts } from "@/actions/admin";
+import {
+  getAllCategories,
+  getProducts,
+} from "@/data/admin/products/gateway/server";
 import { ProductsTableContainer } from "@/features/dashboard/products";
 import { Suspense } from "react";
 

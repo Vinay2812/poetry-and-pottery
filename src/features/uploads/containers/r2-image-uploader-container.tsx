@@ -1,7 +1,7 @@
 "use client";
 
-import { getPresignedUploadUrl } from "@/actions/admin/admin.uploads.actions";
 import { ACCEPTED_IMAGE_TYPES } from "@/consts/uploads";
+import { getPresignedUploadUrl } from "@/data/admin/uploads/gateway/server";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 

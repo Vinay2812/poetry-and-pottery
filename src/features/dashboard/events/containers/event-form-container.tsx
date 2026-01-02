@@ -1,6 +1,6 @@
 "use client";
 
-import { createEvent, updateEvent } from "@/actions/admin";
+import { createEvent, updateEvent } from "@/data/admin/events/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useTransition } from "react";
 
@@ -27,13 +27,12 @@ export function EventFormContainer({
     (data: EventFormData) => {
       startTransition(async () => {
         if (isEditing && event) {
-          const result = await updateEvent({
-            id: event.id,
+          const result = await updateEvent(event.id, {
             title: data.title,
             slug: data.slug,
             description: data.description,
-            starts_at: data.startsAt,
-            ends_at: data.endsAt,
+            starts_at: data.startsAt.toISOString(),
+            ends_at: data.endsAt.toISOString(),
             location: data.location,
             full_location: data.fullLocation,
             total_seats: data.totalSeats,
@@ -59,8 +58,8 @@ export function EventFormContainer({
             title: data.title,
             slug: data.slug,
             description: data.description,
-            starts_at: data.startsAt,
-            ends_at: data.endsAt,
+            starts_at: data.startsAt.toISOString(),
+            ends_at: data.endsAt.toISOString(),
             location: data.location,
             full_location: data.fullLocation,
             total_seats: data.totalSeats,

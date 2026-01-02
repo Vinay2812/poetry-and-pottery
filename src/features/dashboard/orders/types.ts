@@ -1,6 +1,6 @@
-import type { UserOrder } from "@/actions/admin";
-
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";
+
+import type { AdminUserOrder } from "@/graphql/generated/types";
 
 /**
  * Edited state for a single order item.
@@ -67,35 +67,7 @@ export interface OrderDetailDialogContainerProps {
 /**
  * Raw order data from the server.
  */
-export interface OrderData {
-  id: string;
-  status: string;
-  total: number;
-  subtotal: number;
-  discount: number;
-  shipping_fee: number;
-  created_at: Date;
-  request_at: Date | null;
-  approved_at: Date | null;
-  paid_at: Date | null;
-  shipped_at: Date | null;
-  delivered_at: Date | null;
-  cancelled_at: Date | null;
-  returned_at: Date | null;
-  refunded_at: Date | null;
-  ordered_products: {
-    id: number;
-    quantity: number;
-    price: number;
-    discount: number;
-    product: {
-      id: number;
-      name: string;
-      slug: string;
-      image_urls: string[];
-    };
-  }[];
-}
+export type OrderData = AdminUserOrder;
 
 /**
  * View model for a single order card in the board.
@@ -105,7 +77,7 @@ export interface OrderCardViewModel {
   totalItems: number;
   calculatedTotal: number;
   totalDiscount: number;
-  createdAt: Date;
+  createdAt: Date | string;
   productImages: {
     id: number;
     imageUrl: string | null;
@@ -127,16 +99,16 @@ export interface OrderCardProps {
  * Props for the OrdersBoard presentational component.
  */
 export interface OrdersBoardProps {
-  columns: KanbanColumn<UserOrder>[];
+  columns: KanbanColumn<AdminUserOrder>[];
   isLoading: boolean;
-  selectedOrder: UserOrder | null;
+  selectedOrder: AdminUserOrder | null;
   dialogOpen: boolean;
   onMove: (
     itemId: string,
     fromColumn: string,
     toColumn: string,
   ) => Promise<void>;
-  onCardClick: (order: UserOrder) => void;
+  onCardClick: (order: AdminUserOrder) => void;
   onDialogOpenChange: (open: boolean) => void;
 }
 
@@ -144,13 +116,15 @@ export interface OrdersBoardProps {
  * Props for the OrdersBoardContainer.
  */
 export interface OrdersBoardContainerProps {
-  orders: UserOrder[];
+  orders: AdminUserOrder[];
 }
 
 /**
  * Build order card view model from raw order data.
  */
-export function buildOrderCardViewModel(order: UserOrder): OrderCardViewModel {
+export function buildOrderCardViewModel(
+  order: AdminUserOrder,
+): OrderCardViewModel {
   const totalItems = order.ordered_products.reduce(
     (sum, p) => sum + p.quantity,
     0,

@@ -1,6 +1,6 @@
 "use client";
 
-import { updateRegistrationDetails } from "@/actions/admin";
+import { updateRegistrationDetails } from "@/data/admin/registrations/gateway/server";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
 import { formatCreatedAt, formatDateShort, formatTime } from "@/lib/date";

@@ -4,8 +4,7 @@ import {
   updateOrderDiscount,
   updateOrderItemDiscount,
   updateOrderItemQuantity,
-} from "@/actions/admin";
-import type { UserOrder } from "@/actions/admin";
+} from "@/data/admin/orders/gateway/server";
 import { PackageIcon } from "lucide-react";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
@@ -18,11 +17,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+import type { AdminUserOrder } from "@/graphql/generated/types";
+
 import { EditablePrice } from "./editable-price";
 import { EditableQuantity } from "./editable-quantity";
 
 interface OrderDetailDialogProps {
-  order: UserOrder | null;
+  order: AdminUserOrder | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

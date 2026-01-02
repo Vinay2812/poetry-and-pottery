@@ -1,5 +1,6 @@
 "use client";
 
+import type { ShippingAddress } from "@/data/orders/types";
 import { formatEventDateFull } from "./date";
 
 // Types for different notification scenarios
@@ -23,15 +24,7 @@ export interface OrderNotificationData {
   customerName: string;
   customerEmail: string;
   customerPhone?: string;
-  shippingAddress: {
-    name: string;
-    addressLine1: string;
-    addressLine2?: string;
-    city: string;
-    state: string;
-    zip: string;
-    contactNumber?: string;
-  };
+  shippingAddress: ShippingAddress;
   items: Array<{
     name: string;
     quantity: number;
@@ -107,13 +100,13 @@ export function openWhatsApp(data: NotificationData): void {
       .map((item) => `- ${item.name} x${item.quantity} (Rs.${item.price})`)
       .join("\n");
 
-    const addressLine2Part = data.shippingAddress.addressLine2
-      ? `${data.shippingAddress.addressLine2}, `
+    const addressLine2Part = data.shippingAddress.address_line_2
+      ? `${data.shippingAddress.address_line_2}, `
       : "";
     const formattedAddress =
       `${data.shippingAddress.name}\n` +
-      `${data.shippingAddress.addressLine1}, ${addressLine2Part}${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddress.zip}` +
-      `${data.shippingAddress.contactNumber ? `\nContact: ${data.shippingAddress.contactNumber}` : ""}`;
+      `${data.shippingAddress.address_line_1}, ${addressLine2Part}${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddress.zip}` +
+      `${data.shippingAddress.contact_number ? `\nContact: ${data.shippingAddress.contact_number}` : ""}`;
 
     message =
       `Hi! I would like to place the following order:\n\n` +

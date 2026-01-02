@@ -1,11 +1,12 @@
-import { type UserSortOption, getUsers } from "@/actions/admin";
+import { getUsers } from "@/data/admin/users/gateway/server";
 import { UsersTableContainer } from "@/features/dashboard/users";
-import { UserRole } from "@/prisma/generated/enums";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { requireAdminUser } from "@/lib/admin";
+
+import { UserRole } from "@/graphql/generated/types";
 
 interface UsersPageProps {
   searchParams: Promise<{
@@ -58,7 +59,6 @@ async function UsersTableContent({
   const data = await getUsers({
     search,
     role: role as UserRole | undefined,
-    sort: (sort || "pending_orders") as UserSortOption,
     page: page ? parseInt(page) : 1,
     limit: 20,
   });

@@ -1,4 +1,7 @@
-import { getEventLevelOptions, getEventStatusOptions } from "@/actions/admin";
+import {
+  getEventLevelOptions,
+  getEventStatusOptions,
+} from "@/data/admin/events/gateway/server";
 import { EventFormContainer } from "@/features/dashboard/events";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";

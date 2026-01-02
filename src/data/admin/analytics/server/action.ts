@@ -5,39 +5,14 @@ import { EventRegistrationStatus, OrderStatus } from "@/prisma/generated/enums";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-export interface DashboardStats {
-  orders: {
-    pending: number;
-    processing: number;
-    total: number;
-  };
-  registrations: {
-    pending: number;
-    total: number;
-  };
-  products: {
-    outOfStock: number;
-    lowStock: number;
-    total: number;
-  };
-  events: {
-    upcoming: number;
-    upcomingIn7Days: number;
-    total: number;
-  };
-  users: {
-    total: number;
-    newThisMonth: number;
-  };
-  revenue: {
-    totalOrders: number;
-    totalRegistrations: number;
-  };
-  newsletter: {
-    totalSubscribers: number;
-    newThisMonth: number;
-  };
-}
+import type {
+  DashboardStats,
+  LowStockProduct,
+  NewsletterSubscriber,
+  RecentOrder,
+  RecentRegistration,
+  UpcomingEvent,
+} from "@/graphql/generated/types";
 
 export async function getDashboardStats(): Promise<DashboardStats> {
   await requireAdmin();
@@ -65,7 +40,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     totalNewsletterSubscribers,
     newNewsletterSubscribersThisMonth,
   ] = await Promise.all([
-    // Orders
     prisma.productOrder.count({
       where: { status: OrderStatus.PENDING },
     }),
@@ -73,14 +47,10 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       where: { status: OrderStatus.PROCESSING },
     }),
     prisma.productOrder.count(),
-
-    // Registrations
     prisma.eventRegistration.count({
       where: { status: EventRegistrationStatus.PENDING },
     }),
     prisma.eventRegistration.count(),
-
-    // Products
     prisma.product.count({
       where: { available_quantity: 0, is_active: true },
     }),
@@ -91,8 +61,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       },
     }),
     prisma.product.count({ where: { is_active: true } }),
-
-    // Events
     prisma.event.count({
       where: { status: "UPCOMING" },
     }),
@@ -103,14 +71,10 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       },
     }),
     prisma.event.count(),
-
-    // Users
     prisma.user.count(),
     prisma.user.count({
       where: { created_at: { gte: startOfMonth } },
     }),
-
-    // Revenue
     prisma.productOrder.aggregate({
       _sum: { total: true },
       where: {
@@ -127,8 +91,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         },
       },
     }),
-
-    // Newsletter
     prisma.user.count({
       where: { subscribed_to_newsletter: true },
     }),
@@ -175,17 +137,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   };
 }
 
-export interface RecentOrder {
-  id: string;
-  status: OrderStatus;
-  total: number;
-  created_at: Date;
-  user: {
-    name: string | null;
-    email: string;
-  };
-}
-
 export async function getRecentOrders(limit = 5): Promise<RecentOrder[]> {
   await requireAdmin();
 
@@ -206,22 +157,7 @@ export async function getRecentOrders(limit = 5): Promise<RecentOrder[]> {
     },
   });
 
-  return orders;
-}
-
-export interface RecentRegistration {
-  id: string;
-  status: EventRegistrationStatus;
-  price: number;
-  seats_reserved: number;
-  created_at: Date;
-  user: {
-    name: string | null;
-    email: string;
-  };
-  event: {
-    title: string;
-  };
+  return orders as RecentOrder[];
 }
 
 export async function getRecentRegistrations(
@@ -252,16 +188,7 @@ export async function getRecentRegistrations(
     },
   });
 
-  return registrations;
-}
-
-export interface LowStockProduct {
-  id: number;
-  name: string;
-  slug: string;
-  available_quantity: number;
-  total_quantity: number;
-  price: number;
+  return registrations as RecentRegistration[];
 }
 
 export async function getLowStockProducts(
@@ -289,18 +216,6 @@ export async function getLowStockProducts(
   return products;
 }
 
-export interface UpcomingEvent {
-  id: string;
-  title: string;
-  slug: string;
-  starts_at: Date;
-  available_seats: number;
-  total_seats: number;
-  _count: {
-    event_registrations: number;
-  };
-}
-
 export async function getUpcomingEvents(limit = 5): Promise<UpcomingEvent[]> {
   await requireAdmin();
 
@@ -326,15 +241,7 @@ export async function getUpcomingEvents(limit = 5): Promise<UpcomingEvent[]> {
     },
   });
 
-  return events;
-}
-
-export interface NewsletterSubscriber {
-  id: number;
-  name: string | null;
-  email: string;
-  image: string | null;
-  newsletter_subscribed_at: Date | null;
+  return events as UpcomingEvent[];
 }
 
 export async function getNewsletterSubscribers(
@@ -355,5 +262,5 @@ export async function getNewsletterSubscribers(
     },
   });
 
-  return subscribers;
+  return subscribers as NewsletterSubscriber[];
 }

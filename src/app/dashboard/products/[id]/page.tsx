@@ -2,7 +2,7 @@ import {
   getAllCategories,
   getProductById,
   getProductReviews,
-} from "@/actions/admin";
+} from "@/data/admin/products/gateway/server";
 import {
   ProductFormContainer,
   ProductReviewsSection,

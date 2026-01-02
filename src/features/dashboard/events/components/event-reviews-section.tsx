@@ -1,11 +1,12 @@
-import { type EventReview } from "@/actions/admin";
 import { StarIcon, UserIcon } from "lucide-react";
 
 import { OptimizedImage } from "@/components/shared";
 
+import type { AdminEventReview } from "@/graphql/generated/types";
+
 interface EventReviewsSectionProps {
   eventId: string;
-  reviews: EventReview[];
+  reviews: AdminEventReview[];
   total: number;
   averageRating: number;
 }

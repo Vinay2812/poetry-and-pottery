@@ -2,58 +2,35 @@
 
 import { UserRole } from "@/prisma/generated/enums";
 import { clerkClient } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
 
 import { requireAdmin, requireAdminUser } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-export interface AdminUser {
-  id: number;
-  auth_id: string;
-  email: string;
-  name: string | null;
-  image: string | null;
-  phone: string | null;
-  role: UserRole;
-  created_at: Date;
-  _count: {
-    product_orders: number;
-    event_registrations: number;
-  };
-  pendingOrdersCount: number;
-  pendingRegistrationsCount: number;
-}
+import type {
+  AdminUserCartItem,
+  AdminUserDetail,
+  AdminUserMutationResponse,
+  AdminUserOrder,
+  AdminUserRegistration,
+  AdminUserWishlistItem,
+  AdminUserWishlistResponse,
+  AdminUsersResponse,
+} from "@/graphql/generated/types";
 
-export type UserSortOption =
-  | "newest"
-  | "oldest"
-  | "pending_orders"
-  | "pending_registrations"
-  | "most_orders"
-  | "most_registrations";
-
-export interface GetUsersParams {
+interface AdminUsersFilterParams {
   search?: string;
-  role?: UserRole;
-  sort?: UserSortOption;
+  role?: string;
+  sort?: string;
   page?: number;
   limit?: number;
 }
 
-export interface GetUsersResult {
-  users: AdminUser[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
 export async function getUsers(
-  params: GetUsersParams = {},
-): Promise<GetUsersResult> {
+  filter: AdminUsersFilterParams = {},
+): Promise<AdminUsersResponse> {
   await requireAdmin();
 
-  const { search = "", role, sort = "newest", page = 1, limit = 20 } = params;
+  const { search = "", role, sort = "newest", page = 1, limit = 20 } = filter;
   const skip = (page - 1) * limit;
 
   const searchId = parseInt(search);
@@ -68,11 +45,10 @@ export async function getUsers(
             ],
           }
         : {},
-      role ? { role } : {},
+      role ? { role: role as UserRole } : {},
     ],
   };
 
-  // Determine orderBy based on sort option (for DB-sortable fields)
   const getOrderBy = () => {
     switch (sort) {
       case "oldest":
@@ -112,7 +88,6 @@ export async function getUsers(
     prisma.user.count({ where }),
   ]);
 
-  // Get pending counts for fetched users
   const userIds = users.map((u) => u.id);
 
   const [pendingOrders, pendingRegistrations] = await Promise.all([
@@ -141,13 +116,12 @@ export async function getUsers(
     pendingRegistrations.map((p) => [p.user_id, p._count]),
   );
 
-  let adminUsers: AdminUser[] = users.map((user) => ({
+  let adminUsers = users.map((user) => ({
     ...user,
     pendingOrdersCount: pendingOrdersMap.get(user.id) ?? 0,
     pendingRegistrationsCount: pendingRegistrationsMap.get(user.id) ?? 0,
   }));
 
-  // Sort by pending counts (client-side since these are computed values)
   if (sort === "pending_orders") {
     adminUsers = adminUsers.sort(
       (a, b) => b.pendingOrdersCount - a.pendingOrdersCount,
@@ -159,7 +133,7 @@ export async function getUsers(
   }
 
   return {
-    users: adminUsers,
+    users: adminUsers as unknown as AdminUsersResponse["users"],
     total,
     page,
     limit,
@@ -167,26 +141,9 @@ export async function getUsers(
   };
 }
 
-export interface UserDetail {
-  id: number;
-  auth_id: string;
-  email: string;
-  name: string | null;
-  image: string | null;
-  phone: string | null;
-  role: UserRole;
-  created_at: Date;
-  updated_at: Date;
-  _count: {
-    product_orders: number;
-    event_registrations: number;
-    wishlists: number;
-    carts: number;
-    reviews: number;
-  };
-}
-
-export async function getUserById(userId: number): Promise<UserDetail | null> {
+export async function getUserById(
+  userId: number,
+): Promise<AdminUserDetail | null> {
   await requireAdmin();
 
   const user = await prisma.user.findUnique({
@@ -213,21 +170,15 @@ export async function getUserById(userId: number): Promise<UserDetail | null> {
     },
   });
 
-  return user;
-}
-
-export interface UpdateUserRoleResult {
-  success: boolean;
-  error?: string;
+  return user as AdminUserDetail | null;
 }
 
 export async function updateUserRole(
   userId: number,
-  newRole: UserRole,
-): Promise<UpdateUserRoleResult> {
+  newRole: string,
+): Promise<AdminUserMutationResponse> {
   const adminUser = await requireAdminUser();
 
-  // Prevent admin from demoting themselves
   if (adminUser.id === userId && newRole !== UserRole.ADMIN) {
     return {
       success: false,
@@ -245,16 +196,14 @@ export async function updateUserRole(
   }
 
   if (user.role === newRole) {
-    return { success: true }; // No change needed
+    return { success: true };
   }
 
-  // Update Prisma user role
   await prisma.user.update({
     where: { id: userId },
-    data: { role: newRole },
+    data: { role: newRole as UserRole },
   });
 
-  // Sync with Clerk publicMetadata
   try {
     const clerk = await clerkClient();
     await clerk.users.updateUserMetadata(user.auth_id, {
@@ -263,7 +212,6 @@ export async function updateUserRole(
       },
     });
   } catch (error) {
-    // Rollback Prisma update if Clerk sync fails
     await prisma.user.update({
       where: { id: userId },
       data: { role: user.role },
@@ -276,44 +224,10 @@ export async function updateUserRole(
     };
   }
 
-  revalidatePath("/dashboard/users");
-  revalidatePath(`/dashboard/users/${userId}`);
-
   return { success: true };
 }
 
-// User orders for Kanban board
-export interface UserOrder {
-  id: string;
-  status: string;
-  total: number;
-  subtotal: number;
-  discount: number;
-  shipping_fee: number;
-  created_at: Date;
-  request_at: Date | null;
-  approved_at: Date | null;
-  paid_at: Date | null;
-  shipped_at: Date | null;
-  delivered_at: Date | null;
-  cancelled_at: Date | null;
-  returned_at: Date | null;
-  refunded_at: Date | null;
-  ordered_products: {
-    id: number;
-    quantity: number;
-    price: number;
-    discount: number;
-    product: {
-      id: number;
-      name: string;
-      slug: string;
-      image_urls: string[];
-    };
-  }[];
-}
-
-export async function getUserOrders(userId: number): Promise<UserOrder[]> {
+export async function getUserOrders(userId: number): Promise<AdminUserOrder[]> {
   await requireAdmin();
 
   const orders = await prisma.productOrder.findMany({
@@ -354,37 +268,12 @@ export async function getUserOrders(userId: number): Promise<UserOrder[]> {
     },
   });
 
-  return orders;
-}
-
-// User registrations for Kanban board
-export interface UserRegistration {
-  id: string;
-  status: string;
-  seats_reserved: number;
-  price: number;
-  discount: number;
-  created_at: Date;
-  request_at: Date | null;
-  approved_at: Date | null;
-  paid_at: Date | null;
-  confirmed_at: Date | null;
-  cancelled_at: Date | null;
-  event: {
-    id: string;
-    title: string;
-    slug: string;
-    starts_at: Date;
-    ends_at: Date;
-    location: string;
-    image: string;
-    price: number;
-  };
+  return orders as unknown as AdminUserOrder[];
 }
 
 export async function getUserRegistrations(
   userId: number,
-): Promise<UserRegistration[]> {
+): Promise<AdminUserRegistration[]> {
   await requireAdmin();
 
   const registrations = await prisma.eventRegistration.findMany({
@@ -417,25 +306,12 @@ export async function getUserRegistrations(
     },
   });
 
-  return registrations;
+  return registrations as unknown as AdminUserRegistration[];
 }
 
-// User cart items
-export interface UserCartItem {
-  id: number;
-  quantity: number;
-  created_at: Date;
-  product: {
-    id: number;
-    name: string;
-    slug: string;
-    price: number;
-    available_quantity: number;
-    image_urls: string[];
-  };
-}
-
-export async function getUserCart(userId: number): Promise<UserCartItem[]> {
+export async function getUserCart(
+  userId: number,
+): Promise<AdminUserCartItem[]> {
   await requireAdmin();
 
   const cartItems = await prisma.cart.findMany({
@@ -458,70 +334,16 @@ export async function getUserCart(userId: number): Promise<UserCartItem[]> {
     },
   });
 
-  return cartItems;
-}
-
-// User wishlist items
-export interface UserWishlistItem {
-  id: number;
-  created_at: Date;
-  product: {
-    id: number;
-    name: string;
-    slug: string;
-    price: number;
-    available_quantity: number;
-    image_urls: string[];
-  };
+  return cartItems as unknown as AdminUserCartItem[];
 }
 
 export async function getUserWishlist(
   userId: number,
-): Promise<UserWishlistItem[]> {
+  page: number = 1,
+  limit: number = 12,
+): Promise<AdminUserWishlistResponse> {
   await requireAdmin();
 
-  const wishlistItems = await prisma.wishlist.findMany({
-    where: { user_id: userId },
-    orderBy: { created_at: "desc" },
-    select: {
-      id: true,
-      created_at: true,
-      product: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          price: true,
-          available_quantity: true,
-          image_urls: true,
-        },
-      },
-    },
-  });
-
-  return wishlistItems;
-}
-
-// Paginated user wishlist
-export interface GetUserWishlistParams {
-  userId: number;
-  page?: number;
-  limit?: number;
-}
-
-export interface GetUserWishlistResult {
-  data: UserWishlistItem[];
-  total: number;
-  page: number;
-  totalPages: number;
-}
-
-export async function getUserWishlistPaginated(
-  params: GetUserWishlistParams,
-): Promise<GetUserWishlistResult> {
-  await requireAdmin();
-
-  const { userId, page = 1, limit = 12 } = params;
   const skip = (page - 1) * limit;
 
   const [wishlistItems, total] = await Promise.all([
@@ -549,7 +371,7 @@ export async function getUserWishlistPaginated(
   ]);
 
   return {
-    data: wishlistItems,
+    data: wishlistItems as unknown as AdminUserWishlistItem[],
     total,
     page,
     totalPages: Math.ceil(total / limit),

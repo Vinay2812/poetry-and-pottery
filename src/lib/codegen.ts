@@ -11,7 +11,7 @@ const config: CodegenConfig = {
       },
     },
   ],
-  documents: ["src/graphql/*.ts", "!src/graphql/generated/**/*/"],
+  documents: ["src/graphql/**/*.ts", "!src/graphql/generated/**/*/"],
   generates: {
     // Types only - safe for server components
     "src/graphql/generated/types.ts": {

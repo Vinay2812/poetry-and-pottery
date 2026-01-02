@@ -1,26 +1,5 @@
 "use client";
 
-import {
-  type AboutPageContent,
-  type AboutProcessStep,
-  type AboutTeamMember,
-  type AboutValue,
-  type CarePageContent,
-  type CareWarning,
-  type FAQCategory,
-  type FAQItem,
-  type FAQPageContent,
-  type GlazeType,
-  type PrivacyPageContent,
-  type PrivacySection,
-  type ReturnStep,
-  type ReturnsPolicy,
-  type ShippingInfo,
-  type ShippingOption,
-  type ShippingPageContent,
-  type TermsPageContent,
-  type TermsSection,
-} from "@/actions/admin";
 import { ArrowLeft, Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
 
@@ -34,6 +13,28 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+
+import type {
+  AboutPageContent,
+  AboutProcessStep,
+  AboutTeamMember,
+  AboutValue,
+  CarePageContent,
+  CareWarning,
+  FaqCategory,
+  FaqItem,
+  FaqPageContent,
+  GlazeType,
+  PrivacyPageContent,
+  PrivacySection,
+  ReturnStep,
+  ReturnsPolicy,
+  ShippingInfo,
+  ShippingOption,
+  ShippingPageContent,
+  TermsPageContent,
+  TermsSection,
+} from "@/graphql/generated/types";
 
 import { type ContentPageEditorProps, ICON_OPTIONS } from "../types";
 
@@ -78,7 +79,7 @@ export function ContentPageEditor({
 
         {viewModel.slug === "faq" && (
           <FAQEditor
-            content={content as FAQPageContent}
+            content={content as FaqPageContent}
             onChange={(c) => setContent(c)}
           />
         )}
@@ -436,13 +437,13 @@ function FAQEditor({
   content,
   onChange,
 }: {
-  content: FAQPageContent;
-  onChange: (content: FAQPageContent) => void;
+  content: FaqPageContent;
+  onChange: (content: FaqPageContent) => void;
 }) {
   const updateCategory = (
     categoryIndex: number,
-    field: keyof FAQCategory,
-    value: string | FAQItem[],
+    field: keyof FaqCategory,
+    value: string | FaqItem[],
   ) => {
     const newCategories = [...content.categories];
     newCategories[categoryIndex] = {
@@ -469,7 +470,7 @@ function FAQEditor({
   const updateFAQ = (
     categoryIndex: number,
     faqIndex: number,
-    field: keyof FAQItem,
+    field: keyof FaqItem,
     value: string,
   ) => {
     const newCategories = [...content.categories];

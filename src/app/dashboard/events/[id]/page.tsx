@@ -4,7 +4,7 @@ import {
   getEventRegistrations,
   getEventReviews,
   getEventStatusOptions,
-} from "@/actions/admin";
+} from "@/data/admin/events/gateway/server";
 import {
   EventFormContainer,
   EventRegistrationsSection,

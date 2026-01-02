@@ -1,11 +1,12 @@
 "use client";
 
-import type { UserOrder } from "@/actions/admin";
 import { PackageIcon } from "lucide-react";
 import { useCallback } from "react";
 
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
 import { OptimizedImage } from "@/components/shared";
+
+import type { AdminUserOrder } from "@/graphql/generated/types";
 
 import { OrderDetailDialogContainer } from "../containers/order-detail-dialog-container";
 import type { OrderCardProps, OrdersBoardProps } from "../types";
@@ -106,7 +107,7 @@ export function OrdersBoard({
   onDialogOpenChange,
 }: OrdersBoardProps) {
   const renderOrderCard = useCallback(
-    (order: UserOrder, isDragging?: boolean) => {
+    (order: AdminUserOrder, isDragging?: boolean) => {
       const viewModel = buildOrderCardViewModel(order);
       return (
         <OrderCard

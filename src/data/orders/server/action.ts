@@ -11,8 +11,8 @@ import type {
   OrderItem,
   OrderMutationResponse,
   OrdersResponse,
-  ShippingAddressInput,
 } from "@/graphql/generated/types";
+import type { ShippingAddress } from "@/data/orders/types";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -291,7 +291,7 @@ export async function getOrderById(orderId: string): Promise<Order | null> {
 
 export async function createOrder(data: {
   shippingFee: number;
-  shippingAddress: ShippingAddressInput;
+  shippingAddress: ShippingAddress;
 }): Promise<OrderMutationResponse> {
   const userId = await getAuthenticatedUserId();
   if (!userId) {
@@ -336,12 +336,12 @@ export async function createOrder(data: {
           request_at: new Date(),
           shipping_address: {
             name: data.shippingAddress.name,
-            addressLine1: data.shippingAddress.addressLine1,
-            addressLine2: data.shippingAddress.addressLine2 ?? null,
+            address_line_1: data.shippingAddress.address_line_1,
+            address_line_2: data.shippingAddress.address_line_2 ?? null,
             city: data.shippingAddress.city,
             state: data.shippingAddress.state,
             zip: data.shippingAddress.zip,
-            contactNumber: data.shippingAddress.contactNumber ?? null,
+            contact_number: data.shippingAddress.contact_number ?? null,
           },
           ordered_products: {
             create: cartItems.map((item) => ({

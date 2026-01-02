@@ -1,15 +1,22 @@
+import { formatContentDate } from "@/lib/date";
+
 import type {
   AboutPageContent,
+  AdminContentPageListItem,
   CarePageContent,
-  ContentPageListItem,
-  ContentPageType,
-  FAQPageContent,
+  FaqPageContent,
   PrivacyPageContent,
   ShippingPageContent,
   TermsPageContent,
-} from "@/actions/admin";
+} from "@/graphql/generated/types";
 
-import { formatContentDate } from "@/lib/date";
+export type ContentPageSlug =
+  | "about"
+  | "faq"
+  | "shipping"
+  | "care"
+  | "privacy"
+  | "terms";
 
 /**
  * View model for the content pages list.
@@ -31,25 +38,25 @@ export interface ContentPageRowViewModel {
 export interface ContentPagesListProps {
   viewModel: ContentPagesListViewModel;
   isPending: boolean;
-  onToggleActive: (slug: ContentPageType) => void;
+  onToggleActive: (slug: ContentPageSlug) => void;
 }
 
 /**
  * Props for the ContentPagesListContainer.
  */
 export interface ContentPagesListContainerProps {
-  data: ContentPageListItem[];
+  data: AdminContentPageListItem[];
 }
 
 /**
  * View model for a single content page editor.
  */
 export interface ContentPageEditorViewModel {
-  slug: ContentPageType;
+  slug: ContentPageSlug;
   title: string;
   content:
     | AboutPageContent
-    | FAQPageContent
+    | FaqPageContent
     | ShippingPageContent
     | CarePageContent
     | PrivacyPageContent
@@ -65,7 +72,7 @@ export interface ContentPageEditorProps {
   onSave: (
     content:
       | AboutPageContent
-      | FAQPageContent
+      | FaqPageContent
       | ShippingPageContent
       | CarePageContent
       | PrivacyPageContent
@@ -78,11 +85,11 @@ export interface ContentPageEditorProps {
  * Props for the ContentPageEditorContainer.
  */
 export interface ContentPageEditorContainerProps {
-  slug: ContentPageType;
+  slug: ContentPageSlug;
   title: string;
   content:
     | AboutPageContent
-    | FAQPageContent
+    | FaqPageContent
     | ShippingPageContent
     | CarePageContent
     | PrivacyPageContent
@@ -93,7 +100,7 @@ export interface ContentPageEditorContainerProps {
  * Build content pages list view model.
  */
 export function buildContentPagesListViewModel(
-  data: ContentPageListItem[],
+  data: AdminContentPageListItem[],
 ): ContentPagesListViewModel {
   return {
     pages: data.map((page) => ({
@@ -109,11 +116,11 @@ export function buildContentPagesListViewModel(
  * Build content page editor view model.
  */
 export function buildContentPageEditorViewModel(
-  slug: ContentPageType,
+  slug: ContentPageSlug,
   title: string,
   content:
     | AboutPageContent
-    | FAQPageContent
+    | FaqPageContent
     | ShippingPageContent
     | CarePageContent
     | PrivacyPageContent
@@ -129,7 +136,7 @@ export function buildContentPageEditorViewModel(
 /**
  * Page descriptions for the list.
  */
-export const PAGE_DESCRIPTIONS: Record<ContentPageType, string> = {
+export const PAGE_DESCRIPTIONS: Record<ContentPageSlug, string> = {
   about: "Team members, values, and process steps",
   faq: "Frequently asked questions and answers",
   shipping: "Shipping options, policies, and return process",

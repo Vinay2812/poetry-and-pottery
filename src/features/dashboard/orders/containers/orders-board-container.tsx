@@ -1,7 +1,6 @@
 "use client";
 
-import { getOrderStatusColor, updateOrderStatus } from "@/actions/admin";
-import type { UserOrder } from "@/actions/admin";
+import { updateOrderStatus } from "@/data/admin/orders/gateway/server";
 import { OrderStatus } from "@/prisma/generated/enums";
 import {
   useCallback,
@@ -12,6 +11,10 @@ import {
 } from "react";
 
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";
+
+import { getOrderStatusColor } from "@/lib/status-utils";
+
+import type { AdminUserOrder } from "@/graphql/generated/types";
 
 import { OrdersBoard } from "../components/orders-board";
 import type { OrdersBoardContainerProps } from "../types";
@@ -29,10 +32,12 @@ const ORDER_COLUMNS: { id: OrderStatus; title: string }[] = [
 export function OrdersBoardContainer({ orders }: OrdersBoardContainerProps) {
   const [isPending, startTransition] = useTransition();
   const [optimisticOrders, setOptimisticOrders] = useOptimistic(orders);
-  const [selectedOrder, setSelectedOrder] = useState<UserOrder | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<AdminUserOrder | null>(
+    null,
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const columns = useMemo((): KanbanColumn<UserOrder>[] => {
+  const columns = useMemo((): KanbanColumn<AdminUserOrder>[] => {
     return ORDER_COLUMNS.map((col) => ({
       id: col.id,
       title: col.title,
@@ -41,7 +46,7 @@ export function OrdersBoardContainer({ orders }: OrdersBoardContainerProps) {
     }));
   }, [optimisticOrders]);
 
-  const handleCardClick = useCallback((order: UserOrder) => {
+  const handleCardClick = useCallback((order: AdminUserOrder) => {
     setSelectedOrder(order);
     setDialogOpen(true);
   }, []);

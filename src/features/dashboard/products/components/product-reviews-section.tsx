@@ -1,11 +1,12 @@
-import { type ProductReview } from "@/actions/admin";
 import { StarIcon, UserIcon } from "lucide-react";
 
 import { OptimizedImage } from "@/components/shared";
 
+import type { AdminProductReview } from "@/graphql/generated/types";
+
 interface ProductReviewsSectionProps {
   productId: number;
-  reviews: ProductReview[];
+  reviews: AdminProductReview[];
   total: number;
   averageRating: number;
 }

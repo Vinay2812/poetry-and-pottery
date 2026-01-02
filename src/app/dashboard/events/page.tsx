@@ -2,12 +2,13 @@ import {
   getEventLevelOptions,
   getEventStatusOptions,
   getEvents,
-} from "@/actions/admin";
+} from "@/data/admin/events/gateway/server";
 import { EventsTableContainer } from "@/features/dashboard/events";
-import type { EventLevel, EventStatus } from "@/prisma/generated/enums";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
+
+import { EventLevel, EventStatus } from "@/graphql/generated/types";
 
 interface EventsPageProps {
   searchParams: Promise<{

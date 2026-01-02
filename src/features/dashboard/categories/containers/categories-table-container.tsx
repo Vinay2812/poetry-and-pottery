@@ -5,7 +5,7 @@ import {
   deleteCategory,
   renameCategory,
   updateCategoryIcon,
-} from "@/actions/admin";
+} from "@/data/admin/categories/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useTransition } from "react";
 

@@ -1,15 +1,18 @@
 "use client";
 
 import {
-  type ContactInfo,
-  type HeroImages,
-  type SocialLinks,
   updateContactInfo,
   updateHeroImages,
   updateSocialLinks,
-} from "@/actions/admin";
+} from "@/data/admin/settings/gateway/server";
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
+
+import type {
+  ContactInfo,
+  HeroImages,
+  SocialLinks,
+} from "@/graphql/generated/types";
 
 import { SettingsForm } from "../components/settings-form";
 import {

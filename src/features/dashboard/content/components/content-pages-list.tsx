@@ -1,13 +1,16 @@
 "use client";
 
-import type { ContentPageType } from "@/actions/admin";
 import { Edit, FileText } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 
-import { type ContentPagesListProps, PAGE_DESCRIPTIONS } from "../types";
+import {
+  type ContentPageSlug,
+  type ContentPagesListProps,
+  PAGE_DESCRIPTIONS,
+} from "../types";
 
 export function ContentPagesList({
   viewModel,
@@ -28,7 +31,7 @@ export function ContentPagesList({
             <div>
               <h3 className="font-semibold">{page.title}</h3>
               <p className="text-muted-foreground text-sm">
-                {PAGE_DESCRIPTIONS[page.slug as ContentPageType]}
+                {PAGE_DESCRIPTIONS[page.slug as ContentPageSlug]}
               </p>
               <p className="text-muted-foreground mt-1 text-xs">
                 Last updated: {page.lastUpdated}
@@ -40,7 +43,7 @@ export function ContentPagesList({
               <Switch
                 checked={page.isActive}
                 onCheckedChange={() =>
-                  onToggleActive(page.slug as ContentPageType)
+                  onToggleActive(page.slug as ContentPageSlug)
                 }
                 disabled={isPending}
               />

@@ -1,7 +1,6 @@
 "use client";
 
 import { R2ImageUploaderContainer } from "@/features/uploads";
-import type { EventLevel, EventStatus } from "@/prisma/generated/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useEffect } from "react";
@@ -21,6 +20,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { formatDateTimeLocal } from "@/lib/date";
+
+import { EventLevel, EventStatus } from "@/graphql/generated/types";
 
 import type { EventFormProps } from "../types";
 import { generateSlug } from "../types";

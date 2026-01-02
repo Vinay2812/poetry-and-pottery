@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  getRegistrationStatusColor,
-  updateRegistrationStatus,
-} from "@/actions/admin";
-import type { UserRegistration } from "@/actions/admin";
+import { updateRegistrationStatus } from "@/data/admin/registrations/gateway/server";
 import { EventRegistrationStatus } from "@/prisma/generated/enums";
 import {
   useCallback,
@@ -15,6 +11,10 @@ import {
 } from "react";
 
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";
+
+import { getRegistrationStatusColor } from "@/lib/status-utils";
+
+import type { AdminUserRegistration } from "@/graphql/generated/types";
 
 import { RegistrationsBoard } from "../components/registrations-board";
 import type { RegistrationsBoardContainerProps } from "../types";
@@ -36,10 +36,10 @@ export function RegistrationsBoardContainer({
   const [optimisticRegistrations, setOptimisticRegistrations] =
     useOptimistic(registrations);
   const [selectedRegistration, setSelectedRegistration] =
-    useState<UserRegistration | null>(null);
+    useState<AdminUserRegistration | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const columns = useMemo((): KanbanColumn<UserRegistration>[] => {
+  const columns = useMemo((): KanbanColumn<AdminUserRegistration>[] => {
     return REGISTRATION_COLUMNS.map((col) => ({
       id: col.id,
       title: col.title,
@@ -48,7 +48,7 @@ export function RegistrationsBoardContainer({
     }));
   }, [optimisticRegistrations]);
 
-  const handleCardClick = useCallback((registration: UserRegistration) => {
+  const handleCardClick = useCallback((registration: AdminUserRegistration) => {
     setSelectedRegistration(registration);
     setDialogOpen(true);
   }, []);

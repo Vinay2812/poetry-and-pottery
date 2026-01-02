@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  getRegistrationStatusColor,
-  updateRegistrationStatus,
-} from "@/actions/admin";
-import type { UserRegistration } from "@/actions/admin";
+import { updateRegistrationStatus } from "@/data/admin/registrations/gateway/server";
 import { RegistrationDetailDialogContainer } from "@/features/dashboard/registrations";
 import { EventRegistrationStatus } from "@/prisma/generated/enums";
 import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
@@ -18,10 +14,14 @@ import {
 
 import { OptimizedImage } from "@/components/shared";
 
+import { getRegistrationStatusColor } from "@/lib/status-utils";
+
+import type { AdminUserRegistration } from "@/graphql/generated/types";
+
 import { KanbanBoard, KanbanColumn } from "./kanban-board";
 
 interface RegistrationsBoardProps {
-  registrations: UserRegistration[];
+  registrations: AdminUserRegistration[];
 }
 
 // Define the columns for registration status
@@ -39,15 +39,15 @@ export function RegistrationsBoard({ registrations }: RegistrationsBoardProps) {
   const [optimisticRegistrations, setOptimisticRegistrations] =
     useOptimistic(registrations);
   const [selectedRegistration, setSelectedRegistration] =
-    useState<UserRegistration | null>(null);
+    useState<AdminUserRegistration | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleCardClick = useCallback((registration: UserRegistration) => {
+  const handleCardClick = useCallback((registration: AdminUserRegistration) => {
     setSelectedRegistration(registration);
     setDialogOpen(true);
   }, []);
 
-  const columns = useMemo((): KanbanColumn<UserRegistration>[] => {
+  const columns = useMemo((): KanbanColumn<AdminUserRegistration>[] => {
     return REGISTRATION_COLUMNS.map((col) => ({
       id: col.id,
       title: col.title,
@@ -83,7 +83,7 @@ export function RegistrationsBoard({ registrations }: RegistrationsBoardProps) {
   );
 
   const renderRegistrationCard = useCallback(
-    (registration: UserRegistration, isDragging?: boolean) => {
+    (registration: AdminUserRegistration, isDragging?: boolean) => {
       return (
         <div
           onClick={() => handleCardClick(registration)}

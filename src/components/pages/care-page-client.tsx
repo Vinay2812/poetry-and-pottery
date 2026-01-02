@@ -1,6 +1,5 @@
 "use client";
 
-import type { CarePageContent } from "@/actions/admin";
 import { MobileHeaderContainer } from "@/features/layout";
 import {
   AlertTriangle,
@@ -19,6 +18,8 @@ import {
 } from "lucide-react";
 
 import { CTASection, SectionHeader } from "@/components/sections";
+
+import type { CarePageContent } from "@/graphql/generated/types";
 
 interface CarePageClientProps {
   content: CarePageContent;

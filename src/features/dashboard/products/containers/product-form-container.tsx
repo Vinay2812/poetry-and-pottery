@@ -1,6 +1,9 @@
 "use client";
 
-import { createProduct, updateProduct } from "@/actions/admin";
+import {
+  createProduct,
+  updateProduct,
+} from "@/data/admin/products/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useTransition } from "react";
 
@@ -26,8 +29,7 @@ export function ProductFormContainer({
     (data: ProductFormData) => {
       startTransition(async () => {
         if (isEditing && product) {
-          const result = await updateProduct({
-            id: product.id,
+          const result = await updateProduct(product.id, {
             name: data.name,
             slug: data.slug,
             description: data.description || undefined,

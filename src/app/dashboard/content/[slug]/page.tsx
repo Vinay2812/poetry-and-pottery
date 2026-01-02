@@ -1,11 +1,19 @@
-import { type ContentPageType, getContentPageBySlug } from "@/actions/admin";
+import { getContentPageBySlug } from "@/data/admin/content/gateway/server";
 import { ContentPageEditorContainer } from "@/features/dashboard/content";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
-const VALID_SLUGS: ContentPageType[] = [
+type ContentPageSlug =
+  | "about"
+  | "faq"
+  | "shipping"
+  | "care"
+  | "privacy"
+  | "terms";
+
+const VALID_SLUGS: ContentPageSlug[] = [
   "about",
   "faq",
   "shipping",
@@ -23,20 +31,20 @@ export default async function ContentEditorPage({
 }: ContentEditorPageProps) {
   const { slug } = await params;
 
-  if (!VALID_SLUGS.includes(slug as ContentPageType)) {
+  if (!VALID_SLUGS.includes(slug as ContentPageSlug)) {
     notFound();
   }
 
   return (
     <div className="space-y-6">
       <Suspense fallback={<ContentEditorSkeleton />}>
-        <ContentEditorContent slug={slug as ContentPageType} />
+        <ContentEditorContent slug={slug as ContentPageSlug} />
       </Suspense>
     </div>
   );
 }
 
-async function ContentEditorContent({ slug }: { slug: ContentPageType }) {
+async function ContentEditorContent({ slug }: { slug: ContentPageSlug }) {
   const page = await getContentPageBySlug(slug);
 
   if (!page) {

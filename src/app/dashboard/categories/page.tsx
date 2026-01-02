@@ -1,4 +1,7 @@
-import { getAvailableIcons, getCategories } from "@/actions/admin";
+import {
+  getAvailableIcons,
+  getCategories,
+} from "@/data/admin/categories/gateway/server";
 import { CategoriesTableContainer } from "@/features/dashboard/categories";
 import { Suspense } from "react";
 

@@ -1,11 +1,12 @@
 "use client";
 
-import type { UserRegistration } from "@/actions/admin";
 import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
 import { useCallback } from "react";
 
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
 import { OptimizedImage } from "@/components/shared";
+
+import type { AdminUserRegistration } from "@/graphql/generated/types";
 
 import { RegistrationDetailDialogContainer } from "../containers/registration-detail-dialog-container";
 import type { RegistrationCardProps, RegistrationsBoardProps } from "../types";
@@ -102,7 +103,7 @@ export function RegistrationsBoard({
   onDialogOpenChange,
 }: RegistrationsBoardProps) {
   const renderRegistrationCard = useCallback(
-    (registration: UserRegistration, isDragging?: boolean) => {
+    (registration: AdminUserRegistration, isDragging?: boolean) => {
       const viewModel = buildRegistrationCardViewModel(registration);
       return (
         <RegistrationCard

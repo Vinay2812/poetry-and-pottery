@@ -6,7 +6,6 @@ import type {
   CancelOrderMutation,
   CancelOrderMutationVariables,
   CreateOrderMutation,
-  CreateOrderMutationVariables,
   Order,
   OrderMutationResponse,
   OrderQuery,
@@ -14,8 +13,16 @@ import type {
   OrdersQuery,
   OrdersQueryVariables,
   OrdersResponse,
-  ShippingAddressInput,
 } from "@/graphql/generated/types";
+import type { ShippingAddress } from "../types";
+
+// Local type for mutation variables (matches API snake_case schema)
+interface CreateOrderVariables {
+  input: {
+    shipping_fee: number;
+    shipping_address: ShippingAddress;
+  };
+}
 import {
   CANCEL_ORDER_MUTATION,
   CREATE_ORDER_MUTATION,
@@ -60,19 +67,16 @@ export async function getOrderById(orderId: string): Promise<Order | null> {
 
 export async function createOrder(data: {
   shippingFee: number;
-  shippingAddress: ShippingAddressInput;
+  shippingAddress: ShippingAddress;
 }): Promise<OrderMutationResponse> {
   const client = getClient();
 
-  const result = await client.mutate<
-    CreateOrderMutation,
-    CreateOrderMutationVariables
-  >({
+  const result = await client.mutate<CreateOrderMutation, CreateOrderVariables>({
     mutation: CREATE_ORDER_MUTATION,
     variables: {
       input: {
-        shippingFee: data.shippingFee,
-        shippingAddress: data.shippingAddress,
+        shipping_fee: data.shippingFee,
+        shipping_address: data.shippingAddress,
       },
     },
   });

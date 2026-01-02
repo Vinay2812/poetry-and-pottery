@@ -1,6 +1,5 @@
 "use client";
 
-import type { ShippingPageContent } from "@/actions/admin";
 import { MobileHeaderContainer } from "@/features/layout";
 import {
   Clock,
@@ -12,6 +11,8 @@ import {
 } from "lucide-react";
 
 import { CTASection, SectionHeader } from "@/components/sections";
+
+import type { ShippingPageContent } from "@/graphql/generated/types";
 
 interface ShippingPageClientProps {
   content: ShippingPageContent;

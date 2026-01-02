@@ -1,8 +1,9 @@
 "use client";
 
-import type { PrivacyPageContent } from "@/actions/admin";
 import { MobileHeaderContainer } from "@/features/layout";
 import { Calendar, Mail, Shield } from "lucide-react";
+
+import type { PrivacyPageContent } from "@/graphql/generated/types";
 
 interface PrivacyPageClientProps {
   content: PrivacyPageContent;

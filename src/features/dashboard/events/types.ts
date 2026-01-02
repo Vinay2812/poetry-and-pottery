@@ -1,7 +1,13 @@
-import type { AdminEvent, EventDetail, GetEventsResult } from "@/actions/admin";
-import type { EventLevel, EventStatus } from "@/prisma/generated/enums";
-
 import { formatDateTime } from "@/lib/date";
+
+import { EventLevel, EventStatus } from "@/graphql/generated/types";
+import type {
+  AdminEvent,
+  AdminEventDetail,
+  AdminEventsResponse,
+  AdminLevelOption,
+  AdminStatusOption,
+} from "@/graphql/generated/types";
 
 /**
  * View model for a single event row in the table.
@@ -11,8 +17,8 @@ export interface EventRowViewModel {
   slug: string;
   title: string;
   description: string;
-  startsAt: Date;
-  endsAt: Date;
+  startsAt: Date | string;
+  endsAt: Date | string;
   startsAtFormatted: string;
   endsAtFormatted: string;
   location: string;
@@ -27,7 +33,7 @@ export interface EventRowViewModel {
   level: EventLevel;
   registrationsCount: number;
   reviewsCount: number;
-  createdAt: Date;
+  createdAt: Date | string;
   isUpcoming: boolean;
   isFullyBooked: boolean;
 }
@@ -60,8 +66,8 @@ export interface EventsTableViewModel {
  */
 export interface EventsTableProps {
   viewModel: EventsTableViewModel;
-  statusOptions: { value: EventStatus; label: string }[];
-  levelOptions: { value: EventLevel; label: string }[];
+  statusOptions: AdminStatusOption[];
+  levelOptions: AdminLevelOption[];
   isPending: boolean;
   onSearch: (value: string) => void;
   onStatusFilter: (value: string) => void;
@@ -75,9 +81,9 @@ export interface EventsTableProps {
  * Props for the EventsTableContainer.
  */
 export interface EventsTableContainerProps {
-  data: GetEventsResult;
-  statusOptions: { value: EventStatus; label: string }[];
-  levelOptions: { value: EventLevel; label: string }[];
+  data: AdminEventsResponse;
+  statusOptions: AdminStatusOption[];
+  levelOptions: AdminLevelOption[];
 }
 
 /**
@@ -109,8 +115,8 @@ export interface EventFormViewModel {
  */
 export interface EventFormProps {
   viewModel: EventFormViewModel;
-  statusOptions: { value: EventStatus; label: string }[];
-  levelOptions: { value: EventLevel; label: string }[];
+  statusOptions: AdminStatusOption[];
+  levelOptions: AdminLevelOption[];
   isSubmitting: boolean;
   isEditing: boolean;
   onSubmit: (data: EventFormData) => void;
@@ -144,9 +150,9 @@ export interface EventFormData {
  * Props for the EventFormContainer.
  */
 export interface EventFormContainerProps {
-  event?: EventDetail;
-  statusOptions: { value: EventStatus; label: string }[];
-  levelOptions: { value: EventLevel; label: string }[];
+  event?: AdminEventDetail;
+  statusOptions: AdminStatusOption[];
+  levelOptions: AdminLevelOption[];
 }
 
 /**
@@ -185,7 +191,7 @@ export function buildEventRowViewModel(event: AdminEvent): EventRowViewModel {
  * Build pagination view model from result data.
  */
 export function buildPaginationViewModel(
-  data: GetEventsResult,
+  data: AdminEventsResponse,
 ): PaginationViewModel {
   return {
     page: data.page,
@@ -201,7 +207,7 @@ export function buildPaginationViewModel(
  * Build events table view model.
  */
 export function buildEventsTableViewModel(
-  data: GetEventsResult,
+  data: AdminEventsResponse,
   searchValue: string,
   statusFilter: string,
   levelFilter: string,
@@ -219,13 +225,14 @@ export function buildEventsTableViewModel(
  * Build event form view model from event detail.
  */
 export function buildEventFormViewModel(
-  event?: EventDetail,
-  statusOptions?: { value: EventStatus; label: string }[],
-  levelOptions?: { value: EventLevel; label: string }[],
+  event?: AdminEventDetail,
+  statusOptions?: AdminStatusOption[],
+  levelOptions?: AdminLevelOption[],
 ): EventFormViewModel {
   const defaultStatus =
-    statusOptions?.[0]?.value || ("UPCOMING" as EventStatus);
-  const defaultLevel = levelOptions?.[0]?.value || ("BEGINNER" as EventLevel);
+    (statusOptions?.[0]?.value as EventStatus) || EventStatus.Upcoming;
+  const defaultLevel =
+    (levelOptions?.[0]?.value as EventLevel) || EventLevel.Beginner;
 
   if (!event) {
     const now = new Date();

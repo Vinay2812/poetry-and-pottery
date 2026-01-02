@@ -1,6 +1,5 @@
 "use client";
 
-import type { FAQPageContent } from "@/actions/admin";
 import { MobileHeaderContainer } from "@/features/layout";
 import { HelpCircle, Mail, MessageCircle, Phone } from "lucide-react";
 
@@ -12,8 +11,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+import type { FaqPageContent } from "@/graphql/generated/types";
+
 interface FAQPageClientProps {
-  content: FAQPageContent;
+  content: FaqPageContent;
 }
 
 export function FAQPageClient({ content }: FAQPageClientProps) {

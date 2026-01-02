@@ -131,12 +131,12 @@ export function CartContainer({
           shippingFee: subtotal > 2000 ? 0 : 150,
           shippingAddress: {
             name: selectedAddress.name,
-            addressLine1: selectedAddress.address_line_1,
-            addressLine2: selectedAddress.address_line_2 || undefined,
+            address_line_1: selectedAddress.address_line_1,
+            address_line_2: selectedAddress.address_line_2 || undefined,
             city: selectedAddress.city,
             state: selectedAddress.state,
             zip: selectedAddress.zip,
-            contactNumber: selectedAddress.contact_number || undefined,
+            contact_number: selectedAddress.contact_number || undefined,
           },
         });
 
@@ -169,17 +169,17 @@ export function CartContainer({
           customerName: orderShippingAddress?.name || selectedAddress.name,
           customerEmail: result.data.user.email,
           customerPhone:
-            orderShippingAddress?.contactNumber ||
+            orderShippingAddress?.contact_number ||
             selectedAddress.contact_number ||
             undefined,
           shippingAddress: {
             name: selectedAddress.name,
-            addressLine1: selectedAddress.address_line_1,
-            addressLine2: selectedAddress.address_line_2 || undefined,
+            address_line_1: selectedAddress.address_line_1,
+            address_line_2: selectedAddress.address_line_2 || undefined,
             city: selectedAddress.city,
             state: selectedAddress.state,
             zip: selectedAddress.zip,
-            contactNumber: selectedAddress.contact_number || undefined,
+            contact_number: selectedAddress.contact_number || undefined,
           },
           items: result.data.ordered_products.map((item) => ({
             name: item.product.name,

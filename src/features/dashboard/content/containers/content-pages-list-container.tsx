@@ -1,12 +1,13 @@
 "use client";
 
-import { type ContentPageType, toggleContentPageActive } from "@/actions/admin";
+import { toggleContentPageActive } from "@/data/admin/content/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useTransition } from "react";
 import { toast } from "sonner";
 
 import { ContentPagesList } from "../components/content-pages-list";
 import {
+  type ContentPageSlug,
   type ContentPagesListContainerProps,
   buildContentPagesListViewModel,
 } from "../types";
@@ -20,7 +21,7 @@ export function ContentPagesListContainer({
   const viewModel = useMemo(() => buildContentPagesListViewModel(data), [data]);
 
   const handleToggleActive = useCallback(
-    (slug: ContentPageType) => {
+    (slug: ContentPageSlug) => {
       startTransition(async () => {
         const result = await toggleContentPageActive(slug);
         if (result.success) {

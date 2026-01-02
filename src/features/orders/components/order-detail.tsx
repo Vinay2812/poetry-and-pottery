@@ -176,19 +176,19 @@ function ShippingAddressCard({ address, className }: ShippingAddressCardProps) {
             {address.name}
           </span>
         </div>
-        {address.contactNumber && (
+        {address.contact_number && (
           <div className="flex items-center gap-2">
             <Phone className="h-4 w-4 shrink-0 text-neutral-400" />
             <span className="text-sm text-neutral-600 dark:text-neutral-400">
-              {address.contactNumber}
+              {address.contact_number}
             </span>
           </div>
         )}
         <div className="flex items-start gap-2">
           <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-neutral-400" />
           <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-            {address.addressLine1}
-            {address.addressLine2 && `, ${address.addressLine2}`}
+            {address.address_line_1}
+            {address.address_line_2 && `, ${address.address_line_2}`}
             {`, ${address.city}`}
             {`, ${address.state}`}
             {` - ${address.zip}`}

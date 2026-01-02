@@ -1,11 +1,12 @@
 "use client";
 
-import { type UserSortOption, updateUserRole } from "@/actions/admin";
+import { updateUserRole } from "@/data/admin/users/gateway/server";
 import type { UserRole } from "@/prisma/generated/enums";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 
 import { UsersTable } from "../components/users-table";
+import type { UserSortOption } from "../types";
 import type { UsersTableContainerProps } from "../types";
 import { buildUsersTableViewModel } from "../types";
 

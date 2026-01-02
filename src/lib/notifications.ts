@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 
 import { BUSINESS_EMAIL, GMAIL_APP_PASSWORD, GMAIL_USER } from "../consts/env";
+import type { ShippingAddress } from "@/data/orders/types";
 import { formatEventDateFull } from "./date";
 
 // Create Gmail transporter
@@ -34,15 +35,7 @@ export interface OrderNotificationData {
   customerName: string;
   customerEmail: string;
   customerPhone?: string;
-  shippingAddress: {
-    name: string;
-    addressLine1: string;
-    addressLine2?: string;
-    city: string;
-    state: string;
-    zip: string;
-    contactNumber?: string;
-  };
+  shippingAddress: ShippingAddress;
   items: Array<{
     name: string;
     quantity: number;
@@ -132,10 +125,10 @@ function generateOrderEmailHtml(data: OrderNotificationData): string {
       <h3 style="color: #1a1a1a;">Shipping Address</h3>
       <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <p style="margin: 8px 0;"><strong>${data.shippingAddress.name}</strong></p>
-        <p style="margin: 8px 0;">${data.shippingAddress.addressLine1}</p>
-        ${data.shippingAddress.addressLine2 ? `<p style="margin: 8px 0;">${data.shippingAddress.addressLine2}</p>` : ""}
+        <p style="margin: 8px 0;">${data.shippingAddress.address_line_1}</p>
+        ${data.shippingAddress.address_line_2 ? `<p style="margin: 8px 0;">${data.shippingAddress.address_line_2}</p>` : ""}
         <p style="margin: 8px 0;">${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddress.zip}</p>
-        ${data.shippingAddress.contactNumber ? `<p style="margin: 8px 0;"><strong>Contact:</strong> ${data.shippingAddress.contactNumber}</p>` : ""}
+        ${data.shippingAddress.contact_number ? `<p style="margin: 8px 0;"><strong>Contact:</strong> ${data.shippingAddress.contact_number}</p>` : ""}
       </div>
 
       <p style="color: #666; font-size: 14px;">Please process this order and contact the customer.</p>

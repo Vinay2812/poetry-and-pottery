@@ -1,6 +1,9 @@
 "use client";
 
-import { deleteEvent, updateEventStatus } from "@/actions/admin";
+import {
+  deleteEvent,
+  updateEventStatus,
+} from "@/data/admin/events/gateway/server";
 import type { EventStatus } from "@/prisma/generated/enums";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";

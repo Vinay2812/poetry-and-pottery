@@ -1,7 +1,6 @@
 "use client";
 
-import { updateUserRole } from "@/actions/admin";
-import type { AdminUser, GetUsersResult } from "@/actions/admin";
+import { updateUserRole } from "@/data/admin/users/gateway/server";
 import { UserRole } from "@/prisma/generated/enums";
 import {
   ChevronLeftIcon,
@@ -32,8 +31,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import type { AdminUser, AdminUsersResponse } from "@/graphql/generated/types";
+
 interface UsersTableProps {
-  data: GetUsersResult;
+  data: AdminUsersResponse;
   currentUserId: number;
 }
 

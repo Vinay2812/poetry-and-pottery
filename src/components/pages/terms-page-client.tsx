@@ -1,8 +1,9 @@
 "use client";
 
-import type { TermsPageContent } from "@/actions/admin";
 import { MobileHeaderContainer } from "@/features/layout";
 import { Calendar, FileText, Mail } from "lucide-react";
+
+import type { TermsPageContent } from "@/graphql/generated/types";
 
 interface TermsPageClientProps {
   content: TermsPageContent;

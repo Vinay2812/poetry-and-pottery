@@ -1,9 +1,16 @@
-import type {
-  AdminUser,
-  GetUsersResult,
-  UserSortOption,
-} from "@/actions/admin";
 import type { UserRole } from "@/prisma/generated/enums";
+
+import type { AdminUser, AdminUsersResponse } from "@/graphql/generated/types";
+
+/**
+ * Sort options for users table.
+ */
+export type UserSortOption =
+  | "newest"
+  | "oldest"
+  | "name_asc"
+  | "name_desc"
+  | "pending_orders";
 
 /**
  * View model for a single user row.
@@ -18,7 +25,7 @@ export interface UserRowViewModel {
   registrationsCount: number;
   pendingOrdersCount: number;
   pendingRegistrationsCount: number;
-  createdAt: Date;
+  createdAt: Date | string;
   isCurrentUser: boolean;
 }
 
@@ -62,7 +69,7 @@ export interface UsersTableProps {
  * Props for the UsersTableContainer.
  */
 export interface UsersTableContainerProps {
-  data: GetUsersResult;
+  data: AdminUsersResponse;
   currentUserId: number;
 }
 
@@ -75,9 +82,9 @@ export function buildUserRowViewModel(
 ): UserRowViewModel {
   return {
     id: user.id,
-    name: user.name,
+    name: user.name ?? null,
     email: user.email,
-    image: user.image,
+    image: user.image ?? null,
     role: user.role,
     ordersCount: user._count.product_orders,
     registrationsCount: user._count.event_registrations,
@@ -92,7 +99,7 @@ export function buildUserRowViewModel(
  * Build pagination view model from result data.
  */
 export function buildPaginationViewModel(
-  data: GetUsersResult,
+  data: AdminUsersResponse,
 ): PaginationViewModel {
   return {
     page: data.page,
@@ -108,7 +115,7 @@ export function buildPaginationViewModel(
  * Build users table view model.
  */
 export function buildUsersTableViewModel(
-  data: GetUsersResult,
+  data: AdminUsersResponse,
   currentUserId: number,
   searchValue: string,
   roleFilter: string,

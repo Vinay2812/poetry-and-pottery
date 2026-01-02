@@ -4,7 +4,7 @@ import {
   getUserOrders,
   getUserRegistrations,
   getUserWishlistPaginated,
-} from "@/actions/admin";
+} from "@/data/admin/users/gateway/server";
 import { OrdersBoardContainer } from "@/features/dashboard/orders";
 import { RegistrationsBoardContainer } from "@/features/dashboard/registrations";
 import { UserRole } from "@/prisma/generated/enums";
@@ -42,7 +42,7 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
       getUserOrders(userId),
       getUserRegistrations(userId),
       getUserCart(userId),
-      getUserWishlistPaginated({ userId, page: 1, limit: 12 }),
+      getUserWishlistPaginated(userId, 1, 12),
     ],
   );
 
@@ -144,7 +144,7 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
 interface CartItem {
   id: number;
   quantity: number;
-  created_at: Date;
+  created_at: Date | string;
   product: {
     id: number;
     name: string;

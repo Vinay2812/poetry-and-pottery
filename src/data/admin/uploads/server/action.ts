@@ -9,29 +9,18 @@ import {
   getSignedUrlForUpload,
 } from "@/lib/r2";
 
-export interface GetPresignedUrlParams {
-  filename: string;
-  contentType: string;
-  fileSize: number;
-  folder?: string;
-}
-
-export interface GetPresignedUrlResult {
-  success: boolean;
-  presignedUrl?: string;
-  publicUrl?: string;
-  key?: string;
-  error?: string;
-}
+import type {
+  GetPresignedUploadUrlInput,
+  PresignedUploadUrlResponse,
+} from "@/graphql/generated/types";
 
 export async function getPresignedUploadUrl(
-  params: GetPresignedUrlParams,
-): Promise<GetPresignedUrlResult> {
+  input: GetPresignedUploadUrlInput,
+): Promise<PresignedUploadUrlResponse> {
   await requireAdmin();
 
-  const { filename, contentType, fileSize, folder } = params;
+  const { filename, contentType, fileSize, folder } = input;
 
-  // Validate required fields
   if (!filename || !contentType || !fileSize) {
     return {
       success: false,
@@ -39,7 +28,6 @@ export async function getPresignedUploadUrl(
     };
   }
 
-  // Validate content type
   if (!ALLOWED_IMAGE_TYPES.includes(contentType)) {
     return {
       success: false,
@@ -47,7 +35,6 @@ export async function getPresignedUploadUrl(
     };
   }
 
-  // Validate file size
   if (fileSize > MAX_FILE_SIZE) {
     return {
       success: false,
@@ -56,7 +43,7 @@ export async function getPresignedUploadUrl(
   }
 
   try {
-    const key = generateUniqueKey(filename, folder);
+    const key = generateUniqueKey(filename, folder ?? undefined);
     const presignedUrl = await getSignedUrlForUpload(key, contentType, 600);
     const publicUrl = getPublicUrl(key);
 
@@ -66,8 +53,7 @@ export async function getPresignedUploadUrl(
       publicUrl,
       key,
     };
-  } catch (error) {
-    console.error("Error generating presigned URL:", error);
+  } catch {
     return {
       success: false,
       error: "Failed to generate presigned URL",

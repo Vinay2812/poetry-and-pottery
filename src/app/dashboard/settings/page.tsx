@@ -1,4 +1,8 @@
-import { getContactInfo, getHeroImages, getSocialLinks } from "@/actions/admin";
+import {
+  getContactInfo,
+  getHeroImages,
+  getSocialLinks,
+} from "@/data/admin/settings/gateway/server";
 import { SettingsFormContainer } from "@/features/dashboard/settings";
 import { Suspense } from "react";
 

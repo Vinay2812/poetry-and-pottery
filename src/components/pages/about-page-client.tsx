@@ -1,6 +1,5 @@
 "use client";
 
-import type { AboutPageContent } from "@/actions/admin";
 import { MobileHeaderContainer } from "@/features/layout";
 import {
   Flame,
@@ -15,6 +14,8 @@ import { ProcessStepCard, TeamMemberCard, ValueCard } from "@/components/cards";
 import { ContactForm } from "@/components/forms";
 import { CTASection, SectionHeader } from "@/components/sections";
 import { OptimizedImage } from "@/components/shared";
+
+import type { AboutPageContent } from "@/graphql/generated/types";
 
 interface AboutPageClientProps {
   content: AboutPageContent;

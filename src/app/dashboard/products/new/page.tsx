@@ -1,4 +1,4 @@
-import { getAllCategories } from "@/actions/admin";
+import { getAllCategories } from "@/data/admin/products/gateway/server";
 import { ProductFormContainer } from "@/features/dashboard/products";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";

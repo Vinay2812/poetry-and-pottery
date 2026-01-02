@@ -1,6 +1,9 @@
 "use client";
 
-import { deleteProduct, toggleProductActive } from "@/actions/admin";
+import {
+  deleteProduct,
+  toggleProductActive,
+} from "@/data/admin/products/gateway/server";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 

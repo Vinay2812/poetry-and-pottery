@@ -5,7 +5,7 @@ import {
   getRecentOrders,
   getRecentRegistrations,
   getUpcomingEvents,
-} from "@/actions/admin";
+} from "@/data/admin/analytics/gateway/server";
 import {
   HeroStats,
   InventoryAlertsSection,

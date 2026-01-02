@@ -1,17 +1,18 @@
 "use client";
 
-import {
-  type AboutPageContent,
-  type CarePageContent,
-  type FAQPageContent,
-  type PrivacyPageContent,
-  type ShippingPageContent,
-  type TermsPageContent,
-  updateContentPage,
-} from "@/actions/admin";
+import { updateContentPage } from "@/data/admin/content/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useTransition } from "react";
 import { toast } from "sonner";
+
+import type {
+  AboutPageContent,
+  CarePageContent,
+  FaqPageContent,
+  PrivacyPageContent,
+  ShippingPageContent,
+  TermsPageContent,
+} from "@/graphql/generated/types";
 
 import { ContentPageEditor } from "../components/content-page-editor";
 import {
@@ -36,7 +37,7 @@ export function ContentPageEditorContainer({
     (
       newContent:
         | AboutPageContent
-        | FAQPageContent
+        | FaqPageContent
         | ShippingPageContent
         | CarePageContent
         | PrivacyPageContent

@@ -1,4 +1,8 @@
-import type { ContactInfo, HeroImages, SocialLinks } from "@/actions/admin";
+import type {
+  ContactInfo,
+  HeroImages,
+  SocialLinks,
+} from "@/graphql/generated/types";
 
 /**
  * View model for the settings page.

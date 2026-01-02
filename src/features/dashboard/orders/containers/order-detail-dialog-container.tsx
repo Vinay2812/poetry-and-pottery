@@ -4,7 +4,7 @@ import {
   updateOrderDiscount,
   updateOrderItemDiscount,
   updateOrderItemQuantity,
-} from "@/actions/admin";
+} from "@/data/admin/orders/gateway/server";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
 import { formatCreatedAt } from "@/lib/date";

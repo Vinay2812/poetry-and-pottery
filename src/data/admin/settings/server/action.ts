@@ -1,51 +1,22 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
-export interface HeroImages {
-  home: string;
-  ourStory: string;
-  products: string;
-  events: string;
-}
+import type {
+  AdminSettingsMutationResponse,
+  AdminSiteSetting,
+  ContactInfo,
+  HeroImages,
+  SocialLinks,
+} from "@/graphql/generated/types";
 
-export interface ContactInfo {
-  address: string;
-  email: string;
-  phone: string;
-  hours: string;
-}
-
-export interface SocialLinks {
-  instagram: string;
-  facebook: string;
-  twitter: string;
-  pinterest: string;
-}
-
-export interface SiteSetting {
-  id: number;
-  key: string;
-  value: unknown;
-  updated_at: Date;
-}
-
-export interface SettingsActionResult {
-  success: boolean;
-  error?: string;
-}
-
-// Setting keys (internal use only - cannot export from "use server" file)
 const SETTING_KEYS = {
   HERO_IMAGES: "hero_images",
   CONTACT_INFO: "contact_info",
   SOCIAL_LINKS: "social_links",
 } as const;
 
-// Default values
 const DEFAULT_HERO_IMAGES: HeroImages = {
   home: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1920&q=80",
   ourStory:
@@ -93,33 +64,24 @@ async function saveSetting(
   });
 }
 
-/**
- * Get all site settings.
- */
-export async function getAllSettings(): Promise<SiteSetting[]> {
+export async function getAllSettings(): Promise<AdminSiteSetting[]> {
   await requireAdmin();
 
   const settings = await prisma.siteSetting.findMany({
     orderBy: { key: "asc" },
   });
 
-  return settings;
+  return settings as unknown as AdminSiteSetting[];
 }
 
-/**
- * Get hero images settings.
- */
 export async function getHeroImages(): Promise<HeroImages> {
   await requireAdmin();
   return getSetting(SETTING_KEYS.HERO_IMAGES, DEFAULT_HERO_IMAGES);
 }
 
-/**
- * Update hero images settings.
- */
 export async function updateHeroImages(
   images: Partial<HeroImages>,
-): Promise<SettingsActionResult> {
+): Promise<AdminSettingsMutationResponse> {
   await requireAdmin();
 
   try {
@@ -130,33 +92,20 @@ export async function updateHeroImages(
     const updated = { ...current, ...images };
     await saveSetting(SETTING_KEYS.HERO_IMAGES, updated);
 
-    revalidatePath("/dashboard/settings");
-    revalidatePath("/");
-    revalidatePath("/about");
-    revalidatePath("/products");
-    revalidatePath("/events");
-
     return { success: true };
-  } catch (error) {
-    console.error("Failed to update hero images:", error);
+  } catch {
     return { success: false, error: "Failed to update hero images" };
   }
 }
 
-/**
- * Get contact info settings.
- */
 export async function getContactInfo(): Promise<ContactInfo> {
   await requireAdmin();
   return getSetting(SETTING_KEYS.CONTACT_INFO, DEFAULT_CONTACT_INFO);
 }
 
-/**
- * Update contact info settings.
- */
 export async function updateContactInfo(
   info: Partial<ContactInfo>,
-): Promise<SettingsActionResult> {
+): Promise<AdminSettingsMutationResponse> {
   await requireAdmin();
 
   try {
@@ -167,32 +116,20 @@ export async function updateContactInfo(
     const updated = { ...current, ...info };
     await saveSetting(SETTING_KEYS.CONTACT_INFO, updated);
 
-    revalidatePath("/dashboard/settings");
-    revalidatePath("/about");
-    revalidatePath("/contact");
-    revalidatePath("/faq");
-
     return { success: true };
-  } catch (error) {
-    console.error("Failed to update contact info:", error);
+  } catch {
     return { success: false, error: "Failed to update contact info" };
   }
 }
 
-/**
- * Get social links settings.
- */
 export async function getSocialLinks(): Promise<SocialLinks> {
   await requireAdmin();
   return getSetting(SETTING_KEYS.SOCIAL_LINKS, DEFAULT_SOCIAL_LINKS);
 }
 
-/**
- * Update social links settings.
- */
 export async function updateSocialLinks(
   links: Partial<SocialLinks>,
-): Promise<SettingsActionResult> {
+): Promise<AdminSettingsMutationResponse> {
   await requireAdmin();
 
   try {
@@ -203,44 +140,21 @@ export async function updateSocialLinks(
     const updated = { ...current, ...links };
     await saveSetting(SETTING_KEYS.SOCIAL_LINKS, updated);
 
-    revalidatePath("/dashboard/settings");
-    revalidatePath("/");
-
     return { success: true };
-  } catch (error) {
-    console.error("Failed to update social links:", error);
+  } catch {
     return { success: false, error: "Failed to update social links" };
   }
 }
 
-/**
- * Get a specific setting by key (for public pages).
- * This function doesn't require admin access.
- */
-export async function getPublicSetting<T>(
-  key: string,
-  defaultValue: T,
-): Promise<T> {
-  return getSetting(key, defaultValue);
-}
-
-/**
- * Get public hero images (no admin required).
- */
+// Public settings functions (no admin check required)
 export async function getPublicHeroImages(): Promise<HeroImages> {
   return getSetting(SETTING_KEYS.HERO_IMAGES, DEFAULT_HERO_IMAGES);
 }
 
-/**
- * Get public contact info (no admin required).
- */
 export async function getPublicContactInfo(): Promise<ContactInfo> {
   return getSetting(SETTING_KEYS.CONTACT_INFO, DEFAULT_CONTACT_INFO);
 }
 
-/**
- * Get public social links (no admin required).
- */
 export async function getPublicSocialLinks(): Promise<SocialLinks> {
   return getSetting(SETTING_KEYS.SOCIAL_LINKS, DEFAULT_SOCIAL_LINKS);
 }
