@@ -28,6 +28,7 @@ export interface ProductCardProps {
   viewModel: ProductCardViewModel;
   variant?: "default" | "wishlist";
   className?: string;
+  disableImageCarousel?: boolean;
   onImageClick: () => void;
   onWishlistClick: () => void;
   onAddToCart: () => void;
@@ -42,6 +43,7 @@ export interface ProductCardContainerProps {
   variant?: "default" | "wishlist";
   onRemoveFromWishlist?: () => void;
   className?: string;
+  disableImageCarousel?: boolean;
 }
 
 /**

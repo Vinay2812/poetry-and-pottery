@@ -28,6 +28,7 @@ interface ImageCarouselProps {
   startIndex?: number;
   loop?: boolean;
   onIndexChange?: (index: number) => void;
+  disableCarousel?: boolean;
 }
 
 export function ImageCarousel({
@@ -43,6 +44,7 @@ export function ImageCarousel({
   startIndex = 0,
   loop = true,
   onIndexChange,
+  disableCarousel = false,
 }: ImageCarouselProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(startIndex);
@@ -87,6 +89,38 @@ export function ImageCarousel({
             className={cn("object-cover", imageClassName)}
           />
         </div>
+      </div>
+    );
+  }
+
+  if (disableCarousel) {
+    return (
+      <div
+        className={cn(
+          "relative w-full max-w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800",
+          className,
+        )}
+      >
+        <div
+          className={cn(
+            "relative aspect-square w-full overflow-hidden",
+            onImageClick && "cursor-pointer",
+          )}
+          onClick={() => onImageClick?.(0)}
+        >
+          <OptimizedImage
+            src={images[0] || "/placeholder.jpg"}
+            alt={alt}
+            fill
+            className={cn(
+              "object-cover transition-transform duration-700 ease-in-out group-hover:scale-105",
+              imageClassName,
+            )}
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          />
+        </div>
+        {/* Overlay Gradient for depth */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
     );
   }
