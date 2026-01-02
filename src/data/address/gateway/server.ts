@@ -46,7 +46,8 @@ export async function getUserAddresses(): Promise<GetAddressesResult> {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch addresses",
+      error:
+        error instanceof Error ? error.message : "Failed to fetch addresses",
     };
   }
 }
@@ -73,7 +74,9 @@ export async function getAddressById(id: number): Promise<GetAddressResult> {
   }
 }
 
-export async function createAddress(data: AddressFormData): Promise<AddressResult> {
+export async function createAddress(
+  data: AddressFormData,
+): Promise<AddressResult> {
   try {
     const input = {
       name: data.name,
@@ -91,18 +94,25 @@ export async function createAddress(data: AddressFormData): Promise<AddressResul
       if (result.success && result.address) {
         return { success: true, data: result.address };
       }
-      return { success: false, error: result.error ?? "Failed to create address" };
+      return {
+        success: false,
+        error: result.error ?? "Failed to create address",
+      };
     }
 
     const result = await actionImpl.createAddress(input);
     if (result.success && result.address) {
       return { success: true, data: result.address };
     }
-    return { success: false, error: result.error ?? "Failed to create address" };
+    return {
+      success: false,
+      error: result.error ?? "Failed to create address",
+    };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create address",
+      error:
+        error instanceof Error ? error.message : "Failed to create address",
     };
   }
 }
@@ -128,18 +138,25 @@ export async function updateAddress(
       if (result.success && result.address) {
         return { success: true, data: result.address };
       }
-      return { success: false, error: result.error ?? "Failed to update address" };
+      return {
+        success: false,
+        error: result.error ?? "Failed to update address",
+      };
     }
 
     const result = await actionImpl.updateAddress(id, input);
     if (result.success && result.address) {
       return { success: true, data: result.address };
     }
-    return { success: false, error: result.error ?? "Failed to update address" };
+    return {
+      success: false,
+      error: result.error ?? "Failed to update address",
+    };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update address",
+      error:
+        error instanceof Error ? error.message : "Failed to update address",
     };
   }
 }
@@ -151,18 +168,25 @@ export async function deleteAddress(id: number): Promise<DeleteAddressResult> {
       if (result.success) {
         return { success: true };
       }
-      return { success: false, error: result.error ?? "Failed to delete address" };
+      return {
+        success: false,
+        error: result.error ?? "Failed to delete address",
+      };
     }
 
     const result = await actionImpl.deleteAddress(id);
     if (result.success) {
       return { success: true };
     }
-    return { success: false, error: result.error ?? "Failed to delete address" };
+    return {
+      success: false,
+      error: result.error ?? "Failed to delete address",
+    };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete address",
+      error:
+        error instanceof Error ? error.message : "Failed to delete address",
     };
   }
 }

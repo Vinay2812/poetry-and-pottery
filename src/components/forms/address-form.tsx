@@ -1,7 +1,6 @@
 "use client";
 
 import { INDIAN_STATES } from "@/consts/forms";
-import type { UserAddress } from "@/graphql/generated/types";
 import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,8 @@ import {
 } from "@/components/ui/select";
 
 import { cn } from "@/lib/utils";
+
+import type { UserAddress } from "@/graphql/generated/types";
 
 interface AddressFormData {
   name: string;

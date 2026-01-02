@@ -2,11 +2,6 @@
 
 import { getClient } from "@/lib/apollo";
 
-import {
-  SUBSCRIBE_TO_NEWSLETTER_MUTATION,
-  UNSUBSCRIBE_FROM_NEWSLETTER_MUTATION,
-} from "@/graphql/newsletter.mutation";
-import { NEWSLETTER_STATUS_QUERY } from "@/graphql/newsletter.query";
 import type {
   NewsletterMutationResponse,
   NewsletterStatus,
@@ -14,6 +9,11 @@ import type {
   SubscribeToNewsletterMutation,
   UnsubscribeFromNewsletterMutation,
 } from "@/graphql/generated/types";
+import {
+  SUBSCRIBE_TO_NEWSLETTER_MUTATION,
+  UNSUBSCRIBE_FROM_NEWSLETTER_MUTATION,
+} from "@/graphql/newsletter.mutation";
+import { NEWSLETTER_STATUS_QUERY } from "@/graphql/newsletter.query";
 
 export async function getNewsletterStatus(): Promise<NewsletterStatus> {
   const client = getClient();

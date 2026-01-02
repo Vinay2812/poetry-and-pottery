@@ -1,8 +1,8 @@
 "use server";
 
+import { getAuthenticatedUserId } from "@/actions/auth.action";
 import { revalidatePath } from "next/cache";
 
-import { getAuthenticatedUserId } from "@/actions/auth.action";
 import { prisma } from "@/lib/prisma";
 
 import type {
@@ -224,7 +224,9 @@ export async function updateAddress(
   }
 }
 
-export async function deleteAddress(id: number): Promise<AddressMutationResponse> {
+export async function deleteAddress(
+  id: number,
+): Promise<AddressMutationResponse> {
   const userId = await getAuthenticatedUserId();
   if (!userId) {
     return { success: false, error: "Not authenticated" };

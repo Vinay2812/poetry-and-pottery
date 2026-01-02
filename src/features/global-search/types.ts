@@ -1,10 +1,6 @@
-import type {
-  EventBase,
-  Order,
-  ProductBase,
-} from "@/graphql/generated/types";
-
 import { formatEventTime, formatOrderDate } from "@/lib/date";
+
+import type { EventBase, Order, ProductBase } from "@/graphql/generated/types";
 
 export type SearchTab = "products" | "events" | "orders";
 
@@ -72,7 +68,9 @@ export interface GlobalSearchProps {
   onViewAllOrders: () => void;
 }
 
-export function buildProductSearchItem(product: ProductBase): ProductSearchItem {
+export function buildProductSearchItem(
+  product: ProductBase,
+): ProductSearchItem {
   return {
     id: product.id,
     name: product.name,

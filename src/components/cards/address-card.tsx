@@ -1,12 +1,13 @@
 "use client";
 
-import type { UserAddress } from "@/graphql/generated/types";
 import { Check, MapPin, Pencil, Phone, Trash2, User } from "lucide-react";
 import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
+
+import type { UserAddress } from "@/graphql/generated/types";
 
 interface AddressCardProps {
   address: UserAddress;

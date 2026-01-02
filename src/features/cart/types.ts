@@ -1,4 +1,5 @@
 import type { ProductBase } from "@/data/products/types";
+
 import type { CartItem, UserAddress } from "@/graphql/generated/types";
 
 /**

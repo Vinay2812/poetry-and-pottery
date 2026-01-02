@@ -5,7 +5,6 @@ import {
   deleteAddress,
   updateAddress,
 } from "@/data/address/gateway/server";
-import type { UserAddress } from "@/graphql/generated/types";
 import { MapPin, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -27,6 +26,8 @@ import {
 } from "@/components/ui/sheet";
 
 import { cn } from "@/lib/utils";
+
+import type { UserAddress } from "@/graphql/generated/types";
 
 interface AddressCarouselProps {
   addresses: UserAddress[];

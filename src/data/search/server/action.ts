@@ -1,8 +1,9 @@
 "use server";
 
 import { getAuthenticatedUserId } from "@/actions/auth.action";
-import { prisma } from "@/lib/prisma";
 import { EventStatus } from "@/prisma/generated/client";
+
+import { prisma } from "@/lib/prisma";
 
 import type {
   EventBase,
@@ -28,9 +29,7 @@ function mapProductBase(product: {
   const reviewsCount = reviews.length;
   const avgRating =
     reviewsCount > 0
-      ? Math.round(
-          reviews.reduce((sum, r) => sum + r.rating, 0) / reviewsCount,
-        )
+      ? Math.round(reviews.reduce((sum, r) => sum + r.rating, 0) / reviewsCount)
       : 0;
 
   return {

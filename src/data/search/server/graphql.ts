@@ -2,12 +2,12 @@
 
 import { getClient } from "@/lib/apollo";
 
-import { GLOBAL_SEARCH_QUERY } from "@/graphql/search.query";
 import type {
   GlobalSearchQuery,
   GlobalSearchQueryVariables,
   GlobalSearchResponse,
 } from "@/graphql/generated/types";
+import { GLOBAL_SEARCH_QUERY } from "@/graphql/search.query";
 
 export async function globalSearch(
   query: string,
@@ -15,7 +15,10 @@ export async function globalSearch(
 ): Promise<GlobalSearchResponse> {
   const client = getClient();
 
-  const result = await client.query<GlobalSearchQuery, GlobalSearchQueryVariables>({
+  const result = await client.query<
+    GlobalSearchQuery,
+    GlobalSearchQueryVariables
+  >({
     query: GLOBAL_SEARCH_QUERY,
     variables: { input: { query, limit } },
   });

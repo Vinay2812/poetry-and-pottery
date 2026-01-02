@@ -7,7 +7,10 @@ import {
   DELETE_ADDRESS_MUTATION,
   UPDATE_ADDRESS_MUTATION,
 } from "@/graphql/address.mutation";
-import { ADDRESS_BY_ID_QUERY, USER_ADDRESSES_QUERY } from "@/graphql/address.query";
+import {
+  ADDRESS_BY_ID_QUERY,
+  USER_ADDRESSES_QUERY,
+} from "@/graphql/address.query";
 import type {
   AddressByIdQuery,
   AddressByIdQueryVariables,
@@ -39,7 +42,10 @@ export async function getUserAddresses(): Promise<UserAddress[]> {
 export async function getAddressById(id: number): Promise<UserAddress | null> {
   const client = getClient();
 
-  const result = await client.query<AddressByIdQuery, AddressByIdQueryVariables>({
+  const result = await client.query<
+    AddressByIdQuery,
+    AddressByIdQueryVariables
+  >({
     query: ADDRESS_BY_ID_QUERY,
     variables: { id },
   });
