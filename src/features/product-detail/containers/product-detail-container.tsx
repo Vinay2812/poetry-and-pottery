@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleReviewLike } from "@/actions";
+import { toggleReviewLike } from "@/data/reviews/gateway/server";
 import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
 import { useCallback, useMemo, useState } from "react";
 

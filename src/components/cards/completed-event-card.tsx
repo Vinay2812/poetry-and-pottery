@@ -1,6 +1,6 @@
 "use client";
 
-import { createEventReview } from "@/actions";
+import { createEventReview } from "@/data/reviews/gateway/server";
 import type { EventRegistration } from "@/data/events/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

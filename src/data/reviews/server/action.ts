@@ -1,24 +1,86 @@
 "use server";
 
+import { getAuthenticatedUserId } from "@/actions/auth.action";
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
-import type { PaginatedResponse, ReviewWithUser } from "@/types";
 import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
-import { getAuthenticatedUserId } from "./auth.action";
+import type { Review, ReviewsResponse } from "@/graphql/generated/types";
+
+function mapReview(
+  review: {
+    id: number;
+    user_id: number;
+    rating: number;
+    review: string | null;
+    image_urls: string[];
+    product_id: number | null;
+    event_id: string | null;
+    created_at: Date;
+    updated_at: Date;
+    user: {
+      id: number;
+      name: string | null;
+      image: string | null;
+    };
+    likes: {
+      id: number;
+      user_id: number;
+    }[];
+  },
+  currentUserId?: number,
+): Review {
+  return {
+    id: review.id,
+    user_id: review.user_id,
+    rating: review.rating,
+    review: review.review,
+    image_urls: review.image_urls,
+    product_id: review.product_id,
+    event_id: review.event_id,
+    created_at: review.created_at,
+    updated_at: review.updated_at,
+    user: {
+      id: review.user.id,
+      name: review.user.name,
+      image: review.user.image,
+    },
+    likes: review.likes.map((like) => ({
+      id: like.id,
+      user_id: like.user_id,
+    })),
+    likes_count: review.likes.length,
+    is_liked_by_current_user: currentUserId
+      ? review.likes.some((like) => like.user_id === currentUserId)
+      : false,
+  };
+}
 
 export async function getProductReviews(
   productId: number,
   page: number = 1,
   limit: number = DEFAULT_PAGE_SIZE,
-): Promise<PaginatedResponse<ReviewWithUser>> {
+): Promise<ReviewsResponse> {
+  const userId = await getAuthenticatedUserId();
+
   const [reviews, total] = await Promise.all([
     prisma.review.findMany({
       where: { product_id: productId },
       include: {
-        user: true,
-        likes: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        likes: {
+          select: {
+            id: true,
+            user_id: true,
+          },
+        },
       },
       orderBy: { created_at: "desc" },
       skip: (page - 1) * limit,
@@ -28,10 +90,10 @@ export async function getProductReviews(
   ]);
 
   return {
-    data: reviews as ReviewWithUser[],
+    data: reviews.map((review) => mapReview(review, userId ?? undefined)),
     total,
     page,
-    totalPages: Math.ceil(total / limit),
+    total_pages: Math.ceil(total / limit),
   };
 }
 
@@ -39,13 +101,26 @@ export async function getEventReviews(
   eventId: string,
   page: number = 1,
   limit: number = DEFAULT_PAGE_SIZE,
-): Promise<PaginatedResponse<ReviewWithUser>> {
+): Promise<ReviewsResponse> {
+  const userId = await getAuthenticatedUserId();
+
   const [reviews, total] = await Promise.all([
     prisma.review.findMany({
       where: { event_id: eventId },
       include: {
-        user: true,
-        likes: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        likes: {
+          select: {
+            id: true,
+            user_id: true,
+          },
+        },
       },
       orderBy: { created_at: "desc" },
       skip: (page - 1) * limit,
@@ -55,10 +130,10 @@ export async function getEventReviews(
   ]);
 
   return {
-    data: reviews as ReviewWithUser[],
+    data: reviews.map((review) => mapReview(review, userId ?? undefined)),
     total,
     page,
-    totalPages: Math.ceil(total / limit),
+    total_pages: Math.ceil(total / limit),
   };
 }
 
@@ -67,10 +142,10 @@ export async function createProductReview(data: {
   rating: number;
   review?: string;
   imageUrls?: string[];
-}) {
+}): Promise<{ success: boolean; error?: string }> {
   const userId = await getAuthenticatedUserId();
   if (!userId) {
-    return { success: false as const, error: "Not authenticated" };
+    return { success: false, error: "Not authenticated" };
   }
 
   try {
@@ -86,12 +161,12 @@ export async function createProductReview(data: {
 
     if (existing) {
       return {
-        success: false as const,
+        success: false,
         error: "You have already reviewed this product",
       };
     }
 
-    const review = await prisma.review.create({
+    await prisma.review.create({
       data: {
         user_id: userId,
         product_id: data.productId,
@@ -99,19 +174,15 @@ export async function createProductReview(data: {
         review: data.review?.trim() || null,
         image_urls: data.imageUrls ?? [],
       },
-      include: {
-        user: true,
-        likes: true,
-      },
     });
 
     revalidatePath(`/products/${data.productId}`);
     revalidatePath("/products");
 
-    return { success: true as const, data: review as ReviewWithUser };
+    return { success: true };
   } catch (error) {
     console.error("Failed to create review:", error);
-    return { success: false as const, error: "Failed to create review" };
+    return { success: false, error: "Failed to create review" };
   }
 }
 
@@ -120,10 +191,10 @@ export async function createEventReview(data: {
   rating: number;
   review?: string;
   imageUrls?: string[];
-}) {
+}): Promise<{ success: boolean; error?: string }> {
   const userId = await getAuthenticatedUserId();
   if (!userId) {
-    return { success: false as const, error: "Not authenticated" };
+    return { success: false, error: "Not authenticated" };
   }
 
   try {
@@ -139,12 +210,12 @@ export async function createEventReview(data: {
 
     if (existing) {
       return {
-        success: false as const,
+        success: false,
         error: "You have already reviewed this event",
       };
     }
 
-    const review = await prisma.review.create({
+    await prisma.review.create({
       data: {
         user_id: userId,
         event_id: data.eventId,
@@ -152,26 +223,24 @@ export async function createEventReview(data: {
         review: data.review?.trim() || null,
         image_urls: data.imageUrls ?? [],
       },
-      include: {
-        user: true,
-        likes: true,
-      },
     });
 
     revalidatePath(`/events/past/${data.eventId}`);
     revalidatePath("/events/past");
 
-    return { success: true as const, data: review as ReviewWithUser };
+    return { success: true };
   } catch (error) {
     console.error("Failed to create review:", error);
-    return { success: false as const, error: "Failed to create review" };
+    return { success: false, error: "Failed to create review" };
   }
 }
 
-export async function deleteReview(reviewId: number) {
+export async function deleteReview(
+  reviewId: number,
+): Promise<{ success: boolean; error?: string }> {
   const userId = await getAuthenticatedUserId();
   if (!userId) {
-    return { success: false as const, error: "Not authenticated" };
+    return { success: false, error: "Not authenticated" };
   }
 
   try {
@@ -181,20 +250,26 @@ export async function deleteReview(reviewId: number) {
         user_id: userId,
       },
     });
+
     revalidatePath("/products");
     revalidatePath("/events");
 
-    return { success: true as const };
+    return { success: true };
   } catch (error) {
     console.error("Failed to delete review:", error);
-    return { success: false as const, error: "Failed to delete review" };
+    return { success: false, error: "Failed to delete review" };
   }
 }
 
-export async function toggleReviewLike(reviewId: number) {
+export async function toggleReviewLike(reviewId: number): Promise<{
+  success: boolean;
+  action?: "liked" | "unliked";
+  likesCount?: number;
+  error?: string;
+}> {
   const userId = await getAuthenticatedUserId();
   if (!userId) {
-    return { success: false as const, error: "Not authenticated" };
+    return { success: false, error: "Not authenticated" };
   }
 
   try {
@@ -225,12 +300,12 @@ export async function toggleReviewLike(reviewId: number) {
     });
 
     return {
-      success: true as const,
-      action: existing ? ("unliked" as const) : ("liked" as const),
+      success: true,
+      action: existing ? "unliked" : "liked",
       likesCount,
     };
   } catch (error) {
     console.error("Failed to toggle like:", error);
-    return { success: false as const, error: "Failed to toggle like" };
+    return { success: false, error: "Failed to toggle like" };
   }
 }

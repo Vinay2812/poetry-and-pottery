@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleReviewLike } from "@/actions";
+import { toggleReviewLike } from "@/data/reviews/gateway/server";
 import { Star } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -163,12 +163,13 @@ export function ReviewsSheet({
         onLikeUpdate?.(reviewId, revertedCount, wasLiked);
       } else if (result.likesCount !== undefined) {
         // Sync with server count
+        const serverCount = result.likesCount;
         setLikeCounts((prev) => ({
           ...prev,
-          [reviewId]: result.likesCount,
+          [reviewId]: serverCount,
         }));
         // Notify parent of server-synced count
-        onLikeUpdate?.(reviewId, result.likesCount, newIsLiked);
+        onLikeUpdate?.(reviewId, serverCount, newIsLiked);
       }
     },
     [likedReviews, likeCounts, onLikeUpdate],

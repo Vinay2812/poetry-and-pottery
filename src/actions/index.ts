@@ -61,16 +61,6 @@ export {
   type EventWithUserContext,
 } from "./event.actions";
 
-// Review actions
-export {
-  getProductReviews,
-  getEventReviews,
-  createProductReview,
-  createEventReview,
-  deleteReview,
-  toggleReviewLike,
-} from "./review.actions";
-
 // Auth actions
 export { getAuthenticatedUserId } from "./auth.action";
 

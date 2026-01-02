@@ -1,6 +1,6 @@
 "use client";
 
-import { createProductReview } from "@/actions";
+import { createProductReview } from "@/data/reviews/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
