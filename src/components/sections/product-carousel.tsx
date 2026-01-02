@@ -88,7 +88,7 @@ export function ProductCarousel({
               key={product.id}
               className="min-w-0 shrink-0 basis-[85%] pl-4 sm:basis-[45%] lg:basis-[24%]"
             >
-              <ProductCard product={product} />
+              <ProductCard product={product} disableImageCarousel />
             </div>
           ))}
         </div>

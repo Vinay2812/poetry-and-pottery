@@ -18,6 +18,7 @@ export function ProductCard({
   inWishlist,
   addedToCart,
   canAddToCart,
+  disableImageCarousel = false,
   onImageClick,
   onWishlistClick,
   onAddToCart,
@@ -49,6 +50,7 @@ export function ProductCard({
               onImageClick={onImageClick}
               className="w-full"
               dotsClassName="bottom-16 lg:bottom-3 lg:group-hover:bottom-16"
+              disableCarousel={disableImageCarousel}
             />
 
             {/* Out of stock overlay */}

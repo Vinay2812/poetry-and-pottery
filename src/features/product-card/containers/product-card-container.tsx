@@ -12,6 +12,7 @@ export function ProductCardContainer({
   variant = "default",
   onRemoveFromWishlist,
   className,
+  disableImageCarousel = false,
 }: ProductCardContainerProps) {
   const [addedToCart, setAddedToCart] = useState(false);
 
@@ -63,6 +64,7 @@ export function ProductCardContainer({
       inWishlist={inWishlist}
       addedToCart={addedToCart}
       canAddToCart={canAddToCart}
+      disableImageCarousel={disableImageCarousel}
       onImageClick={handleImageClick}
       onWishlistClick={handleWishlistClick}
       onAddToCart={handleAddToCart}
