@@ -1,8 +1,4 @@
-import type {
-  ProductBase,
-  ProductDetail,
-  ProductReview,
-} from "@/data/products/types";
+import type { ProductDetail, ProductReview } from "@/data/products/types";
 
 /**
  * Formatted review for display (with optimistic update support).
@@ -25,7 +21,6 @@ export interface FormattedReview {
  */
 export interface ProductDetailProps {
   product: ProductDetail;
-  relatedProducts: ProductBase[];
   formattedReviews: FormattedReview[];
   selectedColor: string;
   addedToCart: boolean;
@@ -47,7 +42,6 @@ export interface ProductDetailProps {
  */
 export interface ProductDetailContainerProps {
   product: ProductDetail;
-  relatedProducts: ProductBase[];
 }
 
 /**

@@ -10,7 +10,6 @@ import { buildFormattedReviews } from "../types";
 
 export function ProductDetailContainer({
   product,
-  relatedProducts,
 }: ProductDetailContainerProps) {
   const [selectedColor, setSelectedColor] = useState(product.color_name || "");
   const [addedToCart, setAddedToCart] = useState(false);
@@ -104,7 +103,6 @@ export function ProductDetailContainer({
   return (
     <ProductDetail
       product={product}
-      relatedProducts={relatedProducts}
       formattedReviews={formattedReviews}
       selectedColor={selectedColor}
       addedToCart={addedToCart}

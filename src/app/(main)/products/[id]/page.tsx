@@ -1,7 +1,4 @@
-import {
-  getProductById,
-  getRecommendedProducts,
-} from "@/data/products/gateway/server";
+import { getProductById } from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { ProductDetailContainer } from "@/features/product-detail";
 import type { Metadata } from "next";
@@ -75,12 +72,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  // Get recommendations based on the current product
-  const recommendedResult = await getRecommendedProducts({
-    productId: product.id,
-    limit: 4,
-  });
-
   return (
     <>
       <MobileHeaderContainer
@@ -88,10 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         showBack
         backHref="/products"
       />
-      <ProductDetailContainer
-        product={product}
-        relatedProducts={recommendedResult.products}
-      />
+      <ProductDetailContainer product={product} />
     </>
   );
 }

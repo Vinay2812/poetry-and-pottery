@@ -1,15 +1,11 @@
 "use client";
 
-import type {
-  ProductBase,
-  ProductDetail as ProductDetailType,
-} from "@/data/products/types";
-import useEmblaCarousel from "embla-carousel-react";
+import type { ProductDetail as ProductDetailType } from "@/data/products/types";
+import { RecommendedProductsContainer } from "@/features/recommended-products";
 import { motion } from "framer-motion";
 import { Check, Heart, Loader2, Share2, ShoppingCartIcon } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
 
-import { ProductCard, ReviewCard } from "@/components/cards";
+import { ReviewCard } from "@/components/cards";
 import { ProductImageGallery } from "@/components/products";
 import { Rating, ReviewsSheet } from "@/components/shared";
 import {
@@ -375,90 +371,8 @@ function ActionButtons({
   );
 }
 
-interface RelatedProductsProps {
-  products: ProductBase[];
-}
-
-function RelatedProducts({ products }: RelatedProductsProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "start",
-    skipSnaps: false,
-    dragFree: true,
-    containScroll: "trimSnaps",
-  });
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    function updateScrollSnaps() {
-      if (!emblaApi) return;
-      setScrollSnaps(emblaApi.scrollSnapList());
-    }
-
-    function onSelect() {
-      if (!emblaApi) return;
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-    }
-
-    updateScrollSnaps();
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi]);
-
-  const scrollTo = useCallback(
-    (index: number) => {
-      if (emblaApi) emblaApi.scrollTo(index);
-    },
-    [emblaApi],
-  );
-
-  if (products.length === 0) return null;
-
-  return (
-    <section className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16 dark:border-neutral-800">
-      <h2 className="mb-6 text-2xl font-bold text-neutral-900 lg:mb-8 dark:text-white">
-        You might also like
-      </h2>
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="-ml-4 flex">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="min-w-0 shrink-0 basis-[85%] pl-4 sm:basis-[45%] lg:basis-[24%]"
-            >
-              <ProductCard product={product} disableImageCarousel />
-            </div>
-          ))}
-        </div>
-      </div>
-      {scrollSnaps.length > 1 && (
-        <div className="mt-4 flex justify-center gap-2">
-          {scrollSnaps.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => scrollTo(index)}
-              className={cn(
-                "h-2 w-2 rounded-full transition-all duration-300",
-                index === selectedIndex
-                  ? "bg-primary w-6"
-                  : "bg-neutral-300 hover:bg-neutral-400 dark:bg-neutral-600",
-              )}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
-    </section>
-  );
-}
-
 export function ProductDetail({
   product,
-  relatedProducts,
   formattedReviews,
   selectedColor,
   addedToCart,
@@ -553,8 +467,12 @@ export function ProductDetail({
             </div>
           </div>
 
-          {/* Related Products */}
-          <RelatedProducts products={relatedProducts} />
+          {/* Recommended Products */}
+          <RecommendedProductsContainer
+            productId={product.id}
+            title="You might also like"
+            className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16 dark:border-neutral-800"
+          />
         </div>
       </main>
 
