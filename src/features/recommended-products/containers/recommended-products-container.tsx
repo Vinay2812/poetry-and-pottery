@@ -1,5 +1,7 @@
 "use client";
 
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+
 import { ProductCarousel } from "@/components/sections";
 import { ProductCarouselSkeleton } from "@/components/skeletons";
 
@@ -11,14 +13,16 @@ interface RecommendedProductsContainerProps {
   className?: string;
   limit?: number;
   productId?: number;
+  viewAllHref?: string;
 }
 
 export function RecommendedProductsContainer({
   title = "Curated Favorites",
   subtitle = "Handpicked pieces for your home.",
   className,
-  limit = 4,
+  limit = DEFAULT_PAGE_SIZE,
   productId,
+  viewAllHref = "/products",
 }: RecommendedProductsContainerProps) {
   const { products, isLoading } = useRecommendedProductsQuery({
     limit,
@@ -39,6 +43,7 @@ export function RecommendedProductsContainer({
       title={title}
       subtitle={subtitle}
       className={className}
+      viewAllHref={viewAllHref}
     />
   );
 }

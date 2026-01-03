@@ -2,6 +2,7 @@
 
 import type { ProductBase } from "@/data/products/types";
 import useEmblaCarousel from "embla-carousel-react";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 import { ProductCard } from "@/components/cards";
@@ -13,6 +14,7 @@ interface ProductCarouselProps {
   title?: string;
   subtitle?: string;
   className?: string;
+  viewAllHref?: string;
 }
 
 export function ProductCarousel({
@@ -20,6 +22,7 @@ export function ProductCarousel({
   title,
   subtitle,
   className,
+  viewAllHref,
 }: ProductCarouselProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -68,11 +71,21 @@ export function ProductCarousel({
     <section className={cn("relative", className)}>
       {(title || subtitle) && (
         <div className="mb-4 lg:mb-6">
-          {title && (
-            <h2 className="text-xl font-bold tracking-tight lg:text-2xl">
-              {title}
-            </h2>
-          )}
+          <div className="flex items-center justify-between">
+            {title && (
+              <h2 className="text-xl font-bold tracking-tight lg:text-2xl">
+                {title}
+              </h2>
+            )}
+            {viewAllHref && (
+              <Link
+                href={viewAllHref}
+                className="text-primary text-sm font-medium hover:underline"
+              >
+                View All &rarr;
+              </Link>
+            )}
+          </div>
           {subtitle && (
             <p className="text-muted-foreground mt-2 text-sm lg:text-base">
               {subtitle}
