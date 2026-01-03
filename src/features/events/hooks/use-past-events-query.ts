@@ -1,7 +1,7 @@
 "use client";
 
 import { isGraphQL } from "@/consts/env";
-import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { DEFAULT_EVENTS_LIMIT } from "@/consts/performance";
 import { getPastEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -27,12 +27,14 @@ export function usePastEventsQuery({
     useInfiniteQuery({
       queryKey: ["past-events", searchQuery, isGraphQL],
       queryFn: async ({ pageParam = 1 }) => {
+        const limit = DEFAULT_EVENTS_LIMIT;
+
         if (isGraphQL) {
           const { data: gqlData, error: gqlError } = await fetchGraphQL({
             variables: {
               filter: {
                 page: pageParam,
-                limit: DEFAULT_PAGE_SIZE,
+                limit,
                 search: searchQuery,
               },
             },
@@ -52,7 +54,7 @@ export function usePastEventsQuery({
         } else {
           const result = await getPastEvents({
             page: pageParam,
-            limit: DEFAULT_PAGE_SIZE,
+            limit,
             search: searchQuery,
           });
           if (!result.success) {

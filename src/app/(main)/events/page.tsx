@@ -1,4 +1,4 @@
-import { MAX_CART_QUANTITY } from "@/consts/performance";
+import { DEFAULT_EVENTS_LIMIT } from "@/consts/performance";
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import { AllEventsContainer } from "@/features/events";
 import type { Metadata } from "next";
@@ -40,11 +40,9 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   const params = await searchParams;
   const search = params.search || undefined;
 
-  // Only fetch upcoming events server-side
-  // Past events will be fetched client-side for faster initial load
   const upcomingEventsResult = await getUpcomingEvents({
     page: 1,
-    limit: MAX_CART_QUANTITY,
+    limit: DEFAULT_EVENTS_LIMIT,
     search,
   });
 

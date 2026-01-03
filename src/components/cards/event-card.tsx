@@ -28,15 +28,15 @@ export function EventCard({ event }: EventCardProps) {
     hour12: true,
   });
 
-  const totalSeats = event.total_seats;
-  const registrations = event.registrations_count;
-  const isSoldOut = registrations >= totalSeats;
+  const availableSeats = event.available_seats;
+  const isSoldOut = availableSeats === 0;
 
   return (
     <EventCardWrapper href={`/events/${event.id}`}>
       <EventCardImage
         src={event.image}
         alt={event.title}
+        showOverlay={isSoldOut}
         topLeftBadge={
           <>
             {event.level && <LevelBadge level={event.level} />}
@@ -55,7 +55,7 @@ export function EventCard({ event }: EventCardProps) {
         <EventCardDescription description={event.description} />
         <EventCardFooter
           location={event.location}
-          seatsInfo={{ current: registrations, total: totalSeats }}
+          availableSeats={availableSeats}
         />
       </EventCardContent>
     </EventCardWrapper>

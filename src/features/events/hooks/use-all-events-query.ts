@@ -1,7 +1,7 @@
 "use client";
 
 import { isGraphQL } from "@/consts/env";
-import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { DEFAULT_EVENTS_LIMIT } from "@/consts/performance";
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -39,12 +39,14 @@ export function useAllEventsQuery({
   } = useInfiniteQuery({
     queryKey: ["all-events-upcoming", searchQuery, isGraphQL],
     queryFn: async ({ pageParam = 1 }) => {
+      const limit = DEFAULT_EVENTS_LIMIT;
+
       if (isGraphQL) {
         const { data: gqlData, error: gqlError } = await fetchUpcomingGraphQL({
           variables: {
             filter: {
               page: pageParam,
-              limit: DEFAULT_PAGE_SIZE,
+              limit,
               search: searchQuery,
             },
           },
@@ -55,6 +57,7 @@ export function useAllEventsQuery({
         }
 
         const events = gqlData?.upcomingEvents;
+
         return {
           data: (events?.data ?? []) as EventBase[],
           total: events?.total ?? 0,
@@ -64,7 +67,7 @@ export function useAllEventsQuery({
       } else {
         const result = await getUpcomingEvents({
           page: pageParam,
-          limit: DEFAULT_PAGE_SIZE,
+          limit,
           search: searchQuery,
         });
         if (!result.success) {

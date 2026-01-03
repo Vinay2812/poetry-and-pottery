@@ -30,7 +30,6 @@ export function AllEventsContainer({
     searchQuery: searchQuery || undefined,
   });
 
-  // Past events fetched client-side
   const {
     pastEvents,
     hasNextPage: hasNextPast,
@@ -39,6 +38,7 @@ export function AllEventsContainer({
     loadMoreRef: pastLoadMoreRef,
   } = usePastEventsQuery({
     searchQuery: searchQuery || undefined,
+    enabled: !hasNextUpcoming && !isFetchingNextUpcoming,
   });
 
   const handleSearchChange = useCallback(

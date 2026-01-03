@@ -2,10 +2,7 @@ import { MapPin, Ticket, Users } from "lucide-react";
 
 interface EventCardFooterProps {
   location?: string | null;
-  seatsInfo?: {
-    current: number;
-    total: number;
-  };
+  availableSeats?: number;
   seatsReserved?: number;
   attendees?: number;
   rightContent?: React.ReactNode;
@@ -13,7 +10,7 @@ interface EventCardFooterProps {
 
 export function EventCardFooter({
   location,
-  seatsInfo,
+  availableSeats,
   seatsReserved,
   attendees,
   rightContent,
@@ -39,12 +36,10 @@ export function EventCardFooter({
 
       {rightContent ? (
         rightContent
-      ) : seatsInfo ? (
+      ) : availableSeats !== undefined ? (
         <div className="flex items-center gap-1 text-[10px] font-bold text-neutral-500">
           <Users className="h-3.5 w-3.5" strokeWidth={2.5} />
-          <span>
-            {seatsInfo.current}/{seatsInfo.total}
-          </span>
+          <span>{availableSeats} spots</span>
         </div>
       ) : seatsReserved !== undefined ? (
         <div className="flex items-center gap-1 text-[10px] font-bold text-neutral-500">

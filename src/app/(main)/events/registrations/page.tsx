@@ -1,3 +1,4 @@
+import { DEFAULT_EVENTS_LIMIT, DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import {
   getCompletedRegistrations,
   getUpcomingEvents,
@@ -22,9 +23,9 @@ export default async function RegistrationsPage() {
     completedRegistrationsResult,
     upcomingEventsResult,
   ] = await Promise.all([
-    getUpcomingRegistrations(),
-    getCompletedRegistrations(),
-    getUpcomingEvents({ page: 1, limit: 4 }),
+    getUpcomingRegistrations({ page: 1, limit: DEFAULT_EVENTS_LIMIT }),
+    getCompletedRegistrations({ page: 1, limit: DEFAULT_EVENTS_LIMIT }),
+    getUpcomingEvents({ page: 1, limit: DEFAULT_EVENTS_LIMIT }),
   ]);
 
   const upcomingRegistrations = upcomingRegistrationsResult.success
