@@ -15,12 +15,12 @@ export function TeamMemberCard({
 }: TeamMemberCardProps) {
   return (
     <div className="group shadow-soft hover:shadow-card overflow-hidden rounded-[2rem] border border-neutral-100 bg-white p-3 transition-all duration-300 hover:-translate-y-1 dark:border-neutral-800 dark:bg-neutral-900">
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800">
         <OptimizedImage
           src={image}
           alt={name}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-contain transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="p-3 text-center">

@@ -155,7 +155,7 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
               title="Meet Our Artisans"
               description="The hands and hearts behind every piece."
             />
-            <div className="mx-auto grid max-w-4xl gap-8 sm:grid-cols-3">
+            <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {content.team.map((member) => (
                 <TeamMemberCard
                   key={member.name}

@@ -235,7 +235,7 @@ export function GlobalSearch({
                             {viewModel.products.map((product) => (
                               <button
                                 key={product.id}
-                                onClick={() => onProductClick(product.slug)}
+                                onClick={() => onProductClick(product.id)}
                                 className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
                               >
                                 <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">

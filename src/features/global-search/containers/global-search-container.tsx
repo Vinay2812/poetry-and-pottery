@@ -17,9 +17,9 @@ export function GlobalSearchContainer() {
   } = useGlobalSearch();
 
   const handleProductClick = useCallback(
-    (slug: string) => {
+    (id: number) => {
       handleClose();
-      router.push(`/products/${slug}`);
+      router.push(`/products/${id}`);
     },
     [handleClose, router],
   );

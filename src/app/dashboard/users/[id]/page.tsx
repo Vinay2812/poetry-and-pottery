@@ -191,7 +191,7 @@ function CartView({ items }: { items: CartItem[] }) {
             )}
             <div className="min-w-0 flex-1">
               <Link
-                href={`/products/${item.product.slug}`}
+                href={`/products/${item.product.id}`}
                 className="hover:text-primary font-medium"
               >
                 {item.product.name}

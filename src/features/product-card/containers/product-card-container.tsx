@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthAction, useCart, useWishlist } from "@/hooks";
+import { useCart, useWishlist } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
@@ -17,7 +17,7 @@ export function ProductCardContainer({
   const [addedToCart, setAddedToCart] = useState(false);
 
   const router = useRouter();
-  const { requireAuth } = useAuthAction();
+
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToCart, isAtMaxQuantity } = useCart();
 
@@ -31,8 +31,8 @@ export function ProductCardContainer({
   const isWishlistVariant = variant === "wishlist";
 
   const handleImageClick = useCallback(() => {
-    router.push(`/products/${product.slug}`);
-  }, [router, product.slug]);
+    router.push(`/products/${product.id}`);
+  }, [router, product.id]);
 
   const handleWishlistClick = useCallback(() => {
     toggleWishlist(product.id);

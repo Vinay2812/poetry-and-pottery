@@ -43,7 +43,7 @@ function OrderItemCard({
   return (
     <div className="shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
       <div className="flex gap-4">
-        <Link href={`/products/${item.productSlug}`}>
+        <Link href={`/products/${item.productId}`}>
           <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
             <OptimizedImage
               src={item.productImage}
@@ -57,7 +57,7 @@ function OrderItemCard({
 
         <div className="flex min-w-0 flex-1 flex-col justify-between">
           <div>
-            <Link href={`/products/${item.productSlug}`}>
+            <Link href={`/products/${item.productId}`}>
               <h3 className="hover:text-primary line-clamp-1 text-sm font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
                 {item.productName}
               </h3>

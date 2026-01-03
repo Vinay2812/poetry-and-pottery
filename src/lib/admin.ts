@@ -108,3 +108,10 @@ export async function getAdminStatus() {
     role: role ?? null,
   };
 }
+
+export async function requireAdminAccess(): Promise<void> {
+  const isAdminUser = await isAdmin();
+  if (!isAdminUser) {
+    return redirect("/");
+  }
+}

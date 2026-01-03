@@ -13,8 +13,6 @@ import {
 import Link from "next/link";
 import { useRef } from "react";
 
-import { cn } from "@/lib/utils";
-
 const ICON_MAP: Record<string, LucideIcon> = {
   Flower2,
   Circle,

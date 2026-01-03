@@ -64,9 +64,6 @@ export function OptimizedImage({
         alt={alt}
         className={cn(
           "object-cover",
-          // When fill is true, use absolute positioning to fill parent container
-          // This matches Next.js Image behavior with fill prop
-          // fill ? "absolute inset-0 h-full w-full" : "h-full w-full",
           isLoading && "opacity-0",
           !isLoading && "opacity-100 transition-opacity duration-300",
           className,

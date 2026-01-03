@@ -136,7 +136,7 @@ export function ProductCard({
 
           {/* Product Details */}
           <Link
-            href={`/products/${product.slug}`}
+            href={`/products/${product.id}`}
             className="flex flex-col gap-1 p-5 lg:gap-1.5"
           >
             <div className="flex items-start justify-between gap-4">

@@ -1,6 +1,5 @@
 import {
   getProductById,
-  getProductBySlug,
   getRecommendedProducts,
 } from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
@@ -17,14 +16,15 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { id } = await params;
+  const numericId = parseInt(id, 10);
 
-  let product = await getProductBySlug(id);
-  if (!product) {
-    const numericId = parseInt(id, 10);
-    if (!isNaN(numericId)) {
-      product = await getProductById(numericId);
-    }
+  if (isNaN(numericId)) {
+    return {
+      title: "Product Not Found | Poetry & Pottery",
+    };
   }
+
+  const product = await getProductById(numericId);
 
   if (!product) {
     return {
@@ -43,7 +43,7 @@ export async function generateMetadata({
       title: `${product.name} | Poetry & Pottery`,
       description: product.description ?? undefined,
       type: "website",
-      url: `/products/${product.slug}`,
+      url: `/products/${product.id}`,
       images: [
         {
           url: imageUrl,
@@ -64,8 +64,13 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
+  const numericId = parseInt(id, 10);
 
-  const product = await getProductById(parseInt(id, 10));
+  if (isNaN(numericId)) {
+    notFound();
+  }
+
+  const product = await getProductById(numericId);
   if (!product) {
     notFound();
   }

@@ -52,7 +52,7 @@ export function CartItemCard({
       {/* Mobile Layout */}
       <div className="flex gap-4 lg:hidden">
         <Link
-          href={`/products/${product.slug}`}
+          href={`/products/${product.id}`}
           className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800"
         >
           <OptimizedImage
@@ -66,7 +66,7 @@ export function CartItemCard({
         <div className="flex min-w-0 flex-1 flex-col justify-between py-0.5">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
-              <Link href={`/products/${product.slug}`}>
+              <Link href={`/products/${product.id}`}>
                 <h3 className="line-clamp-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                   {product.name}
                 </h3>
@@ -117,7 +117,7 @@ export function CartItemCard({
       {/* Desktop Layout */}
       <div className="hidden gap-4 lg:flex">
         <Link
-          href={`/products/${product.slug}`}
+          href={`/products/${product.id}`}
           className="focus-visible:ring-primary/30 relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl focus-visible:ring-2 focus-visible:outline-none"
         >
           <OptimizedImage
@@ -130,7 +130,7 @@ export function CartItemCard({
 
         <div className="flex flex-1 items-center justify-between">
           <div className="min-w-0 flex-1">
-            <Link href={`/products/${product.slug}`}>
+            <Link href={`/products/${product.id}`}>
               <h3 className="hover:text-primary font-semibold transition-colors">
                 {product.name}
               </h3>

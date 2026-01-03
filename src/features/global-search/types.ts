@@ -60,7 +60,7 @@ export interface GlobalSearchProps {
   onQueryChange: (query: string) => void;
   onTabChange: (tab: SearchTab) => void;
   onClose: () => void;
-  onProductClick: (slug: string) => void;
+  onProductClick: (id: number) => void;
   onEventClick: (eventId: string) => void;
   onOrderClick: (orderId: string) => void;
   onViewAllProducts: () => void;
