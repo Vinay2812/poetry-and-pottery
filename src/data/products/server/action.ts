@@ -27,6 +27,8 @@ function getOrderBy(sortBy: string): Prisma.ProductOrderByWithRelationInput[] {
       return [stockSort, { price: "desc" }];
     case "newest":
       return [stockSort, { created_at: "desc" }];
+    case "best-sellers":
+      return [stockSort, { purchased_products: { _count: "desc" } }];
     default:
       return [stockSort, { created_at: "desc" }];
   }
@@ -151,7 +153,12 @@ export async function getProducts(params: {
   materials?: string[];
   min_price?: number;
   max_price?: number;
-  order_by?: "featured" | "new" | "price_low_to_high" | "price_high_to_low";
+  order_by?:
+    | "featured"
+    | "new"
+    | "best_sellers"
+    | "price_low_to_high"
+    | "price_high_to_low";
 }): Promise<ProductsResponse> {
   const {
     page = 1,
@@ -172,7 +179,9 @@ export async function getProducts(params: {
         ? "price-high"
         : order_by === "new"
           ? "newest"
-          : "featured";
+          : order_by === "best_sellers"
+            ? "best-sellers"
+            : "featured";
 
   const where: Prisma.ProductWhereInput = {
     is_active: true,

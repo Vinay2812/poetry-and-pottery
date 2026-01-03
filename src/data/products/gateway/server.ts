@@ -20,7 +20,12 @@ export async function getProducts(params: {
   materials?: string[];
   min_price?: number;
   max_price?: number;
-  order_by?: "featured" | "new" | "price_low_to_high" | "price_high_to_low";
+  order_by?:
+    | "featured"
+    | "new"
+    | "best_sellers"
+    | "price_low_to_high"
+    | "price_high_to_low";
 }): Promise<ProductsResponse> {
   if (isGraphQL) {
     return graphqlImpl.getProducts(params);

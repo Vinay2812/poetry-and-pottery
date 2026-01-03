@@ -22,6 +22,8 @@ function mapSortToOrderBy(
       return "price_high_to_low";
     case "newest":
       return "new";
+    case "best-sellers":
+      return "best_sellers";
     case "featured":
     default:
       return "featured";

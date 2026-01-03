@@ -11,7 +11,12 @@ export interface PriceHistogram {
   count: number;
 }
 
-export type SortOption = "featured" | "price-low" | "price-high" | "newest";
+export type SortOption =
+  | "featured"
+  | "best-sellers"
+  | "price-low"
+  | "price-high"
+  | "newest";
 
 export interface SortOptionConfig {
   value: SortOption;
@@ -20,6 +25,7 @@ export interface SortOptionConfig {
 
 export const SORT_OPTIONS: SortOptionConfig[] = [
   { value: "featured", label: "Featured" },
+  { value: "best-sellers", label: "Best Sellers" },
   { value: "price-low", label: "Price: Low to High" },
   { value: "price-high", label: "Price: High to Low" },
   { value: "newest", label: "Newest" },

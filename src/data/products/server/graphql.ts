@@ -32,11 +32,18 @@ import {
 } from "@/graphql/products.query";
 
 function mapOrderBy(
-  orderBy?: "featured" | "new" | "price_low_to_high" | "price_high_to_low",
+  orderBy?:
+    | "featured"
+    | "new"
+    | "best_sellers"
+    | "price_low_to_high"
+    | "price_high_to_low",
 ): ProductOrderBy | undefined {
   switch (orderBy) {
     case "new":
       return "NEW" as ProductOrderBy;
+    case "best_sellers":
+      return "BEST_SELLERS" as ProductOrderBy;
     case "price_low_to_high":
       return "PRICE_LOW_TO_HIGH" as ProductOrderBy;
     case "price_high_to_low":
@@ -55,7 +62,12 @@ export async function getProducts(params: {
   materials?: string[];
   min_price?: number;
   max_price?: number;
-  order_by?: "featured" | "new" | "price_low_to_high" | "price_high_to_low";
+  order_by?:
+    | "featured"
+    | "new"
+    | "best_sellers"
+    | "price_low_to_high"
+    | "price_high_to_low";
 }): Promise<ProductsResponse> {
   const client = getClient();
 
