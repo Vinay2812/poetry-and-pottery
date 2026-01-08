@@ -11,8 +11,11 @@ import { SetContextLink } from "@apollo/client/link/context";
 import { useAuth } from "@clerk/nextjs";
 
 function makeApolloClient(getToken: () => Promise<string | null>) {
+  const endpoint = GRAPHQL_ENDPOINT.includes("host.docker.internal")
+    ? `${GRAPHQL_ENDPOINT.replace("host.docker.internal", "localhost")}`
+    : GRAPHQL_ENDPOINT;
   const httpLink = new HttpLink({
-    uri: GRAPHQL_ENDPOINT,
+    uri: endpoint,
     credentials: "include",
     headers: {
       origin: DOMAIN,
