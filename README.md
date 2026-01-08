@@ -157,6 +157,42 @@ This keeps URLs clean while sharing layouts between related pages.
 - [Clerk Authentication](https://clerk.com/docs)
 - [Prisma Documentation](https://www.prisma.io/docs)
 
+## Docker
+
+### Prerequisites
+
+- Docker installed
+- API server running on port 5050 (required for GraphQL codegen during build)
+
+### Build
+
+```bash
+docker build -t poetry-and-pottery-client \
+  --add-host=host.docker.internal:host-gateway \
+  --build-arg NEXT_PUBLIC_API_ENDPOINT=http://host.docker.internal:5050 \
+  --build-arg NEXT_PUBLIC_DOMAIN=http://localhost:3005 \
+  --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key \
+  --build-arg DATABASE_URL=postgresql://user:password@host.docker.internal:5435/poetry-and-pottery \
+  -f ./infra/Dockerfile .
+```
+
+| Flag                                            | Purpose                                        |
+| ----------------------------------------------- | ---------------------------------------------- |
+| `--add-host=host.docker.internal:host-gateway`  | Allows build container to access host services |
+| `--build-arg NEXT_PUBLIC_API_ENDPOINT`          | GraphQL API endpoint for codegen               |
+| `--build-arg NEXT_PUBLIC_DOMAIN`                | Frontend domain for CORS headers               |
+| `--build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk authentication publishable key           |
+| `--build-arg DATABASE_URL`                      | PostgreSQL connection string                   |
+
+### Run
+
+```bash
+docker run -p 3005:3005 \
+  -e NEXT_PUBLIC_API_ENDPOINT=http://host.docker.internal:5050 \
+  -e NEXT_PUBLIC_DOMAIN=http://localhost:3005 \
+  poetry-and-pottery-client
+```
+
 ## Deployment
 
 Deploy easily with [Vercel](https://vercel.com):
