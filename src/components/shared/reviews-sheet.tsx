@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleReviewLike } from "@/data/reviews/gateway/server";
+import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { Star } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -91,6 +91,7 @@ export function ReviewsSheet({
   onLikeUpdate,
   children,
 }: ReviewsSheetProps) {
+  const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
   const [sortBy, setSortBy] = useState<SortOption>("recent");
   const [likedReviews, setLikedReviews] = useState<Set<string>>(() => {
     // Initialize from reviews data
@@ -138,8 +139,8 @@ export function ReviewsSheet({
       // Notify parent of optimistic update
       onLikeUpdate?.(reviewId, newLikesCount, newIsLiked);
 
-      // Call server action
-      const result = await toggleReviewLike(Number(reviewId));
+      // Call mutation
+      const result = await toggleReviewLikeMutate(Number(reviewId));
 
       // Revert on failure
       if (!result.success) {
@@ -172,7 +173,7 @@ export function ReviewsSheet({
         onLikeUpdate?.(reviewId, serverCount, newIsLiked);
       }
     },
-    [likedReviews, likeCounts, onLikeUpdate],
+    [likedReviews, likeCounts, onLikeUpdate, toggleReviewLikeMutate],
   );
 
   const ratingCounts = useMemo(() => {

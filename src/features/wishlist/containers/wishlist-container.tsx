@@ -2,7 +2,7 @@
 
 import { isGraphQL } from "@/consts/env";
 import type { ProductBase } from "@/data/products/types";
-import { getWishlist } from "@/data/wishlist/server/action";
+import { getWishlist } from "@/data/wishlist/gateway/server";
 import { useRecommendedProductsQuery } from "@/features/recommended-products";
 import { useWishlist } from "@/hooks";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
@@ -130,7 +130,7 @@ export function WishlistContainer({
     async (productId: number) => {
       // Optimistically update the query cache to remove the item immediately
       queryClient.setQueryData(
-        ["wishlist"],
+        ["wishlist", isGraphQL],
         (oldData: typeof data | undefined) => {
           if (!oldData) return oldData;
           return {

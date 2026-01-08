@@ -1,9 +1,7 @@
 "use client";
 
-import {
-  getNewsletterSubscriptionStatus,
-  subscribeToNewsletter,
-} from "@/data/newsletter/gateway/server";
+import { useSubscribeToNewsletter } from "@/data/newsletter/gateway/client";
+import { getNewsletterSubscriptionStatus } from "@/data/newsletter/gateway/server";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -81,6 +79,7 @@ const BRAND_DESCRIPTION =
 
 export function FooterContainer() {
   const { isSignedIn } = useAuth();
+  const { mutate: subscribeMutate } = useSubscribeToNewsletter();
 
   const [isAlreadySubscribed, setIsAlreadySubscribed] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
@@ -103,7 +102,7 @@ export function FooterContainer() {
     setSubscriptionError(null);
 
     try {
-      const result = await subscribeToNewsletter();
+      const result = await subscribeMutate();
 
       if (result.success) {
         setSubscriptionSuccess(true);
@@ -115,7 +114,7 @@ export function FooterContainer() {
     } finally {
       setIsSubscribing(false);
     }
-  }, []);
+  }, [subscribeMutate]);
 
   const viewModel: FooterViewModel = useMemo(
     () => ({

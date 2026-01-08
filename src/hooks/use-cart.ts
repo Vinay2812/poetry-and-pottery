@@ -2,10 +2,10 @@
 
 import { MAX_CART_QUANTITY } from "@/consts/performance";
 import {
-  addToCart as addToCartAction,
-  removeFromCart as removeFromCartAction,
-  updateCartQuantity as updateCartQuantityAction,
-} from "@/data/cart/gateway/server";
+  useAddToCart,
+  useRemoveFromCart,
+  useUpdateCartQuantity,
+} from "@/data/cart/gateway/client";
 import { useUIStore } from "@/store";
 import type { CartWithProduct, ProductWithCategories } from "@/types";
 import { useAuth } from "@clerk/nextjs";
@@ -47,6 +47,11 @@ export function useCart() {
   const [loadingProducts, setLoadingProducts] = useState<Set<number>>(
     new Set(),
   );
+
+  // Use mutation hooks
+  const { mutate: addToCartMutate } = useAddToCart();
+  const { mutate: removeFromCartMutate } = useRemoveFromCart();
+  const { mutate: updateCartQuantityMutate } = useUpdateCartQuantity();
 
   const setLoading = useCallback((productId: number, loading: boolean) => {
     setLoadingProducts((prev) => {
@@ -144,7 +149,7 @@ export function useCart() {
 
       setLoading(productId, true);
 
-      const actionResult = await addToCartAction(productId, quantityToAdd);
+      const actionResult = await addToCartMutate(productId, quantityToAdd);
       if (!actionResult.success) {
         setItems(previousItems);
         setCartCount(previousCount);
@@ -174,6 +179,7 @@ export function useCart() {
       setLoading,
       setSignInModalOpen,
       setSignInRedirectUrl,
+      addToCartMutate,
     ],
   );
 
@@ -191,7 +197,7 @@ export function useCart() {
 
       setLoading(productId, true);
 
-      const actionResult = await removeFromCartAction(productId);
+      const actionResult = await removeFromCartMutate(productId);
       if (!actionResult.success) {
         setItems(previousItems);
         setCartCount(previousCount);
@@ -206,7 +212,15 @@ export function useCart() {
       setLoading(productId, false);
       return true;
     },
-    [isSignedIn, items, cartCount, setCartCount, addToast, setLoading],
+    [
+      isSignedIn,
+      items,
+      cartCount,
+      setCartCount,
+      addToast,
+      setLoading,
+      removeFromCartMutate,
+    ],
   );
 
   const updateQuantity = useCallback(
@@ -238,7 +252,7 @@ export function useCart() {
 
       setLoading(productId, true);
 
-      const actionResult = await updateCartQuantityAction(
+      const actionResult = await updateCartQuantityMutate(
         productId,
         clampedQuantity,
       );
@@ -256,7 +270,15 @@ export function useCart() {
       setLoading(productId, false);
       return true;
     },
-    [isSignedIn, items, cartCount, setCartCount, addToast, setLoading],
+    [
+      isSignedIn,
+      items,
+      cartCount,
+      setCartCount,
+      addToast,
+      setLoading,
+      updateCartQuantityMutate,
+    ],
   );
 
   const isAtMaxQuantity = useCallback(

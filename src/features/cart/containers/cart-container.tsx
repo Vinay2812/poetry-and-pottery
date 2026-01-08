@@ -1,6 +1,6 @@
 "use client";
 
-import { createOrder } from "@/data/orders/gateway/server";
+import { useCreateOrder } from "@/data/orders/gateway/client";
 import type { ShippingAddress } from "@/data/orders/types";
 import { useAuthAction, useCart } from "@/hooks";
 import { useUIStore } from "@/store";
@@ -61,6 +61,7 @@ export function CartContainer({
   const router = useRouter();
   const { addToast } = useUIStore();
   const { requireAuth } = useAuthAction();
+  const { mutate: createOrderMutate } = useCreateOrder();
   const [isOrdering, setIsOrdering] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<UserAddress | null>(
     initialAddresses[0] || null,
@@ -127,7 +128,7 @@ export function CartContainer({
       setIsOrdering(true);
 
       try {
-        const result = await createOrder({
+        const result = await createOrderMutate({
           shippingFee: subtotal > 2000 ? 0 : 150,
           shippingAddress: {
             name: selectedAddress.name,
@@ -207,6 +208,7 @@ export function CartContainer({
     addToast,
     clear,
     router,
+    createOrderMutate,
   ]);
 
   // Build cart item view models

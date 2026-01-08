@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleReviewLike } from "@/data/reviews/gateway/server";
+import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
 import { useCallback, useMemo, useState } from "react";
 
@@ -17,6 +17,7 @@ export function ProductDetailContainer({
     Record<string, { likes: number; isLiked: boolean }>
   >({});
 
+  const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
   const { requireAuth, userId: currentUserId } = useAuthAction();
   const { addToCart, isLoading: isCartLoading, isAtMaxQuantity } = useCart();
   const {
@@ -84,8 +85,8 @@ export function ProductDetailContainer({
         const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
         handleLikeUpdate(reviewId, newLikes, newIsLiked);
 
-        // Call server action
-        const result = await toggleReviewLike(Number(reviewId));
+        // Call mutation
+        const result = await toggleReviewLikeMutate(Number(reviewId));
 
         if (!result.success) {
           // Revert on failure
@@ -97,7 +98,7 @@ export function ProductDetailContainer({
       });
       return (await result) ?? false;
     },
-    [requireAuth, handleLikeUpdate],
+    [requireAuth, handleLikeUpdate, toggleReviewLikeMutate],
   );
 
   return (

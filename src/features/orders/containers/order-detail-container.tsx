@@ -1,6 +1,6 @@
 "use client";
 
-import { createProductReview } from "@/data/reviews/gateway/server";
+import { useCreateProductReview } from "@/data/reviews/gateway/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
@@ -16,6 +16,7 @@ import { OrderStatus, buildOrderItemViewModel, getStatusLabel } from "../types";
 
 export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
   const router = useRouter();
+  const { mutate: createProductReviewMutate } = useCreateProductReview();
 
   // Build view model
   const viewModel: OrderDetailViewModel | null = useMemo(() => {
@@ -69,7 +70,7 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
       review?: string,
       imageUrls?: string[],
     ) => {
-      const result = await createProductReview({
+      const result = await createProductReviewMutate({
         productId,
         rating,
         review,
@@ -85,7 +86,7 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
         error: result.success ? undefined : result.error,
       };
     },
-    [router],
+    [router, createProductReviewMutate],
   );
 
   const handleWhatsAppContact = useCallback(() => {

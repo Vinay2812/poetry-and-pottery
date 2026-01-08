@@ -1,7 +1,7 @@
 "use client";
 
 import type { EventRegistration } from "@/data/events/types";
-import { createEventReview } from "@/data/reviews/gateway/server";
+import { useCreateEventReview } from "@/data/reviews/gateway/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
@@ -28,6 +28,7 @@ interface CompletedEventCardProps {
 export function CompletedEventCard({ registration }: CompletedEventCardProps) {
   const { event, has_reviewed: hasReviewed } = registration;
   const router = useRouter();
+  const { mutate: createEventReviewMutate } = useCreateEventReview();
 
   const eventDate = new Date(event.ends_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {
@@ -44,7 +45,7 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
 
   const handleReviewSubmit = useCallback(
     async (rating: number, review?: string, imageUrls?: string[]) => {
-      const result = await createEventReview({
+      const result = await createEventReviewMutate({
         eventId: event.id,
         rating,
         review,
@@ -60,7 +61,7 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
         error: result.success ? undefined : result.error,
       };
     },
-    [event.id, router],
+    [event.id, router, createEventReviewMutate],
   );
 
   return (

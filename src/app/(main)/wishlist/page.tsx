@@ -1,6 +1,8 @@
-import { getWishlist } from "@/data/wishlist/server/action";
+import { getWishlist } from "@/data/wishlist/gateway/server";
 import { WishlistContainer } from "@/features/wishlist";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "My Wishlist | Poetry & Pottery",

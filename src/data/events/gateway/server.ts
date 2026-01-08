@@ -3,14 +3,11 @@
 import { isGraphQL } from "@/consts/env";
 
 import type {
-  CancelRegistrationResponse,
   EventDetail,
   EventRegistration,
   EventWithUserContext,
   EventsFilterInput,
   EventsResponse,
-  RegisterForEventInput,
-  RegisterForEventResponse,
   RegistrationsFilterInput,
   RegistrationsResponse,
 } from "@/graphql/generated/types";
@@ -37,14 +34,6 @@ export type GetRegistrationsResult =
 
 export type GetRegistrationResult =
   | { success: true; data: EventRegistration }
-  | { success: false; error: string };
-
-export type RegisterForEventResult =
-  | { success: true; data: EventRegistration }
-  | { success: false; error: string };
-
-export type CancelRegistrationResult =
-  | { success: true }
   | { success: false; error: string };
 
 // ============ EVENT QUERIES ============
@@ -292,66 +281,6 @@ export async function getCompletedRegistrations(
         error instanceof Error
           ? error.message
           : "Failed to get completed registrations",
-    };
-  }
-}
-
-// ============ MUTATIONS ============
-
-export async function registerForEvent(
-  input: RegisterForEventInput,
-): Promise<RegisterForEventResult> {
-  try {
-    let result: RegisterForEventResponse;
-
-    if (isGraphQL) {
-      result = await graphqlImpl.registerForEvent(input);
-    } else {
-      result = await actionImpl.registerForEvent(input);
-    }
-
-    if (result.success && result.registration) {
-      return { success: true, data: result.registration };
-    }
-    return {
-      success: false,
-      error: result.error ?? "Failed to register for event",
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to register for event",
-    };
-  }
-}
-
-export async function cancelRegistration(
-  registrationId: string,
-): Promise<CancelRegistrationResult> {
-  try {
-    let result: CancelRegistrationResponse;
-
-    if (isGraphQL) {
-      result = await graphqlImpl.cancelRegistration(registrationId);
-    } else {
-      result = await actionImpl.cancelRegistration(registrationId);
-    }
-
-    if (result.success) {
-      return { success: true };
-    }
-    return {
-      success: false,
-      error: result.error ?? "Failed to cancel registration",
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "Failed to cancel registration",
     };
   }
 }

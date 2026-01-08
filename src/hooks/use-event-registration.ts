@@ -1,11 +1,12 @@
 "use client";
 
-import { registerForEvent as registerForEventGateway } from "@/data/events/gateway/server";
+import { useRegisterForEvent } from "@/data/events/gateway/client";
 import { useUIStore } from "@/store/ui.store";
 import { useCallback, useState } from "react";
 
 export function useEventRegistration() {
   const { addToast } = useUIStore();
+  const { mutate: registerForEventMutate } = useRegisterForEvent();
   const [loadingEvents, setLoadingEvents] = useState<Set<string>>(new Set());
 
   const setLoading = useCallback((eventId: string, loading: boolean) => {
@@ -30,7 +31,7 @@ export function useEventRegistration() {
       setLoading(eventId, true);
 
       try {
-        const result = await registerForEventGateway({ eventId, seats });
+        const result = await registerForEventMutate({ eventId, seats });
 
         if (!result.success) {
           addToast({
@@ -58,7 +59,7 @@ export function useEventRegistration() {
         return { success: false, error: "Unknown error" };
       }
     },
-    [addToast, setLoading],
+    [addToast, setLoading, registerForEventMutate],
   );
 
   return {

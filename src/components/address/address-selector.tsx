@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  createAddress,
-  deleteAddress,
-  updateAddress,
-} from "@/data/address/gateway/server";
+  useCreateAddress,
+  useDeleteAddress,
+  useUpdateAddress,
+} from "@/data/address/gateway/client";
 import { MapPin, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -147,6 +147,10 @@ export function AddressSelector({
   onSelectAddress,
   onAddressesChange,
 }: AddressSelectorProps) {
+  const { mutate: createAddressMutate } = useCreateAddress();
+  const { mutate: updateAddressMutate } = useUpdateAddress();
+  const { mutate: deleteAddressMutate } = useDeleteAddress();
+
   const [addresses, setAddresses] = useState<UserAddress[]>(initialAddresses);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingAddress, setEditingAddress] = useState<UserAddress | null>(
@@ -175,7 +179,7 @@ export function AddressSelector({
       contactNumber: string;
     }) => {
       setIsSubmitting(true);
-      const result = await createAddress({
+      const result = await createAddressMutate({
         name: data.name,
         addressLine1: data.addressLine1,
         addressLine2: data.addressLine2 || undefined,
@@ -197,7 +201,7 @@ export function AddressSelector({
 
       return { success: false, error: result.error };
     },
-    [addresses, onSelectAddress, updateAddresses],
+    [addresses, onSelectAddress, updateAddresses, createAddressMutate],
   );
 
   const handleUpdateAddress = useCallback(
@@ -215,7 +219,7 @@ export function AddressSelector({
         return { success: false, error: "No address selected" };
 
       setIsSubmitting(true);
-      const result = await updateAddress(editingAddress.id, {
+      const result = await updateAddressMutate(editingAddress.id, {
         name: data.name,
         addressLine1: data.addressLine1,
         addressLine2: data.addressLine2 || undefined,
@@ -247,13 +251,14 @@ export function AddressSelector({
       onSelectAddress,
       selectedAddressId,
       updateAddresses,
+      updateAddressMutate,
     ],
   );
 
   const handleDeleteAddress = useCallback(
     async (addressId: number) => {
       setDeletingId(addressId);
-      const result = await deleteAddress(addressId);
+      const result = await deleteAddressMutate(addressId);
       setDeletingId(null);
 
       if (result.success) {
@@ -264,7 +269,13 @@ export function AddressSelector({
         }
       }
     },
-    [addresses, onSelectAddress, selectedAddressId, updateAddresses],
+    [
+      addresses,
+      onSelectAddress,
+      selectedAddressId,
+      updateAddresses,
+      deleteAddressMutate,
+    ],
   );
 
   const handleSelectAddress = useCallback(

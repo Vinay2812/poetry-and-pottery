@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleReviewLike } from "@/data/reviews/gateway/server";
+import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { useAuthAction } from "@/hooks";
 import { useCallback, useMemo, useState } from "react";
 
@@ -26,6 +26,7 @@ export function PastWorkshopDetailContainer({
     Record<string, { likes: number; isLiked: boolean }>
   >({});
 
+  const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
   const { requireAuth } = useAuthAction();
 
   const handleOpenGallery = useCallback((index: number) => {
@@ -90,8 +91,8 @@ export function PastWorkshopDetailContainer({
       const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
       handleLikeUpdate(reviewId, newLikes, newIsLiked);
 
-      // Call server action
-      const result = await toggleReviewLike(Number(reviewId));
+      // Call mutation
+      const result = await toggleReviewLikeMutate(Number(reviewId));
 
       if (!result.success) {
         // Revert on failure
@@ -101,8 +102,7 @@ export function PastWorkshopDetailContainer({
         handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
       }
     },
-
-    [handleLikeUpdate, formattedReviews],
+    [handleLikeUpdate, formattedReviews, toggleReviewLikeMutate],
   );
 
   // Calculate average rating

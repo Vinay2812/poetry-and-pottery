@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  addToWishlist as addToWishlistAction,
-  removeFromWishlist as removeFromWishlistAction,
-  toggleWishlist as toggleWishlistAction,
-} from "@/data/wishlist/gateway/server";
+  useAddToWishlist,
+  useRemoveFromWishlist,
+  useToggleWishlist,
+} from "@/data/wishlist/gateway/client";
 import { useUIStore } from "@/store";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useState } from "react";
@@ -24,6 +24,11 @@ export function useWishlist() {
   const [loadingProducts, setLoadingProducts] = useState<Set<number>>(
     new Set(),
   );
+
+  // Use mutation hooks
+  const { mutate: addToWishlistMutate } = useAddToWishlist();
+  const { mutate: removeFromWishlistMutate } = useRemoveFromWishlist();
+  const { mutate: toggleWishlistMutate } = useToggleWishlist();
 
   const setLoading = useCallback((productId: number, loading: boolean) => {
     setLoadingProducts((prev) => {
@@ -73,7 +78,7 @@ export function useWishlist() {
 
       setLoading(productId, true);
 
-      const actionResult = await toggleWishlistAction(productId);
+      const actionResult = await toggleWishlistMutate(productId);
       if (!actionResult.success) {
         // Rollback on error
         setWishlistIds(previousIds);
@@ -97,6 +102,7 @@ export function useWishlist() {
       setLoading,
       setSignInModalOpen,
       setSignInRedirectUrl,
+      toggleWishlistMutate,
     ],
   );
 
@@ -119,7 +125,7 @@ export function useWishlist() {
 
       setLoading(productId, true);
 
-      const actionResult = await addToWishlistAction(productId);
+      const actionResult = await addToWishlistMutate(productId);
       if (!actionResult.success) {
         // Rollback on error
         setWishlistIds(previousIds);
@@ -141,6 +147,7 @@ export function useWishlist() {
       setLoading,
       setSignInModalOpen,
       setSignInRedirectUrl,
+      addToWishlistMutate,
     ],
   );
 
@@ -159,7 +166,7 @@ export function useWishlist() {
 
       setLoading(productId, true);
 
-      const actionResult = await removeFromWishlistAction(productId);
+      const actionResult = await removeFromWishlistMutate(productId);
       if (!actionResult.success) {
         // Rollback on error
         setWishlistIds(previousIds);
@@ -179,6 +186,7 @@ export function useWishlist() {
       setWishlistCount,
       addToast,
       setLoading,
+      removeFromWishlistMutate,
     ],
   );
 

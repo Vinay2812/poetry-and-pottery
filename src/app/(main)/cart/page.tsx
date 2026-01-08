@@ -1,8 +1,10 @@
 import { getUserAddresses } from "@/data/address/gateway/server";
-import { getCart } from "@/data/cart/server/action";
+import { getCart } from "@/data/cart/gateway/server";
 import { getRecommendedProducts } from "@/data/products/gateway/server";
 import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Shopping Cart | Poetry & Pottery",
