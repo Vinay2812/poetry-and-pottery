@@ -2,6 +2,8 @@ import { getWishlist } from "@/data/wishlist/gateway/server";
 import { WishlistContainer } from "@/features/wishlist";
 import type { Metadata } from "next";
 
+import { requireAuth } from "@/lib/auth";
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function WishlistPage() {
+  await requireAuth();
   // Only fetch wishlist items server-side
   // Recommendations will be fetched client-side for faster initial load
   const wishlistResult = await getWishlist();

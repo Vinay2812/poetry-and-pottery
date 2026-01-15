@@ -4,6 +4,8 @@ import { getRecommendedProducts } from "@/data/products/gateway/server";
 import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
 
+import { requireAuth } from "@/lib/auth";
+
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -17,6 +19,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
+  await requireAuth();
+
   const [cartResult, recommendedResult, addressResult] = await Promise.all([
     getCart(),
     getRecommendedProducts({ limit: 4 }),

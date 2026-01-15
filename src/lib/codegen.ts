@@ -1,11 +1,19 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
+import dotenv from "dotenv";
+
+const env = process.env.NODE_ENV || "local";
+const envFile = `.env.${env}`;
+dotenv.config({ path: envFile });
+
+const API_ENDPOINT = process.env.API_ENDPOINT!;
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN!;
 
 const config: CodegenConfig = {
   schema: [
     {
-      [`${process.env.NEXT_PUBLIC_API_ENDPOINT}/graphql`]: {
+      [`${API_ENDPOINT}/graphql`]: {
         headers: {
-          origin: process.env.NEXT_PUBLIC_DOMAIN!,
+          origin: DOMAIN!,
           operationname: "IntrospectionQuery",
         },
       },

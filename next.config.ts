@@ -1,4 +1,9 @@
+import dotenv from "dotenv";
 import type { NextConfig } from "next";
+
+const env = process.env.NODE_ENV || "local";
+const envFile = `.env.${env}`;
+dotenv.config({ path: envFile });
 
 const nextConfig: NextConfig = {
   output: "standalone",

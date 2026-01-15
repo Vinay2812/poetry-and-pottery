@@ -14,6 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const dynamic = "force-dynamic";
+
+console.log(process.env.NEXT_PUBLIC_API_ENDPOINT);
+
 export const metadata: Metadata = {
   title: "Poetry & Pottery",
   description:

@@ -7,7 +7,7 @@ README.md
 .git
 rules
 designs
-.env.example
+.env*
 .gitignore
 .prettierignore
 .prettierrc
@@ -17,3 +17,5 @@ CLAUDE.md
 prisma/generated
 prisma/migrations
 src/graphql/generated
+.vscode
+.cursor

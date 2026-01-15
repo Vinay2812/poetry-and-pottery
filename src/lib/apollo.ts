@@ -1,4 +1,4 @@
-import { DOMAIN, GRAPHQL_ENDPOINT } from "@/consts/env";
+import { DOMAIN, SERVER_GRAPHQL_ENDPOINT } from "@/consts/env";
 import { HttpLink } from "@apollo/client";
 import {
   ApolloClient,
@@ -10,7 +10,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export const { getClient, query: apolloClient } = registerApolloClient(() => {
   const httpLink = new HttpLink({
-    uri: GRAPHQL_ENDPOINT,
+    uri: SERVER_GRAPHQL_ENDPOINT,
     credentials: "include",
     headers: {
       origin: DOMAIN,

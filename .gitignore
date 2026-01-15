@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env
 .env.docker
+.env.local
+.env.dev
+.env.production
 
 # vercel
 .vercel
@@ -47,6 +50,4 @@ plan.md
 prisma/generated
 src/lib/reset-db.ts
 
-
-# generated
-src/graphql/generated/
+src/graphql/generated

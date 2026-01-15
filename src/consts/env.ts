@@ -23,11 +23,13 @@ export const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL; // Optional: custom publ
 
 export const MOBILE_NUMBER = process.env.NEXT_PUBLIC_MOBILE_NUMBER;
 
-export const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT!;
+export const CLIENT_API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT!;
+export const SERVER_API_ENDPOINT = process.env.API_ENDPOINT!;
+
 export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN!;
 
-export const GRAPHQL_ENDPOINT = `${API_ENDPOINT}/graphql`;
-
+export const CLIENT_GRAPHQL_ENDPOINT = `${CLIENT_API_ENDPOINT}/graphql`;
+export const SERVER_GRAPHQL_ENDPOINT = `${SERVER_API_ENDPOINT}/graphql`;
 // Data source toggle for gateway pattern (actions vs graphql)
 export type DataSource = "actions" | "graphql";
 const dataSourceEnv = process.env.NEXT_PUBLIC_DATA_SOURCE as DataSource;

@@ -3,6 +3,8 @@ import { MobileHeaderContainer } from "@/features/layout";
 import { OrdersListContainer } from "@/features/orders";
 import type { Metadata } from "next";
 
+import { requireAuth } from "@/lib/auth";
+
 export const metadata: Metadata = {
   title: "My Orders | Poetry & Pottery",
   description:
@@ -20,6 +22,7 @@ interface OrdersPageProps {
 }
 
 export default async function OrdersPage({ searchParams }: OrdersPageProps) {
+  await requireAuth();
   const params = await searchParams;
   const search = params.search || undefined;
 
