@@ -4,7 +4,7 @@ export function Logo() {
   return (
     <>
       <OptimizedImage
-        src="https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg"
+        src="https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.png"
         alt="Poetry & Pottery"
         width={32}
         height={32}
