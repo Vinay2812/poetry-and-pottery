@@ -5,10 +5,13 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Heart, Search, User } from "lucide-react";
 import Link from "next/link";
 
+import { OptimizedImage } from "@/components/shared";
+
 import { cn } from "@/lib/utils";
 
 import { AccountDropdownContainer } from "../containers/account-dropdown-container";
 import type { MobileHeaderProps } from "../types";
+import { Logo } from "./logo";
 
 export function MobileHeader({
   title,
@@ -51,12 +54,7 @@ export function MobileHeader({
             </div>
           ) : (
             <Link href="/" className="flex items-center gap-2">
-              <div className="bg-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-xl shadow-sm">
-                <span className="text-sm font-bold text-white">P</span>
-              </div>
-              <span className="text-base font-bold tracking-tight">
-                Poetry & Pottery
-              </span>
+              <Logo />
             </Link>
           )}
         </div>

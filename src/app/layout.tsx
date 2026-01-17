@@ -27,6 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link
+        rel="icon"
+        href="https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg"
+        className="h-6 w-6 rounded-full"
+      />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

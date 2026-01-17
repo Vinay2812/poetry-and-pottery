@@ -6,12 +6,14 @@ import { motion } from "framer-motion";
 import { Heart, Search, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
+import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
 import { AccountDropdownContainer } from "../containers/account-dropdown-container";
 import type { NavbarProps } from "../types";
+import { Logo } from "./logo";
 
 export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
   const isActiveRoute = (href: string) => {
@@ -29,12 +31,7 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
             href="/"
             className="group flex shrink-0 items-center gap-3 transition-opacity duration-150"
           >
-            <div className="bg-primary shadow-primary/20 flex h-10 w-10 items-center justify-center rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
-              <span className="text-lg font-bold text-white">P</span>
-            </div>
-            <span className="text-foreground text-xl font-bold tracking-tight">
-              Poetry & Pottery
-            </span>
+            <Logo />
           </Link>
 
           {/* Navigation Pills */}
