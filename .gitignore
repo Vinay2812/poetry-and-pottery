@@ -47,5 +47,3 @@ plan.md
 # data
 prisma/generated
 src/lib/reset-db.ts
-
-src/graphql/generated

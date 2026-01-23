@@ -36,28 +36,3 @@ const dataSourceEnv = process.env.NEXT_PUBLIC_DATA_SOURCE as DataSource;
 export const DATA_SOURCE: DataSource = dataSourceEnv || "actions";
 export const isGraphQL = DATA_SOURCE === "graphql";
 export const isActions = DATA_SOURCE === "actions";
-
-console.log("ENV VARIABLES:", {
-  DATABASE_URL,
-  REPLICA_URL,
-  OPTIMIZE_API_KEY,
-  PEXELS_API_KEY,
-  ENVIRONMENT,
-  BUSINESS_EMAIL,
-  GMAIL_USER,
-  GMAIL_APP_PASSWORD,
-  R2_ACCOUNT_ID,
-  R2_ACCESS_KEY_ID,
-  R2_SECRET_ACCESS_KEY,
-  R2_BUCKET,
-  R2_PUBLIC_URL,
-  MOBILE_NUMBER,
-  CLIENT_API_ENDPOINT,
-  SERVER_API_ENDPOINT,
-  DOMAIN,
-  CLIENT_GRAPHQL_ENDPOINT,
-  SERVER_GRAPHQL_ENDPOINT,
-  DATA_SOURCE,
-  isGraphQL,
-  isActions,
-});

@@ -11,14 +11,11 @@
   "license": "ISC",
   "author": "",
   "scripts": {
-    "build": "NODE_ENV=local bun codegen && next build",
-    "build:docker": "NODE_ENV=docker bun codegen && next build",
-    "build:prod": "NODE_ENV=production bun codegen && next build",
+    "build": "next build",
     "codegen": "graphql-codegen --config src/lib/codegen.ts",
     "db:init": "NODE_ENV=local bunx tsx src/lib/seed.ts",
     "db:reset": "NODE_ENV=local bun prisma:reset && bunx prisma migrate deploy && bun db:init",
     "dev": "NODE_ENV=local bun codegen && next dev --port 3005",
-    "dev:prod": "NODE_ENV=production bun codegen && next dev --port 3005",
     "husky": "husky",
     "lint": "eslint .",
     "migration:apply": "NODE_ENV=local bunx prisma migrate deploy",
@@ -28,8 +25,7 @@
     "prisma:generate": "bunx prisma generate",
     "prisma:reset": "bunx prisma migrate reset",
     "prisma:studio": "bunx prisma studio",
-    "start": "NODE_ENV=local next start",
-    "start:prod": "NODE_ENV=production next start",
+    "start": "next start",
     "tsc": "bunx tsc --noEmit"
   },
   "dependencies": {
