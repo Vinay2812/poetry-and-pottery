@@ -18,3 +18,5 @@ terraform_config/.terraform/
 .cache/
 *.log
 coverage/
+
+src/graphql/generated/
