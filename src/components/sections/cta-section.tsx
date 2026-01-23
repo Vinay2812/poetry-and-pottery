@@ -39,7 +39,7 @@ export function CTASection({
     return (
       <section
         className={cn(
-          "container mx-auto px-4 py-8 lg:px-8 lg:py-20",
+          "container mx-auto px-4 py-6 lg:px-8 lg:py-16",
           className,
         )}
       >
@@ -96,7 +96,7 @@ export function CTASection({
 
   return (
     <section
-      className={cn("container mx-auto px-4 py-4 lg:px-8 lg:py-12", className)}
+      className={cn("container mx-auto px-4 py-6 lg:px-8 lg:py-16", className)}
     >
       <div className="group relative aspect-[4/3] overflow-hidden rounded-[2rem] lg:aspect-[21/9]">
         {image && (

@@ -70,7 +70,7 @@ export default async function Home() {
         <RecommendedProductsContainer
           title="Curated Favorites"
           subtitle="Handpicked pieces for your home."
-          className="container mx-auto px-4 py-4 lg:px-8 lg:py-12"
+          className="container mx-auto px-4 py-6 lg:px-8 lg:py-16"
         />
 
         {/* Studio Visit CTA */}
@@ -82,7 +82,6 @@ export default async function Home() {
           secondaryButtonText="Browse Collection"
           secondaryButtonHref="/products"
           variant="solid"
-          className="py-12"
         />
 
         {/* Our Story CTA */}
