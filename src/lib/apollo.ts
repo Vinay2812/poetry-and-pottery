@@ -26,12 +26,20 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
       return {
         headers: {
           ...headers,
+          "content-type": "application/json",
+          "apollo-require-preflight": "true",
           authorization: token ? `Bearer ${token}` : "",
         },
       };
     } catch {
       // auth() might fail outside of request context
-      return { headers };
+      return {
+        headers: {
+          ...headers,
+          "content-type": "application/json",
+          "apollo-require-preflight": "true",
+        },
+      };
     }
   });
 

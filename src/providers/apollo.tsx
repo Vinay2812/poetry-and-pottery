@@ -25,6 +25,8 @@ function makeApolloClient(getToken: () => Promise<string | null>) {
     return {
       headers: {
         ...headers,
+        "content-type": "application/json",
+        "apollo-require-preflight": "true",
         authorization: token ? `Bearer ${token}` : "",
       },
     };
