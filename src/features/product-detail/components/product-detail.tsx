@@ -36,7 +36,7 @@ function ProductInfoHeader({ product, selectedColor }: ProductInfoHeaderProps) {
         </span>
       </div>
 
-      <h1 className="mb-3 text-2xl font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
+      <h1 className="font-display mb-3 text-2xl font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
         {product.name}
         {selectedColor && (
           <span className="font-medium text-neutral-400">

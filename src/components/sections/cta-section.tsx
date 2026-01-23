@@ -56,7 +56,7 @@ export function CTASection({
           </div>
 
           <div className="relative z-10 mx-auto max-w-3xl text-center">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white lg:mb-6 lg:text-5xl">
+            <h2 className="font-display mb-4 text-3xl font-bold tracking-tight text-white lg:mb-6 lg:text-5xl">
               {title}
             </h2>
             <p className="mb-6 text-lg text-white/90 lg:mb-8 lg:text-xl">
@@ -111,7 +111,7 @@ export function CTASection({
 
         <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-16">
           <div className="max-w-2xl">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight text-white lg:text-5xl">
+            <h2 className="font-display mb-4 text-3xl font-bold tracking-tight text-white lg:text-5xl">
               {title}
             </h2>
             <p className="mb-8 max-w-lg text-base text-white/90 lg:text-lg">

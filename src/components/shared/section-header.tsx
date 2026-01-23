@@ -27,7 +27,7 @@ export function SectionHeader({
         <Icon className={cn("h-5 w-5", iconClassName)} />
         <h2
           className={cn(
-            "text-xl font-bold tracking-tight lg:text-3xl",
+            "font-display text-xl font-bold tracking-tight lg:text-3xl",
             titleClassName,
           )}
         >

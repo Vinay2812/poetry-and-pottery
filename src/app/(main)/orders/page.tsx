@@ -39,7 +39,9 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
         <div className="container mx-auto px-4 py-6 lg:px-8">
-          <h1 className="mb-6 hidden text-2xl font-bold lg:block">My Orders</h1>
+          <h1 className="font-display mb-6 hidden text-2xl font-bold lg:block">
+            My Orders
+          </h1>
 
           <OrdersListContainer
             initialOrders={orders}

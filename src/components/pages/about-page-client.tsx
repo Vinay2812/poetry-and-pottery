@@ -52,7 +52,7 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-6 lg:p-12">
-              <h1 className="mb-2 text-4xl font-bold text-white lg:text-6xl">
+              <h1 className="font-display mb-2 text-4xl font-bold text-white lg:text-6xl">
                 Our Story
               </h1>
               <p className="max-w-lg text-sm text-white/90 lg:text-lg">

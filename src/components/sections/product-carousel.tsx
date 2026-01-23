@@ -73,7 +73,7 @@ export function ProductCarousel({
         <div className="mb-4 lg:mb-6">
           <div className="flex items-center justify-between">
             {title && (
-              <h2 className="text-xl font-bold tracking-tight lg:text-2xl">
+              <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
                 {title}
               </h2>
             )}

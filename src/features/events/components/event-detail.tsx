@@ -114,7 +114,7 @@ export function EventDetail({
                     </span>
                   </div>
 
-                  <h1 className="mb-4 text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
+                  <h1 className="font-display mb-4 text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
                     {title}
                   </h1>
 
@@ -358,7 +358,7 @@ export function EventDetail({
           {/* Other Events */}
           {otherEvents.length > 0 && (
             <div className="mt-16 border-t border-neutral-100 px-4 pt-12 lg:mt-24 lg:px-0 lg:pt-16 dark:border-neutral-800">
-              <h2 className="mb-8 text-2xl font-bold tracking-tight text-neutral-900 lg:text-3xl dark:text-white">
+              <h2 className="font-display mb-8 text-2xl font-bold tracking-tight text-neutral-900 lg:text-3xl dark:text-white">
                 Other workshops you might like
               </h2>
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">

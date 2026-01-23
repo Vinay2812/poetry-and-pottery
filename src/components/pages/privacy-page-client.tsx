@@ -21,7 +21,7 @@ export function PrivacyPageClient({ content }: PrivacyPageClientProps) {
             <div className="bg-primary/10 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full">
               <Shield className="text-primary h-8 w-8" />
             </div>
-            <h1 className="mb-4 text-4xl font-bold lg:text-6xl">
+            <h1 className="font-display mb-4 text-4xl font-bold lg:text-6xl">
               Privacy Policy
             </h1>
             <p className="text-muted-foreground text-lg leading-relaxed">

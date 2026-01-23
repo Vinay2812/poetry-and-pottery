@@ -45,7 +45,7 @@ export function EventsListLayout({
         <div className="container mx-auto px-4 py-6 lg:px-8">
           {/* Header */}
           <div className="mb-6 hidden lg:block">
-            <h1 className="mb-2 text-2xl font-bold lg:text-3xl">
+            <h1 className="font-display mb-2 text-2xl font-bold lg:text-3xl">
               Pottery Workshops
             </h1>
             <p className="text-muted-foreground">

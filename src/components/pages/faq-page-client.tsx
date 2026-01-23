@@ -26,7 +26,7 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-4 text-4xl font-bold lg:text-6xl">
+            <h1 className="font-display mb-4 text-4xl font-bold lg:text-6xl">
               Frequently Asked Questions
             </h1>
             <p className="text-muted-foreground text-lg leading-relaxed">

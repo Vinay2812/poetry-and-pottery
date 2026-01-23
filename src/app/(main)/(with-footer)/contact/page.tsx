@@ -15,7 +15,9 @@ export default function ContactPage() {
         {/* Hero Section - Mobile only */}
         <section className="container mx-auto px-4 py-6 lg:hidden">
           <div className="text-center">
-            <h1 className="mb-4 text-4xl font-bold">Get in Touch</h1>
+            <h1 className="font-display mb-4 text-4xl font-bold">
+              Get in Touch
+            </h1>
             <p className="text-muted-foreground text-lg leading-relaxed">
               Have a question about our pottery, want to discuss a custom order,
               or interested in our workshops? We&apos;d love to hear from you.
@@ -29,7 +31,9 @@ export default function ContactPage() {
             {/* Info Card - Hidden on mobile */}
             <div className="bg-primary hidden flex-col justify-between rounded-3xl p-8 text-white lg:flex lg:p-10">
               <div>
-                <h1 className="mb-4 text-4xl font-bold">Get in Touch</h1>
+                <h1 className="font-display mb-4 text-4xl font-bold">
+                  Get in Touch
+                </h1>
                 <p className="mb-10 text-lg text-white/90">
                   Have a question about our pottery, want to discuss a custom
                   order, or interested in our workshops? We&apos;d love to hear

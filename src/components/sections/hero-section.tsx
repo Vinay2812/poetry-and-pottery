@@ -77,7 +77,7 @@ export function HeroSection({
               </motion.span>
             )}
 
-            <h1 className="mb-4 text-4xl leading-tight font-bold tracking-tight text-white lg:mb-6 lg:text-7xl">
+            <h1 className="font-display mb-4 text-4xl leading-tight font-bold tracking-tight text-white lg:mb-6 lg:text-7xl">
               {title}
             </h1>
 

@@ -53,7 +53,9 @@ export function CarePageClient({ content }: CarePageClientProps) {
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
           {/* Mobile Layout */}
           <div className="mx-auto max-w-3xl text-center lg:hidden">
-            <h1 className="mb-4 text-4xl font-bold">Care Instructions</h1>
+            <h1 className="font-display mb-4 text-4xl font-bold">
+              Care Instructions
+            </h1>
             <p className="text-muted-foreground text-lg leading-relaxed">
               With proper care, your handcrafted pottery will bring joy for
               years to come. Follow these guidelines to keep your pieces
@@ -68,7 +70,9 @@ export function CarePageClient({ content }: CarePageClientProps) {
               <p className="mb-4 text-sm font-medium tracking-wider text-white/70 uppercase">
                 Pottery Care Guide
               </p>
-              <h1 className="mb-6 text-4xl font-bold">Care Instructions</h1>
+              <h1 className="font-display mb-6 text-4xl font-bold">
+                Care Instructions
+              </h1>
               <p className="mb-6 text-lg leading-relaxed text-white/90">
                 With proper care, your handcrafted pottery will bring joy for
                 years to come.

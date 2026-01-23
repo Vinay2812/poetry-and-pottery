@@ -123,7 +123,7 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
       <div className="bg-primary/5 dark:bg-primary/10">
         <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
           <div className="mx-auto max-w-2xl text-center">
-            <h3 className="mb-2 text-xl font-semibold text-neutral-900 lg:text-2xl dark:text-neutral-100">
+            <h3 className="font-display mb-2 text-xl font-semibold text-neutral-900 lg:text-2xl dark:text-neutral-100">
               Join Our Community
             </h3>
             <p className="text-muted-foreground mb-6 text-sm lg:text-base">
