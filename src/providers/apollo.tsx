@@ -15,6 +15,7 @@ function makeApolloClient(getToken: () => Promise<string | null>) {
     uri: CLIENT_GRAPHQL_ENDPOINT,
     credentials: "include",
     headers: {
+      "content-type": "application/json",
       origin: DOMAIN,
     },
   });

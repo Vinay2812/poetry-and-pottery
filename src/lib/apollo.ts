@@ -13,6 +13,7 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
     uri: SERVER_GRAPHQL_ENDPOINT,
     credentials: "include",
     headers: {
+      "content-type": "application/json",
       origin: DOMAIN,
     },
   });
