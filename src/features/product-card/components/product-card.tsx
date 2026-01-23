@@ -92,16 +92,18 @@ export function ProductCard({
             <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
               {category}
             </p>
-            <span className="mt-0.5 text-sm font-bold text-neutral-900 lg:text-base dark:text-neutral-100">
-              {formattedPrice}
-            </span>
-            {product.avg_rating > 0 && product.reviews_count > 0 && (
-              <Rating
-                rating={product.avg_rating}
-                reviewCount={product.reviews_count}
-                size="sm"
-              />
-            )}
+            <div className="mt-0.5 flex items-center justify-between gap-2">
+              <span className="text-sm font-bold text-neutral-900 lg:text-base dark:text-neutral-100">
+                {formattedPrice}
+              </span>
+              {product.avg_rating > 0 && product.reviews_count > 0 && (
+                <Rating
+                  rating={product.avg_rating}
+                  reviewCount={product.reviews_count}
+                  size="sm"
+                />
+              )}
+            </div>
           </Link>
 
           {/* Action Buttons - Always Visible */}
