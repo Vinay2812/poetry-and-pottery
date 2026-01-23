@@ -1,6 +1,6 @@
 export const HERO_IMAGES = {
   springRituals:
-    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1600&h=640&fit=crop",
   shopBanner:
     "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=1200&h=400&fit=crop",
   ourStory:

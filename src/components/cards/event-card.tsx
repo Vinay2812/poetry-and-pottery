@@ -1,5 +1,7 @@
 import type { EventBase } from "@/data/events/types";
 
+import { cn } from "@/lib/utils";
+
 import {
   EventCardContent,
   EventCardDescription,
@@ -57,6 +59,16 @@ export function EventCard({ event }: EventCardProps) {
           location={event.location}
           availableSeats={availableSeats}
         />
+        <div
+          className={cn(
+            "mt-auto w-full rounded-lg py-2.5 text-center text-xs font-medium transition-colors lg:text-sm",
+            isSoldOut
+              ? "cursor-not-allowed bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500"
+              : "bg-primary hover:bg-primary-hover text-white",
+          )}
+        >
+          {isSoldOut ? "Sold Out" : "Book Now"}
+        </div>
       </EventCardContent>
     </EventCardWrapper>
   );

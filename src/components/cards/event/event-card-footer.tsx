@@ -16,7 +16,7 @@ export function EventCardFooter({
   rightContent,
 }: EventCardFooterProps) {
   return (
-    <div className="mt-auto flex items-center justify-between border-t border-neutral-50 pt-2 lg:pt-3 dark:border-neutral-800">
+    <div className="mt-auto flex items-center justify-between pt-2 lg:pt-3">
       <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-600 dark:text-neutral-400">
         {location !== undefined && (
           <>

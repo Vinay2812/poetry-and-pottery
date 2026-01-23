@@ -9,7 +9,7 @@ interface EventCardMetaProps {
 export function EventCardMeta({ title, date, time }: EventCardMetaProps) {
   return (
     <div className="flex flex-col gap-0.5 lg:gap-1">
-      <h3 className="line-clamp-1 text-sm font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
+      <h3 className="font-display line-clamp-2 text-sm font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
         {title}
       </h3>
       <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider text-neutral-500 uppercase lg:text-xs">

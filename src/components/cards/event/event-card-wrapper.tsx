@@ -26,7 +26,7 @@ export function EventCardWrapper({
       <Link
         href={href}
         className={cn(
-          "shadow-soft hover:shadow-card flex h-full flex-col overflow-hidden rounded-[2rem] border border-neutral-100 bg-white transition-all duration-300 hover:-translate-y-1 dark:border-neutral-800 dark:bg-neutral-900",
+          "flex h-full flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:bg-neutral-900",
           className,
         )}
       >
@@ -52,7 +52,7 @@ export function EventCardWrapperWithActions({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       className={cn(
-        "group shadow-soft hover:shadow-card relative flex flex-col overflow-hidden rounded-[2rem] border border-neutral-100 bg-white transition-all duration-300 hover:-translate-y-1 dark:border-neutral-800 dark:bg-neutral-900",
+        "group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:bg-neutral-900",
         className,
       )}
     >

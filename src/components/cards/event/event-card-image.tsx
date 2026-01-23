@@ -18,7 +18,7 @@ export function EventCardImage({
   showOverlay,
 }: EventCardImageProps) {
   return (
-    <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+    <div className="relative aspect-video w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
       <OptimizedImage
         src={src}
         alt={alt}
