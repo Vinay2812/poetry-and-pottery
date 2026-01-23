@@ -70,10 +70,10 @@ export function ProductCarousel({
   return (
     <section className={cn("relative", className)}>
       {(title || subtitle) && (
-        <div className="mb-4 lg:mb-6">
+        <div className="mb-6 lg:mb-8">
           <div className="flex items-center justify-between">
             {title && (
-              <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
+              <h2 className="font-display text-2xl font-bold tracking-tight lg:text-4xl">
                 {title}
               </h2>
             )}
@@ -87,7 +87,7 @@ export function ProductCarousel({
             )}
           </div>
           {subtitle && (
-            <p className="text-muted-foreground mt-2 text-sm lg:text-base">
+            <p className="text-muted-foreground mt-3 max-w-lg text-base lg:mt-4">
               {subtitle}
             </p>
           )}

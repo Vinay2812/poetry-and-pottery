@@ -14,9 +14,25 @@ export function SectionHeader({
   centered = true,
 }: SectionHeaderProps) {
   return (
-    <div className={cn(centered && "text-center", "mb-8 lg:mb-12", className)}>
-      <h2 className="mb-2 text-2xl font-bold lg:text-3xl">{title}</h2>
-      {description && <p className="text-muted-foreground">{description}</p>}
+    <div className={cn(centered && "text-center", className)}>
+      <h2
+        className={cn(
+          "font-display text-2xl font-bold tracking-tight lg:text-4xl",
+          description ? "mb-3 lg:mb-4" : "mb-6 lg:mb-8",
+        )}
+      >
+        {title}
+      </h2>
+      {description && (
+        <p
+          className={cn(
+            "text-muted-foreground mb-6 max-w-lg text-base lg:mb-8",
+            centered && "mx-auto",
+          )}
+        >
+          {description}
+        </p>
+      )}
     </div>
   );
 }

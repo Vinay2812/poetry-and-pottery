@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
-  icon: LucideIcon;
+  icon?: LucideIcon;
   iconClassName?: string;
   title: string;
   description?: string;
@@ -23,21 +23,27 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <div className={className}>
-      <div className="mb-3 flex items-center gap-2 lg:mb-6">
-        <Icon className={cn("h-5 w-5", iconClassName)} />
-        <h2
-          className={cn(
-            "font-display text-xl font-bold tracking-tight lg:text-3xl",
-            titleClassName,
-          )}
-        >
-          {title}
-        </h2>
-      </div>
+      <h2
+        className={cn(
+          "font-display text-2xl font-bold tracking-tight lg:text-4xl",
+          description ? "mb-3 lg:mb-4" : "mb-6 lg:mb-8",
+          titleClassName,
+        )}
+      >
+        {Icon && (
+          <Icon
+            className={cn(
+              "mr-2 inline-block h-5 w-5 lg:h-6 lg:w-6",
+              iconClassName,
+            )}
+          />
+        )}
+        {title}
+      </h2>
       {description && (
         <p
           className={cn(
-            "text-muted-foreground mb-4 text-sm lg:mb-8 lg:text-base",
+            "text-muted-foreground mb-6 max-w-lg text-base lg:mb-8",
             descriptionClassName,
           )}
         >

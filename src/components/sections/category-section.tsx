@@ -39,8 +39,8 @@ export function CategorySection({ categories }: CategorySectionProps) {
 
   return (
     <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-16">
-      <div className="mb-4 flex items-center justify-between lg:mb-6">
-        <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
+      <div className="mb-6 flex items-center justify-between lg:mb-8">
+        <h2 className="font-display text-2xl font-bold tracking-tight lg:text-4xl">
           Shop by Category
         </h2>
         <Link
