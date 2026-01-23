@@ -50,17 +50,24 @@ export default async function Home() {
         <HeroSection
           image={HERO_IMAGES.springRituals}
           imageAlt="Spring Rituals Collection"
-          badge="NEW ARRIVALS"
-          title="Spring Rituals"
-          subtitle="Hand-thrown porcelain designed to ground your daily moments in nature."
+          badge="NEW COLLECTION"
+          title="Where Earth Meets Art"
+          subtitle="Handcrafted ceramics that bring warmth and character to your everyday rituals."
         >
-          <Link
-            className="bg-primary hover:bg-primary-hover h-12 rounded-full px-4 py-3 text-base font-bold text-white shadow-lg transition-transform hover:scale-105"
-            // size="lg"
-            href="/products"
-          >
-            Explore Collection
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              className="bg-primary inline-flex h-11 items-center rounded-[10px] px-7 text-[15px] font-semibold text-white transition-transform hover:scale-[1.03] lg:h-12"
+              href="/products"
+            >
+              Explore Collection
+            </Link>
+            <Link
+              className="inline-flex h-11 items-center rounded-[10px] border-[1.5px] border-white/40 px-7 text-[15px] font-medium text-white transition-all hover:border-white hover:bg-white/10 lg:h-12"
+              href="/about"
+            >
+              Learn More
+            </Link>
+          </div>
         </HeroSection>
 
         {/* Shop by Category */}

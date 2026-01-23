@@ -47,5 +47,5 @@ plan.md
 # data
 prisma/generated
 src/lib/reset-db.ts
-.claude/
+design-refactor.md
 prompt.txt
