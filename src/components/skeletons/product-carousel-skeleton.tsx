@@ -24,7 +24,7 @@ export function ProductCarouselSkeleton({
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="min-w-0 shrink-0 basis-[85%] sm:basis-[45%] lg:basis-[24%]"
+            className="min-w-0 shrink-0 basis-full sm:basis-[50%] lg:basis-[33.33%]"
           >
             <Skeleton className="aspect-square rounded-xl lg:rounded-2xl" />
             <div className="mt-3 space-y-1.5">

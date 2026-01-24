@@ -11,6 +11,8 @@ import type {
   DeleteReviewMutationVariables,
   EventReviewsQuery,
   EventReviewsQueryVariables,
+  FeaturedReviewsQuery,
+  FeaturedReviewsQueryVariables,
   ProductReviewsQuery,
   ProductReviewsQueryVariables,
   ReviewsResponse,
@@ -25,8 +27,29 @@ import {
 } from "@/graphql/reviews.mutation";
 import {
   EVENT_REVIEWS_QUERY,
+  FEATURED_REVIEWS_QUERY,
   PRODUCT_REVIEWS_QUERY,
 } from "@/graphql/reviews.query";
+
+export async function getFeaturedReviews(
+  limit: number = 10,
+): Promise<FeaturedReviewsQuery["featuredReviews"]> {
+  const client = getClient();
+
+  const result = await client.query<
+    FeaturedReviewsQuery,
+    FeaturedReviewsQueryVariables
+  >({
+    query: FEATURED_REVIEWS_QUERY,
+    variables: { limit },
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  return result.data?.featuredReviews ?? [];
+}
 
 export async function getProductReviews(
   productId: number,

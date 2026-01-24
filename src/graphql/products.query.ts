@@ -189,6 +189,15 @@ export const CATEGORIES_QUERY = gql`
   }
 `;
 
+export const CATEGORIES_WITH_IMAGES_QUERY = gql`
+  query CategoriesWithImages {
+    categoriesWithImages {
+      name
+      image_url
+    }
+  }
+`;
+
 export const MATERIALS_QUERY = gql`
   query Materials {
     materials

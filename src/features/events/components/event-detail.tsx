@@ -361,7 +361,7 @@ export function EventDetail({
               <h2 className="font-display mb-8 text-2xl font-bold tracking-tight text-neutral-900 lg:text-3xl dark:text-white">
                 Other workshops you might like
               </h2>
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {otherEvents.map((otherEvent) => {
                   const otherFormattedDate = formatEventDate(
                     otherEvent.starts_at,

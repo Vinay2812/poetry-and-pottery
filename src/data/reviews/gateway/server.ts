@@ -2,10 +2,19 @@
 
 import { isGraphQL } from "@/consts/env";
 
-import type { ReviewsResponse } from "@/graphql/generated/types";
+import type {
+  FeaturedReviewsQuery,
+  ReviewsResponse,
+} from "@/graphql/generated/types";
 
 import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
+
+export async function getFeaturedReviews(
+  limit: number = 10,
+): Promise<FeaturedReviewsQuery["featuredReviews"]> {
+  return graphqlImpl.getFeaturedReviews(limit);
+}
 
 export async function getProductReviews(
   productId: number,

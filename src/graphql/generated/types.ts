@@ -577,6 +577,11 @@ export type CartResponse = {
   total: Scalars['Int']['output'];
 };
 
+export type CategoryWithImage = {
+  image_url?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+};
+
 export type ContactInfo = {
   address: Scalars['String']['output'];
   email: Scalars['String']['output'];
@@ -1461,12 +1466,14 @@ export type Query = {
   bestSellers: BestSellersResponse;
   cart: CartResponse;
   categories: Array<Scalars['String']['output']>;
+  categoriesWithImages: Array<CategoryWithImage>;
   completedRegistrations: RegistrationsResponse;
   eventById?: Maybe<EventDetail>;
   eventBySlug?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
   eventWithUserContext?: Maybe<EventWithUserContext>;
   events: EventsResponse;
+  featuredReviews: Array<Review>;
   globalSearch: GlobalSearchResponse;
   materials: Array<Scalars['String']['output']>;
   newsletterStatus: NewsletterStatus;
@@ -1635,6 +1642,11 @@ export type QueryEventWithUserContextArgs = {
 
 export type QueryEventsArgs = {
   filter?: InputMaybe<EventsFilterInput>;
+};
+
+
+export type QueryFeaturedReviewsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2814,6 +2826,11 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CategoriesQuery = { categories: Array<string> };
 
+export type CategoriesWithImagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesWithImagesQuery = { categoriesWithImages: Array<{ name: string, image_url?: string | null }> };
+
 export type MaterialsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2854,6 +2871,13 @@ export type ProductReviewsQueryVariables = Exact<{
 
 
 export type ProductReviewsQuery = { productReviews: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> }> } };
+
+export type FeaturedReviewsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type FeaturedReviewsQuery = { featuredReviews: Array<{ id: number, rating: number, review?: string | null, user: { id: number, name?: string | null, image?: string | null } }> };
 
 export type EventReviewsQueryVariables = Exact<{
   eventId: Scalars['String']['input'];

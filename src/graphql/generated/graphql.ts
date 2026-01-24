@@ -584,6 +584,11 @@ export type CartResponse = {
   total: Scalars['Int']['output'];
 };
 
+export type CategoryWithImage = {
+  image_url?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+};
+
 export type ContactInfo = {
   address: Scalars['String']['output'];
   email: Scalars['String']['output'];
@@ -1468,12 +1473,14 @@ export type Query = {
   bestSellers: BestSellersResponse;
   cart: CartResponse;
   categories: Array<Scalars['String']['output']>;
+  categoriesWithImages: Array<CategoryWithImage>;
   completedRegistrations: RegistrationsResponse;
   eventById?: Maybe<EventDetail>;
   eventBySlug?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
   eventWithUserContext?: Maybe<EventWithUserContext>;
   events: EventsResponse;
+  featuredReviews: Array<Review>;
   globalSearch: GlobalSearchResponse;
   materials: Array<Scalars['String']['output']>;
   newsletterStatus: NewsletterStatus;
@@ -1642,6 +1649,11 @@ export type QueryEventWithUserContextArgs = {
 
 export type QueryEventsArgs = {
   filter?: InputMaybe<EventsFilterInput>;
+};
+
+
+export type QueryFeaturedReviewsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2821,6 +2833,11 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CategoriesQuery = { categories: Array<string> };
 
+export type CategoriesWithImagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesWithImagesQuery = { categoriesWithImages: Array<{ name: string, image_url?: string | null }> };
+
 export type MaterialsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2861,6 +2878,13 @@ export type ProductReviewsQueryVariables = Exact<{
 
 
 export type ProductReviewsQuery = { productReviews: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> }> } };
+
+export type FeaturedReviewsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type FeaturedReviewsQuery = { featuredReviews: Array<{ id: number, rating: number, review?: string | null, user: { id: number, name?: string | null, image?: string | null } }> };
 
 export type EventReviewsQueryVariables = Exact<{
   eventId: Scalars['String']['input'];
@@ -7935,6 +7959,48 @@ export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipTo
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesSuspenseQueryHookResult = ReturnType<typeof useCategoriesSuspenseQuery>;
+export const CategoriesWithImagesDocument = gql`
+    query CategoriesWithImages {
+  categoriesWithImages {
+    name
+    image_url
+  }
+}
+    `;
+
+/**
+ * __useCategoriesWithImagesQuery__
+ *
+ * To run a query within a React component, call `useCategoriesWithImagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesWithImagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoriesWithImagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCategoriesWithImagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
+      }
+export function useCategoriesWithImagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
+        }
+// @ts-ignore
+export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>;
+export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesWithImagesQuery | undefined, CategoriesWithImagesQueryVariables>;
+export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
+        }
+export type CategoriesWithImagesQueryHookResult = ReturnType<typeof useCategoriesWithImagesQuery>;
+export type CategoriesWithImagesLazyQueryHookResult = ReturnType<typeof useCategoriesWithImagesLazyQuery>;
+export type CategoriesWithImagesSuspenseQueryHookResult = ReturnType<typeof useCategoriesWithImagesSuspenseQuery>;
 export const MaterialsDocument = gql`
     query Materials {
   materials
@@ -8209,6 +8275,55 @@ export function useProductReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.Sk
 export type ProductReviewsQueryHookResult = ReturnType<typeof useProductReviewsQuery>;
 export type ProductReviewsLazyQueryHookResult = ReturnType<typeof useProductReviewsLazyQuery>;
 export type ProductReviewsSuspenseQueryHookResult = ReturnType<typeof useProductReviewsSuspenseQuery>;
+export const FeaturedReviewsDocument = gql`
+    query FeaturedReviews($limit: Int) {
+  featuredReviews(limit: $limit) {
+    id
+    rating
+    review
+    user {
+      id
+      name
+      image
+    }
+  }
+}
+    `;
+
+/**
+ * __useFeaturedReviewsQuery__
+ *
+ * To run a query within a React component, call `useFeaturedReviewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeaturedReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFeaturedReviewsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useFeaturedReviewsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
+      }
+export function useFeaturedReviewsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
+        }
+// @ts-ignore
+export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>;
+export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FeaturedReviewsQuery | undefined, FeaturedReviewsQueryVariables>;
+export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
+        }
+export type FeaturedReviewsQueryHookResult = ReturnType<typeof useFeaturedReviewsQuery>;
+export type FeaturedReviewsLazyQueryHookResult = ReturnType<typeof useFeaturedReviewsLazyQuery>;
+export type FeaturedReviewsSuspenseQueryHookResult = ReturnType<typeof useFeaturedReviewsSuspenseQuery>;
 export const EventReviewsDocument = gql`
     query EventReviews($eventId: String!, $filter: ReviewsFilterInput) {
   eventReviews(eventId: $eventId, filter: $filter) {

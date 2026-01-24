@@ -92,7 +92,7 @@ export function PastWorkshopsClient({
       </div>
       {events.length > 0 ? (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {events.map((event) => (
               <PastWorkshopCard key={event.id} event={event} />
             ))}

@@ -377,6 +377,9 @@
   .animate-slide-down {
     animation: slideInDown 200ms ease-out;
   }
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
 }
 
 /* Animation keyframes */
@@ -447,6 +450,15 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 

@@ -7,6 +7,8 @@ import type {
   BestSellersQueryVariables,
   BestSellersResponse,
   CategoriesQuery,
+  CategoriesWithImagesQuery,
+  CategoryWithImage,
   MaterialsQuery,
   ProductByIdQuery,
   ProductByIdQueryVariables,
@@ -24,6 +26,7 @@ import type {
 import {
   BEST_SELLERS_QUERY,
   CATEGORIES_QUERY,
+  CATEGORIES_WITH_IMAGES_QUERY,
   MATERIALS_QUERY,
   PRODUCTS_QUERY,
   PRODUCT_BY_ID_QUERY,
@@ -213,6 +216,20 @@ export async function getCategories(): Promise<string[]> {
   }
 
   return result.data?.categories ?? [];
+}
+
+export async function getCategoriesWithImages(): Promise<CategoryWithImage[]> {
+  const client = getClient();
+
+  const result = await client.query<CategoriesWithImagesQuery>({
+    query: CATEGORIES_WITH_IMAGES_QUERY,
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  return result.data?.categoriesWithImages ?? [];
 }
 
 export async function getMaterials(): Promise<string[]> {

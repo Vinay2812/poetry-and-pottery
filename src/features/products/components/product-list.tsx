@@ -170,7 +170,7 @@ export function ProductList({
 
             {products.length > 0 ? (
               <div className="max-h-[calc(100vh-10rem)] overflow-y-auto">
-                <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}

@@ -1,5 +1,4 @@
 import { HERO_IMAGES } from "@/consts/client";
-import { getCategories } from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { RecommendedProductsContainer } from "@/features/recommended-products";
 import type { Metadata } from "next";
@@ -7,8 +6,9 @@ import Link from "next/link";
 
 import {
   CTASection,
-  CategorySection,
+  CategorySectionContainer,
   HeroSection,
+  TestimonialsSectionContainer,
 } from "@/components/sections";
 
 export const metadata: Metadata = {
@@ -38,9 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
-  const categories = await getCategories();
-
+export default function Home() {
   return (
     <>
       <MobileHeaderContainer />
@@ -71,7 +69,7 @@ export default async function Home() {
         </HeroSection>
 
         {/* Shop by Category */}
-        <CategorySection categories={categories.slice(0, 8)} />
+        <CategorySectionContainer />
 
         {/* Curated Favorites */}
         <RecommendedProductsContainer
@@ -79,6 +77,9 @@ export default async function Home() {
           subtitle="Handpicked pieces for your home."
           className="container mx-auto px-4 py-6 lg:px-8 lg:py-16"
         />
+
+        {/* Testimonials */}
+        <TestimonialsSectionContainer />
 
         {/* Studio Visit CTA */}
         <CTASection

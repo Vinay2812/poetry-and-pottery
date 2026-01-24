@@ -98,7 +98,7 @@ export function CTASection({
     <section
       className={cn("container mx-auto px-4 py-6 lg:px-8 lg:py-16", className)}
     >
-      <div className="group relative aspect-[4/3] overflow-hidden rounded-[2rem] lg:aspect-[21/9]">
+      <div className="group relative aspect-4/5 w-full overflow-hidden rounded-[2rem] lg:aspect-square lg:max-h-[80vh]">
         {image && (
           <OptimizedImage
             src={image}

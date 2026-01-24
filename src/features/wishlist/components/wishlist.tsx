@@ -20,7 +20,7 @@ function RecommendationsSection({
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">You might also like</h2>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {recommendations.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -73,8 +73,8 @@ export function Wishlist({
               <div
                 className={
                   displayRecommendations
-                    ? "mb-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
-                    : "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+                    ? "mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+                    : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
                 }
               >
                 <AnimatePresence mode="popLayout">

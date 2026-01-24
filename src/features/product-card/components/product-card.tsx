@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Heart, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 
-import { OptimizedImage } from "@/components/shared";
 import { Rating } from "@/components/shared";
+import { ImageCarousel } from "@/components/shared/image-carousel";
 
 import { cn } from "@/lib/utils";
 
@@ -18,6 +18,7 @@ export function ProductCard({
   inWishlist,
   addedToCart,
   canAddToCart,
+  disableImageCarousel = false,
   onImageClick,
   onWishlistClick,
   onAddToCart,
@@ -41,34 +42,25 @@ export function ProductCard({
       <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:bg-neutral-900">
         {/* Image Container */}
         <div
-          className="relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+          className="relative w-full overflow-hidden"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            onImageClick();
           }}
         >
-          <div className="relative aspect-3/4 w-full cursor-pointer overflow-hidden">
-            {/* Primary Image */}
-            <OptimizedImage
-              src={product.image_urls[0] || "/placeholder.jpg"}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform duration-600 ease-in-out lg:group-hover:scale-105"
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            />
-
-            {/* Second Image - Hover Swap (Desktop only) */}
-            {product.image_urls.length > 1 && (
-              <OptimizedImage
-                src={product.image_urls[1]}
-                alt={`${product.name} - alternate view`}
-                fill
-                className="object-cover opacity-0 transition-opacity duration-400 ease-in-out lg:group-hover:opacity-100"
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-              />
-            )}
-          </div>
+          <ImageCarousel
+            images={
+              product.image_urls.length > 0
+                ? product.image_urls
+                : ["/placeholder.jpg"]
+            }
+            alt={product.name}
+            onImageClick={() => onImageClick()}
+            disableCarousel={disableImageCarousel}
+            showArrows={false}
+            showDots={true}
+            showCounter={false}
+          />
 
           {/* Out of stock overlay */}
           {!inStock && (

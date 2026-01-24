@@ -4,6 +4,7 @@ import { isGraphQL } from "@/consts/env";
 
 import type {
   BestSellersResponse,
+  CategoryWithImage,
   ProductDetail,
   ProductsResponse,
   RecommendedProductsResponse,
@@ -77,6 +78,10 @@ export async function getCategories(): Promise<string[]> {
     return graphqlImpl.getCategories();
   }
   return actionImpl.getCategories();
+}
+
+export async function getCategoriesWithImages(): Promise<CategoryWithImage[]> {
+  return graphqlImpl.getCategoriesWithImages();
 }
 
 export async function getMaterials(): Promise<string[]> {

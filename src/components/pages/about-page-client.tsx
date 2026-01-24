@@ -43,7 +43,7 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl lg:aspect-21/9">
+          <div className="relative aspect-4/5 w-full overflow-hidden rounded-3xl lg:aspect-square lg:max-h-[80vh]">
             <OptimizedImage
               src={heroImage}
               alt="Our Story"

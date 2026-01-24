@@ -83,7 +83,7 @@ export function Registrations({
               description="Your registered workshops that haven't started yet"
             />
             {hasUpcomingRegistrations ? (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {upcomingRegistrations.map((registration) => (
                   <RegisteredEventCard
                     key={registration.id}
@@ -113,7 +113,7 @@ export function Registrations({
                 title="Completed Events"
                 description="Past workshops you attended - share your experience!"
               />
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {completedRegistrations.map((registration) => (
                   <CompletedEventCard
                     key={registration.id}
