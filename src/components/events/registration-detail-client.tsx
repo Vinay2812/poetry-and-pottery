@@ -8,9 +8,9 @@ import { MobileHeaderContainer } from "@/features/layout";
 import { useShare } from "@/hooks";
 import {
   Ban,
-  Calendar,
   Check,
   CheckCircle2,
+  ChevronRight,
   Clock,
   CopyIcon,
   Download,
@@ -18,9 +18,7 @@ import {
   MapPin,
   Share2,
   ThumbsUp,
-  Timer,
   User,
-  Users,
   XCircle,
 } from "lucide-react";
 import Link from "next/link";
@@ -31,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { openWhatsAppFollowUp } from "@/lib/contact-business";
+import { calculateDuration } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 import { EventRegistrationProgress } from "./event-registration-progress";
@@ -152,7 +151,6 @@ export function RegistrationDetailClient({
     });
   }, [registration, event, statusConfig.label]);
 
-  // Format date and time from DateTime
   const eventDate = new Date(event.starts_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {
     weekday: "short",
@@ -164,16 +162,7 @@ export function RegistrationDetailClient({
     minute: "2-digit",
     hour12: true,
   });
-
-  const registrationDate = new Date(registration.created_at).toLocaleDateString(
-    "en-US",
-    {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    },
-  );
-
+  const duration = calculateDuration(event.starts_at, event.ends_at);
   const imageUrl = event.image || "/placeholder.jpg";
 
   return (
@@ -186,88 +175,97 @@ export function RegistrationDetailClient({
 
       <main className="pt-14 pb-40 lg:pt-20 lg:pb-12">
         <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
-          <div className="grid gap-0 lg:grid-cols-3 lg:gap-10">
+          {/* Desktop Breadcrumbs */}
+          <nav className="mb-6 hidden items-center gap-2 text-sm lg:flex">
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Home
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5 text-neutral-300" />
+            <Link
+              href="/events/registrations"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Registrations
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5 text-neutral-300" />
+            <span className="text-foreground font-medium">{event.title}</span>
+          </nav>
+
+          {/* Hero Image */}
+          <div className="relative aspect-4/5 w-full overflow-hidden lg:aspect-21/9 lg:rounded-2xl">
+            <OptimizedImage
+              src={imageUrl}
+              alt={event.title}
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+
+            {/* Share Button */}
+            <button
+              onClick={handleShare}
+              className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+              aria-label="Share registration"
+            >
+              <Share2 className="text-foreground h-5 w-5" />
+            </button>
+
+            {/* Status Badge on Image */}
+            <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+              <Badge
+                className={cn(
+                  "border-none px-3 py-1.5 text-xs font-semibold text-white",
+                  statusConfig.bgColor,
+                )}
+              >
+                <StatusIcon className="mr-1 h-3 w-3" />
+                {statusConfig.label}
+              </Badge>
+              {event.level && (
+                <Badge className="border-none bg-white/90 px-3 py-1.5 text-xs font-semibold text-neutral-900">
+                  {event.level}
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          {/* Content Grid: 3fr 1fr */}
+          <div className="mt-0 grid gap-0 lg:mt-8 lg:grid-cols-[3fr_1fr] lg:gap-8">
             {/* Main Content */}
-            <div className="lg:col-span-2">
-              {/* Hero Image */}
-              <div className="relative mb-0 aspect-square w-full overflow-hidden lg:mb-4 lg:aspect-video lg:rounded-2xl">
-                <OptimizedImage
-                  src={imageUrl}
-                  alt={event.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-
-                {/* Share Button */}
-                <button
-                  onClick={handleShare}
-                  className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-                  aria-label="Share registration"
-                >
-                  <Share2 className="text-foreground h-5 w-5" />
-                </button>
-
-                {/* Status Badge on Image */}
-                <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                  <Badge
-                    className={cn(
-                      "border-none px-3 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-lg backdrop-blur-md",
-                      statusConfig.bgColor,
-                    )}
+            <div>
+              <div className="px-4 pt-6 lg:px-0 lg:pt-0">
+                {/* Registration ID */}
+                <p className="mb-2 flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase">
+                  <span>Registration #{registration.id.toUpperCase()}</span>
+                  <button
+                    onClick={handleCopyRegistrationId}
+                    className="inline-flex items-center justify-center rounded p-1 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    aria-label="Copy registration ID"
                   >
-                    <StatusIcon className="mr-1 h-3 w-3" />
-                    {statusConfig.label}
-                  </Badge>
-                  {event.level && (
-                    <Badge className="border-none bg-white/90 px-3 py-1 text-[10px] font-bold tracking-wider text-neutral-900 uppercase shadow-lg backdrop-blur-md">
-                      {event.level}
-                    </Badge>
-                  )}
-                </div>
-              </div>
+                    {copied ? (
+                      <Check className="text-primary h-3.5 w-3.5" />
+                    ) : (
+                      <CopyIcon className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                </p>
 
-              <div className="px-4 pt-4 lg:px-0 lg:pt-0">
-                {/* Registration Header & Price */}
-                <div className="mb-4 border-b border-neutral-100 pb-4 dark:border-neutral-800">
-                  <p className="mb-1 flex items-center gap-2 pl-1 text-xs font-bold text-neutral-400 uppercase">
-                    <span>
-                      Registration ID: #{registration.id.toUpperCase()}
-                    </span>
-                    <button
-                      onClick={handleCopyRegistrationId}
-                      className="inline-flex items-center justify-center rounded p-1 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                      aria-label="Copy registration ID"
-                    >
-                      {copied ? (
-                        <Check className="text-primary h-3.5 w-3.5" />
-                      ) : (
-                        <CopyIcon className="h-3.5 w-3.5" />
-                      )}
-                    </button>
-                  </p>
+                {/* Title */}
+                <h1 className="font-display mb-2 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
+                  {event.title}
+                </h1>
 
-                  <div className="mb-2 flex items-center gap-2">
-                    <h1 className="text-3xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-5xl dark:text-white">
-                      {event.title}
-                    </h1>
-                  </div>
-
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-neutral-900 dark:text-white">
-                      ₹
-                      {(
-                        event.price * registration.seats_reserved
-                      ).toLocaleString()}
-                    </span>
-                    <span className="text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
-                      {isPaid || isConfirmed ? "Amount Paid" : "Total Amount"}
-                    </span>
-                  </div>
-                </div>
+                {/* Inline Metadata */}
+                <p className="mb-6 text-sm text-neutral-500 lg:text-base">
+                  {formattedDate} · {formattedTime} · {duration}
+                  {event.location && ` · ${event.location}`}
+                </p>
 
                 {/* Mobile Registration Progress */}
-                <div className="mb-6 pl-2 lg:hidden">
+                <div className="mb-6 lg:hidden">
                   <EventRegistrationProgress
                     status={status}
                     requestAt={registration.request_at}
@@ -279,133 +277,90 @@ export function RegistrationDetailClient({
                   />
                 </div>
 
-                {/* Registration & Quick Info */}
-                <div className="mb-6 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-neutral-100 py-6 sm:grid-cols-4 dark:border-neutral-800">
-                  <div className="flex items-start gap-3">
-                    <Users className="mt-1 h-4 w-4 text-neutral-400" />
-                    <div>
-                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                        Seats
-                      </p>
-                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                        {registration.seats_reserved}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Calendar className="mt-1 h-4 w-4 text-neutral-400" />
-                    <div>
-                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                        Date
-                      </p>
-                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                        {formattedDate}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="mt-1 h-4 w-4 text-neutral-400" />
-                    <div>
-                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                        Time
-                      </p>
-                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                        {formattedTime}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Timer className="mt-1 h-4 w-4 text-neutral-400" />
-                    <div>
-                      <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                        Total Paid
-                      </p>
-                      <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                        ₹
-                        {(
-                          event.price * registration.seats_reserved
-                        ).toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Location & Instructor */}
-                <div className="mb-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
-                  {event.location && (
-                    <div className="flex items-start gap-3">
-                      <MapPin className="mt-1 h-4 w-4 text-neutral-400" />
-                      <div>
-                        <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                          Location
-                        </p>
-                        <p className="text-sm leading-snug font-semibold text-neutral-900 dark:text-neutral-100">
-                          {event.location}
-                        </p>
-                        <p className="mt-0.5 text-[11px] text-neutral-400">
-                          {event.full_location}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  {event.instructor && (
-                    <div className="flex items-start gap-3">
-                      <User className="mt-1 h-4 w-4 text-neutral-400" />
-                      <div>
-                        <p className="mb-1 text-[9px] font-bold tracking-widest text-neutral-400 uppercase">
-                          Instructor
-                        </p>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                          {event.instructor}
-                        </p>
-                        <p className="mt-0.5 text-[11px] text-neutral-400">
-                          Lead Artist
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Description */}
-                <div className="mb-10">
-                  <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-500 uppercase">
-                    About this workshop
+                {/* About */}
+                <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                  <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    About
                   </h2>
-                  <p className="text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
+                  <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
                     {event.description}
                   </p>
                 </div>
 
+                {/* Instructor */}
+                {event.instructor && (
+                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                      Instructor
+                    </h2>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                        <User className="h-5 w-5 text-neutral-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                          {event.instructor}
+                        </p>
+                        <p className="text-xs text-neutral-500">
+                          Lead Facilitator
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Location */}
+                {event.location && (
+                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                      Location
+                    </h2>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                        <MapPin className="h-5 w-5 text-neutral-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                          {event.location}
+                        </p>
+                        {event.full_location && (
+                          <p className="text-xs text-neutral-500">
+                            {event.full_location}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* What's Included */}
                 {event.includes && event.includes.length > 0 && (
-                  <div className="mb-10">
-                    <h2 className="mb-4 text-xs font-bold tracking-widest text-neutral-500 uppercase">
+                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
                       What&apos;s included
                     </h2>
-                    <div className="shadow-soft rounded-2xl border border-neutral-50 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
-                      <ul className="grid gap-4 sm:grid-cols-2">
-                        {event.includes.map((item, index) => (
-                          <li key={index} className="flex items-center gap-3">
-                            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50">
-                              <Check className="h-3.5 w-3.5 text-emerald-500" />
-                            </div>
-                            <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                              {item}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className="grid gap-3 sm:grid-cols-2">
+                      {event.includes.map((item, index) => (
+                        <li key={index} className="flex items-center gap-3">
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+                            <Check className="h-3 w-3 text-emerald-500" />
+                          </div>
+                          <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Desktop Sidebar */}
+            {/* Desktop Sidebar - Minimal */}
             <div className="hidden lg:block">
-              <div className="shadow-soft sticky top-24 space-y-6">
-                {/* Status Card */}
-                <div className="rounded-2xl border border-neutral-100 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
+              <div className="sticky top-24">
+                {/* Progress */}
+                <div className="mb-5">
                   <EventRegistrationProgress
                     status={status}
                     requestAt={registration.request_at}
@@ -417,85 +372,77 @@ export function RegistrationDetailClient({
                   />
                 </div>
 
-                {/* Summary Card */}
-                <div className="rounded-2xl border border-neutral-100 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
-                  <p className="mb-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
-                    Registration Summary
-                  </p>
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        Seats Reserved
-                      </span>
-                      <span className="font-medium">
-                        {registration.seats_reserved}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        Registered On
-                      </span>
-                      <span>{registrationDate}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        {isPaid || isConfirmed ? "Amount Paid" : "Total Amount"}
-                      </span>
-                      <span className="text-primary font-semibold">
-                        ₹
-                        {(event.price * registration.seats_reserved).toFixed(2)}
-                      </span>
-                    </div>
+                <div className="mb-5 border-t border-neutral-100 dark:border-neutral-800" />
+
+                {/* Summary */}
+                <div className="mb-5 space-y-2.5">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-neutral-500">Seats</span>
+                    <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                      {registration.seats_reserved}
+                    </span>
                   </div>
-
-                  <div className="border-border my-4 border-t" />
-
-                  <div className="space-y-3">
-                    {showTicketDownload ? (
-                      <TicketDownloadDialog
-                        registration={registration}
-                        trigger={
-                          <Button className="h-12 w-full rounded-xl" size="lg">
-                            <Download className="mr-2 h-4 w-4" />
-                            Download Ticket
-                          </Button>
-                        }
-                      />
-                    ) : (
-                      <div
-                        className={cn(
-                          "flex items-center gap-2 rounded-xl p-3",
-                          isPending && "bg-amber-50 dark:bg-amber-950/20",
-                          isApproved && "bg-blue-50 dark:bg-blue-950/20",
-                        )}
-                      >
-                        <StatusIcon
-                          className={cn("h-5 w-5", statusConfig.textColor)}
-                        />
-                        <span
-                          className={cn(
-                            "text-sm font-medium",
-                            statusConfig.textColor,
-                          )}
-                        >
-                          {statusConfig.message}
-                        </span>
-                      </div>
-                    )}
-                    <Link href="/events/upcoming">
-                      <Button
-                        variant="outline"
-                        className="h-12 w-full rounded-xl"
-                        size="lg"
-                      >
-                        Browse More Workshops
-                      </Button>
-                    </Link>
-                    {showWhatsAppButton && (
-                      <WhatsAppContactButton onClick={handleWhatsAppContact} />
-                    )}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-neutral-500">
+                      {isPaid || isConfirmed ? "Amount Paid" : "Total Amount"}
+                    </span>
+                    <span className="text-primary font-semibold">
+                      ₹
+                      {(
+                        event.price * registration.seats_reserved
+                      ).toLocaleString()}
+                    </span>
                   </div>
                 </div>
+
+                {/* CTA */}
+                {showTicketDownload ? (
+                  <TicketDownloadDialog
+                    registration={registration}
+                    trigger={
+                      <Button className="h-12 w-full rounded-xl text-sm font-bold">
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Ticket
+                      </Button>
+                    }
+                  />
+                ) : (
+                  <div
+                    className={cn(
+                      "flex items-center gap-2 rounded-xl p-3",
+                      isPending && "bg-amber-50 dark:bg-amber-950/20",
+                      isApproved && "bg-blue-50 dark:bg-blue-950/20",
+                      isPaid && "bg-teal-50 dark:bg-teal-950/20",
+                    )}
+                  >
+                    <StatusIcon
+                      className={cn("h-5 w-5", statusConfig.textColor)}
+                    />
+                    <span
+                      className={cn(
+                        "text-sm font-medium",
+                        statusConfig.textColor,
+                      )}
+                    >
+                      {statusConfig.message}
+                    </span>
+                  </div>
+                )}
+
+                <Link href="/events/upcoming" className="mt-3 block">
+                  <Button
+                    variant="outline"
+                    className="h-12 w-full rounded-xl text-sm font-bold"
+                  >
+                    Browse More Workshops
+                  </Button>
+                </Link>
+
+                {showWhatsAppButton && (
+                  <div className="mt-3">
+                    <WhatsAppContactButton onClick={handleWhatsAppContact} />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -503,12 +450,12 @@ export function RegistrationDetailClient({
       </main>
 
       {/* Mobile Fixed Bottom CTA */}
-      <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
+      <div className="fixed right-0 bottom-16 left-0 z-40 bg-white/95 p-4 backdrop-blur-md lg:hidden">
         {showTicketDownload ? (
           <TicketDownloadDialog
             registration={registration}
             trigger={
-              <Button className="h-12 w-full rounded-xl" size="lg">
+              <Button className="h-12 w-full rounded-xl text-sm font-bold">
                 <Download className="mr-2 h-4 w-4" />
                 Download Ticket
               </Button>

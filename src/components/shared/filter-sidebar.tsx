@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
 
 import { cn } from "@/lib/utils";
 
@@ -83,11 +82,11 @@ export function FilterSidebar({
     <div className="relative">
       <div
         className={cn(
-          "flex h-12 items-center justify-between px-4 py-2",
+          "flex h-12 items-center justify-between py-2",
           filtersClassName,
         )}
       >
-        <div className="text-lg font-semibold">Filters</div>
+        <div className="font-display text-lg font-semibold">Filters</div>
         {hasActiveFilters && (
           <Button
             variant="ghost"
@@ -95,24 +94,22 @@ export function FilterSidebar({
             className="text-primary hover:text-primary-hover h-8 px-2 text-xs"
             onClick={onClear}
           >
-            Reset
+            Clear All
           </Button>
         )}
       </div>
-
-      <Separator />
 
       <Accordion
         type="multiple"
         defaultValue={["categories", "materials", "price"]}
         className={cn("w-full", className)}
       >
-        <AccordionItem value="price" className="border-none">
-          <AccordionTrigger className="py-3 text-sm font-medium hover:no-underline">
+        <AccordionItem value="price" className="border-b border-neutral-100">
+          <AccordionTrigger className="font-display py-4 text-sm font-semibold hover:no-underline">
             Price Range
           </AccordionTrigger>
           <AccordionContent>
-            <div className="pt-6 pb-2">
+            <div className="pt-4 pb-3">
               <PriceRangeSlider
                 min={priceRange?.min ?? 0}
                 max={priceRange?.max ?? 1000}
@@ -130,12 +127,15 @@ export function FilterSidebar({
             </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="categories" className="border-none">
-          <AccordionTrigger className="py-3 text-sm font-medium hover:no-underline">
+        <AccordionItem
+          value="categories"
+          className="border-b border-neutral-100"
+        >
+          <AccordionTrigger className="font-display py-4 text-sm font-semibold hover:no-underline">
             Categories
           </AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-3 pt-2">
+            <div className="space-y-3 pt-1 pb-2">
               {categories.map((category) => (
                 <label
                   key={category.id}
@@ -162,12 +162,15 @@ export function FilterSidebar({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="materials" className="border-none">
-          <AccordionTrigger className="py-3 text-sm font-medium hover:no-underline">
+        <AccordionItem
+          value="materials"
+          className="border-b border-neutral-100"
+        >
+          <AccordionTrigger className="font-display py-4 text-sm font-semibold hover:no-underline">
             Materials
           </AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-3 pt-2">
+            <div className="space-y-3 pt-1 pb-2">
               {materials.map((material) => (
                 <label
                   key={material}

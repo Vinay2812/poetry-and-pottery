@@ -1,6 +1,7 @@
 "use client";
 
-import { Loader2, Search, SlidersHorizontal } from "lucide-react";
+import { Loader2, Search, SlidersHorizontal, X } from "lucide-react";
+import { useState } from "react";
 
 import { ProductCard } from "@/components/cards";
 import { EmptyState } from "@/components/sections";
@@ -17,13 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 
 import { type ProductListProps, SORT_OPTIONS } from "../types";
 
@@ -40,6 +34,8 @@ export function ProductList({
   onSearchChange,
   onClearFilters,
 }: ProductListProps) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   const {
     products,
     totalProducts,
@@ -60,6 +56,9 @@ export function ProductList({
     searchQuery,
   } = filterState;
 
+  const activeFilterCount =
+    selectedCategories.length + selectedMaterials.length;
+
   return (
     <>
       {/* Search Bar - Mobile */}
@@ -74,38 +73,20 @@ export function ProductList({
 
       {/* Mobile Filter Bar */}
       <div className="bg-background sticky z-40 flex items-center gap-2 overflow-y-auto px-4 pt-1 pb-3 lg:hidden">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="sm" className="h-9 rounded-full">
-              <SlidersHorizontal className="mr-2 h-4 w-4" />
-              Filter
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-80">
-            <SheetHeader className="hidden px-6 py-4 pb-0">
-              <SheetTitle className="sr-only">Filters</SheetTitle>
-            </SheetHeader>
-
-            <div className="mt-0 h-[calc(100vh-4rem)] space-y-0 overflow-y-auto px-6">
-              <FilterSidebar
-                selectedCategories={selectedCategories}
-                selectedMaterials={selectedMaterials}
-                categories={categories}
-                materials={materials}
-                onCategoryToggle={onCategoryToggle}
-                onMaterialToggle={onMaterialToggle}
-                onClear={onClearFilters}
-                priceRange={priceRange}
-                selectedPriceRange={localPriceRange}
-                onPriceChange={onPriceChange}
-                onPriceChangeCommit={onPriceCommit}
-                priceHistogram={priceHistogram}
-                className="mt-0 space-y-0"
-                filtersClassName="pr-8 pl-6"
-              />
-            </div>
-          </SheetContent>
-        </Sheet>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-9 rounded-full"
+          onClick={() => setIsFilterOpen(true)}
+        >
+          <SlidersHorizontal className="mr-2 h-4 w-4" />
+          Filter
+          {activeFilterCount > 0 && (
+            <span className="bg-primary ml-1.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-white">
+              {activeFilterCount}
+            </span>
+          )}
+        </Button>
 
         <Select value={sortBy} onValueChange={onSortChange}>
           <SelectTrigger className="h-9 w-48 rounded-full text-sm">
@@ -120,6 +101,60 @@ export function ProductList({
           </SelectContent>
         </Select>
       </div>
+
+      {/* Mobile Full-Screen Filter Overlay */}
+      {isFilterOpen && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-white lg:hidden dark:bg-neutral-950">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4 dark:border-neutral-800">
+            <h2 className="font-display text-lg font-bold">Filters</h2>
+            <button
+              onClick={() => setIsFilterOpen(false)}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-200 dark:bg-neutral-800"
+            >
+              <X className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
+            </button>
+          </div>
+
+          {/* Scrollable Body */}
+          <div className="flex-1 overflow-y-auto px-5 py-4">
+            <FilterSidebar
+              selectedCategories={selectedCategories}
+              selectedMaterials={selectedMaterials}
+              categories={categories}
+              materials={materials}
+              onCategoryToggle={onCategoryToggle}
+              onMaterialToggle={onMaterialToggle}
+              onClear={onClearFilters}
+              priceRange={priceRange}
+              selectedPriceRange={localPriceRange}
+              onPriceChange={onPriceChange}
+              onPriceChangeCommit={onPriceCommit}
+              priceHistogram={priceHistogram}
+              filtersClassName="hidden"
+            />
+          </div>
+
+          {/* Footer */}
+          <div className="flex gap-3 border-t border-neutral-100 px-5 py-4 dark:border-neutral-800">
+            <Button
+              variant="secondary"
+              className="flex-1 rounded-xl"
+              onClick={() => {
+                onClearFilters();
+              }}
+            >
+              Reset
+            </Button>
+            <Button
+              className="shadow-primary/20 flex-2 rounded-xl shadow-lg"
+              onClick={() => setIsFilterOpen(false)}
+            >
+              Show {totalProducts} Products
+            </Button>
+          </div>
+        </div>
+      )}
 
       <div className="container mx-auto px-4 py-0 lg:px-8">
         <ListingPageHeader

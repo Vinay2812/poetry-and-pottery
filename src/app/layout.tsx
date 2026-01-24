@@ -5,20 +5,18 @@ import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 const outfit = Outfit({
-  variable: "--font-sans",
+  variable: "--font-outfit",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-display",
+  variable: "--font-plus-jakarta",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const dynamic = "force-dynamic";
-
-console.log(process.env.NEXT_PUBLIC_API_ENDPOINT);
 
 export const metadata: Metadata = {
   title: "Poetry & Pottery",
@@ -39,7 +37,7 @@ export default function RootLayout({
         className="h-6 w-6 rounded-full"
       />
       <body
-        className={`${outfit.variable} ${plusJakartaSans.variable} antialiased`}
+        className={`${outfit.variable} ${plusJakartaSans.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
       </body>
