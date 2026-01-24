@@ -20,3 +20,7 @@ terraform_config/.terraform/
 coverage/
 
 src/graphql/generated/
+
+# Design files
+designs/
+wireframe.html
