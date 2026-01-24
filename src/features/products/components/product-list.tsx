@@ -4,7 +4,11 @@ import { Loader2, Search, SlidersHorizontal } from "lucide-react";
 
 import { ProductCard } from "@/components/cards";
 import { EmptyState } from "@/components/sections";
-import { FilterSidebar, SearchInput } from "@/components/shared";
+import {
+  FilterSidebar,
+  ListingPageHeader,
+  SearchInput,
+} from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -118,6 +122,11 @@ export function ProductList({
       </div>
 
       <div className="container mx-auto px-4 py-0 lg:px-8">
+        <ListingPageHeader
+          title="Our Collection"
+          subtitle={`Discover ${totalProducts} handcrafted ceramic pieces, each uniquely made by artisan potters.`}
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Shop" }]}
+        />
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
           <aside className="hidden w-64 shrink-0 lg:block">
@@ -149,10 +158,7 @@ export function ProductList({
                 placeholder="Search products..."
                 className="w-full max-w-md"
               />
-              <div className="flex items-center justify-between">
-                <p className="text-muted-foreground text-sm">
-                  {totalProducts} products
-                </p>
+              <div className="flex items-center justify-end">
                 <Select value={sortBy} onValueChange={onSortChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue placeholder="Sort by" />

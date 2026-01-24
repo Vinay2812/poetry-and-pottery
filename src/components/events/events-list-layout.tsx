@@ -4,6 +4,7 @@ import { MobileHeaderContainer } from "@/features/layout";
 import { useUIStore } from "@/store";
 import { redirect, usePathname } from "next/navigation";
 
+import { ListingPageHeader } from "../shared";
 import { SearchInput } from "../shared";
 import { EVENTS_TABS, EventsTabs, TabType } from "./events-tabs";
 
@@ -44,14 +45,11 @@ export function EventsListLayout({
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
         <div className="container mx-auto px-4 py-6 lg:px-8">
           {/* Header */}
-          <div className="mb-6 hidden lg:block">
-            <h1 className="font-display mb-2 text-2xl font-bold lg:text-3xl">
-              Pottery Workshops
-            </h1>
-            <p className="text-muted-foreground">
-              Join our hands-on pottery sessions and create something beautiful.
-            </p>
-          </div>
+          <ListingPageHeader
+            title="Pottery Workshops"
+            subtitle="Join our hands-on pottery sessions and create something beautiful."
+            breadcrumbs={[{ label: "Home", href: "/" }, { label: "Workshops" }]}
+          />
 
           {/* Tab Navigation */}
           <EventsTabs
