@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.9: Registrations Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      .registrations-section {
+        max-width: 1200px;
+        margin: 0 auto 48px;
+      }
+
+      /* Section Header */
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .section-header-icon {
+        width: 20px;
+        height: 20px;
+        color: #4f6f52;
+      }
+
+      .section-header-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .section-header-desc {
+        font-size: 13px;
+        color: #737373;
+        margin-bottom: 16px;
+      }
+
+      /* Status Badges */
+      .status-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 6px;
+      }
+
+      .status-badge.pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .status-badge.approved {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .status-badge.confirmed {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .status-badge.completed {
+        background: #ecfdf5;
+        color: #059669;
+      }
+
+      .status-badge.cancelled {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      /* Event Grid */
+      .event-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .event-grid.cols-1 {
+        grid-template-columns: 1fr;
+      }
+      .event-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .event-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      /* Vertical Event Card (Option A) */
+      .reg-card-vertical {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(79, 111, 82, 0.06);
+      }
+
+      .reg-card-vertical .card-img {
+        aspect-ratio: 16/9;
+        background: linear-gradient(135deg, #e8ece8 0%, #f5f5f4 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+      }
+
+      .reg-card-vertical .card-img .status-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+      }
+
+      .reg-card-vertical .card-body {
+        padding: 14px;
+      }
+
+      .reg-card-vertical .card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+      }
+
+      .reg-card-vertical .card-meta {
+        font-size: 12px;
+        color: #737373;
+        margin-bottom: 8px;
+      }
+
+      .reg-card-vertical .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        color: #737373;
+        margin-bottom: 10px;
+      }
+
+      .reg-card-vertical .card-cta {
+        width: 100%;
+        padding: 10px;
+        background: #1a1a1a;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .reg-card-vertical .card-cta.primary {
+        background: #4f6f52;
+      }
+
+      .reg-card-vertical .card-cta.outline {
+        background: transparent;
+        color: #4f6f52;
+        border: 1px solid #4f6f52;
+      }
+
+      /* Horizontal Card (Option B) */
+      .reg-card-horizontal {
+        background: white;
+        border-radius: 14px;
+        padding: 12px;
+        box-shadow: 0 2px 8px rgba(79, 111, 82, 0.06);
+        display: flex;
+        gap: 12px;
+      }
+
+      .reg-card-horizontal .card-img {
+        width: 72px;
+        height: 72px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #e8ece8 0%, #f5f5f4 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .reg-card-horizontal .card-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .reg-card-horizontal .card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .reg-card-horizontal .card-meta {
+        font-size: 11px;
+        color: #737373;
+        margin-bottom: 6px;
+      }
+
+      .reg-card-horizontal .card-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .reg-card-horizontal .btn {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+      }
+
+      .reg-card-horizontal .btn.primary {
+        background: #1a1a1a;
+        color: white;
+      }
+
+      .reg-card-horizontal .btn.secondary {
+        background: #f5f5f4;
+        color: #525252;
+      }
+
+      .reg-card-horizontal .btn.review {
+        background: #4f6f52;
+        color: white;
+      }
+
+      /* Hybrid Card (Option C) */
+      .reg-card-hybrid {
+        background: white;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(79, 111, 82, 0.06);
+      }
+
+      .reg-card-hybrid .card-img {
+        aspect-ratio: 4/3;
+        background: linear-gradient(135deg, #e8ece8 0%, #f5f5f4 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+      }
+
+      .reg-card-hybrid .card-img .status-badge {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        font-size: 9px;
+      }
+
+      .reg-card-hybrid .card-body {
+        padding: 10px 12px;
+      }
+
+      .reg-card-hybrid .card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .reg-card-hybrid .card-meta {
+        font-size: 10px;
+        color: #737373;
+      }
+
+      .reg-card-hybrid .card-cta {
+        margin-top: 8px;
+        width: 100%;
+        padding: 6px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* Completed card state */
+      .completed-card {
+        opacity: 0.85;
+      }
+
+      /* Grid Layout */
+      .options-grid {
+        display: grid;
+        grid-template-columns: 375px 1fr;
+        gap: 32px;
+        align-items: start;
+      }
+
+      @media (max-width: 900px) {
+        .options-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .view-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #a3a3a3;
+        margin-bottom: 12px;
+      }
+
+      /* Mobile Frame */
+      .mobile-frame {
+        width: 375px;
+        max-width: 100%;
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        border: 8px solid #1a1a1a;
+      }
+
+      .mobile-content {
+        padding: 16px;
+        min-height: 600px;
+      }
+
+      /* Desktop Frame */
+      .desktop-frame {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .browser-bar {
+        background: #f5f5f4;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .browser-dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .browser-dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .browser-dots span:nth-child(1) {
+        background: #ef4444;
+      }
+      .browser-dots span:nth-child(2) {
+        background: #f59e0b;
+      }
+      .browser-dots span:nth-child(3) {
+        background: #22c55e;
+      }
+
+      .url-bar {
+        flex: 1;
+        font-size: 11px;
+        color: #737373;
+        background: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+      }
+
+      .desktop-content {
+        padding: 32px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.9: Registrations Page</h1>
+    <p class="subtitle">
+      Registration cards with status badges, section headers with icons,
+      upcoming/completed tabs
+    </p>
+
+    <span
+      class="wf-task-label"
+      style="display: block; text-align: center; margin: 0 auto 32px"
+      >Status: Wireframe Ready</span
+    >
+
+    <!-- Option A: Vertical Cards -->
+    <div class="registrations-section">
+      <div class="section-title">Option A: Vertical Cards (Image Top)</div>
+      <div class="option-details">
+        <strong>Style:</strong> Standard vertical event card layout with status
+        badge overlay on image.<br />
+        <strong>Best for:</strong> Consistent with event card design, visually
+        rich.<br />
+        <strong>Layout:</strong> Full-width mobile, 3-column desktop.
+      </div>
+
+      <div class="options-grid">
+        <!-- Mobile -->
+        <div>
+          <p class="view-label">Mobile (375px)</p>
+          <div class="mobile-frame">
+            <div class="mobile-content">
+              <div class="section-header">
+                <svg
+                  class="section-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="section-header-title">My Upcoming Events</span>
+              </div>
+              <div class="section-header-desc">
+                Workshops you're registered for
+              </div>
+
+              <div class="event-grid cols-1">
+                <div class="reg-card-vertical">
+                  <div class="card-img">
+                    <span class="status-badge approved">Approved</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Beginner Wheel Throwing</div>
+                    <div class="card-meta">
+                      &#128197; Jan 28, 2026 &middot; &#128336; 10:00 AM
+                    </div>
+                    <div class="card-footer">
+                      <span>&#128205; Studio A</span>
+                      <span>2 seats</span>
+                    </div>
+                    <button class="card-cta">View Details</button>
+                  </div>
+                </div>
+                <div class="reg-card-vertical">
+                  <div class="card-img">
+                    <span class="status-badge pending">Pending</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Advanced Glazing Techniques</div>
+                    <div class="card-meta">
+                      &#128197; Feb 3, 2026 &middot; &#128336; 2:00 PM
+                    </div>
+                    <button class="card-cta">View Details</button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 32px">
+                <div class="section-header">
+                  <svg
+                    class="section-header-icon"
+                    style="color: #059669"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <span class="section-header-title">Completed Events</span>
+                </div>
+                <div class="section-header-desc">
+                  Past workshops — share your experience!
+                </div>
+
+                <div class="event-grid cols-1">
+                  <div class="reg-card-vertical completed-card">
+                    <div class="card-img">
+                      <span class="status-badge completed">Completed</span>
+                      &#127979;
+                    </div>
+                    <div class="card-body">
+                      <div class="card-title">Intro to Pottery</div>
+                      <div class="card-meta">&#128197; Dec 15, 2025</div>
+                      <button class="card-cta primary">Write Review</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <p class="view-label">Desktop (1440px)</p>
+          <div class="desktop-frame">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="url-bar">localhost:3005/events/registrations</div>
+            </div>
+            <div class="desktop-content">
+              <div class="section-header">
+                <svg
+                  class="section-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="section-header-title">My Upcoming Events</span>
+              </div>
+              <div class="section-header-desc">
+                Workshops you're registered for
+              </div>
+
+              <div class="event-grid cols-3">
+                <div class="reg-card-vertical">
+                  <div class="card-img">
+                    <span class="status-badge approved">Approved</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Beginner Wheel Throwing</div>
+                    <div class="card-meta">
+                      &#128197; Jan 28 &middot; &#128336; 10:00 AM
+                    </div>
+                    <div class="card-footer">
+                      <span>&#128205; Studio A</span><span>2 seats</span>
+                    </div>
+                    <button class="card-cta">View Details</button>
+                  </div>
+                </div>
+                <div class="reg-card-vertical">
+                  <div class="card-img">
+                    <span class="status-badge pending">Pending</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Advanced Glazing Techniques</div>
+                    <div class="card-meta">
+                      &#128197; Feb 3 &middot; &#128336; 2:00 PM
+                    </div>
+                    <div class="card-footer">
+                      <span>&#128205; Main Hall</span>
+                    </div>
+                    <button class="card-cta">View Details</button>
+                  </div>
+                </div>
+                <div class="reg-card-vertical">
+                  <div class="card-img">
+                    <span class="status-badge confirmed">Confirmed</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Raku Firing Experience</div>
+                    <div class="card-meta">
+                      &#128197; Feb 14 &middot; &#128336; 9:00 AM
+                    </div>
+                    <button class="card-cta">View Details</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Option B: Horizontal Cards -->
+    <div class="registrations-section">
+      <div class="section-title">Option B: Horizontal Cards (Compact)</div>
+      <div class="option-details">
+        <strong>Style:</strong> Compact horizontal layout with small thumbnail,
+        info on right. Status badge inline.<br />
+        <strong>Best for:</strong> Info-dense, shows more items per screen. Good
+        for users with many registrations.<br />
+        <strong>Layout:</strong> Full-width stacked mobile, 2-column desktop.
+      </div>
+
+      <div class="options-grid">
+        <!-- Mobile -->
+        <div>
+          <p class="view-label">Mobile (375px)</p>
+          <div class="mobile-frame">
+            <div class="mobile-content">
+              <div class="section-header">
+                <svg
+                  class="section-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="section-header-title">My Upcoming Events</span>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <div class="reg-card-horizontal">
+                  <div class="card-img">&#127979;</div>
+                  <div class="card-info">
+                    <div class="card-title">Beginner Wheel Throwing</div>
+                    <div class="card-meta">
+                      &#128197; Jan 28 &middot; 10:00 AM
+                    </div>
+                    <div style="margin-top: 4px">
+                      <span class="status-badge approved">Approved</span>
+                    </div>
+                    <div class="card-actions">
+                      <button class="btn primary">View</button>
+                      <button class="btn secondary">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="reg-card-horizontal">
+                  <div class="card-img">&#127979;</div>
+                  <div class="card-info">
+                    <div class="card-title">Advanced Glazing</div>
+                    <div class="card-meta">
+                      &#128197; Feb 3 &middot; 2:00 PM
+                    </div>
+                    <div style="margin-top: 4px">
+                      <span class="status-badge pending">Pending</span>
+                    </div>
+                    <div class="card-actions">
+                      <button class="btn primary">View</button>
+                      <button class="btn secondary">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 28px">
+                <div class="section-header">
+                  <svg
+                    class="section-header-icon"
+                    style="color: #059669"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <span class="section-header-title">Completed</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px">
+                  <div class="reg-card-horizontal completed-card">
+                    <div class="card-img">&#127979;</div>
+                    <div class="card-info">
+                      <div class="card-title">Intro to Pottery</div>
+                      <div class="card-meta">&#128197; Dec 15, 2025</div>
+                      <div class="card-actions">
+                        <button class="btn review">Review</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <p class="view-label">Desktop (1440px)</p>
+          <div class="desktop-frame">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="url-bar">localhost:3005/events/registrations</div>
+            </div>
+            <div class="desktop-content">
+              <div class="section-header">
+                <svg
+                  class="section-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="section-header-title">My Upcoming Events</span>
+              </div>
+              <div class="section-header-desc">
+                Workshops you're registered for
+              </div>
+
+              <div class="event-grid cols-2" style="gap: 16px">
+                <div class="reg-card-horizontal" style="padding: 16px">
+                  <div class="card-img" style="width: 100px; height: 100px">
+                    &#127979;
+                  </div>
+                  <div class="card-info">
+                    <div class="card-title" style="font-size: 14px">
+                      Beginner Wheel Throwing
+                    </div>
+                    <div class="card-meta">
+                      &#128197; Jan 28, 2026 &middot; &#128336; 10:00 AM
+                    </div>
+                    <div class="card-meta">
+                      &#128205; Studio A &middot; 2 seats reserved
+                    </div>
+                    <div style="margin-top: 6px">
+                      <span class="status-badge approved">Approved</span>
+                    </div>
+                    <div class="card-actions" style="margin-top: 8px">
+                      <button class="btn primary">View Details</button>
+                      <button class="btn secondary">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="reg-card-horizontal" style="padding: 16px">
+                  <div class="card-img" style="width: 100px; height: 100px">
+                    &#127979;
+                  </div>
+                  <div class="card-info">
+                    <div class="card-title" style="font-size: 14px">
+                      Advanced Glazing Techniques
+                    </div>
+                    <div class="card-meta">
+                      &#128197; Feb 3, 2026 &middot; &#128336; 2:00 PM
+                    </div>
+                    <div class="card-meta">
+                      &#128205; Main Hall &middot; 1 seat reserved
+                    </div>
+                    <div style="margin-top: 6px">
+                      <span class="status-badge pending">Pending</span>
+                    </div>
+                    <div class="card-actions" style="margin-top: 8px">
+                      <button class="btn primary">View Details</button>
+                      <button class="btn secondary">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Option C: Hybrid Cards -->
+    <div class="registrations-section">
+      <div class="section-title">
+        Option C: Hybrid (Image Top, Compact Info)
+      </div>
+      <div class="option-details">
+        <strong>Style:</strong> Combines vertical card image (smaller 4:3 aspect
+        ratio) with compact info block.<br />
+        <strong>Best for:</strong> More visual appeal than horizontal, less
+        space than full vertical.<br />
+        <strong>Layout:</strong> 2-column mobile, 4-column desktop.
+      </div>
+
+      <div class="options-grid">
+        <!-- Mobile -->
+        <div>
+          <p class="view-label">Mobile (375px)</p>
+          <div class="mobile-frame">
+            <div class="mobile-content">
+              <div class="section-header">
+                <svg
+                  class="section-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="section-header-title">My Upcoming Events</span>
+              </div>
+
+              <div class="event-grid cols-2" style="gap: 10px">
+                <div class="reg-card-hybrid">
+                  <div class="card-img">
+                    <span class="status-badge approved">Approved</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title" style="font-size: 11px">
+                      Wheel Throwing
+                    </div>
+                    <div class="card-meta" style="font-size: 9px">
+                      Jan 28 &middot; 10 AM
+                    </div>
+                  </div>
+                </div>
+                <div class="reg-card-hybrid">
+                  <div class="card-img">
+                    <span class="status-badge pending">Pending</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title" style="font-size: 11px">
+                      Glazing
+                    </div>
+                    <div class="card-meta" style="font-size: 9px">
+                      Feb 3 &middot; 2 PM
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 24px">
+                <div class="section-header">
+                  <svg
+                    class="section-header-icon"
+                    style="color: #059669"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <span class="section-header-title">Completed</span>
+                </div>
+                <div class="event-grid cols-2" style="gap: 10px">
+                  <div class="reg-card-hybrid completed-card">
+                    <div class="card-img">
+                      <span class="status-badge completed">Done</span>
+                      &#127979;
+                    </div>
+                    <div class="card-body">
+                      <div class="card-title" style="font-size: 11px">
+                        Intro to Pottery
+                      </div>
+                      <div class="card-meta" style="font-size: 9px">Dec 15</div>
+                      <button class="card-cta">Review</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <p class="view-label">Desktop (1440px)</p>
+          <div class="desktop-frame">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="url-bar">localhost:3005/events/registrations</div>
+            </div>
+            <div class="desktop-content">
+              <div class="section-header">
+                <svg
+                  class="section-header-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="section-header-title">My Upcoming Events</span>
+              </div>
+              <div class="section-header-desc">
+                Workshops you're registered for
+              </div>
+
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 16px;
+                "
+              >
+                <div class="reg-card-hybrid">
+                  <div class="card-img">
+                    <span class="status-badge approved">Approved</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Beginner Wheel Throwing</div>
+                    <div class="card-meta">
+                      &#128197; Jan 28 &middot; 10:00 AM
+                    </div>
+                  </div>
+                </div>
+                <div class="reg-card-hybrid">
+                  <div class="card-img">
+                    <span class="status-badge pending">Pending</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Advanced Glazing</div>
+                    <div class="card-meta">
+                      &#128197; Feb 3 &middot; 2:00 PM
+                    </div>
+                  </div>
+                </div>
+                <div class="reg-card-hybrid">
+                  <div class="card-img">
+                    <span class="status-badge confirmed">Confirmed</span>
+                    &#127979;
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">Raku Firing Experience</div>
+                    <div class="card-meta">
+                      &#128197; Feb 14 &middot; 9:00 AM
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Implementation Notes -->
+    <div class="notes">
+      <strong>Task 4.9 Implementation Notes:</strong><br /><br />
+      &bull; <strong>Option A (Vertical):</strong> Matches event card design,
+      visually rich, 3-col desktop grid<br />
+      &bull; <strong>Option B (Horizontal):</strong> Compact, info-dense, 2-col
+      desktop grid<br />
+      &bull; <strong>Option C (Hybrid):</strong> 4:3 image ratio, balanced
+      visual/info density, 4-col desktop<br />
+      &bull; <strong>Status Badges:</strong> Pending (yellow), Approved (green),
+      Confirmed (blue), Completed (teal), Cancelled (red)<br />
+      &bull; <strong>Section Headers:</strong> Icon + title + description
+      pattern<br />
+      &bull; <strong>Actions:</strong> View Details (primary), Cancel
+      (secondary), Write Review (CTA for completed)<br />
+      &bull; <strong>Completed State:</strong> Slightly reduced opacity, review
+      CTA prominent
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Wireframes Index - Poetry & Pottery</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Outfit",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: #fafaf9;
+        color: #1a1a1a;
+        padding: 60px 24px;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 36px;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #737373;
+        font-size: 16px;
+        margin-bottom: 60px;
+        line-height: 1.6;
+      }
+
+      .phase-section {
+        margin-bottom: 48px;
+      }
+
+      .phase-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #4f6f52;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e8ece8;
+      }
+
+      .wireframe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .wireframe-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .wireframe-card:hover {
+        box-shadow: 0 4px 20px rgba(79, 111, 82, 0.12);
+        transform: translateY(-2px);
+      }
+
+      .task-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        background: #e8ece8;
+        color: #4f6f52;
+        width: fit-content;
+      }
+
+      .task-badge.completed {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+
+      .task-badge.pending {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .wireframe-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        line-height: 1.3;
+      }
+
+      .wireframe-desc {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      .wireframe-meta {
+        display: flex;
+        gap: 12px;
+        margin-top: auto;
+        padding-top: 12px;
+        border-top: 1px solid #f5f5f4;
+      }
+
+      .meta-item {
+        font-size: 11px;
+        color: #999;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .meta-item svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .status-dot.implemented {
+        background: #22c55e;
+      }
+
+      .status-dot.wireframe-only {
+        background: #f59e0b;
+      }
+
+      .status-dot.pending {
+        background: #d4d4d4;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        margin-bottom: 48px;
+        padding: 16px 24px;
+        background: white;
+        border-radius: 12px;
+        font-size: 13px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #737373;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      }
+
+      footer a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Design Wireframes</h1>
+      <p class="subtitle">
+        Poetry & Pottery UI design wireframes organized by implementation phase
+      </p>
+
+      <div class="legend">
+        <div class="legend-item">
+          <span class="status-dot implemented"></span>
+          <span>Implemented</span>
+        </div>
+        <div class="legend-item">
+          <span class="status-dot wireframe-only"></span>
+          <span>Wireframe Ready</span>
+        </div>
+        <div class="legend-item">
+          <span class="status-dot pending"></span>
+          <span>Pending</span>
+        </div>
+      </div>
+
+      <!-- Phase 2: Product Cards -->
+      <div class="phase-section">
+        <h2 class="phase-title">Phase 2: Product Cards</h2>
+        <div class="wireframe-grid">
+          <a href="task-2-product-cards.html" class="wireframe-card">
+            <span class="task-badge completed">Task 2.1-2.7</span>
+            <h3 class="wireframe-title">Product Card Design</h3>
+            <p class="wireframe-desc">
+              3:4 image ratio, no borders, hover image swap, always-visible ATC
+              + wishlist buttons, out of stock overlay
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Phase 3: Homepage Sections -->
+      <div class="phase-section">
+        <h2 class="phase-title">Phase 3: Homepage Sections</h2>
+        <div class="wireframe-grid">
+          <a href="task-3-1-hero-section.html" class="wireframe-card">
+            <span class="task-badge completed">Task 3.1</span>
+            <h3 class="wireframe-title">Hero Section Redesign</h3>
+            <p class="wireframe-desc">
+              Taller hero (4:5 mobile, 2.5:1 desktop), dual CTAs, text generate
+              effect animation
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-3-2-usp-strip.html" class="wireframe-card">
+            <span class="task-badge completed">Task 3.2</span>
+            <h3 class="wireframe-title">USP/Trust Strip</h3>
+            <p class="wireframe-desc">
+              Grid with icon boxes (mobile 2x2), auto-scrolling marquee
+              (desktop), minimal inline options
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-3-3-category-section.html" class="wireframe-card">
+            <span class="task-badge completed">Task 3.3</span>
+            <h3 class="wireframe-title">Category Section</h3>
+            <p class="wireframe-desc">
+              Image-based category cards with gradient overlays, 4-column grid
+              and masonry options
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-3-4-testimonials.html" class="wireframe-card">
+            <span class="task-badge completed">Task 3.4</span>
+            <h3 class="wireframe-title">Testimonials Section</h3>
+            <p class="wireframe-desc">
+              Featured testimonial with image, 3-card grid, scrolling marquee
+              options
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-3-5-product-carousel.html" class="wireframe-card">
+            <span class="task-badge completed">Task 3.5</span>
+            <h3 class="wireframe-title">Product Carousel</h3>
+            <p class="wireframe-desc">
+              Serif heading, "View All" button, updated card styling
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Phase 4: Listing Pages -->
+      <div class="phase-section">
+        <h2 class="phase-title">Phase 4: Listing Pages</h2>
+        <div class="wireframe-grid">
+          <a href="task-4-1-products-header.html" class="wireframe-card">
+            <span class="task-badge completed">Task 4.1</span>
+            <h3 class="wireframe-title">Products Page Header</h3>
+            <p class="wireframe-desc">
+              Serif heading, result count, breadcrumbs, green underline accent
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-2-product-grid.html" class="wireframe-card">
+            <span class="task-badge completed">Task 4.2</span>
+            <h3 class="wireframe-title">Product Grid Layout</h3>
+            <p class="wireframe-desc">
+              2-column mobile, 3-column desktop, natural scroll
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-3-events-header.html" class="wireframe-card">
+            <span class="task-badge completed">Task 4.3</span>
+            <h3 class="wireframe-title">Events Page Header</h3>
+            <p class="wireframe-desc">
+              Visual header with serif title, subtitle styling
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-4-event-cards.html" class="wireframe-card">
+            <span class="task-badge completed">Task 4.4</span>
+            <h3 class="wireframe-title">Event Cards</h3>
+            <p class="wireframe-desc">
+              16:9 image, level badge, price pill, "Book Now" CTA, sold out
+              state
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-5-event-detail.html" class="wireframe-card">
+            <span class="task-badge completed">Task 4.5</span>
+            <h3 class="wireframe-title">Event Detail Page</h3>
+            <p class="wireframe-desc">
+              Full-width hero, info chips, breadcrumbs, sticky CTA
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-6-filter-sidebar.html" class="wireframe-card">
+            <span class="task-badge completed">Task 4.6</span>
+            <h3 class="wireframe-title">Filter Sidebar</h3>
+            <p class="wireframe-desc">
+              Mobile full-screen overlay, desktop sticky sidebar, filter chips
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-7-price-slider.html" class="wireframe-card">
+            <span class="task-badge completed">Task 4.7</span>
+            <h3 class="wireframe-title">Price Range Slider</h3>
+            <p class="wireframe-desc">
+              Thicker track, primary color fill, larger touch targets
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot implemented"></span> Implemented</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-8-events-subpages.html" class="wireframe-card">
+            <span class="task-badge pending">Task 4.8</span>
+            <h3 class="wireframe-title">Events Sub-Pages</h3>
+            <p class="wireframe-desc">
+              Upcoming & Past events tabs, scrollable tabs mobile, centered tabs
+              desktop, 3 design options
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot wireframe-only"></span> Wireframe
+                Ready</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-9-registrations.html" class="wireframe-card">
+            <span class="task-badge pending">Task 4.9</span>
+            <h3 class="wireframe-title">Registrations Page</h3>
+            <p class="wireframe-desc">
+              Registration cards with status badges, section headers,
+              upcoming/completed sections, 3 layout options
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot wireframe-only"></span> Wireframe
+                Ready</span
+              >
+            </div>
+          </a>
+
+          <a href="task-4-10-unified-event-detail.html" class="wireframe-card">
+            <span class="task-badge pending">Task 4.10</span>
+            <h3 class="wireframe-title">Unified Event Detail</h3>
+            <p class="wireframe-desc">
+              Upcoming, past workshop, and registered event variants with
+              galleries, reviews, progress steppers
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot wireframe-only"></span> Wireframe
+                Ready</span
+              >
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Pending Phases -->
+      <div class="phase-section">
+        <h2 class="phase-title">Phase 5-14: Pending Wireframes</h2>
+        <div class="wireframe-grid">
+          <div class="wireframe-card" style="opacity: 0.6; cursor: default">
+            <span class="task-badge">Phase 5</span>
+            <h3 class="wireframe-title">Color & Visual Polish</h3>
+            <p class="wireframe-desc">
+              Button styles, section backgrounds, newsletter, scroll animations,
+              smooth scrolling, animated counters
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot pending"></span> Pending</span
+              >
+            </div>
+          </div>
+
+          <div class="wireframe-card" style="opacity: 0.6; cursor: default">
+            <span class="task-badge">Phase 6</span>
+            <h3 class="wireframe-title">Product Detail Page</h3>
+            <p class="wireframe-desc">
+              Mobile-first layout, trust badges, tabs, related products grid,
+              sticky CTA, image gallery
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot pending"></span> Pending</span
+              >
+            </div>
+          </div>
+
+          <div class="wireframe-card" style="opacity: 0.6; cursor: default">
+            <span class="task-badge">Phase 7</span>
+            <h3 class="wireframe-title">Remaining Pages</h3>
+            <p class="wireframe-desc">
+              Cart, Wishlist, Orders, About, Contact, Info pages, Profile, Care
+              guide
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot pending"></span> Pending</span
+              >
+            </div>
+          </div>
+
+          <div class="wireframe-card" style="opacity: 0.6; cursor: default">
+            <span class="task-badge">Phase 8</span>
+            <h3 class="wireframe-title">Navigation & Layout</h3>
+            <p class="wireframe-desc">
+              Desktop navbar, mobile header, bottom navigation, logo, account
+              dropdown, search, footer
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot pending"></span> Pending</span
+              >
+            </div>
+          </div>
+
+          <div class="wireframe-card" style="opacity: 0.6; cursor: default">
+            <span class="task-badge">Phase 9-14</span>
+            <h3 class="wireframe-title">Components & Polish</h3>
+            <p class="wireframe-desc">
+              Forms, shared components, event sub-components, skeletons, about
+              page, mobile components, auth pages
+            </p>
+            <div class="wireframe-meta">
+              <span class="meta-item"
+                ><span class="status-dot pending"></span> Pending</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>Poetry & Pottery Design System</p>
+      </footer>
+    </div>
+  </body>
+</html>

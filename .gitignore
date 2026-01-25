@@ -48,4 +48,4 @@ plan.md
 prisma/generated
 src/lib/reset-db.ts
 design-refactor.md
-prompt.md
+prompt*.md

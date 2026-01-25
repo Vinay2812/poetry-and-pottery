@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 3.4: Testimonials Section - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Testimonials Styles */
+      .testimonials-section {
+        max-width: 1200px;
+        margin: 0 auto 48px;
+      }
+
+      .testimonials-header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .testimonials-header h2 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .testimonials-header p {
+        color: #737373;
+        font-size: 14px;
+      }
+
+      /* Option A: Featured with Image */
+      .testimonial-featured {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+        padding: 48px;
+        background: #f9f7f4;
+        border-radius: 24px;
+      }
+
+      @media (max-width: 900px) {
+        .testimonial-featured {
+          grid-template-columns: 1fr;
+          padding: 32px 24px;
+        }
+      }
+
+      .testimonial-image {
+        aspect-ratio: 1;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #d4c4b0 0%, #b8a896 100%);
+      }
+
+      .testimonial-content {
+        padding: 24px 0;
+      }
+
+      .testimonial-quote {
+        font-size: 20px;
+        line-height: 1.6;
+        color: #1a1a1a;
+        margin-bottom: 24px;
+        font-style: italic;
+      }
+
+      .testimonial-rating {
+        color: #f59e0b;
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+
+      .testimonial-author {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .testimonial-tag {
+        font-size: 12px;
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      /* Option B: 3-Card Grid */
+      .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      @media (max-width: 900px) {
+        .testimonial-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .testimonial-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+      }
+
+      .testimonial-card .t-rating {
+        color: #f59e0b;
+        font-size: 14px;
+        margin-bottom: 16px;
+      }
+
+      .testimonial-card .t-quote {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #555;
+        margin-bottom: 20px;
+      }
+
+      .testimonial-card .t-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .testimonial-card .t-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #d4c4b0 0%, #b8a896 100%);
+      }
+
+      .testimonial-card .t-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      .testimonial-card .t-tag {
+        font-size: 11px;
+        color: #4f6f52;
+      }
+
+      /* Option C: Marquee */
+      .testimonial-marquee-container {
+        overflow: hidden;
+        padding: 24px 0;
+      }
+
+      .testimonial-marquee {
+        display: flex;
+        gap: 24px;
+        animation: testimonialScroll 40s linear infinite;
+      }
+
+      @keyframes testimonialScroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      .testimonial-marquee .testimonial-card {
+        flex-shrink: 0;
+        width: 320px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 3.4: Testimonials Section</h1>
+    <p class="subtitle">
+      Customer testimonials with photos and ratings for social proof
+    </p>
+
+    <span
+      class="wf-task-label"
+      style="display: block; text-align: center; margin: 0 auto 32px"
+      >Status: Implemented</span
+    >
+
+    <!-- Option A: Featured -->
+    <div class="testimonials-section">
+      <div class="testimonials-header">
+        <h2>What Our Customers Say</h2>
+        <p>Real stories from real pottery lovers</p>
+      </div>
+
+      <div class="section-title">
+        Option A: Featured Testimonial with Image (Aceternity Animated
+        Testimonials style)
+      </div>
+      <div class="option-details">
+        <strong>Layout:</strong> 50/50 split - customer image left, quote
+        right.<br />
+        <strong>Animation:</strong> Auto-cycling between testimonials with fade
+        transition.<br />
+        <strong>Advantage:</strong> High impact, personal connection with
+        customer photos.
+      </div>
+
+      <div class="testimonial-featured">
+        <div class="testimonial-image"></div>
+        <div class="testimonial-content">
+          <div class="testimonial-rating">
+            &#9733;&#9733;&#9733;&#9733;&#9733;
+          </div>
+          <p class="testimonial-quote">
+            "The craftsmanship is absolutely stunning. Each piece feels like it
+            was made just for me. My home has never felt more complete."
+          </p>
+          <div class="testimonial-author">Priya Sharma</div>
+          <div class="testimonial-tag">Verified Buyer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Option B: 3-Card Grid -->
+    <div class="testimonials-section">
+      <div class="testimonials-header">
+        <h2>What Our Customers Say</h2>
+        <p>Real stories from real pottery lovers</p>
+      </div>
+
+      <div class="section-title">Option B: Three-Card Grid (Static, clean)</div>
+      <div class="option-details">
+        <strong>Layout:</strong> 3-column grid on desktop, stacked on mobile.<br />
+        <strong>Cards:</strong> White bg, rating, quote, author with avatar.<br />
+        <strong>Advantage:</strong> Shows multiple testimonials at once, more
+        social proof.
+      </div>
+
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="t-quote">
+            "Beautiful vase! The quality exceeded my expectations. Will
+            definitely order again."
+          </p>
+          <div class="t-author">
+            <div class="t-avatar"></div>
+            <div>
+              <div class="t-name">Anjali M.</div>
+              <div class="t-tag">Verified Buyer</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="t-quote">
+            "The workshop was amazing! I learned so much and made my own
+            beautiful bowl."
+          </p>
+          <div class="t-author">
+            <div class="t-avatar"></div>
+            <div>
+              <div class="t-name">Rahul K.</div>
+              <div class="t-tag">Workshop Attendee</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <p class="t-quote">
+            "Perfect gift for my mother. She was thrilled with the handcrafted
+            dinner set."
+          </p>
+          <div class="t-author">
+            <div class="t-avatar"></div>
+            <div>
+              <div class="t-name">Neha S.</div>
+              <div class="t-tag">Verified Buyer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Option C: Marquee -->
+    <div class="testimonials-section">
+      <div class="testimonials-header">
+        <h2>What Our Customers Say</h2>
+        <p>Real stories from real pottery lovers</p>
+      </div>
+
+      <div class="section-title">
+        Option C: Scrolling Marquee Cards (Magic UI Marquee style)
+      </div>
+      <div class="option-details">
+        <strong>Layout:</strong> Horizontally scrolling cards in a continuous
+        loop.<br />
+        <strong>Animation:</strong> Smooth auto-scroll, pauses on hover.<br />
+        <strong>Advantage:</strong> Shows many testimonials without taking
+        vertical space.
+      </div>
+
+      <div class="testimonial-marquee-container">
+        <div class="testimonial-marquee">
+          <div class="testimonial-card">
+            <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="t-quote">
+              "Beautiful vase! The quality exceeded my expectations. Will
+              definitely order again."
+            </p>
+            <div class="t-author">
+              <div class="t-avatar"></div>
+              <div>
+                <div class="t-name">Anjali M.</div>
+                <div class="t-tag">Verified Buyer</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="t-quote">
+              "The workshop was amazing! I learned so much and made my own
+              beautiful bowl."
+            </p>
+            <div class="t-author">
+              <div class="t-avatar"></div>
+              <div>
+                <div class="t-name">Rahul K.</div>
+                <div class="t-tag">Workshop Attendee</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+            <p class="t-quote">
+              "Perfect gift for my mother. She was thrilled with the handcrafted
+              dinner set."
+            </p>
+            <div class="t-author">
+              <div class="t-avatar"></div>
+              <div>
+                <div class="t-name">Neha S.</div>
+                <div class="t-tag">Verified Buyer</div>
+              </div>
+            </div>
+          </div>
+          <!-- Duplicates for seamless loop -->
+          <div class="testimonial-card">
+            <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="t-quote">
+              "Beautiful vase! The quality exceeded my expectations. Will
+              definitely order again."
+            </p>
+            <div class="t-author">
+              <div class="t-avatar"></div>
+              <div>
+                <div class="t-name">Anjali M.</div>
+                <div class="t-tag">Verified Buyer</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="t-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="t-quote">
+              "The workshop was amazing! I learned so much and made my own
+              beautiful bowl."
+            </p>
+            <div class="t-author">
+              <div class="t-avatar"></div>
+              <div>
+                <div class="t-name">Rahul K.</div>
+                <div class="t-tag">Workshop Attendee</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Implementation Notes -->
+    <div class="notes">
+      <strong>Task 3.4 Implementation Notes:</strong><br /><br />
+      &bull; <strong>Selected:</strong> Option A (Featured with Image) - using
+      Aceternity Animated Testimonials<br />
+      &bull; <strong>Background:</strong> bg-primary-lighter for section<br />
+      &bull; <strong>Animation:</strong> Auto-cycling with fade transition (5s
+      per testimonial)<br />
+      &bull; <strong>Mobile:</strong> Stacked layout, swipeable cards<br />
+      &bull; <strong>Data:</strong> Testimonial content (quote, name, rating,
+      image) from CMS/API
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

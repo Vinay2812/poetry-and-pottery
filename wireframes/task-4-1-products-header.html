@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.1: Products Page Header - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      .page-header-section {
+        max-width: 1200px;
+        margin: 0 auto 48px;
+      }
+
+      .page-header-demo {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+      }
+
+      .breadcrumbs {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 16px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .page-title::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+      }
+
+      .page-subtitle {
+        color: #737373;
+        font-size: 14px;
+        margin-top: 16px;
+      }
+
+      .result-count {
+        font-size: 13px;
+        color: #999;
+        margin-top: 16px;
+      }
+
+      .result-count strong {
+        color: #1a1a1a;
+      }
+
+      /* Mobile frame */
+      .mobile-header-demo {
+        width: 375px;
+        max-width: 100%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 28px;
+        padding: 20px 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        border: 8px solid #1a1a1a;
+      }
+
+      .mobile-header-demo .page-title {
+        font-size: 24px;
+      }
+
+      .mobile-header-demo .page-title::after {
+        width: 40px;
+        height: 2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.1: Products Page Header</h1>
+    <p class="subtitle">
+      Serif heading, result count, breadcrumbs with green underline accent
+    </p>
+
+    <span
+      class="wf-task-label"
+      style="display: block; text-align: center; margin: 0 auto 32px"
+      >Status: Implemented</span
+    >
+
+    <div class="page-header-section">
+      <div class="section-title">Final Design: Green Underline Accent</div>
+      <div class="option-details">
+        <strong>Breadcrumbs:</strong> Home > Shop - links in primary color,
+        separator in gray.<br />
+        <strong>Title:</strong> Display font (Plus Jakarta Sans 700), green
+        underline accent.<br />
+        <strong>Subtitle:</strong> Optional descriptive text in muted gray.<br />
+        <strong>Result Count:</strong> "Showing X of Y results" below title.
+      </div>
+
+      <!-- Desktop -->
+      <div class="mobile-label">DESKTOP VIEW</div>
+      <div class="page-header-demo">
+        <div class="breadcrumbs"><a href="#">Home</a> / <span>Shop</span></div>
+        <h1 class="page-title">Our Collection</h1>
+        <p class="page-subtitle">
+          Discover handcrafted pottery pieces for your home
+        </p>
+        <p class="result-count">
+          Showing <strong>1-12</strong> of <strong>48</strong> results
+        </p>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Mobile -->
+      <div class="mobile-label">MOBILE VIEW (375px)</div>
+      <div class="mobile-header-demo">
+        <div class="breadcrumbs"><a href="#">Home</a> / <span>Shop</span></div>
+        <h1 class="page-title">Our Collection</h1>
+        <p class="result-count">
+          Showing <strong>1-12</strong> of <strong>48</strong> results
+        </p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="notes">
+      <strong>Task 4.1 Implementation Notes:</strong><br /><br />
+      &bull; <strong>Title:</strong> font-display font-bold text-2xl
+      lg:text-4xl<br />
+      &bull; <strong>Underline:</strong> Pseudo-element, w-15, h-0.5,
+      bg-primary, rounded-full<br />
+      &bull; <strong>Breadcrumbs:</strong> text-sm, primary color links<br />
+      &bull; <strong>Result Count:</strong> text-sm text-muted, strong for
+      numbers<br />
+      &bull; <strong>Mobile:</strong> Hide subtitle, keep title + count compact
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

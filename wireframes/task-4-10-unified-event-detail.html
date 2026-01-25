@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Task 4.10: Unified Event Detail Pages - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      .unified-section {
+        max-width: 1400px;
+        margin: 0 auto 48px;
+      }
+
+      /* Variant Labels */
+      .variant-label {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .variant-label.upcoming {
+        background: #ecfdf5;
+        color: #059669;
+      }
+
+      .variant-label.past {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .variant-label.registered {
+        background: #ede9fe;
+        color: #7c3aed;
+      }
+
+      /* Desktop Frame */
+      .desktop-frame {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+
+      .browser-bar {
+        background: #f5f5f4;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .browser-dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .browser-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #d4d4d4;
+      }
+
+      .url-bar {
+        flex: 1;
+        background: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .frame-content {
+        padding: 20px;
+        background: #fafaf9;
+      }
+
+      /* Hero Section */
+      .ued-hero {
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .ued-hero-img {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #e8ece8 0%, #d4dcd4 100%);
+      }
+
+      .ued-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.5),
+          transparent 60%
+        );
+      }
+
+      /* Badges */
+      .ued-badge {
+        position: absolute;
+        bottom: 16px;
+        left: 16px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .ued-badge-item {
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .ued-badge-primary {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .ued-badge-white {
+        background: rgba(255, 255, 255, 0.9);
+        color: #1a1a1a;
+      }
+
+      .ued-badge-completed {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .ued-badge-confirmed {
+        background: #ede9fe;
+        color: #7c3aed;
+      }
+
+      /* Content Layout */
+      .ued-desktop-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 32px;
+      }
+
+      .ued-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .ued-desc {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+        margin-bottom: 16px;
+      }
+
+      /* Info Chips */
+      .ued-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .ued-chip {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 10px;
+        background: #f5f5f4;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 500;
+        color: #525252;
+      }
+
+      .ued-chip.highlight {
+        background: #ecfdf5;
+        color: #059669;
+      }
+
+      /* Section Headings */
+      .ued-section-heading {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+        margin-top: 20px;
+      }
+
+      .ued-section-text {
+        font-size: 12px;
+        line-height: 1.6;
+        color: #525252;
+      }
+
+      /* Sidebar */
+      .ued-sidebar {
+        background: #fafaf9;
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .ued-sidebar-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        color: #4f6f52;
+        margin-bottom: 2px;
+      }
+
+      .ued-sidebar-sublabel {
+        font-size: 11px;
+        color: #a3a3a3;
+        margin-bottom: 16px;
+      }
+
+      .ued-sidebar-info-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 0;
+        font-size: 11px;
+        color: #525252;
+      }
+
+      .ued-cta-btn {
+        width: 100%;
+        padding: 12px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 16px;
+      }
+
+      .ued-cta-btn.outline {
+        background: transparent;
+        border: 1.5px solid #d4d4d4;
+        color: #525252;
+      }
+
+      /* Status Banner */
+      .ued-status-banner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+
+      .ued-status-banner.completed {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .ued-status-banner.confirmed {
+        background: #ede9fe;
+        color: #7c3aed;
+      }
+
+      /* Progress Steps */
+      .ued-progress {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .ued-progress-step {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        color: #a3a3a3;
+      }
+
+      .ued-progress-step.completed {
+        color: #059669;
+      }
+
+      .ued-progress-step.active {
+        color: #4f6f52;
+        font-weight: 600;
+      }
+
+      .step-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #f5f5f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+      }
+
+      .ued-progress-step.completed .step-dot {
+        background: #ecfdf5;
+        color: #059669;
+      }
+
+      .ued-progress-step.active .step-dot {
+        background: #4f6f52;
+        color: white;
+      }
+
+      /* Summary Rows */
+      .ued-summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 11px;
+      }
+
+      .ued-summary-row .label {
+        color: #737373;
+      }
+
+      .ued-summary-row .value {
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .ued-summary-row .value.primary {
+        color: #4f6f52;
+      }
+
+      /* Gallery */
+      .ued-gallery {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      .ued-gallery-item {
+        aspect-ratio: 1;
+        background: #e8ece8;
+        border-radius: 8px;
+      }
+
+      .ued-gallery-item.more {
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .ued-gallery-item.more::after {
+        content: "+4";
+      }
+
+      /* Reviews */
+      .ued-review {
+        padding: 12px 0;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .ued-review-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      .ued-review-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #e8ece8;
+      }
+
+      .ued-review-name {
+        font-size: 11px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .ued-review-stars {
+        font-size: 10px;
+        color: #f59e0b;
+        margin-left: auto;
+      }
+
+      .ued-review-text {
+        font-size: 11px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      /* Rating Inline */
+      .ued-rating-inline {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+      }
+
+      .ued-rating-inline .stars {
+        color: #f59e0b;
+      }
+
+      .ued-rating-inline .score {
+        font-weight: 600;
+      }
+
+      .ued-rating-inline .count {
+        color: #a3a3a3;
+      }
+
+      /* Variant Row Grid */
+      .variant-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 48px;
+      }
+
+      @media (max-width: 1100px) {
+        .variant-row {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+
+      /* Registration ID */
+      .ued-reg-id {
+        font-size: 11px;
+        color: #737373;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .copy-btn {
+        cursor: pointer;
+        color: #4f6f52;
+      }
+
+      /* Includes List */
+      .ued-includes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .ued-include-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: #525252;
+      }
+
+      .ued-include-item .check {
+        color: #10b981;
+        font-weight: bold;
+      }
+
+      /* Info Card */
+      .ued-info-card {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 0;
+      }
+
+      .ued-info-card .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #e8ece8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ued-info-card .name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .ued-info-card .sub {
+        font-size: 10px;
+        color: #737373;
+      }
+
+      /* Upcoming Card in Sidebar */
+      .ued-upcoming-card {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 8px;
+      }
+
+      .ued-upcoming-card .thumb {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        background: #e8ece8;
+      }
+
+      .ued-upcoming-card .info .name {
+        font-size: 11px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .ued-upcoming-card .info .meta {
+        font-size: 10px;
+        color: #737373;
+      }
+
+      .ued-upcoming-card .info .price {
+        font-size: 11px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.10: Unified Event Detail Pages</h1>
+    <p class="subtitle">
+      Consistent event detail experience across all page variants: Upcoming
+      Events, Past Workshops, and Registered Events
+    </p>
+
+    <span
+      class="wf-task-label"
+      style="display: block; text-align: center; margin: 0 auto 32px"
+      >Status: Wireframe Ready</span
+    >
+
+    <div class="unified-section">
+      <div class="section-title">
+        Option A - Full-width Hero + Info Chips (Selected)
+      </div>
+      <div class="option-details">
+        <strong>Layout:</strong> Hero image spans full container width (21:9
+        desktop, 4:5 mobile). Below it, 2/3 content + 1/3 sidebar grid.<br />
+        <strong>Info:</strong> Rounded chip pills with icons for key details
+        (date, time, duration, location, seats).<br />
+        <strong>Sections:</strong> Flat card-less sections with font-display
+        headings. No borders between sections, generous spacing.<br />
+        <strong>Sidebar:</strong> Neutral-50 bg, no border/shadow. Content
+        adapts per variant (CTA / Status / Recommendations).<br />
+        <strong>Mobile CTA:</strong> Full-width button fixed at bottom with
+        price inline.
+      </div>
+
+      <!-- All Three Variants -->
+      <div class="variant-row">
+        <!-- UPCOMING EVENT -->
+        <div>
+          <span class="variant-label upcoming">Upcoming Event</span>
+          <div class="desktop-frame">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <div class="browser-dot"></div>
+                <div class="browser-dot"></div>
+                <div class="browser-dot"></div>
+              </div>
+              <div class="url-bar">
+                poetryandpottery.com/events/wheel-throwing
+              </div>
+            </div>
+            <div class="frame-content">
+              <div class="ued-hero" style="aspect-ratio: 21/9">
+                <div class="ued-hero-img"></div>
+                <div class="ued-hero-overlay"></div>
+                <div class="ued-badge">
+                  <span class="ued-badge-item ued-badge-primary">BEGINNER</span>
+                  <span class="ued-badge-item ued-badge-white"
+                    >4 spots left</span
+                  >
+                </div>
+              </div>
+              <div class="ued-desktop-layout">
+                <div>
+                  <div class="ued-title">Wheel Throwing Basics</div>
+                  <div class="ued-desc">
+                    A hands-on introduction to the pottery wheel.
+                  </div>
+                  <div class="ued-chips">
+                    <span class="ued-chip">&#128197; Sat, Jan 25</span>
+                    <span class="ued-chip">&#128336; 10:00 AM</span>
+                    <span class="ued-chip">&#9201; 3 hours</span>
+                    <span class="ued-chip highlight"
+                      >&#128101; 4 spots left</span
+                    >
+                  </div>
+                  <div class="ued-section-heading">About this workshop</div>
+                  <div class="ued-section-text">
+                    Learn centering, pulling, and shaping basics under expert
+                    guidance.
+                  </div>
+                </div>
+                <div class="ued-sidebar">
+                  <div class="ued-sidebar-price">&#8377;2,500</div>
+                  <div class="ued-sidebar-sublabel">per seat</div>
+                  <button class="ued-cta-btn">Reserve Seat &rarr;</button>
+                  <div
+                    style="
+                      text-align: center;
+                      margin-top: 8px;
+                      font-size: 10px;
+                      color: #059669;
+                      font-weight: 600;
+                    "
+                  >
+                    &#10003; 4 seats available
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAST WORKSHOP -->
+        <div>
+          <span class="variant-label past">Past Workshop</span>
+          <div class="desktop-frame">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <div class="browser-dot"></div>
+                <div class="browser-dot"></div>
+                <div class="browser-dot"></div>
+              </div>
+              <div class="url-bar">
+                poetryandpottery.com/events/coil-building
+              </div>
+            </div>
+            <div class="frame-content">
+              <div class="ued-hero" style="aspect-ratio: 21/9">
+                <div class="ued-hero-img"></div>
+                <div class="ued-hero-overlay"></div>
+                <div class="ued-badge">
+                  <span class="ued-badge-item ued-badge-completed"
+                    >&#10003; COMPLETED</span
+                  >
+                  <span class="ued-badge-item ued-badge-white"
+                    >INTERMEDIATE</span
+                  >
+                </div>
+              </div>
+              <div class="ued-desktop-layout">
+                <div>
+                  <div class="ued-title">Coil Building Masterclass</div>
+                  <div class="ued-desc">
+                    Traditional coil building techniques for vessels.
+                  </div>
+                  <div class="ued-chips">
+                    <span class="ued-chip">&#128197; Dec 14, 2024</span>
+                    <span class="ued-chip">&#128336; 2:00 PM</span>
+                    <span class="ued-chip">&#9201; 4 hours</span>
+                    <span class="ued-chip">&#128101; 12 attended</span>
+                  </div>
+                  <div class="ued-section-heading">Gallery</div>
+                  <div class="ued-gallery">
+                    <div class="ued-gallery-item"></div>
+                    <div class="ued-gallery-item"></div>
+                    <div class="ued-gallery-item"></div>
+                    <div class="ued-gallery-item more"></div>
+                  </div>
+                  <div
+                    class="ued-section-heading"
+                    style="display: flex; align-items: center; gap: 8px"
+                  >
+                    Reviews
+                    <span class="ued-rating-inline"
+                      ><span class="stars">&#9733;</span>
+                      <span class="score">4.8</span>
+                      <span class="count">(8)</span></span
+                    >
+                  </div>
+                  <div class="ued-review">
+                    <div class="ued-review-header">
+                      <div class="ued-review-avatar"></div>
+                      <div class="ued-review-name">Priya K.</div>
+                      <div class="ued-review-stars">
+                        &#9733;&#9733;&#9733;&#9733;&#9733;
+                      </div>
+                    </div>
+                    <div class="ued-review-text">
+                      Amazing workshop! Highly recommend.
+                    </div>
+                  </div>
+                </div>
+                <div class="ued-sidebar">
+                  <div class="ued-status-banner completed">
+                    &#10003; Workshop Completed
+                  </div>
+                  <div class="ued-summary-row">
+                    <span class="label">Attendees</span
+                    ><span class="value">12</span>
+                  </div>
+                  <div class="ued-summary-row">
+                    <span class="label">Rating</span
+                    ><span class="value"
+                      ><span class="ued-rating-inline"
+                        ><span class="stars">&#9733;</span>
+                        <span class="score">4.8</span></span
+                      ></span
+                    >
+                  </div>
+                  <div
+                    style="border-top: 1px solid #e5e5e5; margin: 12px 0"
+                  ></div>
+                  <div
+                    style="
+                      font-size: 11px;
+                      font-weight: 600;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    Similar upcoming:
+                  </div>
+                  <div class="ued-upcoming-card">
+                    <div class="thumb"></div>
+                    <div class="info">
+                      <div class="name">Advanced Coils</div>
+                      <div class="meta">Feb 1 &bull; 2:00 PM</div>
+                      <div class="price">&#8377;3,000</div>
+                    </div>
+                  </div>
+                  <button class="ued-cta-btn">View All Workshops</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REGISTERED EVENT -->
+        <div>
+          <span class="variant-label registered">Registered Event</span>
+          <div class="desktop-frame">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <div class="browser-dot"></div>
+                <div class="browser-dot"></div>
+                <div class="browser-dot"></div>
+              </div>
+              <div class="url-bar">poetryandpottery.com/events/glazing-101</div>
+            </div>
+            <div class="frame-content">
+              <div class="ued-hero" style="aspect-ratio: 21/9">
+                <div class="ued-hero-img"></div>
+                <div class="ued-hero-overlay"></div>
+                <div class="ued-badge">
+                  <span class="ued-badge-item ued-badge-confirmed"
+                    >&#10003; CONFIRMED</span
+                  >
+                  <span class="ued-badge-item ued-badge-white">ALL LEVELS</span>
+                </div>
+              </div>
+              <div class="ued-desktop-layout">
+                <div>
+                  <div class="ued-reg-id">
+                    Registration #A7BX9K2M <span class="copy-btn">&#8963;</span>
+                  </div>
+                  <div class="ued-title">Glazing 101: Colors & Finishes</div>
+                  <div class="ued-desc">
+                    Explore the world of ceramic glazes.
+                  </div>
+                  <div class="ued-chips">
+                    <span class="ued-chip">&#128197; Sat, Feb 8</span>
+                    <span class="ued-chip">&#128336; 11:00 AM</span>
+                    <span class="ued-chip">&#9201; 3 hours</span>
+                    <span class="ued-chip">&#127915; 2 seats</span>
+                  </div>
+                  <div class="ued-section-heading">What's included</div>
+                  <div class="ued-includes">
+                    <div class="ued-include-item">
+                      <span class="check">&#10003;</span> Glaze materials
+                    </div>
+                    <div class="ued-include-item">
+                      <span class="check">&#10003;</span> Bisqueware
+                    </div>
+                    <div class="ued-include-item">
+                      <span class="check">&#10003;</span> Firing included
+                    </div>
+                    <div class="ued-include-item">
+                      <span class="check">&#10003;</span> Color handout
+                    </div>
+                  </div>
+                </div>
+                <div class="ued-sidebar">
+                  <div
+                    style="
+                      font-size: 10px;
+                      font-weight: 700;
+                      letter-spacing: 1px;
+                      text-transform: uppercase;
+                      color: #a3a3a3;
+                      margin-bottom: 12px;
+                    "
+                  >
+                    Registration Progress
+                  </div>
+                  <div class="ued-progress">
+                    <div class="ued-progress-step completed">
+                      <div class="step-dot">&#10003;</div>
+                      Registered
+                    </div>
+                    <div class="ued-progress-step completed">
+                      <div class="step-dot">&#10003;</div>
+                      Approved
+                    </div>
+                    <div class="ued-progress-step completed">
+                      <div class="step-dot">&#10003;</div>
+                      Paid
+                    </div>
+                    <div class="ued-progress-step active">
+                      <div class="step-dot">&#10003;</div>
+                      Confirmed
+                    </div>
+                  </div>
+                  <div
+                    style="border-top: 1px solid #e5e5e5; margin: 12px 0"
+                  ></div>
+                  <div class="ued-summary-row">
+                    <span class="label">Seats</span><span class="value">2</span>
+                  </div>
+                  <div class="ued-summary-row">
+                    <span class="label">Amount Paid</span
+                    ><span class="value primary">&#8377;5,000</span>
+                  </div>
+                  <button class="ued-cta-btn">&#8595; Download Ticket</button>
+                  <button class="ued-cta-btn outline" style="margin-top: 8px">
+                    Browse More
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Implementation Notes -->
+    <div class="notes">
+      <strong>Task 4.10 Implementation Notes:</strong><br /><br />
+      &bull; <strong>Hero:</strong> aspect-ratio: 21/9 desktop, 4/5 mobile<br />
+      &bull; <strong>Variant Detection:</strong> Server-side based on event
+      status and user registration<br />
+      &bull; <strong>Upcoming:</strong> Reserve CTA, seats available
+      indicator<br />
+      &bull; <strong>Past:</strong> Gallery, reviews section, related upcoming
+      workshops<br />
+      &bull; <strong>Registered:</strong> Progress stepper, registration ID,
+      download ticket CTA<br />
+      &bull; <strong>Sidebar Adapts:</strong> Different content per variant<br />
+      &bull; <strong>Mobile:</strong> Sticky bottom CTA adapts per variant
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>
