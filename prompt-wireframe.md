@@ -21,7 +21,7 @@ You are a UI/UX designer working on the `poetry-and-pottery` project. Your task 
 
 ## Task Overview
 
-Create **wireframe design options** for the **top 3 highest-priority sub-tasks** from `poetry-and-pottery/design-refactor.md`. Each wireframe must show designs for all three viewports (mobile, tablet, desktop).
+Create **wireframe design options** for the **top 3 highest-priority sub-tasks** from `poetry-and-pottery/design-refactor.md` who don't have wireframe. Each wireframe must show designs for all three viewports (mobile, tablet, desktop).
 
 ---
 

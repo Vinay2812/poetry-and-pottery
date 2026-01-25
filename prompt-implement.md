@@ -5,6 +5,7 @@
 You are a frontend developer working on the `poetry-and-pottery` project. Your task is to implement **approved wireframe designs** with **React 19 performance patterns** and verify the implementation using `agent-browser`.
 
 **IMPORTANT:**
+
 1. Only implement tasks with status `✅ Approved` in design-refactor.md
 2. **ALWAYS apply React 19 patterns** from Phase 14 during implementation (not as a separate step)
 3. React 19 patterns include: `useTransition`, `useOptimistic`, `Suspense`, `Activity`, `ViewTransition`, `useFormStatus`
@@ -13,10 +14,10 @@ You are a frontend developer working on the `poetry-and-pottery` project. Your t
 
 ## URLs
 
-| Resource | URL |
-|----------|-----|
+| Resource   | URL                                                    |
+| ---------- | ------------------------------------------------------ |
 | Wireframes | `http://127.0.0.1:5500/poetry-and-pottery/wireframes/` |
-| Website | `http://127.0.0.1:3005/` |
+| Website    | `http://127.0.0.1:3005/`                               |
 
 **Note:** These servers are already running and accessible. No need to start them.
 
@@ -25,6 +26,7 @@ You are a frontend developer working on the `poetry-and-pottery` project. Your t
 ## Prerequisites
 
 Before starting, ensure:
+
 1. Wireframes have been created (via `prompt-wireframe.md`)
 2. User has approved designs for all viewports (mobile, tablet, desktop)
 3. Task status in `design-refactor.md` is `✅ Approved`
@@ -113,6 +115,7 @@ Before starting, ensure:
    - Does this have shared images across pages? → Use `viewTransitionName`
 
    **Navigation with Transitions:**
+
    ```tsx
    // ALWAYS wrap router.push with useTransition for smooth page transitions
    const [isPending, startTransition] = useTransition();
@@ -124,30 +127,37 @@ Before starting, ensure:
    };
 
    // Show loading state during navigation
-   {isPending && <NavigationProgress />}
+   {
+     isPending && <NavigationProgress />;
+   }
    ```
 
    **Optimistic Updates (Cart, Wishlist, Likes):**
+
    ```tsx
    // USE useOptimistic instead of manual rollback patterns
    const [optimisticItems, addOptimistic] = useOptimistic(
      items,
-     (state, action) => applyAction(state, action)
+     (state, action) => applyAction(state, action),
    );
 
    // Automatic rollback on error - no manual try/catch needed
    ```
 
    **Form Submissions:**
+
    ```tsx
    // USE useFormStatus for submit button pending states
    function SubmitButton() {
      const { pending } = useFormStatus();
-     return <Button disabled={pending}>{pending ? "Saving..." : "Save"}</Button>;
+     return (
+       <Button disabled={pending}>{pending ? "Saving..." : "Save"}</Button>
+     );
    }
    ```
 
    **Suspense Boundaries:**
+
    ```tsx
    // ADD Suspense around async sections (related products, reviews, etc.)
    <Suspense fallback={<SectionSkeleton />}>
@@ -156,6 +166,7 @@ Before starting, ensure:
    ```
 
    **ViewTransition for Shared Elements:**
+
    ```tsx
    // ADD view-transition-name for elements that should animate across pages
    <div style={{ viewTransitionName: `product-image-${id}` }}>
@@ -164,6 +175,7 @@ Before starting, ensure:
    ```
 
    **Activity for Dialogs/Sheets:**
+
    ```tsx
    // WRAP dialog content with Activity to prevent parent re-renders
    <Dialog open={open}>
@@ -211,16 +223,16 @@ Before starting, ensure:
 
    For each viewport, verify:
 
-   | Aspect | Wireframe | Implementation | Match? |
-   |--------|-----------|----------------|--------|
-   | Layout structure | | | [ ] |
-   | Colors | | | [ ] |
-   | Typography | | | [ ] |
-   | Spacing | | | [ ] |
-   | Border radius | | | [ ] |
-   | Shadows | | | [ ] |
-   | Interactive elements | | | [ ] |
-   | Responsive behavior | | | [ ] |
+   | Aspect               | Wireframe | Implementation | Match? |
+   | -------------------- | --------- | -------------- | ------ |
+   | Layout structure     |           |                | [ ]    |
+   | Colors               |           |                | [ ]    |
+   | Typography           |           |                | [ ]    |
+   | Spacing              |           |                | [ ]    |
+   | Border radius        |           |                | [ ]    |
+   | Shadows              |           |                | [ ]    |
+   | Interactive elements |           |                | [ ]    |
+   | Responsive behavior  |           |                | [ ]    |
 
 8. **Test interactivity**
 
@@ -350,12 +362,14 @@ agent-browser errors                  # View page errors
 Before marking task as completed:
 
 ### Layout Verification
+
 - [ ] Mobile layout matches wireframe (375px)
 - [ ] Tablet layout matches wireframe (768px)
 - [ ] Desktop layout matches wireframe (1440px)
 - [ ] Responsive transitions work smoothly
 
 ### Visual Verification
+
 - [ ] Colors match forest theme exactly
 - [ ] Typography correct (font-family, size, weight)
 - [ ] Spacing matches wireframe
@@ -363,18 +377,21 @@ Before marking task as completed:
 - [ ] Shadows correct
 
 ### Functional Verification
+
 - [ ] All interactive elements work
 - [ ] Hover states match design
 - [ ] Focus states accessible
 - [ ] Click handlers functional
 
 ### Code Quality
+
 - [ ] TypeScript passes (`bun run tsc`)
 - [ ] Code formatted (`bun run prettier:format`)
 - [ ] No console errors
 - [ ] No accessibility issues
 
 ### React 19 Performance (Phase 14)
+
 - [ ] `router.push` wrapped with `useTransition`
 - [ ] Mutations use `useOptimistic` (cart, wishlist, likes)
 - [ ] Forms use `useFormStatus` for submit buttons
@@ -402,13 +419,13 @@ At the end of this workflow:
 
 ## Status Legend
 
-| Status | Meaning |
-|--------|---------|
-| `🔲 Wireframe Pending` | Task not started |
+| Status                 | Meaning                                        |
+| ---------------------- | ---------------------------------------------- |
+| `🔲 Wireframe Pending` | Task not started                               |
 | `⏳ Awaiting Approval` | Wireframes created, waiting for user selection |
-| `✅ Approved` | User approved, ready for implementation |
-| `🚧 In Progress` | Implementation in progress |
-| `✔️ Completed` | Implementation done and verified |
+| `✅ Approved`          | User approved, ready for implementation        |
+| `🚧 In Progress`       | Implementation in progress                     |
+| `✔️ Completed`         | Implementation done and verified               |
 
 ---
 
@@ -416,30 +433,38 @@ At the end of this workflow:
 
 **When to use each hook:**
 
-| Scenario | Hook/Pattern | Example |
-|----------|--------------|---------|
-| Page navigation | `useTransition` + `router.push` | Product card → detail page |
-| Cart/wishlist mutations | `useOptimistic` | Add to cart, toggle wishlist |
-| Form submissions | `useFormStatus` | Submit button pending state |
-| Async data sections | `Suspense` | Related products, reviews |
-| Cross-page animations | `viewTransitionName` | Product image morph |
-| Modal/sheet rendering | `Activity` | Order detail dialog |
-| Filter updates | `startTransition` | Price range, category filter |
-| Review likes | `useOptimistic` | Like/unlike with rollback |
+| Scenario                | Hook/Pattern                    | Example                      |
+| ----------------------- | ------------------------------- | ---------------------------- |
+| Page navigation         | `useTransition` + `router.push` | Product card → detail page   |
+| Cart/wishlist mutations | `useOptimistic`                 | Add to cart, toggle wishlist |
+| Form submissions        | `useFormStatus`                 | Submit button pending state  |
+| Async data sections     | `Suspense`                      | Related products, reviews    |
+| Cross-page animations   | `viewTransitionName`            | Product image morph          |
+| Modal/sheet rendering   | `Activity`                      | Order detail dialog          |
+| Filter updates          | `startTransition`               | Price range, category filter |
+| Review likes            | `useOptimistic`                 | Like/unlike with rollback    |
 
 **Import locations:**
+
 ```tsx
-import { useTransition, useOptimistic, Suspense } from "react";
+import { Suspense, useOptimistic, useTransition } from "react";
+import { Activity } from "react";
 import { useFormStatus } from "react-dom";
-import { Activity } from "react"; // React 19+
+
+// React 19+
 ```
 
 **Common patterns to avoid:**
+
 ```tsx
 // ❌ BAD: Manual optimistic rollback
 const previous = items;
 setItems(optimistic);
-try { await mutate(); } catch { setItems(previous); }
+try {
+  await mutate();
+} catch {
+  setItems(previous);
+}
 
 // ✅ GOOD: useOptimistic with automatic rollback
 const [optimistic, addOptimistic] = useOptimistic(items, reducer);
@@ -456,17 +481,20 @@ startTransition(() => router.push("/products/123"));
 ## Troubleshooting
 
 **If implementation differs from wireframe:**
+
 1. Re-check the wireframe at exact viewport size
 2. Use `agent-browser get styles [sel]` to compare CSS
 3. Use `agent-browser get box [sel]` to compare dimensions
 4. Fix discrepancies and re-verify
 
 **If technical constraints prevent exact match:**
+
 1. Document the constraint
 2. Propose alternative solution
 3. Get user approval before proceeding
 
 **If responsive behavior is wrong:**
+
 1. Check breakpoint values in Tailwind config
 2. Verify correct responsive prefixes (`md:`, `lg:`, `xl:`)
 3. Test each breakpoint transition point
