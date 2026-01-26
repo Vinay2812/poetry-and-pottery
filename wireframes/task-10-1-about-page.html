@@ -1,0 +1,2193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 10.1: About Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Page Header Pattern */
+      .page-header {
+        margin-bottom: 32px;
+      }
+
+      .page-header-desktop {
+        padding-bottom: 24px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .page-title-desktop {
+        font-size: 36px;
+      }
+
+      .title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-bottom: 12px;
+      }
+
+      .page-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 500px;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        margin-bottom: 48px;
+      }
+
+      .hero-image {
+        aspect-ratio: 16/9;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8b7355;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-image::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        border: 3px solid rgba(139, 115, 85, 0.3);
+        border-radius: 50%;
+      }
+
+      .hero-image-mobile {
+        aspect-ratio: 4/3;
+        border-radius: 12px;
+      }
+
+      /* Split Section */
+      .split-section {
+        display: flex;
+        gap: 32px;
+        margin-bottom: 48px;
+        align-items: center;
+      }
+
+      .split-section.reverse {
+        flex-direction: row-reverse;
+      }
+
+      .split-content,
+      .split-image {
+        flex: 1;
+      }
+
+      .split-image {
+        aspect-ratio: 4/3;
+        background: linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #5a7a5a;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .split-mobile {
+        flex-direction: column;
+      }
+
+      .split-mobile .split-image {
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 12px;
+      }
+
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #4f6f52;
+        margin-bottom: 8px;
+      }
+
+      .section-heading {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+        line-height: 1.3;
+      }
+
+      .section-text {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.7;
+      }
+
+      /* Stats Section */
+      .stats-section {
+        padding: 32px 0;
+        margin-bottom: 48px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        text-align: center;
+      }
+
+      .stats-grid-mobile {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .stat-item {
+        padding: 20px;
+      }
+
+      .stat-number {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 36px;
+        font-weight: 800;
+        color: #4f6f52;
+        margin-bottom: 4px;
+      }
+
+      .stat-number-mobile {
+        font-size: 28px;
+      }
+
+      .stat-label {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      /* Values Section */
+      .values-section {
+        margin-bottom: 48px;
+      }
+
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .values-grid-mobile {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .value-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .value-icon {
+        width: 48px;
+        height: 48px;
+        background: #e8ece8;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        color: #4f6f52;
+      }
+
+      .value-icon svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        fill: none;
+      }
+
+      .value-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .value-desc {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.6;
+      }
+
+      /* Team Section */
+      .team-section {
+        margin-bottom: 48px;
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .team-grid-mobile {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .team-card {
+        text-align: center;
+      }
+
+      .team-avatar {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #e8e0d4 0%, #c4a882 100%);
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8b7355;
+        font-size: 11px;
+      }
+
+      .team-avatar-mobile {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 12px;
+      }
+
+      .team-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .team-role {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      /* Process Timeline */
+      .process-section {
+        margin-bottom: 48px;
+      }
+
+      .process-timeline {
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        position: relative;
+      }
+
+      .process-timeline::before {
+        content: "";
+        position: absolute;
+        top: 24px;
+        left: 48px;
+        right: 48px;
+        height: 2px;
+        background: #e5e5e5;
+      }
+
+      .process-timeline-mobile {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .process-timeline-mobile::before {
+        display: none;
+      }
+
+      .process-step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .process-step-mobile {
+        display: flex;
+        gap: 16px;
+        text-align: left;
+      }
+
+      .step-number {
+        width: 48px;
+        height: 48px;
+        background: #4f6f52;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 auto 12px;
+      }
+
+      .step-number-mobile {
+        flex-shrink: 0;
+      }
+
+      .step-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .step-desc {
+        font-size: 12px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      /* Option Layouts */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e5e5;
+      }
+
+      .page-frame-content {
+        padding: 16px;
+        max-height: 600px;
+        overflow-y: auto;
+      }
+
+      .page-frame-content.desktop {
+        padding: 32px 48px;
+      }
+
+      .page-frame-content.tablet {
+        padding: 24px 32px;
+      }
+
+      /* Background Variants */
+      .bg-cream {
+        background: #f5f0e8;
+      }
+
+      .bg-primary-lighter {
+        background: #f4f6f4;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 10.1: About Page</h1>
+    <p class="subtitle">
+      Editorial layout with 50/50 image-text splits, stats section with animated
+      counters, team grid, values cards, and our pottery-making process.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">⏳ AWAITING APPROVAL</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="heart-icon" viewBox="0 0 24 24">
+        <path
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        />
+      </symbol>
+      <symbol id="leaf-icon" viewBox="0 0 24 24">
+        <path
+          d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"
+        />
+        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+      </symbol>
+      <symbol id="hand-icon" viewBox="0 0 24 24">
+        <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+        <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" />
+        <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
+        <path
+          d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"
+        />
+      </symbol>
+      <symbol id="sparkles-icon" viewBox="0 0 24 24">
+        <path
+          d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+        />
+        <path d="M5 3v4" />
+        <path d="M19 17v4" />
+        <path d="M3 5h4" />
+        <path d="M17 19h4" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Basic text-heavy layout</li>
+            <li>No visual storytelling</li>
+            <li>Missing stats section</li>
+            <li>No team introduction</li>
+            <li>Inconsistent page header</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Editorial 50/50 image-text splits</li>
+            <li>Animated stats counters</li>
+            <li>Team member grid</li>
+            <li>Values with icons</li>
+            <li>Process timeline</li>
+            <li>Consistent page header pattern</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Classic Editorial -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Classic Editorial
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Clean alternating 50/50 sections with generous whitespace. Hero
+              image at top, followed by story sections, stats strip, values
+              cards, team grid, and process timeline.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / About Us
+                  </div>
+                  <h1 class="page-title">Our Story</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Crafting beauty from clay since 2018
+                  </p>
+                </div>
+
+                <!-- Hero -->
+                <div class="hero-section">
+                  <div class="hero-image hero-image-mobile">Workshop Image</div>
+                </div>
+
+                <!-- Story Section -->
+                <div class="split-section split-mobile">
+                  <div class="split-content">
+                    <div class="section-label">The Beginning</div>
+                    <h2 class="section-heading">
+                      From a Small Workshop to Your Home
+                    </h2>
+                    <p class="section-text">
+                      What started as a passion project in a tiny garage has
+                      grown into a beloved pottery studio...
+                    </p>
+                  </div>
+                  <div class="split-image">Pottery Image</div>
+                </div>
+
+                <!-- Stats -->
+                <div
+                  class="stats-section bg-primary-lighter"
+                  style="
+                    padding: 24px 16px;
+                    border-radius: 12px;
+                    margin: 32px -16px;
+                  "
+                >
+                  <div class="stats-grid stats-grid-mobile">
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">500+</div>
+                      <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">1,000+</div>
+                      <div class="stat-label">Pieces Crafted</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">50+</div>
+                      <div class="stat-label">Workshops</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">6</div>
+                      <div class="stat-label">Years of Craft</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Values -->
+                <div class="values-section">
+                  <div class="section-label">Our Values</div>
+                  <h2 class="section-heading" style="margin-bottom: 20px">
+                    What We Stand For
+                  </h2>
+                  <div class="values-grid values-grid-mobile">
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#hand-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Handcrafted</h3>
+                      <p class="value-desc">
+                        Every piece is made by hand with care.
+                      </p>
+                    </div>
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#leaf-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Sustainable</h3>
+                      <p class="value-desc">
+                        Eco-friendly materials and processes.
+                      </p>
+                    </div>
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#heart-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Made with Love</h3>
+                      <p class="value-desc">Passion in every creation.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Team -->
+                <div class="team-section">
+                  <div class="section-label">Meet the Team</div>
+                  <h2 class="section-heading" style="margin-bottom: 20px">
+                    The Hands Behind the Clay
+                  </h2>
+                  <div class="team-grid team-grid-mobile">
+                    <div class="team-card">
+                      <div class="team-avatar team-avatar-mobile">Photo</div>
+                      <h3 class="team-name">Priya Sharma</h3>
+                      <p class="team-role">Founder & Artist</p>
+                    </div>
+                    <div class="team-card">
+                      <div class="team-avatar team-avatar-mobile">Photo</div>
+                      <h3 class="team-name">Raj Patel</h3>
+                      <p class="team-role">Master Potter</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / About Us
+                  </div>
+                  <h1 class="page-title">Our Story</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Crafting beauty from clay since 2018
+                  </p>
+                </div>
+
+                <!-- Hero -->
+                <div class="hero-section">
+                  <div class="hero-image">Workshop Hero Image</div>
+                </div>
+
+                <!-- Story Split -->
+                <div class="split-section" style="display: flex; gap: 24px">
+                  <div class="split-content" style="flex: 1">
+                    <div class="section-label">The Beginning</div>
+                    <h2 class="section-heading">
+                      From a Small Workshop to Your Home
+                    </h2>
+                    <p class="section-text">
+                      What started as a passion project in a tiny garage has
+                      grown into a beloved pottery studio. Our journey began
+                      with a simple wheel and a dream to create beautiful,
+                      functional pieces...
+                    </p>
+                  </div>
+                  <div class="split-image" style="flex: 1">Pottery Image</div>
+                </div>
+
+                <!-- Stats -->
+                <div
+                  class="stats-section bg-primary-lighter"
+                  style="padding: 32px; border-radius: 16px; margin: 32px 0"
+                >
+                  <div class="stats-grid">
+                    <div class="stat-item">
+                      <div class="stat-number">500+</div>
+                      <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">1,000+</div>
+                      <div class="stat-label">Pieces Crafted</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">50+</div>
+                      <div class="stat-label">Workshops</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">6</div>
+                      <div class="stat-label">Years of Craft</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Values -->
+                <div class="values-section">
+                  <div class="section-label" style="text-align: center">
+                    Our Values
+                  </div>
+                  <h2
+                    class="section-heading"
+                    style="text-align: center; margin-bottom: 24px"
+                  >
+                    What We Stand For
+                  </h2>
+                  <div class="values-grid">
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#hand-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Handcrafted</h3>
+                      <p class="value-desc">
+                        Every piece is made by hand with care and attention to
+                        detail.
+                      </p>
+                    </div>
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#leaf-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Sustainable</h3>
+                      <p class="value-desc">
+                        Eco-friendly materials and environmentally conscious
+                        processes.
+                      </p>
+                    </div>
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#heart-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Made with Love</h3>
+                      <p class="value-desc">
+                        Every piece carries our passion and dedication.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / About Us
+                  </div>
+                  <h1 class="page-title page-title-desktop">Our Story</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Crafting beauty from clay since 2018. Discover the passion
+                    and craftsmanship behind every piece.
+                  </p>
+                </div>
+
+                <!-- Hero -->
+                <div class="hero-section">
+                  <div class="hero-image" style="aspect-ratio: 21/9">
+                    Workshop Hero Image - Full Width
+                  </div>
+                </div>
+
+                <!-- Story Split -->
+                <div class="split-section">
+                  <div class="split-content">
+                    <div class="section-label">The Beginning</div>
+                    <h2 class="section-heading">
+                      From a Small Workshop to Your Home
+                    </h2>
+                    <p class="section-text">
+                      What started as a passion project in a tiny garage has
+                      grown into a beloved pottery studio, trusted by hundreds
+                      of customers across India. Our journey began with a simple
+                      wheel and a dream to create beautiful, functional pieces
+                      that bring joy to everyday moments.
+                    </p>
+                  </div>
+                  <div class="split-image">Pottery Workshop Image</div>
+                </div>
+
+                <!-- Stats Strip -->
+                <div
+                  class="stats-section bg-primary-lighter"
+                  style="padding: 48px; border-radius: 20px; margin: 48px 0"
+                >
+                  <div class="stats-grid">
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">
+                        500+
+                      </div>
+                      <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">
+                        1,000+
+                      </div>
+                      <div class="stat-label">Pieces Crafted</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">50+</div>
+                      <div class="stat-label">Workshops Hosted</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">6</div>
+                      <div class="stat-label">Years of Craft</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Values Section -->
+                <div class="values-section">
+                  <div class="section-label" style="text-align: center">
+                    Our Values
+                  </div>
+                  <h2
+                    class="section-heading"
+                    style="text-align: center; margin-bottom: 32px"
+                  >
+                    What We Stand For
+                  </h2>
+                  <div class="values-grid" style="gap: 32px">
+                    <div class="value-card" style="padding: 32px">
+                      <div class="value-icon" style="width: 56px; height: 56px">
+                        <svg style="width: 28px; height: 28px">
+                          <use href="#hand-icon" />
+                        </svg>
+                      </div>
+                      <h3 class="value-title" style="font-size: 18px">
+                        Handcrafted with Care
+                      </h3>
+                      <p class="value-desc">
+                        Every piece is made entirely by hand, ensuring each
+                        creation is unique and carries the mark of true
+                        craftsmanship.
+                      </p>
+                    </div>
+                    <div class="value-card" style="padding: 32px">
+                      <div class="value-icon" style="width: 56px; height: 56px">
+                        <svg style="width: 28px; height: 28px">
+                          <use href="#leaf-icon" />
+                        </svg>
+                      </div>
+                      <h3 class="value-title" style="font-size: 18px">
+                        Sustainable Practices
+                      </h3>
+                      <p class="value-desc">
+                        We use eco-friendly materials and environmentally
+                        conscious processes in everything we create.
+                      </p>
+                    </div>
+                    <div class="value-card" style="padding: 32px">
+                      <div class="value-icon" style="width: 56px; height: 56px">
+                        <svg style="width: 28px; height: 28px">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </div>
+                      <h3 class="value-title" style="font-size: 18px">
+                        Made with Love
+                      </h3>
+                      <p class="value-desc">
+                        Every piece we create carries our passion and dedication
+                        to the art of pottery.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Team -->
+                <div class="team-section" style="margin-top: 48px">
+                  <div class="section-label" style="text-align: center">
+                    Meet the Team
+                  </div>
+                  <h2
+                    class="section-heading"
+                    style="text-align: center; margin-bottom: 32px"
+                  >
+                    The Hands Behind the Clay
+                  </h2>
+                  <div class="team-grid">
+                    <div class="team-card">
+                      <div class="team-avatar">Photo</div>
+                      <h3 class="team-name">Priya Sharma</h3>
+                      <p class="team-role">Founder & Lead Artist</p>
+                    </div>
+                    <div class="team-card">
+                      <div class="team-avatar">Photo</div>
+                      <h3 class="team-name">Raj Patel</h3>
+                      <p class="team-role">Master Potter</p>
+                    </div>
+                    <div class="team-card">
+                      <div class="team-avatar">Photo</div>
+                      <h3 class="team-name">Ananya Desai</h3>
+                      <p class="team-role">Workshop Instructor</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Immersive Hero -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Immersive Hero</h3>
+            <p class="wf-option-desc">
+              Large full-bleed hero with text overlay. Story unfolds as user
+              scrolls through full-width image sections with overlaid content.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content" style="padding: 0">
+                <!-- Full-bleed Hero -->
+                <div
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #4f6f52 0%,
+                      #3d5640 100%
+                    );
+                    color: white;
+                    padding: 48px 24px;
+                    text-align: center;
+                    position: relative;
+                    min-height: 280px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 11px;
+                      letter-spacing: 2px;
+                      text-transform: uppercase;
+                      opacity: 0.8;
+                      margin-bottom: 12px;
+                    "
+                  >
+                    Our Story
+                  </div>
+                  <h1
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 28px;
+                      font-weight: 700;
+                      margin-bottom: 16px;
+                      line-height: 1.2;
+                    "
+                  >
+                    Crafting Beauty<br />From Clay
+                  </h1>
+                  <p style="font-size: 14px; opacity: 0.9; line-height: 1.6">
+                    Since 2018, we've been creating handcrafted pottery pieces
+                    that bring warmth to your home.
+                  </p>
+                </div>
+
+                <div style="padding: 24px 16px">
+                  <!-- Stats inline -->
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-around;
+                      padding: 24px 0;
+                      border-bottom: 1px solid #e5e5e5;
+                      margin-bottom: 24px;
+                    "
+                  >
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 24px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        500+
+                      </div>
+                      <div style="font-size: 11px; color: #737373">
+                        Customers
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 24px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        1K+
+                      </div>
+                      <div style="font-size: 11px; color: #737373">Pieces</div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 24px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        50+
+                      </div>
+                      <div style="font-size: 11px; color: #737373">
+                        Workshops
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Story -->
+                  <div class="section-label">The Beginning</div>
+                  <h2 class="section-heading" style="font-size: 20px">
+                    From Passion to Purpose
+                  </h2>
+                  <p class="section-text" style="margin-bottom: 24px">
+                    What started as a passion project has grown into a studio
+                    trusted by hundreds...
+                  </p>
+
+                  <div
+                    class="split-image"
+                    style="
+                      aspect-ratio: 16/9;
+                      border-radius: 12px;
+                      margin-bottom: 32px;
+                    "
+                  >
+                    Workshop Image
+                  </div>
+
+                  <!-- Values as horizontal scroll -->
+                  <div class="section-label">Our Values</div>
+                  <h2
+                    class="section-heading"
+                    style="font-size: 20px; margin-bottom: 16px"
+                  >
+                    What Drives Us
+                  </h2>
+                  <div
+                    style="
+                      display: flex;
+                      gap: 12px;
+                      overflow-x: auto;
+                      padding-bottom: 8px;
+                      margin: 0 -16px;
+                      padding: 0 16px;
+                    "
+                  >
+                    <div
+                      class="value-card"
+                      style="min-width: 200px; flex-shrink: 0"
+                    >
+                      <div class="value-icon">
+                        <svg><use href="#hand-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Handcrafted</h3>
+                      <p class="value-desc">Every piece is made by hand.</p>
+                    </div>
+                    <div
+                      class="value-card"
+                      style="min-width: 200px; flex-shrink: 0"
+                    >
+                      <div class="value-icon">
+                        <svg><use href="#leaf-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Sustainable</h3>
+                      <p class="value-desc">Eco-friendly materials.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content" style="padding: 0">
+                <!-- Full-bleed Hero -->
+                <div
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #4f6f52 0%,
+                      #3d5640 100%
+                    );
+                    color: white;
+                    padding: 64px 48px;
+                    text-align: center;
+                    min-height: 320px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 12px;
+                      letter-spacing: 2px;
+                      text-transform: uppercase;
+                      opacity: 0.8;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    Our Story
+                  </div>
+                  <h1
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 36px;
+                      font-weight: 700;
+                      margin-bottom: 20px;
+                    "
+                  >
+                    Crafting Beauty From Clay
+                  </h1>
+                  <p
+                    style="
+                      font-size: 16px;
+                      opacity: 0.9;
+                      max-width: 500px;
+                      margin: 0 auto;
+                      line-height: 1.6;
+                    "
+                  >
+                    Since 2018, we've been creating handcrafted pottery pieces
+                    that bring warmth and character to your home.
+                  </p>
+                </div>
+
+                <div style="padding: 32px">
+                  <!-- Stats row -->
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      gap: 48px;
+                      padding: 32px 0;
+                      border-bottom: 1px solid #e5e5e5;
+                      margin-bottom: 32px;
+                    "
+                  >
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 36px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        500+
+                      </div>
+                      <div style="font-size: 13px; color: #737373">
+                        Happy Customers
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 36px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        1,000+
+                      </div>
+                      <div style="font-size: 13px; color: #737373">
+                        Pieces Crafted
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 36px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        50+
+                      </div>
+                      <div style="font-size: 13px; color: #737373">
+                        Workshops
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 36px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        6
+                      </div>
+                      <div style="font-size: 13px; color: #737373">Years</div>
+                    </div>
+                  </div>
+
+                  <!-- Story with side image -->
+                  <div
+                    style="
+                      display: flex;
+                      gap: 32px;
+                      align-items: center;
+                      margin-bottom: 48px;
+                    "
+                  >
+                    <div style="flex: 1">
+                      <div class="section-label">The Beginning</div>
+                      <h2 class="section-heading">From Passion to Purpose</h2>
+                      <p class="section-text">
+                        What started as a passion project in a tiny garage has
+                        grown into a beloved pottery studio. Our journey began
+                        with a simple wheel and a dream...
+                      </p>
+                    </div>
+                    <div
+                      class="split-image"
+                      style="flex: 1; aspect-ratio: 4/3; border-radius: 12px"
+                    >
+                      Workshop Image
+                    </div>
+                  </div>
+
+                  <!-- Values grid -->
+                  <div class="values-grid">
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#hand-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Handcrafted</h3>
+                      <p class="value-desc">
+                        Every piece is made by hand with care.
+                      </p>
+                    </div>
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#leaf-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Sustainable</h3>
+                      <p class="value-desc">
+                        Eco-friendly materials and processes.
+                      </p>
+                    </div>
+                    <div class="value-card">
+                      <div class="value-icon">
+                        <svg><use href="#heart-icon" /></svg>
+                      </div>
+                      <h3 class="value-title">Made with Love</h3>
+                      <p class="value-desc">Passion in every creation.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content" style="padding: 0">
+                <!-- Full-bleed Hero -->
+                <div
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #4f6f52 0%,
+                      #3d5640 100%
+                    );
+                    color: white;
+                    padding: 80px 64px;
+                    min-height: 400px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 12px;
+                      letter-spacing: 3px;
+                      text-transform: uppercase;
+                      opacity: 0.8;
+                      margin-bottom: 20px;
+                    "
+                  >
+                    Our Story
+                  </div>
+                  <h1
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 48px;
+                      font-weight: 700;
+                      margin-bottom: 24px;
+                    "
+                  >
+                    Crafting Beauty From Clay
+                  </h1>
+                  <p
+                    style="
+                      font-size: 18px;
+                      opacity: 0.9;
+                      max-width: 600px;
+                      line-height: 1.7;
+                    "
+                  >
+                    Since 2018, we've been creating handcrafted pottery pieces
+                    that bring warmth, character, and artistry to your home.
+                  </p>
+                </div>
+
+                <div style="padding: 48px">
+                  <!-- Stats row -->
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      gap: 64px;
+                      padding: 48px 0;
+                      border-bottom: 1px solid #e5e5e5;
+                      margin-bottom: 48px;
+                    "
+                  >
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 48px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        500+
+                      </div>
+                      <div style="font-size: 14px; color: #737373">
+                        Happy Customers
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 48px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        1,000+
+                      </div>
+                      <div style="font-size: 14px; color: #737373">
+                        Pieces Crafted
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 48px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        50+
+                      </div>
+                      <div style="font-size: 14px; color: #737373">
+                        Workshops Hosted
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 48px;
+                          font-weight: 800;
+                          color: #4f6f52;
+                        "
+                      >
+                        6
+                      </div>
+                      <div style="font-size: 14px; color: #737373">
+                        Years of Craft
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Story with side image -->
+                  <div
+                    style="
+                      display: flex;
+                      gap: 48px;
+                      align-items: center;
+                      margin-bottom: 64px;
+                    "
+                  >
+                    <div style="flex: 1">
+                      <div class="section-label">The Beginning</div>
+                      <h2 class="section-heading" style="font-size: 28px">
+                        From Passion to Purpose
+                      </h2>
+                      <p
+                        class="section-text"
+                        style="font-size: 15px; line-height: 1.8"
+                      >
+                        What started as a passion project in a tiny garage has
+                        grown into a beloved pottery studio, trusted by hundreds
+                        of customers across India. Our journey began with a
+                        simple wheel and a dream to create beautiful, functional
+                        pieces that bring joy to everyday moments.
+                      </p>
+                    </div>
+                    <div
+                      class="split-image"
+                      style="flex: 1; aspect-ratio: 4/3; border-radius: 16px"
+                    >
+                      Workshop Image
+                    </div>
+                  </div>
+
+                  <!-- Values grid -->
+                  <div class="values-grid" style="gap: 32px">
+                    <div class="value-card" style="padding: 32px">
+                      <div class="value-icon" style="width: 56px; height: 56px">
+                        <svg style="width: 28px; height: 28px">
+                          <use href="#hand-icon" />
+                        </svg>
+                      </div>
+                      <h3 class="value-title" style="font-size: 18px">
+                        Handcrafted with Care
+                      </h3>
+                      <p class="value-desc">
+                        Every piece is made entirely by hand with attention to
+                        detail.
+                      </p>
+                    </div>
+                    <div class="value-card" style="padding: 32px">
+                      <div class="value-icon" style="width: 56px; height: 56px">
+                        <svg style="width: 28px; height: 28px">
+                          <use href="#leaf-icon" />
+                        </svg>
+                      </div>
+                      <h3 class="value-title" style="font-size: 18px">
+                        Sustainable Practices
+                      </h3>
+                      <p class="value-desc">
+                        Eco-friendly materials and environmentally conscious
+                        processes.
+                      </p>
+                    </div>
+                    <div class="value-card" style="padding: 32px">
+                      <div class="value-icon" style="width: 56px; height: 56px">
+                        <svg style="width: 28px; height: 28px">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </div>
+                      <h3 class="value-title" style="font-size: 18px">
+                        Made with Love
+                      </h3>
+                      <p class="value-desc">
+                        Every piece carries our passion and dedication to the
+                        art.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Story Timeline -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Story Timeline</h3>
+            <p class="wf-option-desc">
+              Vertical timeline approach showing the journey of the pottery
+              studio. Each milestone is a step on the timeline with connected
+              visuals.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / About Us
+                  </div>
+                  <h1 class="page-title">Our Journey</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    A timeline of passion, craft, and growth
+                  </p>
+                </div>
+
+                <!-- Timeline -->
+                <div class="process-section">
+                  <div class="process-timeline process-timeline-mobile">
+                    <div class="process-step process-step-mobile">
+                      <div class="step-number step-number-mobile">2018</div>
+                      <div>
+                        <h3 class="step-title">The Beginning</h3>
+                        <p class="step-desc">
+                          Started in a small garage with one pottery wheel and a
+                          dream.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="process-step process-step-mobile">
+                      <div class="step-number step-number-mobile">2020</div>
+                      <div>
+                        <h3 class="step-title">First Workshop</h3>
+                        <p class="step-desc">
+                          Launched our pottery workshops program.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="process-step process-step-mobile">
+                      <div class="step-number step-number-mobile">2022</div>
+                      <div>
+                        <h3 class="step-title">Online Store</h3>
+                        <p class="step-desc">
+                          Expanded to serve customers across India.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="process-step process-step-mobile">
+                      <div class="step-number step-number-mobile">Now</div>
+                      <div>
+                        <h3 class="step-title">Growing Together</h3>
+                        <p class="step-desc">
+                          500+ happy customers and counting.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stats -->
+                <div
+                  class="stats-section bg-cream"
+                  style="
+                    padding: 24px 16px;
+                    border-radius: 12px;
+                    margin: 0 -16px 24px;
+                  "
+                >
+                  <div class="stats-grid stats-grid-mobile">
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">500+</div>
+                      <div class="stat-label">Customers</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">1K+</div>
+                      <div class="stat-label">Pieces</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">50+</div>
+                      <div class="stat-label">Workshops</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number stat-number-mobile">6</div>
+                      <div class="stat-label">Years</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Team -->
+                <div class="team-section">
+                  <div class="section-label">The Team</div>
+                  <h2
+                    class="section-heading"
+                    style="font-size: 20px; margin-bottom: 20px"
+                  >
+                    Meet the Makers
+                  </h2>
+                  <div class="team-grid team-grid-mobile">
+                    <div class="team-card">
+                      <div class="team-avatar team-avatar-mobile">Photo</div>
+                      <h3 class="team-name" style="font-size: 14px">
+                        Priya Sharma
+                      </h3>
+                      <p class="team-role" style="font-size: 12px">Founder</p>
+                    </div>
+                    <div class="team-card">
+                      <div class="team-avatar team-avatar-mobile">Photo</div>
+                      <h3 class="team-name" style="font-size: 14px">
+                        Raj Patel
+                      </h3>
+                      <p class="team-role" style="font-size: 12px">Potter</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / About Us
+                  </div>
+                  <h1 class="page-title">Our Journey</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    A timeline of passion, craft, and growth
+                  </p>
+                </div>
+
+                <!-- Timeline horizontal -->
+                <div class="process-section" style="margin-bottom: 48px">
+                  <div class="process-timeline">
+                    <div class="process-step">
+                      <div class="step-number">2018</div>
+                      <h3 class="step-title">The Beginning</h3>
+                      <p class="step-desc">Started in a garage</p>
+                    </div>
+                    <div class="process-step">
+                      <div class="step-number">2020</div>
+                      <h3 class="step-title">First Workshop</h3>
+                      <p class="step-desc">Launched workshops</p>
+                    </div>
+                    <div class="process-step">
+                      <div class="step-number">2022</div>
+                      <h3 class="step-title">Online Store</h3>
+                      <p class="step-desc">Expanded online</p>
+                    </div>
+                    <div class="process-step">
+                      <div class="step-number">Now</div>
+                      <h3 class="step-title">Growing</h3>
+                      <p class="step-desc">500+ customers</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stats -->
+                <div
+                  class="stats-section bg-cream"
+                  style="
+                    padding: 32px;
+                    border-radius: 16px;
+                    margin-bottom: 48px;
+                  "
+                >
+                  <div class="stats-grid">
+                    <div class="stat-item">
+                      <div class="stat-number">500+</div>
+                      <div class="stat-label">Customers</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">1,000+</div>
+                      <div class="stat-label">Pieces</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">50+</div>
+                      <div class="stat-label">Workshops</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">6</div>
+                      <div class="stat-label">Years</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Team -->
+                <div class="team-section">
+                  <div class="section-label" style="text-align: center">
+                    The Team
+                  </div>
+                  <h2
+                    class="section-heading"
+                    style="text-align: center; margin-bottom: 24px"
+                  >
+                    Meet the Makers
+                  </h2>
+                  <div class="team-grid">
+                    <div class="team-card">
+                      <div class="team-avatar">Photo</div>
+                      <h3 class="team-name">Priya Sharma</h3>
+                      <p class="team-role">Founder & Artist</p>
+                    </div>
+                    <div class="team-card">
+                      <div class="team-avatar">Photo</div>
+                      <h3 class="team-name">Raj Patel</h3>
+                      <p class="team-role">Master Potter</p>
+                    </div>
+                    <div class="team-card">
+                      <div class="team-avatar">Photo</div>
+                      <h3 class="team-name">Ananya Desai</h3>
+                      <p class="team-role">Instructor</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / About Us
+                  </div>
+                  <h1 class="page-title page-title-desktop">Our Journey</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    A timeline of passion, craft, and growth since 2018
+                  </p>
+                </div>
+
+                <!-- Timeline horizontal -->
+                <div class="process-section" style="margin-bottom: 64px">
+                  <div class="process-timeline">
+                    <div class="process-step">
+                      <div
+                        class="step-number"
+                        style="width: 64px; height: 64px; font-size: 20px"
+                      >
+                        2018
+                      </div>
+                      <h3 class="step-title" style="font-size: 16px">
+                        The Beginning
+                      </h3>
+                      <p class="step-desc">
+                        Started in a small garage with one pottery wheel
+                      </p>
+                    </div>
+                    <div class="process-step">
+                      <div
+                        class="step-number"
+                        style="width: 64px; height: 64px; font-size: 20px"
+                      >
+                        2020
+                      </div>
+                      <h3 class="step-title" style="font-size: 16px">
+                        First Workshop
+                      </h3>
+                      <p class="step-desc">
+                        Launched our pottery workshops program
+                      </p>
+                    </div>
+                    <div class="process-step">
+                      <div
+                        class="step-number"
+                        style="width: 64px; height: 64px; font-size: 20px"
+                      >
+                        2022
+                      </div>
+                      <h3 class="step-title" style="font-size: 16px">
+                        Online Store
+                      </h3>
+                      <p class="step-desc">
+                        Expanded to serve customers across India
+                      </p>
+                    </div>
+                    <div class="process-step">
+                      <div
+                        class="step-number"
+                        style="width: 64px; height: 64px; font-size: 20px"
+                      >
+                        Now
+                      </div>
+                      <h3 class="step-title" style="font-size: 16px">
+                        Growing Together
+                      </h3>
+                      <p class="step-desc">500+ happy customers and counting</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stats -->
+                <div
+                  class="stats-section bg-cream"
+                  style="
+                    padding: 48px;
+                    border-radius: 20px;
+                    margin-bottom: 64px;
+                  "
+                >
+                  <div class="stats-grid">
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">
+                        500+
+                      </div>
+                      <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">
+                        1,000+
+                      </div>
+                      <div class="stat-label">Pieces Crafted</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">50+</div>
+                      <div class="stat-label">Workshops Hosted</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number" style="font-size: 48px">6</div>
+                      <div class="stat-label">Years of Craft</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Team -->
+                <div class="team-section">
+                  <div class="section-label" style="text-align: center">
+                    The Team
+                  </div>
+                  <h2
+                    class="section-heading"
+                    style="text-align: center; margin-bottom: 32px"
+                  >
+                    Meet the Makers
+                  </h2>
+                  <div class="team-grid">
+                    <div class="team-card">
+                      <div
+                        class="team-avatar"
+                        style="width: 140px; height: 140px"
+                      >
+                        Photo
+                      </div>
+                      <h3 class="team-name" style="font-size: 18px">
+                        Priya Sharma
+                      </h3>
+                      <p class="team-role">Founder & Lead Artist</p>
+                    </div>
+                    <div class="team-card">
+                      <div
+                        class="team-avatar"
+                        style="width: 140px; height: 140px"
+                      >
+                        Photo
+                      </div>
+                      <h3 class="team-name" style="font-size: 18px">
+                        Raj Patel
+                      </h3>
+                      <p class="team-role">Master Potter</p>
+                    </div>
+                    <div class="team-card">
+                      <div
+                        class="team-avatar"
+                        style="width: 140px; height: 140px"
+                      >
+                        Photo
+                      </div>
+                      <h3 class="team-name" style="font-size: 18px">
+                        Ananya Desai
+                      </h3>
+                      <p class="team-role">Workshop Instructor</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred About page layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Classic
+            Editorial</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Immersive
+            Hero</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Story
+            Timeline</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Classic
+            Editorial</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Immersive
+            Hero</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Story
+            Timeline</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Classic
+            Editorial</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            Immersive Hero</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Story
+            Timeline</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 10.1):</strong><br /><br />
+      &bull; <strong>Page Header:</strong> Consistent with other pages -
+      breadcrumbs, title, green underline, subtitle<br />
+      &bull; <strong>Hero:</strong> Full-width image, 16:9 desktop, 4:3
+      mobile<br />
+      &bull; <strong>Split Sections:</strong> 50/50 on desktop, stacked on
+      mobile with image on top<br />
+      &bull; <strong>Stats:</strong> Animated counters using Framer Motion or
+      Magic UI Number Ticker<br />
+      &bull; <strong>Values:</strong> 3-column grid, icon in primary-lighter
+      circle<br />
+      &bull; <strong>Team:</strong> 3-column grid desktop, 2-column mobile<br />
+      &bull; <strong>Timeline:</strong> Horizontal on desktop, vertical on
+      mobile<br />
+      &bull; <strong>File:</strong> src/app/(main)/(with-footer)/about/page.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

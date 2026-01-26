@@ -1,0 +1,1387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 11.3: Scroll Animations - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      :root {
+        --primary: #4f6f52;
+        --primary-light: #e8ece8;
+        --primary-lighter: #f4f6f4;
+        --neutral-50: #fafaf9;
+        --neutral-100: #f5f5f4;
+        --neutral-200: #e7e5e4;
+        --neutral-500: #737373;
+        --neutral-900: #1a1a1a;
+        --terracotta: #c4785a;
+      }
+
+      /* ===== LIVE DEMO STYLES ===== */
+      .live-demo-area {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        margin-bottom: 24px;
+        overflow: hidden;
+      }
+
+      .demo-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .demo-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--neutral-500);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .demo-controls {
+        display: flex;
+        gap: 8px;
+      }
+
+      .demo-btn {
+        padding: 8px 18px;
+        border: none;
+        border-radius: 20px;
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .demo-btn-play {
+        background: var(--primary);
+        color: white;
+      }
+
+      .demo-btn-play:hover {
+        background: #3d5640;
+      }
+
+      .demo-btn-reset {
+        background: var(--neutral-100);
+        color: var(--neutral-500);
+      }
+
+      .demo-btn-reset:hover {
+        background: var(--neutral-200);
+        color: var(--neutral-900);
+      }
+
+      /* Product card grid for demos */
+      .demo-product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      @media (max-width: 900px) {
+        .demo-product-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .demo-product-card {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        background: white;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .demo-product-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .demo-product-image {
+        width: 100%;
+        aspect-ratio: 1;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .demo-product-image .wishlist-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        z-index: 1;
+      }
+
+      .demo-product-info {
+        padding: 14px;
+      }
+
+      .demo-product-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--neutral-900);
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .demo-product-category {
+        font-size: 11px;
+        color: var(--neutral-500);
+        margin-bottom: 8px;
+      }
+
+      .demo-product-price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .demo-product-price {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .demo-product-rating {
+        font-size: 11px;
+        color: var(--neutral-500);
+      }
+
+      /* Card hidden state for animations */
+      .card-hidden-a {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .card-hidden-b {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+
+      .card-hidden-c {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+      }
+
+      /* Option A: Subtle Fade-Up */
+      .card-animate-a {
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+          opacity 200ms ease-out,
+          transform 200ms ease-out;
+      }
+
+      /* Option B: Spring Bounce (CSS approximation) */
+      @keyframes springBounce {
+        0% {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+        }
+        60% {
+          opacity: 1;
+          transform: translateY(-4px) scale(1.01);
+        }
+        80% {
+          transform: translateY(2px) scale(0.995);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .card-animate-b {
+        animation: springBounce 450ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+
+      /* Option C: Scale Reveal */
+      .card-animate-c {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition:
+          opacity 250ms ease-out,
+          transform 250ms ease-out;
+      }
+
+      /* ===== SECTION STYLES ===== */
+      .option-section {
+        margin-bottom: 64px;
+        padding-bottom: 48px;
+        border-bottom: 1px solid #e5e5e5;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .option-section:last-of-type {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--primary);
+        width: 40px;
+        height: 40px;
+        background: var(--primary-light);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .option-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .option-desc {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+
+      /* Specs */
+      .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .spec-item {
+        background: var(--neutral-50);
+        border-radius: 10px;
+        padding: 14px;
+        text-align: center;
+      }
+
+      .spec-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--neutral-500);
+        margin-bottom: 6px;
+      }
+
+      .spec-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--neutral-900);
+      }
+
+      .spec-value code {
+        background: var(--primary-lighter);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "SF Mono", Monaco, monospace;
+        font-size: 13px;
+        color: var(--primary);
+      }
+
+      /* Code Block */
+      .code-block {
+        background: #1a1a1a;
+        color: #e5e5e5;
+        border-radius: 10px;
+        padding: 20px;
+        font-family: "SF Mono", Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.7;
+        overflow-x: auto;
+        margin-top: 20px;
+      }
+
+      .code-block .keyword {
+        color: #c792ea;
+      }
+      .code-block .string {
+        color: #c3e88d;
+      }
+      .code-block .number {
+        color: #f78c6c;
+      }
+      .code-block .comment {
+        color: #546e7a;
+      }
+
+      /* Viewport comparison */
+      .viewport-comparison {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-top: 32px;
+      }
+
+      @media (max-width: 900px) {
+        .viewport-comparison {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Status badges */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .badge-enabled {
+        background: #dcfce7;
+        color: #16a34a;
+        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      .badge-disabled {
+        background: #f5f5f4;
+        color: #737373;
+        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: var(--neutral-100);
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      @media (max-width: 768px) {
+        .approval-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 10px;
+        cursor: pointer;
+        padding: 6px 8px;
+        border-radius: 8px;
+        transition: background 0.15s;
+      }
+
+      .approval-item label:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--primary);
+        flex-shrink: 0;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--neutral-900);
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 14px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+        transition: border-color 0.2s;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+
+      /* Component list */
+      .component-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 700px) {
+        .component-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .component-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .component-card-title {
+        font-weight: 600;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+
+      .component-card-desc {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+      }
+
+      .component-card-file {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--primary);
+      }
+
+      .component-card-file code {
+        background: var(--primary-lighter);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: "SF Mono", Monaco, monospace;
+      }
+
+      /* Scroll demo indicator */
+      .scroll-hint {
+        text-align: center;
+        margin: 48px 0 24px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .scroll-hint-text {
+        font-size: 13px;
+        color: var(--neutral-500);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .scroll-hint-arrow {
+        animation: bounceDown 1.5s ease infinite;
+        display: inline-block;
+      }
+
+      @keyframes bounceDown {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(6px);
+        }
+      }
+
+      /* Scroll-triggered demo cards */
+      .scroll-demo-section {
+        max-width: 1200px;
+        margin: 0 auto 64px;
+        padding-top: 32px;
+      }
+
+      .scroll-demo-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--primary);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .scroll-demo-label .dot {
+        width: 8px;
+        height: 8px;
+        background: var(--primary);
+        border-radius: 50%;
+        animation: pulse 2s ease infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 11.3: Scroll Animations</h1>
+    <p class="subtitle">
+      Staggered reveal animations on product grids and scroll-triggered fade-in
+      effects. Desktop only with reduced motion support. Play each demo below to
+      see and compare the three animation options.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== ANIMATION BEHAVIOR BY DEVICE ===== -->
+    <div class="section">
+      <h2 class="section-title">Animation Behavior by Device</h2>
+
+      <div class="viewport-comparison">
+        <div class="viewport-box">
+          <div class="viewport-label">
+            <span>&#128241;</span> Mobile (375px)
+            <span class="badge-disabled" style="margin-left: auto"
+              >DISABLED</span
+            >
+          </div>
+          <p style="font-size: 13px; color: #666; line-height: 1.6">
+            Scroll animations are <strong>disabled</strong> on mobile for
+            performance and battery optimization. Elements appear immediately.
+          </p>
+          <div
+            style="
+              margin-top: 16px;
+              padding: 12px;
+              background: #f5f5f4;
+              border-radius: 8px;
+              font-size: 12px;
+            "
+          >
+            <strong>Reason:</strong> Limited processing power; animations cause
+            jank and drain battery.
+          </div>
+        </div>
+
+        <div class="viewport-box">
+          <div class="viewport-label">
+            <span>&#128241;</span> Tablet (768px)
+            <span class="badge-disabled" style="margin-left: auto"
+              >DISABLED</span
+            >
+          </div>
+          <p style="font-size: 13px; color: #666; line-height: 1.6">
+            Scroll animations are <strong>disabled</strong> on tablet. Touch
+            scrolling with animations can feel sluggish.
+          </p>
+          <div
+            style="
+              margin-top: 16px;
+              padding: 12px;
+              background: #f5f5f4;
+              border-radius: 8px;
+              font-size: 12px;
+            "
+          >
+            <strong>Note:</strong> Hover/tap feedback animations still work.
+          </div>
+        </div>
+
+        <div class="viewport-box">
+          <div class="viewport-label">
+            <span>&#128421;&#65039;</span> Desktop (1440px)
+            <span class="badge-enabled" style="margin-left: auto">ENABLED</span>
+          </div>
+          <p style="font-size: 13px; color: #666; line-height: 1.6">
+            Scroll animations are <strong>enabled</strong> on desktop. Staggered
+            reveals create visual delight when scrolling.
+          </p>
+          <div
+            style="
+              margin-top: 16px;
+              padding: 12px;
+              background: #dcfce7;
+              border-radius: 8px;
+              font-size: 12px;
+              color: #166534;
+            "
+          >
+            <strong>Experience:</strong> Elements fade in from bottom as they
+            enter viewport.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== OPTION A: SUBTLE FADE-UP ===== -->
+    <div class="option-section">
+      <div class="option-header">
+        <span class="option-letter">A</span>
+        <div>
+          <div class="option-title">
+            Subtle Fade-Up
+            <span class="recommended-badge">RECOMMENDED</span>
+          </div>
+        </div>
+      </div>
+      <p class="option-desc">
+        Cards fade in from 20px below with opacity transition. Stagger delay of
+        0.1s between items. Fast, subtle, and professional.
+      </p>
+
+      <!-- LIVE DEMO A -->
+      <div class="live-demo-area">
+        <div class="demo-header">
+          <span class="demo-label">Live Demo</span>
+          <div class="demo-controls">
+            <button class="demo-btn demo-btn-play" onclick="playDemo('a')">
+              &#9654; Play
+            </button>
+            <button class="demo-btn demo-btn-reset" onclick="resetDemo('a')">
+              Reset
+            </button>
+          </div>
+        </div>
+        <div class="demo-product-grid" id="demo-grid-a">
+          <!-- Cards injected by JS -->
+        </div>
+      </div>
+
+      <!-- Specs -->
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Opacity</div>
+          <div class="spec-value"><code>0 &rarr; 1</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Transform Y</div>
+          <div class="spec-value"><code>20px &rarr; 0</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Duration</div>
+          <div class="spec-value"><code>200ms</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Stagger</div>
+          <div class="spec-value"><code>0.1s</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Easing</div>
+          <div class="spec-value"><code>ease-out</code></div>
+        </div>
+      </div>
+
+      <!-- Code -->
+      <div class="code-block">
+        <span class="comment">// Framer Motion config - Option A</span>
+        <span class="keyword">const</span> containerVariants = { hidden: {},
+        visible: { transition: { staggerChildren:
+        <span class="number">0.1</span> } } };
+
+        <span class="keyword">const</span> itemVariants = { hidden: { opacity:
+        <span class="number">0</span>, y: <span class="number">20</span> },
+        visible: { opacity: <span class="number">1</span>, y:
+        <span class="number">0</span>, transition: { duration:
+        <span class="number">0.2</span>, ease:
+        <span class="string">"easeOut"</span> } } };
+      </div>
+    </div>
+
+    <!-- ===== OPTION B: SPRING BOUNCE ===== -->
+    <div class="option-section">
+      <div class="option-header">
+        <span class="option-letter">B</span>
+        <div>
+          <div class="option-title">Spring Bounce</div>
+        </div>
+      </div>
+      <p class="option-desc">
+        Cards spring into view with a slight overshoot and bounce-back. More
+        playful and dynamic feel. Stagger of 0.08s.
+      </p>
+
+      <!-- LIVE DEMO B -->
+      <div class="live-demo-area">
+        <div class="demo-header">
+          <span class="demo-label">Live Demo</span>
+          <div class="demo-controls">
+            <button class="demo-btn demo-btn-play" onclick="playDemo('b')">
+              &#9654; Play
+            </button>
+            <button class="demo-btn demo-btn-reset" onclick="resetDemo('b')">
+              Reset
+            </button>
+          </div>
+        </div>
+        <div class="demo-product-grid" id="demo-grid-b">
+          <!-- Cards injected by JS -->
+        </div>
+      </div>
+
+      <!-- Specs -->
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Type</div>
+          <div class="spec-value"><code>spring</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Stiffness</div>
+          <div class="spec-value"><code>300</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Damping</div>
+          <div class="spec-value"><code>25</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Stagger</div>
+          <div class="spec-value"><code>0.08s</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Initial Y</div>
+          <div class="spec-value"><code>30px</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Initial Scale</div>
+          <div class="spec-value"><code>0.95</code></div>
+        </div>
+      </div>
+
+      <!-- Code -->
+      <div class="code-block">
+        <span class="comment">// Framer Motion config - Option B</span>
+        <span class="keyword">const</span> itemVariants = { hidden: { opacity:
+        <span class="number">0</span>, y: <span class="number">30</span>, scale:
+        <span class="number">0.95</span> }, visible: { opacity:
+        <span class="number">1</span>, y: <span class="number">0</span>, scale:
+        <span class="number">1</span>, transition: { type:
+        <span class="string">"spring"</span>, stiffness:
+        <span class="number">300</span>, damping: <span class="number">25</span>
+        } } };
+      </div>
+    </div>
+
+    <!-- ===== OPTION C: SCALE REVEAL ===== -->
+    <div class="option-section">
+      <div class="option-header">
+        <span class="option-letter">C</span>
+        <div>
+          <div class="option-title">Scale Reveal</div>
+        </div>
+      </div>
+      <p class="option-desc">
+        Cards scale from 95% to 100% while fading in. Creates a depth and focus
+        effect. Slower stagger of 0.12s for a more deliberate reveal.
+      </p>
+
+      <!-- LIVE DEMO C -->
+      <div class="live-demo-area">
+        <div class="demo-header">
+          <span class="demo-label">Live Demo</span>
+          <div class="demo-controls">
+            <button class="demo-btn demo-btn-play" onclick="playDemo('c')">
+              &#9654; Play
+            </button>
+            <button class="demo-btn demo-btn-reset" onclick="resetDemo('c')">
+              Reset
+            </button>
+          </div>
+        </div>
+        <div class="demo-product-grid" id="demo-grid-c">
+          <!-- Cards injected by JS -->
+        </div>
+      </div>
+
+      <!-- Specs -->
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-label">Opacity</div>
+          <div class="spec-value"><code>0 &rarr; 1</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Scale</div>
+          <div class="spec-value"><code>0.95 &rarr; 1</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Transform Y</div>
+          <div class="spec-value"><code>10px &rarr; 0</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Duration</div>
+          <div class="spec-value"><code>250ms</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Stagger</div>
+          <div class="spec-value"><code>0.12s</code></div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">Easing</div>
+          <div class="spec-value"><code>ease-out</code></div>
+        </div>
+      </div>
+
+      <!-- Code -->
+      <div class="code-block">
+        <span class="comment">// Framer Motion config - Option C</span>
+        <span class="keyword">const</span> itemVariants = { hidden: { opacity:
+        <span class="number">0</span>, scale: <span class="number">0.95</span>,
+        y: <span class="number">10</span> }, visible: { opacity:
+        <span class="number">1</span>, scale: <span class="number">1</span>, y:
+        <span class="number">0</span>, transition: { duration:
+        <span class="number">0.25</span>, ease:
+        <span class="string">"easeOut"</span> } } };
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== SCROLL-TRIGGERED DEMO ===== -->
+    <div class="scroll-hint">
+      <div class="scroll-hint-text">
+        <span class="scroll-hint-arrow">&darr;</span>
+        Scroll down to see all three options animate on viewport entry
+        (simulates real behavior)
+        <span class="scroll-hint-arrow">&darr;</span>
+      </div>
+    </div>
+
+    <div class="scroll-demo-section">
+      <div class="scroll-demo-label">
+        <span class="dot"></span>
+        Option A &mdash; Scroll-Triggered Demo
+      </div>
+      <div
+        class="demo-product-grid scroll-grid"
+        data-option="a"
+        id="scroll-grid-a"
+      >
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+
+    <div class="scroll-demo-section">
+      <div class="scroll-demo-label">
+        <span class="dot"></span>
+        Option B &mdash; Scroll-Triggered Demo
+      </div>
+      <div
+        class="demo-product-grid scroll-grid"
+        data-option="b"
+        id="scroll-grid-b"
+      >
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+
+    <div class="scroll-demo-section">
+      <div class="scroll-demo-label">
+        <span class="dot"></span>
+        Option C &mdash; Scroll-Triggered Demo
+      </div>
+      <div
+        class="demo-product-grid scroll-grid"
+        data-option="c"
+        id="scroll-grid-c"
+      >
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== REDUCED MOTION ===== -->
+    <div class="section">
+      <h2 class="section-title">Reduced Motion Support</h2>
+      <p
+        style="
+          font-size: 14px;
+          color: #666;
+          margin-bottom: 24px;
+          line-height: 1.6;
+        "
+      >
+        All animations respect the user's
+        <code
+          style="
+            background: var(--primary-lighter);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            color: var(--primary);
+          "
+          >prefers-reduced-motion</code
+        >
+        system preference. When enabled, elements appear instantly with no
+        animation.
+      </p>
+
+      <div class="code-block">
+        <span class="comment">/* CSS fallback for reduced motion */</span>
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after {
+        animation-duration: <span class="number">0.01ms</span> !important;
+        transition-duration: <span class="number">0.01ms</span> !important; } }
+
+        <span class="comment">// React hook for Framer Motion</span>
+        <span class="keyword">const</span> prefersReducedMotion =
+        window.matchMedia(<span class="string"
+          >'(prefers-reduced-motion: reduce)'</span
+        >).matches;
+
+        <span class="comment"
+          >// Skip animation when user prefers reduced motion</span
+        >
+        &lt;motion.div initial={prefersReducedMotion ?
+        <span class="string">false</span> :
+        <span class="string">"hidden"</span>} whileInView={<span class="string"
+          >"visible"</span
+        >} viewport={{ once: <span class="keyword">true</span>, amount:
+        <span class="number">0.2</span> }} /&gt;
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== COMPONENTS WITH SCROLL ANIMATIONS ===== -->
+    <div class="section">
+      <h2 class="section-title">Components with Scroll Animations</h2>
+
+      <div class="component-grid">
+        <div class="component-card">
+          <div class="component-card-title">Product Grid</div>
+          <div class="component-card-desc">
+            Homepage featured products, Shop page products, Related products
+            section
+          </div>
+          <div class="component-card-file">
+            <code>product-card.tsx</code>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-title">Event Cards</div>
+          <div class="component-card-desc">
+            Upcoming events grid, Past workshops gallery
+          </div>
+          <div class="component-card-file">
+            <code>event-card.tsx</code>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-title">Category Cards</div>
+          <div class="component-card-desc">
+            Shop by category section on homepage
+          </div>
+          <div class="component-card-file">
+            <code>category-card.tsx</code>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-title">Testimonials</div>
+          <div class="component-card-desc">
+            Customer review cards on homepage
+          </div>
+          <div class="component-card-file">
+            <code>testimonial-card.tsx</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== APPROVAL SECTION ===== -->
+    <div class="approval-section">
+      <h3 class="approval-title">Approval Section</h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred scroll animation style for desktop. Mobile and
+        tablet will have no animations.
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="none" checked /> No
+            animations (performance)</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="none" checked /> No
+            animations (performance)</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Subtle
+            Fade-Up (Recommended)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Spring
+            Bounce</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Scale
+            Reveal</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="none" /> No
+            animations</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- ===== IMPLEMENTATION NOTES ===== -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 11.3):</strong><br /><br />
+      &bull; <strong>Library:</strong> Framer Motion with
+      <code>whileInView</code> trigger<br />
+      &bull; <strong>Viewport:</strong> Trigger when 20% of element is
+      visible<br />
+      &bull; <strong>Once:</strong> Animation plays only once (not on scroll
+      back)<br />
+      &bull; <strong>Media Query:</strong> Only enable for
+      <code>lg:</code> breakpoint and above<br />
+      &bull; <strong>Reduced Motion:</strong> Respect
+      <code>prefers-reduced-motion</code><br />
+      &bull; <strong>Files:</strong> product-card.tsx, event-card.tsx (wrap with
+      <code>motion.div</code>)
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+
+    <!-- ===== JAVASCRIPT: LIVE ANIMATION DEMOS ===== -->
+    <script>
+      // Product data for demo cards
+      const products = [
+        {
+          name: "Rustic Ceramic Vase",
+          category: "Vases",
+          price: "2,499",
+          rating: "4.8",
+          bg: "linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%)",
+        },
+        {
+          name: "Handcrafted Bowl Set",
+          category: "Bowls",
+          price: "1,899",
+          rating: "4.6",
+          bg: "linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%)",
+        },
+        {
+          name: "Artisan Dinner Plate",
+          category: "Plates",
+          price: "999",
+          rating: "4.9",
+          bg: "linear-gradient(135deg, #e8e0d4 0%, #c4a882 100%)",
+        },
+        {
+          name: "Stoneware Mug",
+          category: "Mugs",
+          price: "749",
+          rating: "4.7",
+          bg: "linear-gradient(135deg, #dde4e8 0%, #b0c4d4 100%)",
+        },
+        {
+          name: "Glazed Planter",
+          category: "Planters",
+          price: "1,599",
+          rating: "4.5",
+          bg: "linear-gradient(135deg, #f0e8e0 0%, #d4b89c 100%)",
+        },
+        {
+          name: "Tea Ceremony Set",
+          category: "Sets",
+          price: "3,299",
+          rating: "5.0",
+          bg: "linear-gradient(135deg, #e0e8e2 0%, #b0c4a8 100%)",
+        },
+        {
+          name: "Decorative Jar",
+          category: "Decor",
+          price: "1,199",
+          rating: "4.4",
+          bg: "linear-gradient(135deg, #ece0d6 0%, #c8b098 100%)",
+        },
+        {
+          name: "Serving Platter",
+          category: "Platters",
+          price: "1,499",
+          rating: "4.8",
+          bg: "linear-gradient(135deg, #d8e4d8 0%, #a8c4a8 100%)",
+        },
+      ];
+
+      // Stagger delays for each option
+      const staggerDelays = { a: 100, b: 80, c: 120 };
+
+      // Generate card HTML
+      function createCardHTML(product) {
+        return `
+          <div class="demo-product-image" style="background: ${product.bg}; position: relative;">
+            <div class="wishlist-btn">&#9825;</div>
+          </div>
+          <div class="demo-product-info">
+            <div class="demo-product-name">${product.name}</div>
+            <div class="demo-product-category">${product.category}</div>
+            <div class="demo-product-price-row">
+              <span class="demo-product-price">&#8377;${product.price}</span>
+              <span class="demo-product-rating">&#9733; ${product.rating}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      // Initialize all grids
+      function initGrids() {
+        ["a", "b", "c"].forEach((option) => {
+          // Button-triggered demo grids
+          const demoGrid = document.getElementById(`demo-grid-${option}`);
+          demoGrid.innerHTML = "";
+          products.forEach((product, i) => {
+            const card = document.createElement("div");
+            card.className = `demo-product-card card-hidden-${option}`;
+            card.dataset.index = i;
+            card.innerHTML = createCardHTML(product);
+            demoGrid.appendChild(card);
+          });
+
+          // Scroll-triggered demo grids
+          const scrollGrid = document.getElementById(`scroll-grid-${option}`);
+          scrollGrid.innerHTML = "";
+          products.forEach((product, i) => {
+            const card = document.createElement("div");
+            card.className = `demo-product-card card-hidden-${option}`;
+            card.dataset.index = i;
+            card.innerHTML = createCardHTML(product);
+            scrollGrid.appendChild(card);
+          });
+        });
+      }
+
+      // Play button-triggered animation
+      function playDemo(option) {
+        const grid = document.getElementById(`demo-grid-${option}`);
+        const cards = grid.querySelectorAll(".demo-product-card");
+        const delay = staggerDelays[option];
+
+        // First reset
+        cards.forEach((card) => {
+          card.className = `demo-product-card card-hidden-${option}`;
+          // Force reflow for option B (animation reset)
+          if (option === "b") {
+            card.style.animation = "none";
+            card.offsetHeight; // trigger reflow
+            card.style.animation = "";
+          }
+        });
+
+        // Force reflow
+        grid.offsetHeight;
+
+        // Animate with stagger
+        cards.forEach((card, i) => {
+          setTimeout(() => {
+            if (option === "b") {
+              card.className = "demo-product-card card-animate-b";
+            } else {
+              card.classList.remove(`card-hidden-${option}`);
+              card.classList.add(`card-animate-${option}`);
+            }
+          }, i * delay);
+        });
+      }
+
+      // Reset demo
+      function resetDemo(option) {
+        const grid = document.getElementById(`demo-grid-${option}`);
+        const cards = grid.querySelectorAll(".demo-product-card");
+
+        cards.forEach((card) => {
+          // Remove animation classes
+          card.classList.remove(
+            `card-animate-${option}`,
+            `card-hidden-${option}`,
+          );
+          card.style.animation = "none";
+          card.offsetHeight;
+          card.style.animation = "";
+
+          // Add hidden class
+          card.className = `demo-product-card card-hidden-${option}`;
+        });
+      }
+
+      // Scroll-triggered animations using IntersectionObserver
+      function initScrollObservers() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const grid = entry.target;
+                const option = grid.dataset.option;
+                const cards = grid.querySelectorAll(".demo-product-card");
+                const delay = staggerDelays[option];
+
+                cards.forEach((card, i) => {
+                  setTimeout(() => {
+                    if (option === "b") {
+                      card.className = "demo-product-card card-animate-b";
+                    } else {
+                      card.classList.remove(`card-hidden-${option}`);
+                      card.classList.add(`card-animate-${option}`);
+                    }
+                  }, i * delay);
+                });
+
+                // Only animate once
+                observer.unobserve(grid);
+              }
+            });
+          },
+          {
+            threshold: 0.2,
+          },
+        );
+
+        document.querySelectorAll(".scroll-grid").forEach((grid) => {
+          observer.observe(grid);
+        });
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        initGrids();
+        initScrollObservers();
+      });
+    </script>
+  </body>
+</html>

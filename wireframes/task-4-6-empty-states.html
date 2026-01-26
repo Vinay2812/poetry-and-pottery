@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.6: Empty States - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Empty State Base */
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 48px 24px;
+      }
+
+      .empty-state-icon {
+        margin-bottom: 20px;
+        color: #999;
+      }
+
+      .empty-state-icon svg {
+        width: 64px;
+        height: 64px;
+        stroke-width: 1.5;
+        fill: none;
+        stroke: currentColor;
+      }
+
+      .empty-state-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .empty-state-desc {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 320px;
+        margin-bottom: 24px;
+      }
+
+      .empty-state-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 24px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease-out;
+      }
+
+      .empty-state-btn:active {
+        transform: scale(0.97);
+      }
+
+      .empty-state-btn-primary {
+        background: #4f6f52;
+        color: white;
+      }
+      .empty-state-btn-primary:hover {
+        background: #3d5640;
+      }
+
+      .empty-state-btn-outline {
+        background: transparent;
+        color: #4f6f52;
+        border: 1.5px solid #4f6f52;
+      }
+      .empty-state-btn-outline:hover {
+        background: #e8ece8;
+      }
+
+      .empty-state-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Size Variants */
+      .empty-state-sm {
+        padding: 32px 20px;
+      }
+      .empty-state-sm .empty-state-icon svg {
+        width: 48px;
+        height: 48px;
+      }
+      .empty-state-sm .empty-state-title {
+        font-size: 16px;
+      }
+      .empty-state-sm .empty-state-desc {
+        font-size: 13px;
+        max-width: 260px;
+      }
+      .empty-state-sm .empty-state-btn {
+        height: 40px;
+        padding: 0 20px;
+        font-size: 13px;
+      }
+
+      .empty-state-lg {
+        padding: 64px 32px;
+      }
+      .empty-state-lg .empty-state-icon svg {
+        width: 80px;
+        height: 80px;
+      }
+      .empty-state-lg .empty-state-title {
+        font-size: 22px;
+      }
+      .empty-state-lg .empty-state-desc {
+        font-size: 15px;
+        max-width: 400px;
+      }
+
+      /* Option A: Simple Icon */
+      .option-a .empty-state-icon {
+        color: #bbb;
+      }
+
+      /* Option B: Colored Icon Circle */
+      .option-b .empty-state-icon {
+        width: 80px;
+        height: 80px;
+        background: #e8ece8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4f6f52;
+      }
+      .option-b .empty-state-icon svg {
+        width: 40px;
+        height: 40px;
+      }
+      .option-b.empty-state-sm .empty-state-icon {
+        width: 64px;
+        height: 64px;
+      }
+      .option-b.empty-state-sm .empty-state-icon svg {
+        width: 32px;
+        height: 32px;
+      }
+      .option-b.empty-state-lg .empty-state-icon {
+        width: 100px;
+        height: 100px;
+      }
+      .option-b.empty-state-lg .empty-state-icon svg {
+        width: 48px;
+        height: 48px;
+      }
+
+      /* Option C: Illustrated Style */
+      .option-c .empty-state-icon {
+        width: 120px;
+        height: 100px;
+        background: linear-gradient(135deg, #f5f0e8 0%, #e8ece8 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8b7355;
+        position: relative;
+      }
+      .option-c .empty-state-icon svg {
+        width: 48px;
+        height: 48px;
+      }
+      .option-c .empty-state-icon::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 8px;
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: 50%;
+      }
+      .option-c.empty-state-sm .empty-state-icon {
+        width: 100px;
+        height: 80px;
+      }
+      .option-c.empty-state-sm .empty-state-icon svg {
+        width: 40px;
+        height: 40px;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Demo Sections */
+      .demo-section {
+        margin-bottom: 24px;
+      }
+
+      .demo-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      /* Context Cards */
+      .context-card {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: 16px;
+      }
+
+      .context-card-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.6: Empty States</h1>
+    <p class="subtitle">
+      Foundation component: Consistent empty state design for all pages. Large
+      muted icon, centered heading in font-display, description, and CTA button.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a"
+        >✅ APPROVED - Option B (Colored Circle)</span
+      >
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="cart-icon" viewBox="0 0 24 24">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </symbol>
+      <symbol id="heart-icon" viewBox="0 0 24 24">
+        <path
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        />
+      </symbol>
+      <symbol id="package-icon" viewBox="0 0 24 24">
+        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+        />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </symbol>
+      <symbol id="calendar-icon" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </symbol>
+      <symbol id="search-icon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </symbol>
+      <symbol id="arrow-right" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Inconsistent empty state designs</li>
+            <li>Varying icon sizes and styles</li>
+            <li>Different typography across pages</li>
+            <li>No standardized CTA pattern</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Unified empty state component</li>
+            <li>Consistent large muted icons (64px)</li>
+            <li>Heading in font-display, font-semibold</li>
+            <li>Description: muted, centered, max-w-sm</li>
+            <li>Primary or outline CTA button</li>
+            <li>Size variants: sm, md (default), lg</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Simple Icon (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Simple Icon <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Clean, minimal approach. Large muted icon with no background.
+              Maximum focus on message and CTA.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Empty Cart</div>
+              <div class="context-card">
+                <div class="context-card-header">Shopping Cart</div>
+                <div class="empty-state option-a">
+                  <div class="empty-state-icon">
+                    <svg><use href="#cart-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">Your cart is empty</h3>
+                  <p class="empty-state-desc">
+                    Looks like you haven't added any items to your cart yet.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Start Shopping
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Empty Wishlist</div>
+              <div class="context-card">
+                <div class="context-card-header">My Wishlist</div>
+                <div class="empty-state option-a empty-state-sm">
+                  <div class="empty-state-icon">
+                    <svg><use href="#heart-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No saved items</h3>
+                  <p class="empty-state-desc">
+                    Items you love will appear here.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-outline">
+                    Browse Products
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Orders</div>
+              <div class="context-card">
+                <div class="context-card-header">My Orders</div>
+                <div class="empty-state option-a">
+                  <div class="empty-state-icon">
+                    <svg><use href="#package-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No orders yet</h3>
+                  <p class="empty-state-desc">
+                    When you place an order, it will appear here for you to
+                    track.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Start Shopping
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Registrations</div>
+              <div class="context-card">
+                <div class="context-card-header">My Registrations</div>
+                <div class="empty-state option-a empty-state-sm">
+                  <div class="empty-state-icon">
+                    <svg><use href="#calendar-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No upcoming events</h3>
+                  <p class="empty-state-desc">
+                    You haven't registered for any workshops yet.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-outline">
+                    Browse Events
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Search Results</div>
+              <div class="context-card">
+                <div class="context-card-header">Search Results</div>
+                <div class="empty-state option-a empty-state-lg">
+                  <div class="empty-state-icon">
+                    <svg><use href="#search-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No results found</h3>
+                  <p class="empty-state-desc">
+                    We couldn't find anything matching "ceramic vase blue". Try
+                    adjusting your search or browse our categories.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Browse All Products
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Colored Icon Circle -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Colored Icon Circle</h3>
+            <p class="wf-option-desc">
+              Icon in a colored circle background. More visual presence. Matches
+              brand primary color.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Empty Cart</div>
+              <div class="context-card">
+                <div class="context-card-header">Shopping Cart</div>
+                <div class="empty-state option-b">
+                  <div class="empty-state-icon">
+                    <svg><use href="#cart-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">Your cart is empty</h3>
+                  <p class="empty-state-desc">
+                    Looks like you haven't added any items to your cart yet.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Start Shopping
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Empty Wishlist</div>
+              <div class="context-card">
+                <div class="context-card-header">My Wishlist</div>
+                <div class="empty-state option-b empty-state-sm">
+                  <div class="empty-state-icon">
+                    <svg><use href="#heart-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No saved items</h3>
+                  <p class="empty-state-desc">
+                    Items you love will appear here.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-outline">
+                    Browse Products
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Orders</div>
+              <div class="context-card">
+                <div class="context-card-header">My Orders</div>
+                <div class="empty-state option-b">
+                  <div class="empty-state-icon">
+                    <svg><use href="#package-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No orders yet</h3>
+                  <p class="empty-state-desc">
+                    When you place an order, it will appear here for you to
+                    track.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Start Shopping
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Registrations</div>
+              <div class="context-card">
+                <div class="context-card-header">My Registrations</div>
+                <div class="empty-state option-b empty-state-sm">
+                  <div class="empty-state-icon">
+                    <svg><use href="#calendar-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No upcoming events</h3>
+                  <p class="empty-state-desc">
+                    You haven't registered for any workshops yet.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-outline">
+                    Browse Events
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Search Results</div>
+              <div class="context-card">
+                <div class="context-card-header">Search Results</div>
+                <div class="empty-state option-b empty-state-lg">
+                  <div class="empty-state-icon">
+                    <svg><use href="#search-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No results found</h3>
+                  <p class="empty-state-desc">
+                    We couldn't find anything matching "ceramic vase blue". Try
+                    adjusting your search or browse our categories.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Browse All Products
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Illustrated Style -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Illustrated Style</h3>
+            <p class="wf-option-desc">
+              Icon with decorative rounded background and shadow. Warm,
+              pottery-inspired colors. More visual personality.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Empty Cart</div>
+              <div class="context-card">
+                <div class="context-card-header">Shopping Cart</div>
+                <div class="empty-state option-c">
+                  <div class="empty-state-icon">
+                    <svg><use href="#cart-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">Your cart is empty</h3>
+                  <p class="empty-state-desc">
+                    Looks like you haven't added any items to your cart yet.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Start Shopping
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Empty Wishlist</div>
+              <div class="context-card">
+                <div class="context-card-header">My Wishlist</div>
+                <div class="empty-state option-c empty-state-sm">
+                  <div class="empty-state-icon">
+                    <svg><use href="#heart-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No saved items</h3>
+                  <p class="empty-state-desc">
+                    Items you love will appear here.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-outline">
+                    Browse Products
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Orders</div>
+              <div class="context-card">
+                <div class="context-card-header">My Orders</div>
+                <div class="empty-state option-c">
+                  <div class="empty-state-icon">
+                    <svg><use href="#package-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No orders yet</h3>
+                  <p class="empty-state-desc">
+                    When you place an order, it will appear here for you to
+                    track.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Start Shopping
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Registrations</div>
+              <div class="context-card">
+                <div class="context-card-header">My Registrations</div>
+                <div class="empty-state option-c empty-state-sm">
+                  <div class="empty-state-icon">
+                    <svg><use href="#calendar-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No upcoming events</h3>
+                  <p class="empty-state-desc">
+                    You haven't registered for any workshops yet.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-outline">
+                    Browse Events
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">No Search Results</div>
+              <div class="context-card">
+                <div class="context-card-header">Search Results</div>
+                <div class="empty-state option-c empty-state-lg">
+                  <div class="empty-state-icon">
+                    <svg><use href="#search-icon" /></svg>
+                  </div>
+                  <h3 class="empty-state-title">No results found</h3>
+                  <p class="empty-state-desc">
+                    We couldn't find anything matching "ceramic vase blue". Try
+                    adjusting your search or browse our categories.
+                  </p>
+                  <button class="empty-state-btn empty-state-btn-primary">
+                    Browse All Products
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred empty state style for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Simple
+            Icon</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Colored
+            Circle</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            Illustrated</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Simple
+            Icon</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Colored
+            Circle</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            Illustrated</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Simple
+            Icon</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Colored
+            Circle</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            Illustrated</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 4.6):</strong><br /><br />
+      &bull; <strong>Icon:</strong> 64px (md), 48px (sm), 80px (lg) - Lucide
+      React icons<br />
+      &bull; <strong>Title:</strong> font-display, font-semibold, text-lg<br />
+      &bull; <strong>Description:</strong> text-muted, max-w-sm, text-center<br />
+      &bull; <strong>CTA:</strong> Primary or outline button, rounded-lg<br />
+      &bull; <strong>Props:</strong> icon, title, description, action, size,
+      variant<br />
+      &bull; <strong>Variants:</strong> simple, circled, illustrated<br />
+      &bull; <strong>File:</strong> src/components/sections/empty-state.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

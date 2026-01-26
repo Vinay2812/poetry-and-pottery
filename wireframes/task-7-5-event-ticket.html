@@ -1,0 +1,1646 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 7.5: Event Ticket - Wireframe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Ticket Base Styles */
+      .ticket {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .ticket-header {
+        background: #4f6f52;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .ticket-logo {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        opacity: 0.9;
+      }
+
+      .ticket-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1.3;
+      }
+
+      .ticket-body {
+        padding: 24px;
+      }
+
+      .ticket-divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .ticket-divider-line {
+        flex: 1;
+        height: 1px;
+        background: repeating-linear-gradient(
+          90deg,
+          #e5e5e5 0px,
+          #e5e5e5 6px,
+          transparent 6px,
+          transparent 12px
+        );
+      }
+
+      .ticket-divider-circle {
+        width: 24px;
+        height: 24px;
+        background: #fafaf9;
+        border-radius: 50%;
+        margin: 0 -12px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .ticket-divider-circle.left {
+        margin-left: -36px;
+      }
+
+      .ticket-divider-circle.right {
+        margin-right: -36px;
+      }
+
+      /* Ticket Info Rows */
+      .ticket-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .ticket-info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .ticket-info-item.full {
+        grid-column: 1 / -1;
+      }
+
+      .ticket-info-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .ticket-info-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      /* QR Code Area */
+      .ticket-qr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background: #fafaf9;
+        border-radius: 12px;
+        margin-top: 16px;
+      }
+
+      .ticket-qr-placeholder {
+        width: 120px;
+        height: 120px;
+        background: white;
+        border: 2px solid #e5e5e5;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+
+      .ticket-qr-pattern {
+        width: 100px;
+        height: 100px;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            #1a1a1a 0px,
+            #1a1a1a 4px,
+            white 4px,
+            white 8px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            #1a1a1a 0px,
+            #1a1a1a 4px,
+            white 4px,
+            white 8px
+          );
+        background-size: 8px 8px;
+        opacity: 0.6;
+        border-radius: 4px;
+      }
+
+      .ticket-id {
+        font-family: monospace;
+        font-size: 12px;
+        color: #737373;
+        letter-spacing: 1px;
+      }
+
+      /* Ticket Footer */
+      .ticket-footer {
+        padding: 16px 24px;
+        background: #f5f5f4;
+        text-align: center;
+        font-size: 11px;
+        color: #737373;
+      }
+
+      /* Option A: Classic Ticket with Torn Edge */
+      .ticket-a {
+        position: relative;
+      }
+
+      .ticket-a::before,
+      .ticket-a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 12px;
+        background: radial-gradient(circle, #fafaf9 6px, transparent 6px)
+          repeat-x;
+        background-size: 24px 12px;
+      }
+
+      .ticket-a::before {
+        top: -6px;
+        background-position: 12px 0;
+      }
+
+      .ticket-a::after {
+        bottom: -6px;
+        background-position: 12px -6px;
+      }
+
+      /* Option B: Modern Card with Side Notch */
+      .ticket-b {
+        position: relative;
+        border-radius: 20px;
+      }
+
+      .ticket-b .ticket-notch {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 40px;
+        background: #fafaf9;
+      }
+
+      .ticket-b .ticket-notch.left {
+        left: -10px;
+        border-radius: 0 20px 20px 0;
+      }
+
+      .ticket-b .ticket-notch.right {
+        right: -10px;
+        border-radius: 20px 0 0 20px;
+      }
+
+      .ticket-b .ticket-divider {
+        border-left: 2px dashed #e5e5e5;
+        height: 100%;
+        margin: 0;
+        position: absolute;
+        left: 70%;
+        top: 0;
+      }
+
+      /* Option B Layout */
+      .ticket-b-layout {
+        display: flex;
+      }
+
+      .ticket-b-main {
+        flex: 0.7;
+        padding: 24px;
+      }
+
+      .ticket-b-qr {
+        flex: 0.3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        background: #fafaf9;
+        border-radius: 0 20px 20px 0;
+      }
+
+      .ticket-b-qr .ticket-qr-placeholder {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 8px;
+      }
+
+      .ticket-b-qr .ticket-qr-pattern {
+        width: 64px;
+        height: 64px;
+      }
+
+      /* Option C: Minimal Pass Style */
+      .ticket-c {
+        border: 2px solid #4f6f52;
+        border-radius: 24px;
+        overflow: visible;
+      }
+
+      .ticket-c .ticket-header {
+        background: transparent;
+        color: #4f6f52;
+        border-bottom: 2px dashed #e5e5e5;
+        padding: 24px;
+      }
+
+      .ticket-c .ticket-logo {
+        opacity: 1;
+      }
+
+      .ticket-c .ticket-title {
+        color: #1a1a1a;
+      }
+
+      .ticket-c .ticket-badge {
+        display: inline-block;
+        background: #e8ece8;
+        color: #4f6f52;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .ticket-c .ticket-qr {
+        background: transparent;
+      }
+
+      /* Attendee Info */
+      .attendee-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: #f5f5f4;
+        border-radius: 12px;
+        margin-bottom: 16px;
+      }
+
+      .attendee-avatar {
+        width: 48px;
+        height: 48px;
+        background: #4f6f52;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .attendee-details {
+        flex: 1;
+      }
+
+      .attendee-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: #1a1a1a;
+      }
+
+      .attendee-email {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      /* Print Button */
+      .print-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 12px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 16px;
+      }
+
+      .print-btn:hover {
+        background: #3d5640;
+      }
+
+      /* Status Badge */
+      .status-confirmed {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #dcfce7;
+        color: #166534;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-top: 8px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f8f9fa;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 48px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        color: #1a1a1a;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 16px 24px;
+        align-items: center;
+      }
+
+      .approval-label {
+        font-weight: 600;
+        color: #737373;
+        font-size: 14px;
+      }
+
+      .approval-options {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .approval-option {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .approval-option input[type="radio"] {
+        accent-color: #4f6f52;
+      }
+
+      .notes-box {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .notes-box label {
+        display: block;
+        font-weight: 600;
+        color: #737373;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      .notes-box textarea {
+        width: 100%;
+        min-height: 80px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 12px;
+        font-family: inherit;
+        font-size: 14px;
+        resize: vertical;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="wf-task-label">Task 7.5</div>
+    <h1>Event Ticket</h1>
+    <p class="subtitle">
+      Ticket-style registration confirmation for confirmed event registrations.
+      Features event details, attendee info, QR code for check-in, and print
+      functionality.
+    </p>
+
+    <!-- Design Specifications -->
+    <div class="option-details">
+      <strong>Design Specifications:</strong><br />
+      Ticket style: Torn edge or dashed border | Title: font-display
+      font-bold<br />
+      Details: Date, time, location, instructor in rows | QR: Placeholder area
+      for check-in<br />
+      ID: Monospace font | Printable: High contrast, clean layout<br />
+      File: src/components/events/event-ticket.tsx
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION A ==================== -->
+    <section class="wf-section">
+      <div class="wf-option-header">
+        Option A: Classic Ticket with Torn Edge
+        <span class="recommended-badge">RECOMMENDED</span>
+      </div>
+      <div class="wf-option-desc">
+        Traditional ticket design with decorative torn/perforated edges. QR code
+        at the bottom. Classic vertical layout that feels like a real event
+        ticket.
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="ticket ticket-a" style="margin: 20px auto">
+                <div class="ticket-header">
+                  <div class="ticket-logo">Poetry & Pottery</div>
+                  <h2 class="ticket-title">
+                    Introduction to Wheel Throwing Workshop
+                  </h2>
+                  <span class="status-confirmed">✓ Confirmed</span>
+                </div>
+
+                <div class="ticket-body">
+                  <div class="attendee-info">
+                    <div class="attendee-avatar">JD</div>
+                    <div class="attendee-details">
+                      <div class="attendee-name">John Doe</div>
+                      <div class="attendee-email">john.doe@email.com</div>
+                    </div>
+                  </div>
+
+                  <div class="ticket-info">
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Date</span>
+                      <span class="ticket-info-value">Feb 15, 2025</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Time</span>
+                      <span class="ticket-info-value">10:00 AM - 1:00 PM</span>
+                    </div>
+                    <div class="ticket-info-item full">
+                      <span class="ticket-info-label">Location</span>
+                      <span class="ticket-info-value"
+                        >Studio A, 123 Pottery Lane, Bangalore</span
+                      >
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Instructor</span>
+                      <span class="ticket-info-value">Maya Patel</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Skill Level</span>
+                      <span class="ticket-info-value">Beginner</span>
+                    </div>
+                  </div>
+
+                  <div class="ticket-divider">
+                    <div class="ticket-divider-circle left"></div>
+                    <div class="ticket-divider-line"></div>
+                    <div class="ticket-divider-circle right"></div>
+                  </div>
+
+                  <div class="ticket-qr">
+                    <div class="ticket-qr-placeholder">
+                      <div class="ticket-qr-pattern"></div>
+                    </div>
+                    <div class="ticket-id">REG-7X8K9M2N</div>
+                  </div>
+
+                  <button class="print-btn">🖨️ Print Ticket</button>
+                </div>
+
+                <div class="ticket-footer">
+                  Present this ticket at the venue for check-in
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-page-content tablet">
+              <div
+                class="ticket ticket-a"
+                style="max-width: 450px; margin: 40px auto"
+              >
+                <div class="ticket-header" style="padding: 28px">
+                  <div class="ticket-logo">Poetry & Pottery</div>
+                  <h2 class="ticket-title" style="font-size: 24px">
+                    Introduction to Wheel Throwing Workshop
+                  </h2>
+                  <span class="status-confirmed">✓ Confirmed</span>
+                </div>
+
+                <div class="ticket-body" style="padding: 32px">
+                  <div class="attendee-info">
+                    <div
+                      class="attendee-avatar"
+                      style="width: 56px; height: 56px; font-size: 20px"
+                    >
+                      JD
+                    </div>
+                    <div class="attendee-details">
+                      <div class="attendee-name" style="font-size: 16px">
+                        John Doe
+                      </div>
+                      <div class="attendee-email" style="font-size: 13px">
+                        john.doe@email.com
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ticket-info" style="gap: 20px">
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Date</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >Saturday, Feb 15, 2025</span
+                      >
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Time</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >10:00 AM - 1:00 PM</span
+                      >
+                    </div>
+                    <div class="ticket-info-item full">
+                      <span class="ticket-info-label">Location</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >Studio A, 123 Pottery Lane, Koramangala, Bangalore
+                        560034</span
+                      >
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Instructor</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >Maya Patel</span
+                      >
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Skill Level</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >Beginner</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="ticket-divider">
+                    <div class="ticket-divider-circle left"></div>
+                    <div class="ticket-divider-line"></div>
+                    <div class="ticket-divider-circle right"></div>
+                  </div>
+
+                  <div class="ticket-qr">
+                    <div
+                      class="ticket-qr-placeholder"
+                      style="width: 140px; height: 140px"
+                    >
+                      <div
+                        class="ticket-qr-pattern"
+                        style="width: 120px; height: 120px"
+                      ></div>
+                    </div>
+                    <div class="ticket-id" style="font-size: 14px">
+                      Registration ID: REG-7X8K9M2N
+                    </div>
+                  </div>
+
+                  <button
+                    class="print-btn"
+                    style="padding: 14px; font-size: 14px"
+                  >
+                    🖨️ Print Ticket
+                  </button>
+                </div>
+
+                <div
+                  class="ticket-footer"
+                  style="font-size: 12px; padding: 20px"
+                >
+                  Present this ticket at the venue for check-in • Screenshot or
+                  print accepted
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                localhost:3005/events/registrations/REG-7X8K9M2N/ticket
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div style="display: flex; gap: 48px; align-items: flex-start">
+                <!-- Ticket -->
+                <div
+                  class="ticket ticket-a"
+                  style="max-width: 480px; flex-shrink: 0"
+                >
+                  <div class="ticket-header" style="padding: 32px">
+                    <div class="ticket-logo">Poetry & Pottery</div>
+                    <h2 class="ticket-title" style="font-size: 26px">
+                      Introduction to Wheel Throwing Workshop
+                    </h2>
+                    <span class="status-confirmed">✓ Confirmed</span>
+                  </div>
+
+                  <div class="ticket-body" style="padding: 36px">
+                    <div class="attendee-info">
+                      <div
+                        class="attendee-avatar"
+                        style="width: 56px; height: 56px; font-size: 20px"
+                      >
+                        JD
+                      </div>
+                      <div class="attendee-details">
+                        <div class="attendee-name" style="font-size: 16px">
+                          John Doe
+                        </div>
+                        <div class="attendee-email" style="font-size: 13px">
+                          john.doe@email.com
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ticket-info" style="gap: 24px">
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Date</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Saturday, Feb 15, 2025</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Time</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >10:00 AM - 1:00 PM</span
+                        >
+                      </div>
+                      <div class="ticket-info-item full">
+                        <span class="ticket-info-label">Location</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Studio A, 123 Pottery Lane, Koramangala, Bangalore
+                          560034</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Instructor</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Maya Patel</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Skill Level</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Beginner</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="ticket-divider">
+                      <div class="ticket-divider-circle left"></div>
+                      <div class="ticket-divider-line"></div>
+                      <div class="ticket-divider-circle right"></div>
+                    </div>
+
+                    <div class="ticket-qr">
+                      <div
+                        class="ticket-qr-placeholder"
+                        style="width: 150px; height: 150px"
+                      >
+                        <div
+                          class="ticket-qr-pattern"
+                          style="width: 130px; height: 130px"
+                        ></div>
+                      </div>
+                      <div
+                        class="ticket-id"
+                        style="font-size: 14px; margin-top: 12px"
+                      >
+                        Registration ID: REG-7X8K9M2N
+                      </div>
+                    </div>
+
+                    <button
+                      class="print-btn"
+                      style="padding: 14px; font-size: 14px"
+                    >
+                      🖨️ Print Ticket
+                    </button>
+                  </div>
+
+                  <div
+                    class="ticket-footer"
+                    style="font-size: 12px; padding: 20px"
+                  >
+                    Present this ticket at the venue for check-in • Screenshot
+                    or print accepted
+                  </div>
+                </div>
+
+                <!-- Side Info -->
+                <div style="flex: 1; padding-top: 20px">
+                  <h3
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;;
+                      font-size: 18px;
+                      font-weight: 700;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    Workshop Details
+                  </h3>
+                  <div
+                    style="
+                      background: #f5f5f4;
+                      padding: 24px;
+                      border-radius: 16px;
+                      margin-bottom: 24px;
+                    "
+                  >
+                    <p
+                      style="
+                        font-size: 14px;
+                        color: #737373;
+                        line-height: 1.8;
+                        margin-bottom: 16px;
+                      "
+                    >
+                      Learn the fundamentals of wheel throwing in this hands-on
+                      3-hour workshop. Perfect for complete beginners who want
+                      to create their first ceramic piece.
+                    </p>
+                    <p style="font-size: 13px; color: #737373">
+                      <strong style="color: #4f6f52">What to bring:</strong>
+                      Comfortable clothes, towel, apron (optional)
+                    </p>
+                  </div>
+
+                  <h3
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;;
+                      font-size: 18px;
+                      font-weight: 700;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    Need Help?
+                  </h3>
+                  <div
+                    style="
+                      background: white;
+                      padding: 20px;
+                      border-radius: 12px;
+                      border: 1px solid #e5e5e5;
+                    "
+                  >
+                    <p
+                      style="
+                        font-size: 13px;
+                        color: #737373;
+                        margin-bottom: 12px;
+                      "
+                    >
+                      Contact us if you have any questions about your
+                      registration.
+                    </p>
+                    <button
+                      style="
+                        background: transparent;
+                        border: 1px solid #4f6f52;
+                        color: #4f6f52;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        font-family: &quot;Plus Jakarta Sans&quot;;
+                        font-weight: 600;
+                        font-size: 13px;
+                        cursor: pointer;
+                      "
+                    >
+                      Contact Support
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION B ==================== -->
+    <section class="wf-section">
+      <div class="wf-option-header">Option B: Modern Horizontal Layout</div>
+      <div class="wf-option-desc">
+        Modern horizontal ticket with QR code on the right side and side notches
+        for a contemporary look. Clean separation between info and QR sections.
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <!-- On mobile, falls back to vertical layout -->
+              <div
+                class="ticket"
+                style="margin: 20px auto; border-radius: 20px"
+              >
+                <div
+                  class="ticket-notch left"
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 16px;
+                    height: 32px;
+                    background: #fafaf9;
+                    left: -8px;
+                    border-radius: 0 16px 16px 0;
+                  "
+                ></div>
+                <div
+                  class="ticket-notch right"
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 16px;
+                    height: 32px;
+                    background: #fafaf9;
+                    right: -8px;
+                    border-radius: 16px 0 0 16px;
+                  "
+                ></div>
+
+                <div
+                  class="ticket-header"
+                  style="padding: 20px; border-radius: 20px 20px 0 0"
+                >
+                  <div class="ticket-logo">Poetry & Pottery</div>
+                  <h2 class="ticket-title" style="font-size: 18px">
+                    Wheel Throwing Workshop
+                  </h2>
+                </div>
+
+                <div class="ticket-body" style="position: relative">
+                  <div class="ticket-info" style="margin-bottom: 16px">
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Date</span>
+                      <span class="ticket-info-value">Feb 15, 2025</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Time</span>
+                      <span class="ticket-info-value">10:00 AM</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Location</span>
+                      <span class="ticket-info-value">Studio A</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Attendee</span>
+                      <span class="ticket-info-value">John Doe</span>
+                    </div>
+                  </div>
+
+                  <div
+                    style="border-top: 2px dashed #e5e5e5; padding-top: 16px"
+                  >
+                    <div
+                      class="ticket-qr"
+                      style="background: transparent; padding: 0"
+                    >
+                      <div
+                        class="ticket-qr-placeholder"
+                        style="width: 100px; height: 100px"
+                      >
+                        <div
+                          class="ticket-qr-pattern"
+                          style="width: 80px; height: 80px"
+                        ></div>
+                      </div>
+                      <div class="ticket-id">REG-7X8K9M2N</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ticket-footer">
+                  Scan QR at venue • Print or screenshot
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-page-content tablet">
+              <div
+                class="ticket ticket-b"
+                style="max-width: 600px; margin: 40px auto; position: relative"
+              >
+                <div class="ticket-notch left"></div>
+                <div class="ticket-notch right"></div>
+
+                <div class="ticket-b-layout">
+                  <div class="ticket-b-main">
+                    <div style="margin-bottom: 20px">
+                      <div
+                        class="ticket-logo"
+                        style="color: #4f6f52; margin-bottom: 8px"
+                      >
+                        Poetry & Pottery
+                      </div>
+                      <h2
+                        style="
+                          font-family: &quot;Plus Jakarta Sans&quot;;
+                          font-size: 20px;
+                          font-weight: 800;
+                          color: #1a1a1a;
+                          margin-bottom: 8px;
+                        "
+                      >
+                        Introduction to Wheel Throwing Workshop
+                      </h2>
+                      <span class="status-confirmed">✓ Confirmed</span>
+                    </div>
+
+                    <div class="attendee-info" style="margin-bottom: 20px">
+                      <div class="attendee-avatar">JD</div>
+                      <div class="attendee-details">
+                        <div class="attendee-name">John Doe</div>
+                        <div class="attendee-email">john.doe@email.com</div>
+                      </div>
+                    </div>
+
+                    <div class="ticket-info">
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Date</span>
+                        <span class="ticket-info-value"
+                          >Saturday, Feb 15, 2025</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Time</span>
+                        <span class="ticket-info-value"
+                          >10:00 AM - 1:00 PM</span
+                        >
+                      </div>
+                      <div class="ticket-info-item full">
+                        <span class="ticket-info-label">Location</span>
+                        <span class="ticket-info-value"
+                          >Studio A, 123 Pottery Lane, Bangalore</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ticket-b-qr">
+                    <div
+                      class="ticket-qr-placeholder"
+                      style="width: 100px; height: 100px"
+                    >
+                      <div
+                        class="ticket-qr-pattern"
+                        style="width: 80px; height: 80px"
+                      ></div>
+                    </div>
+                    <div
+                      class="ticket-id"
+                      style="text-align: center; font-size: 10px"
+                    >
+                      REG-7X8K9M2N
+                    </div>
+                    <div
+                      style="
+                        font-size: 9px;
+                        color: #999;
+                        text-align: center;
+                        margin-top: 8px;
+                      "
+                    >
+                      Scan at venue
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="text-align: center; margin-top: 24px">
+                <button
+                  class="print-btn"
+                  style="max-width: 200px; margin: 0 auto"
+                >
+                  🖨️ Print Ticket
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                localhost:3005/events/registrations/REG-7X8K9M2N/ticket
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div
+                class="ticket ticket-b"
+                style="max-width: 700px; margin: 40px auto; position: relative"
+              >
+                <div class="ticket-notch left"></div>
+                <div class="ticket-notch right"></div>
+
+                <div class="ticket-b-layout">
+                  <div class="ticket-b-main" style="padding: 32px">
+                    <div style="margin-bottom: 24px">
+                      <div
+                        class="ticket-logo"
+                        style="color: #4f6f52; margin-bottom: 8px"
+                      >
+                        Poetry & Pottery
+                      </div>
+                      <h2
+                        style="
+                          font-family: &quot;Plus Jakarta Sans&quot;;
+                          font-size: 24px;
+                          font-weight: 800;
+                          color: #1a1a1a;
+                          margin-bottom: 8px;
+                        "
+                      >
+                        Introduction to Wheel Throwing Workshop
+                      </h2>
+                      <span class="status-confirmed">✓ Confirmed</span>
+                    </div>
+
+                    <div class="attendee-info" style="margin-bottom: 24px">
+                      <div
+                        class="attendee-avatar"
+                        style="width: 56px; height: 56px; font-size: 20px"
+                      >
+                        JD
+                      </div>
+                      <div class="attendee-details">
+                        <div class="attendee-name" style="font-size: 16px">
+                          John Doe
+                        </div>
+                        <div class="attendee-email" style="font-size: 13px">
+                          john.doe@email.com
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ticket-info" style="gap: 24px">
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Date</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Saturday, February 15, 2025</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Time</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >10:00 AM - 1:00 PM</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Instructor</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Maya Patel</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Skill Level</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Beginner</span
+                        >
+                      </div>
+                      <div class="ticket-info-item full">
+                        <span class="ticket-info-label">Location</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Studio A, 123 Pottery Lane, Koramangala, Bangalore
+                          560034</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ticket-b-qr" style="padding: 32px 24px">
+                    <div
+                      class="ticket-qr-placeholder"
+                      style="width: 120px; height: 120px"
+                    >
+                      <div
+                        class="ticket-qr-pattern"
+                        style="width: 100px; height: 100px"
+                      ></div>
+                    </div>
+                    <div
+                      class="ticket-id"
+                      style="
+                        text-align: center;
+                        font-size: 12px;
+                        margin-top: 12px;
+                      "
+                    >
+                      REG-7X8K9M2N
+                    </div>
+                    <div
+                      style="
+                        font-size: 10px;
+                        color: #999;
+                        text-align: center;
+                        margin-top: 8px;
+                      "
+                    >
+                      Scan at venue<br />for check-in
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="text-align: center; margin-top: 32px">
+                <button
+                  class="print-btn"
+                  style="max-width: 200px; margin: 0 auto"
+                >
+                  🖨️ Print Ticket
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION C ==================== -->
+    <section class="wf-section">
+      <div class="wf-option-header">Option C: Minimal Pass Style</div>
+      <div class="wf-option-desc">
+        Clean, minimal design with outlined border instead of solid header.
+        Modern pass/badge aesthetic. Dashed divider between sections.
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="ticket ticket-c" style="margin: 20px auto">
+                <div class="ticket-header">
+                  <div class="ticket-logo">Poetry & Pottery</div>
+                  <h2 class="ticket-title" style="font-size: 18px">
+                    Wheel Throwing Workshop
+                  </h2>
+                  <span class="ticket-badge">Beginner Level</span>
+                </div>
+
+                <div class="ticket-body">
+                  <div
+                    class="attendee-info"
+                    style="background: white; border: 1px solid #e5e5e5"
+                  >
+                    <div class="attendee-avatar">JD</div>
+                    <div class="attendee-details">
+                      <div class="attendee-name">John Doe</div>
+                      <div class="attendee-email">john.doe@email.com</div>
+                    </div>
+                  </div>
+
+                  <div class="ticket-info">
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Date</span>
+                      <span class="ticket-info-value">Feb 15, 2025</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Time</span>
+                      <span class="ticket-info-value">10:00 AM</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Location</span>
+                      <span class="ticket-info-value">Studio A</span>
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Instructor</span>
+                      <span class="ticket-info-value">Maya Patel</span>
+                    </div>
+                  </div>
+
+                  <div class="ticket-qr">
+                    <div class="ticket-qr-placeholder">
+                      <div class="ticket-qr-pattern"></div>
+                    </div>
+                    <div class="ticket-id">REG-7X8K9M2N</div>
+                  </div>
+
+                  <button class="print-btn">🖨️ Print Pass</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-page-content tablet">
+              <div
+                class="ticket ticket-c"
+                style="max-width: 420px; margin: 40px auto"
+              >
+                <div class="ticket-header" style="padding: 28px">
+                  <div class="ticket-logo">Poetry & Pottery</div>
+                  <h2 class="ticket-title" style="font-size: 22px">
+                    Introduction to Wheel Throwing Workshop
+                  </h2>
+                  <span class="ticket-badge">Beginner Level</span>
+                </div>
+
+                <div class="ticket-body" style="padding: 28px">
+                  <div
+                    class="attendee-info"
+                    style="background: white; border: 1px solid #e5e5e5"
+                  >
+                    <div
+                      class="attendee-avatar"
+                      style="width: 52px; height: 52px"
+                    >
+                      JD
+                    </div>
+                    <div class="attendee-details">
+                      <div class="attendee-name" style="font-size: 15px">
+                        John Doe
+                      </div>
+                      <div class="attendee-email">john.doe@email.com</div>
+                    </div>
+                  </div>
+
+                  <div class="ticket-info" style="gap: 20px">
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Date</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >Saturday, Feb 15, 2025</span
+                      >
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Time</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >10:00 AM - 1:00 PM</span
+                      >
+                    </div>
+                    <div class="ticket-info-item full">
+                      <span class="ticket-info-label">Location</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >Studio A, 123 Pottery Lane, Bangalore</span
+                      >
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Instructor</span>
+                      <span class="ticket-info-value" style="font-size: 15px"
+                        >Maya Patel</span
+                      >
+                    </div>
+                    <div class="ticket-info-item">
+                      <span class="ticket-info-label">Status</span>
+                      <span class="status-confirmed" style="margin: 0"
+                        >✓ Confirmed</span
+                      >
+                    </div>
+                  </div>
+
+                  <div
+                    class="ticket-qr"
+                    style="border: 2px dashed #e5e5e5; border-radius: 16px"
+                  >
+                    <div
+                      class="ticket-qr-placeholder"
+                      style="width: 130px; height: 130px"
+                    >
+                      <div
+                        class="ticket-qr-pattern"
+                        style="width: 110px; height: 110px"
+                      ></div>
+                    </div>
+                    <div class="ticket-id" style="font-size: 13px">
+                      Registration ID: REG-7X8K9M2N
+                    </div>
+                  </div>
+
+                  <button
+                    class="print-btn"
+                    style="
+                      background: transparent;
+                      color: #4f6f52;
+                      border: 2px solid #4f6f52;
+                    "
+                  >
+                    🖨️ Print Pass
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                localhost:3005/events/registrations/REG-7X8K9M2N/ticket
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div
+                style="
+                  display: flex;
+                  gap: 48px;
+                  align-items: flex-start;
+                  justify-content: center;
+                "
+              >
+                <div class="ticket ticket-c" style="max-width: 480px">
+                  <div class="ticket-header" style="padding: 32px">
+                    <div class="ticket-logo">Poetry & Pottery</div>
+                    <h2 class="ticket-title" style="font-size: 26px">
+                      Introduction to Wheel Throwing Workshop
+                    </h2>
+                    <span class="ticket-badge">Beginner Level</span>
+                  </div>
+
+                  <div class="ticket-body" style="padding: 32px">
+                    <div
+                      class="attendee-info"
+                      style="background: white; border: 1px solid #e5e5e5"
+                    >
+                      <div
+                        class="attendee-avatar"
+                        style="width: 56px; height: 56px; font-size: 20px"
+                      >
+                        JD
+                      </div>
+                      <div class="attendee-details">
+                        <div class="attendee-name" style="font-size: 16px">
+                          John Doe
+                        </div>
+                        <div class="attendee-email" style="font-size: 13px">
+                          john.doe@email.com
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ticket-info" style="gap: 24px">
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Date</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Saturday, February 15, 2025</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Time</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >10:00 AM - 1:00 PM</span
+                        >
+                      </div>
+                      <div class="ticket-info-item full">
+                        <span class="ticket-info-label">Location</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Studio A, 123 Pottery Lane, Koramangala, Bangalore
+                          560034</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Instructor</span>
+                        <span class="ticket-info-value" style="font-size: 16px"
+                          >Maya Patel</span
+                        >
+                      </div>
+                      <div class="ticket-info-item">
+                        <span class="ticket-info-label">Status</span>
+                        <span class="status-confirmed" style="margin: 0"
+                          >✓ Confirmed</span
+                        >
+                      </div>
+                    </div>
+
+                    <div
+                      class="ticket-qr"
+                      style="
+                        border: 2px dashed #e5e5e5;
+                        border-radius: 16px;
+                        padding: 24px;
+                      "
+                    >
+                      <div
+                        class="ticket-qr-placeholder"
+                        style="width: 150px; height: 150px"
+                      >
+                        <div
+                          class="ticket-qr-pattern"
+                          style="width: 130px; height: 130px"
+                        ></div>
+                      </div>
+                      <div
+                        class="ticket-id"
+                        style="font-size: 14px; margin-top: 12px"
+                      >
+                        Registration ID: REG-7X8K9M2N
+                      </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 20px">
+                      <button class="print-btn" style="flex: 1">
+                        🖨️ Print Pass
+                      </button>
+                      <button
+                        class="print-btn"
+                        style="
+                          flex: 1;
+                          background: transparent;
+                          color: #4f6f52;
+                          border: 2px solid #4f6f52;
+                        "
+                      >
+                        📱 Add to Wallet
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Implementation Notes -->
+    <div class="notes">
+      <strong>Implementation Notes:</strong><br />
+      • QR Code: Use `qrcode.react` library to generate actual QR with
+      registration ID<br />
+      • Print: Use CSS `@media print` for clean print layout (hide buttons, full
+      contrast)<br />
+      • Attendee: Pull from Clerk user data (name, email, avatar initials)<br />
+      • Registration ID: Monospace font, format "REG-" + nanoid<br />
+      • Status: Only show ticket for "Confirmed" status registrations<br />
+      • Responsive: Fall back to vertical layout on mobile for horizontal
+      options<br />
+      • File: src/components/events/event-ticket.tsx
+    </div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h2 class="approval-title">Approval Section</h2>
+      <p style="font-size: 13px; color: #737373; margin-bottom: 24px">
+        Select your preferred option for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <span class="approval-label">Mobile:</span>
+        <div class="approval-options">
+          <label class="approval-option">
+            <input type="radio" name="mobile" value="A" />
+            Option A (Classic)
+          </label>
+          <label class="approval-option">
+            <input type="radio" name="mobile" value="B" />
+            Option B (Horizontal)
+          </label>
+          <label class="approval-option">
+            <input type="radio" name="mobile" value="C" />
+            Option C (Minimal)
+          </label>
+        </div>
+
+        <span class="approval-label">Tablet:</span>
+        <div class="approval-options">
+          <label class="approval-option">
+            <input type="radio" name="tablet" value="A" />
+            Option A (Classic)
+          </label>
+          <label class="approval-option">
+            <input type="radio" name="tablet" value="B" />
+            Option B (Horizontal)
+          </label>
+          <label class="approval-option">
+            <input type="radio" name="tablet" value="C" />
+            Option C (Minimal)
+          </label>
+        </div>
+
+        <span class="approval-label">Desktop:</span>
+        <div class="approval-options">
+          <label class="approval-option">
+            <input type="radio" name="desktop" value="A" />
+            Option A (Classic)
+          </label>
+          <label class="approval-option">
+            <input type="radio" name="desktop" value="B" />
+            Option B (Horizontal)
+          </label>
+          <label class="approval-option">
+            <input type="radio" name="desktop" value="C" />
+            Option C (Minimal)
+          </label>
+        </div>
+      </div>
+
+      <div class="notes-box">
+        <label for="notes">Notes / Feedback:</label>
+        <textarea
+          id="notes"
+          placeholder="Any specific feedback or modifications needed..."
+        ></textarea>
+      </div>
+    </div>
+  </body>
+</html>

@@ -2,9 +2,13 @@
 
 ## Context
 
-You are a UI/UX designer working on the `poetry-and-pottery` project. Your task is to create wireframe design options for user approval following a structured wireframe-first approach.
+You are a UI/UX designer working on the `poetry-and-pottery` project. Your task is to create wireframe design options following a structured wireframe-first approach. Do not read existing wireframes. You just have to implement the designs.
 
-**IMPORTANT:** This is the wireframe creation phase only. Do NOT implement any code until designs are approved.
+**IMPORTANT:**
+
+- This is the wireframe creation phase only. Do NOT implement any code.
+- Do NOT update `wireframes/index.html` to avoid merge conflicts.
+- **Parallel Mode:** Multiple agents may work on different tasks simultaneously. Check `design-refactor.md` for task statuses before starting work.
 
 ---
 
@@ -21,7 +25,19 @@ You are a UI/UX designer working on the `poetry-and-pottery` project. Your task 
 
 ## Task Overview
 
-Create **wireframe design options** for the **top 3 highest-priority sub-tasks** from `poetry-and-pottery/design-refactor.md` who don't have wireframe. Each wireframe must show designs for all three viewports (mobile, tablet, desktop).
+Create **wireframe design options** for sub-tasks within a **specific phase** from `poetry-and-pottery/design-refactor.md`. Each wireframe must show designs for all three viewports (mobile, tablet, desktop).
+
+**Parallel Workflow:**
+
+1. Read `design-refactor.md` to identify the current phase and check task statuses
+2. Find a phase that has `🔲 Wireframe Pending` sub-tasks
+3. If the phase is not already `🚧 In Progress`, mark it as `🚧 In Progress`
+4. Within that phase, skip any sub-task marked `🚧 In Progress` (another agent is working on it)
+5. Pick the next available `🔲 Wireframe Pending` sub-task within the phase
+6. Mark the sub-task as `🚧 In Progress` in `design-refactor.md` BEFORE starting work
+7. Create the wireframe designs
+8. Mark sub-task as `⏳ Awaiting Approval` when done
+9. Repeat for remaining pending sub-tasks in the same phase
 
 ---
 
@@ -29,12 +45,21 @@ Create **wireframe design options** for the **top 3 highest-priority sub-tasks**
 
 ### Step 1: Analysis & Planning
 
-1. **Read the task file**
+1. **Read the task file and identify the phase**
    - Open and review `poetry-and-pottery/design-refactor.md`
-   - Identify and select the **3 highest-priority sub-tasks** with status `🔲 Wireframe Pending`
+   - Find a phase that has `🔲 Wireframe Pending` sub-tasks
+   - If the phase is not already marked `🚧 In Progress`, mark it now
 
-2. **Study existing design context**
-   - Review existing wireframes in `poetry-and-pottery/wireframes/` folder
+2. **Select a sub-task within the phase**
+   - Within your chosen phase, check for sub-tasks with status `🚧 In Progress` — **SKIP these** (another agent is working on them)
+   - Identify and select the next available sub-task with status `🔲 Wireframe Pending`
+
+3. **Claim the sub-task (BEFORE starting work)**
+   - Update `design-refactor.md` to mark your selected sub-task as `🚧 In Progress`
+   - This prevents other agents from picking up the same sub-task
+
+4. **Study existing design context**
+   - Review existing wireframes in `poetry-and-pottery/wireframes/` folder (do NOT modify `index.html`)
    - Use `agent-browser` to view and capture snapshots of existing wireframes
    - Analyze the forest theme (colors, typography, spacing conventions)
    - Note the mandatory design tokens from `design-refactor.md`
@@ -91,15 +116,14 @@ For **EACH** selected task, create wireframe options:
 
    Each wireframe file should include:
    - Task number and component name as title
-   - Status indicator (AWAITING APPROVAL)
+   - Status indicator (IN PROGRESS or AWAITING APPROVAL)
    - All design options labeled (Option A, B, C, D)
    - All three viewport sizes per option
-   - Approval section with checkboxes
-   - Notes/feedback area
+   - Notes/feedback area (optional)
 
 ---
 
-### Step 4: Present for Approval
+### Step 4: Finalize & Move to Next Task
 
 7. **Capture wireframe screenshots**
 
@@ -125,22 +149,17 @@ For **EACH** selected task, create wireframe options:
    # ... repeat
    ```
 
-8. **Present to user**
-   - Show all design options with screenshots
-   - Explain the differences between options
-   - Highlight pros/cons of each approach
-   - Ask user to select preferred option for EACH viewport:
-     - Mobile: Option A / B / C / D
-     - Tablet: Option A / B / C / D
-     - Desktop: Option A / B / C / D
-
-9. **Update task status**
+8. **Update task status**
    - Update `poetry-and-pottery/design-refactor.md`
-   - Change task status from `🔲 Wireframe Pending` to `⏳ Awaiting Approval`
+   - Change task status from `🚧 In Progress` to `⏳ Awaiting Approval`
+
+9. **Pick up next sub-task in the same phase**
+   - Go back to Step 1 and repeat for remaining `🔲 Wireframe Pending` sub-tasks within the same phase
+   - Continue until all sub-tasks in the phase are designed or claimed by other agents
 
 ---
 
-### Step 5: Record Approval (After User Responds)
+<!-- ### Step 5: Record Approval (After User Responds)
 
 10. **Document user selections**
     - Record which option was selected for each viewport
@@ -154,7 +173,7 @@ For **EACH** selected task, create wireframe options:
     - Mark section as `✅ APPROVED`
     - Add approved selections summary at top
 
----
+--- -->
 
 ## STOP HERE - Do Not Implement
 
@@ -223,27 +242,27 @@ Before presenting wireframes, verify:
 
 At the end of this workflow:
 
-1. **New wireframe file** in `wireframes/` folder with:
+1. **New wireframe file(s)** in `wireframes/` folder with:
    - 3-4 design options per task
    - All 3 viewports per option
-   - Approval checkboxes
+   - Do NOT modify `index.html`
 
 2. **Screenshots** of all wireframe options at each viewport
 
 3. **Updated design-refactor.md** with:
-   - Task status changed to `⏳ Awaiting Approval`
-   - (After user responds) Status changed to `✅ Approved`
+   - Phase marked `🚧 In Progress`
+   - Sub-tasks marked `⏳ Awaiting Approval` when wireframes are complete
 
-4. **Clear presentation** to user asking for viewport selections
+**Note:** Approval stage will be handled separately. Focus only on creating wireframe designs.
 
 ---
 
 ## Status Legend
 
-| Status                 | Meaning                                        |
-| ---------------------- | ---------------------------------------------- |
-| `🔲 Wireframe Pending` | Task not started                               |
-| `⏳ Awaiting Approval` | Wireframes created, waiting for user selection |
-| `✅ Approved`          | User approved, ready for implementation        |
-| `🚧 In Progress`       | Implementation in progress                     |
-| `✔️ Completed`         | Implementation done and verified               |
+| Status                 | Meaning                                                |
+| ---------------------- | ------------------------------------------------------ |
+| `🔲 Wireframe Pending` | Task available — pick this up                          |
+| `🚧 In Progress`       | Agent is actively working on this — **SKIP** (claimed) |
+| `⏳ Awaiting Approval` | Wireframes created, waiting for user selection         |
+| `✅ Approved`          | User approved, ready for implementation                |
+| `✔️ Completed`         | Implementation done and verified                       |

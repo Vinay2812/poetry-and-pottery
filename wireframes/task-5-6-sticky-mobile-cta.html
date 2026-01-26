@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 5.6: Sticky Mobile CTA - Poetry & Pottery Wireframes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Mobile Frame Extended for Sticky Demo */
+      .wf-mobile-frame-extended {
+        width: 375px;
+        min-height: 700px;
+        background: white;
+        border-radius: 24px;
+        border: 6px solid #1a1a1a;
+        overflow: hidden;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        position: relative;
+      }
+
+      /* Sticky CTA Bar */
+      .sticky-cta {
+        position: absolute;
+        bottom: 80px; /* Above mobile nav */
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        z-index: 50;
+      }
+
+      .sticky-cta.with-safe-area {
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .sticky-price {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sticky-price-label {
+        font-size: 11px;
+        color: #737373;
+        margin-bottom: 2px;
+      }
+
+      .sticky-price-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .sticky-add-btn {
+        background: #4f6f52;
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .sticky-add-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* Mobile Nav Placeholder */
+      .mobile-nav {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: white;
+        border-top: 1px solid #e7e5e4;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 16px;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: #737373;
+      }
+
+      .nav-item svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .nav-item span {
+        font-size: 10px;
+      }
+
+      /* Product Content Placeholder */
+      .product-scroll-content {
+        padding: 16px;
+        padding-bottom: 160px; /* Space for sticky + nav */
+      }
+
+      .product-image-placeholder {
+        aspect-ratio: 1;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 16px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product-image-placeholder .pottery-icon {
+        width: 30%;
+        height: 40%;
+        background: rgba(139, 115, 85, 0.25);
+        border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+      }
+
+      .product-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .product-price-main {
+        font-size: 20px;
+        font-weight: 600;
+        color: #4f6f52;
+        margin-bottom: 16px;
+      }
+
+      .main-cta-btn {
+        width: 100%;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 16px;
+      }
+
+      .scrolled-past-indicator {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      /* Compact Variant */
+      .sticky-cta.compact {
+        padding: 10px 16px;
+      }
+
+      .sticky-cta.compact .sticky-price-value {
+        font-size: 18px;
+      }
+
+      .sticky-cta.compact .sticky-add-btn {
+        padding: 12px 24px;
+        font-size: 13px;
+      }
+
+      /* With Quantity */
+      .sticky-qty-selector {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f5f5f4;
+        border-radius: 8px;
+        padding: 4px;
+      }
+
+      .qty-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: white;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .qty-value {
+        font-weight: 600;
+        min-width: 24px;
+        text-align: center;
+      }
+
+      /* Note styles */
+      .behavior-note {
+        background: #fef3c7;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 12px;
+        color: #92400e;
+        margin-top: 16px;
+      }
+
+      .behavior-note strong {
+        color: #78350f;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Task 5.6: Sticky Mobile CTA</h1>
+    <p class="subtitle">
+      Fixed bottom bar that appears when user scrolls past the main Add to Cart
+      button. Shows price and quick-add action. Mobile-only component.
+    </p>
+
+    <!-- ======================= OPTION A ======================= -->
+    <section class="wf-section">
+      <span class="wf-task-label">Option A</span>
+      <h2 class="wf-section-title">
+        Standard Price + Button
+        <span class="recommended-badge">RECOMMENDED</span>
+      </h2>
+      <p class="wf-section-desc">
+        Clean layout with price on left, Add to Cart button on right. Frosted
+        glass background with backdrop blur. Positioned above mobile nav.
+      </p>
+
+      <div class="option-details">
+        <strong>Position:</strong> Fixed bottom, above mobile nav (64px) |
+        <strong>Background:</strong> White 95% opacity + backdrop blur |
+        <strong>Shadow:</strong> Top shadow for depth |
+        <strong>Trigger:</strong> When main CTA scrolls out of view
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile - Hidden State -->
+        <div>
+          <div class="wf-viewport-label">Mobile - Before Scroll (Hidden)</div>
+          <div class="wf-mobile-frame-extended">
+            <div class="product-scroll-content">
+              <div class="product-image-placeholder">
+                <div class="pottery-icon"></div>
+              </div>
+              <h2 class="product-title">Ceramic Vase</h2>
+              <div class="product-price-main">$65.00</div>
+              <button class="main-cta-btn">Add to Cart</button>
+              <p style="font-size: 13px; color: #737373; line-height: 1.6">
+                Main CTA is visible. Sticky bar is hidden.
+              </p>
+            </div>
+            <div class="mobile-nav">
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile - Visible State -->
+        <div>
+          <div class="wf-viewport-label">Mobile - After Scroll (Visible)</div>
+          <div class="wf-mobile-frame-extended">
+            <div class="product-scroll-content" style="padding-top: 200px">
+              <div class="scrolled-past-indicator">Scrolled past main CTA</div>
+              <p
+                style="
+                  font-size: 13px;
+                  color: #737373;
+                  line-height: 1.6;
+                  margin-top: 80px;
+                "
+              >
+                Product description and details continue here. User has scrolled
+                down to read more information about the product.
+              </p>
+              <p
+                style="
+                  font-size: 13px;
+                  color: #737373;
+                  line-height: 1.6;
+                  margin-top: 16px;
+                "
+              >
+                The sticky CTA bar appears at the bottom, allowing quick access
+                to Add to Cart without scrolling back up.
+              </p>
+            </div>
+
+            <div class="sticky-cta">
+              <div class="sticky-price">
+                <span class="sticky-price-label">Price</span>
+                <span class="sticky-price-value">$65.00</span>
+              </div>
+              <button class="sticky-add-btn">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+                Add to Cart
+              </button>
+            </div>
+
+            <div class="mobile-nav">
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop - Note -->
+        <div>
+          <div class="wf-viewport-label">Desktop / Tablet</div>
+          <div
+            class="wf-desktop-frame"
+            style="min-width: auto; max-width: 600px"
+          >
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/products/ceramic-vase
+              </div>
+            </div>
+            <div
+              class="wf-page-content desktop"
+              style="text-align: center; padding: 60px 40px"
+            >
+              <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5">
+                <svg
+                  width="64"
+                  height="64"
+                  fill="none"
+                  stroke="#737373"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  style="margin: 0 auto"
+                >
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                  <line x1="12" y1="18" x2="12" y2="18" />
+                </svg>
+              </div>
+              <h3
+                style="
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 18px;
+                  font-weight: 600;
+                  color: #1a1a1a;
+                  margin-bottom: 8px;
+                "
+              >
+                Mobile Only Component
+              </h3>
+              <p
+                style="
+                  font-size: 14px;
+                  color: #737373;
+                  max-width: 400px;
+                  margin: 0 auto;
+                  line-height: 1.6;
+                "
+              >
+                The sticky CTA bar is designed for mobile devices only. On
+                tablet and desktop, the Add to Cart button remains visible
+                within the product layout, so this component is hidden.
+              </p>
+              <div
+                class="behavior-note"
+                style="
+                  margin-top: 24px;
+                  text-align: left;
+                  max-width: 400px;
+                  margin-left: auto;
+                  margin-right: auto;
+                "
+              >
+                <strong>Breakpoint:</strong> Hide on screens wider than 768px
+                (md: breakpoint)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ======================= OPTION B ======================= -->
+    <section class="wf-section">
+      <span class="wf-task-label">Option B</span>
+      <h2 class="wf-section-title">With Quantity Selector</h2>
+      <p class="wf-section-desc">
+        Includes compact quantity selector in the sticky bar. Allows users to
+        adjust quantity before adding to cart without scrolling back up.
+      </p>
+
+      <div class="option-details">
+        <strong>Layout:</strong> Price | Quantity | Add Button |
+        <strong>Quantity:</strong> Compact +/- controls |
+        <strong>Button:</strong> Slightly smaller to fit all elements |
+        <strong>Use case:</strong> When quantity selection is important
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile - Visible State -->
+        <div>
+          <div class="wf-viewport-label">Mobile - With Quantity</div>
+          <div class="wf-mobile-frame-extended">
+            <div class="product-scroll-content" style="padding-top: 200px">
+              <div class="scrolled-past-indicator">Scrolled past main CTA</div>
+              <p
+                style="
+                  font-size: 13px;
+                  color: #737373;
+                  line-height: 1.6;
+                  margin-top: 80px;
+                "
+              >
+                Product details continue here...
+              </p>
+            </div>
+
+            <div class="sticky-cta">
+              <div class="sticky-price">
+                <span class="sticky-price-value" style="font-size: 18px"
+                  >$65.00</span
+                >
+              </div>
+              <div class="sticky-qty-selector">
+                <button class="qty-btn">-</button>
+                <span class="qty-value">1</span>
+                <button class="qty-btn">+</button>
+              </div>
+              <button class="sticky-add-btn" style="padding: 12px 20px">
+                Add to Cart
+              </button>
+            </div>
+
+            <div class="mobile-nav">
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile - Full Width Button Variant -->
+        <div>
+          <div class="wf-viewport-label">Mobile - Stacked Layout</div>
+          <div class="wf-mobile-frame-extended">
+            <div class="product-scroll-content" style="padding-top: 200px">
+              <div class="scrolled-past-indicator">Scrolled past main CTA</div>
+            </div>
+
+            <div
+              class="sticky-cta"
+              style="flex-direction: column; gap: 10px; padding: 16px"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
+                  align-items: center;
+                "
+              >
+                <div class="sticky-price">
+                  <span class="sticky-price-value" style="font-size: 20px"
+                    >$65.00</span
+                  >
+                </div>
+                <div class="sticky-qty-selector">
+                  <button class="qty-btn">-</button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">+</button>
+                </div>
+              </div>
+              <button
+                class="sticky-add-btn"
+                style="width: 100%; justify-content: center"
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+                Add to Cart
+              </button>
+            </div>
+
+            <div class="mobile-nav">
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Behavior Note -->
+        <div>
+          <div class="wf-viewport-label">Implementation Notes</div>
+          <div
+            class="wf-desktop-frame"
+            style="min-width: auto; max-width: 600px"
+          >
+            <div class="wf-page-content desktop">
+              <h3
+                style="
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 16px;
+                  font-weight: 600;
+                  margin-bottom: 16px;
+                "
+              >
+                Behavior Specifications
+              </h3>
+
+              <div
+                class="behavior-note"
+                style="background: #e8f5e9; color: #2e7d32"
+              >
+                <strong>Visibility Trigger:</strong> Use IntersectionObserver to
+                detect when main CTA button leaves viewport. Show sticky bar
+                when not intersecting.
+              </div>
+
+              <div
+                class="behavior-note"
+                style="background: #e3f2fd; color: #1565c0; margin-top: 12px"
+              >
+                <strong>Animation:</strong> Slide up from bottom with opacity
+                fade. Duration: 200ms ease-out. Use transform for performance.
+              </div>
+
+              <div
+                class="behavior-note"
+                style="background: #fff3e0; color: #e65100; margin-top: 12px"
+              >
+                <strong>Safe Area:</strong> Add padding-bottom for devices with
+                home indicator (iPhone X+). Use env(safe-area-inset-bottom).
+              </div>
+
+              <div
+                class="behavior-note"
+                style="background: #fce4ec; color: #c2185b; margin-top: 12px"
+              >
+                <strong>Z-Index:</strong> Should be above page content but below
+                modals/sheets. Recommended: z-50
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ======================= OPTION C ======================= -->
+    <section class="wf-section">
+      <span class="wf-task-label">Option C</span>
+      <h2 class="wf-section-title">Minimal Full-Width Button</h2>
+      <p class="wf-section-desc">
+        Ultra-minimal design with just the Add to Cart button spanning full
+        width. Price is integrated into the button text.
+      </p>
+
+      <div class="option-details">
+        <strong>Layout:</strong> Full-width button only |
+        <strong>Button Text:</strong> "Add to Cart - $65.00" |
+        <strong>Height:</strong> Compact, minimal vertical space |
+        <strong>Use case:</strong> Maximally simple, less intrusive
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile - Minimal</div>
+          <div class="wf-mobile-frame-extended">
+            <div class="product-scroll-content" style="padding-top: 200px">
+              <div class="scrolled-past-indicator">Scrolled past main CTA</div>
+              <p
+                style="
+                  font-size: 13px;
+                  color: #737373;
+                  line-height: 1.6;
+                  margin-top: 80px;
+                "
+              >
+                Product details continue here with a minimal sticky bar below.
+              </p>
+            </div>
+
+            <div class="sticky-cta" style="padding: 12px 16px">
+              <button
+                class="sticky-add-btn"
+                style="width: 100%; justify-content: center; padding: 16px"
+              >
+                Add to Cart - $65.00
+              </button>
+            </div>
+
+            <div class="mobile-nav">
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile - With Icon -->
+        <div>
+          <div class="wf-viewport-label">Mobile - With Cart Icon</div>
+          <div class="wf-mobile-frame-extended">
+            <div class="product-scroll-content" style="padding-top: 200px">
+              <div class="scrolled-past-indicator">Scrolled past main CTA</div>
+            </div>
+
+            <div class="sticky-cta" style="padding: 12px 16px">
+              <button
+                class="sticky-add-btn"
+                style="
+                  width: 100%;
+                  justify-content: center;
+                  padding: 16px;
+                  gap: 10px;
+                "
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  style="width: 20px; height: 20px"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+                Add to Cart - $65.00
+              </button>
+            </div>
+
+            <div class="mobile-nav">
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                  />
+                </svg>
+              </div>
+              <div class="nav-item">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparison -->
+        <div>
+          <div class="wf-viewport-label">Comparison</div>
+          <div
+            class="wf-desktop-frame"
+            style="min-width: auto; max-width: 600px"
+          >
+            <div class="wf-page-content desktop">
+              <h3
+                style="
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 16px;
+                  font-weight: 600;
+                  margin-bottom: 16px;
+                "
+              >
+                Option Comparison
+              </h3>
+
+              <table
+                style="width: 100%; font-size: 13px; border-collapse: collapse"
+              >
+                <thead>
+                  <tr style="border-bottom: 2px solid #e7e5e4">
+                    <th
+                      style="
+                        text-align: left;
+                        padding: 12px 8px;
+                        font-weight: 600;
+                      "
+                    >
+                      Option
+                    </th>
+                    <th
+                      style="
+                        text-align: left;
+                        padding: 12px 8px;
+                        font-weight: 600;
+                      "
+                    >
+                      Height
+                    </th>
+                    <th
+                      style="
+                        text-align: left;
+                        padding: 12px 8px;
+                        font-weight: 600;
+                      "
+                    >
+                      Features
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid #e7e5e4">
+                    <td
+                      style="
+                        padding: 12px 8px;
+                        color: #4f6f52;
+                        font-weight: 600;
+                      "
+                    >
+                      A (Recommended)
+                    </td>
+                    <td style="padding: 12px 8px">~60px</td>
+                    <td style="padding: 12px 8px">Price + Button</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid #e7e5e4">
+                    <td style="padding: 12px 8px">B (With Qty)</td>
+                    <td style="padding: 12px 8px">~60-100px</td>
+                    <td style="padding: 12px 8px">Price + Qty + Button</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 12px 8px">C (Minimal)</td>
+                    <td style="padding: 12px 8px">~56px</td>
+                    <td style="padding: 12px 8px">Button only</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ======================= APPROVAL SECTION ======================= -->
+    <section class="wf-section">
+      <h2 class="wf-section-title">Approval Selection</h2>
+      <p class="wf-section-desc">
+        Please select your preferred option. Note: This is a mobile-only
+        component.
+      </p>
+
+      <div class="notes">
+        <strong>Option A (Recommended):</strong> Standard Price + Button - Clean
+        layout with price clearly visible on the left. Most common e-commerce
+        pattern.<br />
+        <strong>Option B:</strong> With Quantity Selector - Adds compact
+        quantity controls. Good if users frequently buy multiples.<br />
+        <strong>Option C:</strong> Minimal Full-Width Button - Simplest option.
+        Price integrated into button text. Less intrusive, more compact.
+      </div>
+    </section>
+  </body>
+</html>

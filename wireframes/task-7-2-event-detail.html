@@ -1,0 +1,3387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 7.2: Event Detail Pages - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Hero Section */
+      .hero-image {
+        aspect-ratio: 16/9;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 16px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .hero-image-placeholder {
+        width: 64px;
+        height: 64px;
+        color: rgba(139, 115, 85, 0.4);
+      }
+
+      .hero-badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .hero-badge.past {
+        background: #f5f5f4;
+        color: #999;
+      }
+
+      .hero-badge.cancelled {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .hero-badge.sold-out {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      /* Gallery Thumbnails */
+      .gallery-thumbnails {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .gallery-thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%);
+        cursor: pointer;
+        border: 2px solid transparent;
+      }
+
+      .gallery-thumb.active {
+        border-color: #4f6f52;
+      }
+
+      /* Content Section */
+      .detail-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+        line-height: 1.3;
+      }
+
+      .detail-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .meta-row svg {
+        width: 18px;
+        height: 18px;
+        color: #4f6f52;
+        flex-shrink: 0;
+      }
+
+      .detail-description {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #555;
+        margin-bottom: 24px;
+      }
+
+      /* Section Headers */
+      .section-header {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      /* Instructor Card */
+      .instructor-card {
+        display: flex;
+        gap: 16px;
+        padding: 16px;
+        background: #fafaf9;
+        border-radius: 12px;
+        margin-bottom: 20px;
+      }
+
+      .instructor-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4f6f52 0%, #3d5640 100%);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .instructor-info h4 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .instructor-info p {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      /* Sidebar */
+      .detail-sidebar {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        position: sticky;
+        top: 24px;
+      }
+
+      .sidebar-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      .sidebar-price.struck {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 18px;
+      }
+
+      .sidebar-details {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .sidebar-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+      }
+
+      .sidebar-row .label {
+        color: #737373;
+      }
+
+      .sidebar-row .value {
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .sidebar-spots {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+        background: #e8ece8;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #4f6f52;
+      }
+
+      .sidebar-spots.low {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .sidebar-spots.sold-out {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .sidebar-btn {
+        width: 100%;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .sidebar-btn:hover {
+        background: #3d5640;
+      }
+
+      .sidebar-btn-outline {
+        background: transparent;
+        color: #4f6f52;
+        border: 2px solid #4f6f52;
+      }
+
+      .sidebar-btn-outline:hover {
+        background: #e8ece8;
+      }
+
+      .sidebar-btn-disabled {
+        background: #e5e5e5;
+        color: #999;
+        cursor: not-allowed;
+      }
+
+      .sidebar-btn-disabled:hover {
+        background: #e5e5e5;
+      }
+
+      /* Layout Options */
+      .content-layout {
+        display: grid;
+        gap: 32px;
+      }
+
+      .content-layout.split {
+        grid-template-columns: 1fr 380px;
+      }
+
+      /* What's Included */
+      .included-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .included-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .included-item svg {
+        width: 20px;
+        height: 20px;
+        color: #4f6f52;
+      }
+
+      /* Reviews */
+      .review-card {
+        padding: 16px;
+        background: #fafaf9;
+        border-radius: 12px;
+        margin-bottom: 12px;
+      }
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+      }
+
+      .reviewer-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .review-date {
+        font-size: 12px;
+        color: #999;
+      }
+
+      .review-stars {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 8px;
+      }
+
+      .star {
+        width: 14px;
+        height: 14px;
+        color: #4f6f52;
+      }
+
+      .star.empty {
+        color: #d4e5d6;
+      }
+
+      .review-text {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #666;
+      }
+
+      /* Option Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 64px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 48px;
+        height: 48px;
+        background: #e8ece8;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 768px 1fr;
+        gap: 32px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .viewport-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .viewport-size {
+        font-size: 11px;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        padding: 16px;
+        max-height: 780px;
+        overflow-y: auto;
+      }
+
+      .viewport-content.tablet {
+        padding: 24px;
+      }
+
+      .viewport-content.desktop {
+        padding: 32px 48px;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      /* Variant Label */
+      .variant-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #737373;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .variant-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e5e5e5;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 20px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 24px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      .notes-area {
+        margin-top: 32px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 100px;
+        padding: 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Mobile Sticky CTA */
+      .mobile-sticky-cta {
+        background: white;
+        padding: 12px 16px;
+        border-top: 1px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        margin: 16px -16px -16px -16px;
+      }
+
+      .sticky-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #1a1a1a;
+      }
+
+      .sticky-btn {
+        flex: 1;
+        max-width: 180px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 10px;
+      }
+
+      .sticky-btn.outline {
+        background: transparent;
+        color: #4f6f52;
+        border: 2px solid #4f6f52;
+      }
+
+      .sticky-btn.disabled {
+        background: #e5e5e5;
+        color: #999;
+      }
+
+      /* Past event badge */
+      .past-event-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        background: #f5f5f4;
+        border-radius: 16px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      .cancelled-badge {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      /* Rating Summary */
+      .rating-summary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .rating-summary .score {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .rating-summary .count {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      /* Share + Bookmark Bar */
+      .action-bar {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        background: #f5f5f4;
+        border: none;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #666;
+        cursor: pointer;
+      }
+
+      .action-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 7.2: Event Detail Pages</h1>
+    <p class="subtitle">
+      Unified layout system for all event detail pages. Covers
+      <strong>4 event states</strong>: Upcoming (register), Past/Completed
+      (gallery + reviews), Sold Out (waitlist), and Cancelled. All states share
+      the same header, hero, content layout, and instructor card.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">AWAITING APPROVAL</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol
+        id="calendar-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </symbol>
+      <symbol
+        id="clock-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </symbol>
+      <symbol
+        id="map-pin-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol
+        id="users-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </symbol>
+      <symbol
+        id="check-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+      <symbol id="star-icon" viewBox="0 0 24 24" fill="currentColor">
+        <polygon
+          points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+        />
+      </symbol>
+      <symbol
+        id="palette-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="13.5" cy="6.5" r=".5" />
+        <circle cx="17.5" cy="10.5" r=".5" />
+        <circle cx="8.5" cy="7.5" r=".5" />
+        <circle cx="6.5" cy="12.5" r=".5" />
+        <path
+          d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"
+        />
+      </symbol>
+      <symbol
+        id="share-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="18" cy="5" r="3" />
+        <circle cx="6" cy="12" r="3" />
+        <circle cx="18" cy="19" r="3" />
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+      </symbol>
+      <symbol
+        id="bookmark-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+      </symbol>
+      <symbol
+        id="bell-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </symbol>
+      <symbol
+        id="x-circle-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="15" y1="9" x2="9" y2="15" />
+        <line x1="9" y1="9" x2="15" y2="15" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT ISSUES</h3>
+          <ul>
+            <li>Only Upcoming event shown in detail</li>
+            <li>No Past/Completed event detail layout</li>
+            <li>Missing Sold Out and Cancelled states</li>
+            <li>Mobile register button not clearly visible</li>
+            <li>Incomplete viewport coverage across options</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>REDESIGNED</h3>
+          <ul>
+            <li>4 event states: Upcoming, Past, Sold Out, Cancelled</li>
+            <li>Full Mobile + Tablet + Desktop for each option</li>
+            <li>Both options show all event types completely</li>
+            <li>Clear sticky CTA on mobile for all states</li>
+            <li>Unified layout shared across all states</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- OPTION A: STACKED LAYOUT (Full-width hero, content below)    -->
+    <!-- ============================================================ -->
+    <div class="options-container">
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div class="option-info">
+            <h3 class="wf-option-header">
+              Stacked Layout <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Full-width hero image on top, stacked content sections below.
+              Sidebar appears on tablet/desktop. Sticky CTA bar on mobile with
+              price + action button. Clean, immersive, content-focused
+              experience.
+            </p>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- UPCOMING EVENT - All Viewports      -->
+        <!-- ═══════════════════════════════════ -->
+        <div class="variant-label">Upcoming Event (Register)</div>
+
+        <div class="viewport-grid">
+          <!-- MOBILE - Upcoming -->
+          <div class="viewport-box" style="width: 375px">
+            <div class="viewport-header">
+              <span class="viewport-label">Mobile - Upcoming</span>
+              <span class="viewport-size">375 x 812</span>
+            </div>
+            <div class="viewport-content">
+              <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                <a href="#">Home</a> / <a href="#">Events</a> / Wheel Throwing
+              </div>
+
+              <div
+                class="hero-image"
+                style="aspect-ratio: 4/3; margin-bottom: 20px"
+              >
+                <svg class="hero-image-placeholder">
+                  <use href="#palette-icon" />
+                </svg>
+                <span class="hero-badge">Beginner</span>
+              </div>
+
+              <h1 class="detail-title" style="font-size: 20px">
+                Introduction to Wheel Throwing
+              </h1>
+
+              <div class="detail-meta">
+                <div class="meta-row">
+                  <svg><use href="#calendar-icon" /></svg>
+                  <span>Saturday, Feb 15, 2025</span>
+                </div>
+                <div class="meta-row">
+                  <svg><use href="#clock-icon" /></svg>
+                  <span>10:00 AM - 1:00 PM (3 hours)</span>
+                </div>
+                <div class="meta-row">
+                  <svg><use href="#map-pin-icon" /></svg>
+                  <span>Poetry & Pottery Studio, Bangalore</span>
+                </div>
+                <div class="meta-row">
+                  <svg><use href="#users-icon" /></svg>
+                  <span>8 spots remaining</span>
+                </div>
+              </div>
+
+              <div class="action-bar">
+                <button class="action-btn">
+                  <svg><use href="#share-icon" /></svg> Share
+                </button>
+                <button class="action-btn">
+                  <svg><use href="#bookmark-icon" /></svg> Save
+                </button>
+              </div>
+
+              <h3 class="section-header">About This Workshop</h3>
+              <p class="detail-description">
+                Learn the fundamentals of wheel throwing in this hands-on
+                beginner workshop. You'll create your first pottery piece under
+                expert guidance. No prior experience needed!
+              </p>
+
+              <h3 class="section-header">Your Instructor</h3>
+              <div class="instructor-card">
+                <div class="instructor-avatar">PS</div>
+                <div class="instructor-info">
+                  <h4>Priya Sharma</h4>
+                  <p>
+                    Master potter with 15 years of experience. Trained in
+                    traditional Japanese techniques.
+                  </p>
+                </div>
+              </div>
+
+              <h3 class="section-header">What's Included</h3>
+              <div class="included-list" style="margin-bottom: 24px">
+                <div class="included-item">
+                  <svg><use href="#check-icon" /></svg
+                  ><span>All materials and clay</span>
+                </div>
+                <div class="included-item">
+                  <svg><use href="#check-icon" /></svg
+                  ><span>Use of pottery wheel</span>
+                </div>
+                <div class="included-item">
+                  <svg><use href="#check-icon" /></svg
+                  ><span>Glazing and firing</span>
+                </div>
+                <div class="included-item">
+                  <svg><use href="#check-icon" /></svg
+                  ><span>Take home your creation</span>
+                </div>
+              </div>
+
+              <!-- STICKY CTA - Register Now -->
+              <div class="mobile-sticky-cta">
+                <div>
+                  <div class="sticky-price">Rs. 2,500</div>
+                  <div style="font-size: 12px; color: #737373">per person</div>
+                </div>
+                <button class="sticky-btn">Register Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLET - Upcoming -->
+          <div class="viewport-box" style="width: 768px">
+            <div class="viewport-header">
+              <span class="viewport-label">Tablet - Upcoming</span>
+              <span class="viewport-size">768 x 1024</span>
+            </div>
+            <div class="viewport-content tablet">
+              <div class="wf-breadcrumbs" style="margin-bottom: 16px">
+                <a href="#">Home</a> / <a href="#">Events</a> / Wheel Throwing
+                Workshop
+              </div>
+
+              <div class="hero-image" style="margin-bottom: 24px">
+                <svg class="hero-image-placeholder">
+                  <use href="#palette-icon" />
+                </svg>
+                <span class="hero-badge">Beginner Friendly</span>
+              </div>
+
+              <div
+                class="content-layout split"
+                style="grid-template-columns: 1fr 280px"
+              >
+                <div>
+                  <h1 class="detail-title" style="font-size: 26px">
+                    Introduction to Wheel Throwing
+                  </h1>
+
+                  <div class="detail-meta">
+                    <div class="meta-row">
+                      <svg><use href="#calendar-icon" /></svg
+                      ><span>Saturday, February 15, 2025</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#clock-icon" /></svg
+                      ><span>10:00 AM - 1:00 PM (3 hours)</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#map-pin-icon" /></svg
+                      ><span>Poetry & Pottery Studio, Koramangala</span>
+                    </div>
+                  </div>
+
+                  <div class="action-bar">
+                    <button class="action-btn">
+                      <svg><use href="#share-icon" /></svg> Share
+                    </button>
+                    <button class="action-btn">
+                      <svg><use href="#bookmark-icon" /></svg> Save
+                    </button>
+                  </div>
+
+                  <h3 class="section-header">About This Workshop</h3>
+                  <p class="detail-description">
+                    Learn the fundamentals of wheel throwing in this hands-on
+                    beginner workshop. You'll create your first pottery piece
+                    under expert guidance. No prior experience needed!
+                  </p>
+
+                  <h3 class="section-header">Your Instructor</h3>
+                  <div class="instructor-card">
+                    <div class="instructor-avatar">PS</div>
+                    <div class="instructor-info">
+                      <h4>Priya Sharma</h4>
+                      <p>Master potter with 15 years of experience.</p>
+                    </div>
+                  </div>
+
+                  <h3 class="section-header">What's Included</h3>
+                  <div class="included-list" style="margin-bottom: 24px">
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>All materials and clay</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Use of pottery wheel</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Glazing and firing</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Take home your creation</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="detail-sidebar">
+                  <div class="sidebar-price">Rs. 2,500</div>
+                  <div class="sidebar-details">
+                    <div class="sidebar-row">
+                      <span class="label">Date</span
+                      ><span class="value">Feb 15, 2025</span>
+                    </div>
+                    <div class="sidebar-row">
+                      <span class="label">Time</span
+                      ><span class="value">10 AM - 1 PM</span>
+                    </div>
+                    <div class="sidebar-row">
+                      <span class="label">Duration</span
+                      ><span class="value">3 hours</span>
+                    </div>
+                    <div class="sidebar-row">
+                      <span class="label">Level</span
+                      ><span class="value">Beginner</span>
+                    </div>
+                  </div>
+                  <div class="sidebar-spots">
+                    <svg width="16" height="16"><use href="#users-icon" /></svg>
+                    8 spots remaining
+                  </div>
+                  <button class="sidebar-btn">Register Now</button>
+                  <p
+                    style="
+                      font-size: 12px;
+                      color: #999;
+                      text-align: center;
+                      margin-top: 12px;
+                    "
+                  >
+                    Free cancellation up to 48 hours before
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DESKTOP - Upcoming -->
+          <div class="viewport-box" style="min-width: 900px">
+            <div class="viewport-header">
+              <span class="viewport-label">Desktop - Upcoming</span>
+              <span class="viewport-size">1440 x 900</span>
+            </div>
+            <div class="viewport-content desktop">
+              <div class="wf-breadcrumbs" style="margin-bottom: 20px">
+                <a href="#">Home</a> / <a href="#">Events</a> /
+                <a href="#">Upcoming</a> / Wheel Throwing Workshop
+              </div>
+
+              <div
+                class="hero-image"
+                style="aspect-ratio: 21/9; margin-bottom: 32px"
+              >
+                <svg
+                  class="hero-image-placeholder"
+                  style="width: 80px; height: 80px"
+                >
+                  <use href="#palette-icon" />
+                </svg>
+                <span
+                  class="hero-badge"
+                  style="padding: 8px 16px; font-size: 13px"
+                  >Beginner Friendly</span
+                >
+              </div>
+
+              <div class="content-layout split">
+                <div>
+                  <h1 class="detail-title" style="font-size: 32px">
+                    Introduction to Wheel Throwing
+                  </h1>
+
+                  <div
+                    class="detail-meta"
+                    style="flex-direction: row; flex-wrap: wrap; gap: 20px"
+                  >
+                    <div class="meta-row">
+                      <svg><use href="#calendar-icon" /></svg
+                      ><span>Saturday, February 15, 2025</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#clock-icon" /></svg
+                      ><span>10:00 AM - 1:00 PM</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#map-pin-icon" /></svg
+                      ><span>Poetry & Pottery Studio, Koramangala</span>
+                    </div>
+                  </div>
+
+                  <div class="action-bar">
+                    <button class="action-btn">
+                      <svg><use href="#share-icon" /></svg> Share
+                    </button>
+                    <button class="action-btn">
+                      <svg><use href="#bookmark-icon" /></svg> Save
+                    </button>
+                  </div>
+
+                  <h3 class="section-header">About This Workshop</h3>
+                  <p class="detail-description" style="font-size: 15px">
+                    Learn the fundamentals of wheel throwing in this hands-on
+                    beginner workshop. You'll create your first pottery piece
+                    under expert guidance. No prior experience needed! We'll
+                    cover centering clay, opening, pulling walls, and basic
+                    shaping techniques.
+                  </p>
+
+                  <h3 class="section-header">Your Instructor</h3>
+                  <div class="instructor-card">
+                    <div
+                      class="instructor-avatar"
+                      style="width: 64px; height: 64px"
+                    >
+                      PS
+                    </div>
+                    <div class="instructor-info">
+                      <h4 style="font-size: 16px">Priya Sharma</h4>
+                      <p style="font-size: 14px">
+                        Master potter with 15 years of experience. Trained in
+                        traditional Japanese techniques at Mashiko Pottery
+                        Village. Specializes in functional ceramics and wheel
+                        throwing.
+                      </p>
+                    </div>
+                  </div>
+
+                  <h3 class="section-header">What's Included</h3>
+                  <div
+                    class="included-list"
+                    style="
+                      grid-template-columns: repeat(2, 1fr);
+                      margin-bottom: 32px;
+                    "
+                  >
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>All materials and clay</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Use of pottery wheel</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Glazing and firing included</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Take home your creation</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Refreshments provided</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Certificate of completion</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="detail-sidebar">
+                  <div class="sidebar-price">Rs. 2,500</div>
+                  <div
+                    style="font-size: 13px; color: #737373; margin-bottom: 16px"
+                  >
+                    per person
+                  </div>
+                  <div class="sidebar-details">
+                    <div class="sidebar-row">
+                      <span class="label">Date</span
+                      ><span class="value">Feb 15, 2025</span>
+                    </div>
+                    <div class="sidebar-row">
+                      <span class="label">Time</span
+                      ><span class="value">10:00 AM - 1:00 PM</span>
+                    </div>
+                    <div class="sidebar-row">
+                      <span class="label">Duration</span
+                      ><span class="value">3 hours</span>
+                    </div>
+                    <div class="sidebar-row">
+                      <span class="label">Level</span
+                      ><span class="value">Beginner</span>
+                    </div>
+                  </div>
+                  <div class="sidebar-spots">
+                    <svg width="16" height="16"><use href="#users-icon" /></svg>
+                    8 spots remaining
+                  </div>
+                  <button class="sidebar-btn">Register Now</button>
+                  <p
+                    style="
+                      font-size: 12px;
+                      color: #999;
+                      text-align: center;
+                      margin-top: 12px;
+                    "
+                  >
+                    Free cancellation up to 48 hours before
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- PAST/COMPLETED EVENT - All Viewports -->
+        <!-- ═══════════════════════════════════ -->
+        <div style="margin-top: 48px">
+          <div class="variant-label">
+            Past / Completed Event (Reviews + Gallery)
+          </div>
+
+          <div class="viewport-grid">
+            <!-- MOBILE - Past -->
+            <div class="viewport-box" style="width: 375px">
+              <div class="viewport-header">
+                <span class="viewport-label">Mobile - Past</span>
+                <span class="viewport-size">375 x 812</span>
+              </div>
+              <div class="viewport-content">
+                <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                  <a href="#">Home</a> / <a href="#">Events</a> /
+                  <a href="#">Past</a> / Raku
+                </div>
+
+                <div class="past-event-badge">Completed on Jan 20, 2025</div>
+
+                <div
+                  class="hero-image"
+                  style="aspect-ratio: 4/3; margin-bottom: 8px"
+                >
+                  <svg class="hero-image-placeholder">
+                    <use href="#palette-icon" />
+                  </svg>
+                  <span class="hero-badge past">Past Workshop</span>
+                </div>
+                <div class="gallery-thumbnails">
+                  <div class="gallery-thumb active pottery-1"></div>
+                  <div class="gallery-thumb pottery-2"></div>
+                  <div class="gallery-thumb pottery-3"></div>
+                  <div class="gallery-thumb pottery-4"></div>
+                </div>
+
+                <h1
+                  class="detail-title"
+                  style="font-size: 20px; margin-top: 20px"
+                >
+                  Raku Firing Experience
+                </h1>
+
+                <div class="rating-summary">
+                  <div class="review-stars">
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star empty"><use href="#star-icon" /></svg>
+                  </div>
+                  <span class="score">4.2</span>
+                  <span class="count">(12 reviews)</span>
+                </div>
+
+                <div class="detail-meta">
+                  <div class="meta-row">
+                    <svg><use href="#calendar-icon" /></svg
+                    ><span>Jan 20, 2025</span>
+                  </div>
+                  <div class="meta-row">
+                    <svg><use href="#clock-icon" /></svg
+                    ><span>9:00 AM - 3:00 PM (6 hours)</span>
+                  </div>
+                  <div class="meta-row">
+                    <svg><use href="#map-pin-icon" /></svg
+                    ><span>Outdoor Kiln Space</span>
+                  </div>
+                </div>
+
+                <h3 class="section-header">About This Workshop</h3>
+                <p class="detail-description">
+                  Experience the ancient art of Raku firing. Participants
+                  learned specialized glazing techniques and watched their
+                  pieces transform in the outdoor kiln.
+                </p>
+
+                <h3 class="section-header">Instructor</h3>
+                <div class="instructor-card">
+                  <div class="instructor-avatar">AK</div>
+                  <div class="instructor-info">
+                    <h4>Arun Kumar</h4>
+                    <p>Raku specialist with 20 years of experience.</p>
+                  </div>
+                </div>
+
+                <h3 class="section-header">Reviews</h3>
+                <div class="review-card">
+                  <div class="review-header">
+                    <span class="reviewer-name">Meera S.</span>
+                    <span class="review-date">Jan 22, 2025</span>
+                  </div>
+                  <div class="review-stars" style="margin-bottom: 8px">
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                  </div>
+                  <p class="review-text">
+                    Amazing experience! The firing process was magical to watch.
+                  </p>
+                </div>
+
+                <!-- STICKY CTA - Write a Review -->
+                <div class="mobile-sticky-cta">
+                  <button
+                    class="sticky-btn outline"
+                    style="max-width: none; flex: 1"
+                  >
+                    Write a Review
+                  </button>
+                  <button class="sticky-btn" style="max-width: none; flex: 1">
+                    View Similar Events
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TABLET - Past -->
+            <div class="viewport-box" style="width: 768px">
+              <div class="viewport-header">
+                <span class="viewport-label">Tablet - Past</span>
+                <span class="viewport-size">768 x 1024</span>
+              </div>
+              <div class="viewport-content tablet">
+                <div class="wf-breadcrumbs" style="margin-bottom: 16px">
+                  <a href="#">Home</a> / <a href="#">Events</a> /
+                  <a href="#">Past</a> / Raku Firing
+                </div>
+
+                <div class="past-event-badge">
+                  Completed on January 20, 2025
+                </div>
+
+                <!-- Gallery Row -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 80px;
+                    gap: 8px;
+                    margin-bottom: 24px;
+                  "
+                >
+                  <div class="hero-image" style="aspect-ratio: 16/9">
+                    <svg class="hero-image-placeholder">
+                      <use href="#palette-icon" />
+                    </svg>
+                    <span class="hero-badge past">Past Workshop</span>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px">
+                    <div
+                      class="gallery-thumb active pottery-1"
+                      style="width: 100%; height: auto; aspect-ratio: 1"
+                    ></div>
+                    <div
+                      class="gallery-thumb pottery-2"
+                      style="width: 100%; height: auto; aspect-ratio: 1"
+                    ></div>
+                    <div
+                      style="
+                        background: #f5f5f4;
+                        border-radius: 8px;
+                        aspect-ratio: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 12px;
+                        color: #999;
+                        font-weight: 600;
+                      "
+                    >
+                      +5
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="content-layout split"
+                  style="grid-template-columns: 1fr 260px"
+                >
+                  <div>
+                    <h1 class="detail-title" style="font-size: 26px">
+                      Raku Firing Experience
+                    </h1>
+                    <div class="rating-summary">
+                      <div class="review-stars">
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg
+                          class="star empty"
+                          style="width: 16px; height: 16px"
+                        >
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <span class="score">4.2</span>
+                      <span class="count">(12 reviews)</span>
+                    </div>
+
+                    <h3 class="section-header">About This Workshop</h3>
+                    <p class="detail-description">
+                      Experience the ancient art of Raku firing. Participants
+                      learned specialized glazing techniques and watched their
+                      pieces transform in the outdoor kiln.
+                    </p>
+
+                    <h3 class="section-header">Instructor</h3>
+                    <div class="instructor-card">
+                      <div class="instructor-avatar">AK</div>
+                      <div class="instructor-info">
+                        <h4>Arun Kumar</h4>
+                        <p>Raku specialist with 20 years of experience.</p>
+                      </div>
+                    </div>
+
+                    <h3 class="section-header">Reviews (12)</h3>
+                    <div class="review-card">
+                      <div class="review-header">
+                        <span class="reviewer-name">Meera S.</span>
+                        <span class="review-date">Jan 22, 2025</span>
+                      </div>
+                      <div class="review-stars" style="margin-bottom: 8px">
+                        <svg class="star" style="width: 12px; height: 12px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 12px; height: 12px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 12px; height: 12px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 12px; height: 12px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 12px; height: 12px">
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <p class="review-text">
+                        Amazing experience! The firing process was magical to
+                        watch.
+                      </p>
+                    </div>
+                    <button
+                      style="
+                        width: 100%;
+                        padding: 10px;
+                        background: transparent;
+                        border: none;
+                        color: #4f6f52;
+                        font-weight: 600;
+                        cursor: pointer;
+                        margin-top: 4px;
+                        font-size: 13px;
+                      "
+                    >
+                      View All 12 Reviews &rarr;
+                    </button>
+                  </div>
+
+                  <!-- Sidebar -->
+                  <div class="detail-sidebar">
+                    <div
+                      style="
+                        font-size: 13px;
+                        color: #737373;
+                        margin-bottom: 8px;
+                      "
+                    >
+                      This workshop has ended
+                    </div>
+                    <div
+                      class="sidebar-details"
+                      style="
+                        border-bottom: none;
+                        padding-bottom: 0;
+                        margin-bottom: 16px;
+                      "
+                    >
+                      <div class="sidebar-row">
+                        <span class="label">Date</span
+                        ><span class="value">Jan 20, 2025</span>
+                      </div>
+                      <div class="sidebar-row">
+                        <span class="label">Duration</span
+                        ><span class="value">6 hours</span>
+                      </div>
+                      <div class="sidebar-row">
+                        <span class="label">Level</span
+                        ><span class="value">Advanced</span>
+                      </div>
+                      <div class="sidebar-row">
+                        <span class="label">Attendees</span
+                        ><span class="value">8 participants</span>
+                      </div>
+                    </div>
+                    <button
+                      class="sidebar-btn sidebar-btn-outline"
+                      style="margin-bottom: 12px"
+                    >
+                      Write a Review
+                    </button>
+                    <button class="sidebar-btn">View Similar Events</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DESKTOP - Past -->
+            <div class="viewport-box" style="min-width: 900px">
+              <div class="viewport-header">
+                <span class="viewport-label">Desktop - Past</span>
+                <span class="viewport-size">1440 x 900</span>
+              </div>
+              <div class="viewport-content desktop">
+                <div class="wf-breadcrumbs" style="margin-bottom: 20px">
+                  <a href="#">Home</a> / <a href="#">Events</a> /
+                  <a href="#">Past Workshops</a> / Raku Firing
+                </div>
+
+                <div class="past-event-badge" style="margin-bottom: 16px">
+                  Completed on January 20, 2025
+                </div>
+
+                <!-- Gallery -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 120px;
+                    gap: 12px;
+                    margin-bottom: 32px;
+                  "
+                >
+                  <div class="hero-image" style="aspect-ratio: 16/9">
+                    <svg
+                      class="hero-image-placeholder"
+                      style="width: 80px; height: 80px"
+                    >
+                      <use href="#palette-icon" />
+                    </svg>
+                    <span class="hero-badge past" style="padding: 8px 16px"
+                      >Past Workshop</span
+                    >
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px">
+                    <div
+                      class="gallery-thumb active pottery-1"
+                      style="width: 100%; height: auto; aspect-ratio: 1"
+                    ></div>
+                    <div
+                      class="gallery-thumb pottery-2"
+                      style="width: 100%; height: auto; aspect-ratio: 1"
+                    ></div>
+                    <div
+                      class="gallery-thumb pottery-3"
+                      style="width: 100%; height: auto; aspect-ratio: 1"
+                    ></div>
+                    <div
+                      style="
+                        background: #f5f5f4;
+                        border-radius: 8px;
+                        aspect-ratio: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 13px;
+                        color: #999;
+                        font-weight: 600;
+                      "
+                    >
+                      +5
+                    </div>
+                  </div>
+                </div>
+
+                <div class="content-layout split">
+                  <div>
+                    <h1 class="detail-title" style="font-size: 32px">
+                      Raku Firing Experience
+                    </h1>
+                    <div class="rating-summary" style="margin-bottom: 20px">
+                      <div class="review-stars">
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg
+                          class="star empty"
+                          style="width: 18px; height: 18px"
+                        >
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <span class="score">4.2</span>
+                      <span class="count">out of 5 (12 reviews)</span>
+                    </div>
+
+                    <h3 class="section-header">About This Workshop</h3>
+                    <p class="detail-description" style="font-size: 15px">
+                      Experience the ancient art of Raku firing in this advanced
+                      workshop. Participants learned specialized glazing
+                      techniques and watched their pieces transform in our
+                      outdoor kiln. The dramatic process of removing red-hot
+                      pottery creates unique, one-of-a-kind finishes.
+                    </p>
+
+                    <h3 class="section-header">Instructor</h3>
+                    <div class="instructor-card">
+                      <div
+                        class="instructor-avatar"
+                        style="width: 64px; height: 64px"
+                      >
+                        AK
+                      </div>
+                      <div class="instructor-info">
+                        <h4 style="font-size: 16px">Arun Kumar</h4>
+                        <p style="font-size: 14px">
+                          Raku specialist with 20 years of experience. Studied
+                          traditional Raku techniques in Kyoto, Japan.
+                        </p>
+                      </div>
+                    </div>
+
+                    <h3 class="section-header">Reviews (12)</h3>
+                    <div class="review-card">
+                      <div class="review-header">
+                        <span class="reviewer-name">Meera Sundaram</span>
+                        <span class="review-date">January 22, 2025</span>
+                      </div>
+                      <div class="review-stars" style="margin-bottom: 8px">
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <p class="review-text">
+                        Amazing experience! The firing process was magical. Arun
+                        is a patient teacher.
+                      </p>
+                    </div>
+                    <div class="review-card">
+                      <div class="review-header">
+                        <span class="reviewer-name">Rahul P.</span>
+                        <span class="review-date">January 21, 2025</span>
+                      </div>
+                      <div class="review-stars" style="margin-bottom: 8px">
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg
+                          class="star empty"
+                          style="width: 14px; height: 14px"
+                        >
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <p class="review-text">
+                        Great workshop. The firing demo was incredible.
+                      </p>
+                    </div>
+                    <button
+                      style="
+                        width: 100%;
+                        padding: 12px;
+                        background: transparent;
+                        border: none;
+                        color: #4f6f52;
+                        font-weight: 600;
+                        cursor: pointer;
+                        margin-top: 8px;
+                      "
+                    >
+                      View All 12 Reviews &rarr;
+                    </button>
+                  </div>
+
+                  <!-- Sidebar -->
+                  <div class="detail-sidebar">
+                    <div
+                      style="
+                        font-size: 13px;
+                        color: #737373;
+                        margin-bottom: 8px;
+                      "
+                    >
+                      This workshop has ended
+                    </div>
+                    <div
+                      class="sidebar-details"
+                      style="
+                        border-bottom: none;
+                        padding-bottom: 0;
+                        margin-bottom: 16px;
+                      "
+                    >
+                      <div class="sidebar-row">
+                        <span class="label">Date</span
+                        ><span class="value">Jan 20, 2025</span>
+                      </div>
+                      <div class="sidebar-row">
+                        <span class="label">Duration</span
+                        ><span class="value">6 hours</span>
+                      </div>
+                      <div class="sidebar-row">
+                        <span class="label">Level</span
+                        ><span class="value">Advanced</span>
+                      </div>
+                      <div class="sidebar-row">
+                        <span class="label">Attendees</span
+                        ><span class="value">8 participants</span>
+                      </div>
+                    </div>
+                    <button
+                      class="sidebar-btn sidebar-btn-outline"
+                      style="margin-bottom: 12px"
+                    >
+                      Write a Review
+                    </button>
+                    <button class="sidebar-btn">View Similar Events</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- SOLD OUT + CANCELLED - Mobile Only  -->
+        <!-- (Same layout, different CTAs/badges) -->
+        <!-- ═══════════════════════════════════ -->
+        <div style="margin-top: 48px">
+          <div class="variant-label">
+            Additional States: Sold Out + Cancelled (Mobile)
+          </div>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 375px 375px;
+              gap: 32px;
+              overflow-x: auto;
+              padding-bottom: 16px;
+            "
+          >
+            <!-- MOBILE - Sold Out -->
+            <div class="viewport-box" style="width: 375px">
+              <div class="viewport-header">
+                <span class="viewport-label">Mobile - Sold Out</span>
+                <span class="viewport-size">375 x 812</span>
+              </div>
+              <div class="viewport-content">
+                <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                  <a href="#">Home</a> / <a href="#">Events</a> / Sculpting
+                  Masterclass
+                </div>
+
+                <div
+                  class="hero-image"
+                  style="aspect-ratio: 4/3; margin-bottom: 20px"
+                >
+                  <svg class="hero-image-placeholder">
+                    <use href="#palette-icon" />
+                  </svg>
+                  <span class="hero-badge sold-out">Sold Out</span>
+                </div>
+
+                <h1 class="detail-title" style="font-size: 20px">
+                  Advanced Sculpting Masterclass
+                </h1>
+
+                <div class="detail-meta">
+                  <div class="meta-row">
+                    <svg><use href="#calendar-icon" /></svg
+                    ><span>Saturday, Mar 8, 2025</span>
+                  </div>
+                  <div class="meta-row">
+                    <svg><use href="#clock-icon" /></svg
+                    ><span>10:00 AM - 4:00 PM</span>
+                  </div>
+                  <div class="meta-row">
+                    <svg><use href="#map-pin-icon" /></svg
+                    ><span>Poetry & Pottery Studio</span>
+                  </div>
+                </div>
+
+                <h3 class="section-header">About This Workshop</h3>
+                <p class="detail-description">
+                  Take your sculpting skills to the next level in this intensive
+                  masterclass. Learn advanced hand-building, armature, and
+                  finishing techniques.
+                </p>
+
+                <!-- STICKY CTA - Sold Out -->
+                <div class="mobile-sticky-cta">
+                  <div>
+                    <div
+                      class="sticky-price"
+                      style="
+                        color: #999;
+                        text-decoration: line-through;
+                        font-size: 16px;
+                      "
+                    >
+                      Rs. 4,500
+                    </div>
+                    <div
+                      style="font-size: 12px; color: #dc2626; font-weight: 600"
+                    >
+                      Sold Out
+                    </div>
+                  </div>
+                  <button class="sticky-btn" style="background: #1a1a1a">
+                    <svg width="16" height="16" style="margin-right: 6px">
+                      <use href="#bell-icon" />
+                    </svg>
+                    Notify Me
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- MOBILE - Cancelled -->
+            <div class="viewport-box" style="width: 375px">
+              <div class="viewport-header">
+                <span class="viewport-label">Mobile - Cancelled</span>
+                <span class="viewport-size">375 x 812</span>
+              </div>
+              <div class="viewport-content">
+                <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                  <a href="#">Home</a> / <a href="#">Events</a> / Kiln Building
+                </div>
+
+                <div
+                  class="cancelled-badge past-event-badge"
+                  style="margin-bottom: 12px"
+                >
+                  <svg width="14" height="14">
+                    <use href="#x-circle-icon" />
+                  </svg>
+                  Event Cancelled
+                </div>
+
+                <div
+                  class="hero-image"
+                  style="aspect-ratio: 4/3; margin-bottom: 20px; opacity: 0.6"
+                >
+                  <svg class="hero-image-placeholder">
+                    <use href="#palette-icon" />
+                  </svg>
+                  <span class="hero-badge cancelled">Cancelled</span>
+                </div>
+
+                <h1 class="detail-title" style="font-size: 20px">
+                  Kiln Building Workshop
+                </h1>
+
+                <div
+                  style="
+                    background: #fee2e2;
+                    border-radius: 12px;
+                    padding: 16px;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: #dc2626;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    This event has been cancelled
+                  </div>
+                  <div style="font-size: 13px; color: #666; line-height: 1.5">
+                    Due to unforeseen circumstances, this event has been
+                    cancelled. If you were registered, a full refund has been
+                    initiated.
+                  </div>
+                </div>
+
+                <div class="detail-meta">
+                  <div class="meta-row">
+                    <svg><use href="#calendar-icon" /></svg
+                    ><span style="text-decoration: line-through"
+                      >Saturday, Mar 15, 2025</span
+                    >
+                  </div>
+                  <div class="meta-row">
+                    <svg><use href="#map-pin-icon" /></svg
+                    ><span>Poetry & Pottery Studio</span>
+                  </div>
+                </div>
+
+                <!-- STICKY CTA - Cancelled -->
+                <div class="mobile-sticky-cta">
+                  <button class="sticky-btn" style="max-width: none; flex: 1">
+                    Browse Similar Events
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- OPTION B: SIDE-BY-SIDE LAYOUT (Image + Content side by side) -->
+      <!-- ============================================================ -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div class="option-info">
+            <h3 class="wf-option-header">Side-by-Side Layout (Desktop)</h3>
+            <p class="wf-option-desc">
+              Hero image and content sit side-by-side on desktop (50/50 split).
+              Registration/info card is inline with content (no separate
+              sidebar). Mobile remains stacked with sticky CTA. More balanced
+              visual weight, good for events with strong imagery.
+            </p>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- UPCOMING EVENT - All Viewports      -->
+        <!-- ═══════════════════════════════════ -->
+        <div class="variant-label">Upcoming Event (Register)</div>
+
+        <div class="viewport-grid">
+          <!-- MOBILE - Upcoming -->
+          <div class="viewport-box" style="width: 375px">
+            <div class="viewport-header">
+              <span class="viewport-label">Mobile - Upcoming</span>
+              <span class="viewport-size">375 x 812</span>
+            </div>
+            <div class="viewport-content">
+              <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                <a href="#">Home</a> / <a href="#">Events</a> / Wheel Throwing
+              </div>
+
+              <div
+                class="hero-image"
+                style="aspect-ratio: 4/3; margin-bottom: 20px"
+              >
+                <svg class="hero-image-placeholder">
+                  <use href="#palette-icon" />
+                </svg>
+                <span class="hero-badge">Beginner</span>
+              </div>
+
+              <h1 class="detail-title" style="font-size: 20px">
+                Introduction to Wheel Throwing
+              </h1>
+
+              <div class="detail-meta">
+                <div class="meta-row">
+                  <svg><use href="#calendar-icon" /></svg
+                  ><span>Saturday, Feb 15, 2025</span>
+                </div>
+                <div class="meta-row">
+                  <svg><use href="#clock-icon" /></svg
+                  ><span>10:00 AM - 1:00 PM (3 hours)</span>
+                </div>
+                <div class="meta-row">
+                  <svg><use href="#map-pin-icon" /></svg
+                  ><span>Poetry & Pottery Studio, Bangalore</span>
+                </div>
+              </div>
+
+              <!-- Inline Price Card -->
+              <div
+                style="
+                  background: #fafaf9;
+                  border-radius: 12px;
+                  padding: 16px;
+                  margin-bottom: 20px;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 12px;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 22px;
+                      font-weight: 800;
+                      color: #1a1a1a;
+                    "
+                  >
+                    Rs. 2,500
+                  </div>
+                  <div
+                    style="font-size: 12px; color: #4f6f52; font-weight: 600"
+                  >
+                    8 spots left
+                  </div>
+                </div>
+                <div
+                  style="font-size: 12px; color: #737373; margin-bottom: 12px"
+                >
+                  per person | Beginner level
+                </div>
+              </div>
+
+              <h3 class="section-header">About This Workshop</h3>
+              <p class="detail-description">
+                Learn the fundamentals of wheel throwing in this hands-on
+                beginner workshop. You'll create your first pottery piece under
+                expert guidance.
+              </p>
+
+              <h3 class="section-header">Your Instructor</h3>
+              <div class="instructor-card">
+                <div class="instructor-avatar">PS</div>
+                <div class="instructor-info">
+                  <h4>Priya Sharma</h4>
+                  <p>Master potter with 15 years of experience.</p>
+                </div>
+              </div>
+
+              <h3 class="section-header">What's Included</h3>
+              <div class="included-list" style="margin-bottom: 24px">
+                <div class="included-item">
+                  <svg><use href="#check-icon" /></svg
+                  ><span>All materials and clay</span>
+                </div>
+                <div class="included-item">
+                  <svg><use href="#check-icon" /></svg
+                  ><span>Glazing and firing</span>
+                </div>
+                <div class="included-item">
+                  <svg><use href="#check-icon" /></svg
+                  ><span>Take home your creation</span>
+                </div>
+              </div>
+
+              <!-- STICKY CTA -->
+              <div class="mobile-sticky-cta">
+                <div>
+                  <div class="sticky-price">Rs. 2,500</div>
+                  <div style="font-size: 12px; color: #737373">per person</div>
+                </div>
+                <button class="sticky-btn">Register Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLET - Upcoming (Side by Side) -->
+          <div class="viewport-box" style="width: 768px">
+            <div class="viewport-header">
+              <span class="viewport-label">Tablet - Upcoming</span>
+              <span class="viewport-size">768 x 1024</span>
+            </div>
+            <div class="viewport-content tablet">
+              <div class="wf-breadcrumbs" style="margin-bottom: 16px">
+                <a href="#">Home</a> / <a href="#">Events</a> / Wheel Throwing
+                Workshop
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px"
+              >
+                <!-- Left: Image -->
+                <div>
+                  <div
+                    class="hero-image"
+                    style="aspect-ratio: 3/4; border-radius: 16px"
+                  >
+                    <svg class="hero-image-placeholder">
+                      <use href="#palette-icon" />
+                    </svg>
+                    <span class="hero-badge">Beginner</span>
+                  </div>
+                  <div class="gallery-thumbnails" style="margin-top: 12px">
+                    <div class="gallery-thumb active pottery-1"></div>
+                    <div class="gallery-thumb pottery-2"></div>
+                    <div class="gallery-thumb pottery-3"></div>
+                  </div>
+                </div>
+
+                <!-- Right: Content -->
+                <div>
+                  <h1 class="detail-title" style="font-size: 24px">
+                    Introduction to Wheel Throwing
+                  </h1>
+
+                  <div class="detail-meta" style="margin-bottom: 16px">
+                    <div class="meta-row">
+                      <svg><use href="#calendar-icon" /></svg
+                      ><span>Saturday, Feb 15, 2025</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#clock-icon" /></svg
+                      ><span>10:00 AM - 1:00 PM</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#map-pin-icon" /></svg
+                      ><span>Poetry & Pottery Studio</span>
+                    </div>
+                  </div>
+
+                  <!-- Inline Price Card -->
+                  <div
+                    style="
+                      background: #fafaf9;
+                      border-radius: 12px;
+                      padding: 16px;
+                      margin-bottom: 20px;
+                    "
+                  >
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 12px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 24px;
+                          font-weight: 800;
+                        "
+                      >
+                        Rs. 2,500
+                      </div>
+                      <div
+                        class="sidebar-spots"
+                        style="
+                          margin-bottom: 0;
+                          padding: 6px 10px;
+                          font-size: 12px;
+                        "
+                      >
+                        8 spots left
+                      </div>
+                    </div>
+                    <button class="sidebar-btn">Register Now</button>
+                    <p
+                      style="
+                        font-size: 11px;
+                        color: #999;
+                        text-align: center;
+                        margin-top: 8px;
+                      "
+                    >
+                      Free cancellation up to 48h
+                    </p>
+                  </div>
+
+                  <p class="detail-description">
+                    Learn the fundamentals of wheel throwing in this hands-on
+                    beginner workshop.
+                  </p>
+
+                  <h3 class="section-header">Your Instructor</h3>
+                  <div class="instructor-card">
+                    <div class="instructor-avatar">PS</div>
+                    <div class="instructor-info">
+                      <h4>Priya Sharma</h4>
+                      <p>Master potter with 15 years of experience.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DESKTOP - Upcoming (Side by Side) -->
+          <div class="viewport-box" style="min-width: 900px">
+            <div class="viewport-header">
+              <span class="viewport-label">Desktop - Upcoming</span>
+              <span class="viewport-size">1440 x 900</span>
+            </div>
+            <div class="viewport-content desktop">
+              <div class="wf-breadcrumbs" style="margin-bottom: 20px">
+                <a href="#">Home</a> / <a href="#">Events</a> / Wheel Throwing
+                Workshop
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px"
+              >
+                <!-- Left: Image -->
+                <div>
+                  <div
+                    class="hero-image"
+                    style="aspect-ratio: 4/5; border-radius: 20px"
+                  >
+                    <svg
+                      class="hero-image-placeholder"
+                      style="width: 80px; height: 80px"
+                    >
+                      <use href="#palette-icon" />
+                    </svg>
+                    <span class="hero-badge" style="padding: 8px 16px"
+                      >Beginner Friendly</span
+                    >
+                  </div>
+                  <div class="gallery-thumbnails" style="margin-top: 16px">
+                    <div
+                      class="gallery-thumb active pottery-1"
+                      style="width: 80px; height: 80px"
+                    ></div>
+                    <div
+                      class="gallery-thumb pottery-2"
+                      style="width: 80px; height: 80px"
+                    ></div>
+                    <div
+                      class="gallery-thumb pottery-3"
+                      style="width: 80px; height: 80px"
+                    ></div>
+                    <div
+                      class="gallery-thumb pottery-4"
+                      style="width: 80px; height: 80px"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Right: Content -->
+                <div>
+                  <h1 class="detail-title" style="font-size: 32px">
+                    Introduction to Wheel Throwing
+                  </h1>
+
+                  <div class="detail-meta" style="margin-bottom: 20px">
+                    <div class="meta-row">
+                      <svg><use href="#calendar-icon" /></svg
+                      ><span>Saturday, February 15, 2025</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#clock-icon" /></svg
+                      ><span>10:00 AM - 1:00 PM (3 hours)</span>
+                    </div>
+                    <div class="meta-row">
+                      <svg><use href="#map-pin-icon" /></svg
+                      ><span>Poetry & Pottery Studio, Koramangala</span>
+                    </div>
+                  </div>
+
+                  <!-- Inline Price Card -->
+                  <div
+                    style="
+                      background: #fafaf9;
+                      border-radius: 16px;
+                      padding: 20px;
+                      margin-bottom: 24px;
+                    "
+                  >
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 16px;
+                      "
+                    >
+                      <div>
+                        <div
+                          style="
+                            font-family:
+                              &quot;Plus Jakarta Sans&quot;, sans-serif;
+                            font-size: 28px;
+                            font-weight: 800;
+                          "
+                        >
+                          Rs. 2,500
+                        </div>
+                        <div style="font-size: 13px; color: #737373">
+                          per person
+                        </div>
+                      </div>
+                      <div
+                        class="sidebar-spots"
+                        style="margin-bottom: 0; padding: 8px 12px"
+                      >
+                        8 spots left
+                      </div>
+                    </div>
+                    <button class="sidebar-btn" style="width: 100%">
+                      Register Now
+                    </button>
+                    <p
+                      style="
+                        font-size: 12px;
+                        color: #999;
+                        text-align: center;
+                        margin-top: 10px;
+                      "
+                    >
+                      Free cancellation up to 48 hours before
+                    </p>
+                  </div>
+
+                  <div class="action-bar">
+                    <button class="action-btn">
+                      <svg><use href="#share-icon" /></svg> Share
+                    </button>
+                    <button class="action-btn">
+                      <svg><use href="#bookmark-icon" /></svg> Save
+                    </button>
+                  </div>
+
+                  <p class="detail-description" style="font-size: 15px">
+                    Learn the fundamentals of wheel throwing in this hands-on
+                    beginner workshop. You'll create your first pottery piece
+                    under expert guidance. No prior experience needed!
+                  </p>
+
+                  <h3 class="section-header">Your Instructor</h3>
+                  <div class="instructor-card">
+                    <div
+                      class="instructor-avatar"
+                      style="width: 64px; height: 64px"
+                    >
+                      PS
+                    </div>
+                    <div class="instructor-info">
+                      <h4 style="font-size: 16px">Priya Sharma</h4>
+                      <p style="font-size: 14px">
+                        Master potter with 15 years of experience. Trained in
+                        traditional Japanese techniques.
+                      </p>
+                    </div>
+                  </div>
+
+                  <h3 class="section-header">What's Included</h3>
+                  <div class="included-list">
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>All materials and clay</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Glazing and firing</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Take home your creation</span>
+                    </div>
+                    <div class="included-item">
+                      <svg><use href="#check-icon" /></svg
+                      ><span>Refreshments provided</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- PAST EVENT - All Viewports           -->
+        <!-- ═══════════════════════════════════ -->
+        <div style="margin-top: 48px">
+          <div class="variant-label">
+            Past / Completed Event (Reviews + Gallery)
+          </div>
+
+          <div class="viewport-grid">
+            <!-- MOBILE - Past -->
+            <div class="viewport-box" style="width: 375px">
+              <div class="viewport-header">
+                <span class="viewport-label">Mobile - Past</span>
+                <span class="viewport-size">375 x 812</span>
+              </div>
+              <div class="viewport-content">
+                <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                  <a href="#">Home</a> / <a href="#">Events</a> /
+                  <a href="#">Past</a> / Raku
+                </div>
+
+                <div class="past-event-badge">Completed on Jan 20, 2025</div>
+
+                <div
+                  class="hero-image"
+                  style="aspect-ratio: 4/3; margin-bottom: 8px"
+                >
+                  <svg class="hero-image-placeholder">
+                    <use href="#palette-icon" />
+                  </svg>
+                  <span class="hero-badge past">Past Workshop</span>
+                </div>
+                <div class="gallery-thumbnails">
+                  <div class="gallery-thumb active pottery-1"></div>
+                  <div class="gallery-thumb pottery-2"></div>
+                  <div class="gallery-thumb pottery-3"></div>
+                  <div class="gallery-thumb pottery-4"></div>
+                </div>
+
+                <h1
+                  class="detail-title"
+                  style="font-size: 20px; margin-top: 20px"
+                >
+                  Raku Firing Experience
+                </h1>
+                <div class="rating-summary">
+                  <div class="review-stars">
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star"><use href="#star-icon" /></svg>
+                    <svg class="star empty"><use href="#star-icon" /></svg>
+                  </div>
+                  <span class="score">4.2</span>
+                  <span class="count">(12 reviews)</span>
+                </div>
+
+                <div class="detail-meta">
+                  <div class="meta-row">
+                    <svg><use href="#calendar-icon" /></svg
+                    ><span>Jan 20, 2025</span>
+                  </div>
+                  <div class="meta-row">
+                    <svg><use href="#clock-icon" /></svg><span>6 hours</span>
+                  </div>
+                </div>
+
+                <p class="detail-description">
+                  Experience the ancient art of Raku firing. Participants
+                  learned specialized glazing techniques.
+                </p>
+
+                <h3 class="section-header">Reviews</h3>
+                <div class="review-card">
+                  <div class="review-header">
+                    <span class="reviewer-name">Meera S.</span>
+                    <span class="review-date">Jan 22</span>
+                  </div>
+                  <div class="review-stars" style="margin-bottom: 8px">
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                    <svg class="star" style="width: 12px; height: 12px">
+                      <use href="#star-icon" />
+                    </svg>
+                  </div>
+                  <p class="review-text">Amazing experience!</p>
+                </div>
+
+                <div class="mobile-sticky-cta">
+                  <button
+                    class="sticky-btn outline"
+                    style="max-width: none; flex: 1"
+                  >
+                    Write a Review
+                  </button>
+                  <button class="sticky-btn" style="max-width: none; flex: 1">
+                    Similar Events
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TABLET - Past (Side by Side) -->
+            <div class="viewport-box" style="width: 768px">
+              <div class="viewport-header">
+                <span class="viewport-label">Tablet - Past</span>
+                <span class="viewport-size">768 x 1024</span>
+              </div>
+              <div class="viewport-content tablet">
+                <div class="wf-breadcrumbs" style="margin-bottom: 16px">
+                  <a href="#">Home</a> / <a href="#">Events</a> /
+                  <a href="#">Past</a> / Raku Firing
+                </div>
+                <div class="past-event-badge">Completed on Jan 20, 2025</div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 24px;
+                    margin-top: 16px;
+                  "
+                >
+                  <!-- Left: Gallery -->
+                  <div>
+                    <div
+                      class="hero-image"
+                      style="aspect-ratio: 3/4; border-radius: 16px"
+                    >
+                      <svg class="hero-image-placeholder">
+                        <use href="#palette-icon" />
+                      </svg>
+                      <span class="hero-badge past">Past Workshop</span>
+                    </div>
+                    <div class="gallery-thumbnails" style="margin-top: 12px">
+                      <div class="gallery-thumb active pottery-1"></div>
+                      <div class="gallery-thumb pottery-2"></div>
+                      <div class="gallery-thumb pottery-3"></div>
+                      <div
+                        style="
+                          width: 60px;
+                          height: 60px;
+                          background: #f5f5f4;
+                          border-radius: 8px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          font-size: 12px;
+                          color: #999;
+                          font-weight: 600;
+                        "
+                      >
+                        +5
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Content -->
+                  <div>
+                    <h1 class="detail-title" style="font-size: 24px">
+                      Raku Firing Experience
+                    </h1>
+                    <div class="rating-summary">
+                      <div class="review-stars">
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 16px; height: 16px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg
+                          class="star empty"
+                          style="width: 16px; height: 16px"
+                        >
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <span class="score">4.2</span>
+                      <span class="count">(12 reviews)</span>
+                    </div>
+
+                    <!-- Info Card (instead of sidebar) -->
+                    <div
+                      style="
+                        background: #fafaf9;
+                        border-radius: 12px;
+                        padding: 16px;
+                        margin-bottom: 20px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-size: 13px;
+                          color: #737373;
+                          margin-bottom: 12px;
+                        "
+                      >
+                        This workshop has ended
+                      </div>
+                      <div
+                        style="
+                          display: flex;
+                          flex-direction: column;
+                          gap: 8px;
+                          font-size: 13px;
+                          margin-bottom: 16px;
+                        "
+                      >
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <span style="color: #737373">Date</span
+                          ><span style="font-weight: 600">Jan 20, 2025</span>
+                        </div>
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <span style="color: #737373">Duration</span
+                          ><span style="font-weight: 600">6 hours</span>
+                        </div>
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <span style="color: #737373">Attendees</span
+                          ><span style="font-weight: 600">8 participants</span>
+                        </div>
+                      </div>
+                      <button
+                        class="sidebar-btn sidebar-btn-outline"
+                        style="
+                          height: 40px;
+                          font-size: 13px;
+                          margin-bottom: 8px;
+                        "
+                      >
+                        Write a Review
+                      </button>
+                      <button
+                        class="sidebar-btn"
+                        style="height: 40px; font-size: 13px"
+                      >
+                        View Similar Events
+                      </button>
+                    </div>
+
+                    <p class="detail-description">
+                      Experience the ancient art of Raku firing. Participants
+                      learned specialized glazing techniques.
+                    </p>
+
+                    <h3 class="section-header">Instructor</h3>
+                    <div class="instructor-card">
+                      <div class="instructor-avatar">AK</div>
+                      <div class="instructor-info">
+                        <h4>Arun Kumar</h4>
+                        <p>Raku specialist, 20 years experience.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DESKTOP - Past (Side by Side) -->
+            <div class="viewport-box" style="min-width: 900px">
+              <div class="viewport-header">
+                <span class="viewport-label">Desktop - Past</span>
+                <span class="viewport-size">1440 x 900</span>
+              </div>
+              <div class="viewport-content desktop">
+                <div class="wf-breadcrumbs" style="margin-bottom: 20px">
+                  <a href="#">Home</a> / <a href="#">Events</a> /
+                  <a href="#">Past Workshops</a> / Raku Firing
+                </div>
+                <div class="past-event-badge" style="margin-bottom: 16px">
+                  Completed on January 20, 2025
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 48px;
+                  "
+                >
+                  <!-- Left: Gallery -->
+                  <div>
+                    <div
+                      class="hero-image"
+                      style="aspect-ratio: 4/5; border-radius: 20px"
+                    >
+                      <svg
+                        class="hero-image-placeholder"
+                        style="width: 80px; height: 80px"
+                      >
+                        <use href="#palette-icon" />
+                      </svg>
+                      <span class="hero-badge past" style="padding: 8px 16px"
+                        >Past Workshop</span
+                      >
+                    </div>
+                    <div class="gallery-thumbnails" style="margin-top: 16px">
+                      <div
+                        class="gallery-thumb active pottery-1"
+                        style="width: 80px; height: 80px"
+                      ></div>
+                      <div
+                        class="gallery-thumb pottery-2"
+                        style="width: 80px; height: 80px"
+                      ></div>
+                      <div
+                        class="gallery-thumb pottery-3"
+                        style="width: 80px; height: 80px"
+                      ></div>
+                      <div
+                        style="
+                          width: 80px;
+                          height: 80px;
+                          background: #f5f5f4;
+                          border-radius: 8px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          font-size: 14px;
+                          color: #999;
+                          font-weight: 600;
+                        "
+                      >
+                        +5
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Content -->
+                  <div>
+                    <h1 class="detail-title" style="font-size: 32px">
+                      Raku Firing Experience
+                    </h1>
+                    <div class="rating-summary" style="margin-bottom: 20px">
+                      <div class="review-stars">
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 18px; height: 18px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg
+                          class="star empty"
+                          style="width: 18px; height: 18px"
+                        >
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <span class="score">4.2</span>
+                      <span class="count">out of 5 (12 reviews)</span>
+                    </div>
+
+                    <!-- Info Card -->
+                    <div
+                      style="
+                        background: #fafaf9;
+                        border-radius: 16px;
+                        padding: 20px;
+                        margin-bottom: 24px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-size: 13px;
+                          color: #737373;
+                          margin-bottom: 12px;
+                        "
+                      >
+                        This workshop has ended
+                      </div>
+                      <div
+                        style="
+                          display: flex;
+                          flex-direction: column;
+                          gap: 10px;
+                          font-size: 14px;
+                          margin-bottom: 16px;
+                        "
+                      >
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <span style="color: #737373">Date</span
+                          ><span style="font-weight: 600"
+                            >January 20, 2025</span
+                          >
+                        </div>
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <span style="color: #737373">Duration</span
+                          ><span style="font-weight: 600">6 hours</span>
+                        </div>
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <span style="color: #737373">Level</span
+                          ><span style="font-weight: 600">Advanced</span>
+                        </div>
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <span style="color: #737373">Attendees</span
+                          ><span style="font-weight: 600">8 participants</span>
+                        </div>
+                      </div>
+                      <div style="display: flex; gap: 12px">
+                        <button
+                          class="sidebar-btn sidebar-btn-outline"
+                          style="flex: 1"
+                        >
+                          Write a Review
+                        </button>
+                        <button class="sidebar-btn" style="flex: 1">
+                          Similar Events
+                        </button>
+                      </div>
+                    </div>
+
+                    <p class="detail-description" style="font-size: 15px">
+                      Experience the ancient art of Raku firing in this advanced
+                      workshop. Participants learned specialized glazing
+                      techniques and watched their pieces transform in our
+                      outdoor kiln.
+                    </p>
+
+                    <h3 class="section-header">Instructor</h3>
+                    <div class="instructor-card">
+                      <div
+                        class="instructor-avatar"
+                        style="width: 64px; height: 64px"
+                      >
+                        AK
+                      </div>
+                      <div class="instructor-info">
+                        <h4 style="font-size: 16px">Arun Kumar</h4>
+                        <p style="font-size: 14px">
+                          Raku specialist with 20 years of experience. Studied
+                          in Kyoto, Japan.
+                        </p>
+                      </div>
+                    </div>
+
+                    <h3 class="section-header">Reviews (12)</h3>
+                    <div class="review-card">
+                      <div class="review-header">
+                        <span class="reviewer-name">Meera Sundaram</span>
+                        <span class="review-date">January 22, 2025</span>
+                      </div>
+                      <div class="review-stars" style="margin-bottom: 8px">
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <p class="review-text">
+                        Amazing experience! The firing process was magical.
+                      </p>
+                    </div>
+                    <div class="review-card">
+                      <div class="review-header">
+                        <span class="reviewer-name">Rahul P.</span>
+                        <span class="review-date">January 21, 2025</span>
+                      </div>
+                      <div class="review-stars" style="margin-bottom: 8px">
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg class="star" style="width: 14px; height: 14px">
+                          <use href="#star-icon" />
+                        </svg>
+                        <svg
+                          class="star empty"
+                          style="width: 14px; height: 14px"
+                        >
+                          <use href="#star-icon" />
+                        </svg>
+                      </div>
+                      <p class="review-text">
+                        Great workshop. The firing demo was incredible.
+                      </p>
+                    </div>
+                    <button
+                      style="
+                        width: 100%;
+                        padding: 12px;
+                        background: transparent;
+                        border: none;
+                        color: #4f6f52;
+                        font-weight: 600;
+                        cursor: pointer;
+                        margin-top: 8px;
+                      "
+                    >
+                      View All 12 Reviews &rarr;
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOLD OUT + CANCELLED for Option B -->
+        <div style="margin-top: 48px">
+          <div class="variant-label">
+            Additional States: Sold Out + Cancelled (Mobile)
+          </div>
+
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 375px 375px;
+              gap: 32px;
+              overflow-x: auto;
+              padding-bottom: 16px;
+            "
+          >
+            <!-- MOBILE - Sold Out (Option B) -->
+            <div class="viewport-box" style="width: 375px">
+              <div class="viewport-header">
+                <span class="viewport-label">Mobile - Sold Out</span>
+                <span class="viewport-size">375 x 812</span>
+              </div>
+              <div class="viewport-content">
+                <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                  <a href="#">Home</a> / <a href="#">Events</a> / Sculpting
+                  Masterclass
+                </div>
+
+                <div
+                  class="hero-image"
+                  style="aspect-ratio: 4/3; margin-bottom: 20px"
+                >
+                  <svg class="hero-image-placeholder">
+                    <use href="#palette-icon" />
+                  </svg>
+                  <span class="hero-badge sold-out">Sold Out</span>
+                </div>
+
+                <h1 class="detail-title" style="font-size: 20px">
+                  Advanced Sculpting Masterclass
+                </h1>
+
+                <div class="detail-meta">
+                  <div class="meta-row">
+                    <svg><use href="#calendar-icon" /></svg
+                    ><span>Saturday, Mar 8, 2025</span>
+                  </div>
+                  <div class="meta-row">
+                    <svg><use href="#clock-icon" /></svg
+                    ><span>10:00 AM - 4:00 PM</span>
+                  </div>
+                </div>
+
+                <!-- Inline Sold Out Card -->
+                <div
+                  style="
+                    background: #fef3c7;
+                    border-radius: 12px;
+                    padding: 16px;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: #d97706;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    All spots are filled
+                  </div>
+                  <div style="font-size: 13px; color: #666; line-height: 1.5">
+                    Get notified when a spot opens up or when a similar event is
+                    scheduled.
+                  </div>
+                </div>
+
+                <div class="mobile-sticky-cta">
+                  <div>
+                    <div
+                      class="sticky-price"
+                      style="
+                        color: #999;
+                        text-decoration: line-through;
+                        font-size: 16px;
+                      "
+                    >
+                      Rs. 4,500
+                    </div>
+                    <div
+                      style="font-size: 12px; color: #dc2626; font-weight: 600"
+                    >
+                      Sold Out
+                    </div>
+                  </div>
+                  <button class="sticky-btn" style="background: #1a1a1a">
+                    <svg width="16" height="16" style="margin-right: 6px">
+                      <use href="#bell-icon" />
+                    </svg>
+                    Notify Me
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- MOBILE - Cancelled (Option B) -->
+            <div class="viewport-box" style="width: 375px">
+              <div class="viewport-header">
+                <span class="viewport-label">Mobile - Cancelled</span>
+                <span class="viewport-size">375 x 812</span>
+              </div>
+              <div class="viewport-content">
+                <div class="wf-breadcrumbs" style="margin-bottom: 12px">
+                  <a href="#">Home</a> / <a href="#">Events</a> / Kiln Building
+                </div>
+
+                <div
+                  class="cancelled-badge past-event-badge"
+                  style="margin-bottom: 12px"
+                >
+                  <svg width="14" height="14">
+                    <use href="#x-circle-icon" />
+                  </svg>
+                  Event Cancelled
+                </div>
+
+                <div
+                  class="hero-image"
+                  style="aspect-ratio: 4/3; margin-bottom: 20px; opacity: 0.6"
+                >
+                  <svg class="hero-image-placeholder">
+                    <use href="#palette-icon" />
+                  </svg>
+                  <span class="hero-badge cancelled">Cancelled</span>
+                </div>
+
+                <h1 class="detail-title" style="font-size: 20px">
+                  Kiln Building Workshop
+                </h1>
+
+                <div
+                  style="
+                    background: #fee2e2;
+                    border-radius: 12px;
+                    padding: 16px;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: #dc2626;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    This event has been cancelled
+                  </div>
+                  <div style="font-size: 13px; color: #666; line-height: 1.5">
+                    Due to unforeseen circumstances, this event has been
+                    cancelled. A full refund has been initiated for registered
+                    attendees.
+                  </div>
+                </div>
+
+                <div class="mobile-sticky-cta">
+                  <button class="sticky-btn" style="max-width: none; flex: 1">
+                    Browse Similar Events
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- KEY DIFFERENCES SUMMARY                                       -->
+    <!-- ============================================================ -->
+    <div style="max-width: 900px; margin: 0 auto 48px">
+      <h3
+        style="
+          font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 20px;
+        "
+      >
+        Key Differences Between Options
+      </h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px">
+        <thead>
+          <tr style="border-bottom: 2px solid #e5e5e5">
+            <th
+              style="
+                text-align: left;
+                padding: 12px 16px;
+                font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                color: #737373;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              "
+            >
+              Aspect
+            </th>
+            <th
+              style="
+                text-align: left;
+                padding: 12px 16px;
+                font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                color: #4f6f52;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              "
+            >
+              Option A (Stacked)
+            </th>
+            <th
+              style="
+                text-align: left;
+                padding: 12px 16px;
+                font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                color: #737373;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              "
+            >
+              Option B (Side-by-Side)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #f0f0f0">
+            <td style="padding: 12px 16px; font-weight: 600">Desktop Layout</td>
+            <td style="padding: 12px 16px">
+              Full-width hero on top, 60/40 content+sidebar below
+            </td>
+            <td style="padding: 12px 16px">50/50 image+content side by side</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f0f0f0">
+            <td style="padding: 12px 16px; font-weight: 600">Sidebar</td>
+            <td style="padding: 12px 16px">Separate sticky sidebar (right)</td>
+            <td style="padding: 12px 16px">
+              Inline card within content column
+            </td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f0f0f0">
+            <td style="padding: 12px 16px; font-weight: 600">Hero Image</td>
+            <td style="padding: 12px 16px">
+              Full-width, 21:9 on desktop, 4:3 mobile
+            </td>
+            <td style="padding: 12px 16px">
+              4:5 portrait on desktop, 4:3 mobile
+            </td>
+          </tr>
+          <tr style="border-bottom: 1px solid #f0f0f0">
+            <td style="padding: 12px 16px; font-weight: 600">Mobile</td>
+            <td style="padding: 12px 16px">Same stacked layout + sticky CTA</td>
+            <td style="padding: 12px 16px">Same stacked layout + sticky CTA</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 16px; font-weight: 600">Best For</td>
+            <td style="padding: 12px 16px">
+              Content-heavy events, longer descriptions
+            </td>
+            <td style="padding: 12px 16px">
+              Visually rich events, strong photography
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <!-- APPROVAL SECTION                                              -->
+    <!-- ============================================================ -->
+    <div class="approval-section">
+      <h3 class="approval-title">Approval Section</h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred layout for each viewport. Both options fully cover
+        all event states (Upcoming, Past, Sold Out, Cancelled).
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Stacked +
+            Sticky CTA</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Stacked +
+            Inline Card + Sticky CTA</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Full Hero
+            + Sidebar</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B -
+            Side-by-Side + Inline Card</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Full
+            Hero + Sticky Sidebar</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - 50/50
+            Side-by-Side</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 7.2):</strong><br /><br />
+      &bull; <strong>Event States:</strong> Upcoming (register), Past (gallery +
+      reviews), Sold Out (notify), Cancelled (info + redirect)<br />
+      &bull; <strong>Hero:</strong> Option A: 21:9 desktop / 4:3 mobile. Option
+      B: 4:5 desktop / 4:3 mobile<br />
+      &bull; <strong>Gallery:</strong> Past events show thumbnail strip.
+      Lightbox for full view<br />
+      &bull; <strong>Layout:</strong> Option A: Full-width hero + 60/40 split.
+      Option B: 50/50 side-by-side<br />
+      &bull; <strong>Sidebar:</strong> Option A: Separate sticky sidebar. Option
+      B: Inline card in content<br />
+      &bull; <strong>Mobile CTA:</strong> Sticky bottom bar for ALL states
+      (Register/Write Review/Notify Me/Browse Similar)<br />
+      &bull; <strong>Instructor:</strong> Avatar (initials), name, bio.
+      Consistent card design across both options<br />
+      &bull; <strong>Reviews:</strong> Past events show rating summary + review
+      cards + "View All" link<br />
+      &bull; <strong>Files:</strong> event-detail.tsx, past-workshop-detail.tsx,
+      event-hero.tsx, event-sidebar.tsx, instructor-card.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

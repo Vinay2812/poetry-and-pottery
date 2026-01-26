@@ -1,0 +1,1507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Task 12.1: Sign In/Sign Up Pages - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Auth Page Specific Styles */
+      .auth-split {
+        display: flex;
+        min-height: 100%;
+      }
+
+      .auth-image-side {
+        background: linear-gradient(
+          135deg,
+          #e8ece8 0%,
+          #d9e8d9 50%,
+          #e8ddd4 100%
+        );
+        position: relative;
+        overflow: hidden;
+      }
+
+      .auth-image-side::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 C20 5 15 15 15 25 C15 35 20 45 30 55 C40 45 45 35 45 25 C45 15 40 5 30 5' fill='none' stroke='%234F6F52' stroke-width='1' opacity='0.1'/%3E%3C/svg%3E")
+          repeat;
+        opacity: 0.5;
+      }
+
+      .auth-image-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding: 40px;
+        text-align: center;
+      }
+
+      .auth-image-logo {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #4f6f52;
+        margin-bottom: 16px;
+      }
+
+      .auth-image-tagline {
+        font-size: 14px;
+        color: #525252;
+        max-width: 240px;
+        line-height: 1.6;
+      }
+
+      .pottery-illustration {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, #c4785a 0%, #8b7355 100%);
+        border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+        opacity: 0.6;
+      }
+
+      .auth-form-side {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px;
+        background: white;
+      }
+
+      .auth-form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .auth-header {
+        margin-bottom: 32px;
+      }
+
+      .auth-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .auth-subtitle {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .auth-subtitle a {
+        color: #4f6f52;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      /* Clerk-like Form Elements */
+      .clerk-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .clerk-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .clerk-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #525252;
+      }
+
+      .clerk-input {
+        height: 44px;
+        padding: 0 14px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #1a1a1a;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        transition: all 0.15s ease-out;
+      }
+
+      .clerk-input:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      .clerk-btn-primary {
+        height: 44px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .clerk-btn-primary:hover {
+        background: #3d5640;
+      }
+
+      .clerk-divider {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin: 8px 0;
+      }
+
+      .clerk-divider::before,
+      .clerk-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e5e5e5;
+      }
+
+      .clerk-divider span {
+        font-size: 12px;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .clerk-social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        height: 44px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        background: white;
+        color: #1a1a1a;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .clerk-social-btn:hover {
+        background: #f5f5f4;
+        border-color: #d4d4d4;
+      }
+
+      .clerk-social-icon {
+        width: 18px;
+        height: 18px;
+        background: #737373;
+        border-radius: 4px;
+      }
+
+      .clerk-footer {
+        margin-top: 24px;
+        text-align: center;
+        font-size: 12px;
+        color: #999;
+      }
+
+      .clerk-footer a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      /* Breadcrumbs */
+      .auth-breadcrumbs {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 24px;
+      }
+
+      .auth-breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .auth-breadcrumbs span {
+        margin: 0 8px;
+        color: #ccc;
+      }
+
+      /* Option Layouts */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 64px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        padding: 16px 20px;
+        background: #fafaf9;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        min-height: 500px;
+      }
+
+      /* Mobile Frame */
+      .mobile-auth {
+        padding: 20px 16px;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mobile-auth .auth-header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .mobile-auth .auth-title {
+        font-size: 24px;
+      }
+
+      /* Tablet Frame */
+      .tablet-auth {
+        display: flex;
+        min-height: 500px;
+      }
+
+      .tablet-auth .auth-image-side {
+        width: 200px;
+        flex-shrink: 0;
+      }
+
+      .tablet-auth .auth-form-side {
+        padding: 32px 24px;
+      }
+
+      .tablet-auth .auth-title {
+        font-size: 24px;
+      }
+
+      /* Desktop Frame */
+      .desktop-auth {
+        display: flex;
+        min-height: 500px;
+      }
+
+      .desktop-auth .auth-image-side {
+        width: 45%;
+        flex-shrink: 0;
+      }
+
+      .desktop-auth .auth-form-side {
+        padding: 48px 40px;
+      }
+
+      /* Option B: Centered Card */
+      .centered-card-bg {
+        background: linear-gradient(135deg, #fafaf9 0%, #f5f0e8 100%);
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .auth-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 32px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .auth-card.mobile {
+        padding: 24px 20px;
+        border-radius: 16px;
+      }
+
+      .auth-card .auth-logo {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .auth-card .auth-logo-text {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+      }
+
+      /* Option C: Minimal */
+      .minimal-auth {
+        background: #fafaf9;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+      }
+
+      .minimal-auth-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 380px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .minimal-auth .auth-title {
+        text-align: center;
+      }
+
+      .minimal-auth .auth-subtitle {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      /* Green underline accent */
+      .title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        margin: 8px auto 0;
+        border-radius: 2px;
+      }
+
+      /* Tabs for Sign In / Sign Up */
+      .auth-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .auth-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px 20px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+      }
+
+      .auth-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 12.1: Sign In/Sign Up Pages</h1>
+    <p class="subtitle">
+      Auth pages with consistent header, clean centered layout, and Clerk
+      styling matching the forest theme. Uses "Welcome Back" for sign-in and
+      "Create Account" for sign-up headings.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">In Progress</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>DESIGN REQUIREMENTS</h3>
+          <ul>
+            <li>
+              Page header: Title + breadcrumbs (consistent with other pages)
+            </li>
+            <li>Layout: Centered card on desktop, full-screen mobile</li>
+            <li>Heading: "Welcome Back" / "Create Account" in font-display</li>
+            <li>Clerk: Custom styling to match forest theme</li>
+            <li>Social login buttons (Google, GitHub, etc.)</li>
+            <li>Link between sign-in and sign-up pages</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>DESIGN GOALS</h3>
+          <ul>
+            <li>Premium, welcoming first impression</li>
+            <li>Consistent with Poetry & Pottery brand</li>
+            <li>
+              Forest theme colors (primary green, cream, terracotta accents)
+            </li>
+            <li>Clean, distraction-free form experience</li>
+            <li>Mobile-optimized touch targets (44px min)</li>
+            <li>Smooth focus states and transitions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Split Layout - RECOMMENDED -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Split Layout with Brand Image
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Desktop shows 50/50 split with decorative pottery/forest imagery.
+              Creates premium brand experience while keeping form accessible.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="mobile-auth">
+                <div class="auth-breadcrumbs">
+                  <a href="#">Home</a><span>/</span>Sign In
+                </div>
+
+                <div class="auth-header">
+                  <h1 class="auth-title">Welcome Back</h1>
+                  <div class="title-underline"></div>
+                  <p class="auth-subtitle" style="margin-top: 12px">
+                    Don't have an account? <a href="#">Sign up</a>
+                  </p>
+                </div>
+
+                <div class="clerk-form">
+                  <button class="clerk-social-btn">
+                    <div class="clerk-social-icon"></div>
+                    Continue with Google
+                  </button>
+
+                  <div class="clerk-divider">
+                    <span>or</span>
+                  </div>
+
+                  <div class="clerk-input-group">
+                    <label class="clerk-label">Email address</label>
+                    <input
+                      type="email"
+                      class="clerk-input"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+
+                  <div class="clerk-input-group">
+                    <label class="clerk-label">Password</label>
+                    <input
+                      type="password"
+                      class="clerk-input"
+                      placeholder="Enter your password"
+                    />
+                  </div>
+
+                  <button class="clerk-btn-primary">Sign In</button>
+
+                  <div class="clerk-footer">
+                    <a href="#">Forgot password?</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="tablet-auth">
+                <div class="auth-image-side">
+                  <div class="auth-image-content">
+                    <div class="pottery-illustration"></div>
+                    <div class="auth-image-logo">Poetry & Pottery</div>
+                    <p class="auth-image-tagline">
+                      Handcrafted with love, delivered with care
+                    </p>
+                  </div>
+                </div>
+                <div class="auth-form-side">
+                  <div class="auth-form-container">
+                    <div class="auth-breadcrumbs">
+                      <a href="#">Home</a><span>/</span>Sign In
+                    </div>
+
+                    <div class="auth-header">
+                      <h1 class="auth-title">Welcome Back</h1>
+                      <p class="auth-subtitle">
+                        Don't have an account? <a href="#">Sign up</a>
+                      </p>
+                    </div>
+
+                    <div class="clerk-form">
+                      <button class="clerk-social-btn">
+                        <div class="clerk-social-icon"></div>
+                        Continue with Google
+                      </button>
+
+                      <div class="clerk-divider">
+                        <span>or</span>
+                      </div>
+
+                      <div class="clerk-input-group">
+                        <label class="clerk-label">Email address</label>
+                        <input
+                          type="email"
+                          class="clerk-input"
+                          placeholder="you@example.com"
+                        />
+                      </div>
+
+                      <div class="clerk-input-group">
+                        <label class="clerk-label">Password</label>
+                        <input
+                          type="password"
+                          class="clerk-input"
+                          placeholder="Enter your password"
+                        />
+                      </div>
+
+                      <button class="clerk-btn-primary">Sign In</button>
+
+                      <div class="clerk-footer">
+                        <a href="#">Forgot password?</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="desktop-auth">
+                <div class="auth-image-side">
+                  <div class="auth-image-content">
+                    <div
+                      class="pottery-illustration"
+                      style="width: 160px; height: 160px"
+                    ></div>
+                    <div class="auth-image-logo" style="font-size: 28px">
+                      Poetry & Pottery
+                    </div>
+                    <p
+                      class="auth-image-tagline"
+                      style="max-width: 280px; font-size: 15px"
+                    >
+                      Handcrafted with love, delivered with care
+                    </p>
+                  </div>
+                </div>
+                <div class="auth-form-side">
+                  <div class="auth-form-container">
+                    <div class="auth-breadcrumbs">
+                      <a href="#">Home</a><span>/</span>Sign In
+                    </div>
+
+                    <div class="auth-header">
+                      <h1 class="auth-title">Welcome Back</h1>
+                      <p class="auth-subtitle">
+                        Don't have an account? <a href="#">Sign up</a>
+                      </p>
+                    </div>
+
+                    <div class="clerk-form">
+                      <div style="display: flex; gap: 12px">
+                        <button class="clerk-social-btn" style="flex: 1">
+                          <div class="clerk-social-icon"></div>
+                          Google
+                        </button>
+                        <button class="clerk-social-btn" style="flex: 1">
+                          <div class="clerk-social-icon"></div>
+                          GitHub
+                        </button>
+                      </div>
+
+                      <div class="clerk-divider">
+                        <span>or continue with email</span>
+                      </div>
+
+                      <div class="clerk-input-group">
+                        <label class="clerk-label">Email address</label>
+                        <input
+                          type="email"
+                          class="clerk-input"
+                          placeholder="you@example.com"
+                        />
+                      </div>
+
+                      <div class="clerk-input-group">
+                        <label class="clerk-label">Password</label>
+                        <input
+                          type="password"
+                          class="clerk-input"
+                          placeholder="Enter your password"
+                        />
+                      </div>
+
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: flex-end;
+                          margin-top: -8px;
+                        "
+                      >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 13px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Forgot password?</a
+                        >
+                      </div>
+
+                      <button class="clerk-btn-primary">Sign In</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Centered Card with Background -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">
+              Centered Card with Pattern Background
+            </h3>
+            <p class="wf-option-desc">
+              Card floats on subtle cream/forest pattern background. Symmetrical
+              layout works well for all viewports. More compact approach.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="centered-card-bg" style="padding: 16px">
+                <div class="auth-card mobile">
+                  <div class="auth-logo">
+                    <span class="auth-logo-text">Poetry & Pottery</span>
+                  </div>
+
+                  <div
+                    class="auth-header"
+                    style="text-align: center; margin-bottom: 20px"
+                  >
+                    <h1 class="auth-title" style="font-size: 22px">
+                      Welcome Back
+                    </h1>
+                    <p class="auth-subtitle" style="font-size: 13px">
+                      New here? <a href="#">Create account</a>
+                    </p>
+                  </div>
+
+                  <div class="clerk-form" style="gap: 16px">
+                    <button class="clerk-social-btn" style="height: 42px">
+                      <div class="clerk-social-icon"></div>
+                      Continue with Google
+                    </button>
+
+                    <div class="clerk-divider">
+                      <span>or</span>
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Email</label>
+                      <input
+                        type="email"
+                        class="clerk-input"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Password</label>
+                      <input
+                        type="password"
+                        class="clerk-input"
+                        placeholder="Password"
+                      />
+                    </div>
+
+                    <button class="clerk-btn-primary" style="height: 42px">
+                      Sign In
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="centered-card-bg">
+                <div class="auth-card">
+                  <div class="auth-logo">
+                    <span class="auth-logo-text">Poetry & Pottery</span>
+                  </div>
+
+                  <div class="auth-header" style="text-align: center">
+                    <h1 class="auth-title" style="font-size: 26px">
+                      Welcome Back
+                    </h1>
+                    <p class="auth-subtitle">
+                      New here? <a href="#">Create account</a>
+                    </p>
+                  </div>
+
+                  <div class="clerk-form">
+                    <button class="clerk-social-btn">
+                      <div class="clerk-social-icon"></div>
+                      Continue with Google
+                    </button>
+
+                    <div class="clerk-divider">
+                      <span>or</span>
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Email address</label>
+                      <input
+                        type="email"
+                        class="clerk-input"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Password</label>
+                      <input
+                        type="password"
+                        class="clerk-input"
+                        placeholder="Enter your password"
+                      />
+                    </div>
+
+                    <button class="clerk-btn-primary">Sign In</button>
+
+                    <div class="clerk-footer">
+                      <a href="#">Forgot password?</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="centered-card-bg">
+                <div
+                  class="auth-card"
+                  style="max-width: 440px; padding: 48px 40px"
+                >
+                  <div class="auth-logo">
+                    <span class="auth-logo-text" style="font-size: 22px"
+                      >Poetry & Pottery</span
+                    >
+                  </div>
+
+                  <div class="auth-header" style="text-align: center">
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <p class="auth-subtitle">
+                      New here? <a href="#">Create account</a>
+                    </p>
+                  </div>
+
+                  <div class="clerk-form">
+                    <div style="display: flex; gap: 12px">
+                      <button class="clerk-social-btn" style="flex: 1">
+                        <div class="clerk-social-icon"></div>
+                        Google
+                      </button>
+                      <button class="clerk-social-btn" style="flex: 1">
+                        <div class="clerk-social-icon"></div>
+                        GitHub
+                      </button>
+                    </div>
+
+                    <div class="clerk-divider">
+                      <span>or continue with email</span>
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Email address</label>
+                      <input
+                        type="email"
+                        class="clerk-input"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Password</label>
+                      <input
+                        type="password"
+                        class="clerk-input"
+                        placeholder="Enter your password"
+                      />
+                    </div>
+
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: flex-end;
+                        margin-top: -8px;
+                      "
+                    >
+                      <a
+                        href="#"
+                        style="
+                          font-size: 13px;
+                          color: #4f6f52;
+                          text-decoration: none;
+                        "
+                        >Forgot password?</a
+                      >
+                    </div>
+
+                    <button class="clerk-btn-primary">Sign In</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Minimal Clean -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Minimal Clean Layout</h3>
+            <p class="wf-option-desc">
+              Maximum focus on the form with minimal decoration. Clean,
+              professional, and fast-loading. Best for users who value
+              efficiency.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="minimal-auth">
+                <div class="auth-breadcrumbs" style="margin-bottom: 16px">
+                  <a href="#">Home</a><span>/</span>Sign In
+                </div>
+
+                <div class="minimal-auth-content">
+                  <div
+                    class="auth-header"
+                    style="text-align: center; margin-bottom: 28px"
+                  >
+                    <h1 class="auth-title" style="font-size: 24px">
+                      Welcome Back
+                    </h1>
+                    <div class="title-underline"></div>
+                  </div>
+
+                  <div class="clerk-form" style="gap: 16px">
+                    <button class="clerk-social-btn">
+                      <div class="clerk-social-icon"></div>
+                      Continue with Google
+                    </button>
+
+                    <div class="clerk-divider">
+                      <span>or</span>
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Email</label>
+                      <input
+                        type="email"
+                        class="clerk-input"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Password</label>
+                      <input
+                        type="password"
+                        class="clerk-input"
+                        placeholder="Password"
+                      />
+                    </div>
+
+                    <button class="clerk-btn-primary">Sign In</button>
+
+                    <div class="clerk-footer">
+                      <a href="#">Forgot password?</a>
+                      <span style="margin: 0 8px; color: #ccc">|</span>
+                      <a href="#">Create account</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="minimal-auth">
+                <div class="auth-breadcrumbs">
+                  <a href="#">Home</a><span>/</span>Sign In
+                </div>
+
+                <div class="minimal-auth-content" style="max-width: 400px">
+                  <div
+                    class="auth-header"
+                    style="text-align: center; margin-bottom: 32px"
+                  >
+                    <h1 class="auth-title" style="font-size: 28px">
+                      Welcome Back
+                    </h1>
+                    <div class="title-underline"></div>
+                  </div>
+
+                  <div class="clerk-form">
+                    <button class="clerk-social-btn">
+                      <div class="clerk-social-icon"></div>
+                      Continue with Google
+                    </button>
+
+                    <div class="clerk-divider">
+                      <span>or</span>
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Email address</label>
+                      <input
+                        type="email"
+                        class="clerk-input"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Password</label>
+                      <input
+                        type="password"
+                        class="clerk-input"
+                        placeholder="Enter your password"
+                      />
+                    </div>
+
+                    <button class="clerk-btn-primary">Sign In</button>
+
+                    <div class="clerk-footer">
+                      <a href="#">Forgot password?</a>
+                      <span style="margin: 0 12px; color: #ccc">|</span>
+                      <a href="#">Create account</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="viewport-content">
+              <div class="minimal-auth">
+                <div class="auth-breadcrumbs">
+                  <a href="#">Home</a><span>/</span>Sign In
+                </div>
+
+                <div class="minimal-auth-content" style="max-width: 420px">
+                  <div
+                    class="auth-header"
+                    style="text-align: center; margin-bottom: 36px"
+                  >
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <div class="title-underline"></div>
+                    <p class="auth-subtitle" style="margin-top: 12px">
+                      Sign in to your account to continue
+                    </p>
+                  </div>
+
+                  <div class="clerk-form">
+                    <div style="display: flex; gap: 12px">
+                      <button class="clerk-social-btn" style="flex: 1">
+                        <div class="clerk-social-icon"></div>
+                        Google
+                      </button>
+                      <button class="clerk-social-btn" style="flex: 1">
+                        <div class="clerk-social-icon"></div>
+                        GitHub
+                      </button>
+                    </div>
+
+                    <div class="clerk-divider">
+                      <span>or continue with email</span>
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Email address</label>
+                      <input
+                        type="email"
+                        class="clerk-input"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div class="clerk-input-group">
+                      <label class="clerk-label">Password</label>
+                      <input
+                        type="password"
+                        class="clerk-input"
+                        placeholder="Enter your password"
+                      />
+                    </div>
+
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-top: -4px;
+                      "
+                    >
+                      <label
+                        style="
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                          font-size: 13px;
+                          color: #666;
+                          cursor: pointer;
+                        "
+                      >
+                        <input type="checkbox" style="accent-color: #4f6f52" />
+                        Remember me
+                      </label>
+                      <a
+                        href="#"
+                        style="
+                          font-size: 13px;
+                          color: #4f6f52;
+                          text-decoration: none;
+                        "
+                        >Forgot password?</a
+                      >
+                    </div>
+
+                    <button class="clerk-btn-primary">Sign In</button>
+
+                    <div class="clerk-footer" style="margin-top: 16px">
+                      Don't have an account? <a href="#">Create one</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Sign Up Variant Preview -->
+    <div class="section">
+      <h2
+        class="section-title"
+        style="text-align: center; font-size: 22px; margin-bottom: 32px"
+      >
+        Sign Up Page Variant (Same Layout, Different Content)
+      </h2>
+
+      <div
+        style="
+          display: flex;
+          gap: 24px;
+          justify-content: center;
+          flex-wrap: wrap;
+        "
+      >
+        <div class="auth-card" style="max-width: 360px">
+          <div class="auth-logo">
+            <span class="auth-logo-text">Poetry & Pottery</span>
+          </div>
+
+          <div class="auth-header" style="text-align: center">
+            <h1 class="auth-title" style="font-size: 24px">Create Account</h1>
+            <p class="auth-subtitle">
+              Already have an account? <a href="#">Sign in</a>
+            </p>
+          </div>
+
+          <div class="clerk-form" style="gap: 16px">
+            <button class="clerk-social-btn">
+              <div class="clerk-social-icon"></div>
+              Continue with Google
+            </button>
+
+            <div class="clerk-divider">
+              <span>or</span>
+            </div>
+
+            <div class="clerk-input-group">
+              <label class="clerk-label">Full name</label>
+              <input type="text" class="clerk-input" placeholder="John Doe" />
+            </div>
+
+            <div class="clerk-input-group">
+              <label class="clerk-label">Email address</label>
+              <input
+                type="email"
+                class="clerk-input"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            <div class="clerk-input-group">
+              <label class="clerk-label">Password</label>
+              <input
+                type="password"
+                class="clerk-input"
+                placeholder="Create a password"
+              />
+            </div>
+
+            <button class="clerk-btn-primary">Create Account</button>
+
+            <div class="clerk-footer" style="font-size: 11px; line-height: 1.6">
+              By signing up, you agree to our <a href="#">Terms</a> and
+              <a href="#">Privacy Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred auth page layout option for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Split
+            (mobile: full-width)</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Centered
+            Card</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Minimal
+            Clean</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Split
+            Layout</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Centered
+            Card</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Minimal
+            Clean</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Split
+            Layout</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Centered
+            Card</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Minimal
+            Clean</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 12.1):</strong><br /><br />
+      &bull; <strong>Layout:</strong> Split (Option A) or Centered Card (Option
+      B/C)<br />
+      &bull; <strong>Clerk Components:</strong> &lt;SignIn/&gt; and
+      &lt;SignUp/&gt; with appearance prop<br />
+      &bull; <strong>Appearance:</strong> Custom Clerk theme matching forest
+      colors<br />
+      &bull; <strong>Colors:</strong> Primary #4F6F52, Background #FAFAF9,
+      Accent #C4785A<br />
+      &bull; <strong>Typography:</strong> font-display (Plus Jakarta Sans) for
+      headings<br />
+      &bull; <strong>Inputs:</strong> h-11 (44px), rounded-lg (8px), focus ring
+      primary<br />
+      &bull; <strong>Buttons:</strong> h-11 (44px), rounded-lg, bg-primary<br />
+      &bull; <strong>Social:</strong> Google + GitHub buttons with custom
+      styling<br />
+      &bull; <strong>Files:</strong> sign-in/[[...sign-in]]/page.tsx,
+      sign-up/[[...sign-up]]/page.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

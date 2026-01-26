@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 9.5: Global Search - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Search Dialog Base */
+      .search-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 120px;
+      }
+
+      .search-dialog {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 640px;
+        overflow: hidden;
+      }
+
+      .search-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .search-input-wrapper svg {
+        width: 22px;
+        height: 22px;
+        stroke: #999;
+        fill: none;
+        stroke-width: 2;
+        flex-shrink: 0;
+      }
+
+      .search-input {
+        flex: 1;
+        border: none;
+        font-family: "Outfit", sans-serif;
+        font-size: 18px;
+        color: #1a1a1a;
+        outline: none;
+      }
+
+      .search-input::placeholder {
+        color: #999;
+      }
+
+      .search-shortcut {
+        font-size: 12px;
+        color: #999;
+        background: #f5f5f4;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-family: monospace;
+      }
+
+      .search-results {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .search-group {
+        padding: 12px 0;
+      }
+
+      .search-group-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        padding: 0 20px;
+        margin-bottom: 8px;
+      }
+
+      .search-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 20px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .search-item:hover,
+      .search-item.selected {
+        background: #f5f5f4;
+      }
+
+      .search-item-thumb {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        flex-shrink: 0;
+      }
+
+      .search-item-thumb.event {
+        background: linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%);
+      }
+
+      .search-item-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .search-item-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .search-item-meta {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .search-item-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .search-footer {
+        padding: 12px 20px;
+        background: #fafaf9;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #999;
+      }
+
+      .search-footer-keys {
+        display: flex;
+        gap: 16px;
+      }
+
+      .search-footer-key {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .search-footer-key kbd {
+        font-family: monospace;
+        background: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid #e5e5e5;
+        font-size: 11px;
+      }
+
+      /* Mobile Full Screen */
+      .mobile-search {
+        width: 375px;
+        height: 600px;
+        background: white;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mobile-search-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .mobile-search-back {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .mobile-search-back svg {
+        width: 22px;
+        height: 22px;
+        stroke: #1a1a1a;
+        fill: none;
+        stroke-width: 2;
+      }
+
+      .mobile-search-input-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #f5f5f4;
+        border-radius: 10px;
+        padding: 10px 14px;
+      }
+
+      .mobile-search-input-wrapper svg {
+        width: 18px;
+        height: 18px;
+        stroke: #999;
+        fill: none;
+      }
+
+      .mobile-search-input-wrapper input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-family: "Outfit", sans-serif;
+        font-size: 16px;
+        outline: none;
+      }
+
+      /* Demo Layout */
+      .demo-row {
+        display: flex;
+        gap: 48px;
+        justify-content: center;
+        margin-top: 32px;
+        flex-wrap: wrap;
+      }
+
+      .demo-container {
+        text-align: center;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 32px;
+        height: 32px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .option-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .option-desc {
+        font-size: 12px;
+        color: #737373;
+        margin-top: 4px;
+      }
+
+      .demo-frame {
+        position: relative;
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 24px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Empty State */
+      .search-empty {
+        padding: 48px 20px;
+        text-align: center;
+      }
+
+      .search-empty-icon {
+        width: 64px;
+        height: 64px;
+        background: #f5f5f4;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+
+      .search-empty-icon svg {
+        width: 28px;
+        height: 28px;
+        stroke: #999;
+        fill: none;
+      }
+
+      .search-empty-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .search-empty-desc {
+        font-size: 13px;
+        color: #737373;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 9.5: Global Search</h1>
+    <p class="subtitle">
+      Command palette style search dialog. Centered with backdrop blur, grouped
+      results (products, events, orders), keyboard navigation support.
+      Full-screen overlay on mobile.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="search-icon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </symbol>
+      <symbol id="back-icon" viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </symbol>
+      <symbol id="x-icon" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT STATE</h3>
+          <ul>
+            <li>Basic search input</li>
+            <li>No grouped results</li>
+            <li>No keyboard navigation</li>
+            <li>Same UI on all devices</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Command palette style dialog</li>
+            <li>Grouped results: Products, Events, Orders</li>
+            <li>Arrow navigation + Enter to select</li>
+            <li>Full-screen overlay on mobile</li>
+            <li>Thumbnails for visual context</li>
+            <li>Backdrop blur effect</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Desktop Option -->
+    <div class="section-title">Desktop: Command Palette</div>
+    <div class="demo-row">
+      <div class="demo-container">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <div class="option-title">
+              With Results
+              <span
+                class="recommended-badge"
+                style="font-size: 9px; padding: 2px 6px"
+                >RECOMMENDED</span
+              >
+            </div>
+            <div class="option-desc">
+              Grouped search results with thumbnails
+            </div>
+          </div>
+        </div>
+        <div class="demo-frame">
+          <div class="search-dialog">
+            <div class="search-input-wrapper">
+              <svg><use href="#search-icon" /></svg>
+              <input
+                type="text"
+                class="search-input"
+                value="ceramic"
+                placeholder="Search products, events..."
+              />
+              <span class="search-shortcut">ESC</span>
+            </div>
+            <div class="search-results">
+              <div class="search-group">
+                <div class="search-group-title">Products</div>
+                <div class="search-item selected">
+                  <div class="search-item-thumb"></div>
+                  <div class="search-item-info">
+                    <div class="search-item-title">Ceramic Serving Bowl</div>
+                    <div class="search-item-meta">Handmade • In Stock</div>
+                  </div>
+                  <div class="search-item-price">&#8377;1,450</div>
+                </div>
+                <div class="search-item">
+                  <div class="search-item-thumb"></div>
+                  <div class="search-item-info">
+                    <div class="search-item-title">
+                      Ceramic Vase - Forest Green
+                    </div>
+                    <div class="search-item-meta">Handmade • Low Stock</div>
+                  </div>
+                  <div class="search-item-price">&#8377;2,200</div>
+                </div>
+              </div>
+              <div class="search-group">
+                <div class="search-group-title">Events</div>
+                <div class="search-item">
+                  <div class="search-item-thumb event"></div>
+                  <div class="search-item-info">
+                    <div class="search-item-title">
+                      Ceramic Glazing Workshop
+                    </div>
+                    <div class="search-item-meta">
+                      Feb 15, 2026 • 5 spots left
+                    </div>
+                  </div>
+                  <div class="search-item-price">&#8377;3,500</div>
+                </div>
+              </div>
+            </div>
+            <div class="search-footer">
+              <div class="search-footer-keys">
+                <div class="search-footer-key"><kbd>↑↓</kbd> Navigate</div>
+                <div class="search-footer-key"><kbd>↵</kbd> Select</div>
+                <div class="search-footer-key"><kbd>ESC</kbd> Close</div>
+              </div>
+              <span>3 results</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-container">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <div class="option-title">Empty State</div>
+            <div class="option-desc">When no results found</div>
+          </div>
+        </div>
+        <div class="demo-frame">
+          <div class="search-dialog">
+            <div class="search-input-wrapper">
+              <svg><use href="#search-icon" /></svg>
+              <input
+                type="text"
+                class="search-input"
+                value="xyz123"
+                placeholder="Search products, events..."
+              />
+              <span class="search-shortcut">ESC</span>
+            </div>
+            <div class="search-empty">
+              <div class="search-empty-icon">
+                <svg><use href="#search-icon" /></svg>
+              </div>
+              <div class="search-empty-title">No results found</div>
+              <div class="search-empty-desc">Try a different search term</div>
+            </div>
+            <div class="search-footer">
+              <div class="search-footer-keys">
+                <div class="search-footer-key"><kbd>ESC</kbd> Close</div>
+              </div>
+              <span>0 results</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Mobile Option -->
+    <div class="section-title">Mobile: Full-Screen Search</div>
+    <div class="demo-row">
+      <div class="demo-container">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <div class="option-title">Full Screen Overlay</div>
+            <div class="option-desc">Back button + search input header</div>
+          </div>
+        </div>
+        <div
+          class="wf-mobile-frame-custom"
+          style="
+            width: 375px;
+            background: white;
+            border-radius: 32px;
+            border: 8px solid #1a1a1a;
+            overflow: hidden;
+          "
+        >
+          <div class="mobile-search-header">
+            <button class="mobile-search-back">
+              <svg><use href="#back-icon" /></svg>
+            </button>
+            <div class="mobile-search-input-wrapper">
+              <svg><use href="#search-icon" /></svg>
+              <input type="text" value="vase" placeholder="Search..." />
+            </div>
+          </div>
+          <div
+            class="search-results"
+            style="background: #fafaf9; min-height: 400px"
+          >
+            <div class="search-group">
+              <div class="search-group-title">Products</div>
+              <div class="search-item selected">
+                <div class="search-item-thumb"></div>
+                <div class="search-item-info">
+                  <div class="search-item-title">Terracotta Vase</div>
+                  <div class="search-item-meta">Handmade • In Stock</div>
+                </div>
+                <div class="search-item-price">&#8377;1,850</div>
+              </div>
+              <div class="search-item">
+                <div class="search-item-thumb"></div>
+                <div class="search-item-info">
+                  <div class="search-item-title">Ceramic Vase Set</div>
+                  <div class="search-item-meta">Handmade • In Stock</div>
+                </div>
+                <div class="search-item-price">&#8377;2,450</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred global search design:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop</div>
+          <label
+            ><input type="radio" name="desktop" value="a" checked /> Option A -
+            Command Palette (Recommended)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Slide
+            Down Panel</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile</div>
+          <label
+            ><input type="radio" name="mobile" value="a" checked /> Option A -
+            Full Screen Overlay</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Bottom
+            Sheet</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area" style="margin-top: 24px">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 9.5):</strong><br /><br />
+      &bull; <strong>Trigger:</strong> Search icon click or Cmd+K / Ctrl+K
+      keyboard shortcut<br />
+      &bull; <strong>Desktop dialog:</strong> max-w-[640px], rounded-2xl,
+      centered with top offset<br />
+      &bull; <strong>Backdrop:</strong> bg-black/40, backdrop-blur-sm<br />
+      &bull; <strong>Input:</strong> text-lg, no border, focus outline none<br />
+      &bull; <strong>Groups:</strong> Products, Events, Orders
+      (authenticated)<br />
+      &bull; <strong>Results:</strong> Thumbnail (48px), title, meta, price<br />
+      &bull; <strong>Keyboard:</strong> Arrow up/down for navigation, Enter to
+      select, Esc to close<br />
+      &bull; <strong>Mobile:</strong> Full screen overlay with back button<br />
+      &bull;
+      <strong>File:</strong>
+      src/features/global-search/components/global-search.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

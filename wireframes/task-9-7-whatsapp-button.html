@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 9.7 - WhatsApp Button | Poetry & Pottery Wireframes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* WhatsApp Button Styles */
+      .whatsapp-fab {
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .whatsapp-fab:hover {
+        transform: scale(1.05);
+      }
+
+      .whatsapp-fab svg {
+        fill: white;
+      }
+
+      /* Standard Green FAB */
+      .whatsapp-green {
+        background: #25d366;
+        border-radius: 50%;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      }
+
+      .whatsapp-green:hover {
+        background: #22c55e;
+        box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
+      }
+
+      /* Primary Color FAB */
+      .whatsapp-primary {
+        background: #4f6f52;
+        border-radius: 50%;
+        box-shadow: 0 4px 20px rgba(79, 111, 82, 0.35);
+      }
+
+      .whatsapp-primary:hover {
+        background: #3d5640;
+        box-shadow: 0 6px 24px rgba(79, 111, 82, 0.45);
+      }
+
+      /* Pill with Label */
+      .whatsapp-pill {
+        background: #25d366;
+        border-radius: 28px;
+        padding: 12px 20px 12px 16px;
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      }
+
+      .whatsapp-pill-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        white-space: nowrap;
+      }
+
+      /* Pulse Animation */
+      .whatsapp-pulse {
+        position: relative;
+      }
+
+      .whatsapp-pulse::before {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: inherit;
+        opacity: 0.3;
+        animation: pulse 2s ease-out infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.3;
+        }
+        70% {
+          transform: scale(1.3);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1.3);
+          opacity: 0;
+        }
+      }
+
+      /* Notification Badge */
+      .whatsapp-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: #ef4444;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid white;
+      }
+
+      /* Tooltip */
+      .whatsapp-tooltip {
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 12px;
+        background: #1a1a1a;
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s;
+      }
+
+      .whatsapp-tooltip::after {
+        content: "";
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 6px solid transparent;
+        border-left-color: #1a1a1a;
+      }
+
+      .whatsapp-fab:hover .whatsapp-tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* Chat Popup */
+      .whatsapp-popup {
+        position: fixed;
+        bottom: 100px;
+        right: 24px;
+        width: 320px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        z-index: 999;
+      }
+
+      .whatsapp-popup-header {
+        background: #25d366;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .whatsapp-popup-avatar {
+        width: 44px;
+        height: 44px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .whatsapp-popup-avatar svg {
+        width: 28px;
+        height: 28px;
+        fill: #4f6f52;
+      }
+
+      .whatsapp-popup-info {
+        flex: 1;
+      }
+
+      .whatsapp-popup-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+      }
+
+      .whatsapp-popup-status {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .whatsapp-popup-close {
+        width: 28px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .whatsapp-popup-close svg {
+        width: 14px;
+        height: 14px;
+        fill: white;
+      }
+
+      .whatsapp-popup-body {
+        padding: 20px;
+        background: #e5ddd5;
+        min-height: 100px;
+      }
+
+      .whatsapp-popup-message {
+        background: white;
+        padding: 10px 14px;
+        border-radius: 0 12px 12px 12px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #1a1a1a;
+        max-width: 85%;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .whatsapp-popup-time {
+        font-size: 10px;
+        color: #999;
+        text-align: right;
+        margin-top: 4px;
+      }
+
+      .whatsapp-popup-footer {
+        padding: 12px 16px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .whatsapp-popup-input {
+        flex: 1;
+        border: 1px solid #e5e5e5;
+        border-radius: 20px;
+        padding: 10px 16px;
+        font-size: 13px;
+        outline: none;
+      }
+
+      .whatsapp-popup-send {
+        width: 40px;
+        height: 40px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .whatsapp-popup-send svg {
+        width: 20px;
+        height: 20px;
+        fill: white;
+      }
+
+      /* Device Frame Preview */
+      .preview-container {
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 48px;
+      }
+
+      .preview-frame {
+        position: relative;
+        background: #fafaf9;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .preview-mobile {
+        width: 375px;
+        height: 500px;
+        border: 6px solid #1a1a1a;
+      }
+
+      .preview-desktop {
+        width: 600px;
+        height: 400px;
+        border-radius: 12px;
+        border: 3px solid #333;
+      }
+
+      .preview-content {
+        padding: 16px;
+        height: 100%;
+      }
+
+      .preview-placeholder {
+        background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+        border-radius: 12px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-size: 13px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        max-width: 800px;
+        margin: 64px auto;
+        background: #f8f7f6;
+        border-radius: 16px;
+        padding: 32px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+      }
+
+      .approval-options {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .approval-option {
+        background: white;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .approval-option:hover {
+        border-color: #4f6f52;
+      }
+
+      .approval-option.selected {
+        border-color: #4f6f52;
+        background: #e8ece8;
+      }
+
+      .approval-option-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .approval-notes {
+        margin-top: 16px;
+      }
+
+      .approval-notes textarea {
+        width: 100%;
+        min-height: 80px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 13px;
+        resize: vertical;
+      }
+
+      .approval-submit {
+        margin-top: 16px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* Implementation Notes */
+      .impl-notes {
+        max-width: 900px;
+        margin: 48px auto;
+        background: #e8ece8;
+        border-radius: 16px;
+        padding: 24px 28px;
+      }
+
+      .impl-notes h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #4f6f52;
+        margin-bottom: 16px;
+      }
+
+      .impl-notes ul {
+        list-style: none;
+        font-size: 13px;
+        line-height: 2;
+        color: #333;
+      }
+
+      .impl-notes li::before {
+        content: "→ ";
+        color: #4f6f52;
+        font-weight: 600;
+      }
+
+      .impl-notes code {
+        background: rgba(79, 111, 82, 0.15);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+
+      /* State Demos */
+      .state-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        margin-bottom: 48px;
+      }
+
+      .state-demo {
+        text-align: center;
+      }
+
+      .state-demo-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #999;
+        margin-bottom: 16px;
+      }
+
+      .state-demo-box {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      /* Sizes */
+      .fab-sm {
+        width: 48px;
+        height: 48px;
+      }
+
+      .fab-md {
+        width: 56px;
+        height: 56px;
+      }
+
+      .fab-lg {
+        width: 64px;
+        height: 64px;
+      }
+
+      .fab-sm svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .fab-md svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .fab-lg svg {
+        width: 32px;
+        height: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SVG Icons -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol id="icon-whatsapp" viewBox="0 0 24 24">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24">
+        <path
+          d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+        />
+      </symbol>
+      <symbol id="icon-send" viewBox="0 0 24 24">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+      </symbol>
+      <symbol id="icon-leaf" viewBox="0 0 24 24">
+        <path
+          d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3C8.34 15.75 11.1 12 17 10.85V8z"
+        />
+      </symbol>
+    </svg>
+
+    <!-- Header -->
+    <span class="wf-task-label">Task 9.7</span>
+    <h1>WhatsApp Contact Button</h1>
+    <p class="subtitle">
+      Floating action button for quick WhatsApp contact. Positioned at
+      bottom-right for easy access on both desktop and mobile devices.
+    </p>
+
+    <!-- Before/After Context -->
+    <div class="section">
+      <div class="section-title">Design Context</div>
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>Before (Issues)</h3>
+          <ul>
+            <li>No quick contact option</li>
+            <li>Contact form only</li>
+            <li>Users must search for help</li>
+            <li>High friction for inquiries</li>
+            <li>No real-time support indication</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>After (Goals)</h3>
+          <ul>
+            <li>One-tap WhatsApp access</li>
+            <li>Visible but not intrusive</li>
+            <li>Shows availability status</li>
+            <li>Optional pre-chat message</li>
+            <li>Mobile-optimized positioning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== OPTION A: Standard Green FAB ========== -->
+    <div class="wf-section">
+      <div class="wf-option-header">
+        Option A: Standard Green FAB
+        <span class="recommended-badge">RECOMMENDED</span>
+      </div>
+      <div class="wf-option-desc">
+        Classic WhatsApp green floating action button. Instantly recognizable,
+        universally understood. Simple hover tooltip on desktop.
+      </div>
+
+      <!-- Button States -->
+      <div class="state-grid">
+        <div class="state-demo">
+          <div class="state-demo-label">Default</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">With Tooltip</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+              <div
+                class="whatsapp-tooltip"
+                style="opacity: 1; visibility: visible"
+              >
+                Chat with us
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">With Pulse</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-green whatsapp-pulse fab-md"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">With Badge</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+              <span class="whatsapp-badge">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-container">
+        <!-- Mobile Preview -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="preview-frame preview-mobile">
+            <div class="preview-content">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: absolute; bottom: 24px; right: 16px"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Preview -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="preview-frame preview-desktop">
+            <div class="preview-content">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+            <div
+              class="whatsapp-fab whatsapp-green fab-lg"
+              style="position: absolute; bottom: 32px; right: 32px"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+              <div
+                class="whatsapp-tooltip"
+                style="opacity: 1; visibility: visible"
+              >
+                Chat with us on WhatsApp
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== OPTION B: Brand Color FAB ========== -->
+    <div class="wf-section">
+      <div class="wf-option-header">Option B: Brand Color FAB</div>
+      <div class="wf-option-desc">
+        Uses the primary brand color instead of WhatsApp green. More cohesive
+        with the site design but slightly less recognizable.
+      </div>
+
+      <!-- Button States -->
+      <div class="state-grid">
+        <div class="state-demo">
+          <div class="state-demo-label">Default</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-primary fab-md"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">With Tooltip</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-primary fab-md"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+              <div
+                class="whatsapp-tooltip"
+                style="opacity: 1; visibility: visible"
+              >
+                Need help?
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">Small Size</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-primary fab-sm"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">Large Size</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-primary fab-lg"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-container">
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="preview-frame preview-mobile">
+            <div class="preview-content">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+            <div
+              class="whatsapp-fab whatsapp-primary fab-md"
+              style="position: absolute; bottom: 24px; right: 16px"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== OPTION C: Pill with Label ========== -->
+    <div class="wf-section">
+      <div class="wf-option-header">Option C: Pill with Label</div>
+      <div class="wf-option-desc">
+        Pill-shaped button with text label. More explicit call-to-action but
+        takes up more space. Can collapse to icon-only on scroll.
+      </div>
+
+      <!-- Button Variants -->
+      <div class="state-grid">
+        <div class="state-demo">
+          <div class="state-demo-label">Full Label</div>
+          <div class="state-demo-box">
+            <div class="whatsapp-fab whatsapp-pill" style="position: relative">
+              <svg style="width: 24px; height: 24px">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span class="whatsapp-pill-label">Chat with us</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">Short Label</div>
+          <div class="state-demo-box">
+            <div class="whatsapp-fab whatsapp-pill" style="position: relative">
+              <svg style="width: 24px; height: 24px">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span class="whatsapp-pill-label">Help</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">Primary Color</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-pill"
+              style="
+                position: relative;
+                background: #4f6f52;
+                box-shadow: 0 4px 20px rgba(79, 111, 82, 0.35);
+              "
+            >
+              <svg style="width: 24px; height: 24px">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span class="whatsapp-pill-label">WhatsApp</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-demo">
+          <div class="state-demo-label">Collapsed (scroll)</div>
+          <div class="state-demo-box">
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: relative"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-container">
+        <div>
+          <div class="wf-viewport-label">Desktop - Pill (1440px)</div>
+          <div class="preview-frame preview-desktop">
+            <div class="preview-content">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+            <div
+              class="whatsapp-fab whatsapp-pill"
+              style="position: absolute; bottom: 32px; right: 32px"
+            >
+              <svg style="width: 24px; height: 24px">
+                <use href="#icon-whatsapp" />
+              </svg>
+              <span class="whatsapp-pill-label">Chat with us</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="wf-viewport-label">Mobile - Icon Only (375px)</div>
+          <div class="preview-frame preview-mobile">
+            <div class="preview-content">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: absolute; bottom: 24px; right: 16px"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== OPTION D: With Chat Popup ========== -->
+    <div class="wf-section">
+      <div class="wf-option-header">Option D: With Chat Preview Popup</div>
+      <div class="wf-option-desc">
+        FAB with an optional popup showing a pre-chat greeting. Gives context
+        before opening WhatsApp. Good for setting expectations about response
+        time.
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-container">
+        <div>
+          <div class="wf-viewport-label">Desktop - Popup Open (1440px)</div>
+          <div class="preview-frame preview-desktop" style="height: 480px">
+            <div class="preview-content">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+
+            <!-- Chat Popup -->
+            <div
+              class="whatsapp-popup"
+              style="position: absolute; bottom: 100px; right: 32px"
+            >
+              <div class="whatsapp-popup-header">
+                <div class="whatsapp-popup-avatar">
+                  <svg><use href="#icon-leaf" /></svg>
+                </div>
+                <div class="whatsapp-popup-info">
+                  <div class="whatsapp-popup-name">Poetry & Pottery</div>
+                  <div class="whatsapp-popup-status">
+                    Usually replies within an hour
+                  </div>
+                </div>
+                <div class="whatsapp-popup-close">
+                  <svg><use href="#icon-close" /></svg>
+                </div>
+              </div>
+              <div class="whatsapp-popup-body">
+                <div class="whatsapp-popup-message">
+                  Hi there! 👋 How can we help you today? Ask us about our
+                  products, workshops, or anything else!
+                  <div class="whatsapp-popup-time">12:30 PM</div>
+                </div>
+              </div>
+              <div class="whatsapp-popup-footer">
+                <input
+                  type="text"
+                  class="whatsapp-popup-input"
+                  placeholder="Type a message..."
+                />
+                <div class="whatsapp-popup-send">
+                  <svg><use href="#icon-send" /></svg>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="whatsapp-fab whatsapp-green fab-lg"
+              style="position: absolute; bottom: 32px; right: 32px"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="wf-viewport-label">Mobile - Popup Open (375px)</div>
+          <div class="preview-frame preview-mobile" style="height: 600px">
+            <div class="preview-content">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+
+            <!-- Mobile Chat Popup -->
+            <div
+              class="whatsapp-popup"
+              style="
+                position: absolute;
+                bottom: 80px;
+                right: 12px;
+                left: 12px;
+                width: auto;
+              "
+            >
+              <div class="whatsapp-popup-header" style="padding: 12px 16px">
+                <div
+                  class="whatsapp-popup-avatar"
+                  style="width: 38px; height: 38px"
+                >
+                  <svg style="width: 22px; height: 22px">
+                    <use href="#icon-leaf" />
+                  </svg>
+                </div>
+                <div class="whatsapp-popup-info">
+                  <div class="whatsapp-popup-name" style="font-size: 13px">
+                    Poetry & Pottery
+                  </div>
+                  <div class="whatsapp-popup-status" style="font-size: 11px">
+                    Replies in ~1 hour
+                  </div>
+                </div>
+                <div
+                  class="whatsapp-popup-close"
+                  style="width: 24px; height: 24px"
+                >
+                  <svg style="width: 12px; height: 12px">
+                    <use href="#icon-close" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="whatsapp-popup-body"
+                style="padding: 16px; min-height: 80px"
+              >
+                <div class="whatsapp-popup-message" style="font-size: 12px">
+                  Hi! 👋 Need help with pottery or workshops? We're here to
+                  assist!
+                  <div class="whatsapp-popup-time" style="font-size: 9px">
+                    12:30 PM
+                  </div>
+                </div>
+              </div>
+              <div class="whatsapp-popup-footer" style="padding: 10px 12px">
+                <input
+                  type="text"
+                  class="whatsapp-popup-input"
+                  placeholder="Type a message..."
+                  style="font-size: 12px; padding: 8px 14px"
+                />
+                <div
+                  class="whatsapp-popup-send"
+                  style="width: 36px; height: 36px"
+                >
+                  <svg style="width: 18px; height: 18px">
+                    <use href="#icon-send" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: absolute; bottom: 20px; right: 16px"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Position & Sizing Reference -->
+    <div class="wf-section">
+      <div class="wf-option-header">Position & Sizing Reference</div>
+      <div class="wf-option-desc">
+        Standard positioning and size recommendations across viewports.
+      </div>
+
+      <div class="option-details">
+        <strong>Desktop:</strong> Bottom-right, 32px from edges, 64px button
+        size<br />
+        <strong>Tablet:</strong> Bottom-right, 24px from edges, 56px button
+        size<br />
+        <strong>Mobile:</strong> Bottom-right, 16px from edge, 24px from bottom
+        (above bottom nav if present), 56px button size<br />
+        <strong>With Bottom Nav:</strong> Position above mobile bottom
+        navigation (80px from bottom)
+      </div>
+
+      <!-- Mobile with Bottom Nav -->
+      <div class="preview-container">
+        <div>
+          <div class="wf-viewport-label">Mobile with Bottom Nav (375px)</div>
+          <div class="preview-frame preview-mobile">
+            <div class="preview-content" style="padding-bottom: 80px">
+              <div class="preview-placeholder">Page Content</div>
+            </div>
+
+            <!-- Bottom Nav -->
+            <div
+              style="
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 64px;
+                background: white;
+                border-top: 1px solid #e5e5e5;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding: 0 16px;
+              "
+            >
+              <div style="text-align: center">
+                <div
+                  style="
+                    width: 24px;
+                    height: 24px;
+                    background: #4f6f52;
+                    border-radius: 6px;
+                    margin: 0 auto 4px;
+                  "
+                ></div>
+                <div style="font-size: 10px; color: #4f6f52">Home</div>
+              </div>
+              <div style="text-align: center; opacity: 0.5">
+                <div
+                  style="
+                    width: 24px;
+                    height: 24px;
+                    background: #999;
+                    border-radius: 6px;
+                    margin: 0 auto 4px;
+                  "
+                ></div>
+                <div style="font-size: 10px; color: #999">Shop</div>
+              </div>
+              <div style="text-align: center; opacity: 0.5">
+                <div
+                  style="
+                    width: 24px;
+                    height: 24px;
+                    background: #999;
+                    border-radius: 6px;
+                    margin: 0 auto 4px;
+                  "
+                ></div>
+                <div style="font-size: 10px; color: #999">Events</div>
+              </div>
+              <div style="text-align: center; opacity: 0.5">
+                <div
+                  style="
+                    width: 24px;
+                    height: 24px;
+                    background: #999;
+                    border-radius: 6px;
+                    margin: 0 auto 4px;
+                  "
+                ></div>
+                <div style="font-size: 10px; color: #999">Cart</div>
+              </div>
+            </div>
+
+            <!-- WhatsApp FAB above bottom nav -->
+            <div
+              class="whatsapp-fab whatsapp-green fab-md"
+              style="position: absolute; bottom: 80px; right: 16px"
+            >
+              <svg><use href="#icon-whatsapp" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Implementation Notes -->
+    <div class="impl-notes">
+      <h3>Implementation Notes</h3>
+      <ul>
+        <li>
+          <strong>Position:</strong> <code>fixed</code> positioning with
+          <code>z-index: 50</code>, below modals but above page content
+        </li>
+        <li>
+          <strong>Desktop:</strong> <code>bottom-8 right-8</code> (32px), button
+          size <code>w-16 h-16</code> (64px)
+        </li>
+        <li>
+          <strong>Mobile:</strong> <code>bottom-6 right-4</code> (24px/16px),
+          button size <code>w-14 h-14</code> (56px)
+        </li>
+        <li>
+          <strong>With Bottom Nav:</strong> <code>bottom-20</code> (80px) on
+          mobile to clear navigation
+        </li>
+        <li>
+          <strong>WhatsApp Link:</strong>
+          <code>https://wa.me/91XXXXXXXXXX?text=Hello...</code> with pre-filled
+          message
+        </li>
+        <li>
+          <strong>Shadow:</strong> <code>shadow-lg</code> with colored shadow
+          matching button (<code>shadow-green-500/40</code>)
+        </li>
+        <li>
+          <strong>Hover:</strong> <code>hover:scale-105</code> transform with
+          <code>transition-transform duration-200</code>
+        </li>
+        <li>
+          <strong>Tooltip:</strong> Appears on hover with
+          <code>opacity</code> and <code>visibility</code> transition
+        </li>
+        <li>
+          <strong>Pulse Animation:</strong> CSS keyframes with
+          <code>animation: pulse 2s ease-out infinite</code>
+        </li>
+        <li>
+          <strong>Popup:</strong> Use Radix Popover or custom state, animate
+          with <code>data-[state=open]</code> transitions
+        </li>
+        <li>
+          <strong>Accessibility:</strong>
+          <code>aria-label="Contact us on WhatsApp"</code>, focusable, keyboard
+          accessible
+        </li>
+        <li>
+          <strong>Analytics:</strong> Track clicks with event:
+          <code>whatsapp_fab_click</code>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <div class="approval-title">Design Approval</div>
+      <p style="font-size: 13px; color: #666; margin-bottom: 20px">
+        Select your preferred WhatsApp button design:
+      </p>
+      <div class="approval-options">
+        <div class="approval-option">
+          <div class="approval-option-label">Option A</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px">
+            Standard Green
+          </div>
+        </div>
+        <div class="approval-option">
+          <div class="approval-option-label">Option B</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px">
+            Brand Color
+          </div>
+        </div>
+        <div class="approval-option">
+          <div class="approval-option-label">Option C</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px">
+            Pill with Label
+          </div>
+        </div>
+        <div class="approval-option">
+          <div class="approval-option-label">Option D</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px">
+            Chat Popup
+          </div>
+        </div>
+      </div>
+      <div class="approval-notes">
+        <label
+          style="
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+          "
+          >Additional Notes / Requested Changes:</label
+        >
+        <textarea
+          placeholder="Enter any modifications, WhatsApp number, pre-filled message, or specific requirements..."
+        ></textarea>
+      </div>
+      <button class="approval-submit">Submit Approval</button>
+    </div>
+  </body>
+</html>

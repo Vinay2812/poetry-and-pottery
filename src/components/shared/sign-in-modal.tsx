@@ -8,6 +8,8 @@ import { useCallback, useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 
+import { clerkAppearance } from "@/lib/clerk-appearance";
+
 export function SignInModal() {
   const { isSignInModalOpen, setSignInModalOpen, signInRedirectUrl } =
     useUIStore();
@@ -45,6 +47,7 @@ export function SignInModal() {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2"
+            data-lenis-prevent
           >
             <div className="relative rounded-2xl bg-white p-2 shadow-2xl">
               {/* Close button */}
@@ -61,16 +64,7 @@ export function SignInModal() {
               <SignIn
                 routing="hash"
                 forceRedirectUrl={postLoginUrl}
-                appearance={{
-                  elements: {
-                    rootBox: "mx-auto",
-                    card: "shadow-none",
-                    headerTitle: "text-xl font-semibold",
-                    headerSubtitle: "text-muted-foreground",
-                    formButtonPrimary:
-                      "bg-primary hover:bg-primary/90 text-white",
-                  },
-                }}
+                appearance={clerkAppearance}
               />
             </div>
           </motion.div>

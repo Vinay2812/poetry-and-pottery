@@ -1,0 +1,2421 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 8.4: Profile Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* ================================================
+         WIREFRAME STRUCTURAL STYLES (page scaffolding)
+         ================================================ */
+
+      .wf-page {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+
+      .wf-header {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 40px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .wf-header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .wf-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #1a1a1a;
+        text-align: left;
+        margin-bottom: 4px;
+      }
+
+      .wf-subtitle {
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #737373;
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .wf-status {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .wf-status-progress {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .wf-main {
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+      }
+
+      /* Option Sections */
+      .option-section {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .option-header {
+        margin-bottom: 32px;
+      }
+
+      .option-badge {
+        display: inline-block;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 5px 12px;
+        border-radius: 6px;
+        background: #e8ece8;
+        color: #4f6f52;
+        margin-bottom: 12px;
+      }
+
+      .option-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .option-desc {
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 700px;
+      }
+
+      /* Viewport Grid */
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 768px 1fr;
+        gap: 32px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+      }
+
+      .viewport-column {
+        min-width: 0;
+      }
+
+      .viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 16px;
+      }
+
+      /* Mobile Frame Inner Components */
+      .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: white;
+        border-bottom: 1px solid #f5f5f4;
+        height: 56px;
+      }
+
+      .mobile-back-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .mobile-back-btn:hover {
+        background: #f5f5f4;
+      }
+
+      .mobile-back-btn svg {
+        width: 20px;
+        height: 20px;
+        stroke: #1a1a1a;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .mobile-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .mobile-content {
+        background: #fafaf9;
+        min-height: 400px;
+      }
+
+      /* Breadcrumbs */
+      .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        color: #999;
+      }
+
+      .breadcrumbs .current {
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      .breadcrumbs svg {
+        width: 14px;
+        height: 14px;
+        stroke: #bbb;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Page Header (inside frames) */
+      .page-header {
+        padding: 16px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .approval-desc {
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #737373;
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .approval-viewport {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      .approval-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .approval-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        color: #555;
+        cursor: pointer;
+        padding: 6px 0;
+      }
+
+      .approval-option input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+        cursor: pointer;
+      }
+
+      .approval-option:hover {
+        color: #1a1a1a;
+      }
+
+      /* Notes Section */
+      .notes-section {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .notes-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 20px;
+      }
+
+      .notes-content {
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #555;
+        line-height: 1.8;
+      }
+
+      .notes-content h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      .notes-content h3:first-child {
+        margin-top: 0;
+      }
+
+      .notes-content ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .notes-content ul li {
+        padding: 4px 0 4px 16px;
+        position: relative;
+      }
+
+      .notes-content ul li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #4f6f52;
+        font-weight: 700;
+      }
+
+      .notes-content code {
+        font-family: "SF Mono", "Fira Code", monospace;
+        font-size: 12px;
+        background: #f5f5f4;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #4f6f52;
+      }
+
+      /* ================================================
+         PROFILE-SPECIFIC STYLES
+         ================================================ */
+
+      /* Profile Card Styles */
+      .profile-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4f6f52, #6b8f6e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      .profile-avatar-lg {
+        width: 100px;
+        height: 100px;
+        font-size: 36px;
+      }
+
+      .profile-avatar-xl {
+        width: 120px;
+        height: 120px;
+        font-size: 44px;
+      }
+
+      .profile-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .profile-email {
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #737373;
+        margin-top: 2px;
+      }
+
+      .profile-meta {
+        font-family: "Outfit", sans-serif;
+        font-size: 12px;
+        color: #999;
+        margin-top: 8px;
+      }
+
+      /* Quick Link Cards */
+      .quick-link-card {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .quick-link-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .quick-link-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: #e8ece8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .quick-link-icon svg {
+        width: 22px;
+        height: 22px;
+        stroke: #4f6f52;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .quick-link-content {
+        flex: 1;
+      }
+
+      .quick-link-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .quick-link-count {
+        font-family: "Outfit", sans-serif;
+        font-size: 12px;
+        color: #737373;
+        margin-top: 2px;
+      }
+
+      .quick-link-arrow {
+        width: 20px;
+        height: 20px;
+        stroke: #999;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Grid Layouts */
+      .quick-links-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .quick-links-grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      /* Large Card Variant */
+      .quick-link-card-lg {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 16px;
+      }
+
+      .quick-link-card-lg .quick-link-icon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 8px;
+      }
+
+      .quick-link-card-lg .quick-link-icon svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      /* Section Headers */
+      .section-header {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      /* Settings List */
+      .settings-list {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .settings-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        border-bottom: 1px solid #f5f5f4;
+        cursor: pointer;
+      }
+
+      .settings-item:last-child {
+        border-bottom: none;
+      }
+
+      .settings-item:hover {
+        background: #fafafa;
+      }
+
+      .settings-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #e8ece8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .settings-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: #4f6f52;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .settings-label {
+        flex: 1;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #1a1a1a;
+      }
+
+      .settings-arrow svg {
+        width: 16px;
+        height: 16px;
+        stroke: #999;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Logout Button */
+      .logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 14px;
+        background: #fee2e2;
+        color: #dc2626;
+        border: none;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 24px;
+      }
+
+      .logout-btn svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Stats Row */
+      .stats-row {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .stat-label {
+        font-family: "Outfit", sans-serif;
+        font-size: 12px;
+        color: #737373;
+        margin-top: 2px;
+      }
+
+      /* Horizontal Profile */
+      .profile-horizontal {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px;
+      }
+
+      .profile-info {
+        flex: 1;
+      }
+
+      /* Centered Profile */
+      .profile-centered {
+        text-align: center;
+        padding: 32px 24px;
+      }
+
+      .profile-centered .profile-avatar {
+        margin: 0 auto 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SVG Symbol Definitions -->
+    <svg style="display: none">
+      <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </symbol>
+      <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6" />
+      </symbol>
+      <symbol id="icon-package" viewBox="0 0 24 24">
+        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+        />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </symbol>
+      <symbol id="icon-heart" viewBox="0 0 24 24">
+        <path
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        />
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 24 24">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3" />
+        <path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+        />
+      </symbol>
+      <symbol id="icon-bell" viewBox="0 0 24 24">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </symbol>
+      <symbol id="icon-help-circle" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+        <line x1="12" y1="17" x2="12.01" y2="17" />
+      </symbol>
+      <symbol id="icon-log-out" viewBox="0 0 24 24">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </symbol>
+      <symbol id="icon-user" viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+      </symbol>
+    </svg>
+
+    <div class="wf-page">
+      <!-- Header -->
+      <header class="wf-header">
+        <div class="wf-header-content">
+          <div>
+            <h1 class="wf-title">Task 8.4: Profile Page</h1>
+            <p class="wf-subtitle">
+              User profile with quick links to account sections
+            </p>
+          </div>
+          <span class="wf-status wf-status-progress">IN PROGRESS</span>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="wf-main">
+        <!-- ====================================== -->
+        <!-- OPTION A: Centered Profile (RECOMMENDED) -->
+        <!-- ====================================== -->
+        <section class="option-section">
+          <div class="option-header">
+            <span class="option-badge">Option A</span>
+            <h2 class="option-title">Centered Profile Card (RECOMMENDED)</h2>
+            <p class="option-desc">
+              Large centered avatar with user info, followed by quick link grid
+              cards. Clean, focused layout that emphasizes the user's identity.
+            </p>
+          </div>
+
+          <div class="viewport-grid">
+            <!-- Mobile -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">📱 Mobile (375px)</h3>
+              <div class="wf-mobile-frame">
+                <!-- Mobile Header -->
+                <div class="mobile-header">
+                  <button class="mobile-back-btn">
+                    <svg><use href="#icon-arrow-left" /></svg>
+                  </button>
+                  <span class="mobile-title">My Profile</span>
+                  <button class="mobile-back-btn">
+                    <svg><use href="#icon-settings" /></svg>
+                  </button>
+                </div>
+
+                <!-- Content -->
+                <div class="mobile-content" style="padding: 24px 16px">
+                  <!-- Profile Card -->
+                  <div class="profile-card profile-centered">
+                    <div class="profile-avatar profile-avatar-lg">AS</div>
+                    <div class="profile-name" style="font-size: 20px">
+                      Ananya Sharma
+                    </div>
+                    <div class="profile-email">ananya.sharma@email.com</div>
+                    <div class="profile-meta">Member since January 2024</div>
+                  </div>
+
+                  <!-- Quick Links -->
+                  <div style="margin-top: 24px">
+                    <h3 class="section-header">Quick Links</h3>
+                    <div class="quick-links-grid-2">
+                      <!-- Orders -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-package" /></svg>
+                        </div>
+                        <div class="quick-link-label">Orders</div>
+                        <div class="quick-link-count">12 orders</div>
+                      </div>
+
+                      <!-- Wishlist -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-heart" /></svg>
+                        </div>
+                        <div class="quick-link-label">Wishlist</div>
+                        <div class="quick-link-count">6 items</div>
+                      </div>
+
+                      <!-- Addresses -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-map-pin" /></svg>
+                        </div>
+                        <div class="quick-link-label">Addresses</div>
+                        <div class="quick-link-count">2 saved</div>
+                      </div>
+
+                      <!-- Registrations -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-calendar" /></svg>
+                        </div>
+                        <div class="quick-link-label">Workshops</div>
+                        <div class="quick-link-count">3 upcoming</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Logout -->
+                  <button class="logout-btn">
+                    <svg><use href="#icon-log-out" /></svg>
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">📱 Tablet (768px)</h3>
+              <div class="wf-tablet-frame">
+                <!-- Breadcrumbs -->
+                <div style="padding: 16px 24px 0">
+                  <div class="breadcrumbs">
+                    <span>Home</span>
+                    <svg><use href="#icon-chevron-right" /></svg>
+                    <span class="current">Profile</span>
+                  </div>
+                </div>
+
+                <!-- Page Header -->
+                <div class="page-header" style="padding: 16px 24px 24px">
+                  <h1 class="page-title">My Profile</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Content -->
+                <div style="padding: 0 24px">
+                  <!-- Profile Card -->
+                  <div
+                    class="profile-card profile-centered"
+                    style="max-width: 400px; margin: 0 auto"
+                  >
+                    <div class="profile-avatar profile-avatar-xl">AS</div>
+                    <div
+                      class="profile-name"
+                      style="font-size: 24px; margin-top: 4px"
+                    >
+                      Ananya Sharma
+                    </div>
+                    <div class="profile-email" style="font-size: 15px">
+                      ananya.sharma@email.com
+                    </div>
+                    <div class="profile-meta" style="margin-top: 12px">
+                      Member since January 2024
+                    </div>
+                    <button
+                      style="
+                        margin-top: 16px;
+                        padding: 8px 20px;
+                        background: #e8ece8;
+                        color: #4f6f52;
+                        border: none;
+                        border-radius: 8px;
+                        font-family: &quot;Outfit&quot;, sans-serif;
+                        font-size: 13px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 6px;
+                      "
+                    >
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: currentColor;
+                          stroke-width: 2;
+                          fill: none;
+                        "
+                      >
+                        <use href="#icon-edit" />
+                      </svg>
+                      Edit Profile
+                    </button>
+                  </div>
+
+                  <!-- Quick Links -->
+                  <div
+                    style="
+                      margin-top: 32px;
+                      max-width: 600px;
+                      margin-left: auto;
+                      margin-right: auto;
+                    "
+                  >
+                    <h3 class="section-header" style="text-align: center">
+                      Quick Links
+                    </h3>
+                    <div class="quick-links-grid-4">
+                      <!-- Orders -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-package" /></svg>
+                        </div>
+                        <div class="quick-link-label">Orders</div>
+                        <div class="quick-link-count">12 orders</div>
+                      </div>
+
+                      <!-- Wishlist -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-heart" /></svg>
+                        </div>
+                        <div class="quick-link-label">Wishlist</div>
+                        <div class="quick-link-count">6 items</div>
+                      </div>
+
+                      <!-- Addresses -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-map-pin" /></svg>
+                        </div>
+                        <div class="quick-link-label">Addresses</div>
+                        <div class="quick-link-count">2 saved</div>
+                      </div>
+
+                      <!-- Registrations -->
+                      <div class="quick-link-card quick-link-card-lg">
+                        <div class="quick-link-icon">
+                          <svg><use href="#icon-calendar" /></svg>
+                        </div>
+                        <div class="quick-link-label">Workshops</div>
+                        <div class="quick-link-count">3 upcoming</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">🖥️ Desktop (1440px)</h3>
+              <div class="wf-desktop-frame">
+                <!-- Breadcrumbs -->
+                <div style="padding: 24px 48px 0">
+                  <div class="breadcrumbs">
+                    <span>Home</span>
+                    <svg><use href="#icon-chevron-right" /></svg>
+                    <span class="current">Profile</span>
+                  </div>
+                </div>
+
+                <!-- Page Header -->
+                <div class="page-header" style="padding: 16px 48px 32px">
+                  <h1 class="page-title" style="font-size: 32px">My Profile</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Content - Two Column Layout -->
+                <div
+                  style="
+                    padding: 0 48px;
+                    display: grid;
+                    grid-template-columns: 320px 1fr;
+                    gap: 32px;
+                  "
+                >
+                  <!-- Left: Profile Card -->
+                  <div>
+                    <div class="profile-card profile-centered">
+                      <div class="profile-avatar profile-avatar-xl">AS</div>
+                      <div
+                        class="profile-name"
+                        style="font-size: 22px; margin-top: 4px"
+                      >
+                        Ananya Sharma
+                      </div>
+                      <div class="profile-email">ananya.sharma@email.com</div>
+                      <div class="profile-meta" style="margin-top: 12px">
+                        Member since January 2024
+                      </div>
+                      <button
+                        style="
+                          margin-top: 16px;
+                          padding: 10px 24px;
+                          background: #e8ece8;
+                          color: #4f6f52;
+                          border: none;
+                          border-radius: 8px;
+                          font-family: &quot;Outfit&quot;, sans-serif;
+                          font-size: 14px;
+                          font-weight: 500;
+                          cursor: pointer;
+                          display: inline-flex;
+                          align-items: center;
+                          gap: 8px;
+                        "
+                      >
+                        <svg
+                          style="
+                            width: 16px;
+                            height: 16px;
+                            stroke: currentColor;
+                            stroke-width: 2;
+                            fill: none;
+                          "
+                        >
+                          <use href="#icon-edit" />
+                        </svg>
+                        Edit Profile
+                      </button>
+                    </div>
+
+                    <!-- Sign Out -->
+                    <button class="logout-btn" style="margin-top: 16px">
+                      <svg><use href="#icon-log-out" /></svg>
+                      Sign Out
+                    </button>
+                  </div>
+
+                  <!-- Right: Quick Links Grid -->
+                  <div>
+                    <h3 class="section-header">Quick Links</h3>
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 16px;
+                      "
+                    >
+                      <!-- Orders -->
+                      <div class="quick-link-card" style="padding: 20px">
+                        <div
+                          class="quick-link-icon"
+                          style="width: 52px; height: 52px"
+                        >
+                          <svg style="width: 26px; height: 26px">
+                            <use href="#icon-package" />
+                          </svg>
+                        </div>
+                        <div class="quick-link-content">
+                          <div class="quick-link-label" style="font-size: 16px">
+                            My Orders
+                          </div>
+                          <div class="quick-link-count">12 orders placed</div>
+                        </div>
+                        <svg class="quick-link-arrow">
+                          <use href="#icon-chevron-right" />
+                        </svg>
+                      </div>
+
+                      <!-- Wishlist -->
+                      <div class="quick-link-card" style="padding: 20px">
+                        <div
+                          class="quick-link-icon"
+                          style="width: 52px; height: 52px"
+                        >
+                          <svg style="width: 26px; height: 26px">
+                            <use href="#icon-heart" />
+                          </svg>
+                        </div>
+                        <div class="quick-link-content">
+                          <div class="quick-link-label" style="font-size: 16px">
+                            Wishlist
+                          </div>
+                          <div class="quick-link-count">6 items saved</div>
+                        </div>
+                        <svg class="quick-link-arrow">
+                          <use href="#icon-chevron-right" />
+                        </svg>
+                      </div>
+
+                      <!-- Addresses -->
+                      <div class="quick-link-card" style="padding: 20px">
+                        <div
+                          class="quick-link-icon"
+                          style="width: 52px; height: 52px"
+                        >
+                          <svg style="width: 26px; height: 26px">
+                            <use href="#icon-map-pin" />
+                          </svg>
+                        </div>
+                        <div class="quick-link-content">
+                          <div class="quick-link-label" style="font-size: 16px">
+                            Addresses
+                          </div>
+                          <div class="quick-link-count">2 addresses saved</div>
+                        </div>
+                        <svg class="quick-link-arrow">
+                          <use href="#icon-chevron-right" />
+                        </svg>
+                      </div>
+
+                      <!-- Registrations -->
+                      <div class="quick-link-card" style="padding: 20px">
+                        <div
+                          class="quick-link-icon"
+                          style="width: 52px; height: 52px"
+                        >
+                          <svg style="width: 26px; height: 26px">
+                            <use href="#icon-calendar" />
+                          </svg>
+                        </div>
+                        <div class="quick-link-content">
+                          <div class="quick-link-label" style="font-size: 16px">
+                            Workshop Registrations
+                          </div>
+                          <div class="quick-link-count">3 upcoming events</div>
+                        </div>
+                        <svg class="quick-link-arrow">
+                          <use href="#icon-chevron-right" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================== -->
+        <!-- OPTION B: Horizontal Profile with List -->
+        <!-- ====================================== -->
+        <section class="option-section">
+          <div class="option-header">
+            <span class="option-badge">Option B</span>
+            <h2 class="option-title">Horizontal Profile with List</h2>
+            <p class="option-desc">
+              Compact horizontal profile header with settings-style list menu.
+              More efficient use of vertical space.
+            </p>
+          </div>
+
+          <div class="viewport-grid">
+            <!-- Mobile -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">📱 Mobile (375px)</h3>
+              <div class="wf-mobile-frame">
+                <!-- Mobile Header -->
+                <div class="mobile-header">
+                  <button class="mobile-back-btn">
+                    <svg><use href="#icon-arrow-left" /></svg>
+                  </button>
+                  <span class="mobile-title">My Profile</span>
+                  <button class="mobile-back-btn">
+                    <svg><use href="#icon-settings" /></svg>
+                  </button>
+                </div>
+
+                <!-- Content -->
+                <div class="mobile-content" style="padding: 16px">
+                  <!-- Profile Card - Horizontal -->
+                  <div class="profile-card profile-horizontal">
+                    <div class="profile-avatar">AS</div>
+                    <div class="profile-info">
+                      <div class="profile-name">Ananya Sharma</div>
+                      <div class="profile-email">ananya.sharma@email.com</div>
+                      <div class="profile-meta">Member since Jan 2024</div>
+                    </div>
+                  </div>
+
+                  <!-- Quick Links as List -->
+                  <div style="margin-top: 20px">
+                    <div class="settings-list">
+                      <div class="settings-item">
+                        <div class="settings-icon">
+                          <svg><use href="#icon-package" /></svg>
+                        </div>
+                        <span class="settings-label">My Orders</span>
+                        <span
+                          style="
+                            font-size: 12px;
+                            color: #737373;
+                            margin-right: 8px;
+                          "
+                          >12</span
+                        >
+                        <div class="settings-arrow">
+                          <svg><use href="#icon-chevron-right" /></svg>
+                        </div>
+                      </div>
+
+                      <div class="settings-item">
+                        <div class="settings-icon">
+                          <svg><use href="#icon-heart" /></svg>
+                        </div>
+                        <span class="settings-label">Wishlist</span>
+                        <span
+                          style="
+                            font-size: 12px;
+                            color: #737373;
+                            margin-right: 8px;
+                          "
+                          >6</span
+                        >
+                        <div class="settings-arrow">
+                          <svg><use href="#icon-chevron-right" /></svg>
+                        </div>
+                      </div>
+
+                      <div class="settings-item">
+                        <div class="settings-icon">
+                          <svg><use href="#icon-map-pin" /></svg>
+                        </div>
+                        <span class="settings-label">Saved Addresses</span>
+                        <span
+                          style="
+                            font-size: 12px;
+                            color: #737373;
+                            margin-right: 8px;
+                          "
+                          >2</span
+                        >
+                        <div class="settings-arrow">
+                          <svg><use href="#icon-chevron-right" /></svg>
+                        </div>
+                      </div>
+
+                      <div class="settings-item">
+                        <div class="settings-icon">
+                          <svg><use href="#icon-calendar" /></svg>
+                        </div>
+                        <span class="settings-label"
+                          >Workshop Registrations</span
+                        >
+                        <span
+                          style="
+                            font-size: 12px;
+                            color: #737373;
+                            margin-right: 8px;
+                          "
+                          >3</span
+                        >
+                        <div class="settings-arrow">
+                          <svg><use href="#icon-chevron-right" /></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Settings Section -->
+                  <div style="margin-top: 20px">
+                    <h3 class="section-header">Settings</h3>
+                    <div class="settings-list">
+                      <div class="settings-item">
+                        <div class="settings-icon">
+                          <svg><use href="#icon-bell" /></svg>
+                        </div>
+                        <span class="settings-label">Notifications</span>
+                        <div class="settings-arrow">
+                          <svg><use href="#icon-chevron-right" /></svg>
+                        </div>
+                      </div>
+
+                      <div class="settings-item">
+                        <div class="settings-icon">
+                          <svg><use href="#icon-help-circle" /></svg>
+                        </div>
+                        <span class="settings-label">Help & Support</span>
+                        <div class="settings-arrow">
+                          <svg><use href="#icon-chevron-right" /></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Logout -->
+                  <button class="logout-btn">
+                    <svg><use href="#icon-log-out" /></svg>
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">📱 Tablet (768px)</h3>
+              <div class="wf-tablet-frame">
+                <!-- Breadcrumbs -->
+                <div style="padding: 16px 24px 0">
+                  <div class="breadcrumbs">
+                    <span>Home</span>
+                    <svg><use href="#icon-chevron-right" /></svg>
+                    <span class="current">Profile</span>
+                  </div>
+                </div>
+
+                <!-- Page Header -->
+                <div class="page-header" style="padding: 16px 24px 24px">
+                  <h1 class="page-title">My Profile</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Content -->
+                <div style="padding: 0 24px">
+                  <!-- Profile Card -->
+                  <div
+                    class="profile-card profile-horizontal"
+                    style="padding: 24px 32px"
+                  >
+                    <div class="profile-avatar profile-avatar-lg">AS</div>
+                    <div class="profile-info" style="flex: 1">
+                      <div class="profile-name" style="font-size: 22px">
+                        Ananya Sharma
+                      </div>
+                      <div class="profile-email" style="font-size: 15px">
+                        ananya.sharma@email.com
+                      </div>
+                      <div class="profile-meta">Member since January 2024</div>
+                    </div>
+                    <button
+                      style="
+                        padding: 10px 20px;
+                        background: #e8ece8;
+                        color: #4f6f52;
+                        border: none;
+                        border-radius: 8px;
+                        font-family: &quot;Outfit&quot;, sans-serif;
+                        font-size: 14px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                      "
+                    >
+                      <svg
+                        style="
+                          width: 16px;
+                          height: 16px;
+                          stroke: currentColor;
+                          stroke-width: 2;
+                          fill: none;
+                        "
+                      >
+                        <use href="#icon-edit" />
+                      </svg>
+                      Edit
+                    </button>
+                  </div>
+
+                  <!-- Two Column Layout -->
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 20px;
+                      margin-top: 24px;
+                    "
+                  >
+                    <!-- Left: Quick Links -->
+                    <div>
+                      <h3 class="section-header">Account</h3>
+                      <div class="settings-list">
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-package" /></svg>
+                          </div>
+                          <span class="settings-label">My Orders</span>
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >12</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-heart" /></svg>
+                          </div>
+                          <span class="settings-label">Wishlist</span>
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >6</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-map-pin" /></svg>
+                          </div>
+                          <span class="settings-label">Addresses</span>
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >2</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-calendar" /></svg>
+                          </div>
+                          <span class="settings-label">Workshops</span>
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >3</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Right: Settings -->
+                    <div>
+                      <h3 class="section-header">Settings</h3>
+                      <div class="settings-list">
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-bell" /></svg>
+                          </div>
+                          <span class="settings-label">Notifications</span>
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-help-circle" /></svg>
+                          </div>
+                          <span class="settings-label">Help & Support</span>
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="logout-btn" style="margin-top: 16px">
+                        <svg><use href="#icon-log-out" /></svg>
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">🖥️ Desktop (1440px)</h3>
+              <div class="wf-desktop-frame">
+                <!-- Breadcrumbs -->
+                <div style="padding: 24px 48px 0">
+                  <div class="breadcrumbs">
+                    <span>Home</span>
+                    <svg><use href="#icon-chevron-right" /></svg>
+                    <span class="current">Profile</span>
+                  </div>
+                </div>
+
+                <!-- Page Header -->
+                <div class="page-header" style="padding: 16px 48px 32px">
+                  <h1 class="page-title" style="font-size: 32px">My Profile</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Content -->
+                <div style="padding: 0 48px">
+                  <!-- Profile Card -->
+                  <div
+                    class="profile-card profile-horizontal"
+                    style="padding: 32px 40px"
+                  >
+                    <div class="profile-avatar profile-avatar-xl">AS</div>
+                    <div class="profile-info" style="flex: 1">
+                      <div class="profile-name" style="font-size: 26px">
+                        Ananya Sharma
+                      </div>
+                      <div
+                        class="profile-email"
+                        style="font-size: 16px; margin-top: 4px"
+                      >
+                        ananya.sharma@email.com
+                      </div>
+                      <div class="profile-meta" style="margin-top: 8px">
+                        Member since January 2024
+                      </div>
+                    </div>
+                    <div style="display: flex; gap: 12px">
+                      <button
+                        style="
+                          padding: 12px 24px;
+                          background: #e8ece8;
+                          color: #4f6f52;
+                          border: none;
+                          border-radius: 8px;
+                          font-family: &quot;Outfit&quot;, sans-serif;
+                          font-size: 14px;
+                          font-weight: 500;
+                          cursor: pointer;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                        "
+                      >
+                        <svg
+                          style="
+                            width: 16px;
+                            height: 16px;
+                            stroke: currentColor;
+                            stroke-width: 2;
+                            fill: none;
+                          "
+                        >
+                          <use href="#icon-edit" />
+                        </svg>
+                        Edit Profile
+                      </button>
+                      <button
+                        style="
+                          padding: 12px 24px;
+                          background: #fee2e2;
+                          color: #dc2626;
+                          border: none;
+                          border-radius: 8px;
+                          font-family: &quot;Outfit&quot;, sans-serif;
+                          font-size: 14px;
+                          font-weight: 500;
+                          cursor: pointer;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                        "
+                      >
+                        <svg
+                          style="
+                            width: 16px;
+                            height: 16px;
+                            stroke: currentColor;
+                            stroke-width: 2;
+                            fill: none;
+                          "
+                        >
+                          <use href="#icon-log-out" />
+                        </svg>
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Three Column Layout -->
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: repeat(3, 1fr);
+                      gap: 24px;
+                      margin-top: 32px;
+                    "
+                  >
+                    <!-- Account Links -->
+                    <div>
+                      <h3 class="section-header">Account</h3>
+                      <div class="settings-list">
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-package" /></svg>
+                          </div>
+                          <span class="settings-label">My Orders</span>
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >12</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-heart" /></svg>
+                          </div>
+                          <span class="settings-label">Wishlist</span>
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >6</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Addresses & Events -->
+                    <div>
+                      <h3 class="section-header">Manage</h3>
+                      <div class="settings-list">
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-map-pin" /></svg>
+                          </div>
+                          <span class="settings-label">Addresses</span>
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >2</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-calendar" /></svg>
+                          </div>
+                          <span class="settings-label"
+                            >Workshop Registrations</span
+                          >
+                          <span
+                            style="
+                              font-size: 12px;
+                              color: #737373;
+                              margin-right: 8px;
+                            "
+                            >3</span
+                          >
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Settings -->
+                    <div>
+                      <h3 class="section-header">Settings</h3>
+                      <div class="settings-list">
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-bell" /></svg>
+                          </div>
+                          <span class="settings-label">Notifications</span>
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                        <div class="settings-item">
+                          <div class="settings-icon">
+                            <svg><use href="#icon-help-circle" /></svg>
+                          </div>
+                          <span class="settings-label">Help & Support</span>
+                          <div class="settings-arrow">
+                            <svg><use href="#icon-chevron-right" /></svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================== -->
+        <!-- OPTION C: Stats-Focused Profile -->
+        <!-- ====================================== -->
+        <section class="option-section">
+          <div class="option-header">
+            <span class="option-badge">Option C</span>
+            <h2 class="option-title">Stats-Focused Profile</h2>
+            <p class="option-desc">
+              Profile card with prominent stats showing user engagement metrics.
+              Quick links displayed as larger interactive cards.
+            </p>
+          </div>
+
+          <div class="viewport-grid">
+            <!-- Mobile -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">📱 Mobile (375px)</h3>
+              <div class="wf-mobile-frame">
+                <!-- Mobile Header -->
+                <div class="mobile-header">
+                  <button class="mobile-back-btn">
+                    <svg><use href="#icon-arrow-left" /></svg>
+                  </button>
+                  <span class="mobile-title">My Profile</span>
+                  <button class="mobile-back-btn">
+                    <svg><use href="#icon-settings" /></svg>
+                  </button>
+                </div>
+
+                <!-- Content -->
+                <div class="mobile-content" style="padding: 16px">
+                  <!-- Profile Card with Stats -->
+                  <div class="profile-card" style="padding: 24px">
+                    <div style="display: flex; align-items: center; gap: 16px">
+                      <div class="profile-avatar profile-avatar-lg">AS</div>
+                      <div style="flex: 1">
+                        <div class="profile-name" style="font-size: 18px">
+                          Ananya Sharma
+                        </div>
+                        <div class="profile-email" style="font-size: 13px">
+                          ananya.sharma@email.com
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div
+                      class="stats-row"
+                      style="
+                        margin-top: 20px;
+                        padding-top: 16px;
+                        border-top: 1px solid #f5f5f4;
+                        justify-content: space-around;
+                      "
+                    >
+                      <div class="stat-item">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Orders</div>
+                      </div>
+                      <div class="stat-item">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Wishlist</div>
+                      </div>
+                      <div class="stat-item">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Events</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Large Quick Link Cards -->
+                  <div
+                    style="
+                      margin-top: 20px;
+                      display: grid;
+                      grid-template-columns: 1fr;
+                      gap: 12px;
+                    "
+                  >
+                    <div class="quick-link-card" style="padding: 20px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 48px; height: 48px; background: #e8ece8"
+                      >
+                        <svg style="width: 24px; height: 24px">
+                          <use href="#icon-package" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 15px">
+                          My Orders
+                        </div>
+                        <div class="quick-link-count">
+                          View order history and track deliveries
+                        </div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+
+                    <div class="quick-link-card" style="padding: 20px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 48px; height: 48px; background: #fce7f3"
+                      >
+                        <svg style="width: 24px; height: 24px; stroke: #ec4899">
+                          <use href="#icon-heart" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 15px">
+                          Wishlist
+                        </div>
+                        <div class="quick-link-count">
+                          Items you've saved for later
+                        </div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+
+                    <div class="quick-link-card" style="padding: 20px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 48px; height: 48px; background: #dbeafe"
+                      >
+                        <svg style="width: 24px; height: 24px; stroke: #3b82f6">
+                          <use href="#icon-map-pin" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 15px">
+                          Addresses
+                        </div>
+                        <div class="quick-link-count">
+                          Manage delivery addresses
+                        </div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+
+                    <div class="quick-link-card" style="padding: 20px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 48px; height: 48px; background: #fef3c7"
+                      >
+                        <svg style="width: 24px; height: 24px; stroke: #d97706">
+                          <use href="#icon-calendar" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 15px">
+                          Workshop Registrations
+                        </div>
+                        <div class="quick-link-count">
+                          Upcoming pottery classes
+                        </div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Sign Out -->
+                  <button class="logout-btn">
+                    <svg><use href="#icon-log-out" /></svg>
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">📱 Tablet (768px)</h3>
+              <div class="wf-tablet-frame">
+                <!-- Breadcrumbs -->
+                <div style="padding: 16px 24px 0">
+                  <div class="breadcrumbs">
+                    <span>Home</span>
+                    <svg><use href="#icon-chevron-right" /></svg>
+                    <span class="current">Profile</span>
+                  </div>
+                </div>
+
+                <!-- Page Header -->
+                <div class="page-header" style="padding: 16px 24px 24px">
+                  <h1 class="page-title">My Profile</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Content -->
+                <div style="padding: 0 24px">
+                  <!-- Profile Card with Stats -->
+                  <div class="profile-card" style="padding: 28px 32px">
+                    <div style="display: flex; align-items: center; gap: 24px">
+                      <div class="profile-avatar profile-avatar-xl">AS</div>
+                      <div style="flex: 1">
+                        <div class="profile-name" style="font-size: 24px">
+                          Ananya Sharma
+                        </div>
+                        <div
+                          class="profile-email"
+                          style="font-size: 15px; margin-top: 4px"
+                        >
+                          ananya.sharma@email.com
+                        </div>
+                        <div class="profile-meta" style="margin-top: 8px">
+                          Member since January 2024
+                        </div>
+                      </div>
+
+                      <!-- Stats -->
+                      <div
+                        style="
+                          display: flex;
+                          gap: 24px;
+                          padding: 16px 24px;
+                          background: #f5f5f4;
+                          border-radius: 12px;
+                        "
+                      >
+                        <div class="stat-item">
+                          <div class="stat-value" style="font-size: 24px">
+                            12
+                          </div>
+                          <div class="stat-label">Orders</div>
+                        </div>
+                        <div class="stat-item">
+                          <div class="stat-value" style="font-size: 24px">
+                            6
+                          </div>
+                          <div class="stat-label">Wishlist</div>
+                        </div>
+                        <div class="stat-item">
+                          <div class="stat-value" style="font-size: 24px">
+                            3
+                          </div>
+                          <div class="stat-label">Events</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Quick Links 2x2 Grid -->
+                  <div
+                    style="
+                      margin-top: 24px;
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 16px;
+                    "
+                  >
+                    <div class="quick-link-card" style="padding: 24px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 52px; height: 52px"
+                      >
+                        <svg style="width: 26px; height: 26px">
+                          <use href="#icon-package" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 16px">
+                          My Orders
+                        </div>
+                        <div class="quick-link-count">View order history</div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+
+                    <div class="quick-link-card" style="padding: 24px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 52px; height: 52px; background: #fce7f3"
+                      >
+                        <svg style="width: 26px; height: 26px; stroke: #ec4899">
+                          <use href="#icon-heart" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 16px">
+                          Wishlist
+                        </div>
+                        <div class="quick-link-count">Saved items</div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+
+                    <div class="quick-link-card" style="padding: 24px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 52px; height: 52px; background: #dbeafe"
+                      >
+                        <svg style="width: 26px; height: 26px; stroke: #3b82f6">
+                          <use href="#icon-map-pin" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 16px">
+                          Addresses
+                        </div>
+                        <div class="quick-link-count">Delivery locations</div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+
+                    <div class="quick-link-card" style="padding: 24px">
+                      <div
+                        class="quick-link-icon"
+                        style="width: 52px; height: 52px; background: #fef3c7"
+                      >
+                        <svg style="width: 26px; height: 26px; stroke: #d97706">
+                          <use href="#icon-calendar" />
+                        </svg>
+                      </div>
+                      <div class="quick-link-content">
+                        <div class="quick-link-label" style="font-size: 16px">
+                          Workshops
+                        </div>
+                        <div class="quick-link-count">Upcoming events</div>
+                      </div>
+                      <svg class="quick-link-arrow">
+                        <use href="#icon-chevron-right" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop -->
+            <div class="viewport-column">
+              <h3 class="viewport-label">🖥️ Desktop (1440px)</h3>
+              <div class="wf-desktop-frame">
+                <!-- Breadcrumbs -->
+                <div style="padding: 24px 48px 0">
+                  <div class="breadcrumbs">
+                    <span>Home</span>
+                    <svg><use href="#icon-chevron-right" /></svg>
+                    <span class="current">Profile</span>
+                  </div>
+                </div>
+
+                <!-- Page Header -->
+                <div class="page-header" style="padding: 16px 48px 32px">
+                  <h1 class="page-title" style="font-size: 32px">My Profile</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Content -->
+                <div style="padding: 0 48px">
+                  <!-- Profile Card with Stats -->
+                  <div class="profile-card" style="padding: 32px 40px">
+                    <div style="display: flex; align-items: center; gap: 32px">
+                      <div class="profile-avatar profile-avatar-xl">AS</div>
+                      <div style="flex: 1">
+                        <div class="profile-name" style="font-size: 28px">
+                          Ananya Sharma
+                        </div>
+                        <div
+                          class="profile-email"
+                          style="font-size: 16px; margin-top: 4px"
+                        >
+                          ananya.sharma@email.com
+                        </div>
+                        <div
+                          class="profile-meta"
+                          style="margin-top: 8px; font-size: 14px"
+                        >
+                          Member since January 2024
+                        </div>
+                      </div>
+
+                      <!-- Stats -->
+                      <div
+                        style="
+                          display: flex;
+                          gap: 32px;
+                          padding: 20px 32px;
+                          background: #f5f5f4;
+                          border-radius: 16px;
+                        "
+                      >
+                        <div class="stat-item">
+                          <div class="stat-value" style="font-size: 28px">
+                            12
+                          </div>
+                          <div class="stat-label" style="font-size: 13px">
+                            Orders
+                          </div>
+                        </div>
+                        <div class="stat-item">
+                          <div class="stat-value" style="font-size: 28px">
+                            6
+                          </div>
+                          <div class="stat-label" style="font-size: 13px">
+                            Wishlist
+                          </div>
+                        </div>
+                        <div class="stat-item">
+                          <div class="stat-value" style="font-size: 28px">
+                            3
+                          </div>
+                          <div class="stat-label" style="font-size: 13px">
+                            Events
+                          </div>
+                        </div>
+                        <div class="stat-item">
+                          <div class="stat-value" style="font-size: 28px">
+                            2
+                          </div>
+                          <div class="stat-label" style="font-size: 13px">
+                            Addresses
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="display: flex; gap: 12px">
+                        <button
+                          style="
+                            padding: 12px 24px;
+                            background: #e8ece8;
+                            color: #4f6f52;
+                            border: none;
+                            border-radius: 8px;
+                            font-family: &quot;Outfit&quot;, sans-serif;
+                            font-size: 14px;
+                            font-weight: 500;
+                            cursor: pointer;
+                          "
+                        >
+                          Edit Profile
+                        </button>
+                        <button
+                          style="
+                            padding: 12px 24px;
+                            background: #fee2e2;
+                            color: #dc2626;
+                            border: none;
+                            border-radius: 8px;
+                            font-family: &quot;Outfit&quot;, sans-serif;
+                            font-size: 14px;
+                            font-weight: 500;
+                            cursor: pointer;
+                          "
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Quick Links 4-Column Grid -->
+                  <div
+                    style="
+                      margin-top: 32px;
+                      display: grid;
+                      grid-template-columns: repeat(4, 1fr);
+                      gap: 20px;
+                    "
+                  >
+                    <div
+                      class="quick-link-card quick-link-card-lg"
+                      style="padding: 28px"
+                    >
+                      <div
+                        class="quick-link-icon"
+                        style="width: 60px; height: 60px"
+                      >
+                        <svg style="width: 30px; height: 30px">
+                          <use href="#icon-package" />
+                        </svg>
+                      </div>
+                      <div
+                        class="quick-link-label"
+                        style="font-size: 16px; margin-top: 8px"
+                      >
+                        My Orders
+                      </div>
+                      <div class="quick-link-count" style="margin-top: 4px">
+                        View order history and track deliveries
+                      </div>
+                    </div>
+
+                    <div
+                      class="quick-link-card quick-link-card-lg"
+                      style="padding: 28px"
+                    >
+                      <div
+                        class="quick-link-icon"
+                        style="width: 60px; height: 60px; background: #fce7f3"
+                      >
+                        <svg style="width: 30px; height: 30px; stroke: #ec4899">
+                          <use href="#icon-heart" />
+                        </svg>
+                      </div>
+                      <div
+                        class="quick-link-label"
+                        style="font-size: 16px; margin-top: 8px"
+                      >
+                        Wishlist
+                      </div>
+                      <div class="quick-link-count" style="margin-top: 4px">
+                        Items you've saved for later
+                      </div>
+                    </div>
+
+                    <div
+                      class="quick-link-card quick-link-card-lg"
+                      style="padding: 28px"
+                    >
+                      <div
+                        class="quick-link-icon"
+                        style="width: 60px; height: 60px; background: #dbeafe"
+                      >
+                        <svg style="width: 30px; height: 30px; stroke: #3b82f6">
+                          <use href="#icon-map-pin" />
+                        </svg>
+                      </div>
+                      <div
+                        class="quick-link-label"
+                        style="font-size: 16px; margin-top: 8px"
+                      >
+                        Addresses
+                      </div>
+                      <div class="quick-link-count" style="margin-top: 4px">
+                        Manage delivery addresses
+                      </div>
+                    </div>
+
+                    <div
+                      class="quick-link-card quick-link-card-lg"
+                      style="padding: 28px"
+                    >
+                      <div
+                        class="quick-link-icon"
+                        style="width: 60px; height: 60px; background: #fef3c7"
+                      >
+                        <svg style="width: 30px; height: 30px; stroke: #d97706">
+                          <use href="#icon-calendar" />
+                        </svg>
+                      </div>
+                      <div
+                        class="quick-link-label"
+                        style="font-size: 16px; margin-top: 8px"
+                      >
+                        Workshop Registrations
+                      </div>
+                      <div class="quick-link-count" style="margin-top: 4px">
+                        Upcoming pottery classes
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================== -->
+        <!-- APPROVAL SECTION -->
+        <!-- ====================================== -->
+        <section class="approval-section">
+          <h2 class="approval-title">Approval Selection</h2>
+          <p class="approval-desc">
+            Select your preferred option for each viewport. The selected designs
+            will be implemented.
+          </p>
+
+          <div class="approval-grid">
+            <!-- Mobile Selection -->
+            <div class="approval-card">
+              <h3 class="approval-viewport">📱 Mobile (375px)</h3>
+              <div class="approval-options">
+                <label class="approval-option">
+                  <input type="radio" name="mobile" value="A" />
+                  <span>Option A - Centered Profile Card</span>
+                </label>
+                <label class="approval-option">
+                  <input type="radio" name="mobile" value="B" />
+                  <span>Option B - Horizontal with List</span>
+                </label>
+                <label class="approval-option">
+                  <input type="radio" name="mobile" value="C" />
+                  <span>Option C - Stats-Focused</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Tablet Selection -->
+            <div class="approval-card">
+              <h3 class="approval-viewport">📱 Tablet (768px)</h3>
+              <div class="approval-options">
+                <label class="approval-option">
+                  <input type="radio" name="tablet" value="A" />
+                  <span>Option A - Centered Profile Card</span>
+                </label>
+                <label class="approval-option">
+                  <input type="radio" name="tablet" value="B" />
+                  <span>Option B - Horizontal with List</span>
+                </label>
+                <label class="approval-option">
+                  <input type="radio" name="tablet" value="C" />
+                  <span>Option C - Stats-Focused</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Desktop Selection -->
+            <div class="approval-card">
+              <h3 class="approval-viewport">🖥️ Desktop (1440px)</h3>
+              <div class="approval-options">
+                <label class="approval-option">
+                  <input type="radio" name="desktop" value="A" />
+                  <span>Option A - Centered Profile Card</span>
+                </label>
+                <label class="approval-option">
+                  <input type="radio" name="desktop" value="B" />
+                  <span>Option B - Horizontal with List</span>
+                </label>
+                <label class="approval-option">
+                  <input type="radio" name="desktop" value="C" />
+                  <span>Option C - Stats-Focused</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================== -->
+        <!-- IMPLEMENTATION NOTES -->
+        <!-- ====================================== -->
+        <section class="notes-section">
+          <h2 class="notes-title">Implementation Notes</h2>
+          <div class="notes-content">
+            <h3>Design Specifications</h3>
+            <ul>
+              <li>
+                <strong>Avatar:</strong> Initials on gradient background
+                (#4F6F52 to #6B8F6E)
+              </li>
+              <li>
+                <strong>Card Corners:</strong> rounded-2xl (16px) for main
+                cards, rounded-xl for inner
+              </li>
+              <li>
+                <strong>Shadows:</strong> shadow-soft default, shadow-card on
+                hover
+              </li>
+              <li>
+                <strong>Quick Link Icons:</strong> 44-60px depending on viewport
+              </li>
+            </ul>
+
+            <h3>Quick Links</h3>
+            <ul>
+              <li>
+                <strong>Orders:</strong> Links to /orders - show count of total
+                orders
+              </li>
+              <li>
+                <strong>Wishlist:</strong> Links to /wishlist - show count of
+                saved items
+              </li>
+              <li>
+                <strong>Addresses:</strong> Links to /addresses - show count of
+                saved addresses
+              </li>
+              <li>
+                <strong>Registrations:</strong> Links to /registrations - show
+                count of upcoming events
+              </li>
+            </ul>
+
+            <h3>Interactive Elements</h3>
+            <ul>
+              <li>
+                <strong>Edit Profile:</strong> Opens profile edit modal/page
+              </li>
+              <li>
+                <strong>Quick Links:</strong> Hover shows shadow-card, click
+                navigates
+              </li>
+              <li>
+                <strong>Sign Out:</strong> Triggers Clerk sign out, redirects to
+                home
+              </li>
+            </ul>
+
+            <h3>Files to Modify</h3>
+            <ul>
+              <li><code>src/app/(main)/profile/page.tsx</code></li>
+              <li><code>src/app/(main)/profile/profile-client.tsx</code></li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

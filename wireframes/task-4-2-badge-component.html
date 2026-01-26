@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.2: Badge Component - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Badge Base Styles */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-family: "Outfit", sans-serif;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .badge svg {
+        width: 12px;
+        height: 12px;
+        stroke-width: 2;
+        fill: none;
+        stroke: currentColor;
+      }
+
+      /* Sizes */
+      .badge-sm {
+        font-size: 10px;
+        padding: 2px 6px;
+      }
+      .badge-md {
+        font-size: 11px;
+        padding: 3px 8px;
+      }
+      .badge-lg {
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+
+      /* --- OPTION A: Pill Shape (rounded-full) --- */
+      .option-a .badge {
+        border-radius: 9999px;
+      }
+
+      /* --- OPTION B: Rounded Rectangle (rounded-md) --- */
+      .option-b .badge {
+        border-radius: 6px;
+      }
+
+      /* --- OPTION C: Soft Rectangle (rounded-lg) --- */
+      .option-c .badge {
+        border-radius: 8px;
+      }
+
+      /* Variant Colors - Consistent across all options */
+      .badge-default {
+        background: #f5f5f4;
+        color: #737373;
+      }
+
+      .badge-primary {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .badge-secondary {
+        background: #f5f0e8;
+        color: #8b7355;
+      }
+
+      .badge-success {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+
+      .badge-warning {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .badge-error {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .badge-info {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+
+      /* Status Badges (Forest Theme) */
+      .badge-pending {
+        background: #fef3c7;
+        color: #b45309;
+      }
+
+      .badge-approved {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .badge-confirmed {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+
+      .badge-cancelled {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+
+      .badge-completed {
+        background: #f5f5f4;
+        color: #525252;
+      }
+
+      .badge-processing {
+        background: #f3e8ff;
+        color: #7c3aed;
+      }
+
+      .badge-shipped {
+        background: #ccfbf1;
+        color: #0d9488;
+      }
+
+      .badge-delivered {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+
+      /* Product Status */
+      .badge-in-stock {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .badge-low-stock {
+        background: #f5ebe6;
+        color: #c4785a;
+      }
+
+      .badge-out-of-stock {
+        background: #f5f5f4;
+        color: #737373;
+      }
+
+      /* Event Level */
+      .badge-beginner {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+
+      .badge-intermediate {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .badge-advanced {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .badge-all-levels {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+
+      /* Layout */
+      .badge-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .badge-row {
+        margin-bottom: 28px;
+      }
+
+      .badge-row-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      /* Viewport Grid */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Context Examples */
+      .context-example {
+        background: #fafaf9;
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 16px;
+      }
+
+      .context-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #bbb;
+        margin-bottom: 12px;
+      }
+
+      /* Order Card Mini */
+      .order-card-mini {
+        background: white;
+        border-radius: 12px;
+        padding: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .order-card-mini .order-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .order-card-mini .order-id {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .order-card-mini .order-date {
+        font-size: 11px;
+        color: #999;
+      }
+
+      /* Event Card Mini */
+      .event-card-mini {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        max-width: 200px;
+      }
+
+      .event-card-mini .img {
+        height: 80px;
+        background: linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%);
+        position: relative;
+      }
+
+      .event-card-mini .img .badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+      }
+
+      .event-card-mini .info {
+        padding: 10px;
+      }
+
+      .event-card-mini .title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      /* Product Card Mini */
+      .product-card-mini {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        max-width: 140px;
+      }
+
+      .product-card-mini .img {
+        height: 100px;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product-card-mini .stock-badge {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+      }
+
+      .product-card-mini .info {
+        padding: 10px;
+      }
+
+      .product-card-mini .name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .product-card-mini .price {
+        font-size: 12px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.2: Badge Component</h1>
+    <p class="subtitle">
+      Foundation component: Consistent badge/pill design with color variants for
+      all statuses. Used for order status, event levels, stock status, and
+      general labels.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="check-icon" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+      <symbol id="clock-icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </symbol>
+      <symbol id="x-icon" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </symbol>
+      <symbol id="truck-icon" viewBox="0 0 24 24">
+        <rect x="1" y="3" width="15" height="13" />
+        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+        <circle cx="5.5" cy="18.5" r="2.5" />
+        <circle cx="18.5" cy="18.5" r="2.5" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>BEFORE (Current)</h3>
+          <ul>
+            <li>Inconsistent badge styles across components</li>
+            <li>Mixed border-radius values</li>
+            <li>Different color palettes per component</li>
+            <li>No standardized sizing</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>AFTER (New Design)</h3>
+          <ul>
+            <li>Unified badge component with variants</li>
+            <li>Consistent border-radius (pill, rounded, or soft)</li>
+            <li>Forest theme color palette throughout</li>
+            <li>Standardized sizes: sm, md, lg</li>
+            <li>Status variants for orders, events, products</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Pill Shape (rounded-full) - RECOMMENDED -->
+      <div class="option-section option-a">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Pill Shape (rounded-full)
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Classic pill-shaped badges. Soft, friendly appearance. Commonly
+              used in modern UIs.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Order Status</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">Pending</span>
+                <span class="badge badge-md badge-processing">Processing</span>
+                <span class="badge badge-md badge-shipped">Shipped</span>
+                <span class="badge badge-md badge-delivered">Delivered</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Event Level</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-beginner">Beginner</span>
+                <span class="badge badge-sm badge-intermediate"
+                  >Intermediate</span
+                >
+                <span class="badge badge-sm badge-advanced">Advanced</span>
+              </div>
+            </div>
+
+            <div class="context-example">
+              <div class="context-label">In Context: Order Card</div>
+              <div class="order-card-mini">
+                <div class="order-info">
+                  <div class="order-id">#ORD-2024-1234</div>
+                  <div class="order-date">Jan 15, 2024</div>
+                </div>
+                <span class="badge badge-md badge-shipped">
+                  <svg><use href="#truck-icon" /></svg>
+                  Shipped
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Sizes</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-primary">Small</span>
+                <span class="badge badge-md badge-primary">Medium</span>
+                <span class="badge badge-lg badge-primary">Large</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Base Variants</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-default">Default</span>
+                <span class="badge badge-md badge-primary">Primary</span>
+                <span class="badge badge-md badge-secondary">Secondary</span>
+                <span class="badge badge-md badge-success">Success</span>
+                <span class="badge badge-md badge-warning">Warning</span>
+                <span class="badge badge-md badge-error">Error</span>
+                <span class="badge badge-md badge-info">Info</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Stock Status</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-in-stock">In Stock</span>
+                <span class="badge badge-sm badge-low-stock">Low Stock</span>
+                <span class="badge badge-sm badge-out-of-stock"
+                  >Out of Stock</span
+                >
+              </div>
+            </div>
+
+            <div class="context-example">
+              <div class="context-label">In Context: Event Card</div>
+              <div class="event-card-mini">
+                <div class="img">
+                  <span class="badge badge-sm badge-intermediate"
+                    >Intermediate</span
+                  >
+                </div>
+                <div class="info">
+                  <div class="title">Pottery Workshop</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Registration Status</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">
+                  <svg><use href="#clock-icon" /></svg>
+                  Pending
+                </span>
+                <span class="badge badge-md badge-approved">
+                  <svg><use href="#check-icon" /></svg>
+                  Approved
+                </span>
+                <span class="badge badge-md badge-confirmed">
+                  <svg><use href="#check-icon" /></svg>
+                  Confirmed
+                </span>
+                <span class="badge badge-md badge-cancelled">
+                  <svg><use href="#x-icon" /></svg>
+                  Cancelled
+                </span>
+                <span class="badge badge-md badge-completed">
+                  <svg><use href="#check-icon" /></svg>
+                  Completed
+                </span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Full Order Flow</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">Pending</span>
+                <span class="badge badge-md badge-processing">Processing</span>
+                <span class="badge badge-md badge-approved">Paid</span>
+                <span class="badge badge-md badge-shipped">Shipped</span>
+                <span class="badge badge-md badge-delivered">Delivered</span>
+                <span class="badge badge-md badge-cancelled">Cancelled</span>
+                <span class="badge badge-md badge-warning">Returned</span>
+                <span class="badge badge-md badge-info">Refunded</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 16px; margin-top: 16px">
+              <div class="context-example" style="flex: 1">
+                <div class="context-label">Product Card</div>
+                <div class="product-card-mini">
+                  <div class="img">
+                    <span class="badge badge-sm badge-low-stock stock-badge"
+                      >Low Stock</span
+                    >
+                  </div>
+                  <div class="info">
+                    <div class="name">Ceramic Vase</div>
+                    <div class="price">&#8377;1,450</div>
+                  </div>
+                </div>
+              </div>
+              <div class="context-example" style="flex: 1">
+                <div class="context-label">Order Row</div>
+                <div class="order-card-mini">
+                  <div class="order-info">
+                    <div class="order-id">#ORD-2024-5678</div>
+                    <div class="order-date">Jan 20, 2024</div>
+                  </div>
+                  <span class="badge badge-md badge-delivered">
+                    <svg><use href="#check-icon" /></svg>
+                    Delivered
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Rounded Rectangle (rounded-md) -->
+      <div class="option-section option-b">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Rounded Rectangle (6px)</h3>
+            <p class="wf-option-desc">
+              More angular badges. Modern, structured look. Better alignment
+              with card corners.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Order Status</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">Pending</span>
+                <span class="badge badge-md badge-processing">Processing</span>
+                <span class="badge badge-md badge-shipped">Shipped</span>
+                <span class="badge badge-md badge-delivered">Delivered</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Event Level</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-beginner">Beginner</span>
+                <span class="badge badge-sm badge-intermediate"
+                  >Intermediate</span
+                >
+                <span class="badge badge-sm badge-advanced">Advanced</span>
+              </div>
+            </div>
+
+            <div class="context-example">
+              <div class="context-label">In Context: Order Card</div>
+              <div class="order-card-mini">
+                <div class="order-info">
+                  <div class="order-id">#ORD-2024-1234</div>
+                  <div class="order-date">Jan 15, 2024</div>
+                </div>
+                <span class="badge badge-md badge-shipped">
+                  <svg><use href="#truck-icon" /></svg>
+                  Shipped
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Sizes</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-primary">Small</span>
+                <span class="badge badge-md badge-primary">Medium</span>
+                <span class="badge badge-lg badge-primary">Large</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Base Variants</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-default">Default</span>
+                <span class="badge badge-md badge-primary">Primary</span>
+                <span class="badge badge-md badge-secondary">Secondary</span>
+                <span class="badge badge-md badge-success">Success</span>
+                <span class="badge badge-md badge-warning">Warning</span>
+                <span class="badge badge-md badge-error">Error</span>
+                <span class="badge badge-md badge-info">Info</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Stock Status</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-in-stock">In Stock</span>
+                <span class="badge badge-sm badge-low-stock">Low Stock</span>
+                <span class="badge badge-sm badge-out-of-stock"
+                  >Out of Stock</span
+                >
+              </div>
+            </div>
+
+            <div class="context-example">
+              <div class="context-label">In Context: Event Card</div>
+              <div class="event-card-mini">
+                <div class="img">
+                  <span class="badge badge-sm badge-intermediate"
+                    >Intermediate</span
+                  >
+                </div>
+                <div class="info">
+                  <div class="title">Pottery Workshop</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Registration Status</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">
+                  <svg><use href="#clock-icon" /></svg>
+                  Pending
+                </span>
+                <span class="badge badge-md badge-approved">
+                  <svg><use href="#check-icon" /></svg>
+                  Approved
+                </span>
+                <span class="badge badge-md badge-confirmed">
+                  <svg><use href="#check-icon" /></svg>
+                  Confirmed
+                </span>
+                <span class="badge badge-md badge-cancelled">
+                  <svg><use href="#x-icon" /></svg>
+                  Cancelled
+                </span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Full Order Flow</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">Pending</span>
+                <span class="badge badge-md badge-processing">Processing</span>
+                <span class="badge badge-md badge-approved">Paid</span>
+                <span class="badge badge-md badge-shipped">Shipped</span>
+                <span class="badge badge-md badge-delivered">Delivered</span>
+                <span class="badge badge-md badge-cancelled">Cancelled</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 16px; margin-top: 16px">
+              <div class="context-example" style="flex: 1">
+                <div class="context-label">Product Card</div>
+                <div class="product-card-mini">
+                  <div class="img">
+                    <span class="badge badge-sm badge-low-stock stock-badge"
+                      >Low Stock</span
+                    >
+                  </div>
+                  <div class="info">
+                    <div class="name">Ceramic Vase</div>
+                    <div class="price">&#8377;1,450</div>
+                  </div>
+                </div>
+              </div>
+              <div class="context-example" style="flex: 1">
+                <div class="context-label">Order Row</div>
+                <div class="order-card-mini">
+                  <div class="order-info">
+                    <div class="order-id">#ORD-2024-5678</div>
+                    <div class="order-date">Jan 20, 2024</div>
+                  </div>
+                  <span class="badge badge-md badge-delivered">
+                    <svg><use href="#check-icon" /></svg>
+                    Delivered
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Soft Rectangle (rounded-lg) -->
+      <div class="option-section option-c">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Soft Rectangle (8px)</h3>
+            <p class="wf-option-desc">
+              Balanced approach between pill and rectangle. Matches button
+              rounded-lg style.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Order Status</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">Pending</span>
+                <span class="badge badge-md badge-processing">Processing</span>
+                <span class="badge badge-md badge-shipped">Shipped</span>
+                <span class="badge badge-md badge-delivered">Delivered</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Event Level</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-beginner">Beginner</span>
+                <span class="badge badge-sm badge-intermediate"
+                  >Intermediate</span
+                >
+                <span class="badge badge-sm badge-advanced">Advanced</span>
+              </div>
+            </div>
+
+            <div class="context-example">
+              <div class="context-label">In Context: Order Card</div>
+              <div class="order-card-mini">
+                <div class="order-info">
+                  <div class="order-id">#ORD-2024-1234</div>
+                  <div class="order-date">Jan 15, 2024</div>
+                </div>
+                <span class="badge badge-md badge-shipped">
+                  <svg><use href="#truck-icon" /></svg>
+                  Shipped
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Sizes</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-primary">Small</span>
+                <span class="badge badge-md badge-primary">Medium</span>
+                <span class="badge badge-lg badge-primary">Large</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Base Variants</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-default">Default</span>
+                <span class="badge badge-md badge-primary">Primary</span>
+                <span class="badge badge-md badge-secondary">Secondary</span>
+                <span class="badge badge-md badge-success">Success</span>
+                <span class="badge badge-md badge-warning">Warning</span>
+                <span class="badge badge-md badge-error">Error</span>
+                <span class="badge badge-md badge-info">Info</span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Stock Status</div>
+              <div class="badge-group">
+                <span class="badge badge-sm badge-in-stock">In Stock</span>
+                <span class="badge badge-sm badge-low-stock">Low Stock</span>
+                <span class="badge badge-sm badge-out-of-stock"
+                  >Out of Stock</span
+                >
+              </div>
+            </div>
+
+            <div class="context-example">
+              <div class="context-label">In Context: Event Card</div>
+              <div class="event-card-mini">
+                <div class="img">
+                  <span class="badge badge-sm badge-intermediate"
+                    >Intermediate</span
+                  >
+                </div>
+                <div class="info">
+                  <div class="title">Pottery Workshop</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Registration Status</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">
+                  <svg><use href="#clock-icon" /></svg>
+                  Pending
+                </span>
+                <span class="badge badge-md badge-approved">
+                  <svg><use href="#check-icon" /></svg>
+                  Approved
+                </span>
+                <span class="badge badge-md badge-confirmed">
+                  <svg><use href="#check-icon" /></svg>
+                  Confirmed
+                </span>
+                <span class="badge badge-md badge-cancelled">
+                  <svg><use href="#x-icon" /></svg>
+                  Cancelled
+                </span>
+              </div>
+            </div>
+
+            <div class="badge-row">
+              <div class="badge-row-label">Full Order Flow</div>
+              <div class="badge-group">
+                <span class="badge badge-md badge-pending">Pending</span>
+                <span class="badge badge-md badge-processing">Processing</span>
+                <span class="badge badge-md badge-approved">Paid</span>
+                <span class="badge badge-md badge-shipped">Shipped</span>
+                <span class="badge badge-md badge-delivered">Delivered</span>
+                <span class="badge badge-md badge-cancelled">Cancelled</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 16px; margin-top: 16px">
+              <div class="context-example" style="flex: 1">
+                <div class="context-label">Product Card</div>
+                <div class="product-card-mini">
+                  <div class="img">
+                    <span class="badge badge-sm badge-low-stock stock-badge"
+                      >Low Stock</span
+                    >
+                  </div>
+                  <div class="info">
+                    <div class="name">Ceramic Vase</div>
+                    <div class="price">&#8377;1,450</div>
+                  </div>
+                </div>
+              </div>
+              <div class="context-example" style="flex: 1">
+                <div class="context-label">Order Row</div>
+                <div class="order-card-mini">
+                  <div class="order-info">
+                    <div class="order-id">#ORD-2024-5678</div>
+                    <div class="order-date">Jan 20, 2024</div>
+                  </div>
+                  <span class="badge badge-md badge-delivered">
+                    <svg><use href="#check-icon" /></svg>
+                    Delivered
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred badge style option for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Pill
+            (rounded-full)</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Rectangle
+            (6px)</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Soft
+            (8px)</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Pill
+            (rounded-full)</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Rectangle
+            (6px)</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Soft
+            (8px)</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Pill
+            (rounded-full)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            Rectangle (6px)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Soft
+            (8px)</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 4.2):</strong><br /><br />
+      &bull; <strong>Sizes:</strong> text-xs (sm: 10px, md: 11px, lg: 12px)<br />
+      &bull; <strong>Padding:</strong> px-2 py-0.5 (sm), px-2.5 py-0.5 (md),
+      px-3 py-1 (lg)<br />
+      &bull; <strong>Font:</strong> font-sans (Outfit), font-medium<br />
+      &bull; <strong>Icons:</strong> 12px, stroke-width: 2, placed before
+      text<br />
+      &bull; <strong>Colors:</strong> Use forest theme tokens from
+      design-refactor.md<br />
+      &bull; <strong>File:</strong> src/components/ui/badge.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

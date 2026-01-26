@@ -1,0 +1,1686 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 10.3: Info Pages - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Page Header Pattern */
+      .page-header {
+        margin-bottom: 32px;
+      }
+
+      .page-header-desktop {
+        padding-bottom: 24px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .page-title-desktop {
+        font-size: 36px;
+      }
+
+      .title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-bottom: 12px;
+      }
+
+      .page-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 500px;
+      }
+
+      /* Content Container */
+      .content-container {
+        max-width: 768px;
+        margin: 0 auto;
+      }
+
+      .content-container-narrow {
+        max-width: 640px;
+      }
+
+      /* FAQ Accordion */
+      .faq-section {
+        margin-bottom: 32px;
+      }
+
+      .faq-category {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .faq-item {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+      }
+
+      .faq-question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        cursor: pointer;
+      }
+
+      .faq-question:hover {
+        background: #fafaf9;
+      }
+
+      .faq-chevron {
+        width: 20px;
+        height: 20px;
+        color: #999;
+        flex-shrink: 0;
+      }
+
+      .faq-answer {
+        padding: 0 20px 16px;
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.7;
+        display: none;
+      }
+
+      .faq-answer.open {
+        display: block;
+      }
+
+      /* Info Cards */
+      .info-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        margin-bottom: 16px;
+      }
+
+      .info-card-icon {
+        width: 44px;
+        height: 44px;
+        background: #e8ece8;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        color: #4f6f52;
+      }
+
+      .info-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .info-card-text {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+      }
+
+      /* Content Sections */
+      .content-section {
+        margin-bottom: 32px;
+      }
+
+      .content-heading {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      .content-text {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.8;
+      }
+
+      .content-list {
+        list-style: none;
+        padding: 0;
+        margin: 16px 0;
+      }
+
+      .content-list li {
+        padding: 8px 0 8px 20px;
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        position: relative;
+      }
+
+      .content-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 14px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #4f6f52;
+      }
+
+      /* Table Styles */
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+      }
+
+      .info-table th,
+      .info-table td {
+        padding: 12px 16px;
+        text-align: left;
+        font-size: 14px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .info-table th {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 600;
+        color: #1a1a1a;
+        background: #f5f5f4;
+      }
+
+      .info-table td {
+        color: #555;
+      }
+
+      /* Sidebar Layout */
+      .page-with-sidebar {
+        display: flex;
+        gap: 48px;
+      }
+
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+      }
+
+      .sidebar-nav {
+        position: sticky;
+        top: 24px;
+      }
+
+      .sidebar-link {
+        display: block;
+        padding: 10px 16px;
+        font-size: 14px;
+        color: #666;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 4px;
+        transition: all 0.15s;
+      }
+
+      .sidebar-link:hover {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .sidebar-link.active {
+        background: #e8ece8;
+        color: #4f6f52;
+        font-weight: 600;
+      }
+
+      .main-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* Page Tabs */
+      .page-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 32px;
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 16px;
+        overflow-x: auto;
+      }
+
+      .page-tab {
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #737373;
+        text-decoration: none;
+        border-radius: 8px;
+        white-space: nowrap;
+        transition: all 0.15s;
+      }
+
+      .page-tab:hover {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .page-tab.active {
+        background: #4f6f52;
+        color: white;
+      }
+
+      /* Option Layouts */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e5e5;
+      }
+
+      .page-frame-content {
+        padding: 16px;
+        max-height: 700px;
+        overflow-y: auto;
+      }
+
+      .page-frame-content.desktop {
+        padding: 32px 48px;
+      }
+
+      .page-frame-content.tablet {
+        padding: 24px 32px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Page Preview Tabs */
+      .preview-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px;
+        background: #f5f5f4;
+        padding: 4px;
+        border-radius: 10px;
+      }
+
+      .preview-tab {
+        padding: 6px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #737373;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .preview-tab.active {
+        background: white;
+        color: #4f6f52;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      }
+
+      /* Care Instructions */
+      .care-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .care-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .care-icon {
+        width: 40px;
+        height: 40px;
+        background: #e8ece8;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4f6f52;
+        font-size: 18px;
+      }
+
+      .care-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #1a1a1a;
+      }
+
+      .care-text {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 10.3: Info Pages</h1>
+    <p class="subtitle">
+      FAQ, Shipping, Privacy Policy, Terms of Service, and Care Instructions
+      pages. Consistent page header, grouped accordion for FAQ, content layout
+      with max-w-3xl for readability.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">&#8987; AWAITING APPROVAL</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>No dedicated info pages</li>
+            <li>Missing FAQ section</li>
+            <li>No shipping information</li>
+            <li>No legal pages</li>
+            <li>No care instructions</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Grouped FAQ with accordion</li>
+            <li>Clear shipping rate table</li>
+            <li>Privacy policy with sections</li>
+            <li>Terms of service page</li>
+            <li>Product care instructions</li>
+            <li>Consistent page headers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Tab-Based Navigation -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Tab-Based Navigation
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              All info pages accessible via horizontal tabs. Clean, centered
+              content with max-width for readability. FAQ uses grouped accordion
+              pattern.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <!-- Preview Tab Selector -->
+            <div class="preview-tabs">
+              <div class="preview-tab active">FAQ</div>
+              <div class="preview-tab">Shipping</div>
+              <div class="preview-tab">Privacy</div>
+              <div class="preview-tab">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs"><a href="#">Home</a> / Help</div>
+                  <h1 class="page-title" style="font-size: 24px">
+                    Help Center
+                  </h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Page Tabs (scrollable on mobile) -->
+                <div
+                  class="page-tabs"
+                  style="margin: 0 -16px; padding: 0 16px 16px"
+                >
+                  <a class="page-tab active" href="#">FAQ</a>
+                  <a class="page-tab" href="#">Shipping</a>
+                  <a class="page-tab" href="#">Privacy</a>
+                  <a class="page-tab" href="#">Terms</a>
+                  <a class="page-tab" href="#">Care</a>
+                </div>
+
+                <!-- FAQ Content -->
+                <div class="faq-section">
+                  <div class="faq-category" style="font-size: 15px">
+                    Orders & Shipping
+                  </div>
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      How long does shipping take?
+                      <span class="faq-chevron">+</span>
+                    </div>
+                  </div>
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      Do you ship internationally?
+                      <span class="faq-chevron">+</span>
+                    </div>
+                  </div>
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      How can I track my order?
+                      <span class="faq-chevron">+</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="faq-section">
+                  <div class="faq-category" style="font-size: 15px">
+                    Products
+                  </div>
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      Are your products food safe?
+                      <span class="faq-chevron">+</span>
+                    </div>
+                  </div>
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      Can I microwave pottery?
+                      <span class="faq-chevron">+</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="faq-section">
+                  <div class="faq-category" style="font-size: 15px">
+                    Returns & Refunds
+                  </div>
+                  <div class="faq-item">
+                    <div class="faq-question">
+                      What is your return policy?
+                      <span class="faq-chevron">+</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab active">FAQ</div>
+              <div class="preview-tab">Shipping</div>
+              <div class="preview-tab">Privacy</div>
+              <div class="preview-tab">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / Help Center
+                  </div>
+                  <h1 class="page-title">Help Center</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">Find answers to common questions</p>
+                </div>
+
+                <!-- Page Tabs -->
+                <div class="page-tabs">
+                  <a class="page-tab active" href="#">FAQ</a>
+                  <a class="page-tab" href="#">Shipping</a>
+                  <a class="page-tab" href="#">Privacy Policy</a>
+                  <a class="page-tab" href="#">Terms of Service</a>
+                  <a class="page-tab" href="#">Care Instructions</a>
+                </div>
+
+                <!-- FAQ Content (centered) -->
+                <div style="max-width: 600px; margin: 0 auto">
+                  <div class="faq-section">
+                    <div class="faq-category">Orders & Shipping</div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        How long does shipping take?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        Do you ship internationally?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        How can I track my order?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        What payment methods do you accept?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="faq-section">
+                    <div class="faq-category">Products</div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        Are your products food safe?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        Can I microwave pottery items?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        How do I care for my pottery?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab active">FAQ</div>
+              <div class="preview-tab">Shipping</div>
+              <div class="preview-tab">Privacy</div>
+              <div class="preview-tab">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div
+                  class="page-header page-header-desktop"
+                  style="text-align: center"
+                >
+                  <div class="wf-breadcrumbs" style="text-align: center">
+                    <a href="#">Home</a> / Help Center
+                  </div>
+                  <h1 class="page-title page-title-desktop">Help Center</h1>
+                  <div
+                    class="title-underline"
+                    style="margin: 0 auto 12px"
+                  ></div>
+                  <p class="page-subtitle" style="margin: 0 auto">
+                    Find answers to common questions about our products,
+                    shipping, and policies
+                  </p>
+                </div>
+
+                <!-- Page Tabs (centered) -->
+                <div class="page-tabs" style="justify-content: center">
+                  <a class="page-tab active" href="#">FAQ</a>
+                  <a class="page-tab" href="#">Shipping</a>
+                  <a class="page-tab" href="#">Privacy Policy</a>
+                  <a class="page-tab" href="#">Terms of Service</a>
+                  <a class="page-tab" href="#">Care Instructions</a>
+                </div>
+
+                <!-- FAQ Content (centered with max-width) -->
+                <div style="max-width: 720px; margin: 0 auto">
+                  <div class="faq-section">
+                    <div class="faq-category">Orders & Shipping</div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        How long does shipping take?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                      <div class="faq-answer open">
+                        Standard shipping takes 5-7 business days within India.
+                        Express shipping (2-3 days) is available for an
+                        additional fee. Each piece is carefully wrapped to
+                        ensure safe delivery.
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        Do you ship internationally?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        How can I track my order?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        What payment methods do you accept?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="faq-section">
+                    <div class="faq-category">Products</div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        Are your products food safe?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        Can I microwave pottery items?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        How do I care for my pottery?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="faq-section">
+                    <div class="faq-category">Returns & Refunds</div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        What is your return policy?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                    <div class="faq-item">
+                      <div class="faq-question">
+                        How do I request a refund?
+                        <span class="faq-chevron">+</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Sidebar Navigation -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Sidebar Navigation</h3>
+            <p class="wf-option-desc">
+              Sticky sidebar on desktop/tablet with page links. Main content
+              area with scrollable sections. Transforms to tabs on mobile.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile (tabs fallback) -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab">FAQ</div>
+              <div class="preview-tab active">Shipping</div>
+              <div class="preview-tab">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / Shipping
+                  </div>
+                  <h1 class="page-title" style="font-size: 24px">
+                    Shipping Info
+                  </h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Dropdown for mobile -->
+                <div
+                  style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 14px 16px;
+                    margin-bottom: 24px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                  "
+                >
+                  <span style="font-weight: 600; font-size: 14px"
+                    >Shipping Info</span
+                  >
+                  <span style="color: #999">&#9662;</span>
+                </div>
+
+                <!-- Content -->
+                <div class="content-section">
+                  <h2 class="content-heading" style="font-size: 18px">
+                    Delivery Times
+                  </h2>
+                  <p class="content-text">
+                    All orders are processed within 1-2 business days.
+                  </p>
+
+                  <div
+                    style="
+                      background: white;
+                      border-radius: 12px;
+                      overflow: hidden;
+                      margin-top: 16px;
+                    "
+                  >
+                    <table class="info-table" style="font-size: 13px">
+                      <tr>
+                        <th>Method</th>
+                        <th>Time</th>
+                        <th>Cost</th>
+                      </tr>
+                      <tr>
+                        <td>Standard</td>
+                        <td>5-7 days</td>
+                        <td>Rs. 99</td>
+                      </tr>
+                      <tr>
+                        <td>Express</td>
+                        <td>2-3 days</td>
+                        <td>Rs. 199</td>
+                      </tr>
+                      <tr>
+                        <td>Free Ship</td>
+                        <td>5-7 days</td>
+                        <td>Rs. 999+</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="content-section">
+                  <h2 class="content-heading" style="font-size: 18px">
+                    Packaging
+                  </h2>
+                  <p class="content-text">
+                    Each piece is carefully wrapped in bubble wrap and packed in
+                    custom boxes to ensure safe delivery.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab">FAQ</div>
+              <div class="preview-tab active">Shipping</div>
+              <div class="preview-tab">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / Help / Shipping
+                  </div>
+                  <h1 class="page-title">Shipping Information</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <!-- Sidebar Layout -->
+                <div class="page-with-sidebar" style="gap: 32px">
+                  <div class="sidebar" style="width: 180px">
+                    <nav class="sidebar-nav">
+                      <a class="sidebar-link" href="#">FAQ</a>
+                      <a class="sidebar-link active" href="#">Shipping</a>
+                      <a class="sidebar-link" href="#">Privacy Policy</a>
+                      <a class="sidebar-link" href="#">Terms</a>
+                      <a class="sidebar-link" href="#">Care Guide</a>
+                    </nav>
+                  </div>
+
+                  <div class="main-content">
+                    <div class="content-section">
+                      <h2 class="content-heading">Delivery Times</h2>
+                      <p class="content-text">
+                        All orders are processed within 1-2 business days.
+                        Delivery times depend on your location and chosen
+                        shipping method.
+                      </p>
+
+                      <table class="info-table" style="margin-top: 20px">
+                        <tr>
+                          <th>Method</th>
+                          <th>Delivery Time</th>
+                          <th>Cost</th>
+                        </tr>
+                        <tr>
+                          <td>Standard Shipping</td>
+                          <td>5-7 business days</td>
+                          <td>Rs. 99</td>
+                        </tr>
+                        <tr>
+                          <td>Express Shipping</td>
+                          <td>2-3 business days</td>
+                          <td>Rs. 199</td>
+                        </tr>
+                        <tr>
+                          <td>Free Shipping</td>
+                          <td>5-7 business days</td>
+                          <td>Orders Rs. 999+</td>
+                        </tr>
+                      </table>
+                    </div>
+
+                    <div class="content-section">
+                      <h2 class="content-heading">Packaging</h2>
+                      <p class="content-text">
+                        Each pottery piece is carefully wrapped in bubble wrap
+                        and packed in custom-designed boxes with padding to
+                        ensure safe delivery.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab">FAQ</div>
+              <div class="preview-tab active">Shipping</div>
+              <div class="preview-tab">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / Help Center / Shipping
+                  </div>
+                  <h1 class="page-title page-title-desktop">
+                    Shipping Information
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Everything you need to know about delivery
+                  </p>
+                </div>
+
+                <!-- Sidebar Layout -->
+                <div class="page-with-sidebar">
+                  <div class="sidebar">
+                    <nav class="sidebar-nav">
+                      <a class="sidebar-link" href="#">FAQ</a>
+                      <a class="sidebar-link active" href="#">Shipping</a>
+                      <a class="sidebar-link" href="#">Privacy Policy</a>
+                      <a class="sidebar-link" href="#">Terms of Service</a>
+                      <a class="sidebar-link" href="#">Care Instructions</a>
+                    </nav>
+                  </div>
+
+                  <div class="main-content" style="max-width: 720px">
+                    <div class="content-section">
+                      <h2 class="content-heading" style="font-size: 22px">
+                        Delivery Times
+                      </h2>
+                      <p class="content-text">
+                        All orders are processed within 1-2 business days.
+                        Delivery times depend on your location and chosen
+                        shipping method.
+                      </p>
+
+                      <table class="info-table" style="margin-top: 24px">
+                        <tr>
+                          <th>Shipping Method</th>
+                          <th>Delivery Time</th>
+                          <th>Cost</th>
+                        </tr>
+                        <tr>
+                          <td>Standard Shipping</td>
+                          <td>5-7 business days</td>
+                          <td>Rs. 99</td>
+                        </tr>
+                        <tr>
+                          <td>Express Shipping</td>
+                          <td>2-3 business days</td>
+                          <td>Rs. 199</td>
+                        </tr>
+                        <tr>
+                          <td>Free Shipping</td>
+                          <td>5-7 business days</td>
+                          <td>Orders above Rs. 999</td>
+                        </tr>
+                      </table>
+                    </div>
+
+                    <div class="content-section">
+                      <h2 class="content-heading" style="font-size: 22px">
+                        Packaging & Care
+                      </h2>
+                      <p class="content-text">
+                        Each pottery piece is carefully wrapped in bubble wrap
+                        and packed in custom-designed boxes with additional
+                        padding to ensure your order arrives safely.
+                      </p>
+
+                      <ul class="content-list">
+                        <li>Individual bubble wrap for each item</li>
+                        <li>Custom-fit cardboard dividers</li>
+                        <li>Fragile handling stickers</li>
+                        <li>Eco-friendly packaging materials</li>
+                      </ul>
+                    </div>
+
+                    <div class="content-section">
+                      <h2 class="content-heading" style="font-size: 22px">
+                        Tracking Your Order
+                      </h2>
+                      <p class="content-text">
+                        Once your order ships, you'll receive an email with
+                        tracking information. You can also track your order from
+                        your account dashboard.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Card-Based Layout -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Card-Based Layout</h3>
+            <p class="wf-option-desc">
+              Each info category displayed as cards. FAQ uses expandable
+              sections within cards. Care instructions as visual icon cards.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab">FAQ</div>
+              <div class="preview-tab">Shipping</div>
+              <div class="preview-tab active">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs"><a href="#">Home</a> / Care</div>
+                  <h1 class="page-title" style="font-size: 24px">Care Guide</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle" style="font-size: 13px">
+                    Keep your pottery beautiful
+                  </p>
+                </div>
+
+                <!-- Care Cards -->
+                <div
+                  class="care-grid"
+                  style="grid-template-columns: 1fr; gap: 12px"
+                >
+                  <div class="care-card">
+                    <div class="care-icon">&#128167;</div>
+                    <h3 class="care-title">Hand Wash Only</h3>
+                    <p class="care-text">
+                      Gently wash with mild soap and warm water.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#9888;</div>
+                    <h3 class="care-title">Avoid Extreme Heat</h3>
+                    <p class="care-text">
+                      Not suitable for oven or open flame.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#10052;</div>
+                    <h3 class="care-title">No Freezer</h3>
+                    <p class="care-text">Avoid freezing temperatures.</p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#128293;</div>
+                    <h3 class="care-title">Microwave Safe</h3>
+                    <p class="care-text">Safe for short microwave use.</p>
+                  </div>
+                </div>
+
+                <!-- Tips Card -->
+                <div
+                  class="info-card"
+                  style="margin-top: 24px; background: #f5f0e8"
+                >
+                  <h3 class="info-card-title">Pro Tip</h3>
+                  <p class="info-card-text">
+                    For stubborn stains, soak in warm water with baking soda for
+                    30 minutes.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab">FAQ</div>
+              <div class="preview-tab">Shipping</div>
+              <div class="preview-tab active">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header" style="text-align: center">
+                  <div class="wf-breadcrumbs" style="text-align: center">
+                    <a href="#">Home</a> / Care Instructions
+                  </div>
+                  <h1 class="page-title">Care Guide</h1>
+                  <div
+                    class="title-underline"
+                    style="margin: 0 auto 12px"
+                  ></div>
+                  <p class="page-subtitle" style="margin: 0 auto">
+                    Keep your handcrafted pottery looking beautiful
+                  </p>
+                </div>
+
+                <!-- Care Cards Grid -->
+                <div class="care-grid" style="margin-top: 32px">
+                  <div class="care-card">
+                    <div class="care-icon">&#128167;</div>
+                    <h3 class="care-title">Hand Wash Only</h3>
+                    <p class="care-text">
+                      Gently wash with mild soap and warm water. Avoid abrasive
+                      scrubbers.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#9888;</div>
+                    <h3 class="care-title">Avoid Extreme Heat</h3>
+                    <p class="care-text">
+                      Not suitable for oven, stovetop, or open flame use.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#10052;</div>
+                    <h3 class="care-title">No Freezer</h3>
+                    <p class="care-text">
+                      Avoid putting pottery in the freezer as it may crack.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#128293;</div>
+                    <h3 class="care-title">Microwave Safe</h3>
+                    <p class="care-text">
+                      Safe for short microwave use (under 2 minutes).
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div
+                  class="info-card"
+                  style="margin-top: 32px; background: #f5f0e8"
+                >
+                  <div
+                    class="info-card-icon"
+                    style="background: #4f6f52; color: white"
+                  >
+                    &#128161;
+                  </div>
+                  <h3 class="info-card-title">Pro Tips</h3>
+                  <ul class="content-list">
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                    <li>
+                      Dry thoroughly before storing to prevent moisture damage
+                    </li>
+                    <li>Store with soft padding between stacked pieces</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="preview-tabs">
+              <div class="preview-tab">FAQ</div>
+              <div class="preview-tab">Shipping</div>
+              <div class="preview-tab active">Care</div>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div
+                  class="page-header page-header-desktop"
+                  style="text-align: center"
+                >
+                  <div class="wf-breadcrumbs" style="text-align: center">
+                    <a href="#">Home</a> / Care Instructions
+                  </div>
+                  <h1 class="page-title page-title-desktop">Care Guide</h1>
+                  <div
+                    class="title-underline"
+                    style="margin: 0 auto 12px"
+                  ></div>
+                  <p class="page-subtitle" style="margin: 0 auto">
+                    Everything you need to keep your handcrafted pottery looking
+                    beautiful for years to come
+                  </p>
+                </div>
+
+                <!-- Care Cards Grid (4 columns) -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 24px;
+                    margin-top: 48px;
+                    max-width: 900px;
+                    margin-left: auto;
+                    margin-right: auto;
+                  "
+                >
+                  <div
+                    class="care-card"
+                    style="text-align: center; padding: 28px"
+                  >
+                    <div
+                      class="care-icon"
+                      style="
+                        margin: 0 auto 16px;
+                        width: 56px;
+                        height: 56px;
+                        font-size: 24px;
+                      "
+                    >
+                      &#128167;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      Hand Wash Only
+                    </h3>
+                    <p class="care-text">
+                      Gently wash with mild soap and warm water.
+                    </p>
+                  </div>
+                  <div
+                    class="care-card"
+                    style="text-align: center; padding: 28px"
+                  >
+                    <div
+                      class="care-icon"
+                      style="
+                        margin: 0 auto 16px;
+                        width: 56px;
+                        height: 56px;
+                        font-size: 24px;
+                      "
+                    >
+                      &#9888;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      Avoid Extreme Heat
+                    </h3>
+                    <p class="care-text">
+                      Not suitable for oven or open flame.
+                    </p>
+                  </div>
+                  <div
+                    class="care-card"
+                    style="text-align: center; padding: 28px"
+                  >
+                    <div
+                      class="care-icon"
+                      style="
+                        margin: 0 auto 16px;
+                        width: 56px;
+                        height: 56px;
+                        font-size: 24px;
+                      "
+                    >
+                      &#10052;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      No Freezer
+                    </h3>
+                    <p class="care-text">Avoid freezing temperatures.</p>
+                  </div>
+                  <div
+                    class="care-card"
+                    style="text-align: center; padding: 28px"
+                  >
+                    <div
+                      class="care-icon"
+                      style="
+                        margin: 0 auto 16px;
+                        width: 56px;
+                        height: 56px;
+                        font-size: 24px;
+                      "
+                    >
+                      &#128293;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      Microwave Safe
+                    </h3>
+                    <p class="care-text">Safe for short microwave use.</p>
+                  </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div style="max-width: 720px; margin: 48px auto 0">
+                  <div
+                    class="info-card"
+                    style="
+                      background: #f5f0e8;
+                      display: flex;
+                      gap: 24px;
+                      align-items: flex-start;
+                    "
+                  >
+                    <div
+                      class="info-card-icon"
+                      style="background: #4f6f52; color: white; flex-shrink: 0"
+                    >
+                      &#128161;
+                    </div>
+                    <div>
+                      <h3 class="info-card-title" style="font-size: 18px">
+                        Pro Tips for Long-Lasting Pottery
+                      </h3>
+                      <ul class="content-list">
+                        <li>
+                          For stubborn stains, soak in warm water with a
+                          teaspoon of baking soda for 30 minutes
+                        </li>
+                        <li>
+                          Always dry thoroughly before storing to prevent
+                          moisture damage
+                        </li>
+                        <li>
+                          Store with soft padding or felt between stacked pieces
+                        </li>
+                        <li>
+                          Avoid sudden temperature changes to prevent thermal
+                          shock
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred Info Pages layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Tab-Based
+            Navigation</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Sidebar
+            Navigation</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            Card-Based Layout</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Tab-Based
+            Navigation</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Sidebar
+            Navigation</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            Card-Based Layout</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A -
+            Tab-Based Navigation</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Sidebar
+            Navigation</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            Card-Based Layout</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 10.3):</strong><br /><br />
+      <strong>Pages to Create:</strong><br />
+      &bull; src/app/(main)/(with-footer)/help/page.tsx (FAQ redirect or
+      landing)<br />
+      &bull; src/app/(main)/(with-footer)/help/faq/page.tsx<br />
+      &bull; src/app/(main)/(with-footer)/help/shipping/page.tsx<br />
+      &bull; src/app/(main)/(with-footer)/help/privacy/page.tsx<br />
+      &bull; src/app/(main)/(with-footer)/help/terms/page.tsx<br />
+      &bull; src/app/(main)/(with-footer)/help/care/page.tsx<br /><br />
+      <strong>Components:</strong><br />
+      &bull; <strong>FAQAccordion:</strong> Grouped accordion with Radix UI
+      Accordion<br />
+      &bull; <strong>PageTabs:</strong> Horizontal tabs for page navigation<br />
+      &bull; <strong>InfoTable:</strong> For shipping rates display<br />
+      &bull; <strong>CareCard:</strong> Icon-based care instruction cards<br /><br />
+      <strong>Patterns:</strong><br />
+      &bull; Content container max-width: 768px (max-w-3xl)<br />
+      &bull; Consistent page header with breadcrumbs<br />
+      &bull; FAQ categories with font-display headings<br />
+      &bull; Responsive: tabs on all sizes, sidebar on desktop only
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

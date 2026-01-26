@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 9.4: Account Dropdown - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Dropdown Container */
+      .dropdown-demo {
+        position: relative;
+        display: inline-block;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border: 2px solid #e5e5e5;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+
+      .user-avatar:hover {
+        border-color: #4f6f52;
+      }
+
+      .user-avatar-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* Dropdown Menu */
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+        min-width: 220px;
+        padding: 8px;
+        z-index: 100;
+      }
+
+      .dropdown-header {
+        padding: 12px 12px 16px;
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 8px;
+      }
+
+      .dropdown-user-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .dropdown-user-email {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: background 0.15s;
+        border: none;
+        background: transparent;
+        width: 100%;
+        text-align: left;
+      }
+
+      .dropdown-item:hover {
+        background: #f5f5f4;
+      }
+
+      .dropdown-item svg {
+        width: 18px;
+        height: 18px;
+        stroke: #737373;
+        fill: none;
+        stroke-width: 2;
+      }
+
+      .dropdown-item-badge {
+        margin-left: auto;
+        min-width: 20px;
+        height: 20px;
+        background: #e8ece8;
+        color: #4f6f52;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 6px;
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background: #f0f0f0;
+        margin: 8px 0;
+      }
+
+      .dropdown-item.destructive {
+        color: #ef4444;
+      }
+
+      .dropdown-item.destructive svg {
+        stroke: #ef4444;
+      }
+
+      /* Option Variations */
+      .option-b .dropdown-menu {
+        border-radius: 12px;
+        padding: 4px;
+      }
+
+      .option-b .dropdown-item {
+        border-radius: 6px;
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .option-c .dropdown-menu {
+        min-width: 260px;
+      }
+
+      .option-c .dropdown-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+      }
+
+      .option-c .dropdown-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        flex-shrink: 0;
+      }
+
+      /* Demo Layout */
+      .options-row {
+        display: flex;
+        gap: 80px;
+        justify-content: center;
+        margin-top: 48px;
+        flex-wrap: wrap;
+      }
+
+      .option-container {
+        text-align: center;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 32px;
+        height: 32px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .option-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .option-desc {
+        font-size: 12px;
+        color: #737373;
+        margin-top: 4px;
+      }
+
+      .demo-box {
+        background: #fafaf9;
+        border-radius: 16px;
+        padding: 40px 60px;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-end;
+        min-height: 380px;
+      }
+
+      /* Mobile Sheet Version */
+      .mobile-sheet {
+        width: 375px;
+        background: white;
+        border-radius: 32px 32px 0 0;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.12);
+        padding: 12px 0 32px;
+      }
+
+      .sheet-handle {
+        width: 36px;
+        height: 4px;
+        background: #e5e5e5;
+        border-radius: 2px;
+        margin: 0 auto 16px;
+      }
+
+      .sheet-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .sheet-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+      }
+
+      .sheet-items {
+        padding: 8px 12px;
+      }
+
+      .sheet-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 12px;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .sheet-item:hover,
+      .sheet-item:active {
+        background: #f5f5f4;
+      }
+
+      .sheet-item svg {
+        width: 22px;
+        height: 22px;
+        stroke: #737373;
+        fill: none;
+        stroke-width: 2;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 9.4: Account Dropdown</h1>
+    <p class="subtitle">
+      User account menu dropdown with clean card design. Avatar trigger, icon +
+      label menu items, links to Orders, Wishlist, Registrations, Addresses.
+      Divider before Sign Out.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="package-icon" viewBox="0 0 24 24">
+        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+        />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </symbol>
+      <symbol id="heart-icon" viewBox="0 0 24 24">
+        <path
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        />
+      </symbol>
+      <symbol id="calendar-icon" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </symbol>
+      <symbol id="map-pin-icon" viewBox="0 0 24 24">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="settings-icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3" />
+        <path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+        />
+      </symbol>
+      <symbol id="logout-icon" viewBox="0 0 24 24">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </symbol>
+      <symbol id="user-icon" viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT STATE</h3>
+          <ul>
+            <li>Basic dropdown styling</li>
+            <li>No user info display</li>
+            <li>Inconsistent item spacing</li>
+            <li>No visual distinction for sign out</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Clean rounded-xl card with shadow</li>
+            <li>User name and email at top</li>
+            <li>Icon + label menu items</li>
+            <li>Hover bg-neutral-50 effect</li>
+            <li>Divider before destructive sign out</li>
+            <li>Badge counts for notifications</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Desktop Options -->
+    <div class="section-title">Desktop Dropdown Options</div>
+    <div class="options-row">
+      <!-- Option A: Standard -->
+      <div class="option-container option-a">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <div class="option-title">
+              Standard
+              <span
+                class="recommended-badge"
+                style="font-size: 9px; padding: 2px 6px"
+                >RECOMMENDED</span
+              >
+            </div>
+            <div class="option-desc">Clean with user info header</div>
+          </div>
+        </div>
+        <div class="demo-box">
+          <div class="dropdown-demo">
+            <div class="user-avatar"></div>
+            <div
+              class="dropdown-menu"
+              style="position: relative; top: 12px; right: auto"
+            >
+              <div class="dropdown-header">
+                <div class="dropdown-user-name">Priya Sharma</div>
+                <div class="dropdown-user-email">priya@example.com</div>
+              </div>
+              <button class="dropdown-item">
+                <svg><use href="#package-icon" /></svg>
+                My Orders
+                <span class="dropdown-item-badge">3</span>
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#heart-icon" /></svg>
+                Wishlist
+                <span class="dropdown-item-badge">5</span>
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#calendar-icon" /></svg>
+                Registrations
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#map-pin-icon" /></svg>
+                Addresses
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#settings-icon" /></svg>
+                Settings
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item destructive">
+                <svg><use href="#logout-icon" /></svg>
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Compact -->
+      <div class="option-container option-b">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <div class="option-title">Compact</div>
+            <div class="option-desc">Smaller padding, tighter spacing</div>
+          </div>
+        </div>
+        <div class="demo-box">
+          <div class="dropdown-demo">
+            <div class="user-avatar"></div>
+            <div
+              class="dropdown-menu"
+              style="
+                position: relative;
+                top: 12px;
+                right: auto;
+                min-width: 180px;
+              "
+            >
+              <div class="dropdown-header" style="padding: 10px 10px 12px">
+                <div class="dropdown-user-name" style="font-size: 13px">
+                  Priya Sharma
+                </div>
+                <div class="dropdown-user-email" style="font-size: 11px">
+                  priya@example.com
+                </div>
+              </div>
+              <button class="dropdown-item">
+                <svg><use href="#package-icon" /></svg>
+                Orders
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#heart-icon" /></svg>
+                Wishlist
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#calendar-icon" /></svg>
+                Registrations
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#map-pin-icon" /></svg>
+                Addresses
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item destructive">
+                <svg><use href="#logout-icon" /></svg>
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: With Avatar -->
+      <div class="option-container option-c">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <div class="option-title">With Avatar</div>
+            <div class="option-desc">Larger header with avatar display</div>
+          </div>
+        </div>
+        <div class="demo-box">
+          <div class="dropdown-demo">
+            <div class="user-avatar"></div>
+            <div
+              class="dropdown-menu"
+              style="position: relative; top: 12px; right: auto"
+            >
+              <div class="dropdown-header">
+                <div class="dropdown-avatar"></div>
+                <div>
+                  <div class="dropdown-user-name">Priya Sharma</div>
+                  <div class="dropdown-user-email">priya@example.com</div>
+                </div>
+              </div>
+              <button class="dropdown-item">
+                <svg><use href="#package-icon" /></svg>
+                My Orders
+                <span class="dropdown-item-badge">3</span>
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#heart-icon" /></svg>
+                Wishlist
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#calendar-icon" /></svg>
+                Registrations
+              </button>
+              <button class="dropdown-item">
+                <svg><use href="#map-pin-icon" /></svg>
+                Addresses
+              </button>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item destructive">
+                <svg><use href="#logout-icon" /></svg>
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Mobile Sheet -->
+    <div class="section-title">Mobile: Bottom Sheet Version</div>
+    <p
+      style="
+        text-align: center;
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 32px;
+      "
+    >
+      On mobile, the account menu opens as a bottom sheet instead of a dropdown
+    </p>
+
+    <div
+      style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap"
+    >
+      <div class="mobile-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-avatar"></div>
+          <div>
+            <div class="dropdown-user-name">Priya Sharma</div>
+            <div class="dropdown-user-email">priya@example.com</div>
+          </div>
+        </div>
+        <div class="sheet-items">
+          <button class="sheet-item">
+            <svg><use href="#package-icon" /></svg>
+            My Orders
+            <span class="dropdown-item-badge" style="margin-left: auto">3</span>
+          </button>
+          <button class="sheet-item">
+            <svg><use href="#heart-icon" /></svg>
+            Wishlist
+            <span class="dropdown-item-badge" style="margin-left: auto">5</span>
+          </button>
+          <button class="sheet-item">
+            <svg><use href="#calendar-icon" /></svg>
+            My Registrations
+          </button>
+          <button class="sheet-item">
+            <svg><use href="#map-pin-icon" /></svg>
+            Saved Addresses
+          </button>
+          <button class="sheet-item">
+            <svg><use href="#settings-icon" /></svg>
+            Account Settings
+          </button>
+          <div style="height: 1px; background: #f0f0f0; margin: 8px 12px"></div>
+          <button class="sheet-item" style="color: #ef4444">
+            <svg style="stroke: #ef4444"><use href="#logout-icon" /></svg>
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred account dropdown design:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop Dropdown</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Standard
+            (Recommended)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            Compact</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - With
+            Avatar</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (Bottom Sheet)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" checked /> Bottom Sheet
+            with Avatar</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Full Screen
+            Modal</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area" style="margin-top: 24px">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 9.4):</strong><br /><br />
+      &bull; <strong>Trigger:</strong> Avatar circle, 40px, hover ring-2
+      ring-primary<br />
+      &bull; <strong>Dropdown:</strong> rounded-xl, shadow-lg, min-w-[220px]<br />
+      &bull; <strong>Items:</strong> Icon (18px) + label, px-3 py-2.5,
+      rounded-lg<br />
+      &bull; <strong>Hover:</strong> bg-neutral-50<br />
+      &bull; <strong>Links:</strong> Orders, Wishlist, Registrations, Addresses,
+      Settings<br />
+      &bull; <strong>Divider:</strong> 1px neutral-100, my-2<br />
+      &bull; <strong>Sign Out:</strong> text-red-500, separate from other
+      items<br />
+      &bull; <strong>Mobile:</strong> Use Sheet component with drag handle<br />
+      &bull;
+      <strong>File:</strong> src/features/layout/components/account-dropdown.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

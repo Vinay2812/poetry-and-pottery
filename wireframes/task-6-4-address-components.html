@@ -1,0 +1,1969 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 6.4: Address Components | Wireframe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Status Badge */
+      .status-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .status-badge.in-progress {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .status-badge.awaiting {
+        background: #e0e7ff;
+        color: #3730a3;
+      }
+
+      /* Header */
+      .page-header {
+        text-align: center;
+        margin-bottom: 48px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .task-number {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4f6f52;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 48px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .approval-option {
+        background: white;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .approval-option:hover {
+        border-color: #4f6f52;
+      }
+
+      .approval-option input {
+        margin-right: 8px;
+      }
+
+      .approval-option label {
+        font-weight: 600;
+        color: #1a1a1a;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .approval-option p {
+        font-size: 12px;
+        color: #737373;
+        margin-top: 6px;
+        margin-left: 20px;
+      }
+
+      /* Address Card Styles */
+      .address-card {
+        border-radius: 12px;
+        padding: 16px;
+        position: relative;
+      }
+
+      .address-card.neutral {
+        background: #f5f5f4;
+      }
+
+      .address-card.white {
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+
+      .address-card.selected {
+        outline: 2px solid #4f6f52;
+        outline-offset: 2px;
+      }
+
+      .address-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+      }
+
+      .address-line {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+        margin-bottom: 2px;
+      }
+
+      .address-phone {
+        font-size: 12px;
+        color: #999;
+        margin-top: 8px;
+      }
+
+      .address-actions {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .address-icon-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: transparent;
+        border: none;
+        color: #999;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+
+      .address-icon-btn:hover {
+        background: #e5e5e5;
+        color: #666;
+      }
+
+      /* Add New Card */
+      .add-new-card {
+        border: 2px dashed #d4d4d4;
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: transparent;
+      }
+
+      .add-new-card:hover {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .add-new-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e8ece8;
+        color: #4f6f52;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .add-new-text {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4f6f52;
+      }
+
+      /* Form Styles */
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 6px;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #1a1a1a;
+        background: white;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      .form-input.placeholder {
+        color: #999;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      /* Radio/Checkbox Styles */
+      .address-radio {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 18px;
+        height: 18px;
+        accent-color: #4f6f52;
+      }
+
+      .address-card.with-radio {
+        padding-left: 44px;
+      }
+
+      /* Default Badge */
+      .default-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: #e8ece8;
+        color: #4f6f52;
+        margin-left: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Address Type Tag */
+      .address-type {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: #f5f5f4;
+        color: #737373;
+        margin-bottom: 8px;
+      }
+
+      /* Grid layouts */
+      .address-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .address-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .address-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* Compact variant */
+      .address-card.compact {
+        padding: 12px 14px;
+      }
+
+      .address-card.compact .address-name {
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+
+      .address-card.compact .address-line {
+        font-size: 12px;
+      }
+
+      /* Form Sheet/Modal */
+      .form-sheet {
+        background: white;
+        border-radius: 16px 16px 0 0;
+        padding: 24px 20px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-sheet-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .form-sheet-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .form-sheet-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f5f5f4;
+        border: none;
+        font-size: 18px;
+        color: #666;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Primary Button */
+      .btn-primary {
+        width: 100%;
+        padding: 14px 24px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .btn-primary:hover {
+        background: #3d5640;
+      }
+
+      /* Section Separator */
+      .section-sep {
+        border-top: 1px solid #e5e5e5;
+        margin: 32px 0;
+        padding-top: 24px;
+      }
+
+      .section-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="task-number">TASK 6.4</div>
+      <h1>Address Components</h1>
+      <p class="subtitle">
+        Address card, selector grid, and form designs for checkout and account
+        pages.
+        <br />Includes selection states, edit/delete actions, and "Add New"
+        functionality.
+      </p>
+      <span class="status-badge in-progress">In Progress</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="section-title">Current vs. Proposed Changes</div>
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>Current Issues</h3>
+          <ul>
+            <li>Address cards have inconsistent styling</li>
+            <li>Selection state not visually clear</li>
+            <li>Add new address action not prominent</li>
+            <li>Edit/delete actions hard to discover</li>
+            <li>Form inputs lack consistent styling</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>Proposed Design</h3>
+          <ul>
+            <li>Consistent card styling with bg-neutral-50 or white</li>
+            <li>Clear selection with ring-2 ring-primary</li>
+            <li>Prominent "Add New" card with dashed border</li>
+            <li>Subtle icon buttons (top-right) for actions</li>
+            <li>Clean form inputs with rounded-lg styling</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION A ==================== -->
+    <div class="wf-section">
+      <span class="wf-task-label">Option A</span>
+      <h2 class="wf-section-title">
+        Neutral Background Cards
+        <span class="recommended-badge">Recommended</span>
+      </h2>
+      <p class="wf-section-desc">
+        Clean address cards with neutral-50 background. Selected state uses ring
+        outline. Subtle icon buttons for edit/delete in top-right corner. "Add
+        New" card with dashed border and centered content. Form uses simple
+        labeled inputs.
+      </p>
+
+      <div class="option-details">
+        <strong>Key Features:</strong> bg-neutral-50 cards • ring-2 ring-primary
+        selection • Icon buttons (top-right) • Dashed "Add New" card • Simple
+        form layout<br />
+        <strong>Typography:</strong> Name: font-medium 14px • Address:
+        text-muted 13px • Phone: text-muted-foreground 12px<br />
+        <strong>Spacing:</strong> Card padding 16px • Grid gap 16px (mobile),
+        20px (desktop)
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="wf-page-header">
+                <div class="wf-breadcrumbs">
+                  <a href="#">Account</a> / Addresses
+                </div>
+                <div class="wf-page-title">Saved Addresses</div>
+              </div>
+
+              <!-- Address Selector -->
+              <div class="section-label">Select Delivery Address</div>
+              <div class="address-stack">
+                <!-- Selected Address -->
+                <div class="address-card neutral selected">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-name">
+                    John Doe <span class="default-badge">Default</span>
+                  </div>
+                  <div class="address-line">123 Forest Lane, Apt 4B</div>
+                  <div class="address-line">Bangalore, Karnataka 560001</div>
+                  <div class="address-phone">+91 98765 43210</div>
+                </div>
+
+                <!-- Unselected Address -->
+                <div class="address-card neutral">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-name">Jane Doe</div>
+                  <div class="address-line">456 Garden Street</div>
+                  <div class="address-line">Mumbai, Maharashtra 400001</div>
+                  <div class="address-phone">+91 87654 32109</div>
+                </div>
+
+                <!-- Add New Card -->
+                <div class="add-new-card">
+                  <div class="add-new-icon">+</div>
+                  <div class="add-new-text">Add New Address</div>
+                </div>
+              </div>
+
+              <!-- Form Section -->
+              <div class="section-sep">
+                <div class="section-label">Add New Address</div>
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-input placeholder"
+                    value="Enter full name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input
+                    type="text"
+                    class="form-input placeholder"
+                    value="+91"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Address Line 1</label>
+                  <input
+                    type="text"
+                    class="form-input placeholder"
+                    value="House/Flat, Street"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">PIN Code</label>
+                  <input
+                    type="text"
+                    class="form-input placeholder"
+                    value="6-digit code"
+                  />
+                </div>
+                <button class="btn-primary" style="margin-top: 8px">
+                  Save Address
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/account/addresses
+              </div>
+            </div>
+            <div class="wf-page-content tablet">
+              <div class="wf-page-header">
+                <div class="wf-breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Account</a> / Addresses
+                </div>
+                <div class="wf-page-title" style="font-size: 26px">
+                  Saved Addresses
+                </div>
+              </div>
+
+              <div class="section-label">Select Delivery Address</div>
+              <div class="address-grid-2">
+                <!-- Selected -->
+                <div class="address-card neutral selected">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-name">
+                    John Doe <span class="default-badge">Default</span>
+                  </div>
+                  <div class="address-line">123 Forest Lane, Apt 4B</div>
+                  <div class="address-line">Bangalore, Karnataka 560001</div>
+                  <div class="address-phone">+91 98765 43210</div>
+                </div>
+
+                <!-- Unselected -->
+                <div class="address-card neutral">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-name">Jane Doe</div>
+                  <div class="address-line">456 Garden Street</div>
+                  <div class="address-line">Mumbai, Maharashtra 400001</div>
+                  <div class="address-phone">+91 87654 32109</div>
+                </div>
+
+                <!-- Office Address -->
+                <div class="address-card neutral">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-type">Office</div>
+                  <div class="address-name">John Doe</div>
+                  <div class="address-line">789 Business Park, Tower A</div>
+                  <div class="address-line">Chennai, Tamil Nadu 600001</div>
+                  <div class="address-phone">+91 76543 21098</div>
+                </div>
+
+                <!-- Add New -->
+                <div class="add-new-card">
+                  <div class="add-new-icon">+</div>
+                  <div class="add-new-text">Add New Address</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/account/addresses
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div class="wf-page-header">
+                <div class="wf-breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Account</a> / Addresses
+                </div>
+                <div class="wf-page-title" style="font-size: 28px">
+                  Saved Addresses
+                </div>
+                <div class="wf-page-subtitle">
+                  Manage your delivery addresses for faster checkout
+                </div>
+              </div>
+
+              <div class="section-label">Select Delivery Address</div>
+              <div class="address-grid-3">
+                <!-- Selected -->
+                <div class="address-card neutral selected">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-name">
+                    John Doe <span class="default-badge">Default</span>
+                  </div>
+                  <div class="address-line">123 Forest Lane, Apt 4B</div>
+                  <div class="address-line">Bangalore, Karnataka 560001</div>
+                  <div class="address-phone">+91 98765 43210</div>
+                </div>
+
+                <!-- Unselected -->
+                <div class="address-card neutral">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-name">Jane Doe</div>
+                  <div class="address-line">456 Garden Street</div>
+                  <div class="address-line">Mumbai, Maharashtra 400001</div>
+                  <div class="address-phone">+91 87654 32109</div>
+                </div>
+
+                <!-- Office -->
+                <div class="address-card neutral">
+                  <div class="address-actions">
+                    <button class="address-icon-btn">✎</button>
+                    <button class="address-icon-btn">🗑</button>
+                  </div>
+                  <div class="address-type">Office</div>
+                  <div class="address-name">John Doe</div>
+                  <div class="address-line">789 Business Park, Tower A</div>
+                  <div class="address-line">Chennai, Tamil Nadu 600001</div>
+                  <div class="address-phone">+91 76543 21098</div>
+                </div>
+
+                <!-- Add New -->
+                <div class="add-new-card">
+                  <div class="add-new-icon">+</div>
+                  <div class="add-new-text">Add New Address</div>
+                </div>
+              </div>
+
+              <!-- Form Section (inline on desktop) -->
+              <div class="section-sep">
+                <div class="section-label">Add New Address</div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                    max-width: 600px;
+                  "
+                >
+                  <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input
+                      type="text"
+                      class="form-input placeholder"
+                      value="Enter full name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input
+                      type="text"
+                      class="form-input placeholder"
+                      value="+91"
+                    />
+                  </div>
+                  <div class="form-group" style="grid-column: span 2">
+                    <label class="form-label">Address Line 1</label>
+                    <input
+                      type="text"
+                      class="form-input placeholder"
+                      value="House/Flat, Street name"
+                    />
+                  </div>
+                  <div class="form-group" style="grid-column: span 2">
+                    <label class="form-label">Address Line 2</label>
+                    <input
+                      type="text"
+                      class="form-input placeholder"
+                      value="Landmark (optional)"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input
+                      type="text"
+                      class="form-input placeholder"
+                      value="City"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">State</label>
+                    <input
+                      type="text"
+                      class="form-input placeholder"
+                      value="State"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">PIN Code</label>
+                    <input
+                      type="text"
+                      class="form-input placeholder"
+                      value="6-digit code"
+                    />
+                  </div>
+                  <div
+                    class="form-group"
+                    style="display: flex; align-items: flex-end"
+                  >
+                    <button class="btn-primary">Save Address</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION B ==================== -->
+    <div class="wf-section">
+      <span class="wf-task-label">Option B</span>
+      <h2 class="wf-section-title">
+        Elevated White Cards with Radio Selection
+      </h2>
+      <p class="wf-section-desc">
+        White address cards with subtle shadow for elevation. Radio button for
+        selection with card highlight. More prominent action buttons. Form
+        appears in a bottom sheet on mobile, modal on desktop.
+      </p>
+
+      <div class="option-details">
+        <strong>Key Features:</strong> White cards with shadow • Radio button
+        selection • Visible action buttons • Bottom sheet form (mobile) • Inline
+        form (desktop)<br />
+        <strong>Typography:</strong> Name: font-semibold 14px • Address:
+        text-muted 13px • Type badge: text-xs uppercase<br />
+        <strong>Spacing:</strong> Card padding 16px • Radio left padding 44px •
+        Grid gap 16px
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="wf-page-header">
+                <div class="wf-breadcrumbs">
+                  <a href="#">Checkout</a> / Address
+                </div>
+                <div class="wf-page-title">Delivery Address</div>
+              </div>
+
+              <div class="address-stack">
+                <!-- Selected with Radio -->
+                <div class="address-card white selected with-radio">
+                  <input type="radio" class="address-radio" checked />
+                  <div class="address-actions">
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      ✎
+                    </button>
+                  </div>
+                  <div class="address-type">Home</div>
+                  <div class="address-name">John Doe</div>
+                  <div class="address-line">123 Forest Lane, Apt 4B</div>
+                  <div class="address-line">Bangalore, Karnataka 560001</div>
+                  <div class="address-phone">+91 98765 43210</div>
+                </div>
+
+                <!-- Unselected with Radio -->
+                <div class="address-card white with-radio">
+                  <input type="radio" class="address-radio" />
+                  <div class="address-actions">
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      ✎
+                    </button>
+                  </div>
+                  <div class="address-type">Office</div>
+                  <div class="address-name">John Doe</div>
+                  <div class="address-line">789 Business Park</div>
+                  <div class="address-line">Chennai, Tamil Nadu 600001</div>
+                  <div class="address-phone">+91 76543 21098</div>
+                </div>
+
+                <!-- Add New -->
+                <div class="add-new-card">
+                  <div class="add-new-icon">+</div>
+                  <div class="add-new-text">Add New Address</div>
+                </div>
+              </div>
+
+              <!-- Bottom Sheet Form -->
+              <div
+                class="form-sheet"
+                style="
+                  margin-top: 24px;
+                  margin-left: -16px;
+                  margin-right: -16px;
+                  margin-bottom: -16px;
+                "
+              >
+                <div class="form-sheet-header">
+                  <div class="form-sheet-title">Add Address</div>
+                  <button class="form-sheet-close">×</button>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Full Name *</label>
+                  <input type="text" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone *</label>
+                  <input type="text" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Address *</label>
+                  <input type="text" class="form-input" />
+                </div>
+                <button class="btn-primary" style="margin-top: 8px">
+                  Save Address
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/checkout/address
+              </div>
+            </div>
+            <div class="wf-page-content tablet">
+              <div class="wf-page-header">
+                <div class="wf-breadcrumbs">
+                  <a href="#">Cart</a> / <a href="#">Checkout</a> / Address
+                </div>
+                <div class="wf-page-title" style="font-size: 26px">
+                  Select Delivery Address
+                </div>
+              </div>
+
+              <div class="address-grid-2">
+                <!-- Selected -->
+                <div class="address-card white selected with-radio">
+                  <input type="radio" class="address-radio" checked />
+                  <div class="address-actions">
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      ✎
+                    </button>
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      🗑
+                    </button>
+                  </div>
+                  <div class="address-type">Home</div>
+                  <div class="address-name">
+                    John Doe <span class="default-badge">Default</span>
+                  </div>
+                  <div class="address-line">123 Forest Lane, Apt 4B</div>
+                  <div class="address-line">Bangalore, Karnataka 560001</div>
+                  <div class="address-phone">+91 98765 43210</div>
+                </div>
+
+                <!-- Unselected -->
+                <div class="address-card white with-radio">
+                  <input type="radio" class="address-radio" />
+                  <div class="address-actions">
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      ✎
+                    </button>
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      🗑
+                    </button>
+                  </div>
+                  <div class="address-type">Office</div>
+                  <div class="address-name">John Doe</div>
+                  <div class="address-line">789 Business Park, Tower A</div>
+                  <div class="address-line">Chennai, Tamil Nadu 600001</div>
+                  <div class="address-phone">+91 76543 21098</div>
+                </div>
+
+                <!-- Unselected 2 -->
+                <div class="address-card white with-radio">
+                  <input type="radio" class="address-radio" />
+                  <div class="address-actions">
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      ✎
+                    </button>
+                    <button
+                      class="address-icon-btn"
+                      style="background: #f5f5f4"
+                    >
+                      🗑
+                    </button>
+                  </div>
+                  <div class="address-name">Jane Doe</div>
+                  <div class="address-line">456 Garden Street</div>
+                  <div class="address-line">Mumbai, Maharashtra 400001</div>
+                  <div class="address-phone">+91 87654 32109</div>
+                </div>
+
+                <!-- Add New -->
+                <div class="add-new-card">
+                  <div class="add-new-icon">+</div>
+                  <div class="add-new-text">Add New Address</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/checkout/address
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div class="wf-page-header">
+                <div class="wf-breadcrumbs">
+                  <a href="#">Cart</a> / <a href="#">Checkout</a> / Address
+                </div>
+                <div class="wf-page-title" style="font-size: 28px">
+                  Select Delivery Address
+                </div>
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px"
+              >
+                <!-- Address Grid -->
+                <div>
+                  <div class="address-grid-2">
+                    <!-- Selected -->
+                    <div class="address-card white selected with-radio">
+                      <input type="radio" class="address-radio" checked />
+                      <div class="address-actions">
+                        <button
+                          class="address-icon-btn"
+                          style="background: #f5f5f4"
+                        >
+                          ✎
+                        </button>
+                        <button
+                          class="address-icon-btn"
+                          style="background: #f5f5f4"
+                        >
+                          🗑
+                        </button>
+                      </div>
+                      <div class="address-type">Home</div>
+                      <div class="address-name">
+                        John Doe <span class="default-badge">Default</span>
+                      </div>
+                      <div class="address-line">123 Forest Lane, Apt 4B</div>
+                      <div class="address-line">
+                        Bangalore, Karnataka 560001
+                      </div>
+                      <div class="address-phone">+91 98765 43210</div>
+                    </div>
+
+                    <!-- Unselected -->
+                    <div class="address-card white with-radio">
+                      <input type="radio" class="address-radio" />
+                      <div class="address-actions">
+                        <button
+                          class="address-icon-btn"
+                          style="background: #f5f5f4"
+                        >
+                          ✎
+                        </button>
+                        <button
+                          class="address-icon-btn"
+                          style="background: #f5f5f4"
+                        >
+                          🗑
+                        </button>
+                      </div>
+                      <div class="address-type">Office</div>
+                      <div class="address-name">John Doe</div>
+                      <div class="address-line">789 Business Park, Tower A</div>
+                      <div class="address-line">Chennai, Tamil Nadu 600001</div>
+                      <div class="address-phone">+91 76543 21098</div>
+                    </div>
+
+                    <!-- Add New -->
+                    <div class="add-new-card" style="grid-column: span 2">
+                      <div class="add-new-icon">+</div>
+                      <div class="add-new-text">Add New Address</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Inline Form -->
+                <div
+                  style="
+                    background: #f5f5f4;
+                    padding: 24px;
+                    border-radius: 16px;
+                  "
+                >
+                  <div class="section-label">Quick Add</div>
+                  <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <input type="text" class="form-input" />
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">City</label>
+                      <input type="text" class="form-input" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">PIN</label>
+                      <input type="text" class="form-input" />
+                    </div>
+                  </div>
+                  <button class="btn-primary" style="margin-top: 8px">
+                    Save Address
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION C ==================== -->
+    <div class="wf-section">
+      <span class="wf-task-label">Option C</span>
+      <h2 class="wf-section-title">Compact List with Green Accent</h2>
+      <p class="wf-section-desc">
+        Compact address cards in a stacked list format. Uses primary-light
+        background for selected state instead of ring. Text-based edit/delete
+        links instead of icons. Inline form on all viewports.
+      </p>
+
+      <div class="option-details">
+        <strong>Key Features:</strong> Compact stacked list • bg-primary-light
+        selection • Text action links • Inline form always visible<br />
+        <strong>Typography:</strong> Name: font-medium 13px • Address: text-sm
+        muted • Actions: text-xs primary<br />
+        <strong>Spacing:</strong> Card padding 12px 14px • Stack gap 10px
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="wf-page-header">
+                <div class="wf-page-title" style="font-size: 18px">
+                  Delivery Address
+                </div>
+              </div>
+
+              <div class="address-stack" style="gap: 10px">
+                <!-- Selected (green background) -->
+                <div
+                  class="address-card compact"
+                  style="background: #e8ece8; border-left: 3px solid #4f6f52"
+                >
+                  <div
+                    class="address-name"
+                    style="
+                      font-size: 13px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <span
+                      >John Doe
+                      <span class="default-badge" style="font-size: 9px"
+                        >Default</span
+                      ></span
+                    >
+                    <span
+                      style="font-size: 11px; color: #4f6f52; font-weight: 500"
+                      >✓ Selected</span
+                    >
+                  </div>
+                  <div class="address-line" style="font-size: 12px">
+                    123 Forest Lane, Apt 4B, Bangalore 560001
+                  </div>
+                  <div style="display: flex; gap: 12px; margin-top: 8px">
+                    <a
+                      href="#"
+                      style="
+                        font-size: 11px;
+                        color: #4f6f52;
+                        text-decoration: none;
+                      "
+                      >Edit</a
+                    >
+                    <a
+                      href="#"
+                      style="
+                        font-size: 11px;
+                        color: #999;
+                        text-decoration: none;
+                      "
+                      >Delete</a
+                    >
+                  </div>
+                </div>
+
+                <!-- Unselected -->
+                <div class="address-card compact neutral">
+                  <div class="address-name" style="font-size: 13px">
+                    Jane Doe
+                  </div>
+                  <div class="address-line" style="font-size: 12px">
+                    456 Garden Street, Mumbai 400001
+                  </div>
+                  <div style="display: flex; gap: 12px; margin-top: 8px">
+                    <a
+                      href="#"
+                      style="
+                        font-size: 11px;
+                        color: #4f6f52;
+                        text-decoration: none;
+                      "
+                      >Select</a
+                    >
+                    <a
+                      href="#"
+                      style="
+                        font-size: 11px;
+                        color: #4f6f52;
+                        text-decoration: none;
+                      "
+                      >Edit</a
+                    >
+                    <a
+                      href="#"
+                      style="
+                        font-size: 11px;
+                        color: #999;
+                        text-decoration: none;
+                      "
+                      >Delete</a
+                    >
+                  </div>
+                </div>
+
+                <!-- Add New Link -->
+                <a
+                  href="#"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 12px;
+                    font-size: 13px;
+                    color: #4f6f52;
+                    text-decoration: none;
+                    font-weight: 600;
+                  "
+                >
+                  <span style="font-size: 18px">+</span> Add new address
+                </a>
+              </div>
+
+              <!-- Inline Form -->
+              <div
+                style="
+                  margin-top: 20px;
+                  padding-top: 20px;
+                  border-top: 1px solid #e5e5e5;
+                "
+              >
+                <div class="section-label" style="font-size: 14px">
+                  New Address
+                </div>
+                <div class="form-group" style="margin-bottom: 12px">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="Full name"
+                    style="padding: 10px 12px; font-size: 13px"
+                  />
+                </div>
+                <div class="form-group" style="margin-bottom: 12px">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="Phone number"
+                    style="padding: 10px 12px; font-size: 13px"
+                  />
+                </div>
+                <div class="form-group" style="margin-bottom: 12px">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="Full address"
+                    style="padding: 10px 12px; font-size: 13px"
+                  />
+                </div>
+                <div class="form-row" style="gap: 8px">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="City"
+                    style="padding: 10px 12px; font-size: 13px"
+                  />
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="PIN"
+                    style="padding: 10px 12px; font-size: 13px"
+                  />
+                </div>
+                <button
+                  class="btn-primary"
+                  style="margin-top: 12px; padding: 12px; font-size: 13px"
+                >
+                  Save Address
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/checkout</div>
+            </div>
+            <div class="wf-page-content tablet">
+              <div class="wf-page-header">
+                <div class="wf-page-title" style="font-size: 22px">
+                  Delivery Address
+                </div>
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px"
+              >
+                <!-- Address List -->
+                <div>
+                  <div class="address-stack" style="gap: 10px">
+                    <!-- Selected -->
+                    <div
+                      class="address-card compact"
+                      style="
+                        background: #e8ece8;
+                        border-left: 3px solid #4f6f52;
+                      "
+                    >
+                      <div
+                        class="address-name"
+                        style="
+                          font-size: 13px;
+                          display: flex;
+                          justify-content: space-between;
+                        "
+                      >
+                        <span
+                          >John Doe
+                          <span class="default-badge" style="font-size: 9px"
+                            >Default</span
+                          ></span
+                        >
+                        <span
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            font-weight: 500;
+                          "
+                          >✓</span
+                        >
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        123 Forest Lane, Apt 4B
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        Bangalore, Karnataka 560001
+                      </div>
+                      <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Edit</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #999;
+                            text-decoration: none;
+                          "
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Unselected -->
+                    <div class="address-card compact neutral">
+                      <div class="address-name" style="font-size: 13px">
+                        Jane Doe
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        456 Garden Street
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        Mumbai, Maharashtra 400001
+                      </div>
+                      <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Select</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Edit</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #999;
+                            text-decoration: none;
+                          "
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Unselected 2 -->
+                    <div class="address-card compact neutral">
+                      <div class="address-name" style="font-size: 13px">
+                        John Doe (Office)
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        789 Business Park
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        Chennai, Tamil Nadu 600001
+                      </div>
+                      <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Select</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Edit</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #999;
+                            text-decoration: none;
+                          "
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Form -->
+                <div
+                  style="
+                    background: #fafaf9;
+                    padding: 20px;
+                    border-radius: 12px;
+                  "
+                >
+                  <div class="section-label" style="font-size: 14px">
+                    Add New Address
+                  </div>
+                  <div class="form-group" style="margin-bottom: 12px">
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="Full name"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-group" style="margin-bottom: 12px">
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="Phone"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-group" style="margin-bottom: 12px">
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="Address"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-row" style="gap: 8px; margin-bottom: 12px">
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="City"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="State"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-group" style="margin-bottom: 12px">
+                    <input
+                      type="text"
+                      class="form-input"
+                      placeholder="PIN Code"
+                      style="
+                        padding: 10px 12px;
+                        font-size: 13px;
+                        max-width: 120px;
+                      "
+                    />
+                  </div>
+                  <button
+                    class="btn-primary"
+                    style="padding: 12px; font-size: 13px"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/checkout</div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div class="wf-page-header">
+                <div class="wf-page-title" style="font-size: 24px">
+                  Delivery Address
+                </div>
+                <div class="wf-page-subtitle">
+                  Select or add a delivery address
+                </div>
+              </div>
+
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr 1fr;
+                  gap: 24px;
+                "
+              >
+                <!-- Existing Addresses -->
+                <div>
+                  <div
+                    class="section-label"
+                    style="font-size: 13px; color: #737373; margin-bottom: 12px"
+                  >
+                    SAVED ADDRESSES
+                  </div>
+                  <div class="address-stack" style="gap: 10px">
+                    <!-- Selected -->
+                    <div
+                      class="address-card compact"
+                      style="
+                        background: #e8ece8;
+                        border-left: 3px solid #4f6f52;
+                      "
+                    >
+                      <div
+                        class="address-name"
+                        style="
+                          font-size: 13px;
+                          display: flex;
+                          justify-content: space-between;
+                        "
+                      >
+                        <span
+                          >John Doe
+                          <span class="default-badge" style="font-size: 9px"
+                            >Default</span
+                          ></span
+                        >
+                        <span
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            font-weight: 500;
+                          "
+                          >✓ Selected</span
+                        >
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        123 Forest Lane, Apt 4B
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        Bangalore, Karnataka 560001
+                      </div>
+                      <div class="address-phone" style="font-size: 11px">
+                        +91 98765 43210
+                      </div>
+                      <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Edit</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #999;
+                            text-decoration: none;
+                          "
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Unselected -->
+                    <div class="address-card compact neutral">
+                      <div class="address-name" style="font-size: 13px">
+                        Jane Doe
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        456 Garden Street
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        Mumbai, Maharashtra 400001
+                      </div>
+                      <div class="address-phone" style="font-size: 11px">
+                        +91 87654 32109
+                      </div>
+                      <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Select</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Edit</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #999;
+                            text-decoration: none;
+                          "
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- More Addresses -->
+                <div>
+                  <div
+                    class="section-label"
+                    style="
+                      font-size: 13px;
+                      color: transparent;
+                      margin-bottom: 12px;
+                    "
+                  >
+                    .
+                  </div>
+                  <div class="address-stack" style="gap: 10px">
+                    <!-- Office -->
+                    <div class="address-card compact neutral">
+                      <div class="address-name" style="font-size: 13px">
+                        John Doe (Office)
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        789 Business Park, Tower A
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        Chennai, Tamil Nadu 600001
+                      </div>
+                      <div class="address-phone" style="font-size: 11px">
+                        +91 76543 21098
+                      </div>
+                      <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Select</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Edit</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #999;
+                            text-decoration: none;
+                          "
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Parents -->
+                    <div class="address-card compact neutral">
+                      <div class="address-name" style="font-size: 13px">
+                        Parents Home
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        101 Village Road
+                      </div>
+                      <div class="address-line" style="font-size: 12px">
+                        Coimbatore, Tamil Nadu 641001
+                      </div>
+                      <div class="address-phone" style="font-size: 11px">
+                        +91 65432 10987
+                      </div>
+                      <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Select</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            text-decoration: none;
+                          "
+                          >Edit</a
+                        >
+                        <a
+                          href="#"
+                          style="
+                            font-size: 11px;
+                            color: #999;
+                            text-decoration: none;
+                          "
+                          >Delete</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Form -->
+                <div
+                  style="
+                    background: #fafaf9;
+                    padding: 24px;
+                    border-radius: 12px;
+                  "
+                >
+                  <div class="section-label" style="font-size: 14px">
+                    Add New Address
+                  </div>
+                  <div class="form-group" style="margin-bottom: 14px">
+                    <label class="form-label" style="font-size: 12px"
+                      >Full Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-input"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-group" style="margin-bottom: 14px">
+                    <label class="form-label" style="font-size: 12px"
+                      >Phone</label
+                    >
+                    <input
+                      type="text"
+                      class="form-input"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-group" style="margin-bottom: 14px">
+                    <label class="form-label" style="font-size: 12px"
+                      >Address Line 1</label
+                    >
+                    <input
+                      type="text"
+                      class="form-input"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-group" style="margin-bottom: 14px">
+                    <label class="form-label" style="font-size: 12px"
+                      >Address Line 2</label
+                    >
+                    <input
+                      type="text"
+                      class="form-input"
+                      style="padding: 10px 12px; font-size: 13px"
+                    />
+                  </div>
+                  <div class="form-row" style="gap: 10px; margin-bottom: 14px">
+                    <div class="form-group" style="margin-bottom: 0">
+                      <label class="form-label" style="font-size: 12px"
+                        >City</label
+                      >
+                      <input
+                        type="text"
+                        class="form-input"
+                        style="padding: 10px 12px; font-size: 13px"
+                      />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0">
+                      <label class="form-label" style="font-size: 12px"
+                        >State</label
+                      >
+                      <input
+                        type="text"
+                        class="form-input"
+                        style="padding: 10px 12px; font-size: 13px"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 14px">
+                    <label class="form-label" style="font-size: 12px"
+                      >PIN Code</label
+                    >
+                    <input
+                      type="text"
+                      class="form-input"
+                      style="
+                        padding: 10px 12px;
+                        font-size: 13px;
+                        max-width: 120px;
+                      "
+                    />
+                  </div>
+                  <button
+                    class="btn-primary"
+                    style="padding: 12px; font-size: 13px"
+                  >
+                    Save Address
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">Select Preferred Design Option</h3>
+      <div class="approval-grid">
+        <div class="approval-option">
+          <input type="radio" name="approval" id="optionA" />
+          <label for="optionA">Option A</label>
+          <p>Neutral bg cards, ring selection, icon buttons</p>
+        </div>
+        <div class="approval-option">
+          <input type="radio" name="approval" id="optionB" />
+          <label for="optionB">Option B</label>
+          <p>White elevated cards, radio selection, bottom sheet form</p>
+        </div>
+        <div class="approval-option">
+          <input type="radio" name="approval" id="optionC" />
+          <label for="optionC">Option C</label>
+          <p>Compact list, green accent selection, text links</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes">
+      <strong>Implementation Notes:</strong><br />
+      • Address card: No border, use bg-neutral-50 or white with shadow-soft<br />
+      • Selected state: ring-2 ring-primary (or bg-primary-light for Option
+      C)<br />
+      • Name typography: font-medium text-neutral-900<br />
+      • Address lines: text-muted-foreground (gray-500)<br />
+      • Edit/Delete: Subtle icon buttons (Option A/B) or text links (Option
+      C)<br />
+      • "Add New" card: Dashed border-2, centered content, hover state<br />
+      • Form inputs: rounded-lg, focus:ring-primary<br />
+      • Grid: 1-col mobile, 2-col tablet, 3-col desktop<br />
+      • Mobile form: Can be bottom sheet (B) or inline (A/C)
+    </div>
+  </body>
+</html>

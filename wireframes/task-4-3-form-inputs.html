@@ -1,0 +1,1193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.3: Form Inputs - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Form Base Styles */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: #525252;
+        margin-bottom: 6px;
+      }
+
+      .form-label.required::after {
+        content: " *";
+        color: #ef4444;
+      }
+
+      .form-input {
+        width: 100%;
+        height: 40px;
+        padding: 0 14px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        color: #1a1a1a;
+        background: white;
+        border: 1px solid #e5e5e5;
+        transition: all 0.15s ease-out;
+      }
+
+      .form-input:hover {
+        border-color: #d4d4d4;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      .form-input::placeholder {
+        color: #a3a3a3;
+      }
+
+      .form-input.error {
+        border-color: #ef4444;
+      }
+
+      .form-input.error:focus {
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      }
+
+      .form-error {
+        font-size: 12px;
+        color: #ef4444;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .form-error svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+
+      .form-hint {
+        font-size: 12px;
+        color: #737373;
+        margin-top: 4px;
+      }
+
+      /* Textarea */
+      .form-textarea {
+        min-height: 120px;
+        padding: 12px 14px;
+        resize: vertical;
+      }
+
+      /* Select */
+      .form-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 40px;
+        cursor: pointer;
+      }
+
+      /* Input with Icon */
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input-wrapper .form-input {
+        padding-left: 40px;
+      }
+
+      .input-wrapper .input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        stroke: #a3a3a3;
+        fill: none;
+        stroke-width: 2;
+        pointer-events: none;
+      }
+
+      .input-wrapper .form-input:focus + .input-icon,
+      .input-wrapper .form-input:not(:placeholder-shown) + .input-icon {
+        stroke: #4f6f52;
+      }
+
+      /* Border Radius Options */
+      .option-a .form-input,
+      .option-a .form-textarea,
+      .option-a .form-select {
+        border-radius: 8px;
+      }
+
+      .option-b .form-input,
+      .option-b .form-textarea,
+      .option-b .form-select {
+        border-radius: 12px;
+      }
+
+      .option-c .form-input,
+      .option-c .form-textarea,
+      .option-c .form-select {
+        border-radius: 6px;
+      }
+
+      /* Checkbox & Radio */
+      .form-checkbox,
+      .form-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #525252;
+        cursor: pointer;
+      }
+
+      .form-checkbox input,
+      .form-radio input {
+        width: 18px;
+        height: 18px;
+        accent-color: #4f6f52;
+        cursor: pointer;
+      }
+
+      /* Form Row */
+      .form-row {
+        display: flex;
+        gap: 16px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+      }
+
+      /* Viewport Grid */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Form Card */
+      .form-card {
+        background: #fafaf9;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .form-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+      }
+
+      /* States Demo */
+      .states-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+
+      .state-demo {
+        flex: 1;
+        min-width: 120px;
+      }
+
+      .state-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .form-input.disabled {
+        background: #f5f5f4;
+        color: #a3a3a3;
+        cursor: not-allowed;
+      }
+
+      .form-input.filled {
+        border-color: #4f6f52;
+        background: #fafff9;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Button for forms */
+      .form-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 40px;
+        padding: 0 18px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .form-btn:hover {
+        background: #3d5640;
+      }
+
+      .form-btn.secondary {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .form-btn.secondary:hover {
+        background: #e7e5e4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.3: Form Inputs</h1>
+    <p class="subtitle">
+      Foundation component: Consistent input, select, and textarea styling with
+      proper labels, error states, and focus rings. Used across address forms,
+      contact forms, review forms, and checkout.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="alert-icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </symbol>
+      <symbol id="mail-icon" viewBox="0 0 24 24">
+        <path
+          d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+        />
+        <polyline points="22,6 12,13 2,6" />
+      </symbol>
+      <symbol id="user-icon" viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </symbol>
+      <symbol id="phone-icon" viewBox="0 0 24 24">
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+        />
+      </symbol>
+      <symbol id="search-icon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </symbol>
+      <symbol id="map-pin-icon" viewBox="0 0 24 24">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>BEFORE (Current)</h3>
+          <ul>
+            <li>Inconsistent input styles across forms</li>
+            <li>Mixed border radius values</li>
+            <li>Inconsistent focus states</li>
+            <li>Error styling varies by form</li>
+            <li>No standardized label styling</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>AFTER (New Design)</h3>
+          <ul>
+            <li>Unified input component with variants</li>
+            <li>Consistent border-radius across all inputs</li>
+            <li>Primary color focus ring (forest green)</li>
+            <li>Standardized error state with red border + icon</li>
+            <li>Label styling: font-medium, text-sm, muted color</li>
+            <li>Custom select dropdown indicator</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: rounded-lg (8px) - RECOMMENDED -->
+      <div class="option-section option-a">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Rounded-lg (8px)
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Matches button rounded-lg style. Balanced, professional look for
+              forms.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Contact Form</div>
+
+              <div class="form-group">
+                <label class="form-label required">Full Name</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Email</label>
+                <input
+                  type="email"
+                  class="form-input error"
+                  value="invalid-email"
+                />
+                <div class="form-error">
+                  <svg><use href="#alert-icon" /></svg>
+                  Please enter a valid email
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea
+                  class="form-input form-textarea"
+                  placeholder="Your message..."
+                ></textarea>
+              </div>
+
+              <button class="form-btn" style="width: 100%">Send Message</button>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Input States</div>
+
+              <div class="states-row">
+                <div class="state-demo">
+                  <div class="state-label">Default</div>
+                  <input type="text" class="form-input" placeholder="Default" />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Filled</div>
+                  <input
+                    type="text"
+                    class="form-input filled"
+                    value="Filled value"
+                  />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Error</div>
+                  <input type="text" class="form-input error" value="Error" />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Disabled</div>
+                  <input
+                    type="text"
+                    class="form-input disabled"
+                    value="Disabled"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Select Input</label>
+                <select class="form-input form-select">
+                  <option value="">Choose a category...</option>
+                  <option value="vases">Vases</option>
+                  <option value="bowls">Bowls</option>
+                  <option value="plates">Plates</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">With Icon</label>
+                <div class="input-wrapper">
+                  <input
+                    type="email"
+                    class="form-input"
+                    placeholder="Enter email address"
+                  />
+                  <svg class="input-icon"><use href="#mail-icon" /></svg>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" checked />
+                  Subscribe to newsletter
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Shipping Address</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label required">First Name</label>
+                  <div class="input-wrapper">
+                    <input type="text" class="form-input" placeholder="John" />
+                    <svg class="input-icon"><use href="#user-icon" /></svg>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">Last Name</label>
+                  <input type="text" class="form-input" placeholder="Doe" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Street Address</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="123 Main Street"
+                  />
+                  <svg class="input-icon"><use href="#map-pin-icon" /></svg>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label required">City</label>
+                  <input type="text" class="form-input" placeholder="Mumbai" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">State</label>
+                  <select class="form-input form-select">
+                    <option value="">Select state...</option>
+                    <option value="mh">Maharashtra</option>
+                    <option value="ka">Karnataka</option>
+                  </select>
+                </div>
+                <div class="form-group" style="max-width: 140px">
+                  <label class="form-label required">PIN Code</label>
+                  <input type="text" class="form-input" placeholder="400001" />
+                  <div class="form-hint">6 digits</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <div class="input-wrapper">
+                  <input
+                    type="tel"
+                    class="form-input"
+                    placeholder="+91 98765 43210"
+                  />
+                  <svg class="input-icon"><use href="#phone-icon" /></svg>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-top: 24px">
+                <button class="form-btn">Save Address</button>
+                <button class="form-btn secondary">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: rounded-xl (12px) -->
+      <div class="option-section option-b">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Rounded-xl (12px)</h3>
+            <p class="wf-option-desc">
+              Softer, more rounded corners. Friendly, approachable feel for
+              forms.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Contact Form</div>
+
+              <div class="form-group">
+                <label class="form-label required">Full Name</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Email</label>
+                <input
+                  type="email"
+                  class="form-input error"
+                  value="invalid-email"
+                />
+                <div class="form-error">
+                  <svg><use href="#alert-icon" /></svg>
+                  Please enter a valid email
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea
+                  class="form-input form-textarea"
+                  placeholder="Your message..."
+                ></textarea>
+              </div>
+
+              <button class="form-btn" style="width: 100%; border-radius: 12px">
+                Send Message
+              </button>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Input States</div>
+
+              <div class="states-row">
+                <div class="state-demo">
+                  <div class="state-label">Default</div>
+                  <input type="text" class="form-input" placeholder="Default" />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Filled</div>
+                  <input
+                    type="text"
+                    class="form-input filled"
+                    value="Filled value"
+                  />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Error</div>
+                  <input type="text" class="form-input error" value="Error" />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Disabled</div>
+                  <input
+                    type="text"
+                    class="form-input disabled"
+                    value="Disabled"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Select Input</label>
+                <select class="form-input form-select">
+                  <option value="">Choose a category...</option>
+                  <option value="vases">Vases</option>
+                  <option value="bowls">Bowls</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">With Icon</label>
+                <div class="input-wrapper">
+                  <input
+                    type="email"
+                    class="form-input"
+                    placeholder="Enter email address"
+                  />
+                  <svg class="input-icon"><use href="#mail-icon" /></svg>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" checked />
+                  Subscribe to newsletter
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Shipping Address</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label required">First Name</label>
+                  <div class="input-wrapper">
+                    <input type="text" class="form-input" placeholder="John" />
+                    <svg class="input-icon"><use href="#user-icon" /></svg>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">Last Name</label>
+                  <input type="text" class="form-input" placeholder="Doe" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Street Address</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="123 Main Street"
+                  />
+                  <svg class="input-icon"><use href="#map-pin-icon" /></svg>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label required">City</label>
+                  <input type="text" class="form-input" placeholder="Mumbai" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">State</label>
+                  <select class="form-input form-select">
+                    <option value="">Select state...</option>
+                    <option value="mh">Maharashtra</option>
+                  </select>
+                </div>
+                <div class="form-group" style="max-width: 140px">
+                  <label class="form-label required">PIN Code</label>
+                  <input type="text" class="form-input" placeholder="400001" />
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-top: 24px">
+                <button class="form-btn" style="border-radius: 12px">
+                  Save Address
+                </button>
+                <button class="form-btn secondary" style="border-radius: 12px">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: rounded-md (6px) -->
+      <div class="option-section option-c">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Rounded-md (6px)</h3>
+            <p class="wf-option-desc">
+              More angular, minimal corners. Modern, crisp aesthetic for forms.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Contact Form</div>
+
+              <div class="form-group">
+                <label class="form-label required">Full Name</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Email</label>
+                <input
+                  type="email"
+                  class="form-input error"
+                  value="invalid-email"
+                />
+                <div class="form-error">
+                  <svg><use href="#alert-icon" /></svg>
+                  Please enter a valid email
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea
+                  class="form-input form-textarea"
+                  placeholder="Your message..."
+                ></textarea>
+              </div>
+
+              <button class="form-btn" style="width: 100%; border-radius: 6px">
+                Send Message
+              </button>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Input States</div>
+
+              <div class="states-row">
+                <div class="state-demo">
+                  <div class="state-label">Default</div>
+                  <input type="text" class="form-input" placeholder="Default" />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Filled</div>
+                  <input
+                    type="text"
+                    class="form-input filled"
+                    value="Filled value"
+                  />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Error</div>
+                  <input type="text" class="form-input error" value="Error" />
+                </div>
+                <div class="state-demo">
+                  <div class="state-label">Disabled</div>
+                  <input
+                    type="text"
+                    class="form-input disabled"
+                    value="Disabled"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Select Input</label>
+                <select class="form-input form-select">
+                  <option value="">Choose a category...</option>
+                  <option value="vases">Vases</option>
+                  <option value="bowls">Bowls</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">With Icon</label>
+                <div class="input-wrapper">
+                  <input
+                    type="email"
+                    class="form-input"
+                    placeholder="Enter email address"
+                  />
+                  <svg class="input-icon"><use href="#mail-icon" /></svg>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" checked />
+                  Subscribe to newsletter
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">Shipping Address</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label required">First Name</label>
+                  <div class="input-wrapper">
+                    <input type="text" class="form-input" placeholder="John" />
+                    <svg class="input-icon"><use href="#user-icon" /></svg>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">Last Name</label>
+                  <input type="text" class="form-input" placeholder="Doe" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Street Address</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="123 Main Street"
+                  />
+                  <svg class="input-icon"><use href="#map-pin-icon" /></svg>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label required">City</label>
+                  <input type="text" class="form-input" placeholder="Mumbai" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">State</label>
+                  <select class="form-input form-select">
+                    <option value="">Select state...</option>
+                    <option value="mh">Maharashtra</option>
+                  </select>
+                </div>
+                <div class="form-group" style="max-width: 140px">
+                  <label class="form-label required">PIN Code</label>
+                  <input type="text" class="form-input" placeholder="400001" />
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-top: 24px">
+                <button class="form-btn" style="border-radius: 6px">
+                  Save Address
+                </button>
+                <button class="form-btn secondary" style="border-radius: 6px">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred form input style option for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A -
+            rounded-lg (8px)</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B -
+            rounded-xl (12px)</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            rounded-md (6px)</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A -
+            rounded-lg (8px)</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B -
+            rounded-xl (12px)</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            rounded-md (6px)</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A -
+            rounded-lg (8px)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            rounded-xl (12px)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            rounded-md (6px)</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 4.3):</strong><br /><br />
+      &bull; <strong>Height:</strong> h-10 (40px) for inputs and selects<br />
+      &bull; <strong>Padding:</strong> px-3.5 for inputs, px-10 for inputs with
+      icons<br />
+      &bull; <strong>Font:</strong> font-sans (Outfit), text-sm (14px)<br />
+      &bull; <strong>Border:</strong> 1px solid neutral-200, hover:
+      neutral-300<br />
+      &bull; <strong>Focus:</strong> border-primary, ring-3 ring-primary/10<br />
+      &bull; <strong>Error:</strong> border-red-500, ring-3 ring-red-500/10<br />
+      &bull; <strong>Label:</strong> font-medium text-sm text-neutral-600,
+      required indicator: text-red-500<br />
+      &bull; <strong>Textarea:</strong> min-h-[120px], resize-y<br />
+      &bull; <strong>Files:</strong> src/components/ui/input.tsx, textarea.tsx,
+      src/components/forms/form-input.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

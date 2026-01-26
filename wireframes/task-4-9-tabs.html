@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.9: Tabs - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Tabs Base Styles */
+      .tabs-container {
+        width: 100%;
+      }
+
+      .tabs-list {
+        display: flex;
+        position: relative;
+      }
+
+      .tabs-trigger {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px 16px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: #737373;
+        transition: all 0.15s ease-out;
+        position: relative;
+        white-space: nowrap;
+      }
+
+      .tabs-trigger:hover {
+        color: #4f6f52;
+      }
+
+      .tabs-trigger.active {
+        color: #4f6f52;
+      }
+
+      .tabs-content {
+        padding: 24px 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #555;
+      }
+
+      /* Option A: Underline Indicator */
+      .option-a .tabs-list {
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .option-a .tabs-trigger::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: transparent;
+        transition: background 0.15s ease-out;
+      }
+
+      .option-a .tabs-trigger.active::after {
+        background: #4f6f52;
+      }
+
+      /* Option B: Pill/Segment Style */
+      .option-b .tabs-list {
+        background: #f5f5f4;
+        padding: 4px;
+        border-radius: 12px;
+        display: inline-flex;
+        gap: 4px;
+      }
+
+      .option-b .tabs-trigger {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
+      .option-b .tabs-trigger.active {
+        background: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        color: #4f6f52;
+      }
+
+      .option-b .tabs-trigger:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Option C: Clean Underline (no border) */
+      .option-c .tabs-list {
+        gap: 32px;
+      }
+
+      .option-c .tabs-trigger {
+        padding: 12px 0;
+        position: relative;
+      }
+
+      .option-c .tabs-trigger::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: transparent;
+        border-radius: 2px;
+        transition: background 0.15s ease-out;
+      }
+
+      .option-c .tabs-trigger.active::after {
+        background: #4f6f52;
+      }
+
+      /* Option D: Boxed Style */
+      .option-d .tabs-list {
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        overflow: hidden;
+        display: inline-flex;
+      }
+
+      .option-d .tabs-trigger {
+        padding: 12px 24px;
+        border-right: 1px solid #e5e5e5;
+      }
+
+      .option-d .tabs-trigger:last-child {
+        border-right: none;
+      }
+
+      .option-d .tabs-trigger.active {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .option-d .tabs-trigger:hover:not(.active) {
+        background: #f9faf9;
+      }
+
+      /* Scrollable Tabs (Mobile) */
+      .tabs-scrollable {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .tabs-scrollable::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tabs-scrollable .tabs-list {
+        min-width: max-content;
+      }
+
+      /* Demo Context Card */
+      .demo-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .demo-card-header {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      /* Tab Content Demo */
+      .tab-content-demo {
+        background: #f9faf9;
+        border-radius: 12px;
+        padding: 20px;
+        min-height: 100px;
+      }
+
+      .tab-content-demo h4 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+      }
+
+      .tab-content-demo p {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #555;
+      }
+
+      /* Product Specs Table */
+      .specs-table {
+        width: 100%;
+        font-size: 13px;
+      }
+
+      .specs-table tr {
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .specs-table tr:last-child {
+        border-bottom: none;
+      }
+
+      .specs-table td {
+        padding: 10px 0;
+      }
+
+      .specs-table td:first-child {
+        color: #737373;
+        width: 40%;
+      }
+
+      .specs-table td:last-child {
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 64px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      .demo-section {
+        margin-bottom: 24px;
+      }
+
+      .demo-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      /* Badge for count */
+      .tab-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        background: #e8ece8;
+        color: #4f6f52;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 10px;
+        margin-left: 6px;
+      }
+
+      .tabs-trigger.active .tab-badge {
+        background: #4f6f52;
+        color: white;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Review Item */
+      .review-item {
+        padding: 16px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .review-item:last-child {
+        border-bottom: none;
+      }
+
+      .review-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .review-avatar {
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #4f6f52;
+      }
+
+      .review-name {
+        font-weight: 600;
+        color: #1a1a1a;
+        font-size: 14px;
+      }
+
+      .review-date {
+        font-size: 12px;
+        color: #999;
+      }
+
+      .review-stars {
+        color: #4f6f52;
+        font-size: 12px;
+        letter-spacing: 2px;
+      }
+
+      .review-text {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #555;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.9: Tabs</h1>
+    <p class="subtitle">
+      Foundation component: Clean tabs with underline indicator. Smooth content
+      transitions with horizontal scroll on mobile for many tabs.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">IN PROGRESS</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Inconsistent tab styling</li>
+            <li>No clear active indicator</li>
+            <li>No smooth transitions</li>
+            <li>Overflow issues on mobile</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Triggers: font-medium, no borders</li>
+            <li>Active: Primary underline (2px)</li>
+            <li>Content: Top padding, smooth transition</li>
+            <li>Mobile: Horizontal scroll if many tabs</li>
+            <li>Optional: Badge/count support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Underline Indicator -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Underline Indicator
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Classic tab style with bottom border and underline indicator.
+              Clean and widely recognized pattern.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Product Detail Tabs</div>
+              <div class="tabs-container option-a">
+                <div class="tabs-scrollable">
+                  <div class="tabs-list">
+                    <button class="tabs-trigger active">Description</button>
+                    <button class="tabs-trigger">Materials</button>
+                    <button class="tabs-trigger">
+                      Reviews<span class="tab-badge">24</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="tabs-content">
+                  <div class="tab-content-demo">
+                    <p>
+                      This handcrafted ceramic vase features a unique glaze
+                      pattern created through traditional firing techniques.
+                      Each piece is one-of-a-kind.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Events Tabs (Scrollable)</div>
+              <div class="tabs-container option-a">
+                <div class="tabs-scrollable">
+                  <div class="tabs-list">
+                    <button class="tabs-trigger active">All Events</button>
+                    <button class="tabs-trigger">Upcoming</button>
+                    <button class="tabs-trigger">Past Workshops</button>
+                    <button class="tabs-trigger">My Registrations</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Product Detail Tabs</div>
+              <div class="tabs-container option-a">
+                <div class="tabs-list">
+                  <button class="tabs-trigger active">Description</button>
+                  <button class="tabs-trigger">Materials & Care</button>
+                  <button class="tabs-trigger">
+                    Reviews<span class="tab-badge">24</span>
+                  </button>
+                  <button class="tabs-trigger">Shipping</button>
+                </div>
+                <div class="tabs-content">
+                  <div class="tab-content-demo">
+                    <h4>About This Piece</h4>
+                    <p>
+                      Handcrafted in our studio using traditional wheel-throwing
+                      techniques. The unique reactive glaze creates beautiful
+                      variations in each piece, making yours truly
+                      one-of-a-kind.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Account Tabs</div>
+              <div class="tabs-container option-a">
+                <div class="tabs-list">
+                  <button class="tabs-trigger active">Orders</button>
+                  <button class="tabs-trigger">Wishlist</button>
+                  <button class="tabs-trigger">Addresses</button>
+                  <button class="tabs-trigger">Settings</button>
+                </div>
+                <div class="tabs-content">
+                  <div class="tab-content-demo">
+                    <h4>Recent Orders</h4>
+                    <p>
+                      You have 3 orders in the last 30 days. Your most recent
+                      order #ORD-2024-1234 is on its way.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Pill/Segment Style -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Pill/Segment Style</h3>
+            <p class="wf-option-desc">
+              iOS-style segmented control. Active tab has white background with
+              subtle shadow.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Product Detail Tabs</div>
+              <div class="tabs-container option-b">
+                <div class="tabs-scrollable">
+                  <div class="tabs-list">
+                    <button class="tabs-trigger active">Description</button>
+                    <button class="tabs-trigger">Materials</button>
+                    <button class="tabs-trigger">Reviews</button>
+                  </div>
+                </div>
+                <div class="tabs-content">
+                  <div class="tab-content-demo">
+                    <p>
+                      This handcrafted ceramic vase features a unique glaze
+                      pattern created through traditional firing techniques.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Registrations Filter</div>
+              <div class="tabs-container option-b" style="text-align: center">
+                <div class="tabs-list" style="justify-content: center">
+                  <button class="tabs-trigger active">Upcoming</button>
+                  <button class="tabs-trigger">Completed</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Product Detail Tabs</div>
+              <div class="tabs-container option-b">
+                <div class="tabs-list">
+                  <button class="tabs-trigger active">Description</button>
+                  <button class="tabs-trigger">Materials & Care</button>
+                  <button class="tabs-trigger">Reviews</button>
+                  <button class="tabs-trigger">Shipping</button>
+                </div>
+                <div class="tabs-content">
+                  <div class="tab-content-demo">
+                    <h4>About This Piece</h4>
+                    <p>
+                      Handcrafted in our studio using traditional wheel-throwing
+                      techniques.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">View Toggle</div>
+              <div class="tabs-container option-b" style="text-align: center">
+                <div class="tabs-list" style="display: inline-flex">
+                  <button class="tabs-trigger active">Grid View</button>
+                  <button class="tabs-trigger">List View</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section" style="margin-top: 24px">
+              <div class="demo-label">Dashboard Navigation</div>
+              <div class="tabs-container option-b">
+                <div class="tabs-list">
+                  <button class="tabs-trigger active">Overview</button>
+                  <button class="tabs-trigger">Products</button>
+                  <button class="tabs-trigger">Orders</button>
+                  <button class="tabs-trigger">Customers</button>
+                  <button class="tabs-trigger">Analytics</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Clean Underline (no border) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Clean Underline</h3>
+            <p class="wf-option-desc">
+              Minimal style with no bottom border. Just the underline indicator
+              with generous spacing.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Product Detail Tabs</div>
+              <div class="tabs-container option-c">
+                <div class="tabs-scrollable">
+                  <div class="tabs-list">
+                    <button class="tabs-trigger active">Description</button>
+                    <button class="tabs-trigger">Materials</button>
+                    <button class="tabs-trigger">Reviews</button>
+                  </div>
+                </div>
+                <div class="tabs-content">
+                  <div class="tab-content-demo">
+                    <p>
+                      This handcrafted ceramic vase features a unique glaze
+                      pattern created through traditional firing techniques.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Events Page Tabs</div>
+              <div class="tabs-container option-c">
+                <div class="tabs-list">
+                  <button class="tabs-trigger active">All Events</button>
+                  <button class="tabs-trigger">Upcoming</button>
+                  <button class="tabs-trigger">Past</button>
+                  <button class="tabs-trigger">My Registrations</button>
+                </div>
+                <div class="tabs-content">
+                  <div class="tab-content-demo">
+                    <h4>Browse All Events</h4>
+                    <p>Explore our pottery workshops and creative sessions.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Product Tabs with Content</div>
+              <div class="tabs-container option-c">
+                <div class="tabs-list">
+                  <button class="tabs-trigger">Description</button>
+                  <button class="tabs-trigger">Specifications</button>
+                  <button class="tabs-trigger active">
+                    Reviews<span class="tab-badge">24</span>
+                  </button>
+                </div>
+                <div class="tabs-content">
+                  <div class="review-item">
+                    <div class="review-header">
+                      <div class="review-avatar">JD</div>
+                      <div>
+                        <div class="review-name">Jane D.</div>
+                        <div class="review-stars">★★★★★</div>
+                      </div>
+                      <div class="review-date" style="margin-left: auto">
+                        2 days ago
+                      </div>
+                    </div>
+                    <p class="review-text">
+                      Absolutely beautiful piece! The glaze is even more
+                      stunning in person. Fast shipping and well-packaged.
+                    </p>
+                  </div>
+                  <div class="review-item">
+                    <div class="review-header">
+                      <div class="review-avatar">MS</div>
+                      <div>
+                        <div class="review-name">Mike S.</div>
+                        <div class="review-stars">★★★★☆</div>
+                      </div>
+                      <div class="review-date" style="margin-left: auto">
+                        1 week ago
+                      </div>
+                    </div>
+                    <p class="review-text">
+                      Great quality. Perfect size for my living room. Would love
+                      to see more color options.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Boxed Style -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Boxed Style</h3>
+            <p class="wf-option-desc">
+              Connected tabs with border outline. Active tab fills with primary
+              color.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Simple Toggle</div>
+              <div class="tabs-container option-d" style="text-align: center">
+                <div class="tabs-list" style="display: inline-flex">
+                  <button class="tabs-trigger active">Products</button>
+                  <button class="tabs-trigger">Events</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Three-way Toggle</div>
+              <div class="tabs-container option-d" style="text-align: center">
+                <div class="tabs-list" style="display: inline-flex">
+                  <button class="tabs-trigger active">All</button>
+                  <button class="tabs-trigger">Upcoming</button>
+                  <button class="tabs-trigger">Past</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Filter Tabs</div>
+              <div class="tabs-container option-d">
+                <div class="tabs-list" style="display: inline-flex">
+                  <button class="tabs-trigger active">All</button>
+                  <button class="tabs-trigger">Vases</button>
+                  <button class="tabs-trigger">Bowls</button>
+                  <button class="tabs-trigger">Plates</button>
+                  <button class="tabs-trigger">Mugs</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Product Tabs with Specs</div>
+              <div class="tabs-container option-d">
+                <div class="tabs-list" style="display: inline-flex">
+                  <button class="tabs-trigger active">Description</button>
+                  <button class="tabs-trigger">Specifications</button>
+                  <button class="tabs-trigger">Shipping</button>
+                </div>
+                <div class="tabs-content">
+                  <table class="specs-table">
+                    <tr>
+                      <td>Material</td>
+                      <td>High-fire stoneware clay</td>
+                    </tr>
+                    <tr>
+                      <td>Dimensions</td>
+                      <td>8" H × 5" W</td>
+                    </tr>
+                    <tr>
+                      <td>Weight</td>
+                      <td>1.2 lbs</td>
+                    </tr>
+                    <tr>
+                      <td>Care</td>
+                      <td>Hand wash recommended</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred tabs style for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A -
+            Underline</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B -
+            Pill/Segment</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Clean
+            Underline</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D -
+            Boxed</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A -
+            Underline</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B -
+            Pill/Segment</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Clean
+            Underline</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D -
+            Boxed</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A -
+            Underline</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            Pill/Segment</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Clean
+            Underline</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D -
+            Boxed</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 4.9):</strong><br /><br />
+      &bull; <strong>Triggers:</strong> font-medium (font-display), no borders
+      by default<br />
+      &bull; <strong>Active indicator:</strong> Primary color underline (2px) or
+      pill background<br />
+      &bull; <strong>Content:</strong> Top padding (24px), smooth fade
+      transition<br />
+      &bull; <strong>Mobile:</strong> Horizontal scroll with hidden scrollbar
+      for many tabs<br />
+      &bull; <strong>Badge support:</strong> Optional count badge next to
+      trigger text<br />
+      &bull; <strong>Variants:</strong> underline, pill, minimal, boxed<br />
+      &bull; <strong>Animation:</strong> Indicator slides smoothly between
+      tabs<br />
+      &bull; <strong>File:</strong> src/components/ui/tabs.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

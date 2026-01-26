@@ -1,0 +1,2378 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 5.1: Product Detail Layout - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Product Detail Specific Styles */
+      .pd-container {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      /* Mobile Header Bar */
+      .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: white;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .mobile-header .back-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f4;
+        border-radius: 50%;
+      }
+
+      .mobile-header .title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .mobile-header .actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .mobile-header .action-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f4;
+        border-radius: 50%;
+      }
+
+      /* Breadcrumbs */
+      .breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 16px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .breadcrumbs span {
+        margin: 0 6px;
+        color: #ccc;
+      }
+
+      /* Image Carousel */
+      .image-carousel {
+        width: 100%;
+        aspect-ratio: 1;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .image-carousel .pottery-icon {
+        width: 40%;
+        height: 60%;
+        background: rgba(139, 115, 85, 0.2);
+        border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+      }
+
+      .carousel-dots {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+      }
+
+      .carousel-dots .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .carousel-dots .dot.active {
+        background: white;
+      }
+
+      /* Product Info */
+      .product-info {
+        padding: 20px 16px;
+      }
+
+      .product-info.tablet {
+        padding: 24px;
+      }
+
+      .product-info.desktop {
+        padding: 32px;
+      }
+
+      .product-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: #e8ece8;
+        color: #4f6f52;
+        margin-bottom: 12px;
+      }
+
+      .product-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        line-height: 1.3;
+      }
+
+      .product-title.large {
+        font-size: 28px;
+      }
+
+      .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+
+      .stars {
+        display: flex;
+        gap: 2px;
+      }
+
+      .star {
+        width: 14px;
+        height: 14px;
+        background: #4f6f52;
+        clip-path: polygon(
+          50% 0%,
+          61% 35%,
+          98% 35%,
+          68% 57%,
+          79% 91%,
+          50% 70%,
+          21% 91%,
+          32% 57%,
+          2% 35%,
+          39% 35%
+        );
+      }
+
+      .star.empty {
+        background: #d4e5d6;
+      }
+
+      .rating-text {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .product-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #4f6f52;
+        margin-bottom: 16px;
+      }
+
+      .product-price .original {
+        font-size: 16px;
+        font-weight: 400;
+        color: #999;
+        text-decoration: line-through;
+        margin-left: 8px;
+      }
+
+      .product-description {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      /* Options */
+      .product-options {
+        margin-bottom: 20px;
+      }
+
+      .option-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .color-options {
+        display: flex;
+        gap: 10px;
+      }
+
+      .color-swatch {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+      }
+
+      .color-swatch.selected {
+        border-color: #4f6f52;
+        box-shadow:
+          0 0 0 2px white,
+          0 0 0 4px #4f6f52;
+      }
+
+      /* Quantity */
+      .quantity-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .quantity-selector {
+        display: flex;
+        align-items: center;
+        background: #f5f5f4;
+        border-radius: 999px;
+        padding: 4px;
+      }
+
+      .qty-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 50%;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .qty-value {
+        padding: 0 16px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .stock-status {
+        font-size: 13px;
+        color: #4f6f52;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .stock-dot {
+        width: 8px;
+        height: 8px;
+        background: #4f6f52;
+        border-radius: 50%;
+      }
+
+      /* CTA Buttons */
+      .cta-section {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .btn-add-cart {
+        flex: 1;
+        height: 48px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-wishlist {
+        width: 48px;
+        height: 48px;
+        background: #f5f5f4;
+        border: none;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-buy-now {
+        flex: 1;
+        height: 48px;
+        background: transparent;
+        color: #4f6f52;
+        border: 2px solid #4f6f52;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      /* Trust Badges */
+      .trust-badges {
+        display: flex;
+        gap: 20px;
+        padding: 16px;
+        background: #f9f9f8;
+        border-radius: 12px;
+        margin-top: 16px;
+      }
+
+      .trust-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        color: #666;
+      }
+
+      .trust-badge .icon {
+        width: 24px;
+        height: 24px;
+        background: #e8ece8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      /* Desktop Split Layout */
+      .desktop-split {
+        display: grid;
+        grid-template-columns: 55% 45%;
+        gap: 40px;
+      }
+
+      .desktop-split-equal {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        gap: 32px;
+      }
+
+      .desktop-split-60 {
+        display: grid;
+        grid-template-columns: 60% 40%;
+        gap: 48px;
+      }
+
+      /* Gallery Thumbnails */
+      .gallery-with-thumbs {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 16px;
+      }
+
+      .thumb-strip {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .thumb {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 8px;
+        border: 2px solid transparent;
+      }
+
+      .thumb.active {
+        border-color: #4f6f52;
+      }
+
+      .main-image {
+        aspect-ratio: 3/4;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 16px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main-image .pottery-icon {
+        width: 35%;
+        height: 55%;
+        background: rgba(139, 115, 85, 0.2);
+        border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+      }
+
+      /* Sticky CTA */
+      .sticky-cta {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 12px 16px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        z-index: 100;
+      }
+
+      .sticky-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .sticky-cta .btn-add-cart {
+        flex: 1;
+      }
+
+      /* Option Container */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 48px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 64px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 12px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 44px;
+        height: 44px;
+        background: #e8ece8;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 768px 1fr;
+        gap: 32px;
+        margin-top: 32px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+      }
+
+      .viewport-column {
+        min-width: 0;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      .device-frame {
+        background: white;
+        border-radius: 24px;
+        border: 6px solid #1a1a1a;
+        overflow: hidden;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .device-frame.tablet {
+        border-radius: 16px;
+        border-width: 4px;
+      }
+
+      .device-frame.desktop {
+        border-radius: 12px;
+        border-width: 2px;
+        border-color: #e5e5e5;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* SVG Icons */
+      .icon-svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 5.1: Product Detail Layout</h1>
+    <p class="subtitle">
+      Mobile-first product detail page redesign with full-width images,
+      prominent CTA, and consistent page header pattern. Desktop uses 55/45
+      split layout with image gallery.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT STATE</h3>
+          <ul>
+            <li>Inconsistent header pattern</li>
+            <li>Image not full-width on mobile</li>
+            <li>CTA buttons not prominent enough</li>
+            <li>Layout doesn't match design system</li>
+            <li>Missing trust badges</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Consistent page header with breadcrumbs</li>
+            <li>Full-width images on mobile with carousel</li>
+            <li>55/45 split on desktop (image larger)</li>
+            <li>Prominent Add to Cart CTA</li>
+            <li>Quantity selector + Wishlist</li>
+            <li>Trust badges below CTA</li>
+            <li>Sticky mobile CTA (shows on scroll)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Clean & Minimal -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Clean & Minimal <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Full-width images, stacked layout on mobile. 55/45 split on
+              desktop with vertical thumbnails. Clean typography hierarchy.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Mobile <span class="size">375 x 812</span>
+            </div>
+            <div class="device-frame" style="width: 375px">
+              <!-- Mobile Header -->
+              <div class="mobile-header">
+                <div class="back-btn">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                </div>
+                <span class="title">Product</span>
+                <div class="actions">
+                  <div class="action-btn">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                      />
+                    </svg>
+                  </div>
+                  <div class="action-btn">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="19" cy="12" r="1" />
+                      <circle cx="5" cy="12" r="1" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Image Carousel -->
+              <div class="image-carousel">
+                <div class="pottery-icon"></div>
+                <div class="carousel-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </div>
+
+              <!-- Product Info -->
+              <div class="product-info">
+                <div class="product-badge">Handcrafted</div>
+                <h2 class="product-title">Artisan Ceramic Vase</h2>
+                <div class="product-rating">
+                  <div class="stars">
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star empty"></div>
+                  </div>
+                  <span class="rating-text">4.2 (24 reviews)</span>
+                </div>
+                <div class="product-price">&#8377;2,450</div>
+                <p class="product-description">
+                  Handcrafted ceramic vase with a unique glaze finish. Perfect
+                  for fresh flowers or as a standalone art piece.
+                </p>
+
+                <div class="quantity-section">
+                  <div class="quantity-selector">
+                    <div class="qty-btn">-</div>
+                    <span class="qty-value">1</span>
+                    <div class="qty-btn">+</div>
+                  </div>
+                  <div class="stock-status">
+                    <div class="stock-dot"></div>
+                    In Stock
+                  </div>
+                </div>
+
+                <div class="cta-section">
+                  <button class="btn-add-cart">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path
+                        d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                      />
+                      <line x1="3" y1="6" x2="21" y2="6" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    Add to Cart
+                  </button>
+                  <button class="btn-wishlist">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="trust-badges">
+                  <div class="trust-badge">
+                    <div class="icon">&#128274;</div>
+                    <span>Secure Pay</span>
+                  </div>
+                  <div class="trust-badge">
+                    <div class="icon">&#128666;</div>
+                    <span>Free Shipping</span>
+                  </div>
+                  <div class="trust-badge">
+                    <div class="icon">&#9996;</div>
+                    <span>Handmade</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Tablet <span class="size">768 x 1024</span>
+            </div>
+            <div class="device-frame tablet" style="width: 768px">
+              <div style="padding: 24px">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> <span>/</span> <a href="#">Shop</a>
+                  <span>/</span> <a href="#">Vases</a> <span>/</span>
+                  Artisan Ceramic Vase
+                </div>
+
+                <div class="desktop-split-equal">
+                  <!-- Image -->
+                  <div>
+                    <div class="main-image">
+                      <div class="pottery-icon"></div>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 12px">
+                      <div
+                        style="
+                          width: 64px;
+                          height: 64px;
+                          background: linear-gradient(
+                            135deg,
+                            #e8ddd4 0%,
+                            #d4c4b0 100%
+                          );
+                          border-radius: 8px;
+                          border: 2px solid #4f6f52;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          width: 64px;
+                          height: 64px;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          width: 64px;
+                          height: 64px;
+                          background: linear-gradient(
+                            135deg,
+                            #e8e0d4 0%,
+                            #c4a882 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          width: 64px;
+                          height: 64px;
+                          background: linear-gradient(
+                            135deg,
+                            #dde4e8 0%,
+                            #b0c4d4 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="product-info tablet">
+                    <div class="product-badge">Handcrafted</div>
+                    <h2 class="product-title large">Artisan Ceramic Vase</h2>
+                    <div class="product-rating">
+                      <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star empty"></div>
+                      </div>
+                      <span class="rating-text">4.2 (24 reviews)</span>
+                    </div>
+                    <div class="product-price">&#8377;2,450</div>
+                    <p class="product-description">
+                      Handcrafted ceramic vase with a unique glaze finish.
+                      Perfect for fresh flowers or as a standalone art piece.
+                      Each piece is uniquely made by our artisans.
+                    </p>
+
+                    <div class="product-options">
+                      <div class="option-label">Color</div>
+                      <div class="color-options">
+                        <div
+                          class="color-swatch selected"
+                          style="background: #d4c4b0"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b8d4b8"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b0c4d4"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="quantity-section">
+                      <div class="quantity-selector">
+                        <div class="qty-btn">-</div>
+                        <span class="qty-value">1</span>
+                        <div class="qty-btn">+</div>
+                      </div>
+                      <div class="stock-status">
+                        <div class="stock-dot"></div>
+                        In Stock (12 left)
+                      </div>
+                    </div>
+
+                    <div class="cta-section">
+                      <button class="btn-add-cart">
+                        <svg class="icon-svg" viewBox="0 0 24 24">
+                          <path
+                            d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                          />
+                          <line x1="3" y1="6" x2="21" y2="6" />
+                          <path d="M16 10a4 4 0 0 1-8 0" />
+                        </svg>
+                        Add to Cart
+                      </button>
+                      <button class="btn-wishlist">
+                        <svg class="icon-svg" viewBox="0 0 24 24">
+                          <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div class="trust-badges">
+                      <div class="trust-badge">
+                        <div class="icon">&#128274;</div>
+                        <span>Secure Pay</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#128666;</div>
+                        <span>Free Shipping</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#9996;</div>
+                        <span>Handmade</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Desktop <span class="size">1440 x 900</span>
+            </div>
+            <div
+              class="device-frame desktop"
+              style="width: 100%; min-width: 900px"
+            >
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">
+                  poetryandpottery.com/shop/artisan-ceramic-vase
+                </div>
+              </div>
+              <div style="padding: 40px 64px">
+                <div class="breadcrumbs" style="margin-bottom: 24px">
+                  <a href="#">Home</a> <span>/</span> <a href="#">Shop</a>
+                  <span>/</span> <a href="#">Vases</a> <span>/</span>
+                  Artisan Ceramic Vase
+                </div>
+
+                <div class="desktop-split">
+                  <!-- Gallery with Thumbnails -->
+                  <div class="gallery-with-thumbs">
+                    <div class="thumb-strip">
+                      <div class="thumb active"></div>
+                      <div
+                        class="thumb"
+                        style="
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                        "
+                      ></div>
+                      <div
+                        class="thumb"
+                        style="
+                          background: linear-gradient(
+                            135deg,
+                            #e8e0d4 0%,
+                            #c4a882 100%
+                          );
+                        "
+                      ></div>
+                      <div
+                        class="thumb"
+                        style="
+                          background: linear-gradient(
+                            135deg,
+                            #dde4e8 0%,
+                            #b0c4d4 100%
+                          );
+                        "
+                      ></div>
+                    </div>
+                    <div class="main-image">
+                      <div class="pottery-icon"></div>
+                    </div>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="product-info desktop" style="padding-left: 32px">
+                    <div class="product-badge">Handcrafted</div>
+                    <h2 class="product-title large">Artisan Ceramic Vase</h2>
+                    <div class="product-rating">
+                      <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star empty"></div>
+                      </div>
+                      <span class="rating-text">4.2 (24 reviews)</span>
+                    </div>
+                    <div class="product-price" style="font-size: 28px">
+                      &#8377;2,450 <span class="original">&#8377;2,950</span>
+                    </div>
+                    <p
+                      class="product-description"
+                      style="font-size: 15px; max-width: 400px"
+                    >
+                      Handcrafted ceramic vase with a unique glaze finish.
+                      Perfect for fresh flowers or as a standalone art piece.
+                      Each piece is uniquely made by our artisans in our Jaipur
+                      studio.
+                    </p>
+
+                    <div class="product-options">
+                      <div class="option-label">Color</div>
+                      <div class="color-options">
+                        <div
+                          class="color-swatch selected"
+                          style="background: #d4c4b0"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b8d4b8"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b0c4d4"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #c4a882"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="quantity-section">
+                      <div class="quantity-selector">
+                        <div class="qty-btn">-</div>
+                        <span class="qty-value">1</span>
+                        <div class="qty-btn">+</div>
+                      </div>
+                      <div class="stock-status">
+                        <div class="stock-dot"></div>
+                        In Stock (12 left)
+                      </div>
+                    </div>
+
+                    <div class="cta-section" style="max-width: 400px">
+                      <button
+                        class="btn-add-cart"
+                        style="height: 52px; font-size: 15px"
+                      >
+                        <svg class="icon-svg" viewBox="0 0 24 24">
+                          <path
+                            d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                          />
+                          <line x1="3" y1="6" x2="21" y2="6" />
+                          <path d="M16 10a4 4 0 0 1-8 0" />
+                        </svg>
+                        Add to Cart
+                      </button>
+                      <button
+                        class="btn-wishlist"
+                        style="width: 52px; height: 52px"
+                      >
+                        <svg class="icon-svg" viewBox="0 0 24 24">
+                          <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <button
+                      class="btn-buy-now"
+                      style="width: 100%; max-width: 400px; margin-bottom: 24px"
+                    >
+                      Buy Now
+                    </button>
+
+                    <div class="trust-badges" style="max-width: 400px">
+                      <div class="trust-badge">
+                        <div class="icon">&#128274;</div>
+                        <span>Secure Payments</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#128666;</div>
+                        <span>Free Shipping</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#9996;</div>
+                        <span>Handmade</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Immersive Gallery -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Immersive Gallery Focus</h3>
+            <p class="wf-option-desc">
+              Larger image area with overlay info on mobile. 60/40 split on
+              desktop with horizontal thumbnails below main image.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Mobile <span class="size">375 x 812</span>
+            </div>
+            <div class="device-frame" style="width: 375px">
+              <!-- Immersive image with overlay header -->
+              <div style="position: relative">
+                <div class="image-carousel" style="height: 420px">
+                  <div class="pottery-icon"></div>
+                  <div class="carousel-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                  </div>
+                </div>
+                <!-- Floating header -->
+                <div
+                  style="
+                    position: absolute;
+                    top: 12px;
+                    left: 12px;
+                    right: 12px;
+                    display: flex;
+                    justify-content: space-between;
+                  "
+                >
+                  <div
+                    class="back-btn"
+                    style="
+                      background: rgba(255, 255, 255, 0.9);
+                      backdrop-filter: blur(4px);
+                    "
+                  >
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                  </div>
+                  <div style="display: flex; gap: 8px">
+                    <div
+                      class="action-btn"
+                      style="
+                        background: rgba(255, 255, 255, 0.9);
+                        backdrop-filter: blur(4px);
+                      "
+                    >
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                        />
+                      </svg>
+                    </div>
+                    <div
+                      class="action-btn"
+                      style="
+                        background: rgba(255, 255, 255, 0.9);
+                        backdrop-filter: blur(4px);
+                      "
+                    >
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product Info Card (overlapping) -->
+              <div
+                style="
+                  background: white;
+                  border-radius: 24px 24px 0 0;
+                  margin-top: -24px;
+                  position: relative;
+                  z-index: 10;
+                "
+              >
+                <div class="product-info" style="padding-top: 28px">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: flex-start;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    <div class="product-badge">Handcrafted</div>
+                    <div class="product-price" style="margin-bottom: 0">
+                      &#8377;2,450
+                    </div>
+                  </div>
+                  <h2 class="product-title">Artisan Ceramic Vase</h2>
+                  <div class="product-rating">
+                    <div class="stars">
+                      <div class="star"></div>
+                      <div class="star"></div>
+                      <div class="star"></div>
+                      <div class="star"></div>
+                      <div class="star empty"></div>
+                    </div>
+                    <span class="rating-text">4.2 (24 reviews)</span>
+                  </div>
+
+                  <p class="product-description">
+                    Handcrafted ceramic vase with a unique glaze finish. Perfect
+                    for fresh flowers or as a standalone art piece.
+                  </p>
+
+                  <div class="quantity-section">
+                    <div class="quantity-selector">
+                      <div class="qty-btn">-</div>
+                      <span class="qty-value">1</span>
+                      <div class="qty-btn">+</div>
+                    </div>
+                    <div class="stock-status">
+                      <div class="stock-dot"></div>
+                      In Stock
+                    </div>
+                  </div>
+
+                  <div class="cta-section">
+                    <button class="btn-add-cart">
+                      Add to Cart - &#8377;2,450
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Tablet <span class="size">768 x 1024</span>
+            </div>
+            <div class="device-frame tablet" style="width: 768px">
+              <div style="padding: 24px">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> <span>/</span> <a href="#">Shop</a>
+                  <span>/</span> <a href="#">Vases</a> <span>/</span>
+                  Artisan Ceramic Vase
+                </div>
+
+                <div class="desktop-split-equal">
+                  <!-- Image with horizontal thumbs -->
+                  <div>
+                    <div class="main-image" style="margin-bottom: 12px">
+                      <div class="pottery-icon"></div>
+                    </div>
+                    <div style="display: flex; gap: 8px">
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #e8ddd4 0%,
+                            #d4c4b0 100%
+                          );
+                          border-radius: 8px;
+                          border: 2px solid #4f6f52;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #e8e0d4 0%,
+                            #c4a882 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #dde4e8 0%,
+                            #b0c4d4 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="product-info tablet">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div class="product-badge">Handcrafted</div>
+                    </div>
+                    <h2 class="product-title large">Artisan Ceramic Vase</h2>
+                    <div class="product-rating">
+                      <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star empty"></div>
+                      </div>
+                      <span class="rating-text">4.2 (24 reviews)</span>
+                    </div>
+                    <div class="product-price">
+                      &#8377;2,450 <span class="original">&#8377;2,950</span>
+                    </div>
+
+                    <p class="product-description">
+                      Handcrafted ceramic vase with a unique glaze finish.
+                      Perfect for fresh flowers or as a standalone art piece.
+                    </p>
+
+                    <div class="product-options">
+                      <div class="option-label">Color</div>
+                      <div class="color-options">
+                        <div
+                          class="color-swatch selected"
+                          style="background: #d4c4b0"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b8d4b8"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b0c4d4"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="quantity-section">
+                      <div class="quantity-selector">
+                        <div class="qty-btn">-</div>
+                        <span class="qty-value">1</span>
+                        <div class="qty-btn">+</div>
+                      </div>
+                      <div class="stock-status">
+                        <div class="stock-dot"></div>
+                        In Stock
+                      </div>
+                    </div>
+
+                    <div
+                      style="display: flex; flex-direction: column; gap: 12px"
+                    >
+                      <button class="btn-add-cart" style="width: 100%">
+                        Add to Cart - &#8377;2,450
+                      </button>
+                      <button class="btn-buy-now" style="width: 100%">
+                        Buy Now
+                      </button>
+                    </div>
+
+                    <div class="trust-badges" style="margin-top: 20px">
+                      <div class="trust-badge">
+                        <div class="icon">&#128274;</div>
+                        <span>Secure</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#128666;</div>
+                        <span>Free Ship</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#9996;</div>
+                        <span>Handmade</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Desktop <span class="size">1440 x 900</span>
+            </div>
+            <div
+              class="device-frame desktop"
+              style="width: 100%; min-width: 900px"
+            >
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">
+                  poetryandpottery.com/shop/artisan-ceramic-vase
+                </div>
+              </div>
+              <div style="padding: 40px 64px">
+                <div class="breadcrumbs" style="margin-bottom: 24px">
+                  <a href="#">Home</a> <span>/</span> <a href="#">Shop</a>
+                  <span>/</span> <a href="#">Vases</a> <span>/</span>
+                  Artisan Ceramic Vase
+                </div>
+
+                <div class="desktop-split-60">
+                  <!-- Large Gallery -->
+                  <div>
+                    <div class="main-image" style="aspect-ratio: 4/3">
+                      <div class="pottery-icon"></div>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px">
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #e8ddd4 0%,
+                            #d4c4b0 100%
+                          );
+                          border-radius: 12px;
+                          border: 2px solid #4f6f52;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                          border-radius: 12px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #e8e0d4 0%,
+                            #c4a882 100%
+                          );
+                          border-radius: 12px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #dde4e8 0%,
+                            #b0c4d4 100%
+                          );
+                          border-radius: 12px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #f0e8e0 0%,
+                            #d4b89c 100%
+                          );
+                          border-radius: 12px;
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Sticky Info Panel -->
+                  <div class="product-info desktop" style="padding-left: 40px">
+                    <div class="product-badge">Handcrafted</div>
+                    <h2 class="product-title large">Artisan Ceramic Vase</h2>
+                    <div class="product-rating">
+                      <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star empty"></div>
+                      </div>
+                      <span class="rating-text">4.2 (24 reviews)</span>
+                    </div>
+                    <div class="product-price" style="font-size: 32px">
+                      &#8377;2,450 <span class="original">&#8377;2,950</span>
+                    </div>
+                    <p class="product-description" style="font-size: 15px">
+                      Handcrafted ceramic vase with a unique glaze finish.
+                      Perfect for fresh flowers or as a standalone art piece.
+                      Each piece is uniquely made by our artisans.
+                    </p>
+
+                    <div class="product-options">
+                      <div class="option-label">Color</div>
+                      <div class="color-options">
+                        <div
+                          class="color-swatch selected"
+                          style="background: #d4c4b0; width: 40px; height: 40px"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b8d4b8; width: 40px; height: 40px"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b0c4d4; width: 40px; height: 40px"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #c4a882; width: 40px; height: 40px"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="quantity-section">
+                      <div class="quantity-selector">
+                        <div class="qty-btn">-</div>
+                        <span class="qty-value">1</span>
+                        <div class="qty-btn">+</div>
+                      </div>
+                      <div class="stock-status">
+                        <div class="stock-dot"></div>
+                        In Stock (12 left)
+                      </div>
+                    </div>
+
+                    <div
+                      style="display: flex; flex-direction: column; gap: 12px"
+                    >
+                      <button
+                        class="btn-add-cart"
+                        style="width: 100%; height: 52px; font-size: 15px"
+                      >
+                        Add to Cart - &#8377;2,450
+                      </button>
+                      <button class="btn-buy-now" style="width: 100%">
+                        Buy Now
+                      </button>
+                    </div>
+
+                    <div class="trust-badges" style="margin-top: 24px">
+                      <div class="trust-badge">
+                        <div class="icon">&#128274;</div>
+                        <span>Secure Payments</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#128666;</div>
+                        <span>Free Shipping</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#9996;</div>
+                        <span>Handmade</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Two-Column Compact -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Compact Information Dense</h3>
+            <p class="wf-option-desc">
+              More information visible above the fold. Smaller image on mobile
+              with side-by-side price/title. Good for detailed products.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Mobile <span class="size">375 x 812</span>
+            </div>
+            <div class="device-frame" style="width: 375px">
+              <!-- Mobile Header -->
+              <div class="mobile-header">
+                <div class="back-btn">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                </div>
+                <span class="title">Product</span>
+                <div class="actions">
+                  <div class="action-btn">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                      />
+                    </svg>
+                  </div>
+                  <div class="action-btn">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path
+                        d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Compact Image + Quick Info -->
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 140px 1fr;
+                  gap: 12px;
+                  padding: 16px;
+                  background: white;
+                "
+              >
+                <div
+                  style="
+                    aspect-ratio: 1;
+                    background: linear-gradient(
+                      135deg,
+                      #e8ddd4 0%,
+                      #d4c4b0 100%
+                    );
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <div
+                    style="
+                      width: 50%;
+                      height: 60%;
+                      background: rgba(139, 115, 85, 0.2);
+                      border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+                    "
+                  ></div>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <div class="product-badge" style="margin-bottom: 6px">
+                    Handcrafted
+                  </div>
+                  <h2
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 16px;
+                      font-weight: 700;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Artisan Ceramic Vase
+                  </h2>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
+                      margin-bottom: 6px;
+                    "
+                  >
+                    <div
+                      class="stars"
+                      style="transform: scale(0.8); transform-origin: left"
+                    >
+                      <div class="star"></div>
+                      <div class="star"></div>
+                      <div class="star"></div>
+                      <div class="star"></div>
+                      <div class="star empty"></div>
+                    </div>
+                    <span style="font-size: 11px; color: #999">4.2</span>
+                  </div>
+                  <div
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 18px;
+                      font-weight: 700;
+                      color: #4f6f52;
+                    "
+                  >
+                    &#8377;2,450
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Images Row -->
+              <div style="display: flex; gap: 8px; padding: 0 16px 16px">
+                <div
+                  style="
+                    flex: 1;
+                    aspect-ratio: 1;
+                    background: linear-gradient(
+                      135deg,
+                      #e8ddd4 0%,
+                      #d4c4b0 100%
+                    );
+                    border-radius: 8px;
+                    border: 2px solid #4f6f52;
+                  "
+                ></div>
+                <div
+                  style="
+                    flex: 1;
+                    aspect-ratio: 1;
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                    border-radius: 8px;
+                  "
+                ></div>
+                <div
+                  style="
+                    flex: 1;
+                    aspect-ratio: 1;
+                    background: linear-gradient(
+                      135deg,
+                      #e8e0d4 0%,
+                      #c4a882 100%
+                    );
+                    border-radius: 8px;
+                  "
+                ></div>
+                <div
+                  style="
+                    flex: 1;
+                    aspect-ratio: 1;
+                    background: linear-gradient(
+                      135deg,
+                      #dde4e8 0%,
+                      #b0c4d4 100%
+                    );
+                    border-radius: 8px;
+                  "
+                ></div>
+              </div>
+
+              <!-- Product Details -->
+              <div class="product-info" style="padding-top: 8px">
+                <p class="product-description" style="font-size: 13px">
+                  Handcrafted ceramic vase with a unique glaze finish. Perfect
+                  for fresh flowers or as a standalone art piece. Each piece is
+                  uniquely made.
+                </p>
+
+                <div class="product-options" style="margin-bottom: 16px">
+                  <div class="option-label">Color</div>
+                  <div class="color-options">
+                    <div
+                      class="color-swatch selected"
+                      style="background: #d4c4b0"
+                    ></div>
+                    <div class="color-swatch" style="background: #b8d4b8"></div>
+                    <div class="color-swatch" style="background: #b0c4d4"></div>
+                  </div>
+                </div>
+
+                <div class="quantity-section">
+                  <div class="quantity-selector">
+                    <div class="qty-btn">-</div>
+                    <span class="qty-value">1</span>
+                    <div class="qty-btn">+</div>
+                  </div>
+                  <div class="stock-status">
+                    <div class="stock-dot"></div>
+                    In Stock
+                  </div>
+                </div>
+
+                <div class="cta-section">
+                  <button class="btn-add-cart">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path
+                        d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                      />
+                      <line x1="3" y1="6" x2="21" y2="6" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    Add to Cart
+                  </button>
+                  <button class="btn-wishlist">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="trust-badges">
+                  <div class="trust-badge">
+                    <div class="icon">&#128274;</div>
+                    <span>Secure</span>
+                  </div>
+                  <div class="trust-badge">
+                    <div class="icon">&#128666;</div>
+                    <span>Free Ship</span>
+                  </div>
+                  <div class="trust-badge">
+                    <div class="icon">&#9996;</div>
+                    <span>Handmade</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Tablet <span class="size">768 x 1024</span>
+            </div>
+            <div class="device-frame tablet" style="width: 768px">
+              <div style="padding: 24px">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> <span>/</span> <a href="#">Shop</a>
+                  <span>/</span> <a href="#">Vases</a> <span>/</span>
+                  Artisan Ceramic Vase
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <!-- Images Grid -->
+                  <div>
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 8px;
+                      "
+                    >
+                      <div
+                        style="
+                          grid-column: span 2;
+                          aspect-ratio: 4/3;
+                          background: linear-gradient(
+                            135deg,
+                            #e8ddd4 0%,
+                            #d4c4b0 100%
+                          );
+                          border-radius: 12px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
+                      >
+                        <div
+                          style="
+                            width: 35%;
+                            height: 55%;
+                            background: rgba(139, 115, 85, 0.2);
+                            border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+                          "
+                        ></div>
+                      </div>
+                      <div
+                        style="
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #e8e0d4 0%,
+                            #c4a882 100%
+                          );
+                          border-radius: 8px;
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="product-info tablet" style="padding: 0">
+                    <div class="product-badge">Handcrafted</div>
+                    <h2 class="product-title">Artisan Ceramic Vase</h2>
+                    <div class="product-rating">
+                      <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star empty"></div>
+                      </div>
+                      <span class="rating-text">4.2 (24 reviews)</span>
+                    </div>
+                    <div class="product-price">
+                      &#8377;2,450 <span class="original">&#8377;2,950</span>
+                    </div>
+
+                    <p class="product-description" style="font-size: 13px">
+                      Handcrafted ceramic vase with a unique glaze finish.
+                      Perfect for fresh flowers or as a standalone art piece.
+                    </p>
+
+                    <div class="product-options">
+                      <div class="option-label">Color</div>
+                      <div class="color-options">
+                        <div
+                          class="color-swatch selected"
+                          style="background: #d4c4b0"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b8d4b8"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b0c4d4"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="quantity-section">
+                      <div class="quantity-selector">
+                        <div class="qty-btn">-</div>
+                        <span class="qty-value">1</span>
+                        <div class="qty-btn">+</div>
+                      </div>
+                      <div class="stock-status">
+                        <div class="stock-dot"></div>
+                        In Stock
+                      </div>
+                    </div>
+
+                    <div class="cta-section">
+                      <button class="btn-add-cart" style="flex: 1">
+                        Add to Cart
+                      </button>
+                      <button class="btn-wishlist">
+                        <svg class="icon-svg" viewBox="0 0 24 24">
+                          <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div class="trust-badges">
+                      <div class="trust-badge">
+                        <div class="icon">&#128274;</div>
+                        <span>Secure</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#128666;</div>
+                        <span>Free Ship</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#9996;</div>
+                        <span>Handmade</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Desktop <span class="size">1440 x 900</span>
+            </div>
+            <div
+              class="device-frame desktop"
+              style="width: 100%; min-width: 900px"
+            >
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">
+                  poetryandpottery.com/shop/artisan-ceramic-vase
+                </div>
+              </div>
+              <div style="padding: 32px 48px">
+                <div class="breadcrumbs" style="margin-bottom: 20px">
+                  <a href="#">Home</a> <span>/</span> <a href="#">Shop</a>
+                  <span>/</span> <a href="#">Vases</a> <span>/</span>
+                  Artisan Ceramic Vase
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 40px;
+                  "
+                >
+                  <!-- Images Grid -->
+                  <div>
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 12px;
+                      "
+                    >
+                      <div
+                        style="
+                          grid-column: span 2;
+                          aspect-ratio: 16/10;
+                          background: linear-gradient(
+                            135deg,
+                            #e8ddd4 0%,
+                            #d4c4b0 100%
+                          );
+                          border-radius: 16px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
+                      >
+                        <div
+                          style="
+                            width: 25%;
+                            height: 55%;
+                            background: rgba(139, 115, 85, 0.2);
+                            border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+                          "
+                        ></div>
+                      </div>
+                      <div
+                        style="
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                          border-radius: 12px;
+                        "
+                      ></div>
+                      <div
+                        style="
+                          aspect-ratio: 1;
+                          background: linear-gradient(
+                            135deg,
+                            #e8e0d4 0%,
+                            #c4a882 100%
+                          );
+                          border-radius: 12px;
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="product-info desktop" style="padding: 0">
+                    <div class="product-badge">Handcrafted</div>
+                    <h2 class="product-title large">Artisan Ceramic Vase</h2>
+                    <div class="product-rating">
+                      <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star empty"></div>
+                      </div>
+                      <span class="rating-text">4.2 (24 reviews)</span>
+                    </div>
+                    <div class="product-price" style="font-size: 28px">
+                      &#8377;2,450 <span class="original">&#8377;2,950</span>
+                    </div>
+
+                    <p class="product-description" style="font-size: 14px">
+                      Handcrafted ceramic vase with a unique glaze finish.
+                      Perfect for fresh flowers or as a standalone art piece.
+                      Each piece is uniquely made by our artisans in our Jaipur
+                      studio.
+                    </p>
+
+                    <div class="product-options">
+                      <div class="option-label">Color</div>
+                      <div class="color-options">
+                        <div
+                          class="color-swatch selected"
+                          style="background: #d4c4b0; width: 36px; height: 36px"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b8d4b8; width: 36px; height: 36px"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #b0c4d4; width: 36px; height: 36px"
+                        ></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #c4a882; width: 36px; height: 36px"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="quantity-section">
+                      <div class="quantity-selector">
+                        <div class="qty-btn">-</div>
+                        <span class="qty-value">1</span>
+                        <div class="qty-btn">+</div>
+                      </div>
+                      <div class="stock-status">
+                        <div class="stock-dot"></div>
+                        In Stock (12 left)
+                      </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px">
+                      <button
+                        class="btn-add-cart"
+                        style="flex: 1; height: 50px"
+                      >
+                        Add to Cart
+                      </button>
+                      <button class="btn-buy-now" style="flex: 1">
+                        Buy Now
+                      </button>
+                    </div>
+
+                    <div class="trust-badges">
+                      <div class="trust-badge">
+                        <div class="icon">&#128274;</div>
+                        <span>Secure Payments</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#128666;</div>
+                        <span>Free Shipping</span>
+                      </div>
+                      <div class="trust-badge">
+                        <div class="icon">&#9996;</div>
+                        <span>Handmade</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred layout option for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Clean &
+            Minimal</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Immersive
+            Gallery</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Compact
+            Info Dense</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Clean &
+            Minimal</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Immersive
+            Gallery</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Compact
+            Info Dense</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - 55/45
+            Split + Vertical Thumbs</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - 60/40
+            Split + Horizontal Thumbs</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - 50/50
+            Grid Gallery</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 5.1):</strong><br /><br />
+      &bull; <strong>Mobile Layout:</strong> Full-width image carousel, stacked
+      content, full-width CTA<br />
+      &bull; <strong>Desktop Layout:</strong> 55/45 or 60/40 split (image
+      larger), vertical or horizontal thumbnails<br />
+      &bull; <strong>Page Header:</strong> MobileHeaderContainer on mobile,
+      breadcrumbs on tablet/desktop<br />
+      &bull; <strong>Typography:</strong> Title in font-display (Plus Jakarta
+      Sans), body in font-sans (Outfit)<br />
+      &bull; <strong>CTA:</strong> rounded-lg buttons, Add to Cart (primary),
+      Wishlist (icon button)<br />
+      &bull; <strong>Trust Badges:</strong> Secure Pay, Free Shipping, Handmade
+      icons<br />
+      &bull;
+      <strong>File:</strong>
+      src/features/product-detail/components/product-detail.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

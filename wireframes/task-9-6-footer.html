@@ -1,0 +1,1902 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 9.6 - Footer | Poetry & Pottery Wireframes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* ===== Footer Base Styles ===== */
+      .footer {
+        padding: 48px 24px 24px;
+      }
+
+      /* --- Option A: Cream Background --- */
+      .footer-cream {
+        background: #f5f0e8;
+        color: #1a1a1a;
+      }
+
+      /* --- Option B: Primary Light Green --- */
+      .footer-green-light {
+        background: #e8ece8;
+        color: #1a1a1a;
+      }
+
+      /* --- Option C: Primary Green --- */
+      .footer-primary {
+        background: #4f6f52;
+        color: white;
+      }
+
+      /* Grid Layouts */
+      .footer-grid {
+        display: grid;
+        gap: 32px;
+      }
+
+      .footer-grid-4 {
+        grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      }
+
+      .footer-grid-3 {
+        grid-template-columns: 1.5fr 2fr 1.5fr;
+      }
+
+      /* Logo */
+      .footer-logo {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .footer-logo svg {
+        width: 28px;
+        height: 28px;
+        fill: currentColor;
+      }
+
+      /* Description */
+      .footer-desc {
+        font-size: 13px;
+        line-height: 1.7;
+        opacity: 0.65;
+        margin-bottom: 16px;
+      }
+
+      /* Social Icons */
+      .footer-social {
+        display: flex;
+        gap: 12px;
+      }
+
+      .footer-social-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      /* Cream social icons */
+      .footer-cream .footer-social-icon {
+        background: rgba(79, 111, 82, 0.1);
+        color: #4f6f52;
+      }
+
+      /* Green light social icons */
+      .footer-green-light .footer-social-icon {
+        background: rgba(79, 111, 82, 0.12);
+        color: #4f6f52;
+      }
+
+      /* Primary green social icons */
+      .footer-primary .footer-social-icon {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+      }
+
+      .footer-social-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: currentColor;
+        opacity: 0.8;
+      }
+
+      /* Section Headings */
+      .footer-heading {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+      }
+
+      .footer-cream .footer-heading {
+        color: #4f6f52;
+      }
+
+      .footer-green-light .footer-heading {
+        color: #3d5640;
+      }
+
+      .footer-primary .footer-heading {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* Links */
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 10px;
+      }
+
+      .footer-links a {
+        font-size: 14px;
+        color: inherit;
+        opacity: 0.65;
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+
+      .footer-links a:hover {
+        opacity: 1;
+      }
+
+      /* Newsletter */
+      .footer-newsletter {
+        margin-top: 8px;
+      }
+
+      .footer-newsletter-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .footer-newsletter-desc {
+        font-size: 12px;
+        opacity: 0.55;
+        margin-bottom: 12px;
+        line-height: 1.5;
+      }
+
+      .footer-newsletter-form {
+        display: flex;
+        gap: 8px;
+      }
+
+      /* Cream newsletter input */
+      .footer-cream .footer-newsletter-input {
+        flex: 1;
+        background: white;
+        border: 1px solid #e5e0d8;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        color: #1a1a1a;
+      }
+
+      /* Green-light newsletter input */
+      .footer-green-light .footer-newsletter-input {
+        flex: 1;
+        background: white;
+        border: 1px solid #d4ddd4;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        color: #1a1a1a;
+      }
+
+      /* Primary newsletter input */
+      .footer-primary .footer-newsletter-input {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        color: white;
+      }
+
+      .footer-newsletter-btn {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .footer-cream .footer-newsletter-btn {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .footer-green-light .footer-newsletter-btn {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .footer-primary .footer-newsletter-btn {
+        background: white;
+        color: #4f6f52;
+      }
+
+      /* Bottom Bar */
+      .footer-bottom {
+        margin-top: 32px;
+        padding-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .footer-cream .footer-bottom {
+        border-top: 1px solid rgba(139, 115, 85, 0.15);
+      }
+
+      .footer-green-light .footer-bottom {
+        border-top: 1px solid rgba(79, 111, 82, 0.15);
+      }
+
+      .footer-primary .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .footer-copyright {
+        font-size: 12px;
+        opacity: 0.5;
+      }
+
+      .footer-legal {
+        display: flex;
+        gap: 20px;
+      }
+
+      .footer-legal a {
+        font-size: 12px;
+        color: inherit;
+        opacity: 0.5;
+        text-decoration: none;
+      }
+
+      /* Payment Icons */
+      .footer-payments {
+        display: flex;
+        gap: 8px;
+      }
+
+      .payment-icon {
+        width: 36px;
+        height: 24px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        font-weight: 600;
+        opacity: 0.6;
+      }
+
+      .footer-cream .payment-icon {
+        background: rgba(139, 115, 85, 0.1);
+        color: #1a1a1a;
+      }
+
+      .footer-green-light .payment-icon {
+        background: rgba(79, 111, 82, 0.1);
+        color: #1a1a1a;
+      }
+
+      .footer-primary .payment-icon {
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+      }
+
+      /* Mobile Footer */
+      .footer-mobile {
+        padding: 32px 16px 16px;
+      }
+
+      .footer-mobile .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      /* Accordion */
+      .footer-accordion {
+        padding-bottom: 16px;
+      }
+
+      .footer-cream .footer-accordion {
+        border-bottom: 1px solid rgba(139, 115, 85, 0.12);
+      }
+
+      .footer-green-light .footer-accordion {
+        border-bottom: 1px solid rgba(79, 111, 82, 0.12);
+      }
+
+      .footer-primary .footer-accordion {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .footer-accordion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .footer-accordion-header .footer-heading {
+        margin-bottom: 0;
+      }
+
+      .footer-accordion-icon {
+        width: 20px;
+        height: 20px;
+        opacity: 0.5;
+      }
+
+      .footer-accordion-content {
+        padding-top: 12px;
+      }
+
+      .footer-accordion.collapsed .footer-accordion-content {
+        display: none;
+      }
+
+      /* Centered footer variant */
+      .footer-centered {
+        text-align: center;
+      }
+
+      .footer-centered .footer-logo {
+        justify-content: center;
+      }
+
+      .footer-centered .footer-social {
+        justify-content: center;
+      }
+
+      .footer-centered .footer-links-inline {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+        list-style: none;
+      }
+
+      .footer-centered .footer-links-inline li {
+        margin: 0;
+      }
+
+      .footer-centered .footer-newsletter-form {
+        justify-content: center;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      /* Mobile stacked footer */
+      .footer-mobile-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .footer-mobile-bottom .footer-legal {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .footer-mobile-bottom .footer-payments {
+        justify-content: center;
+      }
+
+      /* ===== Approval Section ===== */
+      .approval-section {
+        max-width: 800px;
+        margin: 64px auto;
+        background: #f8f7f6;
+        border-radius: 16px;
+        padding: 32px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+      }
+
+      .approval-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .approval-option {
+        background: white;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .approval-option:hover {
+        border-color: #4f6f52;
+      }
+
+      .approval-option.selected {
+        border-color: #4f6f52;
+        background: #e8ece8;
+      }
+
+      .approval-option-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .approval-option-color {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        margin: 8px auto 6px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .approval-notes {
+        margin-top: 16px;
+      }
+
+      .approval-notes textarea {
+        width: 100%;
+        min-height: 80px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 13px;
+        resize: vertical;
+      }
+
+      .approval-submit {
+        margin-top: 16px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* Implementation Notes */
+      .impl-notes {
+        max-width: 900px;
+        margin: 48px auto;
+        background: #e8ece8;
+        border-radius: 16px;
+        padding: 24px 28px;
+      }
+
+      .impl-notes h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #4f6f52;
+        margin-bottom: 16px;
+      }
+
+      .impl-notes ul {
+        list-style: none;
+        font-size: 13px;
+        line-height: 2;
+        color: #333;
+      }
+
+      .impl-notes li::before {
+        content: "→ ";
+        color: #4f6f52;
+        font-weight: 600;
+      }
+
+      .impl-notes code {
+        background: rgba(79, 111, 82, 0.15);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SVG Icons -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol id="icon-leaf" viewBox="0 0 24 24">
+        <path
+          d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3C8.34 15.75 11.1 12 17 10.85V8z"
+        />
+        <path
+          d="M12.45 2.29l-.03.02c-.94.82-1.8 1.7-2.56 2.63l-.07.08c-2.58 3.15-4.06 6.96-4.06 11.15 0 1.29.14 2.55.41 3.76L7.71 22l1-2.3c.35-4.45 2.97-8.3 6.61-10.31.71-.4 1.45-.75 2.21-1.04l.23-.08c.96-.33 1.97-.56 3.01-.67l.38-.04V6.74l-.38.04c-3.42.35-6.6 1.74-9.08 3.84l-.11.1c-.27.21-.52.43-.77.66l-.11.11.78-.43c.98-.54 2.02-.99 3.1-1.35l.4-.13c1.1-.34 2.24-.58 3.42-.71l.38-.04V8c-3.82.22-7.31 1.93-9.83 4.58l-.13.15A13.81 13.81 0 005 22.62L5.71 22"
+        />
+      </symbol>
+      <symbol id="icon-instagram" viewBox="0 0 24 24">
+        <path
+          d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+        />
+      </symbol>
+      <symbol id="icon-facebook" viewBox="0 0 24 24">
+        <path
+          d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+        />
+      </symbol>
+      <symbol id="icon-twitter" viewBox="0 0 24 24">
+        <path
+          d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+        />
+      </symbol>
+      <symbol id="icon-pinterest" viewBox="0 0 24 24">
+        <path
+          d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"
+        />
+      </symbol>
+      <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+      </symbol>
+    </svg>
+
+    <!-- Header -->
+    <span class="wf-task-label">Task 9.6</span>
+    <h1>Footer Design (Redesigned)</h1>
+    <p class="subtitle">
+      Site-wide footer redesigned to match the forest theme palette. Previous
+      dark backgrounds (#1a1a1a, #2d3b2d) replaced with theme-appropriate
+      colors. Three responsive options across desktop, tablet, and mobile.
+    </p>
+
+    <!-- Before/After Context -->
+    <div class="section">
+      <div class="section-title">Design Context</div>
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>Before (Issues)</h3>
+          <ul>
+            <li>Dark backgrounds (#1a1a1a, #2d3b2d) don't match theme</li>
+            <li>Too heavy contrast against warm page backgrounds</li>
+            <li>Colors feel disconnected from forest/pottery palette</li>
+            <li>Harsh visual break between content and footer</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>After (Goals)</h3>
+          <ul>
+            <li>
+              Use only approved theme colors (cream, primary-light, primary)
+            </li>
+            <li>Smooth visual transition from page content to footer</li>
+            <li>Warm, cohesive feel matching pottery/nature brand</li>
+            <li>Responsive layouts for desktop, tablet, and mobile</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== OPTION A: Warm Cream ========== -->
+    <div class="wf-section">
+      <div class="wf-option-header">
+        Option A: Warm Cream Footer
+        <span class="recommended-badge">RECOMMENDED</span>
+      </div>
+      <div class="wf-option-desc">
+        Uses <code>#F5F0E8</code> (cream) background &mdash; the warmest theme
+        neutral. Creates a gentle, inviting base that feels like natural
+        parchment. Green headings and primary CTA buttons add brand color
+        without visual heaviness. Best match for the pottery/artisan aesthetic.
+      </div>
+
+      <!-- Desktop -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Desktop (1440px)</div>
+        <div class="wf-desktop-frame">
+          <div class="wf-browser-bar">
+            <div class="wf-browser-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="wf-url-bar">poetryandpottery.in</div>
+          </div>
+          <div class="footer footer-cream">
+            <div class="footer-grid footer-grid-4">
+              <!-- Brand Column -->
+              <div>
+                <div class="footer-logo">
+                  <svg><use href="#icon-leaf" /></svg>
+                  Poetry & Pottery
+                </div>
+                <p class="footer-desc">
+                  Handcrafted pottery for mindful living. Each piece is made
+                  with care in our studio, bringing artisan quality to your
+                  everyday moments.
+                </p>
+                <div class="footer-social">
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-instagram" /></svg>
+                  </div>
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-facebook" /></svg>
+                  </div>
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-pinterest" /></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shop Column -->
+              <div>
+                <div class="footer-heading">Shop</div>
+                <ul class="footer-links">
+                  <li><a href="#">All Products</a></li>
+                  <li><a href="#">Bowls & Plates</a></li>
+                  <li><a href="#">Mugs & Cups</a></li>
+                  <li><a href="#">Vases & Decor</a></li>
+                  <li><a href="#">Gift Sets</a></li>
+                </ul>
+              </div>
+
+              <!-- Support Column -->
+              <div>
+                <div class="footer-heading">Support</div>
+                <ul class="footer-links">
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">FAQs</a></li>
+                  <li><a href="#">Shipping Info</a></li>
+                  <li><a href="#">Returns</a></li>
+                  <li><a href="#">Care Guide</a></li>
+                </ul>
+              </div>
+
+              <!-- Newsletter Column -->
+              <div>
+                <div class="footer-heading">Stay Updated</div>
+                <div class="footer-newsletter">
+                  <p class="footer-newsletter-desc">
+                    Get updates on new collections, workshops, and exclusive
+                    offers.
+                  </p>
+                  <div class="footer-newsletter-form">
+                    <input
+                      type="email"
+                      class="footer-newsletter-input"
+                      placeholder="Your email"
+                    />
+                    <button class="footer-newsletter-btn">Subscribe</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="footer-bottom">
+              <div class="footer-copyright">
+                &copy; 2025 Poetry & Pottery. All rights reserved.
+              </div>
+              <div class="footer-payments">
+                <div class="payment-icon">VISA</div>
+                <div class="payment-icon">MC</div>
+                <div class="payment-icon">UPI</div>
+                <div class="payment-icon">COD</div>
+              </div>
+              <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Refund Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tablet -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Tablet (768px)</div>
+        <div class="wf-tablet-frame">
+          <div class="footer footer-cream" style="padding: 40px 24px 20px">
+            <div
+              class="footer-grid"
+              style="grid-template-columns: 1fr 1fr; gap: 32px"
+            >
+              <!-- Brand Column -->
+              <div>
+                <div class="footer-logo" style="font-size: 16px">
+                  <svg style="width: 24px; height: 24px">
+                    <use href="#icon-leaf" />
+                  </svg>
+                  Poetry & Pottery
+                </div>
+                <p class="footer-desc" style="font-size: 12px">
+                  Handcrafted pottery for mindful living. Each piece is made
+                  with care.
+                </p>
+                <div class="footer-social">
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-instagram" />
+                    </svg>
+                  </div>
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-facebook" />
+                    </svg>
+                  </div>
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-pinterest" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Newsletter -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">
+                  Stay Updated
+                </div>
+                <p class="footer-newsletter-desc" style="font-size: 11px">
+                  Get updates on new collections and workshops.
+                </p>
+                <div class="footer-newsletter-form">
+                  <input
+                    type="email"
+                    class="footer-newsletter-input"
+                    placeholder="Your email"
+                    style="font-size: 12px; padding: 8px 12px"
+                  />
+                  <button
+                    class="footer-newsletter-btn"
+                    style="font-size: 12px; padding: 8px 14px"
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+
+              <!-- Shop Links -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">Shop</div>
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">All Products</a></li>
+                  <li><a href="#">Bowls & Plates</a></li>
+                  <li><a href="#">Mugs & Cups</a></li>
+                  <li><a href="#">Vases & Decor</a></li>
+                </ul>
+              </div>
+
+              <!-- Support Links -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">
+                  Support
+                </div>
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">FAQs</a></li>
+                  <li><a href="#">Shipping Info</a></li>
+                  <li><a href="#">Returns</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+              class="footer-bottom"
+              style="margin-top: 24px; padding-top: 20px"
+            >
+              <div class="footer-copyright" style="font-size: 11px">
+                &copy; 2025 Poetry & Pottery
+              </div>
+              <div class="footer-payments">
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  VISA
+                </div>
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  MC
+                </div>
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  UPI
+                </div>
+              </div>
+              <div class="footer-legal" style="gap: 16px">
+                <a href="#" style="font-size: 11px">Privacy</a>
+                <a href="#" style="font-size: 11px">Terms</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Mobile (375px)</div>
+        <div class="wf-mobile-frame">
+          <div class="footer footer-cream footer-mobile">
+            <!-- Brand Section -->
+            <div style="text-align: center; margin-bottom: 24px">
+              <div
+                class="footer-logo"
+                style="font-size: 16px; justify-content: center"
+              >
+                <svg style="width: 22px; height: 22px">
+                  <use href="#icon-leaf" />
+                </svg>
+                Poetry & Pottery
+              </div>
+              <p
+                class="footer-desc"
+                style="font-size: 12px; margin-bottom: 14px"
+              >
+                Handcrafted pottery for mindful living.
+              </p>
+              <div class="footer-social" style="justify-content: center">
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-instagram" />
+                  </svg>
+                </div>
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-facebook" />
+                  </svg>
+                </div>
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-pinterest" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordion Links -->
+            <div class="footer-accordion">
+              <div class="footer-accordion-header">
+                <div
+                  class="footer-heading"
+                  style="margin-bottom: 0; font-size: 12px"
+                >
+                  Shop
+                </div>
+                <svg class="footer-accordion-icon" fill="#4F6F52">
+                  <use href="#icon-chevron-down" />
+                </svg>
+              </div>
+              <div class="footer-accordion-content">
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">All Products</a></li>
+                  <li><a href="#">Bowls & Plates</a></li>
+                  <li><a href="#">Mugs & Cups</a></li>
+                  <li><a href="#">Vases & Decor</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="footer-accordion" style="margin-top: 16px">
+              <div class="footer-accordion-header">
+                <div
+                  class="footer-heading"
+                  style="margin-bottom: 0; font-size: 12px"
+                >
+                  Support
+                </div>
+                <svg class="footer-accordion-icon" fill="#4F6F52">
+                  <use href="#icon-chevron-down" />
+                </svg>
+              </div>
+              <div class="footer-accordion-content">
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">FAQs</a></li>
+                  <li><a href="#">Shipping Info</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div style="margin-top: 24px">
+              <div
+                class="footer-heading"
+                style="font-size: 12px; text-align: center"
+              >
+                Stay Updated
+              </div>
+              <div
+                class="footer-newsletter-form"
+                style="flex-direction: column"
+              >
+                <input
+                  type="email"
+                  class="footer-newsletter-input"
+                  placeholder="Your email"
+                  style="font-size: 13px"
+                />
+                <button
+                  class="footer-newsletter-btn"
+                  style="width: 100%; font-size: 13px"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+              class="footer-bottom footer-mobile-bottom"
+              style="margin-top: 24px"
+            >
+              <div class="footer-payments">
+                <div class="payment-icon" style="font-size: 8px">VISA</div>
+                <div class="payment-icon" style="font-size: 8px">MC</div>
+                <div class="payment-icon" style="font-size: 8px">UPI</div>
+                <div class="payment-icon" style="font-size: 8px">COD</div>
+              </div>
+              <div class="footer-legal">
+                <a href="#" style="font-size: 11px">Privacy</a>
+                <a href="#" style="font-size: 11px">Terms</a>
+                <a href="#" style="font-size: 11px">Refunds</a>
+              </div>
+              <div class="footer-copyright" style="font-size: 11px">
+                &copy; 2025 Poetry & Pottery
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== OPTION B: Soft Green ========== -->
+    <div class="wf-section">
+      <div class="wf-option-header">Option B: Soft Green Footer</div>
+      <div class="wf-option-desc">
+        Uses <code>#E8ECE8</code> (primary-light) background &mdash; a subtle
+        sage green tint. Reinforces the forest brand identity with a cool,
+        natural tone. Headings use darker green for contrast. Feels fresh and
+        contemporary.
+      </div>
+
+      <!-- Desktop -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Desktop (1440px)</div>
+        <div class="wf-desktop-frame">
+          <div class="wf-browser-bar">
+            <div class="wf-browser-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="wf-url-bar">poetryandpottery.in</div>
+          </div>
+          <div class="footer footer-green-light">
+            <div class="footer-grid footer-grid-4">
+              <!-- Brand Column -->
+              <div>
+                <div class="footer-logo">
+                  <svg><use href="#icon-leaf" /></svg>
+                  Poetry & Pottery
+                </div>
+                <p class="footer-desc">
+                  Handcrafted pottery for mindful living. Each piece is made
+                  with care in our studio, bringing artisan quality to your
+                  everyday moments.
+                </p>
+                <div class="footer-social">
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-instagram" /></svg>
+                  </div>
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-facebook" /></svg>
+                  </div>
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-pinterest" /></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shop Column -->
+              <div>
+                <div class="footer-heading">Shop</div>
+                <ul class="footer-links">
+                  <li><a href="#">All Products</a></li>
+                  <li><a href="#">Bowls & Plates</a></li>
+                  <li><a href="#">Mugs & Cups</a></li>
+                  <li><a href="#">Vases & Decor</a></li>
+                  <li><a href="#">Gift Sets</a></li>
+                </ul>
+              </div>
+
+              <!-- Support Column -->
+              <div>
+                <div class="footer-heading">Support</div>
+                <ul class="footer-links">
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">FAQs</a></li>
+                  <li><a href="#">Shipping Info</a></li>
+                  <li><a href="#">Returns</a></li>
+                  <li><a href="#">Care Guide</a></li>
+                </ul>
+              </div>
+
+              <!-- Newsletter Column -->
+              <div>
+                <div class="footer-heading">Stay Updated</div>
+                <div class="footer-newsletter">
+                  <p class="footer-newsletter-desc">
+                    Get updates on new collections, workshops, and exclusive
+                    offers.
+                  </p>
+                  <div class="footer-newsletter-form">
+                    <input
+                      type="email"
+                      class="footer-newsletter-input"
+                      placeholder="Your email"
+                    />
+                    <button class="footer-newsletter-btn">Subscribe</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="footer-bottom">
+              <div class="footer-copyright">
+                &copy; 2025 Poetry & Pottery. All rights reserved.
+              </div>
+              <div class="footer-payments">
+                <div class="payment-icon">VISA</div>
+                <div class="payment-icon">MC</div>
+                <div class="payment-icon">UPI</div>
+                <div class="payment-icon">COD</div>
+              </div>
+              <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Refund Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tablet -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Tablet (768px)</div>
+        <div class="wf-tablet-frame">
+          <div
+            class="footer footer-green-light"
+            style="padding: 40px 24px 20px"
+          >
+            <div
+              class="footer-grid"
+              style="grid-template-columns: 1fr 1fr; gap: 32px"
+            >
+              <!-- Brand Column -->
+              <div>
+                <div class="footer-logo" style="font-size: 16px">
+                  <svg style="width: 24px; height: 24px">
+                    <use href="#icon-leaf" />
+                  </svg>
+                  Poetry & Pottery
+                </div>
+                <p class="footer-desc" style="font-size: 12px">
+                  Handcrafted pottery for mindful living. Each piece is made
+                  with care.
+                </p>
+                <div class="footer-social">
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-instagram" />
+                    </svg>
+                  </div>
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-facebook" />
+                    </svg>
+                  </div>
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-pinterest" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Newsletter -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">
+                  Stay Updated
+                </div>
+                <p class="footer-newsletter-desc" style="font-size: 11px">
+                  Get updates on new collections and workshops.
+                </p>
+                <div class="footer-newsletter-form">
+                  <input
+                    type="email"
+                    class="footer-newsletter-input"
+                    placeholder="Your email"
+                    style="font-size: 12px; padding: 8px 12px"
+                  />
+                  <button
+                    class="footer-newsletter-btn"
+                    style="font-size: 12px; padding: 8px 14px"
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+
+              <!-- Shop Links -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">Shop</div>
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">All Products</a></li>
+                  <li><a href="#">Bowls & Plates</a></li>
+                  <li><a href="#">Mugs & Cups</a></li>
+                  <li><a href="#">Vases & Decor</a></li>
+                </ul>
+              </div>
+
+              <!-- Support Links -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">
+                  Support
+                </div>
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">FAQs</a></li>
+                  <li><a href="#">Shipping Info</a></li>
+                  <li><a href="#">Returns</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+              class="footer-bottom"
+              style="margin-top: 24px; padding-top: 20px"
+            >
+              <div class="footer-copyright" style="font-size: 11px">
+                &copy; 2025 Poetry & Pottery
+              </div>
+              <div class="footer-payments">
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  VISA
+                </div>
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  MC
+                </div>
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  UPI
+                </div>
+              </div>
+              <div class="footer-legal" style="gap: 16px">
+                <a href="#" style="font-size: 11px">Privacy</a>
+                <a href="#" style="font-size: 11px">Terms</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Mobile (375px)</div>
+        <div class="wf-mobile-frame">
+          <div class="footer footer-green-light footer-mobile">
+            <!-- Brand Section -->
+            <div style="text-align: center; margin-bottom: 24px">
+              <div
+                class="footer-logo"
+                style="font-size: 16px; justify-content: center"
+              >
+                <svg style="width: 22px; height: 22px">
+                  <use href="#icon-leaf" />
+                </svg>
+                Poetry & Pottery
+              </div>
+              <p
+                class="footer-desc"
+                style="font-size: 12px; margin-bottom: 14px"
+              >
+                Handcrafted pottery for mindful living.
+              </p>
+              <div class="footer-social" style="justify-content: center">
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-instagram" />
+                  </svg>
+                </div>
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-facebook" />
+                  </svg>
+                </div>
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-pinterest" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordion Links -->
+            <div class="footer-accordion">
+              <div class="footer-accordion-header">
+                <div
+                  class="footer-heading"
+                  style="margin-bottom: 0; font-size: 12px"
+                >
+                  Shop
+                </div>
+                <svg class="footer-accordion-icon" fill="#3D5640">
+                  <use href="#icon-chevron-down" />
+                </svg>
+              </div>
+              <div class="footer-accordion-content">
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">All Products</a></li>
+                  <li><a href="#">Bowls & Plates</a></li>
+                  <li><a href="#">Mugs & Cups</a></li>
+                  <li><a href="#">Vases & Decor</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="footer-accordion" style="margin-top: 16px">
+              <div class="footer-accordion-header">
+                <div
+                  class="footer-heading"
+                  style="margin-bottom: 0; font-size: 12px"
+                >
+                  Support
+                </div>
+                <svg class="footer-accordion-icon" fill="#3D5640">
+                  <use href="#icon-chevron-down" />
+                </svg>
+              </div>
+              <div class="footer-accordion-content">
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">FAQs</a></li>
+                  <li><a href="#">Shipping Info</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div style="margin-top: 24px">
+              <div
+                class="footer-heading"
+                style="font-size: 12px; text-align: center"
+              >
+                Stay Updated
+              </div>
+              <div
+                class="footer-newsletter-form"
+                style="flex-direction: column"
+              >
+                <input
+                  type="email"
+                  class="footer-newsletter-input"
+                  placeholder="Your email"
+                  style="font-size: 13px"
+                />
+                <button
+                  class="footer-newsletter-btn"
+                  style="width: 100%; font-size: 13px"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+              class="footer-bottom footer-mobile-bottom"
+              style="margin-top: 24px"
+            >
+              <div class="footer-payments">
+                <div class="payment-icon" style="font-size: 8px">VISA</div>
+                <div class="payment-icon" style="font-size: 8px">MC</div>
+                <div class="payment-icon" style="font-size: 8px">UPI</div>
+                <div class="payment-icon" style="font-size: 8px">COD</div>
+              </div>
+              <div class="footer-legal">
+                <a href="#" style="font-size: 11px">Privacy</a>
+                <a href="#" style="font-size: 11px">Terms</a>
+                <a href="#" style="font-size: 11px">Refunds</a>
+              </div>
+              <div class="footer-copyright" style="font-size: 11px">
+                &copy; 2025 Poetry & Pottery
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== OPTION C: Primary Green ========== -->
+    <div class="wf-section">
+      <div class="wf-option-header">Option C: Primary Green Footer</div>
+      <div class="wf-option-desc">
+        Uses <code>#4F6F52</code> (primary green) background with white text.
+        Bolder brand statement that anchors the page with the signature forest
+        green. White social icons and inputs create strong contrast. Good for a
+        more distinctive, branded footer.
+      </div>
+
+      <!-- Desktop -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Desktop (1440px)</div>
+        <div class="wf-desktop-frame">
+          <div class="wf-browser-bar">
+            <div class="wf-browser-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="wf-url-bar">poetryandpottery.in</div>
+          </div>
+          <div class="footer footer-primary">
+            <div class="footer-grid footer-grid-4">
+              <!-- Brand Column -->
+              <div>
+                <div class="footer-logo">
+                  <svg><use href="#icon-leaf" /></svg>
+                  Poetry & Pottery
+                </div>
+                <p class="footer-desc">
+                  Handcrafted pottery for mindful living. Each piece is made
+                  with care in our studio, bringing artisan quality to your
+                  everyday moments.
+                </p>
+                <div class="footer-social">
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-instagram" /></svg>
+                  </div>
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-facebook" /></svg>
+                  </div>
+                  <div class="footer-social-icon">
+                    <svg><use href="#icon-pinterest" /></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shop Column -->
+              <div>
+                <div class="footer-heading">Shop</div>
+                <ul class="footer-links">
+                  <li><a href="#" style="color: white">All Products</a></li>
+                  <li><a href="#" style="color: white">Bowls & Plates</a></li>
+                  <li><a href="#" style="color: white">Mugs & Cups</a></li>
+                  <li><a href="#" style="color: white">Vases & Decor</a></li>
+                  <li><a href="#" style="color: white">Gift Sets</a></li>
+                </ul>
+              </div>
+
+              <!-- Support Column -->
+              <div>
+                <div class="footer-heading">Support</div>
+                <ul class="footer-links">
+                  <li><a href="#" style="color: white">Contact Us</a></li>
+                  <li><a href="#" style="color: white">FAQs</a></li>
+                  <li><a href="#" style="color: white">Shipping Info</a></li>
+                  <li><a href="#" style="color: white">Returns</a></li>
+                  <li><a href="#" style="color: white">Care Guide</a></li>
+                </ul>
+              </div>
+
+              <!-- Newsletter Column -->
+              <div>
+                <div class="footer-heading">Stay Updated</div>
+                <div class="footer-newsletter">
+                  <p class="footer-newsletter-desc">
+                    Get updates on new collections, workshops, and exclusive
+                    offers.
+                  </p>
+                  <div class="footer-newsletter-form">
+                    <input
+                      type="email"
+                      class="footer-newsletter-input"
+                      placeholder="Your email"
+                    />
+                    <button class="footer-newsletter-btn">Subscribe</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="footer-bottom">
+              <div class="footer-copyright">
+                &copy; 2025 Poetry & Pottery. All rights reserved.
+              </div>
+              <div class="footer-payments">
+                <div class="payment-icon">VISA</div>
+                <div class="payment-icon">MC</div>
+                <div class="payment-icon">UPI</div>
+                <div class="payment-icon">COD</div>
+              </div>
+              <div class="footer-legal">
+                <a href="#" style="color: white">Privacy Policy</a>
+                <a href="#" style="color: white">Terms of Service</a>
+                <a href="#" style="color: white">Refund Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tablet -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Tablet (768px)</div>
+        <div class="wf-tablet-frame">
+          <div class="footer footer-primary" style="padding: 40px 24px 20px">
+            <div
+              class="footer-grid"
+              style="grid-template-columns: 1fr 1fr; gap: 32px"
+            >
+              <!-- Brand Column -->
+              <div>
+                <div class="footer-logo" style="font-size: 16px">
+                  <svg style="width: 24px; height: 24px">
+                    <use href="#icon-leaf" />
+                  </svg>
+                  Poetry & Pottery
+                </div>
+                <p class="footer-desc" style="font-size: 12px">
+                  Handcrafted pottery for mindful living. Each piece is made
+                  with care.
+                </p>
+                <div class="footer-social">
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-instagram" />
+                    </svg>
+                  </div>
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-facebook" />
+                    </svg>
+                  </div>
+                  <div
+                    class="footer-social-icon"
+                    style="width: 32px; height: 32px"
+                  >
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#icon-pinterest" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Newsletter -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">
+                  Stay Updated
+                </div>
+                <p class="footer-newsletter-desc" style="font-size: 11px">
+                  Get updates on new collections and workshops.
+                </p>
+                <div class="footer-newsletter-form">
+                  <input
+                    type="email"
+                    class="footer-newsletter-input"
+                    placeholder="Your email"
+                    style="font-size: 12px; padding: 8px 12px"
+                  />
+                  <button
+                    class="footer-newsletter-btn"
+                    style="font-size: 12px; padding: 8px 14px"
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+
+              <!-- Shop Links -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">Shop</div>
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#" style="color: white">All Products</a></li>
+                  <li><a href="#" style="color: white">Bowls & Plates</a></li>
+                  <li><a href="#" style="color: white">Mugs & Cups</a></li>
+                  <li><a href="#" style="color: white">Vases & Decor</a></li>
+                </ul>
+              </div>
+
+              <!-- Support Links -->
+              <div>
+                <div class="footer-heading" style="font-size: 12px">
+                  Support
+                </div>
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#" style="color: white">Contact Us</a></li>
+                  <li><a href="#" style="color: white">FAQs</a></li>
+                  <li><a href="#" style="color: white">Shipping Info</a></li>
+                  <li><a href="#" style="color: white">Returns</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+              class="footer-bottom"
+              style="margin-top: 24px; padding-top: 20px"
+            >
+              <div class="footer-copyright" style="font-size: 11px">
+                &copy; 2025 Poetry & Pottery
+              </div>
+              <div class="footer-payments">
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  VISA
+                </div>
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  MC
+                </div>
+                <div
+                  class="payment-icon"
+                  style="width: 32px; height: 20px; font-size: 8px"
+                >
+                  UPI
+                </div>
+              </div>
+              <div class="footer-legal" style="gap: 16px">
+                <a href="#" style="font-size: 11px; color: white">Privacy</a>
+                <a href="#" style="font-size: 11px; color: white">Terms</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div style="margin-bottom: 32px">
+        <div class="wf-viewport-label">Mobile (375px)</div>
+        <div class="wf-mobile-frame">
+          <div class="footer footer-primary footer-mobile">
+            <!-- Brand Section -->
+            <div style="text-align: center; margin-bottom: 24px">
+              <div
+                class="footer-logo"
+                style="font-size: 16px; justify-content: center"
+              >
+                <svg style="width: 22px; height: 22px">
+                  <use href="#icon-leaf" />
+                </svg>
+                Poetry & Pottery
+              </div>
+              <p
+                class="footer-desc"
+                style="font-size: 12px; margin-bottom: 14px"
+              >
+                Handcrafted pottery for mindful living.
+              </p>
+              <div class="footer-social" style="justify-content: center">
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-instagram" />
+                  </svg>
+                </div>
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-facebook" />
+                  </svg>
+                </div>
+                <div
+                  class="footer-social-icon"
+                  style="width: 32px; height: 32px"
+                >
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#icon-pinterest" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordion Links -->
+            <div class="footer-accordion">
+              <div class="footer-accordion-header">
+                <div
+                  class="footer-heading"
+                  style="margin-bottom: 0; font-size: 12px"
+                >
+                  Shop
+                </div>
+                <svg class="footer-accordion-icon" fill="white">
+                  <use href="#icon-chevron-down" />
+                </svg>
+              </div>
+              <div class="footer-accordion-content">
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#" style="color: white">All Products</a></li>
+                  <li><a href="#" style="color: white">Bowls & Plates</a></li>
+                  <li><a href="#" style="color: white">Mugs & Cups</a></li>
+                  <li><a href="#" style="color: white">Vases & Decor</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="footer-accordion" style="margin-top: 16px">
+              <div class="footer-accordion-header">
+                <div
+                  class="footer-heading"
+                  style="margin-bottom: 0; font-size: 12px"
+                >
+                  Support
+                </div>
+                <svg class="footer-accordion-icon" fill="white">
+                  <use href="#icon-chevron-down" />
+                </svg>
+              </div>
+              <div class="footer-accordion-content">
+                <ul class="footer-links" style="font-size: 13px">
+                  <li><a href="#" style="color: white">Contact Us</a></li>
+                  <li><a href="#" style="color: white">FAQs</a></li>
+                  <li><a href="#" style="color: white">Shipping Info</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div style="margin-top: 24px">
+              <div
+                class="footer-heading"
+                style="font-size: 12px; text-align: center"
+              >
+                Stay Updated
+              </div>
+              <div
+                class="footer-newsletter-form"
+                style="flex-direction: column"
+              >
+                <input
+                  type="email"
+                  class="footer-newsletter-input"
+                  placeholder="Your email"
+                  style="font-size: 13px"
+                />
+                <button
+                  class="footer-newsletter-btn"
+                  style="width: 100%; font-size: 13px"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+              class="footer-bottom footer-mobile-bottom"
+              style="margin-top: 24px"
+            >
+              <div class="footer-payments">
+                <div class="payment-icon" style="font-size: 8px">VISA</div>
+                <div class="payment-icon" style="font-size: 8px">MC</div>
+                <div class="payment-icon" style="font-size: 8px">UPI</div>
+                <div class="payment-icon" style="font-size: 8px">COD</div>
+              </div>
+              <div class="footer-legal">
+                <a href="#" style="font-size: 11px; color: white">Privacy</a>
+                <a href="#" style="font-size: 11px; color: white">Terms</a>
+                <a href="#" style="font-size: 11px; color: white">Refunds</a>
+              </div>
+              <div class="footer-copyright" style="font-size: 11px">
+                &copy; 2025 Poetry & Pottery
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Implementation Notes -->
+    <div class="impl-notes">
+      <h3>Implementation Notes</h3>
+      <ul>
+        <li>
+          <strong>Container:</strong> Full-width background, content max-width
+          <code>1200px</code> centered
+        </li>
+        <li>
+          <strong>Padding:</strong> Desktop <code>py-12 px-6</code>, Tablet
+          <code>py-10 px-6</code>, Mobile <code>py-8 px-4</code>
+        </li>
+        <li>
+          <strong>Grid:</strong> CSS Grid with
+          <code>grid-template-columns</code>, responsive breakpoints at 768px
+          and 640px
+        </li>
+        <li>
+          <strong>Typography:</strong> Headings use
+          <code>font-display</code> (Plus Jakarta Sans), links use
+          <code>font-body</code> (Outfit)
+        </li>
+        <li>
+          <strong>Theme Colors Only:</strong> <br />&nbsp;&nbsp;Option A:
+          <code>bg-cream</code> (#F5F0E8) &mdash; warmest, pottery feel
+          <br />&nbsp;&nbsp;Option B: <code>bg-primary-light</code> (#E8ECE8)
+          &mdash; cool forest green tint <br />&nbsp;&nbsp;Option C:
+          <code>bg-primary</code> (#4F6F52) &mdash; bold brand green
+        </li>
+        <li>
+          <strong>Social Icons:</strong> 36px desktop, 32px mobile,
+          <code>rounded-full</code> with subtle tinted background
+        </li>
+        <li>
+          <strong>Newsletter:</strong> Form uses <code>flex</code> layout,
+          stacks vertically on mobile
+        </li>
+        <li>
+          <strong>Accordion (Mobile):</strong> Use Radix Accordion or custom
+          state, animate height with <code>data-[state=open]</code>
+        </li>
+        <li>
+          <strong>Payment Icons:</strong> Consider using actual SVG brand icons
+          or payment provider logos
+        </li>
+        <li>
+          <strong>Links:</strong> <code>opacity-65</code> default,
+          <code>opacity-100</code> on hover with <code>transition-opacity</code>
+        </li>
+        <li>
+          <strong>Bottom Bar:</strong> Subtle top border using theme-tinted
+          color, flex layout with <code>justify-between</code>
+        </li>
+        <li>
+          <strong>Accessibility:</strong> All links have descriptive text,
+          proper heading hierarchy, keyboard navigable
+        </li>
+      </ul>
+    </div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <div class="approval-title">Design Approval</div>
+      <p style="font-size: 13px; color: #666; margin-bottom: 20px">
+        Select your preferred footer design option for each viewport:
+      </p>
+      <div class="approval-options">
+        <div class="approval-option">
+          <div class="approval-option-color" style="background: #f5f0e8"></div>
+          <div class="approval-option-label">Option A</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px">
+            Warm Cream
+          </div>
+        </div>
+        <div class="approval-option">
+          <div class="approval-option-color" style="background: #e8ece8"></div>
+          <div class="approval-option-label">Option B</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px">
+            Soft Green
+          </div>
+        </div>
+        <div class="approval-option">
+          <div class="approval-option-color" style="background: #4f6f52"></div>
+          <div class="approval-option-label">Option C</div>
+          <div style="font-size: 11px; color: #999; margin-top: 4px">
+            Primary Green
+          </div>
+        </div>
+      </div>
+      <div class="approval-notes">
+        <label
+          style="
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+          "
+          >Additional Notes / Requested Changes:</label
+        >
+        <textarea
+          placeholder="Enter any modifications, color changes, or specific requirements..."
+        ></textarea>
+      </div>
+      <button class="approval-submit">Submit Approval</button>
+    </div>
+  </body>
+</html>

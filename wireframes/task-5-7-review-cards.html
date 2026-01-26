@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 5.7: Review Cards - Poetry & Pottery Wireframes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Review Card Base */
+      .review-card {
+        padding: 20px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .review-card:last-child {
+        border-bottom: none;
+      }
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+      }
+
+      .reviewer-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .reviewer-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e8ece8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: #4f6f52;
+      }
+
+      .reviewer-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .review-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 4px;
+      }
+
+      .review-stars {
+        color: #f59e0b;
+        font-size: 13px;
+        letter-spacing: 1px;
+      }
+
+      .review-date {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        color: #4f6f52;
+        background: #e8ece8;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+
+      .verified-badge svg {
+        width: 12px;
+        height: 12px;
+      }
+
+      .review-text {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #525252;
+      }
+
+      .review-helpful {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .helpful-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: none;
+        border: none;
+        color: #737373;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: background 0.2s;
+      }
+
+      .helpful-btn:hover {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .helpful-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* Card with Background Variant */
+      .review-card.with-bg {
+        background: #fafaf9;
+        padding: 20px;
+        border-radius: 16px;
+        border-bottom: none;
+        margin-bottom: 16px;
+      }
+
+      /* Compact Variant */
+      .review-card.compact {
+        padding: 16px 0;
+      }
+
+      .review-card.compact .reviewer-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+      }
+
+      .review-card.compact .reviewer-name {
+        font-size: 13px;
+      }
+
+      .review-card.compact .review-text {
+        font-size: 13px;
+      }
+
+      /* Context placeholder */
+      .reviews-context {
+        background: #f9f9f8;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        font-size: 10px;
+        color: #999;
+        text-align: center;
+      }
+
+      /* Reviews Summary Header */
+      .reviews-summary {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #e7e5e4;
+      }
+
+      .summary-score {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .summary-details {
+        flex: 1;
+      }
+
+      .summary-stars {
+        color: #f59e0b;
+        font-size: 18px;
+        letter-spacing: 2px;
+        margin-bottom: 4px;
+      }
+
+      .summary-count {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      /* Review Response */
+      .review-response {
+        background: #f5f5f4;
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 16px;
+        margin-left: 52px;
+      }
+
+      .response-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .response-author {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4f6f52;
+      }
+
+      .response-text {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #525252;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Task 5.7: Review Cards</h1>
+    <p class="subtitle">
+      Clean review card design with reviewer info, star rating, review text, and
+      optional verified badge. No borders, spacing-based separation.
+    </p>
+
+    <!-- ======================= OPTION A ======================= -->
+    <section class="wf-section">
+      <span class="wf-task-label">Option A</span>
+      <h2 class="wf-section-title">
+        Standard with Avatar
+        <span class="recommended-badge">RECOMMENDED</span>
+      </h2>
+      <p class="wf-section-desc">
+        Clean card with avatar initials, name, stars, and date. Verified badge
+        shown when applicable. Helpful buttons for engagement.
+      </p>
+
+      <div class="option-details">
+        <strong>Avatar:</strong> 40px circle with initials, bg-primary-light |
+        <strong>Name:</strong> font-display, 14px, semibold |
+        <strong>Stars:</strong> Amber color, inline with date |
+        <strong>Separator:</strong> Subtle 1px border-bottom
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="reviews-context">[ Reviews Tab Content ]</div>
+
+              <div class="reviews-summary">
+                <div class="summary-score">4.8</div>
+                <div class="summary-details">
+                  <div class="summary-stars">★★★★★</div>
+                  <div class="summary-count">Based on 24 reviews</div>
+                </div>
+              </div>
+
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">SM</div>
+                    <div>
+                      <div class="reviewer-name">Sarah M.</div>
+                      <div class="review-meta">
+                        <span class="review-stars">★★★★★</span>
+                        <span class="review-date">2 days ago</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="verified-badge">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                      <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                    Verified
+                  </span>
+                </div>
+                <p class="review-text">
+                  Absolutely love this vase! The glaze is even more beautiful in
+                  person. Perfect size for my living room shelf.
+                </p>
+                <div class="review-helpful">
+                  <button class="helpful-btn">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                      />
+                    </svg>
+                    Helpful (3)
+                  </button>
+                </div>
+              </div>
+
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">JR</div>
+                    <div>
+                      <div class="reviewer-name">James R.</div>
+                      <div class="review-meta">
+                        <span class="review-stars">★★★★☆</span>
+                        <span class="review-date">1 week ago</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="review-text">
+                  Great quality piece. Shipping was fast and packaging was
+                  excellent. Minor glaze variation but adds to the handmade
+                  charm.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-page-content tablet">
+              <div class="reviews-context">
+                [ Product Detail - Reviews Tab ]
+              </div>
+
+              <div class="reviews-summary">
+                <div class="summary-score">4.8</div>
+                <div class="summary-details">
+                  <div class="summary-stars">★★★★★</div>
+                  <div class="summary-count">Based on 24 reviews</div>
+                </div>
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px"
+              >
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">SM</div>
+                      <div>
+                        <div class="reviewer-name">Sarah M.</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★★</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="verified-badge">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      Verified
+                    </span>
+                  </div>
+                  <p class="review-text">
+                    Absolutely love this vase! The glaze is even more beautiful
+                    in person.
+                  </p>
+                  <div class="review-helpful">
+                    <span class="review-date">2 days ago</span>
+                    <button class="helpful-btn">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                        />
+                      </svg>
+                      Helpful (3)
+                    </button>
+                  </div>
+                </div>
+
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">JR</div>
+                      <div>
+                        <div class="reviewer-name">James R.</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★☆</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">
+                    Great quality piece. Shipping was fast and packaging was
+                    excellent.
+                  </p>
+                  <div class="review-helpful">
+                    <span class="review-date">1 week ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/products/ceramic-vase
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div class="reviews-context" style="max-width: 100%">
+                [ Product Detail - Reviews Tab Panel ]
+              </div>
+
+              <div style="max-width: 800px">
+                <div class="reviews-summary">
+                  <div class="summary-score">4.8</div>
+                  <div class="summary-details">
+                    <div class="summary-stars">★★★★★</div>
+                    <div class="summary-count">Based on 24 reviews</div>
+                  </div>
+                  <button
+                    style="
+                      margin-left: auto;
+                      background: #4f6f52;
+                      color: white;
+                      border: none;
+                      padding: 10px 20px;
+                      border-radius: 8px;
+                      font-weight: 600;
+                      cursor: pointer;
+                    "
+                  >
+                    Write a Review
+                  </button>
+                </div>
+
+                <div class="review-card">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">SM</div>
+                      <div>
+                        <div class="reviewer-name">Sarah Mitchell</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★★</span>
+                          <span class="review-date">2 days ago</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="verified-badge">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      Verified Purchase
+                    </span>
+                  </div>
+                  <p class="review-text">
+                    Absolutely love this vase! The glaze is even more beautiful
+                    in person. The speckled pattern catches the light
+                    beautifully and it's the perfect size for my living room
+                    shelf. Highly recommend!
+                  </p>
+                  <div class="review-helpful">
+                    <button class="helpful-btn">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                        />
+                      </svg>
+                      Helpful (3)
+                    </button>
+                    <button class="helpful-btn">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M10 15V19a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"
+                        />
+                      </svg>
+                      Not Helpful
+                    </button>
+                  </div>
+                </div>
+
+                <div class="review-card">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">JR</div>
+                      <div>
+                        <div class="reviewer-name">James Rodriguez</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★☆</span>
+                          <span class="review-date">1 week ago</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">
+                    Great quality piece. Shipping was fast and packaging was
+                    excellent. There's a minor glaze variation on one side but
+                    honestly it adds to the handmade charm of the piece.
+                  </p>
+
+                  <div class="review-response">
+                    <div class="response-header">
+                      <span class="response-author">Poetry & Pottery</span>
+                      <span class="review-date">5 days ago</span>
+                    </div>
+                    <p class="response-text">
+                      Thank you for your kind words, James! You're right that
+                      each piece has unique characteristics - that's what makes
+                      handmade pottery special. Enjoy your vase!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ======================= OPTION B ======================= -->
+    <section class="wf-section">
+      <span class="wf-task-label">Option B</span>
+      <h2 class="wf-section-title">Card Style with Background</h2>
+      <p class="wf-section-desc">
+        Each review in its own card with subtle background. More visual
+        separation between reviews. Good for shorter review lists.
+      </p>
+
+      <div class="option-details">
+        <strong>Card:</strong> bg-neutral-50, rounded-2xl, padding |
+        <strong>Layout:</strong> Stacked vertically with gap |
+        <strong>Spacing:</strong> 16px gap between cards |
+        <strong>Feel:</strong> More prominent, each review is a "block"
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="reviews-context">[ Reviews Tab Content ]</div>
+
+              <div class="review-card with-bg">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">SM</div>
+                    <div>
+                      <div class="reviewer-name">Sarah M.</div>
+                      <div class="review-meta">
+                        <span class="review-stars">★★★★★</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="review-text">
+                  Absolutely love this vase! The glaze is even more beautiful in
+                  person. Perfect size for my living room shelf.
+                </p>
+                <div class="review-helpful">
+                  <span class="review-date">2 days ago</span>
+                  <span class="verified-badge" style="margin-left: auto">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                      <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                    Verified
+                  </span>
+                </div>
+              </div>
+
+              <div class="review-card with-bg">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">JR</div>
+                    <div>
+                      <div class="reviewer-name">James R.</div>
+                      <div class="review-meta">
+                        <span class="review-stars">★★★★☆</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="review-text">
+                  Great quality piece. Shipping was fast and packaging was
+                  excellent.
+                </p>
+                <div class="review-helpful">
+                  <span class="review-date">1 week ago</span>
+                </div>
+              </div>
+
+              <div class="review-card with-bg">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">EL</div>
+                    <div>
+                      <div class="reviewer-name">Emily L.</div>
+                      <div class="review-meta">
+                        <span class="review-stars">★★★★★</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="review-text">
+                  Beautiful craftsmanship. Bought as a gift and they loved it!
+                </p>
+                <div class="review-helpful">
+                  <span class="review-date">2 weeks ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-page-content tablet">
+              <div class="reviews-context">
+                [ Product Detail - Reviews Tab ]
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px"
+              >
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">SM</div>
+                      <div>
+                        <div class="reviewer-name">Sarah M.</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★★</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">
+                    Absolutely love this vase! The glaze is beautiful.
+                  </p>
+                  <div class="review-helpful">
+                    <span class="review-date">2 days ago</span>
+                    <span class="verified-badge" style="margin-left: auto"
+                      >Verified</span
+                    >
+                  </div>
+                </div>
+
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">JR</div>
+                      <div>
+                        <div class="reviewer-name">James R.</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★☆</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">Great quality piece. Fast shipping.</p>
+                  <div class="review-helpful">
+                    <span class="review-date">1 week ago</span>
+                  </div>
+                </div>
+
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">EL</div>
+                      <div>
+                        <div class="reviewer-name">Emily L.</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★★</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">
+                    Beautiful craftsmanship. Perfect gift!
+                  </p>
+                  <div class="review-helpful">
+                    <span class="review-date">2 weeks ago</span>
+                  </div>
+                </div>
+
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">MK</div>
+                      <div>
+                        <div class="reviewer-name">Michael K.</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★★</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">
+                    Exceeded my expectations. Will buy again.
+                  </p>
+                  <div class="review-helpful">
+                    <span class="review-date">3 weeks ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/products/ceramic-vase
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 20px;
+                  max-width: 900px;
+                "
+              >
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">SM</div>
+                      <div>
+                        <div class="reviewer-name">Sarah Mitchell</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★★</span>
+                          <span class="review-date">2 days ago</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">
+                    Absolutely love this vase! The glaze is even more beautiful
+                    in person. Perfect size for my living room shelf.
+                  </p>
+                  <div class="review-helpful">
+                    <button class="helpful-btn">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                        />
+                      </svg>
+                      Helpful (3)
+                    </button>
+                    <span class="verified-badge" style="margin-left: auto">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      Verified
+                    </span>
+                  </div>
+                </div>
+
+                <div class="review-card with-bg">
+                  <div class="review-header">
+                    <div class="reviewer-info">
+                      <div class="reviewer-avatar">JR</div>
+                      <div>
+                        <div class="reviewer-name">James Rodriguez</div>
+                        <div class="review-meta">
+                          <span class="review-stars">★★★★☆</span>
+                          <span class="review-date">1 week ago</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="review-text">
+                    Great quality piece. Shipping was fast and packaging was
+                    excellent. Minor glaze variation adds charm.
+                  </p>
+                  <div class="review-helpful">
+                    <button class="helpful-btn">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                        />
+                      </svg>
+                      Helpful (1)
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ======================= OPTION C ======================= -->
+    <section class="wf-section">
+      <span class="wf-task-label">Option C</span>
+      <h2 class="wf-section-title">Compact List Style</h2>
+      <p class="wf-section-desc">
+        Minimal, compact design without avatars. Stars and date inline with
+        name. More reviews visible in less space.
+      </p>
+
+      <div class="option-details">
+        <strong>Avatar:</strong> None (or small initials) |
+        <strong>Layout:</strong> Name + Stars + Date on one line |
+        <strong>Separator:</strong> Very subtle or none |
+        <strong>Use case:</strong> Long review lists, mobile-optimized
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375px)</div>
+          <div class="wf-mobile-frame">
+            <div class="wf-page-content">
+              <div class="reviews-context">[ Reviews Tab Content ]</div>
+
+              <div class="review-card compact">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <span class="reviewer-name" style="font-size: 13px"
+                      >Sarah M.</span
+                    >
+                    <span class="review-stars" style="font-size: 12px"
+                      >★★★★★</span
+                    >
+                  </div>
+                  <span class="review-date">2 days ago</span>
+                </div>
+                <p class="review-text" style="font-size: 13px">
+                  Absolutely love this vase! The glaze is even more beautiful in
+                  person.
+                </p>
+              </div>
+
+              <div class="review-card compact">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <span class="reviewer-name" style="font-size: 13px"
+                      >James R.</span
+                    >
+                    <span class="review-stars" style="font-size: 12px"
+                      >★★★★☆</span
+                    >
+                  </div>
+                  <span class="review-date">1 week ago</span>
+                </div>
+                <p class="review-text" style="font-size: 13px">
+                  Great quality piece. Fast shipping and excellent packaging.
+                </p>
+              </div>
+
+              <div class="review-card compact">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <span class="reviewer-name" style="font-size: 13px"
+                      >Emily L.</span
+                    >
+                    <span class="review-stars" style="font-size: 12px"
+                      >★★★★★</span
+                    >
+                  </div>
+                  <span class="review-date">2 weeks ago</span>
+                </div>
+                <p class="review-text" style="font-size: 13px">
+                  Beautiful craftsmanship. Bought as a gift and they loved it!
+                </p>
+              </div>
+
+              <div class="review-card compact">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <span class="reviewer-name" style="font-size: 13px"
+                      >Michael K.</span
+                    >
+                    <span class="review-stars" style="font-size: 12px"
+                      >★★★★★</span
+                    >
+                  </div>
+                  <span class="review-date">3 weeks ago</span>
+                </div>
+                <p class="review-text" style="font-size: 13px">
+                  Exceeded my expectations. Will definitely buy again.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768px)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-page-content tablet">
+              <div class="reviews-context">
+                [ Product Detail - Reviews Tab ]
+              </div>
+
+              <div style="max-width: 600px">
+                <div class="review-card compact">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <span class="reviewer-name">Sarah Mitchell</span>
+                      <span class="review-stars">★★★★★</span>
+                      <span class="verified-badge">Verified</span>
+                    </div>
+                    <span class="review-date">2 days ago</span>
+                  </div>
+                  <p class="review-text">
+                    Absolutely love this vase! The glaze is even more beautiful
+                    in person. Perfect size for my living room shelf.
+                  </p>
+                </div>
+
+                <div class="review-card compact">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <span class="reviewer-name">James Rodriguez</span>
+                      <span class="review-stars">★★★★☆</span>
+                    </div>
+                    <span class="review-date">1 week ago</span>
+                  </div>
+                  <p class="review-text">
+                    Great quality piece. Shipping was fast and packaging was
+                    excellent. Minor glaze variation adds charm.
+                  </p>
+                </div>
+
+                <div class="review-card compact">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <span class="reviewer-name">Emily Lee</span>
+                      <span class="review-stars">★★★★★</span>
+                      <span class="verified-badge">Verified</span>
+                    </div>
+                    <span class="review-date">2 weeks ago</span>
+                  </div>
+                  <p class="review-text">
+                    Beautiful craftsmanship. Bought as a gift and they loved it!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440px)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">
+                poetryandpottery.com/products/ceramic-vase
+              </div>
+            </div>
+            <div class="wf-page-content desktop">
+              <div style="max-width: 700px">
+                <div class="review-card compact">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-bottom: 10px;
+                    "
+                  >
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <span class="reviewer-name">Sarah Mitchell</span>
+                      <span class="review-stars">★★★★★</span>
+                      <span class="verified-badge">
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                          <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                        Verified Purchase
+                      </span>
+                    </div>
+                    <span class="review-date">2 days ago</span>
+                  </div>
+                  <p class="review-text">
+                    Absolutely love this vase! The glaze is even more beautiful
+                    in person. The speckled pattern catches the light
+                    beautifully and it's the perfect size for my living room
+                    shelf.
+                  </p>
+                  <div class="review-helpful">
+                    <button class="helpful-btn">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                        />
+                      </svg>
+                      Helpful (3)
+                    </button>
+                  </div>
+                </div>
+
+                <div class="review-card compact">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-bottom: 10px;
+                    "
+                  >
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <span class="reviewer-name">James Rodriguez</span>
+                      <span class="review-stars">★★★★☆</span>
+                    </div>
+                    <span class="review-date">1 week ago</span>
+                  </div>
+                  <p class="review-text">
+                    Great quality piece. Shipping was fast and packaging was
+                    excellent. There's a minor glaze variation but it adds
+                    charm.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ======================= APPROVAL SECTION ======================= -->
+    <section class="wf-section">
+      <h2 class="wf-section-title">Approval Selection</h2>
+      <p class="wf-section-desc">
+        Please select your preferred option for each viewport.
+      </p>
+
+      <div class="notes">
+        <strong>Option A (Recommended):</strong> Standard with Avatar -
+        Full-featured design with avatar, verified badge, and helpful buttons.
+        Most engaging for social proof.<br />
+        <strong>Option B:</strong> Card Style with Background - Each review as a
+        distinct card. More visual separation. Good for tablet 2-column
+        layout.<br />
+        <strong>Option C:</strong> Compact List Style - Minimal, space-efficient
+        design. Shows more reviews in less space. Best for long review lists.
+      </div>
+    </section>
+  </body>
+</html>

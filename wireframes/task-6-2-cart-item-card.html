@@ -1,0 +1,1562 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 6.2: Cart Item Card - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Cart Item Card Styles */
+      .cart-item {
+        display: flex;
+        gap: 16px;
+        padding: 16px;
+        background: white;
+        border-radius: 16px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s ease-out;
+      }
+
+      .cart-item:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      .cart-item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cart-item-image.large {
+        width: 100px;
+        height: 100px;
+      }
+
+      .cart-item-image.xl {
+        width: 120px;
+        height: 120px;
+      }
+
+      .cart-item-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+      }
+
+      .cart-item-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .cart-item-category {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .cart-item-variant {
+        font-size: 12px;
+        color: #999;
+        margin-top: 4px;
+      }
+
+      .cart-item-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .cart-item-price-original {
+        font-size: 12px;
+        color: #999;
+        text-decoration: line-through;
+        margin-right: 6px;
+      }
+
+      .cart-item-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* Quantity Selector Variants */
+      .qty-selector {
+        display: flex;
+        align-items: center;
+        background: #f5f5f4;
+        border-radius: 20px;
+        padding: 4px;
+      }
+
+      .qty-selector.minimal {
+        background: transparent;
+        padding: 0;
+        gap: 8px;
+      }
+
+      .qty-selector.bordered {
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: none;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .qty-btn:hover {
+        background: #e8ece8;
+      }
+
+      .qty-btn:active {
+        transform: scale(0.95);
+      }
+
+      .qty-btn:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .qty-selector.minimal .qty-btn {
+        background: #f5f5f4;
+      }
+
+      .qty-selector.bordered .qty-btn {
+        border-radius: 0;
+        width: 32px;
+        height: 32px;
+        background: transparent;
+      }
+
+      .qty-selector.bordered .qty-btn:first-child {
+        border-right: 1px solid #e5e5e5;
+      }
+
+      .qty-selector.bordered .qty-btn:last-child {
+        border-left: 1px solid #e5e5e5;
+      }
+
+      .qty-value {
+        width: 32px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .qty-selector.bordered .qty-value {
+        width: 40px;
+      }
+
+      /* Remove Button */
+      .remove-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: #999;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+      }
+
+      .remove-btn:hover {
+        background: #fee2e2;
+        color: #ef4444;
+      }
+
+      .remove-btn.text {
+        width: auto;
+        height: auto;
+        border-radius: 0;
+        font-size: 12px;
+        color: #999;
+        text-decoration: underline;
+      }
+
+      .remove-btn.text:hover {
+        background: transparent;
+        color: #ef4444;
+      }
+
+      /* Row Layout */
+      .cart-item-row {
+        display: grid;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .cart-item-row.desktop {
+        grid-template-columns: auto 2fr 1fr 1fr auto;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+        overflow-x: auto;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        min-width: 0;
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      .demo-section {
+        margin-bottom: 24px;
+      }
+
+      .demo-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      .demo-card-list {
+        background: #fafaf9;
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Swipe Action Indicator */
+      .swipe-indicator {
+        position: absolute;
+        right: -60px;
+        top: 0;
+        bottom: 0;
+        width: 60px;
+        background: #ef4444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        border-radius: 0 16px 16px 0;
+      }
+
+      .cart-item-swipeable {
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Desktop Table Style */
+      .cart-table-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+        padding: 12px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e5e5e5;
+        gap: 16px;
+      }
+
+      .cart-item-table-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+        padding: 16px;
+        align-items: center;
+        gap: 16px;
+        background: white;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .cart-item-table-row:last-child {
+        border-bottom: none;
+      }
+
+      .product-cell {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .cell-right {
+        text-align: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 6.2: Cart Item Card</h1>
+    <p class="subtitle">
+      Horizontal cart item card component with product image, name, category,
+      price, quantity controls, and remove action. No borders - spacing-based
+      separation.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a;">APPROVED</span>
+    </div>
+
+    <!-- Approved Decisions -->
+    <div style="background: #f0fdf4; border-radius: 16px; padding: 24px 32px; margin-bottom: 40px; max-width: 720px; margin-left: auto; margin-right: auto;">
+      <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: #16a34a; margin-bottom: 16px;">Approved Design Choices</h3>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14px; color: #333;">
+        <li><strong>Mobile (375px):</strong> Option A (Compact Stacked) + trash icon positioned absolute top-right (from Option C)</li>
+        <li><strong>Tablet (768px):</strong> Option A (Compact Stacked) &mdash; trash icon inline next to qty selector</li>
+        <li><strong>Desktop (1440px):</strong> Option A (Table Layout) &mdash; grid with Product/Price/Quantity/Total columns</li>
+      </ul>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Basic card layout</li>
+            <li>Inconsistent sizing</li>
+            <li>No swipe-to-delete on mobile</li>
+            <li>Small touch targets</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Horizontal layout: Image (80px) + info</li>
+            <li>Name, category, price, quantity in info area</li>
+            <li>Compact connected pill quantity selector</li>
+            <li>Subtle trash icon for remove</li>
+            <li>No borders, soft shadow, rounded-2xl</li>
+            <li>Larger touch targets on mobile (36px min)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Compact Stacked -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Compact Stacked <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Info stacked vertically. Price below category. Quantity and remove
+              in bottom row. Clean and space-efficient.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="demo-label">Default State</div>
+              <div class="cart-item">
+                <div class="cart-item-image"></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name">Ceramic Vase - Large</div>
+                    <div class="cart-item-category">Handcrafted Pottery</div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <div class="cart-item-price">$85.00</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="demo-label" style="margin-top: 24px">
+                With Variant
+              </div>
+              <div class="cart-item">
+                <div
+                  class="cart-item-image"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name">Clay Bowl Set</div>
+                    <div class="cart-item-category">Kitchen Collection</div>
+                    <div class="cart-item-variant">
+                      Size: Medium | Color: Earth
+                    </div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">2</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <div class="cart-item-price">$120.00</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="demo-label" style="margin-top: 24px">
+                With Discount
+              </div>
+              <div class="cart-item">
+                <div
+                  class="cart-item-image"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #e8e0d4 0%,
+                      #c4a882 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name">Terracotta Planter</div>
+                    <div class="cart-item-category">Garden</div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-selector">
+                      <button class="qty-btn" disabled>-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <div>
+                      <span class="cart-item-price-original">$75.00</span>
+                      <span class="cart-item-price">$60.00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="demo-label">Standard Cards</div>
+              <div class="cart-item">
+                <div
+                  class="cart-item-image"
+                  style="width: 88px; height: 88px"
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name" style="font-size: 15px">
+                      Ceramic Vase - Large
+                    </div>
+                    <div class="cart-item-category">Handcrafted Pottery</div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 8px">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <button class="remove-btn">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path
+                          d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                        />
+                      </svg>
+                    </button>
+                    <div style="flex: 1"></div>
+                    <div class="cart-item-price" style="font-size: 16px">
+                      $85.00
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cart-item">
+                <div
+                  class="cart-item-image"
+                  style="
+                    width: 88px;
+                    height: 88px;
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name" style="font-size: 15px">
+                      Clay Bowl Set (3 pieces)
+                    </div>
+                    <div class="cart-item-category">Kitchen Collection</div>
+                    <div class="cart-item-variant">Size: Medium</div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 8px">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">2</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <button class="remove-btn">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path
+                          d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                        />
+                      </svg>
+                    </button>
+                    <div style="flex: 1"></div>
+                    <div class="cart-item-price" style="font-size: 16px">
+                      $120.00
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="demo-label">Table Layout</div>
+              <div class="cart-table-header">
+                <span>Product</span>
+                <span>Price</span>
+                <span>Quantity</span>
+                <span class="cell-right">Total</span>
+                <span></span>
+              </div>
+              <div class="cart-item-table-row">
+                <div class="product-cell">
+                  <div class="cart-item-image"></div>
+                  <div>
+                    <div class="cart-item-name" style="font-size: 15px">
+                      Ceramic Vase - Large
+                    </div>
+                    <div class="cart-item-category">Handcrafted Pottery</div>
+                  </div>
+                </div>
+                <div class="cart-item-price">$85.00</div>
+                <div class="qty-selector">
+                  <button class="qty-btn">-</button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cell-right" style="font-weight: 600">$85.00</div>
+                <button class="remove-btn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="cart-item-table-row">
+                <div class="product-cell">
+                  <div
+                    class="cart-item-image"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #d9e8d9 0%,
+                        #b8d4b8 100%
+                      );
+                    "
+                  ></div>
+                  <div>
+                    <div class="cart-item-name" style="font-size: 15px">
+                      Clay Bowl Set (3 pcs)
+                    </div>
+                    <div class="cart-item-category">Kitchen</div>
+                  </div>
+                </div>
+                <div class="cart-item-price">$60.00</div>
+                <div class="qty-selector">
+                  <button class="qty-btn">-</button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cell-right" style="font-weight: 600">$120.00</div>
+                <button class="remove-btn">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Inline Price -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Inline Price with Remove</h3>
+            <p class="wf-option-desc">
+              Price shown inline with name. Quantity and remove grouped at
+              bottom. More vertical space for product info.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="cart-item" style="padding: 20px">
+                <div
+                  class="cart-item-image"
+                  style="width: 88px; height: 88px"
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div class="cart-item-name" style="font-size: 15px">
+                        Ceramic Vase
+                      </div>
+                      <div class="cart-item-price" style="font-size: 16px">
+                        $85
+                      </div>
+                    </div>
+                    <div class="cart-item-category">Handcrafted Pottery</div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 12px">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <button class="remove-btn text">Remove</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cart-item" style="padding: 20px">
+                <div
+                  class="cart-item-image"
+                  style="
+                    width: 88px;
+                    height: 88px;
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div class="cart-item-name" style="font-size: 15px">
+                        Clay Bowl Set
+                      </div>
+                      <div class="cart-item-price" style="font-size: 16px">
+                        $120
+                      </div>
+                    </div>
+                    <div class="cart-item-category">Kitchen Collection</div>
+                    <div class="cart-item-variant">Size: Medium</div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 12px">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">2</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <button class="remove-btn text">Remove</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="cart-item" style="padding: 20px">
+                <div class="cart-item-image large"></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="cart-item-name" style="font-size: 16px">
+                          Ceramic Vase - Large
+                        </div>
+                        <div class="cart-item-category">
+                          Handcrafted Pottery
+                        </div>
+                      </div>
+                      <div class="cart-item-price" style="font-size: 18px">
+                        $85.00
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 16px">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <button class="remove-btn text">Remove item</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cart-item" style="padding: 20px">
+                <div
+                  class="cart-item-image large"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="cart-item-name" style="font-size: 16px">
+                          Clay Bowl Set (3 pieces)
+                        </div>
+                        <div class="cart-item-category">Kitchen Collection</div>
+                        <div class="cart-item-variant">
+                          Size: Medium | Color: Earth
+                        </div>
+                      </div>
+                      <div class="cart-item-price" style="font-size: 18px">
+                        $120.00
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 16px">
+                    <div class="qty-selector">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">2</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <button class="remove-btn text">Remove item</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="cart-item" style="padding: 24px">
+                <div class="cart-item-image xl"></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="cart-item-name" style="font-size: 18px">
+                          Ceramic Vase - Large
+                        </div>
+                        <div class="cart-item-category" style="font-size: 14px">
+                          Handcrafted Pottery
+                        </div>
+                      </div>
+                      <div class="cart-item-price" style="font-size: 20px">
+                        $85.00
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 16px">
+                    <div class="qty-selector bordered">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <button class="remove-btn text" style="font-size: 13px">
+                      Remove from cart
+                    </button>
+                    <div style="flex: 1"></div>
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #1a1a1a;
+                      "
+                    >
+                      $85.00
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cart-item" style="padding: 24px">
+                <div
+                  class="cart-item-image xl"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="cart-item-name" style="font-size: 18px">
+                          Clay Bowl Set (3 pieces)
+                        </div>
+                        <div class="cart-item-category" style="font-size: 14px">
+                          Kitchen Collection
+                        </div>
+                        <div class="cart-item-variant" style="font-size: 13px">
+                          Size: Medium | Color: Earth
+                        </div>
+                      </div>
+                      <div class="cart-item-price" style="font-size: 20px">
+                        $60.00
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cart-item-actions" style="margin-top: 16px">
+                    <div class="qty-selector bordered">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">2</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <button class="remove-btn text" style="font-size: 13px">
+                      Remove from cart
+                    </button>
+                    <div style="flex: 1"></div>
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #1a1a1a;
+                      "
+                    >
+                      $120.00
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Minimal with Bordered Quantity -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Minimal with Bordered Quantity</h3>
+            <p class="wf-option-desc">
+              Clean minimal layout. Bordered quantity selector for more
+              definition. Trash icon in top-right corner.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="cart-item" style="position: relative">
+                <div class="cart-item-image"></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name">Ceramic Vase - Large</div>
+                    <div class="cart-item-category">Handcrafted</div>
+                    <div class="cart-item-price" style="margin-top: 8px">
+                      $85.00
+                    </div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-selector bordered">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="remove-btn"
+                  style="position: absolute; top: 12px; right: 12px"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="cart-item" style="position: relative">
+                <div
+                  class="cart-item-image"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name">Clay Bowl Set</div>
+                    <div class="cart-item-category">Kitchen</div>
+                    <div class="cart-item-price" style="margin-top: 8px">
+                      $120.00
+                    </div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-selector bordered">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">2</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="remove-btn"
+                  style="position: absolute; top: 12px; right: 12px"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="cart-item" style="position: relative; padding: 20px">
+                <div
+                  class="cart-item-image"
+                  style="width: 88px; height: 88px"
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name" style="font-size: 16px">
+                      Ceramic Vase - Large
+                    </div>
+                    <div class="cart-item-category">Handcrafted Pottery</div>
+                    <div
+                      class="cart-item-price"
+                      style="margin-top: 8px; font-size: 16px"
+                    >
+                      $85.00
+                    </div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-selector bordered">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <div style="font-weight: 600; font-size: 16px">
+                      Subtotal: $85.00
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="remove-btn"
+                  style="position: absolute; top: 16px; right: 16px"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="cart-item" style="position: relative; padding: 20px">
+                <div
+                  class="cart-item-image"
+                  style="
+                    width: 88px;
+                    height: 88px;
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div class="cart-item-info">
+                  <div>
+                    <div class="cart-item-name" style="font-size: 16px">
+                      Clay Bowl Set (3 pieces)
+                    </div>
+                    <div class="cart-item-category">Kitchen Collection</div>
+                    <div
+                      class="cart-item-price"
+                      style="margin-top: 8px; font-size: 16px"
+                    >
+                      $60.00 each
+                    </div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-selector bordered">
+                      <button class="qty-btn">-</button>
+                      <span class="qty-value">2</span>
+                      <button class="qty-btn">+</button>
+                    </div>
+                    <div style="flex: 1"></div>
+                    <div style="font-weight: 600; font-size: 16px">
+                      Subtotal: $120.00
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="remove-btn"
+                  style="position: absolute; top: 16px; right: 16px"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="demo-card-list">
+              <div class="cart-item" style="position: relative; padding: 24px">
+                <div class="cart-item-image xl"></div>
+                <div
+                  class="cart-item-info"
+                  style="
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 32px;
+                  "
+                >
+                  <div style="flex: 2">
+                    <div class="cart-item-name" style="font-size: 18px">
+                      Ceramic Vase - Large
+                    </div>
+                    <div class="cart-item-category" style="font-size: 14px">
+                      Handcrafted Pottery
+                    </div>
+                  </div>
+                  <div class="cart-item-price" style="font-size: 18px; flex: 1">
+                    $85.00
+                  </div>
+                  <div class="qty-selector bordered" style="flex-shrink: 0">
+                    <button class="qty-btn">-</button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">+</button>
+                  </div>
+                  <div
+                    style="
+                      flex: 1;
+                      text-align: right;
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 18px;
+                      font-weight: 700;
+                    "
+                  >
+                    $85.00
+                  </div>
+                </div>
+                <button
+                  class="remove-btn"
+                  style="position: absolute; top: 20px; right: 20px"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="cart-item" style="position: relative; padding: 24px">
+                <div
+                  class="cart-item-image xl"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #d9e8d9 0%,
+                      #b8d4b8 100%
+                    );
+                  "
+                ></div>
+                <div
+                  class="cart-item-info"
+                  style="
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 32px;
+                  "
+                >
+                  <div style="flex: 2">
+                    <div class="cart-item-name" style="font-size: 18px">
+                      Clay Bowl Set (3 pieces)
+                    </div>
+                    <div class="cart-item-category" style="font-size: 14px">
+                      Kitchen Collection
+                    </div>
+                  </div>
+                  <div class="cart-item-price" style="font-size: 18px; flex: 1">
+                    $60.00
+                  </div>
+                  <div class="qty-selector bordered" style="flex-shrink: 0">
+                    <button class="qty-btn">-</button>
+                    <span class="qty-value">2</span>
+                    <button class="qty-btn">+</button>
+                  </div>
+                  <div
+                    style="
+                      flex: 1;
+                      text-align: right;
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 18px;
+                      font-weight: 700;
+                    "
+                  >
+                    $120.00
+                  </div>
+                </div>
+                <button
+                  class="remove-btn"
+                  style="position: absolute; top: 20px; right: 20px"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section" style="background: #f0fdf4;">
+      <h3 class="approval-title" style="color: #16a34a;">
+        <span style="font-size: 24px">&#9989;</span>
+        Approved
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Design choices approved for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" checked disabled /> Option A - Compact
+            Stacked + trash icon top-right (from C)</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" checked disabled /> Option A - Compact
+            Stacked</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" checked disabled /> Option A - Table
+            Layout</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes</div>
+        <p style="font-size: 14px; color: #333; margin: 0;">Mobile uses Option A (Compact Stacked) layout but adds a trash/delete icon positioned absolute in the top-right corner (borrowed from Option C) so users always have a visible remove affordance on mobile.</p>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 6.2):</strong><br /><br />
+      &bull; <strong>Image:</strong> 80px mobile, 88px tablet, 100-120px
+      desktop<br />
+      &bull; <strong>Layout:</strong> Horizontal flex, gap-16px<br />
+      &bull; <strong>Name:</strong> font-display, font-semibold, truncate<br />
+      &bull; <strong>Category:</strong> text-muted, text-sm<br />
+      &bull; <strong>Price:</strong> font-display, font-bold, text-primary<br />
+      &bull; <strong>Quantity:</strong> Connected pill selector (Task 4.5
+      component)<br />
+      &bull; <strong>Remove:</strong> Trash icon, muted, hover:red<br />
+      &bull; <strong>Card:</strong> rounded-2xl, shadow-soft, no borders<br />
+      &bull; <strong>File:</strong> src/components/cards/cart-item-card.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

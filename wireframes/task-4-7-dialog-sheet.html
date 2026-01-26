@@ -1,0 +1,1707 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.7: Dialog & Sheet - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Dialog Base Styles */
+      .dialog-backdrop {
+        background: rgba(0, 0, 0, 0.5);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        border-radius: 12px;
+      }
+
+      .dialog-backdrop.mobile {
+        min-height: 500px;
+      }
+
+      .dialog {
+        background: white;
+        width: 90%;
+        max-width: 440px;
+        position: relative;
+      }
+
+      .dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .dialog-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .dialog-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #737373;
+        transition: all 0.15s;
+      }
+
+      .dialog-close:hover {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .dialog-close svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .dialog-body {
+        padding: 24px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555;
+      }
+
+      .dialog-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 16px 24px 20px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .dialog-btn {
+        height: 40px;
+        padding: 0 20px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .dialog-btn:active {
+        transform: scale(0.97);
+      }
+
+      .dialog-btn-primary {
+        background: #4f6f52;
+        color: white;
+      }
+      .dialog-btn-primary:hover {
+        background: #3d5640;
+      }
+
+      .dialog-btn-secondary {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+      .dialog-btn-secondary:hover {
+        background: #e7e5e4;
+      }
+
+      .dialog-btn-danger {
+        background: #ef4444;
+        color: white;
+      }
+      .dialog-btn-danger:hover {
+        background: #dc2626;
+      }
+
+      /* Option Variants */
+      .option-a .dialog {
+        border-radius: 16px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+
+      .option-b .dialog {
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+      .option-b .dialog-header {
+        border-bottom: none;
+        padding-bottom: 8px;
+      }
+      .option-b .dialog-footer {
+        border-top: none;
+        padding-top: 8px;
+      }
+
+      .option-c .dialog {
+        border-radius: 20px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+      .option-c .dialog-header {
+        background: #f9faf9;
+        border-bottom: none;
+      }
+
+      /* Sheet Base Styles */
+      .sheet-container {
+        position: relative;
+        min-height: 500px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .sheet-container.desktop {
+        min-height: 400px;
+      }
+
+      /* Bottom Sheet (Mobile) */
+      .sheet-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-radius: 24px 24px 0 0;
+        max-height: 85%;
+      }
+
+      .sheet-drag-handle {
+        width: 40px;
+        height: 4px;
+        background: #d4d4d4;
+        border-radius: 2px;
+        margin: 12px auto 8px;
+      }
+
+      .sheet-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px 16px;
+      }
+
+      .sheet-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .sheet-body {
+        padding: 0 20px 24px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .sheet-footer {
+        padding: 16px 20px;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 20px));
+        border-top: 1px solid #e5e5e5;
+        display: flex;
+        gap: 12px;
+      }
+
+      .sheet-footer .dialog-btn {
+        flex: 1;
+      }
+
+      /* Right Sheet (Desktop) */
+      .sheet-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 400px;
+        background: white;
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .sheet-right .sheet-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .sheet-right .sheet-body {
+        padding: 24px;
+        max-height: none;
+        height: calc(100% - 140px);
+        overflow-y: auto;
+      }
+
+      .sheet-right .sheet-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 16px 24px;
+      }
+
+      /* Option A Sheet Variants */
+      .option-a .sheet-bottom {
+        border-radius: 20px 20px 0 0;
+      }
+
+      /* Option B Sheet Variants */
+      .option-b .sheet-bottom {
+        border-radius: 28px 28px 0 0;
+      }
+      .option-b .sheet-drag-handle {
+        width: 48px;
+        height: 5px;
+        background: #bbb;
+      }
+      .option-b .sheet-footer {
+        border-top: none;
+        background: #f9faf9;
+      }
+
+      /* Option C Sheet Variants */
+      .option-c .sheet-bottom {
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+      }
+      .option-c .sheet-header {
+        background: linear-gradient(180deg, #f9faf9 0%, white 100%);
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 64px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .component-section {
+        margin-top: 40px;
+      }
+
+      .component-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #4f6f52;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .component-label::before {
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: #4f6f52;
+        border-radius: 2px;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Form Demo */
+      .demo-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .demo-form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+      }
+
+      .demo-form-group input,
+      .demo-form-group select {
+        width: 100%;
+        height: 40px;
+        padding: 0 12px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      /* List Demo */
+      .demo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .demo-list-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: #f9faf9;
+        border-radius: 10px;
+      }
+
+      .demo-list-item-icon {
+        width: 40px;
+        height: 40px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4f6f52;
+      }
+
+      .demo-list-item-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .demo-list-item-text {
+        flex: 1;
+      }
+
+      .demo-list-item-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .demo-list-item-desc {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.7: Dialog & Sheet</h1>
+    <p class="subtitle">
+      Foundation component: Consistent modal and sheet design with header, body,
+      footer patterns. Dialog for centered overlays, Sheet for slide-in panels.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">IN PROGRESS</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="x-icon" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </symbol>
+      <symbol id="trash-icon" viewBox="0 0 24 24">
+        <polyline points="3 6 5 6 21 6" />
+        <path
+          d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+        />
+      </symbol>
+      <symbol id="map-pin-icon" viewBox="0 0 24 24">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="credit-card-icon" viewBox="0 0 24 24">
+        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+        <line x1="1" y1="10" x2="23" y2="10" />
+      </symbol>
+      <symbol id="filter-icon" viewBox="0 0 24 24">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+      </symbol>
+      <symbol id="check-icon" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Inconsistent modal styling</li>
+            <li>No standard sheet component</li>
+            <li>Varying header/footer patterns</li>
+            <li>No mobile-optimized bottom sheets</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Dialog: rounded-2xl, shadow-xl, backdrop blur</li>
+            <li>Sheet: Right slide (desktop), bottom slide (mobile)</li>
+            <li>Header: Title in font-display, close X</li>
+            <li>Footer: Actions right-aligned</li>
+            <li>Mobile sheet: Rounded top, drag handle</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Classic Clean -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Classic Clean <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Traditional dialog with visible borders separating header, body,
+              and footer. Clear visual hierarchy.
+            </p>
+          </div>
+        </div>
+
+        <!-- Dialog Examples -->
+        <div class="component-section">
+          <div class="component-label">Dialog Component</div>
+
+          <div class="viewport-grid">
+            <!-- Mobile Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Mobile <span class="size">375px</span>
+              </div>
+              <div class="dialog-backdrop mobile option-a">
+                <div class="dialog">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Delete Item?</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    Are you sure you want to remove this item from your cart?
+                    This action cannot be undone.
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Cancel
+                    </button>
+                    <button class="dialog-btn dialog-btn-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Tablet <span class="size">768px</span>
+              </div>
+              <div class="dialog-backdrop option-a">
+                <div class="dialog" style="max-width: 400px">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Add New Address</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    <div class="demo-form">
+                      <div class="demo-form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your name" />
+                      </div>
+                      <div class="demo-form-group">
+                        <label>Address</label>
+                        <input type="text" placeholder="Street address" />
+                      </div>
+                      <div class="demo-form-group">
+                        <label>City</label>
+                        <input type="text" placeholder="City name" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Cancel
+                    </button>
+                    <button class="dialog-btn dialog-btn-primary">
+                      Save Address
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Desktop <span class="size">1440px</span>
+              </div>
+              <div class="dialog-backdrop option-a">
+                <div class="dialog" style="max-width: 480px">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Cancel Order</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    <p style="margin-bottom: 16px">
+                      Are you sure you want to cancel order
+                      <strong>#ORD-2024-1234</strong>?
+                    </p>
+                    <p>
+                      This will refund your payment within 5-7 business days.
+                      Items in this order will become available for other
+                      customers.
+                    </p>
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Keep Order
+                    </button>
+                    <button class="dialog-btn dialog-btn-danger">
+                      Cancel Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sheet Examples -->
+        <div class="component-section">
+          <div class="component-label">Sheet Component</div>
+
+          <div class="viewport-grid">
+            <!-- Mobile Bottom Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Mobile <span class="size">Bottom Sheet</span>
+              </div>
+              <div class="sheet-container option-a">
+                <div class="sheet-bottom">
+                  <div class="sheet-drag-handle"></div>
+                  <div class="sheet-header">
+                    <span class="sheet-title">Filter Products</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="sheet-body">
+                    <div class="demo-list">
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#filter-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Category</div>
+                          <div class="demo-list-item-desc">All Categories</div>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#credit-card-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Price Range</div>
+                          <div class="demo-list-item-desc">$0 - $500</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Reset
+                    </button>
+                    <button class="dialog-btn dialog-btn-primary">
+                      Apply Filters
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet Bottom Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Tablet <span class="size">Bottom Sheet</span>
+              </div>
+              <div class="sheet-container option-a">
+                <div class="sheet-bottom">
+                  <div class="sheet-drag-handle"></div>
+                  <div class="sheet-header">
+                    <span class="sheet-title">Select Address</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="sheet-body">
+                    <div class="demo-list">
+                      <div
+                        class="demo-list-item"
+                        style="border: 2px solid #4f6f52"
+                      >
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#map-pin-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Home</div>
+                          <div class="demo-list-item-desc">
+                            123 Main Street, Apt 4B
+                          </div>
+                        </div>
+                        <div style="color: #4f6f52">
+                          <svg
+                            style="
+                              width: 20px;
+                              height: 20px;
+                              stroke: currentColor;
+                              stroke-width: 2;
+                              fill: none;
+                            "
+                          >
+                            <use href="#check-icon" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#map-pin-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Office</div>
+                          <div class="demo-list-item-desc">
+                            456 Work Boulevard, Suite 100
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer">
+                    <button
+                      class="dialog-btn dialog-btn-primary"
+                      style="width: 100%"
+                    >
+                      Deliver to This Address
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Right Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Desktop <span class="size">Right Sheet</span>
+              </div>
+              <div class="sheet-container desktop option-a">
+                <div class="sheet-right">
+                  <div class="sheet-header">
+                    <span class="sheet-title">Order Details</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div
+                    class="sheet-body"
+                    style="height: auto; max-height: 200px"
+                  >
+                    <div class="demo-list">
+                      <div class="demo-list-item">
+                        <div
+                          style="
+                            width: 48px;
+                            height: 48px;
+                            background: #e8ddd4;
+                            border-radius: 8px;
+                          "
+                        ></div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Ceramic Vase</div>
+                          <div class="demo-list-item-desc">Qty: 1 | $89.00</div>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div
+                          style="
+                            width: 48px;
+                            height: 48px;
+                            background: #d9e8d9;
+                            border-radius: 8px;
+                          "
+                        ></div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Clay Bowl Set</div>
+                          <div class="demo-list-item-desc">
+                            Qty: 2 | $120.00
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer" style="position: relative">
+                    <button
+                      class="dialog-btn dialog-btn-secondary"
+                      style="flex: 1"
+                    >
+                      Close
+                    </button>
+                    <button
+                      class="dialog-btn dialog-btn-primary"
+                      style="flex: 1"
+                    >
+                      Track Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Minimal Floating -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Minimal Floating</h3>
+            <p class="wf-option-desc">
+              No visible borders between sections. Larger border radius. Softer,
+              more modern appearance.
+            </p>
+          </div>
+        </div>
+
+        <!-- Dialog Examples -->
+        <div class="component-section">
+          <div class="component-label">Dialog Component</div>
+
+          <div class="viewport-grid">
+            <!-- Mobile Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Mobile <span class="size">375px</span>
+              </div>
+              <div class="dialog-backdrop mobile option-b">
+                <div class="dialog">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Delete Item?</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    Are you sure you want to remove this item from your cart?
+                    This action cannot be undone.
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Cancel
+                    </button>
+                    <button class="dialog-btn dialog-btn-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Tablet <span class="size">768px</span>
+              </div>
+              <div class="dialog-backdrop option-b">
+                <div class="dialog" style="max-width: 400px">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Add New Address</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    <div class="demo-form">
+                      <div class="demo-form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your name" />
+                      </div>
+                      <div class="demo-form-group">
+                        <label>Address</label>
+                        <input type="text" placeholder="Street address" />
+                      </div>
+                      <div class="demo-form-group">
+                        <label>City</label>
+                        <input type="text" placeholder="City name" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Cancel
+                    </button>
+                    <button class="dialog-btn dialog-btn-primary">
+                      Save Address
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Desktop <span class="size">1440px</span>
+              </div>
+              <div class="dialog-backdrop option-b">
+                <div class="dialog" style="max-width: 480px">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Cancel Order</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    <p style="margin-bottom: 16px">
+                      Are you sure you want to cancel order
+                      <strong>#ORD-2024-1234</strong>?
+                    </p>
+                    <p>
+                      This will refund your payment within 5-7 business days.
+                      Items in this order will become available for other
+                      customers.
+                    </p>
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Keep Order
+                    </button>
+                    <button class="dialog-btn dialog-btn-danger">
+                      Cancel Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sheet Examples -->
+        <div class="component-section">
+          <div class="component-label">Sheet Component</div>
+
+          <div class="viewport-grid">
+            <!-- Mobile Bottom Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Mobile <span class="size">Bottom Sheet</span>
+              </div>
+              <div class="sheet-container option-b">
+                <div class="sheet-bottom">
+                  <div class="sheet-drag-handle"></div>
+                  <div class="sheet-header">
+                    <span class="sheet-title">Filter Products</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="sheet-body">
+                    <div class="demo-list">
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#filter-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Category</div>
+                          <div class="demo-list-item-desc">All Categories</div>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#credit-card-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Price Range</div>
+                          <div class="demo-list-item-desc">$0 - $500</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Reset
+                    </button>
+                    <button class="dialog-btn dialog-btn-primary">
+                      Apply Filters
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet Bottom Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Tablet <span class="size">Bottom Sheet</span>
+              </div>
+              <div class="sheet-container option-b">
+                <div class="sheet-bottom">
+                  <div class="sheet-drag-handle"></div>
+                  <div class="sheet-header">
+                    <span class="sheet-title">Select Address</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="sheet-body">
+                    <div class="demo-list">
+                      <div
+                        class="demo-list-item"
+                        style="border: 2px solid #4f6f52"
+                      >
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#map-pin-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Home</div>
+                          <div class="demo-list-item-desc">
+                            123 Main Street, Apt 4B
+                          </div>
+                        </div>
+                        <div style="color: #4f6f52">
+                          <svg
+                            style="
+                              width: 20px;
+                              height: 20px;
+                              stroke: currentColor;
+                              stroke-width: 2;
+                              fill: none;
+                            "
+                          >
+                            <use href="#check-icon" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#map-pin-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Office</div>
+                          <div class="demo-list-item-desc">
+                            456 Work Boulevard, Suite 100
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer">
+                    <button
+                      class="dialog-btn dialog-btn-primary"
+                      style="width: 100%"
+                    >
+                      Deliver to This Address
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Right Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Desktop <span class="size">Right Sheet</span>
+              </div>
+              <div class="sheet-container desktop option-b">
+                <div class="sheet-right">
+                  <div class="sheet-header">
+                    <span class="sheet-title">Order Details</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div
+                    class="sheet-body"
+                    style="height: auto; max-height: 200px"
+                  >
+                    <div class="demo-list">
+                      <div class="demo-list-item">
+                        <div
+                          style="
+                            width: 48px;
+                            height: 48px;
+                            background: #e8ddd4;
+                            border-radius: 8px;
+                          "
+                        ></div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Ceramic Vase</div>
+                          <div class="demo-list-item-desc">Qty: 1 | $89.00</div>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div
+                          style="
+                            width: 48px;
+                            height: 48px;
+                            background: #d9e8d9;
+                            border-radius: 8px;
+                          "
+                        ></div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Clay Bowl Set</div>
+                          <div class="demo-list-item-desc">
+                            Qty: 2 | $120.00
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="sheet-footer"
+                    style="position: relative; background: #f9faf9"
+                  >
+                    <button
+                      class="dialog-btn dialog-btn-secondary"
+                      style="flex: 1"
+                    >
+                      Close
+                    </button>
+                    <button
+                      class="dialog-btn dialog-btn-primary"
+                      style="flex: 1"
+                    >
+                      Track Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Subtle Header -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Subtle Header</h3>
+            <p class="wf-option-desc">
+              Header with subtle background tint. Creates visual distinction
+              without hard borders.
+            </p>
+          </div>
+        </div>
+
+        <!-- Dialog Examples -->
+        <div class="component-section">
+          <div class="component-label">Dialog Component</div>
+
+          <div class="viewport-grid">
+            <!-- Mobile Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Mobile <span class="size">375px</span>
+              </div>
+              <div class="dialog-backdrop mobile option-c">
+                <div class="dialog">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Delete Item?</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    Are you sure you want to remove this item from your cart?
+                    This action cannot be undone.
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Cancel
+                    </button>
+                    <button class="dialog-btn dialog-btn-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Tablet <span class="size">768px</span>
+              </div>
+              <div class="dialog-backdrop option-c">
+                <div class="dialog" style="max-width: 400px">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Add New Address</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    <div class="demo-form">
+                      <div class="demo-form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your name" />
+                      </div>
+                      <div class="demo-form-group">
+                        <label>Address</label>
+                        <input type="text" placeholder="Street address" />
+                      </div>
+                      <div class="demo-form-group">
+                        <label>City</label>
+                        <input type="text" placeholder="City name" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Cancel
+                    </button>
+                    <button class="dialog-btn dialog-btn-primary">
+                      Save Address
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Dialog -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Desktop <span class="size">1440px</span>
+              </div>
+              <div class="dialog-backdrop option-c">
+                <div class="dialog" style="max-width: 480px">
+                  <div class="dialog-header">
+                    <span class="dialog-title">Cancel Order</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="dialog-body">
+                    <p style="margin-bottom: 16px">
+                      Are you sure you want to cancel order
+                      <strong>#ORD-2024-1234</strong>?
+                    </p>
+                    <p>
+                      This will refund your payment within 5-7 business days.
+                      Items in this order will become available for other
+                      customers.
+                    </p>
+                  </div>
+                  <div class="dialog-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Keep Order
+                    </button>
+                    <button class="dialog-btn dialog-btn-danger">
+                      Cancel Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sheet Examples -->
+        <div class="component-section">
+          <div class="component-label">Sheet Component</div>
+
+          <div class="viewport-grid">
+            <!-- Mobile Bottom Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Mobile <span class="size">Bottom Sheet</span>
+              </div>
+              <div class="sheet-container option-c">
+                <div class="sheet-bottom">
+                  <div class="sheet-drag-handle"></div>
+                  <div
+                    class="sheet-header"
+                    style="
+                      background: linear-gradient(
+                        180deg,
+                        #f9faf9 0%,
+                        white 100%
+                      );
+                    "
+                  >
+                    <span class="sheet-title">Filter Products</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="sheet-body">
+                    <div class="demo-list">
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#filter-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Category</div>
+                          <div class="demo-list-item-desc">All Categories</div>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#credit-card-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Price Range</div>
+                          <div class="demo-list-item-desc">$0 - $500</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer">
+                    <button class="dialog-btn dialog-btn-secondary">
+                      Reset
+                    </button>
+                    <button class="dialog-btn dialog-btn-primary">
+                      Apply Filters
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tablet Bottom Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Tablet <span class="size">Bottom Sheet</span>
+              </div>
+              <div class="sheet-container option-c">
+                <div class="sheet-bottom">
+                  <div class="sheet-drag-handle"></div>
+                  <div
+                    class="sheet-header"
+                    style="
+                      background: linear-gradient(
+                        180deg,
+                        #f9faf9 0%,
+                        white 100%
+                      );
+                    "
+                  >
+                    <span class="sheet-title">Select Address</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div class="sheet-body">
+                    <div class="demo-list">
+                      <div
+                        class="demo-list-item"
+                        style="border: 2px solid #4f6f52"
+                      >
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#map-pin-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Home</div>
+                          <div class="demo-list-item-desc">
+                            123 Main Street, Apt 4B
+                          </div>
+                        </div>
+                        <div style="color: #4f6f52">
+                          <svg
+                            style="
+                              width: 20px;
+                              height: 20px;
+                              stroke: currentColor;
+                              stroke-width: 2;
+                              fill: none;
+                            "
+                          >
+                            <use href="#check-icon" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div class="demo-list-item-icon">
+                          <svg><use href="#map-pin-icon" /></svg>
+                        </div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Office</div>
+                          <div class="demo-list-item-desc">
+                            456 Work Boulevard, Suite 100
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer">
+                    <button
+                      class="dialog-btn dialog-btn-primary"
+                      style="width: 100%"
+                    >
+                      Deliver to This Address
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Right Sheet -->
+            <div class="viewport-box">
+              <div class="viewport-label">
+                Desktop <span class="size">Right Sheet</span>
+              </div>
+              <div class="sheet-container desktop option-c">
+                <div class="sheet-right">
+                  <div class="sheet-header" style="background: #f9faf9">
+                    <span class="sheet-title">Order Details</span>
+                    <button class="dialog-close">
+                      <svg><use href="#x-icon" /></svg>
+                    </button>
+                  </div>
+                  <div
+                    class="sheet-body"
+                    style="height: auto; max-height: 200px"
+                  >
+                    <div class="demo-list">
+                      <div class="demo-list-item">
+                        <div
+                          style="
+                            width: 48px;
+                            height: 48px;
+                            background: #e8ddd4;
+                            border-radius: 8px;
+                          "
+                        ></div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Ceramic Vase</div>
+                          <div class="demo-list-item-desc">Qty: 1 | $89.00</div>
+                        </div>
+                      </div>
+                      <div class="demo-list-item">
+                        <div
+                          style="
+                            width: 48px;
+                            height: 48px;
+                            background: #d9e8d9;
+                            border-radius: 8px;
+                          "
+                        ></div>
+                        <div class="demo-list-item-text">
+                          <div class="demo-list-item-title">Clay Bowl Set</div>
+                          <div class="demo-list-item-desc">
+                            Qty: 2 | $120.00
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sheet-footer" style="position: relative">
+                    <button
+                      class="dialog-btn dialog-btn-secondary"
+                      style="flex: 1"
+                    >
+                      Close
+                    </button>
+                    <button
+                      class="dialog-btn dialog-btn-primary"
+                      style="flex: 1"
+                    >
+                      Track Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred dialog & sheet style for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Classic
+            Clean</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Minimal
+            Floating</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Subtle
+            Header</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Classic
+            Clean</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Minimal
+            Floating</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Subtle
+            Header</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Classic
+            Clean</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Minimal
+            Floating</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Subtle
+            Header</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 4.7):</strong><br /><br />
+      <strong>Dialog:</strong><br />
+      &bull; Border radius: rounded-2xl (16px)<br />
+      &bull; Shadow: shadow-xl with backdrop blur<br />
+      &bull; Header: font-display title, close X button<br />
+      &bull; Footer: Actions right-aligned<br />
+      &bull; Sizes: sm (360px), default (440px), lg (520px), xl (640px)<br /><br />
+      <strong>Sheet:</strong><br />
+      &bull; Mobile: Bottom slide, rounded-t-3xl, drag handle<br />
+      &bull; Desktop: Right slide, 400px width<br />
+      &bull; Safe area padding for notch devices<br />
+      &bull; Backdrop with 50% opacity<br /><br />
+      <strong>Files to modify:</strong> src/components/ui/dialog.tsx,
+      src/components/ui/sheet.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

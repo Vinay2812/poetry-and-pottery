@@ -1,0 +1,1943 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 6.1: Cart Page Layout - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Cart Page Specific Styles */
+      .cart-header {
+        margin-bottom: 24px;
+      }
+
+      .cart-header-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .cart-header-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .cart-header-count {
+        font-size: 14px;
+        color: #737373;
+        margin-top: 8px;
+      }
+
+      /* Cart Layout */
+      .cart-layout {
+        display: flex;
+        gap: 24px;
+      }
+
+      .cart-layout-mobile {
+        flex-direction: column;
+      }
+
+      .cart-layout-desktop {
+        flex-direction: row;
+      }
+
+      .cart-items-section {
+        flex: 2;
+      }
+
+      .cart-summary-section {
+        flex: 1;
+      }
+
+      /* Cart Item */
+      .cart-item {
+        display: flex;
+        gap: 16px;
+        padding: 16px;
+        background: white;
+        border-radius: 16px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .cart-item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        flex-shrink: 0;
+      }
+
+      .cart-item-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .cart-item-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .cart-item-category {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .cart-item-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .cart-item-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* Quantity Selector */
+      .qty-selector {
+        display: flex;
+        align-items: center;
+        background: #f5f5f4;
+        border-radius: 20px;
+        padding: 4px;
+      }
+
+      .qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: none;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: #1a1a1a;
+        cursor: pointer;
+      }
+
+      .qty-value {
+        width: 32px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .remove-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: #999;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Order Summary */
+      .order-summary {
+        background: #fafaf9;
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .order-summary.option-b {
+        background: white;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      }
+
+      .order-summary.option-c {
+        background: #e8ece8;
+      }
+
+      .summary-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .summary-row.total {
+        border-top: 1px solid #e5e5e5;
+        margin-top: 8px;
+        padding-top: 16px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+        color: #1a1a1a;
+      }
+
+      .coupon-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .coupon-input {
+        flex: 1;
+        height: 40px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .coupon-btn {
+        height: 40px;
+        padding: 0 16px;
+        background: white;
+        border: 1px solid #4f6f52;
+        color: #4f6f52;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .checkout-btn {
+        width: 100%;
+        height: 48px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .checkout-btn:hover {
+        background: #3d5640;
+      }
+
+      .checkout-btn.full {
+        border-radius: 12px;
+      }
+
+      /* Sticky CTA */
+      .sticky-cta {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 12px 16px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .sticky-cta-total {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sticky-cta-label {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .sticky-cta-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .sticky-cta-btn {
+        flex: 1;
+        height: 44px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      /* Trust Badges */
+      .trust-badges {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .trust-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .trust-badge-icon {
+        width: 20px;
+        height: 20px;
+        color: #4f6f52;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+        overflow-x: auto;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        min-width: 0;
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Device Frames */
+      .device-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .device-frame.mobile {
+        border: 4px solid #1a1a1a;
+        border-radius: 24px;
+      }
+
+      .device-frame.tablet {
+        border: 3px solid #333;
+        border-radius: 16px;
+      }
+
+      .device-frame.desktop {
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+      }
+
+      .device-content {
+        padding: 16px;
+      }
+
+      .device-content.desktop {
+        padding: 24px 32px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Desktop Split Layout */
+      .desktop-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 32px;
+      }
+
+      /* Mobile Nav Placeholder */
+      .mobile-header {
+        height: 56px;
+        background: white;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 12px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .back-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .header-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        flex: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 6.1: Cart Page Layout</h1>
+    <p class="subtitle">
+      Cart page layout redesign with consistent page header, mobile-first
+      approach. Desktop uses 2/3 + 1/3 split layout. Mobile has full-width items
+      with sticky CTA.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">AWAITING APPROVAL</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Inconsistent page header styling</li>
+            <li>No sticky CTA on mobile</li>
+            <li>Basic cart layout</li>
+            <li>No visual hierarchy</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Consistent page header with title + underline</li>
+            <li>Mobile: Full-width items, summary below, sticky CTA</li>
+            <li>Desktop: 2-column split (items 2/3, summary 1/3)</li>
+            <li>Trust badges under checkout button</li>
+            <li>Coupon code input in summary</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Stacked Summary (Mobile-First) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Stacked Summary <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Clean vertical layout. Mobile shows items first, then summary.
+              Sticky checkout CTA at bottom on mobile.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="device-frame mobile">
+              <div class="mobile-header">
+                <div class="back-btn">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                </div>
+                <span class="header-title">Shopping Cart</span>
+              </div>
+              <div class="device-content">
+                <div class="cart-header">
+                  <div class="cart-header-count">3 items in your cart</div>
+                </div>
+
+                <!-- Cart Items -->
+                <div class="cart-item">
+                  <div class="cart-item-image"></div>
+                  <div class="cart-item-info">
+                    <div>
+                      <div class="cart-item-name">Ceramic Vase</div>
+                      <div class="cart-item-category">Handcrafted</div>
+                    </div>
+                    <div class="cart-item-actions">
+                      <div class="qty-selector">
+                        <button class="qty-btn">-</button>
+                        <span class="qty-value">1</span>
+                        <button class="qty-btn">+</button>
+                      </div>
+                      <div class="cart-item-price">$85</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cart-item">
+                  <div
+                    class="cart-item-image"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #d9e8d9 0%,
+                        #b8d4b8 100%
+                      );
+                    "
+                  ></div>
+                  <div class="cart-item-info">
+                    <div>
+                      <div class="cart-item-name">Clay Bowl Set</div>
+                      <div class="cart-item-category">Kitchen</div>
+                    </div>
+                    <div class="cart-item-actions">
+                      <div class="qty-selector">
+                        <button class="qty-btn">-</button>
+                        <span class="qty-value">2</span>
+                        <button class="qty-btn">+</button>
+                      </div>
+                      <div class="cart-item-price">$120</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-summary" style="margin-top: 24px">
+                  <div class="summary-title">Order Summary</div>
+                  <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>$205.00</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>Free</span>
+                  </div>
+                  <div class="coupon-row">
+                    <input class="coupon-input" placeholder="Coupon code" />
+                    <button class="coupon-btn">Apply</button>
+                  </div>
+                  <div class="summary-row total">
+                    <span>Total</span>
+                    <span>$205.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky CTA -->
+              <div class="sticky-cta">
+                <div class="sticky-cta-total">
+                  <span class="sticky-cta-label">Total</span>
+                  <span class="sticky-cta-price">$205.00</span>
+                </div>
+                <button class="sticky-cta-btn">Place Order</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="device-frame tablet">
+              <div class="device-content">
+                <div class="cart-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <span>Cart</span>
+                  </div>
+                  <div class="cart-header-title">Shopping Cart</div>
+                  <div class="cart-header-underline"></div>
+                  <div class="cart-header-count" style="margin-top: 12px">
+                    3 items
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1.5fr 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <div>
+                    <div class="cart-item">
+                      <div class="cart-item-image"></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name">Ceramic Vase</div>
+                          <div class="cart-item-category">Handcrafted</div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">1</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <div class="cart-item-price">$85</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="cart-item">
+                      <div
+                        class="cart-item-image"
+                        style="
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                        "
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name">Clay Bowl Set</div>
+                          <div class="cart-item-category">Kitchen</div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">2</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <div class="cart-item-price">$120</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-summary">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                      <span>Subtotal</span>
+                      <span>$205.00</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Shipping</span>
+                      <span>Free</span>
+                    </div>
+                    <div class="coupon-row">
+                      <input class="coupon-input" placeholder="Coupon code" />
+                      <button class="coupon-btn">Apply</button>
+                    </div>
+                    <div class="summary-row total">
+                      <span>Total</span>
+                      <span>$205.00</span>
+                    </div>
+                    <button class="checkout-btn">
+                      Place Order
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="device-frame desktop">
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">poetryandpottery.com/cart</div>
+              </div>
+              <div class="device-content desktop">
+                <div class="cart-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <span>Shopping Cart</span>
+                  </div>
+                  <div class="cart-header-title">Shopping Cart</div>
+                  <div class="cart-header-underline"></div>
+                  <div class="cart-header-count" style="margin-top: 12px">
+                    3 items in your cart
+                  </div>
+                </div>
+
+                <div class="desktop-layout">
+                  <div>
+                    <div class="cart-item">
+                      <div
+                        class="cart-item-image"
+                        style="width: 100px; height: 100px"
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name" style="font-size: 16px">
+                            Ceramic Vase - Large
+                          </div>
+                          <div class="cart-item-category">
+                            Handcrafted Pottery
+                          </div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">1</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <button class="remove-btn">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                            >
+                              <path
+                                d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                              />
+                            </svg>
+                          </button>
+                          <div class="cart-item-price" style="font-size: 16px">
+                            $85.00
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="cart-item">
+                      <div
+                        class="cart-item-image"
+                        style="
+                          width: 100px;
+                          height: 100px;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                        "
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name" style="font-size: 16px">
+                            Clay Bowl Set (3 pieces)
+                          </div>
+                          <div class="cart-item-category">
+                            Kitchen Collection
+                          </div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">2</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <button class="remove-btn">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                            >
+                              <path
+                                d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                              />
+                            </svg>
+                          </button>
+                          <div class="cart-item-price" style="font-size: 16px">
+                            $120.00
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-summary option-b">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                      <span>Subtotal (3 items)</span>
+                      <span>$205.00</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Shipping</span>
+                      <span style="color: #4f6f52">Free</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Tax</span>
+                      <span>$16.40</span>
+                    </div>
+                    <div class="coupon-row">
+                      <input
+                        class="coupon-input"
+                        placeholder="Enter coupon code"
+                      />
+                      <button class="coupon-btn">Apply</button>
+                    </div>
+                    <div class="summary-row total">
+                      <span>Total</span>
+                      <span>$221.40</span>
+                    </div>
+                    <button class="checkout-btn full">
+                      Place Order
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                    <div class="trust-badges">
+                      <div class="trust-badge">
+                        <svg
+                          class="trust-badge-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <rect
+                            x="3"
+                            y="11"
+                            width="18"
+                            height="11"
+                            rx="2"
+                            ry="2"
+                          />
+                          <path d="M7 11V7a5 5 0 0110 0v4" />
+                        </svg>
+                        <span>Secure</span>
+                      </div>
+                      <div class="trust-badge">
+                        <svg
+                          class="trust-badge-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <rect x="1" y="3" width="15" height="13" />
+                          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                          <circle cx="5.5" cy="18.5" r="2.5" />
+                          <circle cx="18.5" cy="18.5" r="2.5" />
+                        </svg>
+                        <span>Free Shipping</span>
+                      </div>
+                      <div class="trust-badge">
+                        <svg
+                          class="trust-badge-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path
+                            d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"
+                          />
+                        </svg>
+                        <span>Handmade</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Side Summary with Sticky -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Elevated Summary Card</h3>
+            <p class="wf-option-desc">
+              Summary card has more visual prominence with shadow. Desktop shows
+              sticky summary that follows scroll.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="device-frame mobile">
+              <div class="mobile-header">
+                <div class="back-btn">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                </div>
+                <span class="header-title">Cart (3)</span>
+              </div>
+              <div class="device-content">
+                <!-- Cart Items with more spacing -->
+                <div class="cart-item" style="padding: 20px">
+                  <div
+                    class="cart-item-image"
+                    style="width: 88px; height: 88px"
+                  ></div>
+                  <div class="cart-item-info">
+                    <div>
+                      <div class="cart-item-name" style="font-size: 15px">
+                        Ceramic Vase
+                      </div>
+                      <div class="cart-item-category">Handcrafted</div>
+                      <div class="cart-item-price" style="margin-top: 8px">
+                        $85
+                      </div>
+                    </div>
+                    <div class="cart-item-actions">
+                      <div class="qty-selector">
+                        <button class="qty-btn">-</button>
+                        <span class="qty-value">1</span>
+                        <button class="qty-btn">+</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cart-item" style="padding: 20px">
+                  <div
+                    class="cart-item-image"
+                    style="
+                      width: 88px;
+                      height: 88px;
+                      background: linear-gradient(
+                        135deg,
+                        #d9e8d9 0%,
+                        #b8d4b8 100%
+                      );
+                    "
+                  ></div>
+                  <div class="cart-item-info">
+                    <div>
+                      <div class="cart-item-name" style="font-size: 15px">
+                        Clay Bowl Set
+                      </div>
+                      <div class="cart-item-category">Kitchen</div>
+                      <div class="cart-item-price" style="margin-top: 8px">
+                        $120
+                      </div>
+                    </div>
+                    <div class="cart-item-actions">
+                      <div class="qty-selector">
+                        <button class="qty-btn">-</button>
+                        <span class="qty-value">2</span>
+                        <button class="qty-btn">+</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Elevated Order Summary -->
+                <div class="order-summary option-b" style="margin-top: 24px">
+                  <div class="summary-title">Order Summary</div>
+                  <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>$205.00</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Shipping</span>
+                    <span style="color: #4f6f52">Free</span>
+                  </div>
+                  <div class="summary-row total">
+                    <span>Total</span>
+                    <span>$205.00</span>
+                  </div>
+                  <button class="checkout-btn">Checkout</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="device-frame tablet">
+              <div class="device-content">
+                <div class="cart-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <span>Cart</span>
+                  </div>
+                  <div class="cart-header-title">Your Cart</div>
+                  <div class="cart-header-underline"></div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1.5fr 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <div>
+                    <div class="cart-item" style="padding: 20px">
+                      <div
+                        class="cart-item-image"
+                        style="width: 88px; height: 88px"
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name">Ceramic Vase</div>
+                          <div class="cart-item-category">Handcrafted</div>
+                          <div class="cart-item-price" style="margin-top: 8px">
+                            $85
+                          </div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">1</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="cart-item" style="padding: 20px">
+                      <div
+                        class="cart-item-image"
+                        style="
+                          width: 88px;
+                          height: 88px;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                        "
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name">Clay Bowl Set</div>
+                          <div class="cart-item-category">Kitchen</div>
+                          <div class="cart-item-price" style="margin-top: 8px">
+                            $120
+                          </div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">2</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="order-summary option-b"
+                    style="position: sticky; top: 24px"
+                  >
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                      <span>Subtotal</span>
+                      <span>$205.00</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Shipping</span>
+                      <span style="color: #4f6f52">Free</span>
+                    </div>
+                    <div class="coupon-row">
+                      <input class="coupon-input" placeholder="Coupon" />
+                      <button class="coupon-btn">Apply</button>
+                    </div>
+                    <div class="summary-row total">
+                      <span>Total</span>
+                      <span>$205.00</span>
+                    </div>
+                    <button class="checkout-btn">Proceed to Checkout</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="device-frame desktop">
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">poetryandpottery.com/cart</div>
+              </div>
+              <div class="device-content desktop">
+                <div class="cart-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <span>Your Cart</span>
+                  </div>
+                  <div class="cart-header-title">Your Cart</div>
+                  <div class="cart-header-underline"></div>
+                </div>
+
+                <div class="desktop-layout">
+                  <div>
+                    <!-- Table Header -->
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: 2fr 1fr 1fr 1fr;
+                        padding: 12px 16px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #999;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1px solid #e5e5e5;
+                      "
+                    >
+                      <span>Product</span>
+                      <span>Price</span>
+                      <span>Quantity</span>
+                      <span style="text-align: right">Total</span>
+                    </div>
+
+                    <div
+                      class="cart-item"
+                      style="
+                        border-radius: 0;
+                        box-shadow: none;
+                        border-bottom: 1px solid #f0f0f0;
+                      "
+                    >
+                      <div
+                        class="cart-item-image"
+                        style="width: 80px; height: 80px"
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          display: grid;
+                          grid-template-columns: 2fr 1fr 1fr 1fr;
+                          align-items: center;
+                        "
+                      >
+                        <div>
+                          <div class="cart-item-name">Ceramic Vase - Large</div>
+                          <div class="cart-item-category">Handcrafted</div>
+                        </div>
+                        <div class="cart-item-price">$85.00</div>
+                        <div class="qty-selector">
+                          <button class="qty-btn">-</button>
+                          <span class="qty-value">1</span>
+                          <button class="qty-btn">+</button>
+                        </div>
+                        <div style="text-align: right; font-weight: 600">
+                          $85.00
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="cart-item"
+                      style="
+                        border-radius: 0;
+                        box-shadow: none;
+                        border-bottom: 1px solid #f0f0f0;
+                      "
+                    >
+                      <div
+                        class="cart-item-image"
+                        style="
+                          width: 80px;
+                          height: 80px;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                        "
+                      ></div>
+                      <div
+                        style="
+                          flex: 1;
+                          display: grid;
+                          grid-template-columns: 2fr 1fr 1fr 1fr;
+                          align-items: center;
+                        "
+                      >
+                        <div>
+                          <div class="cart-item-name">
+                            Clay Bowl Set (3 pcs)
+                          </div>
+                          <div class="cart-item-category">Kitchen</div>
+                        </div>
+                        <div class="cart-item-price">$60.00</div>
+                        <div class="qty-selector">
+                          <button class="qty-btn">-</button>
+                          <span class="qty-value">2</span>
+                          <button class="qty-btn">+</button>
+                        </div>
+                        <div style="text-align: right; font-weight: 600">
+                          $120.00
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="order-summary option-b"
+                    style="position: sticky; top: 24px"
+                  >
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                      <span>Subtotal</span>
+                      <span>$205.00</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Shipping</span>
+                      <span style="color: #4f6f52">Free</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Estimated Tax</span>
+                      <span>$16.40</span>
+                    </div>
+                    <div class="coupon-row">
+                      <input class="coupon-input" placeholder="Discount code" />
+                      <button class="coupon-btn">Apply</button>
+                    </div>
+                    <div class="summary-row total">
+                      <span>Total</span>
+                      <span>$221.40</span>
+                    </div>
+                    <button class="checkout-btn full">
+                      Proceed to Checkout
+                    </button>
+                    <div class="trust-badges">
+                      <div class="trust-badge">
+                        <svg
+                          class="trust-badge-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <rect
+                            x="3"
+                            y="11"
+                            width="18"
+                            height="11"
+                            rx="2"
+                            ry="2"
+                          />
+                          <path d="M7 11V7a5 5 0 0110 0v4" />
+                        </svg>
+                        <span>Secure</span>
+                      </div>
+                      <div class="trust-badge">
+                        <svg
+                          class="trust-badge-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <rect x="1" y="3" width="15" height="13" />
+                          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                          <circle cx="5.5" cy="18.5" r="2.5" />
+                          <circle cx="18.5" cy="18.5" r="2.5" />
+                        </svg>
+                        <span>Free Shipping</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Green Accent Summary -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Green Accent Summary</h3>
+            <p class="wf-option-desc">
+              Summary card uses primary-light background for brand consistency.
+              More prominent CTA placement.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="device-frame mobile">
+              <div class="mobile-header">
+                <div class="back-btn">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                </div>
+                <span class="header-title">Shopping Cart</span>
+              </div>
+              <div class="device-content">
+                <div class="cart-header-count" style="margin-bottom: 16px">
+                  3 items
+                </div>
+
+                <div class="cart-item">
+                  <div class="cart-item-image"></div>
+                  <div class="cart-item-info">
+                    <div>
+                      <div class="cart-item-name">Ceramic Vase</div>
+                      <div class="cart-item-category">Handcrafted</div>
+                    </div>
+                    <div class="cart-item-actions">
+                      <div class="qty-selector">
+                        <button class="qty-btn">-</button>
+                        <span class="qty-value">1</span>
+                        <button class="qty-btn">+</button>
+                      </div>
+                      <div class="cart-item-price">$85</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cart-item">
+                  <div
+                    class="cart-item-image"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #d9e8d9 0%,
+                        #b8d4b8 100%
+                      );
+                    "
+                  ></div>
+                  <div class="cart-item-info">
+                    <div>
+                      <div class="cart-item-name">Clay Bowl Set</div>
+                      <div class="cart-item-category">Kitchen</div>
+                    </div>
+                    <div class="cart-item-actions">
+                      <div class="qty-selector">
+                        <button class="qty-btn">-</button>
+                        <span class="qty-value">2</span>
+                        <button class="qty-btn">+</button>
+                      </div>
+                      <div class="cart-item-price">$120</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Green Accent Order Summary -->
+                <div class="order-summary option-c" style="margin-top: 24px">
+                  <div class="summary-title">Order Summary</div>
+                  <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>$205.00</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>Free</span>
+                  </div>
+                  <div
+                    class="summary-row total"
+                    style="border-top-color: #c5d4c6"
+                  >
+                    <span>Total</span>
+                    <span>$205.00</span>
+                  </div>
+                  <button class="checkout-btn">Place Order</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="device-frame tablet">
+              <div class="device-content">
+                <div class="cart-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <span>Cart</span>
+                  </div>
+                  <div class="cart-header-title">Shopping Cart</div>
+                  <div class="cart-header-underline"></div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1.5fr 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <div>
+                    <div class="cart-item">
+                      <div class="cart-item-image"></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name">Ceramic Vase</div>
+                          <div class="cart-item-category">Handcrafted</div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">1</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <div class="cart-item-price">$85</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="cart-item">
+                      <div
+                        class="cart-item-image"
+                        style="
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                        "
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name">Clay Bowl Set</div>
+                          <div class="cart-item-category">Kitchen</div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">2</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <div class="cart-item-price">$120</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-summary option-c">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                      <span>Subtotal</span>
+                      <span>$205.00</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Shipping</span>
+                      <span style="color: #4f6f52">Free</span>
+                    </div>
+                    <div class="coupon-row">
+                      <input
+                        class="coupon-input"
+                        placeholder="Coupon"
+                        style="background: white"
+                      />
+                      <button class="coupon-btn" style="background: white">
+                        Apply
+                      </button>
+                    </div>
+                    <div
+                      class="summary-row total"
+                      style="border-top-color: #c5d4c6"
+                    >
+                      <span>Total</span>
+                      <span>$205.00</span>
+                    </div>
+                    <button class="checkout-btn">Place Order</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="device-frame desktop">
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">poetryandpottery.com/cart</div>
+              </div>
+              <div class="device-content desktop">
+                <div class="cart-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <span>Shopping Cart</span>
+                  </div>
+                  <div class="cart-header-title">Shopping Cart</div>
+                  <div class="cart-header-underline"></div>
+                  <div class="cart-header-count" style="margin-top: 12px">
+                    3 items in your cart
+                  </div>
+                </div>
+
+                <div class="desktop-layout">
+                  <div>
+                    <div class="cart-item">
+                      <div
+                        class="cart-item-image"
+                        style="width: 100px; height: 100px"
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name" style="font-size: 16px">
+                            Ceramic Vase - Large
+                          </div>
+                          <div class="cart-item-category">
+                            Handcrafted Pottery
+                          </div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">1</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <button class="remove-btn">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                            >
+                              <path
+                                d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                              />
+                            </svg>
+                          </button>
+                          <div class="cart-item-price" style="font-size: 16px">
+                            $85.00
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="cart-item">
+                      <div
+                        class="cart-item-image"
+                        style="
+                          width: 100px;
+                          height: 100px;
+                          background: linear-gradient(
+                            135deg,
+                            #d9e8d9 0%,
+                            #b8d4b8 100%
+                          );
+                        "
+                      ></div>
+                      <div class="cart-item-info">
+                        <div>
+                          <div class="cart-item-name" style="font-size: 16px">
+                            Clay Bowl Set (3 pieces)
+                          </div>
+                          <div class="cart-item-category">
+                            Kitchen Collection
+                          </div>
+                        </div>
+                        <div class="cart-item-actions">
+                          <div class="qty-selector">
+                            <button class="qty-btn">-</button>
+                            <span class="qty-value">2</span>
+                            <button class="qty-btn">+</button>
+                          </div>
+                          <button class="remove-btn">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                            >
+                              <path
+                                d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                              />
+                            </svg>
+                          </button>
+                          <div class="cart-item-price" style="font-size: 16px">
+                            $120.00
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="order-summary option-c">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                      <span>Subtotal (3 items)</span>
+                      <span>$205.00</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Shipping</span>
+                      <span style="color: #4f6f52">Free</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Tax</span>
+                      <span>$16.40</span>
+                    </div>
+                    <div class="coupon-row">
+                      <input
+                        class="coupon-input"
+                        placeholder="Enter coupon code"
+                        style="background: white"
+                      />
+                      <button class="coupon-btn" style="background: white">
+                        Apply
+                      </button>
+                    </div>
+                    <div
+                      class="summary-row total"
+                      style="border-top-color: #c5d4c6"
+                    >
+                      <span>Total</span>
+                      <span>$221.40</span>
+                    </div>
+                    <button class="checkout-btn full">
+                      Place Order
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred cart page layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Stacked
+            Summary</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Elevated
+            Card</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Green
+            Accent</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Stacked
+            Summary</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Elevated
+            Card</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Green
+            Accent</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Stacked
+            Summary</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Elevated
+            Card</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Green
+            Accent</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 6.1):</strong><br /><br />
+      &bull; <strong>Page Header:</strong> "Shopping Cart" with breadcrumbs,
+      green underline<br />
+      &bull; <strong>Mobile Layout:</strong> Full-width items, summary below,
+      sticky CTA at bottom<br />
+      &bull; <strong>Desktop Layout:</strong> 2/3 items + 1/3 summary split<br />
+      &bull; <strong>Sticky Summary:</strong> On desktop, summary follows
+      scroll<br />
+      &bull; <strong>CTA:</strong> "Place Order" button, rounded-lg,
+      full-width<br />
+      &bull; <strong>Trust Badges:</strong> Secure, Free Shipping, Handmade
+      icons<br />
+      &bull; <strong>File:</strong> src/features/cart/components/cart.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

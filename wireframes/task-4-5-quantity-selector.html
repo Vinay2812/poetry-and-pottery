@@ -1,0 +1,1493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.5: Quantity Selector - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Quantity Selector Base */
+      .qty-selector {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+      }
+
+      .qty-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        font-family: "Outfit", sans-serif;
+        font-weight: 600;
+        transition: all 0.15s ease-out;
+        color: #1a1a1a;
+      }
+
+      .qty-btn:active:not(:disabled) {
+        transform: scale(0.95);
+      }
+
+      .qty-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .qty-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        fill: none;
+      }
+
+      .qty-value {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Outfit", sans-serif;
+        font-weight: 600;
+        color: #1a1a1a;
+        user-select: none;
+      }
+
+      /* Size Variants */
+      .qty-sm .qty-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+      }
+      .qty-sm .qty-value {
+        width: 32px;
+        font-size: 13px;
+      }
+      .qty-sm .qty-btn svg {
+        width: 12px;
+        height: 12px;
+      }
+
+      .qty-md .qty-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+      .qty-md .qty-value {
+        width: 40px;
+        font-size: 14px;
+      }
+      .qty-md .qty-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .qty-lg .qty-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+      }
+      .qty-lg .qty-value {
+        width: 48px;
+        font-size: 16px;
+      }
+      .qty-lg .qty-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* Option A: Separated Buttons (rounded-lg) */
+      .option-a .qty-btn {
+        background: #f5f5f4;
+        border-radius: 8px;
+      }
+      .option-a .qty-btn:hover:not(:disabled) {
+        background: #e7e5e4;
+      }
+      .option-a .qty-selector {
+        gap: 4px;
+      }
+
+      /* Option B: Connected Pill */
+      .option-b .qty-selector {
+        background: #f5f5f4;
+        border-radius: 9999px;
+        padding: 4px;
+      }
+      .option-b .qty-btn {
+        background: transparent;
+        border-radius: 9999px;
+      }
+      .option-b .qty-btn:hover:not(:disabled) {
+        background: #e7e5e4;
+      }
+
+      /* Option C: Outlined Box */
+      .option-c .qty-selector {
+        border: 1.5px solid #e5e5e5;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .option-c .qty-btn {
+        background: transparent;
+        border-radius: 0;
+      }
+      .option-c .qty-btn:first-child {
+        border-right: 1px solid #e5e5e5;
+      }
+      .option-c .qty-btn:last-child {
+        border-left: 1px solid #e5e5e5;
+      }
+      .option-c .qty-btn:hover:not(:disabled) {
+        background: #f5f5f4;
+      }
+
+      /* Option D: Primary Accent Buttons */
+      .option-d .qty-selector {
+        gap: 8px;
+      }
+      .option-d .qty-btn {
+        background: #4f6f52;
+        color: white;
+        border-radius: 8px;
+      }
+      .option-d .qty-btn:hover:not(:disabled) {
+        background: #3d5640;
+      }
+      .option-d .qty-btn:disabled {
+        background: #e8ece8;
+        color: #999;
+      }
+      .option-d .qty-value {
+        background: #f5f5f4;
+        border-radius: 8px;
+        height: 36px;
+      }
+      .option-d.qty-sm .qty-value {
+        height: 28px;
+      }
+      .option-d.qty-lg .qty-value {
+        height: 44px;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Demo Sections */
+      .demo-section {
+        margin-bottom: 24px;
+      }
+
+      .demo-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      .demo-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 12px;
+      }
+
+      .demo-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-row-label {
+        font-size: 12px;
+        color: #666;
+        min-width: 60px;
+      }
+
+      /* Context Cards */
+      .context-card {
+        background: #fafaf9;
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 16px;
+      }
+
+      .context-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #bbb;
+        margin-bottom: 12px;
+      }
+
+      /* Cart Item Mini */
+      .cart-item-mini {
+        display: flex;
+        gap: 12px;
+        background: white;
+        border-radius: 10px;
+        padding: 12px;
+      }
+
+      .cart-item-mini-img {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+
+      .cart-item-mini-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .cart-item-mini-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .cart-item-mini-meta {
+        font-size: 11px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .cart-item-mini-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto;
+      }
+
+      .cart-item-mini-price {
+        font-size: 14px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      /* Product Detail Mini */
+      .product-detail-mini {
+        background: white;
+        border-radius: 10px;
+        padding: 16px;
+      }
+
+      .product-detail-mini-label {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 8px;
+      }
+
+      .product-detail-mini-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .product-detail-mini-btn {
+        flex: 1;
+        height: 44px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.5: Quantity Selector</h1>
+    <p class="subtitle">
+      Foundation component: Compact +/- quantity controls with disabled states.
+      Mobile-optimized touch targets (36px min), consistent sizing across cart
+      and product detail.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a"
+        >✅ APPROVED - Option B (Connected Pill)</span
+      >
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="minus-icon" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </symbol>
+      <symbol id="plus-icon" viewBox="0 0 24 24">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Inconsistent quantity control styling</li>
+            <li>Small touch targets on mobile</li>
+            <li>No clear disabled state for min/max</li>
+            <li>Varying sizes across cart and product pages</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Three size variants: sm, md, lg</li>
+            <li>Minimum 36px touch targets (WCAG compliant)</li>
+            <li>Clear disabled state at qty=1 and max</li>
+            <li>Press animation for feedback</li>
+            <li>Centered number with font-medium</li>
+            <li>Consistent rounded-lg buttons</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Separated Buttons (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Separated Buttons
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Individual rounded-lg buttons with small gap. Clean, modern look.
+              Easy to tap on mobile.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box option-a">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Size Variants</div>
+              <div class="demo-row">
+                <span class="demo-row-label">Small:</span>
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Medium:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Large:</span>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Disabled States</div>
+              <div class="demo-row">
+                <span class="demo-row-label">At min:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">At max:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">10</span>
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Cart Item</div>
+              <div class="cart-item-mini">
+                <div class="cart-item-mini-img"></div>
+                <div class="cart-item-mini-info">
+                  <div class="cart-item-mini-name">Ceramic Vase</div>
+                  <div class="cart-item-mini-meta">Sage Green</div>
+                  <div class="cart-item-mini-footer">
+                    <div class="qty-selector qty-sm">
+                      <button class="qty-btn" disabled>
+                        <svg><use href="#minus-icon" /></svg>
+                      </button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">
+                        <svg><use href="#plus-icon" /></svg>
+                      </button>
+                    </div>
+                    <span class="cart-item-mini-price">&#8377;1,450</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box option-a">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">All Sizes</div>
+              <div class="demo-row">
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">5</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Product Detail</div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box option-a">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Usage Examples</div>
+              <div class="demo-row">
+                <span class="demo-row-label">Cart list:</span>
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Cart sidebar:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Product page:</span>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">
+                In Context: Product Detail (Desktop)
+              </div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row" style="max-width: 320px">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Connected Pill -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Connected Pill</h3>
+            <p class="wf-option-desc">
+              Unified pill shape with embedded buttons. Compact, cohesive
+              appearance. Friendly feel.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box option-b">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Size Variants</div>
+              <div class="demo-row">
+                <span class="demo-row-label">Small:</span>
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Medium:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Large:</span>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Cart Item</div>
+              <div class="cart-item-mini">
+                <div class="cart-item-mini-img"></div>
+                <div class="cart-item-mini-info">
+                  <div class="cart-item-mini-name">Ceramic Vase</div>
+                  <div class="cart-item-mini-meta">Sage Green</div>
+                  <div class="cart-item-mini-footer">
+                    <div class="qty-selector qty-sm">
+                      <button class="qty-btn" disabled>
+                        <svg><use href="#minus-icon" /></svg>
+                      </button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">
+                        <svg><use href="#plus-icon" /></svg>
+                      </button>
+                    </div>
+                    <span class="cart-item-mini-price">&#8377;1,450</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box option-b">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">All Sizes</div>
+              <div class="demo-row">
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">5</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Product Detail</div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box option-b">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Disabled States</div>
+              <div class="demo-row">
+                <span class="demo-row-label">At min:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">At max:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">10</span>
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">
+                In Context: Product Detail (Desktop)
+              </div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row" style="max-width: 320px">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Outlined Box -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Outlined Box</h3>
+            <p class="wf-option-desc">
+              Bordered container with dividers. Traditional e-commerce style.
+              Clear boundaries.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box option-c">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Size Variants</div>
+              <div class="demo-row">
+                <span class="demo-row-label">Small:</span>
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Medium:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Large:</span>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Cart Item</div>
+              <div class="cart-item-mini">
+                <div class="cart-item-mini-img"></div>
+                <div class="cart-item-mini-info">
+                  <div class="cart-item-mini-name">Ceramic Vase</div>
+                  <div class="cart-item-mini-meta">Sage Green</div>
+                  <div class="cart-item-mini-footer">
+                    <div class="qty-selector qty-sm">
+                      <button class="qty-btn" disabled>
+                        <svg><use href="#minus-icon" /></svg>
+                      </button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">
+                        <svg><use href="#plus-icon" /></svg>
+                      </button>
+                    </div>
+                    <span class="cart-item-mini-price">&#8377;1,450</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box option-c">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">All Sizes</div>
+              <div class="demo-row">
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">5</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Product Detail</div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box option-c">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Disabled States</div>
+              <div class="demo-row">
+                <span class="demo-row-label">At min:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">At max:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">10</span>
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">
+                In Context: Product Detail (Desktop)
+              </div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row" style="max-width: 320px">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Primary Accent Buttons -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Primary Accent Buttons</h3>
+            <p class="wf-option-desc">
+              Green primary-colored buttons with neutral center. High contrast,
+              prominent CTAs.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box option-d">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Size Variants</div>
+              <div class="demo-row">
+                <span class="demo-row-label">Small:</span>
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Medium:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">Large:</span>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Cart Item</div>
+              <div class="cart-item-mini">
+                <div class="cart-item-mini-img"></div>
+                <div class="cart-item-mini-info">
+                  <div class="cart-item-mini-name">Ceramic Vase</div>
+                  <div class="cart-item-mini-meta">Sage Green</div>
+                  <div class="cart-item-mini-footer">
+                    <div class="qty-selector qty-sm">
+                      <button class="qty-btn" disabled>
+                        <svg><use href="#minus-icon" /></svg>
+                      </button>
+                      <span class="qty-value">1</span>
+                      <button class="qty-btn">
+                        <svg><use href="#plus-icon" /></svg>
+                      </button>
+                    </div>
+                    <span class="cart-item-mini-price">&#8377;1,450</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box option-d">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">All Sizes</div>
+              <div class="demo-row">
+                <div class="qty-selector qty-sm">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">2</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">3</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+                <div class="qty-selector qty-lg">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">5</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Product Detail</div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box option-d">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Disabled States</div>
+              <div class="demo-row">
+                <span class="demo-row-label">At min:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">1</span>
+                  <button class="qty-btn">
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="demo-row">
+                <span class="demo-row-label">At max:</span>
+                <div class="qty-selector qty-md">
+                  <button class="qty-btn">
+                    <svg><use href="#minus-icon" /></svg>
+                  </button>
+                  <span class="qty-value">10</span>
+                  <button class="qty-btn" disabled>
+                    <svg><use href="#plus-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">
+                In Context: Product Detail (Desktop)
+              </div>
+              <div class="product-detail-mini">
+                <div class="product-detail-mini-label">Quantity</div>
+                <div class="product-detail-mini-row" style="max-width: 320px">
+                  <div class="qty-selector qty-lg">
+                    <button class="qty-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="qty-value">1</span>
+                    <button class="qty-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                  <button class="product-detail-mini-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred quantity selector style for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Separated
+            (rounded-lg)</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Connected
+            Pill</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Outlined
+            Box</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D - Primary
+            Accent</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Separated
+            (rounded-lg)</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Connected
+            Pill</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Outlined
+            Box</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D - Primary
+            Accent</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A -
+            Separated (rounded-lg)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            Connected Pill</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Outlined
+            Box</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D - Primary
+            Accent</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 4.5):</strong><br /><br />
+      &bull; <strong>Sizes:</strong> sm (28px), md (36px), lg (44px) button
+      height<br />
+      &bull; <strong>Touch Target:</strong> Minimum 36px for WCAG compliance<br />
+      &bull; <strong>Props:</strong> value, min, max, size, onChange,
+      disabled<br />
+      &bull; <strong>States:</strong> Normal, hover, disabled (min/max)<br />
+      &bull; <strong>Animation:</strong> scale(0.95) on :active for press
+      feedback<br />
+      &bull; <strong>Accessibility:</strong> aria-label, keyboard +/- support<br />
+      &bull; <strong>File:</strong> src/components/shared/quantity-selector.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

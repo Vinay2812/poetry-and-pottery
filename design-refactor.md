@@ -34,12 +34,22 @@ agent-browser snapshot                # Get accessibility tree
 
 ### Status Legend
 
+**Phase Status:**
+
+| Status           | Meaning                                                    |
+| ---------------- | ---------------------------------------------------------- |
+| `🔲 Not Started` | Phase has not been started yet                             |
+| `🚧 In Progress` | Phase is actively being worked on — agent(s) claimed tasks |
+| `✅ Completed`   | All tasks in phase are done                                |
+
+**Task Status:**
+
 | Status                 | Meaning                                                |
 | ---------------------- | ------------------------------------------------------ |
-| `🔲 Wireframe Pending` | Task not started - needs wireframes created            |
+| `🔲 Wireframe Pending` | Task available — pick this up                          |
+| `🚧 In Progress`       | Agent is actively working on this — **SKIP** (claimed) |
 | `⏳ Awaiting Approval` | Wireframes created, waiting for user to select options |
 | `✅ Approved`          | User approved designs, ready for implementation        |
-| `🚧 In Progress`       | Implementation in progress                             |
 | `✔️ Completed`         | Implementation done and verified                       |
 
 ### Approval Requirements
@@ -356,11 +366,19 @@ Once user approves, the section is updated to:
 
 ### Phase 4: Foundation Components (PREREQUISITE)
 
+**Phase Status:** 🚧 In Progress
+
 > ⚠️ **BLOCKING:** Complete this phase before starting Phases 5-10. These components are dependencies for all feature phases.
 
 #### Task 4.1: Button Styles
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-1-button-styles.html](wireframes/task-4-1-button-styles.html)
+**Approved Selection:**
+
+- Mobile: Option A - rounded-lg (8px)
+- Tablet: Option A - rounded-lg (8px)
+- Desktop: Option A - rounded-lg (8px)
 
 **Scope:**
 
@@ -384,7 +402,13 @@ Once user approves, the section is updated to:
 
 #### Task 4.2: Badge Component
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-2-badge-component.html](wireframes/task-4-2-badge-component.html)
+**Approved Selection:**
+
+- Mobile: Option A - Pill shape (rounded-full)
+- Tablet: Option A - Pill shape (rounded-full)
+- Desktop: Option A - Pill shape (rounded-full)
 
 **Scope:**
 
@@ -410,7 +434,13 @@ Once user approves, the section is updated to:
 
 #### Task 4.3: Form Inputs
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-3-form-inputs.html](wireframes/task-4-3-form-inputs.html)
+**Approved Selection:**
+
+- Mobile: Option A - rounded-lg (8px)
+- Tablet: Option A - rounded-lg (8px)
+- Desktop: Option A - rounded-lg (8px)
 
 **Scope:**
 
@@ -436,7 +466,13 @@ Once user approves, the section is updated to:
 
 #### Task 4.4: Rating Component
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-4-rating-component.html](wireframes/task-4-4-rating-component.html)
+**Approved Selection:**
+
+- Mobile: Option B - Forest Green Stars
+- Tablet: Option B - Forest Green Stars
+- Desktop: Option B - Forest Green Stars
 
 **Scope:**
 
@@ -445,12 +481,12 @@ Once user approves, the section is updated to:
 
 **Design Specifications:**
 
-- Display: Filled amber, empty muted gray
+- Display: Filled forest green (#4F6F52), empty muted (#D4E5D6)
 - Interactive: Hover preview, cursor pointer
 - Sizes: sm (12px), md (16px), lg (20px)
 - Count: "(X reviews)" muted text
 
-**Files to Modify (after approval):**
+**Files to Modify:**
 
 - `src/components/shared/rating.tsx`
 
@@ -458,7 +494,13 @@ Once user approves, the section is updated to:
 
 #### Task 4.5: Quantity Selector
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-5-quantity-selector.html](wireframes/task-4-5-quantity-selector.html)
+**Approved Selection:**
+
+- Mobile: Option B - Connected Pill
+- Tablet: Option B - Connected Pill
+- Desktop: Option B - Connected Pill
 
 **Scope:**
 
@@ -467,12 +509,12 @@ Once user approves, the section is updated to:
 
 **Design Specifications:**
 
-- Buttons: `rounded-lg`, `bg-neutral-100`
+- Style: Connected pill shape with embedded buttons
 - Number: Centered, `font-medium`
 - Disabled: Minus at qty=1, plus at max
 - Mobile: Larger touch targets (36px min)
 
-**Files to Modify (after approval):**
+**Files to Modify:**
 
 - `src/components/shared/quantity-selector.tsx`
 
@@ -480,7 +522,13 @@ Once user approves, the section is updated to:
 
 #### Task 4.6: Empty States
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-6-empty-states.html](wireframes/task-4-6-empty-states.html)
+**Approved Selection:**
+
+- Mobile: Option B - Colored Circle
+- Tablet: Option B - Colored Circle
+- Desktop: Option B - Colored Circle
 
 **Scope:**
 
@@ -489,12 +537,12 @@ Once user approves, the section is updated to:
 
 **Design Specifications:**
 
-- Icon: Large, muted illustration
+- Icon: Large icon in primary-colored circle background (64px)
 - Heading: `font-display font-semibold`, centered
 - Description: Muted, centered, `max-w-sm`
 - CTA: Primary or outline button, centered
 
-**Files to Modify (after approval):**
+**Files to Modify:**
 
 - `src/components/sections/empty-state.tsx`
 
@@ -502,7 +550,13 @@ Once user approves, the section is updated to:
 
 #### Task 4.7: Dialog & Sheet
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-7-dialog-sheet.html](wireframes/task-4-7-dialog-sheet.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -526,21 +580,30 @@ Once user approves, the section is updated to:
 
 #### Task 4.8: Accordion
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-8-accordion.html](wireframes/task-4-8-accordion.html)
+**Approved Selection:**
+
+- Mobile: Option A - Clean Minimal
+- Tablet: Option A - Clean Minimal
+- Desktop: Option A - Clean Minimal
 
 **Scope:**
 
 - Clean accordion without heavy borders
 - Smooth expand/collapse
+- Contextual icons before each trigger title
 
 **Design Specifications:**
 
 - No borders between items
 - Header: `font-medium`, hover bg subtle
-- Chevron: Rotate animation
+- Chevron: Rotate animation on expand
 - Content: Proper padding, muted text
+- Icons: 20×20px, primary color (`#4F6F52`), contextual per section
+- Clean minimal style with subtle hover background
 
-**Files to Modify (after approval):**
+**Files to Modify:**
 
 - `src/components/ui/accordion.tsx`
 
@@ -548,7 +611,13 @@ Once user approves, the section is updated to:
 
 #### Task 4.9: Tabs
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-4-9-tabs.html](wireframes/task-4-9-tabs.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -570,12 +639,15 @@ Once user approves, the section is updated to:
 
 ### Phase 5: Product Experience
 
+**Phase Status:** 🚧 In Progress
+
 > 🛒 **Customer Impact: HIGH** - Primary revenue driver
 > **Files owned by this phase:** `src/features/product-detail/`, `src/components/products/`, `src/components/shared/review-*.tsx`
 
 #### Task 5.1: Product Detail Layout
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-5-1-product-detail-layout.html](wireframes/task-5-1-product-detail-layout.html)
 
 **Scope:**
 
@@ -598,7 +670,8 @@ Once user approves, the section is updated to:
 
 #### Task 5.2: Product Image Gallery
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-5-2-product-image-gallery.html](wireframes/task-5-2-product-image-gallery.html)
 
 **Scope:**
 
@@ -620,7 +693,13 @@ Once user approves, the section is updated to:
 
 #### Task 5.3: Trust Badges
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-5-3-trust-badges.html](wireframes/task-5-3-trust-badges.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
 
 **Scope:**
 
@@ -642,7 +721,13 @@ Once user approves, the section is updated to:
 
 #### Task 5.4: Product Info Tabs
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-5-4-product-info-tabs.html](wireframes/task-5-4-product-info-tabs.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -663,7 +748,8 @@ Once user approves, the section is updated to:
 
 #### Task 5.5: Related Products Grid
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-5-5-related-products-grid.html](wireframes/task-5-5-related-products-grid.html)
 
 **Scope:**
 
@@ -685,7 +771,13 @@ Once user approves, the section is updated to:
 
 #### Task 5.6: Sticky Mobile CTA
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-5-6-sticky-mobile-cta.html](wireframes/task-5-6-sticky-mobile-cta.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -708,7 +800,13 @@ Once user approves, the section is updated to:
 
 #### Task 5.7: Review Cards
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-5-7-review-cards.html](wireframes/task-5-7-review-cards.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -733,21 +831,32 @@ Once user approves, the section is updated to:
 
 #### Task 5.8: Review Form
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-5-8-review-form.html](wireframes/task-5-8-review-form.html)
+**Approved Selection:**
+
+- Mobile: Option C (Compact Inline) + Collapsible Image Upload
+- Tablet: Option C (Compact Inline) + Collapsible Image Upload + Product Preview
+- Desktop: Option C (Compact Inline) + Collapsible Image Upload + Product Preview
 
 **Scope:**
 
-- Clean review submission form
-- Interactive star rating selector
+- Compact inline review form with collapsible photo upload
+- Interactive star rating selector inline with title
+- Product preview on tablet/desktop
 
 **Design Specifications:**
 
-- Title: "Write a Review" in `font-display`
-- Star selector: Large, interactive, hover preview
-- Textarea: `rounded-lg`, focus ring
-- Submit: Primary button, full-width mobile
+- Title: "Rate this product" inline with stars (compact layout)
+- Star selector: 28px mobile, 40px tablet/desktop, inline with title, hover preview
+- Textarea: `rounded-lg`, min-height 80px, 500 char limit with live counter
+- Photo Upload: Collapsible behind "Add Photos" button, expands to dashed dropzone
+- Max Photos: 3, 5MB each (JPG, PNG)
+- Product Preview: Tablet (60px image) / Desktop (80px image) with name + purchase date
+- Submit: Primary button `rounded-lg`, full-width mobile, inline right-aligned tablet/desktop
+- Card Style: `bg-neutral-50`, `rounded-2xl`, `p-5` mobile / `p-6` tablet/desktop
 
-**Files to Modify (after approval):**
+**Files to Modify:**
 
 - `src/components/shared/review-form.tsx`
 
@@ -755,7 +864,13 @@ Once user approves, the section is updated to:
 
 #### Task 5.9: Reviews Sheet
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-5-9-reviews-sheet.html](wireframes/task-5-9-reviews-sheet.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -778,12 +893,20 @@ Once user approves, the section is updated to:
 
 ### Phase 6: Cart & Checkout
 
+**Phase Status:** 🚧 In Progress
+
 > 💰 **Customer Impact: CRITICAL** - Conversion funnel
 > **Files owned by this phase:** `src/features/cart/`, `src/components/cards/cart-*.tsx`, `src/components/orders/order-summary.tsx`, `src/components/address/`
 
 #### Task 6.1: Cart Page
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-6-1-cart-page.html](wireframes/task-6-1-cart-page.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -805,7 +928,8 @@ Once user approves, the section is updated to:
 
 #### Task 6.2: Cart Item Card
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-6-2-cart-item-card.html](wireframes/task-6-2-cart-item-card.html)
 
 **Scope:**
 
@@ -828,7 +952,13 @@ Once user approves, the section is updated to:
 
 #### Task 6.3: Order Summary Component
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-6-3-order-summary.html](wireframes/task-6-3-order-summary.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -851,7 +981,8 @@ Once user approves, the section is updated to:
 
 #### Task 6.4: Address Components
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-6-4-address-components.html](wireframes/task-6-4-address-components.html)
 
 **Scope:**
 
@@ -877,12 +1008,21 @@ Once user approves, the section is updated to:
 
 ### Phase 7: Events
 
+**Phase Status:** 🚧 In Progress
+
 > 🎨 **Customer Impact: HIGH** - Secondary revenue stream (workshops)
 > **Files owned by this phase:** `src/features/events/`, `src/components/events/`, `src/components/cards/event-*.tsx`, `src/components/cards/registered-*.tsx`
 
 #### Task 7.1: Events Listing Pages (Unified Layout)
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-7-1-events-listing.html](wireframes/task-7-1-events-listing.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
+  **Note:** Header should be left-aligned in wireframe
 
 **Scope:**
 This task establishes a **unified layout system** for ALL event listing pages:
@@ -933,7 +1073,8 @@ _Grid Layout (same for all):_
 
 #### Task 7.2: Event Detail Pages (Unified Layout)
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-7-2-event-detail.html](wireframes/task-7-2-event-detail.html)
 
 **Scope:**
 This task establishes a **unified layout system** for ALL event detail pages:
@@ -983,7 +1124,13 @@ _Sidebar (same structure, different CTAs):_
 
 #### Task 7.3: Event Card
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-7-3-event-card.html](wireframes/task-7-3-event-card.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -1007,7 +1154,13 @@ _Sidebar (same structure, different CTAs):_
 
 #### Task 7.4: Registration Cards
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-7-4-registration-cards.html](wireframes/task-7-4-registration-cards.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -1037,7 +1190,13 @@ _Completed Card (Past registrations):_
 
 #### Task 7.5: Event Ticket
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-7-5-event-ticket.html](wireframes/task-7-5-event-ticket.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -1061,12 +1220,20 @@ _Completed Card (Past registrations):_
 
 ### Phase 8: User Account
 
+**Phase Status:** 🚧 In Progress
+
 > 👤 **Customer Impact: MEDIUM** - Retention & repeat purchases
 > **Files owned by this phase:** `src/features/orders/`, `src/features/wishlist/`, `src/components/orders/order-progress.tsx`, `src/app/(main)/profile/`
 
 #### Task 8.1: Orders Page
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-8-1-orders-page.html](wireframes/task-8-1-orders-page.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -1090,7 +1257,13 @@ _Completed Card (Past registrations):_
 
 #### Task 8.2: Order Progress Stepper
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-8-2-order-progress.html](wireframes/task-8-2-order-progress.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -1113,7 +1286,8 @@ _Completed Card (Past registrations):_
 
 #### Task 8.3: Wishlist Page
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-8-3-wishlist-page.html](wireframes/task-8-3-wishlist-page.html)
 
 **Scope:**
 
@@ -1135,7 +1309,8 @@ _Completed Card (Past registrations):_
 
 #### Task 8.4: Profile Page
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-8-4-profile-page.html](wireframes/task-8-4-profile-page.html)
 
 **Scope:**
 
@@ -1159,12 +1334,20 @@ _Completed Card (Past registrations):_
 
 ### Phase 9: Navigation & Layout
 
+**Phase Status:** 🚧 In Progress
+
 > 🧭 **Customer Impact: HIGH** - Site-wide experience
 > **Files owned by this phase:** `src/features/layout/`, `src/features/global-search/`
 
 #### Task 9.1: Desktop Navbar
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-9-1-desktop-navbar.html](wireframes/task-9-1-desktop-navbar.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
 
 **Scope:**
 
@@ -1187,20 +1370,22 @@ _Completed Card (Past registrations):_
 
 #### Task 9.2: Mobile Header
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-9-2-mobile-header.html](wireframes/task-9-2-mobile-header.html)
 
 **Scope:**
 
-- Fixed top mobile header
-- Minimal, clean design
+- Fixed top mobile header with glassmorphism effect
+- Logo mode (homepage) vs Back+Title mode (sub-pages)
+- Contextual right-side actions per page type
+- Scroll hide/show behavior
 
 **Design Specifications:**
 
 - Height: `h-14` (56px)
-- Left: Hamburger menu or back arrow
-- Center: Logo (compact)
-- Right: Search + cart icons
-- Background: White, subtle bottom shadow
+- Left: Logo (homepage) or Back arrow + Page title (sub-pages)
+- Right: Search + Wishlist (with badge) + User/Avatar (contextual per page)
+- Background: `bg-white/80 backdrop-blur-xl`, subtle bottom border
 
 **Files to Modify (after approval):**
 
@@ -1303,7 +1488,13 @@ _Completed Card (Past registrations):_
 
 #### Task 9.7: WhatsApp Button
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-9-7-whatsapp-button.html](wireframes/task-9-7-whatsapp-button.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 
@@ -1326,12 +1517,20 @@ _Completed Card (Past registrations):_
 
 ### Phase 10: Content Pages
 
+**Phase Status:** 🚧 In Progress
+
 > 📄 **Customer Impact: LOW** - Support & information
 > **Files owned by this phase:** `src/app/(main)/(with-footer)/about/`, `src/app/(main)/(with-footer)/contact/`, `src/app/(main)/(with-footer)/faq/`, etc.
 
 #### Task 10.1: About Page
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-10-1-about-page.html](wireframes/task-10-1-about-page.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -1355,7 +1554,13 @@ _Completed Card (Past registrations):_
 
 #### Task 10.2: Contact Page
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-10-2-contact-page.html](wireframes/task-10-2-contact-page.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
 
 **Scope:**
 
@@ -1377,7 +1582,8 @@ _Completed Card (Past registrations):_
 
 #### Task 10.3: Info Pages (FAQ, Shipping, Privacy, Terms, Care)
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-10-3-info-pages.html](wireframes/task-10-3-info-pages.html)
 
 **Scope:**
 
@@ -1411,12 +1617,21 @@ _Completed Card (Past registrations):_
 
 ### Phase 11: Polish & Animations
 
+**Phase Status:** 🚧 In Progress
+
 > ✨ **Run LAST** - Touches files across multiple phases
 > **Dependencies:** Phases 5-10 should be mostly complete
 
 #### Task 11.1: Section Background Variety
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-11-1-section-backgrounds.html](wireframes/task-11-1-section-backgrounds.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
+  **Note:** No USP strip
 
 **Scope:**
 
@@ -1442,7 +1657,14 @@ _Completed Card (Past registrations):_
 
 #### Task 11.2: Newsletter Section
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-11-2-newsletter-section.html](wireframes/task-11-2-newsletter-section.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
+  **Note:** Handle mobile email input properly
 
 **Scope:**
 
@@ -1465,7 +1687,8 @@ _Completed Card (Past registrations):_
 
 #### Task 11.3: Scroll Animations
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-11-3-scroll-animations.html](wireframes/task-11-3-scroll-animations.html)
 
 **Scope:**
 
@@ -1488,7 +1711,8 @@ _Completed Card (Past registrations):_
 
 #### Task 11.4: Smooth Scrolling
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-11-4-smooth-scrolling.html](wireframes/task-11-4-smooth-scrolling.html)
 
 **Scope:**
 
@@ -1511,7 +1735,13 @@ _Completed Card (Past registrations):_
 
 #### Task 11.5: Animated Number Counters
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-11-5-animated-counters.html](wireframes/task-11-5-animated-counters.html)
+**Approved Selection:**
+
+- Mobile: Option A - Spring
+- Tablet: Option A - Spring
+- Desktop: Option A - Spring
 
 **Scope:**
 
@@ -1522,8 +1752,13 @@ _Completed Card (Past registrations):_
 
 - Numbers count from 0 when scrolled into view
 - Stats: "500+ Happy Customers", "1000+ Products", etc.
-- Animation: Framer Motion spring or Magic UI Number Ticker
+- Animation: Framer Motion `useSpring` with spring physics easing
+- Easing: Fast start, gradual deceleration (~1.5s duration)
 - Font: `font-display`, large numbers
+- Thousand separators for numbers ≥ 1000
+- Support "+" suffix
+- Trigger: IntersectionObserver / `whileInView`, plays once
+- Accessibility: Respect `prefers-reduced-motion` (show final value immediately)
 
 **Files to Modify (after approval):**
 
@@ -1533,11 +1768,14 @@ _Completed Card (Past registrations):_
 
 ### Phase 12: Auth Pages
 
+**Phase Status:** 🚧 In Progress
+
 > 🔐 **Can run independently** - Uses Clerk components
 
 #### Task 12.1: Sign In/Sign Up Pages
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-12-1-sign-in-sign-up.html](wireframes/task-12-1-sign-in-sign-up.html)
 
 **Scope:**
 
@@ -1560,11 +1798,19 @@ _Completed Card (Past registrations):_
 
 ### Phase 13: Skeletons
 
+**Phase Status:** 🚧 In Progress
+
 > 💀 **Run after designs finalized** - Must match final component dimensions
 
 #### Task 13.1: Skeleton Components
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-13-1-skeleton-components.html](wireframes/task-13-1-skeleton-components.html)
+**Approved Selection:**
+
+- Mobile: Option B
+- Tablet: Option B
+- Desktop: Option B
 
 **Scope:**
 

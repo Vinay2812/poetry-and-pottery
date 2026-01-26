@@ -1,0 +1,1563 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 8.1: Orders Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Order Card Styles */
+      .order-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .order-card-header {
+        padding: 16px;
+        border-bottom: 1px solid #f5f5f4;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .order-id {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .order-date {
+        font-size: 12px;
+        color: #999;
+        margin-top: 2px;
+      }
+
+      .order-status {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-processing {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-shipped {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+
+      .status-delivered {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+
+      .status-cancelled {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .order-items {
+        padding: 12px 16px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .order-item-thumb {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+
+      .order-item-more {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        background: #f5f5f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #666;
+      }
+
+      .order-footer {
+        padding: 12px 16px;
+        border-top: 1px solid #f5f5f4;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .order-total-label {
+        font-size: 12px;
+        color: #999;
+      }
+
+      .order-total {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-family: "Outfit", sans-serif;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease-out;
+        border-radius: 8px;
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .btn-sm {
+        height: 32px;
+        padding: 0 12px;
+        font-size: 12px;
+      }
+
+      .btn-md {
+        height: 36px;
+        padding: 0 16px;
+        font-size: 13px;
+      }
+
+      .btn-primary {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #3d5640;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: #4f6f52;
+      }
+
+      .btn-ghost:hover {
+        background: #e8ece8;
+      }
+
+      .btn svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Search Bar */
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 0 12px;
+        height: 40px;
+      }
+
+      .search-bar:focus-within {
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      .search-bar input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+      }
+
+      .search-bar svg {
+        width: 18px;
+        height: 18px;
+        stroke: #999;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* List View (Option B) */
+      .order-list-row {
+        background: white;
+        border-radius: 12px;
+        padding: 16px 20px;
+        display: grid;
+        grid-template-columns: 1fr 120px 100px 100px 80px;
+        align-items: center;
+        gap: 16px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+      }
+
+      .order-list-header {
+        display: grid;
+        grid-template-columns: 1fr 120px 100px 100px 80px;
+        padding: 12px 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #999;
+        gap: 16px;
+      }
+
+      /* Timeline View (Option C) */
+      .order-timeline {
+        position: relative;
+        padding-left: 24px;
+      }
+
+      .order-timeline::before {
+        content: "";
+        position: absolute;
+        left: 7px;
+        top: 20px;
+        bottom: 20px;
+        width: 2px;
+        background: #e5e5e5;
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .timeline-dot {
+        position: absolute;
+        left: -24px;
+        top: 4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: white;
+        border: 3px solid #4f6f52;
+      }
+
+      .timeline-dot.completed {
+        background: #4f6f52;
+      }
+
+      .timeline-date {
+        font-size: 11px;
+        color: #999;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .page-header {
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .page-header.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .page-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .page-content {
+        padding: 16px;
+      }
+
+      .page-content.desktop {
+        padding: 24px 32px;
+      }
+
+      .orders-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* Filters Row */
+      .filters-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-chip {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        background: #f5f5f4;
+        color: #666;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .filter-chip.active {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .filter-chip:hover:not(.active) {
+        background: #e8ece8;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Empty State */
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 48px 24px;
+      }
+
+      .empty-state-icon {
+        width: 80px;
+        height: 80px;
+        background: #e8ece8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .empty-state-icon svg {
+        width: 40px;
+        height: 40px;
+        stroke: #4f6f52;
+        stroke-width: 1.5;
+        fill: none;
+      }
+
+      .empty-state-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .empty-state-desc {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 280px;
+        margin-bottom: 24px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 8.1: Orders Page</h1>
+    <p class="subtitle">
+      User Account page: Orders list with consistent page header, order cards
+      with status badges, items preview, and search functionality.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="package-icon" viewBox="0 0 24 24">
+        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+        />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </symbol>
+      <symbol id="search-icon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </symbol>
+      <symbol id="chevron-right" viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6" />
+      </symbol>
+      <symbol id="eye-icon" viewBox="0 0 24 24">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+      </symbol>
+      <symbol id="arrow-right" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Basic list of orders</li>
+            <li>Inconsistent page header</li>
+            <li>Limited order information at glance</li>
+            <li>No search or filter options</li>
+            <li>No items preview</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Consistent page header with breadcrumbs</li>
+            <li>Order cards with status badges</li>
+            <li>Product thumbnail previews</li>
+            <li>Order ID, date, total visible at glance</li>
+            <li>Search by order number</li>
+            <li>Status filter chips</li>
+            <li>View details CTA on each card</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Card Grid (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Card Grid <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Full-width order cards with product thumbnails, status badges, and
+              clear action buttons. Best for mobile-first experience.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">My Orders</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="search-bar" style="margin-bottom: 16px">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search by order #" />
+                </div>
+
+                <div class="filters-row">
+                  <button class="filter-chip active">All</button>
+                  <button class="filter-chip">Processing</button>
+                  <button class="filter-chip">Shipped</button>
+                  <button class="filter-chip">Delivered</button>
+                </div>
+
+                <div class="orders-grid">
+                  <div class="order-card">
+                    <div class="order-card-header">
+                      <div>
+                        <div class="order-id">#ORD-2024-7842</div>
+                        <div class="order-date">Jan 15, 2024</div>
+                      </div>
+                      <span class="order-status status-shipped">Shipped</span>
+                    </div>
+                    <div class="order-items">
+                      <div class="order-item-thumb pottery-1"></div>
+                      <div class="order-item-thumb pottery-2"></div>
+                      <div class="order-item-more">+2</div>
+                    </div>
+                    <div class="order-footer">
+                      <div>
+                        <div class="order-total-label">Total</div>
+                        <div class="order-total">&#8377;4,850</div>
+                      </div>
+                      <button class="btn btn-ghost btn-sm">
+                        View Details
+                        <svg><use href="#chevron-right" /></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="order-card">
+                    <div class="order-card-header">
+                      <div>
+                        <div class="order-id">#ORD-2024-7821</div>
+                        <div class="order-date">Jan 10, 2024</div>
+                      </div>
+                      <span class="order-status status-delivered"
+                        >Delivered</span
+                      >
+                    </div>
+                    <div class="order-items">
+                      <div class="order-item-thumb pottery-3"></div>
+                    </div>
+                    <div class="order-footer">
+                      <div>
+                        <div class="order-total-label">Total</div>
+                        <div class="order-total">&#8377;1,450</div>
+                      </div>
+                      <button class="btn btn-ghost btn-sm">
+                        View Details
+                        <svg><use href="#chevron-right" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Account</a> / My Orders
+                </div>
+                <div class="page-title">My Orders</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div
+                  style="
+                    display: flex;
+                    gap: 12px;
+                    margin-bottom: 20px;
+                    align-items: center;
+                  "
+                >
+                  <div class="search-bar" style="flex: 1">
+                    <svg><use href="#search-icon" /></svg>
+                    <input type="text" placeholder="Search by order #" />
+                  </div>
+                  <div class="filters-row" style="margin-bottom: 0">
+                    <button class="filter-chip active">All</button>
+                    <button class="filter-chip">Processing</button>
+                    <button class="filter-chip">Shipped</button>
+                  </div>
+                </div>
+
+                <div class="orders-grid">
+                  <div class="order-card">
+                    <div class="order-card-header">
+                      <div>
+                        <div class="order-id">#ORD-2024-7842</div>
+                        <div class="order-date">January 15, 2024</div>
+                      </div>
+                      <span class="order-status status-shipped">Shipped</span>
+                    </div>
+                    <div class="order-items">
+                      <div class="order-item-thumb pottery-1"></div>
+                      <div class="order-item-thumb pottery-2"></div>
+                      <div class="order-item-thumb pottery-4"></div>
+                      <div class="order-item-more">+1</div>
+                    </div>
+                    <div class="order-footer">
+                      <div>
+                        <div class="order-total-label">Total (4 items)</div>
+                        <div class="order-total">&#8377;4,850</div>
+                      </div>
+                      <button class="btn btn-primary btn-sm">
+                        View Details
+                        <svg><use href="#chevron-right" /></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="order-card">
+                    <div class="order-card-header">
+                      <div>
+                        <div class="order-id">#ORD-2024-7821</div>
+                        <div class="order-date">January 10, 2024</div>
+                      </div>
+                      <span class="order-status status-delivered"
+                        >Delivered</span
+                      >
+                    </div>
+                    <div class="order-items">
+                      <div class="order-item-thumb pottery-3"></div>
+                    </div>
+                    <div class="order-footer">
+                      <div>
+                        <div class="order-total-label">Total (1 item)</div>
+                        <div class="order-total">&#8377;1,450</div>
+                      </div>
+                      <button class="btn btn-primary btn-sm">
+                        View Details
+                        <svg><use href="#chevron-right" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> / My Orders
+                </div>
+                <div class="page-title">My Orders</div>
+                <div class="page-title-underline"></div>
+                <p
+                  style="
+                    color: #737373;
+                    font-size: 14px;
+                    margin-top: 8px;
+                    max-width: 400px;
+                  "
+                >
+                  Track your orders, view details, and manage your purchase
+                  history.
+                </p>
+              </div>
+
+              <div class="page-content desktop">
+                <div
+                  style="
+                    display: flex;
+                    gap: 16px;
+                    margin-bottom: 24px;
+                    align-items: center;
+                  "
+                >
+                  <div class="search-bar" style="width: 300px">
+                    <svg><use href="#search-icon" /></svg>
+                    <input type="text" placeholder="Search by order #" />
+                  </div>
+                  <div class="filters-row" style="margin-bottom: 0; flex: 1">
+                    <button class="filter-chip active">All Orders</button>
+                    <button class="filter-chip">Processing</button>
+                    <button class="filter-chip">Shipped</button>
+                    <button class="filter-chip">Delivered</button>
+                    <button class="filter-chip">Cancelled</button>
+                  </div>
+                </div>
+
+                <div
+                  class="orders-grid"
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                  "
+                >
+                  <div class="order-card">
+                    <div class="order-card-header">
+                      <div>
+                        <div class="order-id">#ORD-2024-7842</div>
+                        <div class="order-date">January 15, 2024</div>
+                      </div>
+                      <span class="order-status status-shipped">Shipped</span>
+                    </div>
+                    <div class="order-items">
+                      <div class="order-item-thumb pottery-1"></div>
+                      <div class="order-item-thumb pottery-2"></div>
+                      <div class="order-item-thumb pottery-4"></div>
+                      <div class="order-item-more">+1</div>
+                    </div>
+                    <div class="order-footer">
+                      <div>
+                        <div class="order-total-label">Total (4 items)</div>
+                        <div class="order-total">&#8377;4,850</div>
+                      </div>
+                      <button class="btn btn-primary btn-sm">
+                        View Details
+                        <svg><use href="#chevron-right" /></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="order-card">
+                    <div class="order-card-header">
+                      <div>
+                        <div class="order-id">#ORD-2024-7821</div>
+                        <div class="order-date">January 10, 2024</div>
+                      </div>
+                      <span class="order-status status-delivered"
+                        >Delivered</span
+                      >
+                    </div>
+                    <div class="order-items">
+                      <div class="order-item-thumb pottery-3"></div>
+                    </div>
+                    <div class="order-footer">
+                      <div>
+                        <div class="order-total-label">Total (1 item)</div>
+                        <div class="order-total">&#8377;1,450</div>
+                      </div>
+                      <button class="btn btn-primary btn-sm">
+                        View Details
+                        <svg><use href="#chevron-right" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Compact List -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Compact List View</h3>
+            <p class="wf-option-desc">
+              Table-like list with all key info visible in rows. More dense,
+              efficient for users with many orders. Desktop-optimized.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">My Orders</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="search-bar" style="margin-bottom: 16px">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search orders..." />
+                </div>
+
+                <div class="orders-grid">
+                  <div
+                    class="order-card"
+                    style="padding: 14px; display: flex; gap: 12px"
+                  >
+                    <div class="order-item-thumb pottery-1"></div>
+                    <div style="flex: 1">
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          margin-bottom: 4px;
+                        "
+                      >
+                        <div class="order-id" style="font-size: 13px">
+                          #7842
+                        </div>
+                        <span
+                          class="order-status status-shipped"
+                          style="font-size: 10px; padding: 2px 8px"
+                          >Shipped</span
+                        >
+                      </div>
+                      <div class="order-date" style="margin-bottom: 4px">
+                        Jan 15, 2024 • 4 items
+                      </div>
+                      <div class="order-total" style="font-size: 14px">
+                        &#8377;4,850
+                      </div>
+                    </div>
+                    <svg
+                      style="
+                        width: 20px;
+                        height: 20px;
+                        stroke: #999;
+                        align-self: center;
+                      "
+                    >
+                      <use href="#chevron-right" />
+                    </svg>
+                  </div>
+
+                  <div
+                    class="order-card"
+                    style="padding: 14px; display: flex; gap: 12px"
+                  >
+                    <div class="order-item-thumb pottery-3"></div>
+                    <div style="flex: 1">
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          margin-bottom: 4px;
+                        "
+                      >
+                        <div class="order-id" style="font-size: 13px">
+                          #7821
+                        </div>
+                        <span
+                          class="order-status status-delivered"
+                          style="font-size: 10px; padding: 2px 8px"
+                          >Delivered</span
+                        >
+                      </div>
+                      <div class="order-date" style="margin-bottom: 4px">
+                        Jan 10, 2024 • 1 item
+                      </div>
+                      <div class="order-total" style="font-size: 14px">
+                        &#8377;1,450
+                      </div>
+                    </div>
+                    <svg
+                      style="
+                        width: 20px;
+                        height: 20px;
+                        stroke: #999;
+                        align-self: center;
+                      "
+                    >
+                      <use href="#chevron-right" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Account</a> / Orders
+                </div>
+                <div class="page-title">My Orders</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-list-header" style="font-size: 10px">
+                  <span>Order</span>
+                  <span>Date</span>
+                  <span>Status</span>
+                  <span>Total</span>
+                  <span></span>
+                </div>
+
+                <div class="orders-grid" style="gap: 8px">
+                  <div class="order-list-row">
+                    <div style="display: flex; gap: 10px; align-items: center">
+                      <div
+                        class="order-item-thumb pottery-1"
+                        style="width: 40px; height: 40px"
+                      ></div>
+                      <div class="order-id" style="font-size: 13px">
+                        #ORD-2024-7842
+                      </div>
+                    </div>
+                    <div class="order-date">Jan 15, 2024</div>
+                    <span class="order-status status-shipped">Shipped</span>
+                    <div class="order-total" style="font-size: 14px">
+                      &#8377;4,850
+                    </div>
+                    <button class="btn btn-ghost btn-sm">View</button>
+                  </div>
+
+                  <div class="order-list-row">
+                    <div style="display: flex; gap: 10px; align-items: center">
+                      <div
+                        class="order-item-thumb pottery-3"
+                        style="width: 40px; height: 40px"
+                      ></div>
+                      <div class="order-id" style="font-size: 13px">
+                        #ORD-2024-7821
+                      </div>
+                    </div>
+                    <div class="order-date">Jan 10, 2024</div>
+                    <span class="order-status status-delivered">Delivered</span>
+                    <div class="order-total" style="font-size: 14px">
+                      &#8377;1,450
+                    </div>
+                    <button class="btn btn-ghost btn-sm">View</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> / Orders
+                </div>
+                <div class="page-title">My Orders</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <div class="filters-row" style="margin-bottom: 0">
+                    <button class="filter-chip active">All</button>
+                    <button class="filter-chip">Processing</button>
+                    <button class="filter-chip">Shipped</button>
+                    <button class="filter-chip">Delivered</button>
+                  </div>
+                  <div class="search-bar" style="width: 260px">
+                    <svg><use href="#search-icon" /></svg>
+                    <input type="text" placeholder="Search orders..." />
+                  </div>
+                </div>
+
+                <div
+                  class="order-list-header"
+                  style="grid-template-columns: 1.5fr 120px 120px 100px 100px"
+                >
+                  <span>Order Details</span>
+                  <span>Date</span>
+                  <span>Status</span>
+                  <span>Total</span>
+                  <span>Action</span>
+                </div>
+
+                <div class="orders-grid" style="gap: 8px">
+                  <div
+                    class="order-list-row"
+                    style="grid-template-columns: 1.5fr 120px 120px 100px 100px"
+                  >
+                    <div style="display: flex; gap: 12px; align-items: center">
+                      <div
+                        class="order-item-thumb pottery-1"
+                        style="width: 44px; height: 44px"
+                      ></div>
+                      <div>
+                        <div class="order-id">#ORD-2024-7842</div>
+                        <div class="order-date">4 items</div>
+                      </div>
+                    </div>
+                    <div style="font-size: 13px">Jan 15, 2024</div>
+                    <span class="order-status status-shipped">Shipped</span>
+                    <div class="order-total" style="font-size: 15px">
+                      &#8377;4,850
+                    </div>
+                    <button class="btn btn-primary btn-sm">View</button>
+                  </div>
+
+                  <div
+                    class="order-list-row"
+                    style="grid-template-columns: 1.5fr 120px 120px 100px 100px"
+                  >
+                    <div style="display: flex; gap: 12px; align-items: center">
+                      <div
+                        class="order-item-thumb pottery-3"
+                        style="width: 44px; height: 44px"
+                      ></div>
+                      <div>
+                        <div class="order-id">#ORD-2024-7821</div>
+                        <div class="order-date">1 item</div>
+                      </div>
+                    </div>
+                    <div style="font-size: 13px">Jan 10, 2024</div>
+                    <span class="order-status status-delivered">Delivered</span>
+                    <div class="order-total" style="font-size: 15px">
+                      &#8377;1,450
+                    </div>
+                    <button class="btn btn-primary btn-sm">View</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Timeline View -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Timeline View</h3>
+            <p class="wf-option-desc">
+              Chronological timeline showing orders grouped by date. Visual
+              progression of order history. Good for narrative experience.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order History</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">January 2024</div>
+                    <div class="order-card" style="margin-bottom: 12px">
+                      <div class="order-card-header">
+                        <div>
+                          <div class="order-id">#7842</div>
+                          <div class="order-date">Jan 15</div>
+                        </div>
+                        <span class="order-status status-shipped">Shipped</span>
+                      </div>
+                      <div class="order-footer" style="border-top: none">
+                        <div class="order-total">&#8377;4,850</div>
+                        <button class="btn btn-ghost btn-sm">View</button>
+                      </div>
+                    </div>
+                    <div class="order-card">
+                      <div class="order-card-header">
+                        <div>
+                          <div class="order-id">#7821</div>
+                          <div class="order-date">Jan 10</div>
+                        </div>
+                        <span class="order-status status-delivered"
+                          >Delivered</span
+                        >
+                      </div>
+                      <div class="order-footer" style="border-top: none">
+                        <div class="order-total">&#8377;1,450</div>
+                        <button class="btn btn-ghost btn-sm">View</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-dot completed"></div>
+                    <div class="timeline-date">December 2023</div>
+                    <div class="order-card">
+                      <div class="order-card-header">
+                        <div>
+                          <div class="order-id">#7654</div>
+                          <div class="order-date">Dec 22</div>
+                        </div>
+                        <span class="order-status status-delivered"
+                          >Delivered</span
+                        >
+                      </div>
+                      <div class="order-footer" style="border-top: none">
+                        <div class="order-total">&#8377;2,100</div>
+                        <button class="btn btn-ghost btn-sm">View</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Account</a> / Order History
+                </div>
+                <div class="page-title">Order History</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-timeline" style="padding-left: 32px">
+                  <div class="timeline-item">
+                    <div class="timeline-dot" style="left: -32px"></div>
+                    <div class="timeline-date">January 2024</div>
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 12px;
+                      "
+                    >
+                      <div class="order-card">
+                        <div class="order-card-header">
+                          <div>
+                            <div class="order-id">#ORD-2024-7842</div>
+                            <div class="order-date">Jan 15, 2024</div>
+                          </div>
+                          <span class="order-status status-shipped"
+                            >Shipped</span
+                          >
+                        </div>
+                        <div class="order-items">
+                          <div class="order-item-thumb pottery-1"></div>
+                          <div class="order-item-thumb pottery-2"></div>
+                        </div>
+                        <div class="order-footer">
+                          <div class="order-total">&#8377;4,850</div>
+                          <button class="btn btn-primary btn-sm">View</button>
+                        </div>
+                      </div>
+                      <div class="order-card">
+                        <div class="order-card-header">
+                          <div>
+                            <div class="order-id">#ORD-2024-7821</div>
+                            <div class="order-date">Jan 10, 2024</div>
+                          </div>
+                          <span class="order-status status-delivered"
+                            >Delivered</span
+                          >
+                        </div>
+                        <div class="order-items">
+                          <div class="order-item-thumb pottery-3"></div>
+                        </div>
+                        <div class="order-footer">
+                          <div class="order-total">&#8377;1,450</div>
+                          <button class="btn btn-primary btn-sm">View</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> / Order
+                  History
+                </div>
+                <div class="page-title">Order History</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="order-timeline" style="padding-left: 40px">
+                  <div class="timeline-item">
+                    <div class="timeline-dot" style="left: -40px"></div>
+                    <div
+                      class="timeline-date"
+                      style="font-size: 14px; font-weight: 600"
+                    >
+                      January 2024
+                    </div>
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 16px;
+                      "
+                    >
+                      <div class="order-card">
+                        <div class="order-card-header">
+                          <div>
+                            <div class="order-id">#ORD-2024-7842</div>
+                            <div class="order-date">January 15, 2024</div>
+                          </div>
+                          <span class="order-status status-shipped"
+                            >Shipped</span
+                          >
+                        </div>
+                        <div class="order-items">
+                          <div class="order-item-thumb pottery-1"></div>
+                          <div class="order-item-thumb pottery-2"></div>
+                          <div class="order-item-more">+2</div>
+                        </div>
+                        <div class="order-footer">
+                          <div class="order-total">&#8377;4,850</div>
+                          <button class="btn btn-primary btn-sm">View</button>
+                        </div>
+                      </div>
+                      <div class="order-card">
+                        <div class="order-card-header">
+                          <div>
+                            <div class="order-id">#ORD-2024-7821</div>
+                            <div class="order-date">January 10, 2024</div>
+                          </div>
+                          <span class="order-status status-delivered"
+                            >Delivered</span
+                          >
+                        </div>
+                        <div class="order-items">
+                          <div class="order-item-thumb pottery-3"></div>
+                        </div>
+                        <div class="order-footer">
+                          <div class="order-total">&#8377;1,450</div>
+                          <button class="btn btn-primary btn-sm">View</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred orders page layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Card
+            Grid</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Compact
+            List</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            Timeline</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Card
+            Grid</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Compact
+            List</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            Timeline</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Card
+            Grid</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Compact
+            List</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            Timeline</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 8.1):</strong><br /><br />
+      &bull; <strong>Page Header:</strong> Consistent with other pages -
+      breadcrumbs, title, underline accent<br />
+      &bull; <strong>Order Card:</strong> Order ID, date, status badge, item
+      thumbnails, total<br />
+      &bull; <strong>Status Badges:</strong> Processing (amber), Shipped (blue),
+      Delivered (green), Cancelled (red)<br />
+      &bull; <strong>Search:</strong> Search by order number input<br />
+      &bull; <strong>Filters:</strong> Status filter chips<br />
+      &bull; <strong>Mobile:</strong> Full-width stacked cards<br />
+      &bull; <strong>Desktop:</strong> 2-column grid or list view<br />
+      &bull;
+      <strong>Files:</strong> src/features/orders/components/orders-list.tsx,
+      order-detail.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

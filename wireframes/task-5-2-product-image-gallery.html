@@ -1,0 +1,1216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 5.2: Product Image Gallery - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Gallery Styles */
+      .gallery-container {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      /* Main Image */
+      .main-image {
+        position: relative;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main-image.square {
+        aspect-ratio: 1;
+      }
+
+      .main-image.portrait {
+        aspect-ratio: 3/4;
+      }
+
+      .main-image.landscape {
+        aspect-ratio: 4/3;
+      }
+
+      .pottery-icon {
+        width: 35%;
+        height: 55%;
+        background: rgba(139, 115, 85, 0.25);
+        border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+      }
+
+      /* Carousel Dots */
+      .carousel-dots {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+      }
+
+      .carousel-dots .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.2s;
+      }
+
+      .carousel-dots .dot.active {
+        background: white;
+        width: 24px;
+        border-radius: 4px;
+      }
+
+      /* Carousel Arrows */
+      .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+
+      .carousel-arrow.left {
+        left: 12px;
+      }
+
+      .carousel-arrow.right {
+        right: 12px;
+      }
+
+      /* Thumbnails */
+      .thumb-strip-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .thumb-strip-horizontal {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .thumb {
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 8px;
+        border: 2px solid transparent;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .thumb:hover {
+        transform: scale(1.05);
+      }
+
+      .thumb.active {
+        border-color: #4f6f52;
+      }
+
+      .thumb.size-sm {
+        width: 56px;
+        height: 56px;
+      }
+
+      .thumb.size-md {
+        width: 72px;
+        height: 72px;
+      }
+
+      .thumb.size-lg {
+        width: 80px;
+        height: 80px;
+      }
+
+      /* Gallery Grid Layout */
+      .gallery-grid {
+        display: grid;
+        gap: 8px;
+      }
+
+      .gallery-grid.desktop {
+        grid-template-columns: 80px 1fr;
+        gap: 16px;
+      }
+
+      .gallery-grid.desktop-right {
+        grid-template-columns: 1fr 80px;
+        gap: 16px;
+      }
+
+      .gallery-grid.desktop-bottom {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+        gap: 12px;
+      }
+
+      /* Zoom Overlay */
+      .zoom-hint {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* Fullscreen Button */
+      .fullscreen-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      /* Image Counter */
+      .image-counter {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Option Container */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 48px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 64px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 12px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 44px;
+        height: 44px;
+        background: #e8ece8;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 32px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+      }
+
+      .viewport-column {
+        min-width: 0;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      .device-frame {
+        background: white;
+        border-radius: 24px;
+        border: 6px solid #1a1a1a;
+        overflow: hidden;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .device-frame.tablet {
+        border-radius: 16px;
+        border-width: 4px;
+      }
+
+      .device-frame.desktop {
+        border-radius: 12px;
+        border-width: 2px;
+        border-color: #e5e5e5;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .icon-svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 5.2: Product Image Gallery</h1>
+    <p class="subtitle">
+      Redesigned image gallery with carousel on mobile and thumbnail strip on
+      desktop. Supports swipe gestures, zoom functionality, and multiple image
+      layouts.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT STATE</h3>
+          <ul>
+            <li>Basic image display</li>
+            <li>No thumbnail navigation</li>
+            <li>Limited carousel controls</li>
+            <li>No zoom functionality</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Full-width swipeable carousel on mobile</li>
+            <li>Vertical thumbnail strip on desktop (left side)</li>
+            <li>Active thumbnail border (primary color)</li>
+            <li>Dot indicators with active state</li>
+            <li>Optional zoom/lens on hover</li>
+            <li>Image counter badge</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Dots + Left Thumbnails -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Dots Carousel + Left Thumbnails
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Mobile: swipeable carousel with dots. Desktop: vertical thumbnails
+              on left, main image on right. Clean and intuitive.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="device-frame" style="width: 375px">
+              <div class="main-image square" style="width: 100%">
+                <div class="pottery-icon"></div>
+                <div class="carousel-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+                <div class="image-counter">1 / 4</div>
+              </div>
+              <div style="padding: 12px 16px">
+                <div class="thumb-strip-horizontal">
+                  <div class="thumb size-sm active"></div>
+                  <div
+                    class="thumb size-sm"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #d9e8d9 0%,
+                        #b8d4b8 100%
+                      );
+                    "
+                  ></div>
+                  <div
+                    class="thumb size-sm"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #e8e0d4 0%,
+                        #c4a882 100%
+                      );
+                    "
+                  ></div>
+                  <div
+                    class="thumb size-sm"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #dde4e8 0%,
+                        #b0c4d4 100%
+                      );
+                    "
+                  ></div>
+                  <div
+                    class="thumb size-sm"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #f0e8e0 0%,
+                        #d4b89c 100%
+                      );
+                    "
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="device-frame tablet" style="width: 500px">
+              <div style="padding: 20px">
+                <div
+                  class="gallery-grid desktop"
+                  style="grid-template-columns: 72px 1fr"
+                >
+                  <div class="thumb-strip-vertical">
+                    <div class="thumb size-md active"></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #d9e8d9 0%,
+                          #b8d4b8 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #e8e0d4 0%,
+                          #c4a882 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #dde4e8 0%,
+                          #b0c4d4 100%
+                        );
+                      "
+                    ></div>
+                  </div>
+                  <div class="main-image portrait" style="border-radius: 16px">
+                    <div class="pottery-icon"></div>
+                    <div class="fullscreen-btn">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                        />
+                      </svg>
+                    </div>
+                    <div class="zoom-hint">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                      </svg>
+                      Hover to zoom
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div
+              class="device-frame desktop"
+              style="width: 100%; min-width: 600px"
+            >
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">poetryandpottery.com/shop/product</div>
+              </div>
+              <div style="padding: 32px">
+                <div class="gallery-grid desktop">
+                  <div class="thumb-strip-vertical">
+                    <div class="thumb size-lg active"></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #d9e8d9 0%,
+                          #b8d4b8 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #e8e0d4 0%,
+                          #c4a882 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #dde4e8 0%,
+                          #b0c4d4 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #f0e8e0 0%,
+                          #d4b89c 100%
+                        );
+                      "
+                    ></div>
+                  </div>
+                  <div
+                    class="main-image portrait"
+                    style="border-radius: 16px; max-height: 500px"
+                  >
+                    <div class="pottery-icon"></div>
+                    <div class="fullscreen-btn">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                        />
+                      </svg>
+                    </div>
+                    <div class="zoom-hint">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                      </svg>
+                      Hover to zoom
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Arrows + Bottom Thumbnails -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Arrow Carousel + Bottom Thumbnails</h3>
+            <p class="wf-option-desc">
+              Mobile: carousel with arrow buttons and counter. Desktop:
+              horizontal thumbnails below main image. More traditional
+              e-commerce look.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="device-frame" style="width: 375px">
+              <div class="main-image square" style="width: 100%">
+                <div class="pottery-icon"></div>
+                <div class="carousel-arrow left">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </div>
+                <div class="carousel-arrow right">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </div>
+                <div class="image-counter">1 / 4</div>
+              </div>
+              <div style="padding: 12px 16px">
+                <div class="thumb-strip-horizontal">
+                  <div class="thumb size-sm active"></div>
+                  <div
+                    class="thumb size-sm"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #d9e8d9 0%,
+                        #b8d4b8 100%
+                      );
+                    "
+                  ></div>
+                  <div
+                    class="thumb size-sm"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #e8e0d4 0%,
+                        #c4a882 100%
+                      );
+                    "
+                  ></div>
+                  <div
+                    class="thumb size-sm"
+                    style="
+                      background: linear-gradient(
+                        135deg,
+                        #dde4e8 0%,
+                        #b0c4d4 100%
+                      );
+                    "
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="device-frame tablet" style="width: 500px">
+              <div style="padding: 20px">
+                <div class="gallery-grid desktop-bottom">
+                  <div class="main-image landscape" style="border-radius: 16px">
+                    <div class="pottery-icon"></div>
+                    <div class="carousel-arrow left">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </div>
+                    <div class="carousel-arrow right">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </div>
+                    <div class="fullscreen-btn">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div
+                    class="thumb-strip-horizontal"
+                    style="justify-content: center"
+                  >
+                    <div class="thumb size-md active"></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #d9e8d9 0%,
+                          #b8d4b8 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #e8e0d4 0%,
+                          #c4a882 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #dde4e8 0%,
+                          #b0c4d4 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #f0e8e0 0%,
+                          #d4b89c 100%
+                        );
+                      "
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div
+              class="device-frame desktop"
+              style="width: 100%; min-width: 600px"
+            >
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">poetryandpottery.com/shop/product</div>
+              </div>
+              <div style="padding: 32px">
+                <div class="gallery-grid desktop-bottom">
+                  <div
+                    class="main-image landscape"
+                    style="border-radius: 16px; max-height: 450px"
+                  >
+                    <div class="pottery-icon"></div>
+                    <div
+                      class="carousel-arrow left"
+                      style="width: 48px; height: 48px"
+                    >
+                      <svg
+                        class="icon-svg"
+                        viewBox="0 0 24 24"
+                        style="width: 20px; height: 20px"
+                      >
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </div>
+                    <div
+                      class="carousel-arrow right"
+                      style="width: 48px; height: 48px"
+                    >
+                      <svg
+                        class="icon-svg"
+                        viewBox="0 0 24 24"
+                        style="width: 20px; height: 20px"
+                      >
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </div>
+                    <div class="fullscreen-btn">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                        />
+                      </svg>
+                    </div>
+                    <div class="zoom-hint">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                      </svg>
+                      Hover to zoom
+                    </div>
+                  </div>
+                  <div
+                    class="thumb-strip-horizontal"
+                    style="justify-content: center; gap: 12px"
+                  >
+                    <div class="thumb size-lg active"></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #d9e8d9 0%,
+                          #b8d4b8 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #e8e0d4 0%,
+                          #c4a882 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #dde4e8 0%,
+                          #b0c4d4 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #f0e8e0 0%,
+                          #d4b89c 100%
+                        );
+                      "
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Minimal Dots Only -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Minimal - Dots Only on Mobile</h3>
+            <p class="wf-option-desc">
+              Mobile: full-width carousel with only dots, no thumbnails.
+              Desktop: right-side thumbnails. Cleaner, more immersive look.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="device-frame" style="width: 375px">
+              <div class="main-image" style="width: 100%; aspect-ratio: 4/5">
+                <div class="pottery-icon"></div>
+                <div class="carousel-dots" style="bottom: 24px">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="device-frame tablet" style="width: 500px">
+              <div style="padding: 20px">
+                <div
+                  class="gallery-grid desktop-right"
+                  style="grid-template-columns: 1fr 72px"
+                >
+                  <div class="main-image portrait" style="border-radius: 16px">
+                    <div class="pottery-icon"></div>
+                    <div class="fullscreen-btn">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="thumb-strip-vertical">
+                    <div class="thumb size-md active"></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #d9e8d9 0%,
+                          #b8d4b8 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #e8e0d4 0%,
+                          #c4a882 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-md"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #dde4e8 0%,
+                          #b0c4d4 100%
+                        );
+                      "
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-column">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div
+              class="device-frame desktop"
+              style="width: 100%; min-width: 600px"
+            >
+              <div class="wf-browser-bar">
+                <div class="wf-browser-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="wf-url-bar">poetryandpottery.com/shop/product</div>
+              </div>
+              <div style="padding: 32px">
+                <div class="gallery-grid desktop-right">
+                  <div
+                    class="main-image portrait"
+                    style="border-radius: 16px; max-height: 500px"
+                  >
+                    <div class="pottery-icon"></div>
+                    <div class="fullscreen-btn">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path
+                          d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                        />
+                      </svg>
+                    </div>
+                    <div class="zoom-hint">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                      </svg>
+                      Hover to zoom
+                    </div>
+                  </div>
+                  <div class="thumb-strip-vertical">
+                    <div class="thumb size-lg active"></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #d9e8d9 0%,
+                          #b8d4b8 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #e8e0d4 0%,
+                          #c4a882 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #dde4e8 0%,
+                          #b0c4d4 100%
+                        );
+                      "
+                    ></div>
+                    <div
+                      class="thumb size-lg"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #f0e8e0 0%,
+                          #d4b89c 100%
+                        );
+                      "
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred gallery layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Dots +
+            Thumbnails</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Arrows +
+            Thumbnails</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Minimal
+            Dots Only</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Left
+            Thumbnails</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Bottom
+            Thumbnails</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Right
+            Thumbnails</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Left
+            Thumbnails</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Bottom
+            Thumbnails</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Right
+            Thumbnails</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 5.2):</strong><br /><br />
+      &bull; <strong>Mobile:</strong> Full-width swipeable carousel with
+      embla-carousel or similar<br />
+      &bull; <strong>Desktop:</strong> Vertical thumbnails (80px squares) with
+      primary border on active<br />
+      &bull; <strong>Aspect Ratio:</strong> Main image 3:4 (portrait),
+      thumbnails 1:1 (square)<br />
+      &bull; <strong>Zoom:</strong> Optional lens effect on hover (Aceternity
+      Lens or CSS transform)<br />
+      &bull; <strong>Animations:</strong> Smooth slide transitions, thumbnail
+      hover scale(1.05)<br />
+      &bull;
+      <strong>File:</strong> src/components/products/product-image-gallery.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

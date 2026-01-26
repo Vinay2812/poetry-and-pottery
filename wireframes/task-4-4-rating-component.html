@@ -1,0 +1,1507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 4.4: Rating Component - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Star Rating Base */
+      .rating {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+      }
+
+      .rating-star {
+        color: #e5e5e5;
+        transition: color 0.15s ease-out;
+      }
+
+      .rating-star.filled {
+        color: #f59e0b;
+      }
+
+      .rating-star.half {
+        background: linear-gradient(90deg, #f59e0b 50%, #e5e5e5 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Sizes */
+      .rating-sm .rating-star {
+        font-size: 12px;
+      }
+      .rating-md .rating-star {
+        font-size: 16px;
+      }
+      .rating-lg .rating-star {
+        font-size: 20px;
+      }
+      .rating-xl .rating-star {
+        font-size: 24px;
+      }
+
+      /* Review Count */
+      .rating-count {
+        font-size: 12px;
+        color: #737373;
+        margin-left: 6px;
+      }
+
+      .rating-sm .rating-count {
+        font-size: 10px;
+        margin-left: 4px;
+      }
+      .rating-lg .rating-count {
+        font-size: 14px;
+        margin-left: 8px;
+      }
+      .rating-xl .rating-count {
+        font-size: 16px;
+        margin-left: 10px;
+      }
+
+      /* Rating Value */
+      .rating-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-right: 6px;
+      }
+
+      .rating-sm .rating-value {
+        font-size: 11px;
+      }
+      .rating-md .rating-value {
+        font-size: 13px;
+      }
+      .rating-lg .rating-value {
+        font-size: 15px;
+      }
+      .rating-xl .rating-value {
+        font-size: 18px;
+      }
+
+      /* Interactive Rating */
+      .rating-interactive .rating-star {
+        cursor: pointer;
+      }
+
+      .rating-interactive .rating-star:hover,
+      .rating-interactive .rating-star.hover-preview {
+        color: #fbbf24;
+        transform: scale(1.1);
+      }
+
+      /* Option Variations */
+      .option-a .rating-star.filled {
+        color: #f59e0b;
+      }
+      .option-a .rating-star:not(.filled) {
+        color: #e5e5e5;
+      }
+
+      .option-b .rating-star.filled {
+        color: #4f6f52;
+      }
+      .option-b .rating-star:not(.filled) {
+        color: #d4e5d6;
+      }
+
+      .option-c .rating-star.filled {
+        color: #c4785a;
+      }
+      .option-c .rating-star:not(.filled) {
+        color: #f5ebe6;
+      }
+
+      /* Rating with Bar */
+      .rating-bar-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .rating-bar {
+        flex: 1;
+        height: 6px;
+        background: #e7e5e4;
+        border-radius: 3px;
+        overflow: hidden;
+        max-width: 120px;
+      }
+
+      .rating-bar-fill {
+        height: 100%;
+        background: #f59e0b;
+        border-radius: 3px;
+      }
+
+      /* Rating Summary */
+      .rating-summary {
+        display: flex;
+        gap: 24px;
+        padding: 20px;
+        background: #fafaf9;
+        border-radius: 12px;
+      }
+
+      .rating-summary-main {
+        text-align: center;
+        min-width: 100px;
+      }
+
+      .rating-summary-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 48px;
+        font-weight: 800;
+        color: #1a1a1a;
+        line-height: 1;
+      }
+
+      .rating-summary-stars {
+        margin: 8px 0;
+      }
+
+      .rating-summary-count {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .rating-breakdown {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .rating-breakdown-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+      }
+
+      .rating-breakdown-label {
+        width: 16px;
+        color: #737373;
+      }
+
+      .rating-breakdown-bar {
+        flex: 1;
+        height: 8px;
+        background: #e7e5e4;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .rating-breakdown-bar-fill {
+        height: 100%;
+        background: #f59e0b;
+        border-radius: 4px;
+      }
+
+      .rating-breakdown-count {
+        width: 24px;
+        text-align: right;
+        color: #999;
+      }
+
+      /* Device Frames */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Demo Sections */
+      .demo-section {
+        margin-bottom: 24px;
+      }
+
+      .demo-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      .demo-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 12px;
+      }
+
+      .demo-row:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Context Examples */
+      .context-card {
+        background: #fafaf9;
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 16px;
+      }
+
+      .context-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #bbb;
+        margin-bottom: 12px;
+      }
+
+      .product-mini {
+        display: flex;
+        gap: 12px;
+        background: white;
+        border-radius: 10px;
+        padding: 12px;
+      }
+
+      .product-mini-img {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+
+      .product-mini-info {
+        flex: 1;
+      }
+
+      .product-mini-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .product-mini-price {
+        font-size: 14px;
+        font-weight: 700;
+        color: #4f6f52;
+        margin-top: 6px;
+      }
+
+      /* Review Card Mini */
+      .review-mini {
+        background: white;
+        border-radius: 10px;
+        padding: 14px;
+      }
+
+      .review-mini-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .review-mini-avatar {
+        width: 32px;
+        height: 32px;
+        background: #e8ece8;
+        border-radius: 50%;
+      }
+
+      .review-mini-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        flex: 1;
+      }
+
+      .review-mini-text {
+        font-size: 12px;
+        color: #666;
+        line-height: 1.5;
+      }
+
+      /* Input Rating */
+      .rating-input-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .rating-input-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      .rating-input-hint {
+        font-size: 11px;
+        color: #999;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 4.4: Rating Component</h1>
+    <p class="subtitle">
+      Foundation component: Star rating for display and input. Filled amber
+      stars, empty muted gray. Size variants (sm/md/lg), interactive hover
+      preview for input, review count display.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a"
+        >✅ APPROVED - Option B (Forest Green Stars)</span
+      >
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Inconsistent star sizing across components</li>
+            <li>No standardized color for filled/empty states</li>
+            <li>Review count styling varies</li>
+            <li>No interactive input component</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Three size variants: sm (12px), md (16px), lg (20px)</li>
+            <li>Consistent amber (#F59E0B) for filled stars</li>
+            <li>Muted gray for empty stars</li>
+            <li>Optional review count with consistent styling</li>
+            <li>Interactive input with hover preview</li>
+            <li>Half-star support for display</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Classic Amber Stars (RECOMMENDED) -->
+      <div class="option-section option-a">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Classic Amber Stars
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Traditional amber/gold star rating. Industry standard, universally
+              recognized. High contrast against neutral backgrounds.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Size Variants</div>
+              <div class="demo-row">
+                <div class="rating rating-sm">
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                  <span class="rating-count">Small</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                  <span class="rating-count">Medium</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-lg">
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                  <span class="rating-count">Large</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">With Review Count</div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-count">(128 reviews)</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-value">4.8</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-count">(128)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Product Card</div>
+              <div class="product-mini">
+                <div class="product-mini-img"></div>
+                <div class="product-mini-info">
+                  <div class="product-mini-name">Ceramic Vase</div>
+                  <div class="rating rating-sm">
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star">&#9733;</span>
+                    <span class="rating-count">(42)</span>
+                  </div>
+                  <div class="product-mini-price">&#8377;1,450</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Interactive Rating Input</div>
+              <div class="rating-input-wrapper">
+                <div class="rating-input-label">Rate this product</div>
+                <div class="rating rating-xl rating-interactive">
+                  <span class="rating-star">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                  <span class="rating-star hover-preview">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                </div>
+                <div class="rating-input-hint">
+                  Hover to preview, click to select
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Selected State</div>
+              <div class="rating-input-wrapper">
+                <div class="rating rating-xl rating-interactive">
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                </div>
+                <div class="rating-input-hint">You selected: 4 stars</div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Review Card</div>
+              <div class="review-mini">
+                <div class="review-mini-header">
+                  <div class="review-mini-avatar"></div>
+                  <div class="review-mini-name">Sarah M.</div>
+                  <div class="rating rating-sm">
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                  </div>
+                </div>
+                <div class="review-mini-text">
+                  Beautiful craftsmanship! The vase is even more stunning in
+                  person. Highly recommend.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Rating Summary (Product Detail)</div>
+              <div class="rating-summary">
+                <div class="rating-summary-main">
+                  <div class="rating-summary-value">4.8</div>
+                  <div class="rating rating-md rating-summary-stars">
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                    <span class="rating-star filled">&#9733;</span>
+                  </div>
+                  <div class="rating-summary-count">128 reviews</div>
+                </div>
+                <div class="rating-breakdown">
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">5</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 72%"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">92</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">4</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 20%"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">26</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">3</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 5%"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">6</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">2</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 2%"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">3</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">1</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 1%"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">All Variations</div>
+              <div class="demo-row">
+                <div class="rating rating-sm">
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                  <span class="rating-count">(42)</span>
+                </div>
+                <div class="rating rating-md">
+                  <span class="rating-value">4.5</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star">&#9733;</span>
+                </div>
+                <div class="rating rating-lg">
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-star filled">&#9733;</span>
+                  <span class="rating-count">128 reviews</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Forest Green Stars -->
+      <div class="option-section option-b">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Forest Green Stars</h3>
+            <p class="wf-option-desc">
+              Uses primary forest green color. Matches brand identity. More
+              cohesive with overall design system.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Size Variants</div>
+              <div class="demo-row">
+                <div class="rating rating-sm">
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star" style="color: #d4e5d6"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">Small</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star" style="color: #d4e5d6"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">Medium</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-lg">
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star" style="color: #d4e5d6"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">Large</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Product Card</div>
+              <div class="product-mini">
+                <div class="product-mini-img"></div>
+                <div class="product-mini-info">
+                  <div class="product-mini-name">Ceramic Vase</div>
+                  <div class="rating rating-sm">
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star" style="color: #d4e5d6"
+                      >&#9733;</span
+                    >
+                    <span class="rating-count">(42)</span>
+                  </div>
+                  <div class="product-mini-price">&#8377;1,450</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">With Review Count</div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">(128 reviews)</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-value" style="color: #4f6f52">4.8</span>
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #4f6f52"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">(128)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Review Card</div>
+              <div class="review-mini">
+                <div class="review-mini-header">
+                  <div class="review-mini-avatar"></div>
+                  <div class="review-mini-name">Sarah M.</div>
+                  <div class="rating rating-sm">
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                  </div>
+                </div>
+                <div class="review-mini-text">
+                  Beautiful craftsmanship! The vase is even more stunning in
+                  person.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Rating Summary</div>
+              <div class="rating-summary">
+                <div class="rating-summary-main">
+                  <div class="rating-summary-value" style="color: #4f6f52">
+                    4.8
+                  </div>
+                  <div class="rating rating-md rating-summary-stars">
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #4f6f52"
+                      >&#9733;</span
+                    >
+                  </div>
+                  <div class="rating-summary-count">128 reviews</div>
+                </div>
+                <div class="rating-breakdown">
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">5</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 72%; background: #4f6f52"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">92</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">4</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 20%; background: #4f6f52"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">26</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">3</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 5%; background: #4f6f52"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">6</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">2</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 2%; background: #4f6f52"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">3</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">1</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 1%; background: #4f6f52"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Terracotta Stars -->
+      <div class="option-section option-c">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Terracotta Stars</h3>
+            <p class="wf-option-desc">
+              Uses warm terracotta accent color. Earthy, pottery-inspired feel.
+              Unique brand differentiation.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Size Variants</div>
+              <div class="demo-row">
+                <div class="rating rating-sm">
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star" style="color: #f5ebe6"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">Small</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star" style="color: #f5ebe6"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">Medium</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-lg">
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star" style="color: #f5ebe6"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">Large</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Product Card</div>
+              <div class="product-mini">
+                <div class="product-mini-img"></div>
+                <div class="product-mini-info">
+                  <div class="product-mini-name">Ceramic Vase</div>
+                  <div class="rating rating-sm">
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star" style="color: #f5ebe6"
+                      >&#9733;</span
+                    >
+                    <span class="rating-count">(42)</span>
+                  </div>
+                  <div class="product-mini-price">&#8377;1,450</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">With Review Count</div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">(128 reviews)</span>
+                </div>
+              </div>
+              <div class="demo-row">
+                <div class="rating rating-md">
+                  <span class="rating-value" style="color: #c4785a">4.8</span>
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-star filled" style="color: #c4785a"
+                    >&#9733;</span
+                  >
+                  <span class="rating-count">(128)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="context-card">
+              <div class="context-label">In Context: Review Card</div>
+              <div class="review-mini">
+                <div class="review-mini-header">
+                  <div class="review-mini-avatar"></div>
+                  <div class="review-mini-name">Sarah M.</div>
+                  <div class="rating rating-sm">
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                  </div>
+                </div>
+                <div class="review-mini-text">
+                  Beautiful craftsmanship! The vase is even more stunning in
+                  person.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="demo-section">
+              <div class="demo-label">Rating Summary</div>
+              <div class="rating-summary">
+                <div class="rating-summary-main">
+                  <div class="rating-summary-value" style="color: #c4785a">
+                    4.8
+                  </div>
+                  <div class="rating rating-md rating-summary-stars">
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                    <span class="rating-star filled" style="color: #c4785a"
+                      >&#9733;</span
+                    >
+                  </div>
+                  <div class="rating-summary-count">128 reviews</div>
+                </div>
+                <div class="rating-breakdown">
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">5</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 72%; background: #c4785a"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">92</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">4</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 20%; background: #c4785a"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">26</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">3</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 5%; background: #c4785a"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">6</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">2</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 2%; background: #c4785a"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">3</span>
+                  </div>
+                  <div class="rating-breakdown-row">
+                    <span class="rating-breakdown-label">1</span>
+                    <div class="rating-breakdown-bar">
+                      <div
+                        class="rating-breakdown-bar-fill"
+                        style="width: 1%; background: #c4785a"
+                      ></div>
+                    </div>
+                    <span class="rating-breakdown-count">1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred rating style for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Amber
+            Stars (Classic)</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Forest
+            Green Stars</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            Terracotta Stars</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Amber
+            Stars (Classic)</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Forest
+            Green Stars</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            Terracotta Stars</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Amber
+            Stars (Classic)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Forest
+            Green Stars</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            Terracotta Stars</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 4.4):</strong><br /><br />
+      &bull; <strong>Sizes:</strong> sm (12px), md (16px), lg (20px), xl (24px)
+      for input<br />
+      &bull; <strong>Colors:</strong> Filled (#F59E0B amber), Empty (#E5E5E5
+      gray)<br />
+      &bull; <strong>Interactive:</strong> Hover preview with scale(1.1),
+      cursor: pointer<br />
+      &bull; <strong>Accessibility:</strong> aria-label for screen readers,
+      keyboard navigation<br />
+      &bull; <strong>Props:</strong> value, size, showCount, interactive,
+      onRate<br />
+      &bull; <strong>File:</strong> src/components/shared/rating.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>
