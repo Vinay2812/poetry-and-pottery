@@ -1115,7 +1115,9 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 48px">
-      <span class="status-badge" style="background: #dcfce7; color: #16a34a">Approved</span>
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a"
+        >Approved</span
+      >
     </div>
 
     <!-- SVG Icons -->
@@ -2216,13 +2218,7 @@
               Orders <span class="search-tab-count">0</span>
             </button>
           </div>
-          <div
-            style="
-              background: #fafaf9;
-              flex: 1;
-              overflow-y: auto;
-            "
-          >
+          <div style="background: #fafaf9; flex: 1; overflow-y: auto">
             <div style="padding-top: 4px">
               <div class="search-item" style="background: white">
                 <div class="search-item-thumb product"></div>
@@ -2652,7 +2648,13 @@
         <div class="approval-item">
           <div class="approval-viewport-label">Event Thumbnails</div>
           <label>
-            <input type="radio" name="event-thumb" value="date" checked disabled />
+            <input
+              type="radio"
+              name="event-thumb"
+              value="date"
+              checked
+              disabled
+            />
             Date Block (Month + Day) (Selected)
           </label>
           <label style="opacity: 0.5">
@@ -2665,7 +2667,8 @@
 
     <!-- Implementation Notes -->
     <div class="notes" style="margin-top: 48px">
-      <strong>Implementation Specs (Task 9.5) &mdash; Approved: Option B (Tab
+      <strong
+        >Implementation Specs (Task 9.5) &mdash; Approved: Option B (Tab
         Navigation)</strong
       ><br /><br />
       &bull;
@@ -2684,8 +2687,7 @@
       button on right<br />
       &bull; <strong>Result Layout:</strong> Underline tabs (Products, Events,
       Orders) with count badges. Tab key to switch. 5 items per tab<br />
-      &bull; <strong>Orders Tab:</strong> Only shown for authenticated
-      users<br />
+      &bull; <strong>Orders Tab:</strong> Only shown for authenticated users<br />
       &bull; <strong>Thumbnails:</strong> 48px, rounded-[10px]. Events use date
       block (month + day)<br />
       &bull; <strong>Skeleton:</strong> Shimmer animation, 3 items<br />
