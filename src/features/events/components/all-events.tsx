@@ -5,7 +5,11 @@ import { Calendar, History, Sparkles } from "lucide-react";
 import { EventCard, PastWorkshopCard } from "@/components/cards";
 import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
-import { InfiniteScrollTrigger, SectionHeader } from "@/components/shared";
+import {
+  InfiniteScrollTrigger,
+  SectionHeader,
+  StaggeredGrid,
+} from "@/components/shared";
 
 import type { AllEventsProps } from "../types";
 
@@ -53,11 +57,11 @@ export function AllEvents({
                 <p className="text-muted-foreground mb-4 text-sm lg:mb-8 lg:text-base">
                   Reserve your spot in one of our upcoming pottery sessions.
                 </p>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   {upcomingEvents.map((event) => (
                     <EventCard key={event.id} event={event} />
                   ))}
-                </div>
+                </StaggeredGrid>
               </>
             ) : (
               <div className="bg-muted/50 rounded-xl border border-dashed p-8 text-center">
@@ -83,11 +87,11 @@ export function AllEvents({
                 Explore our previous workshops and the amazing pieces created by
                 our community.
               </p>
-              <div className="grid grid-cols-1 gap-4 opacity-75 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              <StaggeredGrid className="grid grid-cols-1 gap-4 opacity-75 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {pastEvents.map((event) => (
                   <PastWorkshopCard key={event.id} event={event} />
                 ))}
-              </div>
+              </StaggeredGrid>
             </section>
           )}
 

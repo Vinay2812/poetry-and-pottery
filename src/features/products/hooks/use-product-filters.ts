@@ -3,11 +3,11 @@
 import type { ProductsFilterParams } from "@/data/products/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
-  startTransition,
   useCallback,
   useEffect,
   useMemo,
   useState,
+  useTransition,
 } from "react";
 
 const PRODUCTS_PER_PAGE = 12;
@@ -37,6 +37,7 @@ interface UseProductFiltersOptions {
 export function useProductFilters(options: UseProductFiltersOptions = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
   const { priceRange } = options;
 
   const {
@@ -187,6 +188,7 @@ export function useProductFilters(options: UseProductFiltersOptions = {}) {
     localPriceRange,
     searchQuery,
     filterParams,
+    isPending,
     // Handlers
     onCategoryToggle: handleCategoryToggle,
     onMaterialToggle: handleMaterialToggle,

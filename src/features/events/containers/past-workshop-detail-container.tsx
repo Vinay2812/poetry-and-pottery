@@ -2,7 +2,7 @@
 
 import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { useAuthAction } from "@/hooks";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useOptimistic, useState } from "react";
 
 import { PastWorkshopDetail } from "../components/past-workshop-detail";
 import {
@@ -25,6 +25,17 @@ export function PastWorkshopDetailContainer({
   const [reviewLikeUpdates, setReviewLikeUpdates] = useState<
     Record<string, { likes: number; isLiked: boolean }>
   >({});
+  const [optimisticReviewLikeUpdates, applyOptimisticReviewLike] =
+    useOptimistic(
+      reviewLikeUpdates,
+      (
+        state: Record<string, { likes: number; isLiked: boolean }>,
+        update: { reviewId: string; likes: number; isLiked: boolean },
+      ) => ({
+        ...state,
+        [update.reviewId]: { likes: update.likes, isLiked: update.isLiked },
+      }),
+    );
 
   const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
   const { requireAuth } = useAuthAction();
@@ -51,7 +62,7 @@ export function PastWorkshopDetailContainer({
   const formattedReviews: FormattedReview[] = useMemo(() => {
     return (workshop.reviews || []).map((review) => {
       const reviewId = String(review.id);
-      const likeUpdate = reviewLikeUpdates[reviewId];
+      const likeUpdate = optimisticReviewLikeUpdates[reviewId];
       const baseLikes = review.likes?.length || 0;
       const baseIsLiked = currentUserId
         ? (review.likes?.some((like) => like.user_id === currentUserId) ??
@@ -75,7 +86,7 @@ export function PastWorkshopDetailContainer({
         images: [] as string[],
       };
     });
-  }, [workshop.reviews, currentUserId, reviewLikeUpdates]);
+  }, [workshop.reviews, currentUserId, optimisticReviewLikeUpdates]);
 
   const handleReviewLike = useCallback(
     async (reviewId: string) => {
@@ -89,20 +100,30 @@ export function PastWorkshopDetailContainer({
       // Optimistically update UI
       const newIsLiked = !currentIsLiked;
       const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-      handleLikeUpdate(reviewId, newLikes, newIsLiked);
+      applyOptimisticReviewLike({
+        reviewId,
+        likes: newLikes,
+        isLiked: newIsLiked,
+      });
 
       // Call mutation
       const result = await toggleReviewLikeMutate(Number(reviewId));
 
       if (!result.success) {
         // Revert on failure
-        handleLikeUpdate(reviewId, currentLikes, currentIsLiked);
+        setReviewLikeUpdates((prev) => ({
+          ...prev,
+          [reviewId]: { likes: currentLikes, isLiked: currentIsLiked },
+        }));
       } else if (result.likesCount !== undefined) {
         // Sync with server count
-        handleLikeUpdate(reviewId, result.likesCount, newIsLiked);
+        setReviewLikeUpdates((prev) => ({
+          ...prev,
+          [reviewId]: { likes: result.likesCount, isLiked: newIsLiked },
+        }));
       }
     },
-    [handleLikeUpdate, formattedReviews, toggleReviewLikeMutate],
+    [applyOptimisticReviewLike, formattedReviews, toggleReviewLikeMutate],
   );
 
   // Calculate average rating

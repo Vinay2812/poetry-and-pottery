@@ -82,7 +82,6 @@ export function FooterContainer() {
   const { mutate: subscribeMutate } = useSubscribeToNewsletter();
 
   const [isAlreadySubscribed, setIsAlreadySubscribed] = useState(false);
-  const [isSubscribing, setIsSubscribing] = useState(false);
   const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
   const [subscriptionError, setSubscriptionError] = useState<string | null>(
     null,
@@ -98,7 +97,6 @@ export function FooterContainer() {
   }, [isSignedIn]);
 
   const handleSubmit = useCallback(async () => {
-    setIsSubscribing(true);
     setSubscriptionError(null);
 
     try {
@@ -111,8 +109,6 @@ export function FooterContainer() {
       }
     } catch {
       setSubscriptionError("Something went wrong. Please try again.");
-    } finally {
-      setIsSubscribing(false);
     }
   }, [subscribeMutate]);
 
@@ -125,17 +121,10 @@ export function FooterContainer() {
       currentYear: new Date().getFullYear(),
       isAuthenticated: !!isSignedIn,
       isAlreadySubscribed,
-      isSubscribing,
       subscriptionSuccess,
       subscriptionError,
     }),
-    [
-      isSignedIn,
-      isAlreadySubscribed,
-      isSubscribing,
-      subscriptionSuccess,
-      subscriptionError,
-    ],
+    [isSignedIn, isAlreadySubscribed, subscriptionSuccess, subscriptionError],
   );
 
   return <Footer viewModel={viewModel} onNewsletterSubmit={handleSubmit} />;

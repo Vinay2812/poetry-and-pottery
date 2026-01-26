@@ -20,6 +20,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GripVertical, PlusIcon, TrashIcon } from "lucide-react";
 import { useCallback, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -120,7 +121,6 @@ function SortableInstruction({
 export function ProductForm({
   viewModel,
   availableCategories,
-  isSubmitting,
   isEditing,
   onSubmit,
   onCancel,
@@ -182,13 +182,20 @@ export function ProductForm({
     }
   }, [name, isEditing, setValue]);
 
-  const handleFormSubmit = (data: FormValues) => {
-    onSubmit({
-      ...data,
-      instructions: data.instructions.map((i) => i.value).filter(Boolean),
-      availableQuantity, // Pass the calculated available quantity
-    });
-  };
+  const handleFormSubmit = useCallback(
+    (data: FormValues) => {
+      onSubmit({
+        ...data,
+        instructions: data.instructions.map((i) => i.value).filter(Boolean),
+        availableQuantity, // Pass the calculated available quantity
+      });
+    },
+    [availableQuantity, onSubmit],
+  );
+
+  const handleFormAction = useCallback(async () => {
+    await handleSubmit(handleFormSubmit)();
+  }, [handleSubmit, handleFormSubmit]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -209,7 +216,7 @@ export function ProductForm({
   );
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8">
+    <form action={handleFormAction} className="space-y-8">
       {/* Basic Information */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-neutral-900">
@@ -433,18 +440,31 @@ export function ProductForm({
       </div>
 
       {/* Form Actions */}
-      <div className="flex items-center justify-end gap-3">
-        <Button type="button" variant="outline" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting
-            ? "Saving..."
-            : isEditing
-              ? "Update Product"
-              : "Create Product"}
-        </Button>
-      </div>
+      <ProductFormActions isEditing={isEditing} onCancel={onCancel} />
     </form>
+  );
+}
+
+interface ProductFormActionsProps {
+  isEditing: boolean;
+  onCancel: () => void;
+}
+
+function ProductFormActions({ isEditing, onCancel }: ProductFormActionsProps) {
+  const { pending } = useFormStatus();
+
+  return (
+    <div className="flex items-center justify-end gap-3">
+      <Button type="button" variant="outline" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button type="submit" disabled={pending}>
+        {pending
+          ? "Saving..."
+          : isEditing
+            ? "Update Product"
+            : "Create Product"}
+      </Button>
+    </div>
   );
 }

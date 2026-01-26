@@ -136,7 +136,6 @@ export interface FooterViewModel {
   currentYear: number;
   isAuthenticated: boolean;
   isAlreadySubscribed: boolean;
-  isSubscribing: boolean;
   subscriptionSuccess: boolean;
   subscriptionError: string | null;
 }
@@ -146,5 +145,5 @@ export interface FooterViewModel {
  */
 export interface FooterProps {
   viewModel: FooterViewModel;
-  onNewsletterSubmit: () => void;
+  onNewsletterSubmit: () => Promise<void>;
 }

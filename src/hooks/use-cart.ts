@@ -6,10 +6,11 @@ import {
   useRemoveFromCart,
   useUpdateCartQuantity,
 } from "@/data/cart/gateway/client";
+import { useLoadingTransition } from "@/hooks/use-loading-transition";
 import { useUIStore } from "@/store";
 import type { CartWithProduct, ProductWithCategories } from "@/types";
 import { useAuth } from "@clerk/nextjs";
-import { useCallback, useState } from "react";
+import { useCallback, useOptimistic, useState, useTransition } from "react";
 
 import type { CartItem } from "@/graphql/generated/graphql";
 
@@ -34,59 +35,117 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
   };
 }
 
+type CartOptimisticAction =
+  | {
+      type: "add";
+      productId: number;
+      quantity: number;
+      product?: ProductWithCategories;
+    }
+  | { type: "remove"; productId: number }
+  | { type: "update"; productId: number; quantity: number }
+  | { type: "replace"; item: CartWithProduct };
+
+function applyCartOptimisticAction(
+  state: CartWithProduct[],
+  action: CartOptimisticAction,
+): CartWithProduct[] {
+  switch (action.type) {
+    case "add": {
+      const existingItem = state.find(
+        (item) => item.product_id === action.productId,
+      );
+      if (existingItem) {
+        return state.map((item) =>
+          item.product_id === action.productId
+            ? {
+                ...item,
+                quantity: item.quantity + action.quantity,
+              }
+            : item,
+        );
+      }
+      if (!action.product) {
+        return state;
+      }
+      const optimisticItem: CartWithProduct = {
+        id: -action.productId,
+        user_id: 0,
+        product_id: action.productId,
+        quantity: action.quantity,
+        created_at: new Date(),
+        updated_at: new Date(),
+        product: action.product,
+      };
+      return [...state, optimisticItem];
+    }
+    case "remove": {
+      return state.filter((item) => item.product_id !== action.productId);
+    }
+    case "update": {
+      if (action.quantity <= 0) {
+        return state.filter((item) => item.product_id !== action.productId);
+      }
+      return state.map((item) =>
+        item.product_id === action.productId
+          ? { ...item, quantity: action.quantity }
+          : item,
+      );
+    }
+    case "replace": {
+      const filtered = state.filter(
+        (item) => item.product_id !== action.item.product_id,
+      );
+      return [...filtered, action.item];
+    }
+    default:
+      return state;
+  }
+}
+
+function getTotalItemsFrom(items: CartWithProduct[]) {
+  return items.reduce((sum, item) => sum + item.quantity, 0);
+}
+
 export function useCart() {
   const { isSignedIn } = useAuth();
-  const {
-    cartCount,
-    setCartCount,
-    addToast,
-    setSignInModalOpen,
-    setSignInRedirectUrl,
-  } = useUIStore();
+  const { setCartCount, addToast, setSignInModalOpen, setSignInRedirectUrl } =
+    useUIStore();
   const [items, setItems] = useState<CartWithProduct[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState<Set<number>>(
-    new Set(),
+  const [optimisticItems, updateOptimisticItems] = useOptimistic(
+    items,
+    (state: CartWithProduct[], action: CartOptimisticAction) =>
+      applyCartOptimisticAction(state, action),
   );
+  const { isLoading, isAnyLoading, runWithLoading } =
+    useLoadingTransition<number>();
+
+  const [, startTransition] = useTransition();
 
   // Use mutation hooks
   const { mutate: addToCartMutate } = useAddToCart();
   const { mutate: removeFromCartMutate } = useRemoveFromCart();
   const { mutate: updateCartQuantityMutate } = useUpdateCartQuantity();
 
-  const setLoading = useCallback((productId: number, loading: boolean) => {
-    setLoadingProducts((prev) => {
-      const next = new Set(prev);
-      if (loading) {
-        next.add(productId);
-      } else {
-        next.delete(productId);
-      }
-      return next;
-    });
-  }, []);
-
-  const isLoading = useCallback(
-    (productId: number) => loadingProducts.has(productId),
-    [loadingProducts],
-  );
-
   const getQuantity = useCallback(
     (productId: number) => {
-      return items.find((i) => i.product_id === productId)?.quantity ?? 0;
+      return (
+        optimisticItems.find((i) => i.product_id === productId)?.quantity ?? 0
+      );
     },
-    [items],
+    [optimisticItems],
   );
 
   const getTotalItems = useCallback(() => {
-    return items.reduce((sum, item) => sum + item.quantity, 0);
-  }, [items]);
+    return optimisticItems.reduce((sum, item) => sum + item.quantity, 0);
+  }, [optimisticItems]);
 
   const getTotalPrice = useCallback(() => {
-    return items.reduce(
+    return optimisticItems.reduce(
       (sum, item) => sum + item.product.price * item.quantity,
       0,
     );
-  }, [items]);
+  }, [optimisticItems]);
 
   const addToCart = useCallback(
     async (
@@ -100,7 +159,9 @@ export function useCart() {
         return false;
       }
 
-      const existingItem = items.find((i) => i.product_id === productId);
+      const existingItem = optimisticItems.find(
+        (i) => i.product_id === productId,
+      );
       const currentQuantity = existingItem?.quantity ?? 0;
 
       if (currentQuantity >= MAX_CART_QUANTITY) {
@@ -121,65 +182,52 @@ export function useCart() {
         return false;
       }
 
-      // Optimistic update immediately
-      const previousItems = [...items];
-      const previousCount = cartCount;
+      const optimisticAction: CartOptimisticAction = {
+        type: "add",
+        productId,
+        quantity: quantityToAdd,
+        product,
+      };
+      startTransition(() => {
+        updateOptimisticItems(optimisticAction);
+      });
+      const nextItems = applyCartOptimisticAction(
+        optimisticItems,
+        optimisticAction,
+      );
+      setCartCount(getTotalItemsFrom(nextItems));
 
-      if (existingItem) {
-        setItems((prev) =>
-          prev.map((item) =>
-            item.product_id === productId
-              ? { ...item, quantity: newQuantity }
-              : item,
-          ),
-        );
-      } else if (product) {
-        const optimisticItem: CartWithProduct = {
-          id: -productId,
-          user_id: 0,
-          product_id: productId,
-          quantity: quantityToAdd,
-          created_at: new Date(),
-          updated_at: new Date(),
-          product: product,
-        };
-        setItems((prev) => [...prev, optimisticItem]);
-      }
-      setCartCount(cartCount + quantityToAdd);
-
-      setLoading(productId, true);
-
-      const actionResult = await addToCartMutate(productId, quantityToAdd);
+      const actionResult = await runWithLoading(productId, () =>
+        addToCartMutate(productId, quantityToAdd),
+      );
       if (!actionResult.success) {
-        setItems(previousItems);
-        setCartCount(previousCount);
         addToast({
           type: "error",
           message: actionResult.error || "Failed to add to cart",
         });
-        setLoading(productId, false);
+        setItems((prev) => [...prev]);
+        setCartCount(getTotalItemsFrom(items));
         return false;
       }
 
       // Update with actual server data
       const newItem = mapToCartWithProduct(actionResult.data);
-      setItems((prev) => {
-        const filtered = prev.filter((i) => i.product_id !== productId);
-        return [...filtered, newItem];
-      });
-      setLoading(productId, false);
+      setItems((prev) =>
+        applyCartOptimisticAction(prev, { type: "replace", item: newItem }),
+      );
       return true;
     },
     [
       isSignedIn,
+      optimisticItems,
       items,
-      cartCount,
-      setCartCount,
       addToast,
-      setLoading,
       setSignInModalOpen,
       setSignInRedirectUrl,
       addToCartMutate,
+      runWithLoading,
+      setCartCount,
+      updateOptimisticItems,
     ],
   );
 
@@ -187,39 +235,44 @@ export function useCart() {
     async (productId: number) => {
       if (!isSignedIn) return false;
 
-      // Optimistic update immediately
-      const currentItem = items.find((i) => i.product_id === productId);
-      const previousItems = [...items];
-      const previousCount = cartCount;
+      const optimisticAction: CartOptimisticAction = {
+        type: "remove",
+        productId,
+      };
+      startTransition(() => {
+        updateOptimisticItems(optimisticAction);
+      });
+      const nextItems = applyCartOptimisticAction(
+        optimisticItems,
+        optimisticAction,
+      );
+      setCartCount(getTotalItemsFrom(nextItems));
 
-      setItems((prev) => prev.filter((i) => i.product_id !== productId));
-      setCartCount(Math.max(0, cartCount - (currentItem?.quantity ?? 0)));
-
-      setLoading(productId, true);
-
-      const actionResult = await removeFromCartMutate(productId);
+      const actionResult = await runWithLoading(productId, () =>
+        removeFromCartMutate(productId),
+      );
       if (!actionResult.success) {
-        setItems(previousItems);
-        setCartCount(previousCount);
         addToast({
           type: "error",
           message: actionResult.error || "Failed to remove from cart",
         });
-        setLoading(productId, false);
+        setItems((prev) => [...prev]);
+        setCartCount(getTotalItemsFrom(items));
         return false;
       }
 
-      setLoading(productId, false);
+      setItems((prev) => applyCartOptimisticAction(prev, optimisticAction));
       return true;
     },
     [
       isSignedIn,
+      optimisticItems,
       items,
-      cartCount,
-      setCartCount,
       addToast,
-      setLoading,
       removeFromCartMutate,
+      runWithLoading,
+      setCartCount,
+      updateOptimisticItems,
     ],
   );
 
@@ -231,53 +284,43 @@ export function useCart() {
         Math.max(quantity, 0),
         MAX_CART_QUANTITY,
       );
-      const currentItem = items.find((i) => i.product_id === productId);
-      const currentQuantity = currentItem?.quantity ?? 0;
-      const previousItems = [...items];
-      const previousCount = cartCount;
-
-      // Optimistic update immediately
-      if (clampedQuantity === 0) {
-        setItems((prev) => prev.filter((i) => i.product_id !== productId));
-      } else {
-        setItems((prev) =>
-          prev.map((item) =>
-            item.product_id === productId
-              ? { ...item, quantity: clampedQuantity }
-              : item,
-          ),
-        );
-      }
-      setCartCount(cartCount - currentQuantity + clampedQuantity);
-
-      setLoading(productId, true);
-
-      const actionResult = await updateCartQuantityMutate(
+      const optimisticAction: CartOptimisticAction = {
+        type: "update",
         productId,
-        clampedQuantity,
+        quantity: clampedQuantity,
+      };
+      updateOptimisticItems(optimisticAction);
+      const nextItems = applyCartOptimisticAction(
+        optimisticItems,
+        optimisticAction,
+      );
+      setCartCount(getTotalItemsFrom(nextItems));
+
+      const actionResult = await runWithLoading(productId, () =>
+        updateCartQuantityMutate(productId, clampedQuantity),
       );
       if (!actionResult.success) {
-        setItems(previousItems);
-        setCartCount(previousCount);
         addToast({
           type: "error",
           message: actionResult.error || "Failed to update cart",
         });
-        setLoading(productId, false);
+        setItems((prev) => [...prev]);
+        setCartCount(getTotalItemsFrom(items));
         return false;
       }
 
-      setLoading(productId, false);
+      setItems((prev) => applyCartOptimisticAction(prev, optimisticAction));
       return true;
     },
     [
       isSignedIn,
+      optimisticItems,
       items,
-      cartCount,
-      setCartCount,
       addToast,
-      setLoading,
       updateCartQuantityMutate,
+      runWithLoading,
+      setCartCount,
+      updateOptimisticItems,
     ],
   );
 
@@ -289,9 +332,13 @@ export function useCart() {
   );
 
   // Hydrate cart items (called on mount with initial data)
-  const hydrate = useCallback((cartItems: CartWithProduct[]) => {
-    setItems(cartItems);
-  }, []);
+  const hydrate = useCallback(
+    (cartItems: CartWithProduct[]) => {
+      setItems(cartItems);
+      setCartCount(getTotalItemsFrom(cartItems));
+    },
+    [setCartCount],
+  );
 
   // Clear cart
   const clear = useCallback(() => {
@@ -300,7 +347,7 @@ export function useCart() {
   }, [setCartCount]);
 
   return {
-    items,
+    items: optimisticItems,
     totalItems: getTotalItems(),
     totalPrice: getTotalPrice(),
     addToCart,
@@ -308,7 +355,7 @@ export function useCart() {
     updateQuantity,
     getQuantity,
     isLoading,
-    isAnyLoading: loadingProducts.size > 0,
+    isAnyLoading,
     isAtMaxQuantity,
     hydrate,
     clear,

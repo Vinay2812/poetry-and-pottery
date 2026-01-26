@@ -316,8 +316,8 @@
     <h1>Task 5.8: Review Form</h1>
     <p class="subtitle">
       Compact inline review form with interactive star rating, collapsible photo
-      upload, and product preview. Designed for embedding in product detail pages
-      and order history.
+      upload, and product preview. Designed for embedding in product detail
+      pages and order history.
     </p>
 
     <!-- ======================= APPROVAL STATUS ======================= -->
@@ -359,9 +359,8 @@
         <strong>Layout:</strong> Compact, inline with existing content |
         <strong>Fields:</strong> Stars + Textarea + Collapsible Photo Upload |
         <strong>Photos:</strong> "Add Photos" button expands to dropzone, up to
-        3 photos, 5MB each |
-        <strong>Product Preview:</strong> Tablet/Desktop only |
-        <strong>Submit:</strong> Full-width mobile, inline tablet/desktop
+        3 photos, 5MB each | <strong>Product Preview:</strong> Tablet/Desktop
+        only | <strong>Submit:</strong> Full-width mobile, inline tablet/desktop
       </div>
 
       <div class="wf-viewport-row">
@@ -370,9 +369,7 @@
           <div class="wf-viewport-label">Mobile (375px)</div>
           <div class="wf-mobile-frame">
             <div class="wf-page-content">
-              <div class="form-context">
-                [ After Purchase / Quick Review ]
-              </div>
+              <div class="form-context">[ After Purchase / Quick Review ]</div>
 
               <!-- Collapsed Photo State -->
               <div class="review-form card" style="margin-bottom: 24px">
@@ -386,7 +383,7 @@
                 >
                   <h4
                     style="
-                      font-family: 'Plus Jakarta Sans', sans-serif;
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
                       font-size: 15px;
                       font-weight: 600;
                     "
@@ -463,7 +460,7 @@
                 >
                   <h4
                     style="
-                      font-family: 'Plus Jakarta Sans', sans-serif;
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
                       font-size: 15px;
                       font-weight: 600;
                     "
@@ -483,7 +480,9 @@
                   class="form-input form-textarea"
                   style="min-height: 80px; margin-bottom: 4px"
                   placeholder="Share your thoughts (optional)"
-                >Beautiful craftsmanship and the glaze finish is stunning!</textarea>
+                >
+Beautiful craftsmanship and the glaze finish is stunning!</textarea
+                >
                 <div class="char-count">56/500 characters</div>
 
                 <!-- Expanded Photo Upload -->
@@ -572,7 +571,7 @@
                 >
                   <h4
                     style="
-                      font-family: 'Plus Jakarta Sans', sans-serif;
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
                       font-size: 16px;
                       font-weight: 600;
                       white-space: nowrap;
@@ -665,7 +664,7 @@
                 >
                   <h4
                     style="
-                      font-family: 'Plus Jakarta Sans', sans-serif;
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
                       font-size: 16px;
                       font-weight: 600;
                       white-space: nowrap;
@@ -686,7 +685,9 @@
                   class="form-input form-textarea"
                   style="min-height: 100px; margin-bottom: 4px"
                   placeholder="Share your thoughts about this product (optional)"
-                >The speckled glaze is even more beautiful in person. Absolutely love the craftsmanship!</textarea>
+                >
+The speckled glaze is even more beautiful in person. Absolutely love the craftsmanship!</textarea
+                >
                 <div class="char-count">87/500 characters</div>
 
                 <!-- Expanded Photo Upload -->
@@ -714,9 +715,7 @@
                       />
                     </svg>
                     <div>
-                      <p class="photo-upload-text">
-                        Click or drag photos here
-                      </p>
+                      <p class="photo-upload-text">Click or drag photos here</p>
                       <p class="photo-upload-hint">
                         Up to 3 photos, 5MB each. JPG, PNG
                       </p>
@@ -789,7 +788,8 @@
                     <div>
                       <h4
                         style="
-                          font-family: 'Plus Jakarta Sans', sans-serif;
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
                           font-size: 16px;
                           font-weight: 600;
                         "
@@ -891,7 +891,8 @@
                     <div>
                       <h4
                         style="
-                          font-family: 'Plus Jakarta Sans', sans-serif;
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
                           font-size: 16px;
                           font-weight: 600;
                         "
@@ -915,7 +916,9 @@
                     class="form-input"
                     style="min-height: 60px; margin-bottom: 12px"
                     placeholder="Share your thoughts (optional)"
-                  >The speckled glaze is even more beautiful in person. Absolutely love it!</textarea>
+                  >
+The speckled glaze is even more beautiful in person. Absolutely love it!</textarea
+                  >
 
                   <!-- Expanded Photo Section -->
                   <div
@@ -1003,12 +1006,12 @@
       <h2 class="wf-section-title">Implementation Notes</h2>
 
       <div class="notes">
-        <strong>Approved Design:</strong> Option C (Compact Inline) + Collapsible
-        Image Upload<br />
+        <strong>Approved Design:</strong> Option C (Compact Inline) +
+        Collapsible Image Upload<br />
         <strong>All Viewports:</strong> Same design approach across mobile,
         tablet, desktop<br />
-        <strong>Photo Upload:</strong> Hidden behind "Add Photos" button, expands
-        inline with dashed dropzone when clicked<br />
+        <strong>Photo Upload:</strong> Hidden behind "Add Photos" button,
+        expands inline with dashed dropzone when clicked<br />
         <strong>Product Preview:</strong> Included on tablet (60px image) and
         desktop (80px image) layouts<br />
         <strong>Character Limit:</strong> 500 characters with live counter<br />

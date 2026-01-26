@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
 import { cn } from "@/lib/utils";
 
 export enum TabType {
@@ -41,6 +43,7 @@ export function EventsTabs({
   registeredCount = 0,
 }: EventsTabsProps) {
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
 
   const { requireAuth } = useAuthAction();
 
@@ -49,13 +52,17 @@ export function EventsTabs({
       e.preventDefault();
       if (tab === TabType.REGISTRATIONS) {
         requireAuth(async () => {
-          router.push(href);
+          startNavigation(() => {
+            router.push(href);
+          });
         });
       } else {
-        router.push(href);
+        startNavigation(() => {
+          router.push(href);
+        });
       }
     },
-    [router, requireAuth],
+    [router, requireAuth, startNavigation],
   );
 
   return (

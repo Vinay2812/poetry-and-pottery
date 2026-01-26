@@ -10,10 +10,19 @@ import {
 import { ArrowLeftIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+function SectionFallback() {
+  return (
+    <div className="text-muted-foreground rounded-2xl border border-neutral-200 bg-white p-6 text-sm">
+      Loading section...
+    </div>
+  );
+}
 
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
@@ -80,16 +89,20 @@ export default async function ProductDetailPage({
         </TabsList>
 
         <TabsContent value="details">
-          <ProductFormContainer product={product} categories={categories} />
+          <Suspense fallback={<SectionFallback />}>
+            <ProductFormContainer product={product} categories={categories} />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="reviews">
-          <ProductReviewsSection
-            productId={productId}
-            reviews={reviewsData.reviews}
-            total={reviewsData.total}
-            averageRating={reviewsData.averageRating}
-          />
+          <Suspense fallback={<SectionFallback />}>
+            <ProductReviewsSection
+              productId={productId}
+              reviews={reviewsData.reviews}
+              total={reviewsData.total}
+              averageRating={reviewsData.averageRating}
+            />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>

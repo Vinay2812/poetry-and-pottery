@@ -215,68 +215,6 @@
         min-height: 380px;
       }
 
-      /* Mobile Sheet Version */
-      .mobile-sheet {
-        width: 375px;
-        background: white;
-        border-radius: 32px 32px 0 0;
-        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.12);
-        padding: 12px 0 32px;
-      }
-
-      .sheet-handle {
-        width: 36px;
-        height: 4px;
-        background: #e5e5e5;
-        border-radius: 2px;
-        margin: 0 auto 16px;
-      }
-
-      .sheet-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 16px 20px;
-        border-bottom: 1px solid #f0f0f0;
-      }
-
-      .sheet-avatar {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
-      }
-
-      .sheet-items {
-        padding: 8px 12px;
-      }
-
-      .sheet-item {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 14px 12px;
-        border-radius: 12px;
-        font-family: "Outfit", sans-serif;
-        font-size: 15px;
-        color: #1a1a1a;
-        cursor: pointer;
-        transition: background 0.15s;
-      }
-
-      .sheet-item:hover,
-      .sheet-item:active {
-        background: #f5f5f4;
-      }
-
-      .sheet-item svg {
-        width: 22px;
-        height: 22px;
-        stroke: #737373;
-        fill: none;
-        stroke-width: 2;
-      }
-
       /* Approval Section */
       .approval-section {
         background: #f5f5f4;
@@ -374,7 +312,9 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 40px">
-      <span class="status-badge">Awaiting Approval</span>
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a"
+        >Approved</span
+      >
     </div>
 
     <!-- SVG Icons -->
@@ -617,62 +557,23 @@
 
     <div class="divider"></div>
 
-    <!-- Mobile Sheet -->
-    <div class="section-title">Mobile: Bottom Sheet Version</div>
+    <!-- Mobile Note -->
+    <div class="section-title">Mobile Behavior</div>
     <p
       style="
         text-align: center;
         color: #666;
-        font-size: 13px;
-        margin-bottom: 32px;
+        font-size: 14px;
+        margin-bottom: 16px;
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
       "
     >
-      On mobile, the account menu opens as a bottom sheet instead of a dropdown
+      On mobile, the account menu uses the <strong>same dropdown</strong> as
+      desktop. No bottom sheet needed &mdash; the Radix UI DropdownMenu
+      component works well on both viewports.
     </p>
-
-    <div
-      style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap"
-    >
-      <div class="mobile-sheet">
-        <div class="sheet-handle"></div>
-        <div class="sheet-header">
-          <div class="sheet-avatar"></div>
-          <div>
-            <div class="dropdown-user-name">Priya Sharma</div>
-            <div class="dropdown-user-email">priya@example.com</div>
-          </div>
-        </div>
-        <div class="sheet-items">
-          <button class="sheet-item">
-            <svg><use href="#package-icon" /></svg>
-            My Orders
-            <span class="dropdown-item-badge" style="margin-left: auto">3</span>
-          </button>
-          <button class="sheet-item">
-            <svg><use href="#heart-icon" /></svg>
-            Wishlist
-            <span class="dropdown-item-badge" style="margin-left: auto">5</span>
-          </button>
-          <button class="sheet-item">
-            <svg><use href="#calendar-icon" /></svg>
-            My Registrations
-          </button>
-          <button class="sheet-item">
-            <svg><use href="#map-pin-icon" /></svg>
-            Saved Addresses
-          </button>
-          <button class="sheet-item">
-            <svg><use href="#settings-icon" /></svg>
-            Account Settings
-          </button>
-          <div style="height: 1px; background: #f0f0f0; margin: 8px 12px"></div>
-          <button class="sheet-item" style="color: #ef4444">
-            <svg style="stroke: #ef4444"><use href="#logout-icon" /></svg>
-            Sign Out
-          </button>
-        </div>
-      </div>
-    </div>
 
     <div class="divider"></div>
 
@@ -683,44 +584,35 @@
         Approval Section
       </h3>
       <p style="color: #666; font-size: 14px; margin-bottom: 24px">
-        Select your preferred account dropdown design:
+        Approved design selections:
       </p>
 
       <div class="approval-grid">
         <div class="approval-item">
-          <div class="approval-viewport-label">Desktop Dropdown</div>
+          <div class="approval-viewport-label">
+            Desktop &amp; Mobile Dropdown
+          </div>
           <label
-            ><input type="radio" name="desktop" value="a" /> Option A - Standard
-            (Recommended)</label
+            ><input type="radio" name="desktop" value="a" checked disabled />
+            Option A - Standard (Selected)</label
           >
-          <label
-            ><input type="radio" name="desktop" value="b" /> Option B -
+          <label style="opacity: 0.5"
+            ><input type="radio" name="desktop" value="b" disabled /> Option B -
             Compact</label
           >
-          <label
-            ><input type="radio" name="desktop" value="c" /> Option C - With
-            Avatar</label
+          <label style="opacity: 0.5"
+            ><input type="radio" name="desktop" value="c" disabled /> Option C -
+            With Avatar</label
           >
         </div>
 
         <div class="approval-item">
-          <div class="approval-viewport-label">Mobile (Bottom Sheet)</div>
+          <div class="approval-viewport-label">Mobile Behavior</div>
           <label
-            ><input type="radio" name="mobile" value="a" checked /> Bottom Sheet
-            with Avatar</label
-          >
-          <label
-            ><input type="radio" name="mobile" value="b" /> Full Screen
-            Modal</label
+            ><input type="radio" name="mobile" value="a" checked disabled />
+            Same dropdown as desktop (no bottom sheet)</label
           >
         </div>
-      </div>
-
-      <div class="notes-area" style="margin-top: 24px">
-        <div class="approval-viewport-label">Notes / Feedback</div>
-        <textarea
-          placeholder="Add any notes or modification requests here..."
-        ></textarea>
       </div>
     </div>
 
@@ -738,7 +630,8 @@
       &bull; <strong>Divider:</strong> 1px neutral-100, my-2<br />
       &bull; <strong>Sign Out:</strong> text-red-500, separate from other
       items<br />
-      &bull; <strong>Mobile:</strong> Use Sheet component with drag handle<br />
+      &bull; <strong>Mobile:</strong> Same dropdown as desktop (no bottom
+      sheet)<br />
       &bull;
       <strong>File:</strong> src/features/layout/components/account-dropdown.tsx
     </div>

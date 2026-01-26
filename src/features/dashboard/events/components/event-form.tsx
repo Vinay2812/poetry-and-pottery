@@ -3,7 +3,8 @@
 import { R2ImageUploaderContainer } from "@/features/uploads";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, TrashIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -70,7 +71,6 @@ export function EventForm({
   viewModel,
   statusOptions,
   levelOptions,
-  isSubmitting,
   isEditing,
   onSubmit,
   onCancel,
@@ -134,30 +134,37 @@ export function EventForm({
     }
   }, [title, isEditing, setValue]);
 
-  const handleFormSubmit = (data: FormValues) => {
-    onSubmit({
-      title: data.title,
-      slug: data.slug,
-      description: data.description,
-      startsAt: new Date(data.startsAt),
-      endsAt: new Date(data.endsAt),
-      location: data.location,
-      fullLocation: data.fullLocation,
-      totalSeats: data.totalSeats,
-      availableSeats: data.availableSeats,
-      instructor: data.instructor,
-      includes: data.includes.map((i) => i.value).filter(Boolean),
-      price: data.price,
-      image: data.image,
-      highlights: data.highlights.map((h) => h.value).filter(Boolean),
-      gallery: data.gallery,
-      status: data.status as EventStatus,
-      level: data.level as EventLevel,
-    });
-  };
+  const handleFormSubmit = useCallback(
+    (data: FormValues) => {
+      onSubmit({
+        title: data.title,
+        slug: data.slug,
+        description: data.description,
+        startsAt: new Date(data.startsAt),
+        endsAt: new Date(data.endsAt),
+        location: data.location,
+        fullLocation: data.fullLocation,
+        totalSeats: data.totalSeats,
+        availableSeats: data.availableSeats,
+        instructor: data.instructor,
+        includes: data.includes.map((i) => i.value).filter(Boolean),
+        price: data.price,
+        image: data.image,
+        highlights: data.highlights.map((h) => h.value).filter(Boolean),
+        gallery: data.gallery,
+        status: data.status as EventStatus,
+        level: data.level as EventLevel,
+      });
+    },
+    [onSubmit],
+  );
+
+  const handleFormAction = useCallback(async () => {
+    await handleSubmit(handleFormSubmit)();
+  }, [handleSubmit, handleFormSubmit]);
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8">
+    <form action={handleFormAction} className="space-y-8">
       {/* Basic Information */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-neutral-900">
@@ -469,18 +476,27 @@ export function EventForm({
       </div>
 
       {/* Form Actions */}
-      <div className="flex items-center justify-end gap-3">
-        <Button type="button" variant="outline" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting
-            ? "Saving..."
-            : isEditing
-              ? "Update Event"
-              : "Create Event"}
-        </Button>
-      </div>
+      <EventFormActions isEditing={isEditing} onCancel={onCancel} />
     </form>
+  );
+}
+
+interface EventFormActionsProps {
+  isEditing: boolean;
+  onCancel: () => void;
+}
+
+function EventFormActions({ isEditing, onCancel }: EventFormActionsProps) {
+  const { pending } = useFormStatus();
+
+  return (
+    <div className="flex items-center justify-end gap-3">
+      <Button type="button" variant="outline" onClick={onCancel}>
+        Cancel
+      </Button>
+      <Button type="submit" disabled={pending}>
+        {pending ? "Saving..." : isEditing ? "Update Event" : "Create Event"}
+      </Button>
+    </div>
   );
 }

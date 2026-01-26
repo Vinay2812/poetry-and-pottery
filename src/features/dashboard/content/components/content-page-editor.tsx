@@ -1,7 +1,8 @@
 "use client";
 
 import { ArrowLeft, Loader2, Plus, Save, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,31 +41,23 @@ import { type ContentPageEditorProps, ICON_OPTIONS } from "../types";
 
 export function ContentPageEditor({
   viewModel,
-  isPending,
   onSave,
   onCancel,
 }: ContentPageEditorProps) {
   const [content, setContent] = useState(viewModel.content);
 
-  const handleSave = () => {
-    onSave(content);
-  };
+  const handleSave = useCallback(async () => {
+    await onSave(content);
+  }, [content, onSave]);
 
   return (
-    <div className="space-y-6">
+    <form action={handleSave} className="space-y-6">
       <div className="flex items-center justify-between">
-        <Button variant="ghost" onClick={onCancel}>
+        <Button type="button" variant="ghost" onClick={onCancel}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Content Pages
         </Button>
-        <Button onClick={handleSave} disabled={isPending}>
-          {isPending ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Save className="mr-2 h-4 w-4" />
-          )}
-          Save Changes
-        </Button>
+        <ContentSaveButton />
       </div>
 
       <div className="rounded-lg border p-6">
@@ -112,7 +105,22 @@ export function ContentPageEditor({
           />
         )}
       </div>
-    </div>
+    </form>
+  );
+}
+
+function ContentSaveButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? (
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      ) : (
+        <Save className="mr-2 h-4 w-4" />
+      )}
+      Save Changes
+    </Button>
   );
 }
 

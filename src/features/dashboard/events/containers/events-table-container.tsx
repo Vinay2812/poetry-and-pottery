@@ -44,9 +44,11 @@ export function EventsTableContainer({
         params.delete("search");
       }
       params.set("page", "1");
-      router.push(`/dashboard/events?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/events?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleStatusFilter = useCallback(
@@ -58,9 +60,11 @@ export function EventsTableContainer({
         params.delete("status");
       }
       params.set("page", "1");
-      router.push(`/dashboard/events?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/events?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleLevelFilter = useCallback(
@@ -72,18 +76,22 @@ export function EventsTableContainer({
         params.delete("level");
       }
       params.set("page", "1");
-      router.push(`/dashboard/events?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/events?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handlePageChange = useCallback(
     (page: number) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set("page", page.toString());
-      router.push(`/dashboard/events?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/events?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleStatusChange = useCallback(

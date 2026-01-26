@@ -6,7 +6,10 @@ import { useAuthAction, useCart } from "@/hooks";
 import { useUIStore } from "@/store";
 import type { CartWithProduct } from "@/types";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+import { CartSkeleton } from "@/components/skeletons";
 
 import { contactBusiness } from "@/lib/contact-business";
 
@@ -59,6 +62,7 @@ export function CartContainer({
   );
 
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
   const { addToast } = useUIStore();
   const { requireAuth } = useAuthAction();
   const { mutate: createOrderMutate } = useCreateOrder();
@@ -189,7 +193,9 @@ export function CartContainer({
           })),
         });
 
-        router.push(`/orders/${result.data.id}`);
+        startNavigation(() => {
+          router.push(`/orders/${result.data.id}`);
+        });
       } catch {
         addToast({
           type: "error",
@@ -208,6 +214,7 @@ export function CartContainer({
     addToast,
     clear,
     router,
+    startNavigation,
     createOrderMutate,
   ]);
 
@@ -261,12 +268,14 @@ export function CartContainer({
   };
 
   return (
-    <Cart
-      viewModel={viewModel}
-      onQuantityChange={handleUpdateQuantity}
-      onRemoveItem={handleRemoveItem}
-      onSelectAddress={handleSelectAddress}
-      onCheckout={handleCheckout}
-    />
+    <Suspense fallback={<CartSkeleton />}>
+      <Cart
+        viewModel={viewModel}
+        onQuantityChange={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+        onSelectAddress={handleSelectAddress}
+        onCheckout={handleCheckout}
+      />
+    </Suspense>
   );
 }

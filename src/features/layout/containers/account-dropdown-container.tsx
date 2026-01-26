@@ -6,6 +6,8 @@ import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
 import { AccountDropdown } from "../components/account-dropdown";
 import type { AccountDropdownViewModel, UserInfo } from "../types";
 
@@ -14,6 +16,7 @@ export function AccountDropdownContainer() {
   const { user } = useUser();
   const { sessionClaims } = useAuth();
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
   const pendingOrdersCount = useUIStore((state) => state.pendingOrdersCount);
 
   const viewModel: AccountDropdownViewModel = useMemo(() => {
@@ -43,9 +46,11 @@ export function AccountDropdownContainer() {
 
   const handleNavigate = useCallback(
     (path: string) => {
-      router.push(path);
+      startNavigation(() => {
+        router.push(path);
+      });
     },
-    [router],
+    [router, startNavigation],
   );
 
   return (

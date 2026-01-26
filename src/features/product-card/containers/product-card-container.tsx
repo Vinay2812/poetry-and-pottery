@@ -4,6 +4,8 @@ import { useCart, useWishlist } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
 import { ProductCard } from "../components/product-card";
 import type { ProductCardContainerProps } from "../types";
 
@@ -17,6 +19,7 @@ export function ProductCardContainer({
   const [addedToCart, setAddedToCart] = useState(false);
 
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
 
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToCart, isAtMaxQuantity } = useCart();
@@ -31,8 +34,10 @@ export function ProductCardContainer({
   const isWishlistVariant = variant === "wishlist";
 
   const handleImageClick = useCallback(() => {
-    router.push(`/products/${product.id}`);
-  }, [router, product.id]);
+    startNavigation(() => {
+      router.push(`/products/${product.id}`);
+    });
+  }, [router, product.id, startNavigation]);
 
   const handleWishlistClick = useCallback(() => {
     toggleWishlist(product.id);

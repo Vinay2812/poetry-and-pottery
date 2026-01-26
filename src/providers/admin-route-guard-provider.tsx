@@ -6,6 +6,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useRef } from "react";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { DashboardSkeleton } from "@/components/skeletons";
 
 interface AdminRouteGuardProviderProps {
@@ -17,6 +18,7 @@ export function AdminRouteGuardProvider({
 }: AdminRouteGuardProviderProps) {
   const { isLoaded, isSignedIn, sessionClaims } = useAuth();
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
   const hasRefreshed = useRef(false);
   const { isAdminRoute } = usePathInfo();
 
@@ -26,16 +28,27 @@ export function AdminRouteGuardProvider({
 
     if (!isSignedIn) {
       const returnUrl = encodeURIComponent("/dashboard");
-      router.push(`/sign-in?redirect_url=${returnUrl}`);
+      startNavigation(() => {
+        router.push(`/sign-in?redirect_url=${returnUrl}`);
+      });
       return;
     }
 
     const role = sessionClaims?.role;
     if (role !== UserRole.ADMIN) {
-      router.push("/");
+      startNavigation(() => {
+        router.push("/");
+      });
       return;
     }
-  }, [isLoaded, isSignedIn, router, isAdminRoute, sessionClaims?.role]);
+  }, [
+    isLoaded,
+    isSignedIn,
+    router,
+    isAdminRoute,
+    sessionClaims?.role,
+    startNavigation,
+  ]);
 
   // Refresh when user is signed in on initial mount to ensure fresh data
   useEffect(() => {

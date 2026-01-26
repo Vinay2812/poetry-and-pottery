@@ -2,7 +2,13 @@
 
 import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { Star } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useOptimistic,
+  useState,
+} from "react";
 
 import { ReviewCard } from "@/components/cards";
 import { Rating } from "@/components/shared/rating";
@@ -47,6 +53,17 @@ interface Review {
 }
 
 type SortOption = "recent" | "highest" | "lowest" | "top";
+
+interface ReviewLikeState {
+  likedReviews: Set<string>;
+  likeCounts: Record<string, number>;
+}
+
+interface ReviewLikeAction {
+  reviewId: string;
+  likes: number;
+  isLiked: boolean;
+}
 
 interface RatingBreakdownProps {
   rating: number;
@@ -93,48 +110,54 @@ export function ReviewsSheet({
 }: ReviewsSheetProps) {
   const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
   const [sortBy, setSortBy] = useState<SortOption>("recent");
-  const [likedReviews, setLikedReviews] = useState<Set<string>>(() => {
-    // Initialize from reviews data
+  const [reviewState, setReviewState] = useState<ReviewLikeState>(() => {
     const likedSet = new Set<string>();
-    reviews.forEach((review) => {
-      if (review.isLikedByCurrentUser) {
-        likedSet.add(review.id);
-      }
-    });
-    return likedSet;
-  });
-  const [likeCounts, setLikeCounts] = useState<Record<string, number>>(() =>
-    reviews.reduce(
+    const likeCounts = reviews.reduce(
       (acc, review) => {
+        if (review.isLikedByCurrentUser) {
+          likedSet.add(review.id);
+        }
         acc[review.id] = review.likes ?? 0;
         return acc;
       },
       {} as Record<string, number>,
-    ),
+    );
+    return { likedReviews: likedSet, likeCounts };
+  });
+  const [optimisticReviewState, applyOptimisticReview] = useOptimistic(
+    reviewState,
+    (state: ReviewLikeState, action: ReviewLikeAction) => {
+      const nextLiked = new Set(state.likedReviews);
+      if (action.isLiked) {
+        nextLiked.add(action.reviewId);
+      } else {
+        nextLiked.delete(action.reviewId);
+      }
+      return {
+        likedReviews: nextLiked,
+        likeCounts: {
+          ...state.likeCounts,
+          [action.reviewId]: action.likes,
+        },
+      };
+    },
   );
+
+  const { likedReviews, likeCounts } = optimisticReviewState;
 
   const handleLike = useCallback(
     async (reviewId: string) => {
-      // Optimistically update UI
       const wasLiked = likedReviews.has(reviewId);
       const newIsLiked = !wasLiked;
       const newLikesCount = wasLiked
         ? (likeCounts[reviewId] ?? 0) - 1
         : (likeCounts[reviewId] ?? 0) + 1;
 
-      setLikedReviews((prev) => {
-        const newSet = new Set(prev);
-        if (newSet.has(reviewId)) {
-          newSet.delete(reviewId);
-        } else {
-          newSet.add(reviewId);
-        }
-        return newSet;
+      applyOptimisticReview({
+        reviewId,
+        likes: newLikesCount,
+        isLiked: newIsLiked,
       });
-      setLikeCounts((prev) => ({
-        ...prev,
-        [reviewId]: newLikesCount,
-      }));
 
       // Notify parent of optimistic update
       onLikeUpdate?.(reviewId, newLikesCount, newIsLiked);
@@ -142,38 +165,40 @@ export function ReviewsSheet({
       // Call mutation
       const result = await toggleReviewLikeMutate(Number(reviewId));
 
-      // Revert on failure
       if (!result.success) {
-        setLikedReviews((prev) => {
-          const newSet = new Set(prev);
-          if (wasLiked) {
-            newSet.add(reviewId);
-          } else {
-            newSet.delete(reviewId);
-          }
-          return newSet;
+        const baseLikes = reviewState.likeCounts[reviewId] ?? 0;
+        const baseIsLiked = reviewState.likedReviews.has(reviewId);
+        setReviewState({
+          likedReviews: new Set(reviewState.likedReviews),
+          likeCounts: { ...reviewState.likeCounts },
         });
-        const revertedCount = wasLiked
-          ? (likeCounts[reviewId] ?? 0) + 1
-          : (likeCounts[reviewId] ?? 0) - 1;
-        setLikeCounts((prev) => ({
-          ...prev,
-          [reviewId]: revertedCount,
-        }));
-        // Notify parent of revert
-        onLikeUpdate?.(reviewId, revertedCount, wasLiked);
+        onLikeUpdate?.(reviewId, baseLikes, baseIsLiked);
       } else if (result.likesCount !== undefined) {
         // Sync with server count
         const serverCount = result.likesCount;
-        setLikeCounts((prev) => ({
-          ...prev,
-          [reviewId]: serverCount,
+        setReviewState((prev) => ({
+          likedReviews: new Set(
+            newIsLiked
+              ? [...prev.likedReviews, reviewId]
+              : [...prev.likedReviews].filter((id) => id !== reviewId),
+          ),
+          likeCounts: {
+            ...prev.likeCounts,
+            [reviewId]: serverCount,
+          },
         }));
         // Notify parent of server-synced count
         onLikeUpdate?.(reviewId, serverCount, newIsLiked);
       }
     },
-    [likedReviews, likeCounts, onLikeUpdate, toggleReviewLikeMutate],
+    [
+      applyOptimisticReview,
+      likedReviews,
+      likeCounts,
+      onLikeUpdate,
+      reviewState,
+      toggleReviewLikeMutate,
+    ],
   );
 
   const ratingCounts = useMemo(() => {

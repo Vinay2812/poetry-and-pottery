@@ -38,6 +38,7 @@ export function EventCard({ event }: EventCardProps) {
       <EventCardImage
         src={event.image}
         alt={event.title}
+        viewTransitionName={`event-image-${event.id}`}
         showOverlay={isSoldOut}
         topLeftBadge={
           <>

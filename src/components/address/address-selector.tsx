@@ -81,31 +81,30 @@ function AddressCarousel({
   const hasMultiple = addresses.length > 1;
 
   return (
-    <div className="relative w-full lg:hidden">
+    <div className="relative w-full">
       <Carousel
         setApi={setApi}
         opts={{
           startIndex: selectedIndex,
           loop: false,
+          align: "start",
         }}
         className="w-full"
       >
-        <CarouselContent className="ml-0">
+        <CarouselContent className="-ml-3">
           {addresses.map((address) => (
             <CarouselItem
               key={address.id}
-              className="basis-full overflow-hidden pl-0"
+              className="basis-[85%] pl-3 md:basis-[48%] lg:basis-[33.33%]"
             >
-              <div className="h-52">
-                <AddressCard
-                  address={address}
-                  isSelected={address.id === selectedAddressId}
-                  onSelect={() => onSelectAddress(address)}
-                  onEdit={() => onEdit(address)}
-                  onDelete={() => onDelete(address.id)}
-                  isDeleting={deletingId === address.id}
-                />
-              </div>
+              <AddressCard
+                address={address}
+                isSelected={address.id === selectedAddressId}
+                onSelect={() => onSelectAddress(address)}
+                onEdit={() => onEdit(address)}
+                onDelete={() => onDelete(address.id)}
+                isDeleting={deletingId === address.id}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -156,7 +155,6 @@ export function AddressSelector({
   const [editingAddress, setEditingAddress] = useState<UserAddress | null>(
     null,
   );
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const updateAddresses = useCallback(
@@ -178,7 +176,6 @@ export function AddressSelector({
       zip: string;
       contactNumber: string;
     }) => {
-      setIsSubmitting(true);
       const result = await createAddressMutate({
         name: data.name,
         addressLine1: data.addressLine1,
@@ -189,7 +186,6 @@ export function AddressSelector({
         zip: data.zip,
         contactNumber: data.contactNumber || undefined,
       });
-      setIsSubmitting(false);
 
       if (result.success) {
         const newAddresses = [result.data, ...addresses];
@@ -218,7 +214,6 @@ export function AddressSelector({
       if (!editingAddress)
         return { success: false, error: "No address selected" };
 
-      setIsSubmitting(true);
       const result = await updateAddressMutate(editingAddress.id, {
         name: data.name,
         addressLine1: data.addressLine1,
@@ -229,7 +224,6 @@ export function AddressSelector({
         zip: data.zip,
         contactNumber: data.contactNumber || undefined,
       });
-      setIsSubmitting(false);
 
       if (result.success) {
         const newAddresses = addresses.map((addr) =>
@@ -285,10 +279,6 @@ export function AddressSelector({
     [onSelectAddress],
   );
 
-  const selectedAddress = addresses.find(
-    (addr) => addr.id === selectedAddressId,
-  );
-
   return (
     <div className="w-full min-w-0 space-y-4">
       {/* Header */}
@@ -312,32 +302,14 @@ export function AddressSelector({
 
       {/* Address List */}
       {addresses.length > 0 ? (
-        <>
-          {/* Mobile Carousel */}
-          <AddressCarousel
-            addresses={addresses}
-            selectedAddressId={selectedAddressId}
-            onSelectAddress={handleSelectAddress}
-            onEdit={setEditingAddress}
-            onDelete={handleDeleteAddress}
-            deletingId={deletingId}
-          />
-
-          {/* Desktop Stack */}
-          <div className="hidden space-y-3 lg:block">
-            {addresses.map((address) => (
-              <AddressCard
-                key={address.id}
-                address={address}
-                isSelected={address.id === selectedAddressId}
-                onSelect={() => handleSelectAddress(address)}
-                onEdit={() => setEditingAddress(address)}
-                onDelete={() => handleDeleteAddress(address.id)}
-                isDeleting={deletingId === address.id}
-              />
-            ))}
-          </div>
-        </>
+        <AddressCarousel
+          addresses={addresses}
+          selectedAddressId={selectedAddressId}
+          onSelectAddress={handleSelectAddress}
+          onEdit={setEditingAddress}
+          onDelete={handleDeleteAddress}
+          deletingId={deletingId}
+        />
       ) : (
         <div className="rounded-2xl border-2 border-dashed border-neutral-200 bg-neutral-50 p-6 text-center">
           <MapPin className="text-muted-foreground mx-auto mb-3 h-10 w-10" />
@@ -348,19 +320,6 @@ export function AddressSelector({
             <Plus className="mr-2 h-4 w-4" />
             Add Address
           </Button>
-        </div>
-      )}
-
-      {/* Selected Address Summary (for mobile) */}
-      {selectedAddress && (
-        <div className="bg-primary/5 border-primary/20 hidden rounded-xl border p-3 lg:block">
-          <p className="text-primary text-xs font-medium">
-            Delivering to: {selectedAddress.name}
-          </p>
-          <p className="text-muted-foreground mt-1 text-xs">
-            {selectedAddress.address_line_1}, {selectedAddress.city},{" "}
-            {selectedAddress.state} - {selectedAddress.zip}
-          </p>
         </div>
       )}
 
@@ -381,7 +340,6 @@ export function AddressSelector({
               onSubmit={handleAddAddress}
               onCancel={() => setIsAddingNew(false)}
               submitLabel="Save & Use This Address"
-              isSubmitting={isSubmitting}
             />
           </div>
         </SheetContent>
@@ -407,7 +365,6 @@ export function AddressSelector({
                 onSubmit={handleUpdateAddress}
                 onCancel={() => setEditingAddress(null)}
                 submitLabel="Update Address"
-                isSubmitting={isSubmitting}
               />
             )}
           </div>

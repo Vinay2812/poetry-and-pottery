@@ -102,9 +102,8 @@ export interface ProductFormViewModel {
 export interface ProductFormProps {
   viewModel: ProductFormViewModel;
   availableCategories: string[];
-  isSubmitting: boolean;
   isEditing: boolean;
-  onSubmit: (data: ProductFormData) => void;
+  onSubmit: (data: ProductFormData) => Promise<void> | void;
   onCancel: () => void;
 }
 

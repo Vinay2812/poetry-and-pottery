@@ -32,17 +32,19 @@ export function ProductCard({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+      }}
       exit={{ opacity: 0, scale: 0.95 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.4, type: "spring", bounce: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       className={cn("group relative", className)}
     >
       <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:bg-neutral-900">
         {/* Image Container */}
         <div
           className="relative w-full overflow-hidden"
+          style={{ viewTransitionName: `product-image-${product.id}` }}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

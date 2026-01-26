@@ -2,6 +2,8 @@
 
 import { INDIAN_STATES } from "@/consts/forms";
 import { useCallback, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +37,6 @@ interface AddressFormProps {
   ) => Promise<{ success: boolean; error?: string }>;
   onCancel: () => void;
   submitLabel?: string;
-  isSubmitting?: boolean;
 }
 
 export function AddressForm({
@@ -43,7 +44,6 @@ export function AddressForm({
   onSubmit,
   onCancel,
   submitLabel = "Save Address",
-  isSubmitting = false,
 }: AddressFormProps) {
   const [formData, setFormData] = useState<AddressFormData>({
     name: initialData?.name || "",
@@ -109,26 +109,59 @@ export function AddressForm({
     [errors.state],
   );
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
+  const handleSubmitAction = useCallback(async () => {
+    if (!validateForm()) return;
 
-      if (!validateForm()) return;
+    const result = await onSubmit(formData);
 
-      const result = await onSubmit(formData);
-
-      if (!result.success && result.error) {
-        setErrors((prev) => ({ ...prev, name: result.error }));
-      }
-    },
-    [formData, onSubmit, validateForm],
-  );
+    if (!result.success && result.error) {
+      setErrors((prev) => ({ ...prev, name: result.error }));
+    }
+  }, [formData, onSubmit, validateForm]);
 
   const inputClassName =
     "h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form action={handleSubmitAction} className="space-y-5">
+      <AddressFormFields
+        formData={formData}
+        errors={errors}
+        inputClassName={inputClassName}
+        submitLabel={submitLabel}
+        onCancel={onCancel}
+        onChange={handleChange}
+        onStateChange={handleStateChange}
+      />
+    </form>
+  );
+}
+
+interface AddressFormFieldsProps {
+  formData: AddressFormData;
+  errors: Partial<AddressFormData>;
+  inputClassName: string;
+  submitLabel: string;
+  onCancel: () => void;
+  onChange: (
+    field: keyof AddressFormData,
+  ) => (e: ChangeEvent<HTMLInputElement>) => void;
+  onStateChange: (value: string) => void;
+}
+
+function AddressFormFields({
+  formData,
+  errors,
+  inputClassName,
+  submitLabel,
+  onCancel,
+  onChange,
+  onStateChange,
+}: AddressFormFieldsProps) {
+  const { pending } = useFormStatus();
+
+  return (
+    <>
       {/* Full Name */}
       <div className="space-y-1.5">
         <label
@@ -142,8 +175,8 @@ export function AddressForm({
           type="text"
           placeholder="Enter your full name"
           value={formData.name}
-          onChange={handleChange("name")}
-          disabled={isSubmitting}
+          onChange={onChange("name")}
+          disabled={pending}
           aria-invalid={!!errors.name}
           className={cn(inputClassName, errors.name && "border-destructive")}
         />
@@ -165,8 +198,8 @@ export function AddressForm({
           type="tel"
           placeholder="10-digit mobile number"
           value={formData.contactNumber}
-          onChange={handleChange("contactNumber")}
-          disabled={isSubmitting}
+          onChange={onChange("contactNumber")}
+          disabled={pending}
           aria-invalid={!!errors.contactNumber}
           className={cn(
             inputClassName,
@@ -191,8 +224,8 @@ export function AddressForm({
           type="text"
           placeholder="House no., Building, Street"
           value={formData.addressLine1}
-          onChange={handleChange("addressLine1")}
-          disabled={isSubmitting}
+          onChange={onChange("addressLine1")}
+          disabled={pending}
           aria-invalid={!!errors.addressLine1}
           className={cn(
             inputClassName,
@@ -218,8 +251,8 @@ export function AddressForm({
           type="text"
           placeholder="Apartment, Suite, Area"
           value={formData.addressLine2}
-          onChange={handleChange("addressLine2")}
-          disabled={isSubmitting}
+          onChange={onChange("addressLine2")}
+          disabled={pending}
           className={inputClassName}
         />
       </div>
@@ -238,8 +271,8 @@ export function AddressForm({
           type="text"
           placeholder="Nearby landmark"
           value={formData.landmark}
-          onChange={handleChange("landmark")}
-          disabled={isSubmitting}
+          onChange={onChange("landmark")}
+          disabled={pending}
           className={inputClassName}
         />
       </div>
@@ -258,8 +291,8 @@ export function AddressForm({
             type="text"
             placeholder="Enter city"
             value={formData.city}
-            onChange={handleChange("city")}
-            disabled={isSubmitting}
+            onChange={onChange("city")}
+            disabled={pending}
             aria-invalid={!!errors.city}
             className={cn(inputClassName, errors.city && "border-destructive")}
           />
@@ -281,8 +314,8 @@ export function AddressForm({
             placeholder="Enter pincode"
             maxLength={6}
             value={formData.zip}
-            onChange={handleChange("zip")}
-            disabled={isSubmitting}
+            onChange={onChange("zip")}
+            disabled={pending}
             aria-invalid={!!errors.zip}
             className={cn(inputClassName, errors.zip && "border-destructive")}
           />
@@ -302,8 +335,8 @@ export function AddressForm({
         </label>
         <Select
           value={formData.state}
-          onValueChange={handleStateChange}
-          disabled={isSubmitting}
+          onValueChange={onStateChange}
+          disabled={pending}
         >
           <SelectTrigger
             id="state"
@@ -336,7 +369,7 @@ export function AddressForm({
           size="lg"
           className="h-12 flex-1 rounded-xl"
           onClick={onCancel}
-          disabled={isSubmitting}
+          disabled={pending}
         >
           Cancel
         </Button>
@@ -344,11 +377,11 @@ export function AddressForm({
           type="submit"
           size="lg"
           className="h-12 flex-1 rounded-xl"
-          disabled={isSubmitting}
+          disabled={pending}
         >
-          {isSubmitting ? "Saving..." : submitLabel}
+          {pending ? "Saving..." : submitLabel}
         </Button>
       </div>
-    </form>
+    </>
   );
 }

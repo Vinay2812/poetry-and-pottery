@@ -1,8 +1,11 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { StaggeredGrid } from "@/components/shared";
 
 import type { CategoryWithImage } from "@/graphql/generated/types";
 
@@ -34,28 +37,37 @@ export function CategorySection({ categories }: CategorySectionProps) {
           </Link>
         </div>
 
-        <div className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 lg:mx-0 lg:gap-4 lg:px-0">
+        <StaggeredGrid className="scrollbar-hide -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 lg:mx-0 lg:gap-4 lg:px-0">
           {categories.map((category) => (
-            <Link
+            <motion.div
               key={category.name}
-              href={`/products?category=${category.name.toLowerCase()}`}
-              className="group relative h-32 min-w-[160px] shrink-0 overflow-hidden rounded-2xl lg:h-40 lg:min-w-[200px] lg:flex-1"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="min-w-[160px] shrink-0 lg:min-w-[200px] lg:flex-1"
             >
-              <Image
-                src={category.image_url || FALLBACK_IMAGE}
-                alt={formatCategoryName(category.name)}
-                fill
-                className="object-cover blur-xs brightness-50 transition-transform duration-500 group-hover:scale-105"
-                sizes="(min-width: 1024px) 20vw, 160px"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-display text-base font-bold tracking-wide text-white lg:text-lg">
-                  {formatCategoryName(category.name)}
-                </span>
-              </div>
-            </Link>
+              <Link
+                href={`/products?category=${category.name.toLowerCase()}`}
+                className="group relative block h-32 overflow-hidden rounded-2xl lg:h-40"
+              >
+                <Image
+                  src={category.image_url || FALLBACK_IMAGE}
+                  alt={formatCategoryName(category.name)}
+                  fill
+                  className="object-cover blur-xs brightness-50 transition-transform duration-500 group-hover:scale-105"
+                  sizes="(min-width: 1024px) 20vw, 160px"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="font-display text-base font-bold tracking-wide text-white lg:text-lg">
+                    {formatCategoryName(category.name)}
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </StaggeredGrid>
       </div>
     </section>
   );

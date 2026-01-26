@@ -4,6 +4,8 @@ import { useAuthAction, useEventRegistration, useShare } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
 import { contactBusiness } from "@/lib/contact-business";
 
 import { EventDetail } from "../components/event-detail";
@@ -15,6 +17,7 @@ export function EventDetailContainer({
   otherEvents,
 }: EventDetailContainerProps) {
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
   const [registered, setRegistered] = useState(false);
 
   const { requireAuth } = useAuthAction();
@@ -51,7 +54,9 @@ export function EventDetailContainer({
         });
 
         // Redirect to registrations after a delay
-        router.push("/events/registrations");
+        startNavigation(() => {
+          router.push("/events/registrations");
+        });
       }
     });
   }, [
@@ -62,6 +67,7 @@ export function EventDetailContainer({
     event.starts_at,
     event.price,
     router,
+    startNavigation,
   ]);
 
   // Build the view model

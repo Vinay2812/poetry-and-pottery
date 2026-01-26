@@ -5,6 +5,7 @@ import { OptimizedImage } from "@/components/shared";
 interface EventCardImageProps {
   src: string;
   alt: string;
+  viewTransitionName?: string;
   topLeftBadge?: ReactNode;
   bottomRightBadge?: ReactNode;
   showOverlay?: boolean;
@@ -13,12 +14,16 @@ interface EventCardImageProps {
 export function EventCardImage({
   src,
   alt,
+  viewTransitionName,
   topLeftBadge,
   bottomRightBadge,
   showOverlay,
 }: EventCardImageProps) {
   return (
-    <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+    <div
+      className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+      style={viewTransitionName ? { viewTransitionName } : undefined}
+    >
       <OptimizedImage
         src={src}
         alt={alt}

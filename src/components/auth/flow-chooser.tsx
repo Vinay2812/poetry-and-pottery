@@ -3,6 +3,7 @@
 import { LayoutDashboardIcon, StoreIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { Button } from "@/components/ui/button";
 
 interface FlowChooserProps {
@@ -11,14 +12,19 @@ interface FlowChooserProps {
 
 export function FlowChooser({ redirectUrl }: FlowChooserProps) {
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
 
   const handleDashboard = () => {
-    router.push("/dashboard");
+    startNavigation(() => {
+      router.push("/dashboard");
+    });
   };
 
   const handleShop = () => {
     const destination = redirectUrl ? decodeURIComponent(redirectUrl) : "/";
-    router.push(destination);
+    startNavigation(() => {
+      router.push(destination);
+    });
   };
 
   return (

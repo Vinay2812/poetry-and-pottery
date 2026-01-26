@@ -799,9 +799,7 @@
           </div>
           <div class="demo-device-frame mobile">
             <div class="demo-device-content">
-              <div class="product-context">
-                [ Product Detail + Tabs Above ]
-              </div>
+              <div class="product-context">[ Product Detail + Tabs Above ]</div>
               <div class="section-header-row">
                 <div>
                   <div class="section-heading" style="font-size: 18px">
@@ -841,9 +839,7 @@
           </div>
           <div class="demo-device-frame tablet">
             <div class="demo-device-content tablet-padding">
-              <div class="product-context">
-                [ Product Detail Layout Above ]
-              </div>
+              <div class="product-context">[ Product Detail Layout Above ]</div>
               <div class="section-header-row">
                 <div>
                   <div class="section-heading" style="font-size: 20px">
@@ -892,9 +888,7 @@
                   <div class="section-heading-underline"></div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 16px">
-                  <span class="card-counter" id="counter-c-desktop"
-                    >1 / 8</span
-                  >
+                  <span class="card-counter" id="counter-c-desktop">1 / 8</span>
                   <div class="scroll-nav">
                     <button
                       class="scroll-arrow disabled"
@@ -960,8 +954,7 @@
         >// Snap scroll with View All end card - Approved Design</span
       >
       &lt;div <span class="keyword">className</span>=<span class="string"
-        >"flex overflow-x-auto snap-x snap-mandatory gap-5
-        scrollbar-hide"</span
+        >"flex overflow-x-auto snap-x snap-mandatory gap-5 scrollbar-hide"</span
       >&gt; {relatedProducts.map(product =&gt; ( &lt;div
       <span class="keyword">key</span>={product.id}
       <span class="keyword">className</span>=<span class="string"
@@ -975,8 +968,8 @@
       <span class="keyword">className</span>=<span class="string"
         >"flex-shrink-0 snap-start rounded-2xl bg-primary-light flex
         items-center justify-center"</span
-      >&gt; &lt;ArrowRight /&gt; &lt;span&gt;View All&lt;/span&gt;
-      &lt;/Link&gt; &lt;/div&gt;
+      >&gt; &lt;ArrowRight /&gt; &lt;span&gt;View All&lt;/span&gt; &lt;/Link&gt;
+      &lt;/div&gt;
     </div>
 
     <div class="divider"></div>
@@ -1015,8 +1008,8 @@
       <code>-webkit-overflow-scrolling: touch</code> for iOS momentum<br />
       &bull; <strong>End Card:</strong> "View All in [Category]" CTA card at end
       of scroll row, links to <code>/shop?category=slug</code><br />
-      &bull; <strong>Quick Add (Desktop):</strong> Button slides up on card hover
-      via CSS transform<br />
+      &bull; <strong>Quick Add (Desktop):</strong> Button slides up on card
+      hover via CSS transform<br />
       &bull; <strong>Arrows (Desktop):</strong>
       <code>scrollBy({ left: cardWidth + gap, behavior: 'smooth' })</code> with
       card counter<br />
@@ -1184,8 +1177,7 @@
             const dots = dotsContainer.querySelectorAll(".scroll-dot");
             const cardWidth =
               mobileContainer.querySelector(".scroll-card")?.offsetWidth || 156;
-            const gap =
-              parseInt(getComputedStyle(mobileContainer).gap) || 12;
+            const gap = parseInt(getComputedStyle(mobileContainer).gap) || 12;
             const step = cardWidth + gap;
             const activeIndex = Math.round(mobileContainer.scrollLeft / step);
             const maxIndex = dots.length - 1;
@@ -1208,18 +1200,14 @@
                 id.replace("scroll-", "wrapper-"),
               );
               if (wrapper) {
-                wrapper.classList.toggle(
-                  "scrolled",
-                  container.scrollLeft > 10,
-                );
+                wrapper.classList.toggle("scrolled", container.scrollLeft > 10);
               }
 
               // Update card counter for desktop
               if (id === "scroll-c-desktop") {
                 const cardWidth =
                   container.querySelector(".scroll-card")?.offsetWidth || 240;
-                const gap =
-                  parseInt(getComputedStyle(container).gap) || 20;
+                const gap = parseInt(getComputedStyle(container).gap) || 20;
                 const step = cardWidth + gap;
                 const currentIndex =
                   Math.round(container.scrollLeft / step) + 1;

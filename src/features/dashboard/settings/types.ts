@@ -39,12 +39,11 @@ export interface SocialLinksViewModel {
  */
 export interface SettingsFormProps {
   viewModel: SettingsViewModel;
-  isPending: boolean;
   activeTab: SettingsTab;
   onTabChange: (tab: SettingsTab) => void;
-  onHeroImagesChange: (images: Partial<HeroImages>) => void;
-  onContactInfoChange: (info: Partial<ContactInfo>) => void;
-  onSocialLinksChange: (links: Partial<SocialLinks>) => void;
+  onHeroImagesChange: (images: Partial<HeroImages>) => Promise<void> | void;
+  onContactInfoChange: (info: Partial<ContactInfo>) => Promise<void> | void;
+  onSocialLinksChange: (links: Partial<SocialLinks>) => Promise<void> | void;
 }
 
 export type SettingsTab = "hero" | "contact" | "social";

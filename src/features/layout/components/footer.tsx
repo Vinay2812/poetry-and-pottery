@@ -12,6 +12,7 @@ import {
   Phone,
 } from "lucide-react";
 import Link from "next/link";
+import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 
@@ -61,7 +62,7 @@ function NewsletterContent({
   onNewsletterSubmit,
 }: {
   viewModel: FooterProps["viewModel"];
-  onNewsletterSubmit: () => void;
+  onNewsletterSubmit: () => Promise<void>;
 }) {
   // Already subscribed
   if (viewModel.isAlreadySubscribed || viewModel.subscriptionSuccess) {
@@ -94,25 +95,36 @@ function NewsletterContent({
 
   // Authenticated but not subscribed
   return (
-    <div className="flex flex-col items-center gap-3">
-      <Button
-        onClick={onNewsletterSubmit}
-        disabled={viewModel.isSubscribing}
-        className="h-12 min-w-[180px] rounded-full"
-      >
-        {viewModel.isSubscribing ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <>
-            Subscribe to Newsletter
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </>
-        )}
-      </Button>
+    <form
+      action={onNewsletterSubmit}
+      className="flex flex-col items-center gap-3"
+    >
+      <NewsletterSubmitButton />
       {viewModel.subscriptionError && (
         <p className="text-sm text-red-500">{viewModel.subscriptionError}</p>
       )}
-    </div>
+    </form>
+  );
+}
+
+function NewsletterSubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      className="h-12 min-w-[180px] rounded-full"
+    >
+      {pending ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <>
+          Subscribe to Newsletter
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </>
+      )}
+    </Button>
   );
 }
 

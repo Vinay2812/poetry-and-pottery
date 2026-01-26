@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,6 +59,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
   const { user } = useUser();
   const { signOut } = useClerk();
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
 
@@ -66,8 +68,10 @@ export function DashboardShell({ children }: DashboardShellProps) {
   }, [signOut]);
 
   const handleGoHome = useCallback(() => {
-    router.push("/");
-  }, [router]);
+    startNavigation(() => {
+      router.push("/");
+    });
+  }, [router, startNavigation]);
 
   return (
     <div className="min-h-screen">

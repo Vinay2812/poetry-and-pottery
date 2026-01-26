@@ -82,7 +82,10 @@ export function EventDetail({
           </nav>
 
           {/* Hero Image */}
-          <div className="relative aspect-4/5 w-full overflow-hidden lg:aspect-21/9 lg:rounded-2xl">
+          <div
+            className="relative aspect-4/5 w-full overflow-hidden lg:aspect-21/9 lg:rounded-2xl"
+            style={{ viewTransitionName: `event-image-${viewModel.id}` }}
+          >
             <OptimizedImage
               src={imageUrl}
               alt={title}

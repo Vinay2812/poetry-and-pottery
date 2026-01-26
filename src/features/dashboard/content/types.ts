@@ -68,7 +68,6 @@ export interface ContentPageEditorViewModel {
  */
 export interface ContentPageEditorProps {
   viewModel: ContentPageEditorViewModel;
-  isPending: boolean;
   onSave: (
     content:
       | AboutPageContent
@@ -77,7 +76,7 @@ export interface ContentPageEditorProps {
       | CarePageContent
       | PrivacyPageContent
       | TermsPageContent,
-  ) => void;
+  ) => Promise<void> | void;
   onCancel: () => void;
 }
 

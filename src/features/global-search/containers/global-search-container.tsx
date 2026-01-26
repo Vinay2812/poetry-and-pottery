@@ -3,11 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
 import { GlobalSearch } from "../components/global-search";
 import { useGlobalSearch } from "../hooks/use-global-search";
 
 export function GlobalSearchContainer() {
   const router = useRouter();
+  const { startNavigation } = useRouteAnimation();
   const {
     viewModel,
     handleOpen,
@@ -19,43 +22,59 @@ export function GlobalSearchContainer() {
   const handleProductClick = useCallback(
     (id: number) => {
       handleClose();
-      router.push(`/products/${id}`);
+      startNavigation(() => {
+        router.push(`/products/${id}`);
+      });
     },
-    [handleClose, router],
+    [handleClose, router, startNavigation],
   );
 
   const handleEventClick = useCallback(
     (eventId: string) => {
       handleClose();
-      router.push(`/events/${eventId}`);
+      startNavigation(() => {
+        router.push(`/events/${eventId}`);
+      });
     },
-    [handleClose, router],
+    [handleClose, router, startNavigation],
   );
 
   const handleOrderClick = useCallback(
     (orderId: string) => {
       handleClose();
-      router.push(`/orders/${orderId}`);
+      startNavigation(() => {
+        router.push(`/orders/${orderId}`);
+      });
     },
-    [handleClose, router],
+    [handleClose, router, startNavigation],
   );
 
   const handleViewAllProducts = useCallback(() => {
     handleClose();
-    router.push(
-      `/products?search=${encodeURIComponent(viewModel.searchQuery)}`,
-    );
-  }, [handleClose, router, viewModel.searchQuery]);
+    startNavigation(() => {
+      router.push(
+        `/products?search=${encodeURIComponent(viewModel.searchQuery)}`,
+      );
+    });
+  }, [handleClose, router, startNavigation, viewModel.searchQuery]);
 
   const handleViewAllEvents = useCallback(() => {
     handleClose();
-    router.push(`/events?search=${encodeURIComponent(viewModel.searchQuery)}`);
-  }, [handleClose, router, viewModel.searchQuery]);
+    startNavigation(() => {
+      router.push(
+        `/events?search=${encodeURIComponent(viewModel.searchQuery)}`,
+      );
+    });
+  }, [handleClose, router, startNavigation, viewModel.searchQuery]);
 
   const handleViewAllOrders = useCallback(() => {
     handleClose();
-    router.push(`/orders?search=${encodeURIComponent(viewModel.searchQuery)}`);
-  }, [handleClose, router, viewModel.searchQuery]);
+    startNavigation(() => {
+      router.push(
+        `/orders?search=${encodeURIComponent(viewModel.searchQuery)}`,
+      );
+    });
+  }, [handleClose, router, startNavigation, viewModel.searchQuery]);
 
   return {
     viewModel,

@@ -7,7 +7,8 @@ import {
   Save,
   Share2,
 } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
@@ -43,7 +44,6 @@ function ImagePreview({ src, alt }: ImagePreviewProps) {
 
 export function SettingsForm({
   viewModel,
-  isPending,
   activeTab,
   onTabChange,
   onHeroImagesChange,
@@ -55,17 +55,17 @@ export function SettingsForm({
   const [contactInfo, setContactInfo] = useState(viewModel.contactInfo);
   const [socialLinks, setSocialLinks] = useState(viewModel.socialLinks);
 
-  const handleHeroImagesSave = () => {
-    onHeroImagesChange(heroImages);
-  };
+  const handleHeroImagesSave = useCallback(async () => {
+    await onHeroImagesChange(heroImages);
+  }, [heroImages, onHeroImagesChange]);
 
-  const handleContactInfoSave = () => {
-    onContactInfoChange(contactInfo);
-  };
+  const handleContactInfoSave = useCallback(async () => {
+    await onContactInfoChange(contactInfo);
+  }, [contactInfo, onContactInfoChange]);
 
-  const handleSocialLinksSave = () => {
-    onSocialLinksChange(socialLinks);
-  };
+  const handleSocialLinksSave = useCallback(async () => {
+    await onSocialLinksChange(socialLinks);
+  }, [socialLinks, onSocialLinksChange]);
 
   return (
     <div className="space-y-6">
@@ -93,7 +93,7 @@ export function SettingsForm({
 
         {/* Hero Images Tab */}
         <TabsContent value="hero" className="space-y-6 pt-6">
-          <div className="rounded-lg border p-6">
+          <form className="rounded-lg border p-6" action={handleHeroImagesSave}>
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold">Hero Images</h3>
@@ -101,18 +101,7 @@ export function SettingsForm({
                   Configure the hero banner images for different pages.
                 </p>
               </div>
-              <Button
-                onClick={handleHeroImagesSave}
-                disabled={isPending}
-                size="sm"
-              >
-                {isPending ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="mr-2 h-4 w-4" />
-                )}
-                Save Changes
-              </Button>
+              <SettingsSaveButton />
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="space-y-2">
@@ -165,12 +154,15 @@ export function SettingsForm({
                 <ImagePreview src={heroImages.events} alt="Events page hero" />
               </div>
             </div>
-          </div>
+          </form>
         </TabsContent>
 
         {/* Contact Info Tab */}
         <TabsContent value="contact" className="space-y-6 pt-6">
-          <div className="rounded-lg border p-6">
+          <form
+            className="rounded-lg border p-6"
+            action={handleContactInfoSave}
+          >
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold">Contact Information</h3>
@@ -178,18 +170,7 @@ export function SettingsForm({
                   Update your business contact details.
                 </p>
               </div>
-              <Button
-                onClick={handleContactInfoSave}
-                disabled={isPending}
-                size="sm"
-              >
-                {isPending ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="mr-2 h-4 w-4" />
-                )}
-                Save Changes
-              </Button>
+              <SettingsSaveButton />
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="space-y-2">
@@ -234,12 +215,15 @@ export function SettingsForm({
                 />
               </div>
             </div>
-          </div>
+          </form>
         </TabsContent>
 
         {/* Social Links Tab */}
         <TabsContent value="social" className="space-y-6 pt-6">
-          <div className="rounded-lg border p-6">
+          <form
+            className="rounded-lg border p-6"
+            action={handleSocialLinksSave}
+          >
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold">Social Media Links</h3>
@@ -247,18 +231,7 @@ export function SettingsForm({
                   Configure your social media profile links.
                 </p>
               </div>
-              <Button
-                onClick={handleSocialLinksSave}
-                disabled={isPending}
-                size="sm"
-              >
-                {isPending ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="mr-2 h-4 w-4" />
-                )}
-                Save Changes
-              </Button>
+              <SettingsSaveButton />
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="space-y-2">
@@ -308,9 +281,24 @@ export function SettingsForm({
                 />
               </div>
             </div>
-          </div>
+          </form>
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function SettingsSaveButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending} size="sm">
+      {pending ? (
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      ) : (
+        <Save className="mr-2 h-4 w-4" />
+      )}
+      Save Changes
+    </Button>
   );
 }

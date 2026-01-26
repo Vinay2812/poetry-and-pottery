@@ -2,6 +2,8 @@ import Providers from "@/providers";
 import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 
+import { RouteAnimationProvider } from "@/components/providers/route-animation-provider";
+
 import "./globals.css";
 
 const outfit = Outfit({
@@ -39,7 +41,9 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${plusJakartaSans.variable} font-sans antialiased`}
       >
-        <Providers>{children}</Providers>
+        <RouteAnimationProvider>
+          <Providers>{children}</Providers>
+        </RouteAnimationProvider>
       </body>
     </html>
   );

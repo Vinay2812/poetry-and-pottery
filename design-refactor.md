@@ -1309,8 +1309,13 @@ _Completed Card (Past registrations):_
 
 #### Task 8.4: Profile Page
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-8-4-profile-page.html](wireframes/task-8-4-profile-page.html)
+**Approved Selection:**
+
+- Mobile: Option B - Horizontal Profile with List
+- Tablet: Option B - Horizontal Profile with List
+- Desktop: Option B - Horizontal Profile with List
 
 **Scope:**
 
@@ -1464,7 +1469,13 @@ _Completed Card (Past registrations):_
 
 #### Task 9.6: Footer
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+**Wireframe:** [task-9-6-footer.html](wireframes/task-9-6-footer.html)
+**Approved Selection:**
+
+- Mobile: Option B - Soft Green (#E8ECE8)
+- Tablet: Option B - Soft Green (#E8ECE8)
+- Desktop: Option B - Soft Green (#E8ECE8)
 
 **Scope:**
 
@@ -1473,12 +1484,18 @@ _Completed Card (Past registrations):_
 
 **Design Specifications:**
 
-- Layout: 4-column (Brand, Shop, Support, Social/Newsletter)
-- Brand: Logo + description + social icons
-- Links: Heading in `font-display`, muted links
-- Newsletter: Integrated section
-- Bottom: Copyright, payment icons, legal links
-- Mobile: Stacked sections, accordion optional
+- Background: `#E8ECE8` (primary-light) — subtle sage green tint
+- Layout: 4-column grid (Brand, Shop, Support, Newsletter) on desktop
+- Tablet: 2×2 grid (Brand + Newsletter top, Shop + Support bottom)
+- Mobile: Centered brand, accordion sections, stacked newsletter
+- Brand: Logo + description + social icons (36px desktop, 32px mobile)
+- Social Icons: `rgba(79, 111, 82, 0.12)` background, primary color icons
+- Headings: `font-display`, `#3D5640` (darker green for contrast)
+- Links: `opacity-65` default, `opacity-100` on hover
+- Newsletter: White input with `#d4ddd4` border, primary green Subscribe button
+- Bottom Bar: Top border `rgba(79, 111, 82, 0.15)`, copyright + payments + legal links
+- Payment Icons: `rgba(79, 111, 82, 0.1)` background
+- Accordion (Mobile): Chevron icons, `rgba(79, 111, 82, 0.12)` bottom borders
 
 **Files to Modify (after approval):**
 

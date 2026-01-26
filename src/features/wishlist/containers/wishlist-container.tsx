@@ -6,7 +6,7 @@ import { getWishlist } from "@/data/wishlist/gateway/server";
 import { useRecommendedProductsQuery } from "@/features/recommended-products";
 import { useWishlist } from "@/hooks";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useMemo } from "react";
+import { Suspense, useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { ProductCarouselSkeleton } from "@/components/skeletons";
@@ -166,13 +166,15 @@ export function WishlistContainer({
   );
 
   return (
-    <Wishlist
-      viewModel={viewModel}
-      recommendations={recommendations}
-      recommendationsLoading={isRecommendationsLoading}
-      recommendationsSkeleton={<ProductCarouselSkeleton showTitle={false} />}
-      loadMoreRef={loadMoreRef}
-      onRemoveItem={handleRemove}
-    />
+    <Suspense fallback={<ProductCarouselSkeleton showTitle={false} />}>
+      <Wishlist
+        viewModel={viewModel}
+        recommendations={recommendations}
+        recommendationsLoading={isRecommendationsLoading}
+        recommendationsSkeleton={<ProductCarouselSkeleton showTitle={false} />}
+        loadMoreRef={loadMoreRef}
+        onRemoveItem={handleRemove}
+      />
+    </Suspense>
   );
 }

@@ -274,6 +274,14 @@
   --sidebar-ring: #6b8f6e;
 }
 
+/* View transitions */
+::view-transition-old(root) {
+  animation: view-fade-out 200ms ease-out;
+}
+::view-transition-new(root) {
+  animation: view-fade-in 200ms ease-in;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -394,6 +402,24 @@
 }
 
 @keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes view-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes view-fade-out {
   from {
     opacity: 1;
   }

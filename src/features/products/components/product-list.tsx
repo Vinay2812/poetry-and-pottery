@@ -9,6 +9,7 @@ import {
   FilterSidebar,
   ListingPageHeader,
   SearchInput,
+  StaggeredGrid,
 } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,6 +42,7 @@ export function ProductList({
     totalProducts,
     hasNextPage,
     isFetchingNextPage,
+    isFiltering,
     filterState,
     categories,
     materials,
@@ -100,6 +102,12 @@ export function ProductList({
             ))}
           </SelectContent>
         </Select>
+        {isFiltering && (
+          <div className="text-muted-foreground flex items-center gap-1 text-xs">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            Updating
+          </div>
+        )}
       </div>
 
       {/* Mobile Full-Screen Filter Overlay */}
@@ -165,22 +173,23 @@ export function ProductList({
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
           <aside className="hidden w-64 shrink-0 lg:block">
-            <FilterSidebar
-              selectedCategories={selectedCategories}
-              selectedMaterials={selectedMaterials}
-              categories={categories}
-              materials={materials}
-              onCategoryToggle={onCategoryToggle}
-              onMaterialToggle={onMaterialToggle}
-              onClear={onClearFilters}
-              priceRange={priceRange}
-              selectedPriceRange={localPriceRange}
-              onPriceChange={onPriceChange}
-              onPriceChangeCommit={onPriceCommit}
-              priceHistogram={priceHistogram}
-              filtersClassName="px-0"
-              className="max-h-[calc(100vh-10rem)] overflow-y-auto pr-6"
-            />
+            <div className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto lg:pr-6">
+              <FilterSidebar
+                selectedCategories={selectedCategories}
+                selectedMaterials={selectedMaterials}
+                categories={categories}
+                materials={materials}
+                onCategoryToggle={onCategoryToggle}
+                onMaterialToggle={onMaterialToggle}
+                onClear={onClearFilters}
+                priceRange={priceRange}
+                selectedPriceRange={localPriceRange}
+                onPriceChange={onPriceChange}
+                onPriceChangeCommit={onPriceCommit}
+                priceHistogram={priceHistogram}
+                filtersClassName="px-0"
+              />
+            </div>
           </aside>
 
           {/* Product Grid */}
@@ -193,7 +202,13 @@ export function ProductList({
                 placeholder="Search products..."
                 className="w-full max-w-md"
               />
-              <div className="flex items-center justify-end">
+              <div className="flex items-center justify-end gap-3">
+                {isFiltering && (
+                  <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Updating results...
+                  </div>
+                )}
                 <Select value={sortBy} onValueChange={onSortChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue placeholder="Sort by" />
@@ -210,12 +225,12 @@ export function ProductList({
             </div>
 
             {products.length > 0 ? (
-              <div className="max-h-[calc(100vh-10rem)] overflow-y-auto">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              <>
+                <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
-                </div>
+                </StaggeredGrid>
 
                 {/* Infinite scroll trigger */}
                 <div
@@ -234,7 +249,7 @@ export function ProductList({
                     </p>
                   )}
                 </div>
-              </div>
+              </>
             ) : (
               <EmptyState
                 icon={Search}

@@ -10,6 +10,7 @@ import { useInView } from "react-intersection-observer";
 import { PastWorkshopCard } from "@/components/cards";
 import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
+import { StaggeredGrid } from "@/components/shared";
 
 interface PastWorkshopsClientProps {
   initialEvents: EventBase[];
@@ -92,11 +93,11 @@ export function PastWorkshopsClient({
       </div>
       {events.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {events.map((event) => (
               <PastWorkshopCard key={event.id} event={event} />
             ))}
-          </div>
+          </StaggeredGrid>
           {hasNextPage && (
             <div ref={loadMoreRef} className="flex justify-center py-8">
               {isFetchingNextPage && (

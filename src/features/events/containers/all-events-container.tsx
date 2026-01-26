@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { startTransition, useCallback, useMemo } from "react";
+import { Suspense, useCallback, useMemo, useTransition } from "react";
 
 import { PastEventsSkeleton } from "@/components/skeletons";
 
@@ -16,6 +16,7 @@ export function AllEventsContainer({
 }: AllEventsContainerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [, startTransition] = useTransition();
   const searchQuery = searchParams.get("search") || "";
 
   // Upcoming events with initial data from server
@@ -95,12 +96,14 @@ export function AllEventsContainer({
   );
 
   return (
-    <AllEvents
-      viewModel={viewModel}
-      loadMoreRef={loadMoreRef}
-      onSearchChange={handleSearchChange}
-      pastEventsLoading={isPastEventsLoading}
-      pastEventsSkeleton={<PastEventsSkeleton />}
-    />
+    <Suspense fallback={<PastEventsSkeleton />}>
+      <AllEvents
+        viewModel={viewModel}
+        loadMoreRef={loadMoreRef}
+        onSearchChange={handleSearchChange}
+        pastEventsLoading={isPastEventsLoading}
+        pastEventsSkeleton={<PastEventsSkeleton />}
+      />
+    </Suspense>
   );
 }

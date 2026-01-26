@@ -45,9 +45,11 @@ export function UsersTableContainer({
         params.delete("search");
       }
       params.set("page", "1");
-      router.push(`/dashboard/users?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/users?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleRoleFilter = useCallback(
@@ -59,9 +61,11 @@ export function UsersTableContainer({
         params.delete("role");
       }
       params.set("page", "1");
-      router.push(`/dashboard/users?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/users?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleSortChange = useCallback(
@@ -73,18 +77,22 @@ export function UsersTableContainer({
         params.delete("sort");
       }
       params.set("page", "1");
-      router.push(`/dashboard/users?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/users?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handlePageChange = useCallback(
     (page: number) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set("page", page.toString());
-      router.push(`/dashboard/users?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/users?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleRoleChange = useCallback(

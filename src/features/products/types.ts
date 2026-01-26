@@ -44,6 +44,7 @@ export interface ProductListViewModel {
   totalProducts: number;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
+  isFiltering: boolean;
   filterState: ProductFilterState;
   categories: Category[];
   materials: string[];

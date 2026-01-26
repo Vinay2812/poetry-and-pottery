@@ -117,9 +117,8 @@ export interface EventFormProps {
   viewModel: EventFormViewModel;
   statusOptions: AdminStatusOption[];
   levelOptions: AdminLevelOption[];
-  isSubmitting: boolean;
   isEditing: boolean;
-  onSubmit: (data: EventFormData) => void;
+  onSubmit: (data: EventFormData) => Promise<void> | void;
   onCancel: () => void;
 }
 

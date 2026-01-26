@@ -16,6 +16,15 @@ import {
   RevenueBreakdownSection,
   UpcomingEventsSection,
 } from "@/features/dashboard/home";
+import { Suspense } from "react";
+
+function SectionFallback() {
+  return (
+    <div className="text-muted-foreground rounded-2xl border border-neutral-200 bg-white p-6 text-sm">
+      Loading section...
+    </div>
+  );
+}
 
 export default async function DashboardPage() {
   const [
@@ -40,53 +49,65 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-12">
-      <HeroStats
-        totalRevenue={totalRevenue}
-        totalTransactions={totalTransactions}
-        ordersTotal={stats.orders.total}
-        ordersPending={stats.orders.pending}
-        registrationsTotal={stats.registrations.total}
-        registrationsPending={stats.registrations.pending}
-        usersTotal={stats.users.total}
-        usersNewThisMonth={stats.users.newThisMonth}
-      />
+      <Suspense fallback={<SectionFallback />}>
+        <HeroStats
+          totalRevenue={totalRevenue}
+          totalTransactions={totalTransactions}
+          ordersTotal={stats.orders.total}
+          ordersPending={stats.orders.pending}
+          registrationsTotal={stats.registrations.total}
+          registrationsPending={stats.registrations.pending}
+          usersTotal={stats.users.total}
+          usersNewThisMonth={stats.users.newThisMonth}
+        />
+      </Suspense>
 
-      <QuickActions
-        ordersPending={stats.orders.pending}
-        ordersProcessing={stats.orders.processing}
-        registrationsPending={stats.registrations.pending}
-        productsOutOfStock={stats.products.outOfStock}
-        productsLowStock={stats.products.lowStock}
-        eventsUpcomingIn7Days={stats.events.upcomingIn7Days}
-      />
+      <Suspense fallback={<SectionFallback />}>
+        <QuickActions
+          ordersPending={stats.orders.pending}
+          ordersProcessing={stats.orders.processing}
+          registrationsPending={stats.registrations.pending}
+          productsOutOfStock={stats.products.outOfStock}
+          productsLowStock={stats.products.lowStock}
+          eventsUpcomingIn7Days={stats.events.upcomingIn7Days}
+        />
+      </Suspense>
 
       {/* Recent Activity */}
-      <div className="grid gap-12 lg:grid-cols-2">
-        <RecentOrdersSection orders={recentOrders} />
-        <RecentRegistrationsSection registrations={recentRegistrations} />
-      </div>
+      <Suspense fallback={<SectionFallback />}>
+        <div className="grid gap-12 lg:grid-cols-2">
+          <RecentOrdersSection orders={recentOrders} />
+          <RecentRegistrationsSection registrations={recentRegistrations} />
+        </div>
+      </Suspense>
 
       {/* Inventory & Events */}
-      <div className="grid gap-12 lg:grid-cols-2">
-        <InventoryAlertsSection products={lowStockProducts} />
-        <UpcomingEventsSection events={upcomingEvents} />
-      </div>
+      <Suspense fallback={<SectionFallback />}>
+        <div className="grid gap-12 lg:grid-cols-2">
+          <InventoryAlertsSection products={lowStockProducts} />
+          <UpcomingEventsSection events={upcomingEvents} />
+        </div>
+      </Suspense>
 
-      <RevenueBreakdownSection
-        ordersRevenue={stats.revenue.totalOrders}
-        registrationsRevenue={stats.revenue.totalRegistrations}
-        ordersTotal={stats.orders.total}
-        registrationsTotal={stats.registrations.total}
-        totalRevenue={totalRevenue}
-        totalTransactions={totalTransactions}
-      />
+      <Suspense fallback={<SectionFallback />}>
+        <RevenueBreakdownSection
+          ordersRevenue={stats.revenue.totalOrders}
+          registrationsRevenue={stats.revenue.totalRegistrations}
+          ordersTotal={stats.orders.total}
+          registrationsTotal={stats.registrations.total}
+          totalRevenue={totalRevenue}
+          totalTransactions={totalTransactions}
+        />
+      </Suspense>
 
       {/* Newsletter Subscribers */}
-      <NewsletterSection
-        subscribers={newsletterSubscribers}
-        totalSubscribers={stats.newsletter.totalSubscribers}
-        newThisMonth={stats.newsletter.newThisMonth}
-      />
+      <Suspense fallback={<SectionFallback />}>
+        <NewsletterSection
+          subscribers={newsletterSubscribers}
+          totalSubscribers={stats.newsletter.totalSubscribers}
+          newThisMonth={stats.newsletter.newThisMonth}
+        />
+      </Suspense>
     </div>
   );
 }

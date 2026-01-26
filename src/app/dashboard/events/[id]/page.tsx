@@ -13,12 +13,21 @@ import {
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { getEventStatusColor } from "@/lib/status-utils";
+
+function SectionFallback() {
+  return (
+    <div className="text-muted-foreground rounded-2xl border border-neutral-200 bg-white p-6 text-sm">
+      Loading section...
+    </div>
+  );
+}
 
 interface EventDetailPageProps {
   params: Promise<{ id: string }>;
@@ -74,29 +83,35 @@ export default async function EventDetailPage({
         </TabsList>
 
         <TabsContent value="details">
-          <EventFormContainer
-            event={event}
-            statusOptions={statusOptions}
-            levelOptions={levelOptions}
-          />
+          <Suspense fallback={<SectionFallback />}>
+            <EventFormContainer
+              event={event}
+              statusOptions={statusOptions}
+              levelOptions={levelOptions}
+            />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="registrations">
-          <EventRegistrationsSection
-            eventId={id}
-            registrations={registrationsData.registrations}
-            total={registrationsData.total}
-            statusCounts={registrationsData.statusCounts}
-          />
+          <Suspense fallback={<SectionFallback />}>
+            <EventRegistrationsSection
+              eventId={id}
+              registrations={registrationsData.registrations}
+              total={registrationsData.total}
+              statusCounts={registrationsData.statusCounts}
+            />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="reviews">
-          <EventReviewsSection
-            eventId={id}
-            reviews={reviewsData.reviews}
-            total={reviewsData.total}
-            averageRating={reviewsData.averageRating}
-          />
+          <Suspense fallback={<SectionFallback />}>
+            <EventReviewsSection
+              eventId={id}
+              reviews={reviewsData.reviews}
+              total={reviewsData.total}
+              averageRating={reviewsData.averageRating}
+            />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>

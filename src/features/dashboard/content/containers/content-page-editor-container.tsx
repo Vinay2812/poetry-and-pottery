@@ -2,8 +2,10 @@
 
 import { updateContentPage } from "@/data/admin/content/gateway/server";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useTransition } from "react";
+import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
+
+import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 
 import type {
   AboutPageContent,
@@ -26,7 +28,7 @@ export function ContentPageEditorContainer({
   content,
 }: ContentPageEditorContainerProps) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const { startNavigation } = useRouteAnimation();
 
   const viewModel = useMemo(
     () => buildContentPageEditorViewModel(slug, title, content),
@@ -34,7 +36,7 @@ export function ContentPageEditorContainer({
   );
 
   const handleSave = useCallback(
-    (
+    async (
       newContent:
         | AboutPageContent
         | FaqPageContent
@@ -43,27 +45,26 @@ export function ContentPageEditorContainer({
         | PrivacyPageContent
         | TermsPageContent,
     ) => {
-      startTransition(async () => {
-        const result = await updateContentPage(slug, newContent);
-        if (result.success) {
-          toast.success("Content updated successfully");
-          router.refresh();
-        } else {
-          toast.error(result.error || "Failed to update content");
-        }
-      });
+      const result = await updateContentPage(slug, newContent);
+      if (result.success) {
+        toast.success("Content updated successfully");
+        router.refresh();
+      } else {
+        toast.error(result.error || "Failed to update content");
+      }
     },
     [slug, router],
   );
 
   const handleCancel = useCallback(() => {
-    router.push("/dashboard/content");
-  }, [router]);
+    startNavigation(() => {
+      router.push("/dashboard/content");
+    });
+  }, [router, startNavigation]);
 
   return (
     <ContentPageEditor
       viewModel={viewModel}
-      isPending={isPending}
       onSave={handleSave}
       onCancel={handleCancel}
     />

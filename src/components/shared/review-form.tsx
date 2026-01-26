@@ -4,6 +4,7 @@ import { MAX_REVIEW_IMAGES } from "@/consts/uploads";
 import { R2ImageUploaderContainer } from "@/features/uploads";
 import { Star } from "lucide-react";
 import { useCallback, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,39 +35,31 @@ export function ReviewForm({
   const [content, setContent] = useState("");
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [hoveredRating, setHoveredRating] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const reviewed = hasReviewed || justReviewed;
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
+  const handleSubmitAction = useCallback(async () => {
+    if (rating === 0) return;
 
-      if (rating === 0) return;
+    setError(null);
 
-      setIsSubmitting(true);
-      setError(null);
+    const result = await onSubmit(
+      rating,
+      content.trim() || undefined,
+      imageUrls.length > 0 ? imageUrls : undefined,
+    );
 
-      const result = await onSubmit(
-        rating,
-        content.trim() || undefined,
-        imageUrls.length > 0 ? imageUrls : undefined,
-      );
-
-      if (result.success) {
-        setJustReviewed(true);
-        setIsOpen(false);
-        setRating(5);
-        setContent("");
-        setImageUrls([]);
-      } else {
-        setError(result.error || "Failed to submit review");
-      }
-      setIsSubmitting(false);
-    },
-    [content, rating, imageUrls, onSubmit],
-  );
+    if (result.success) {
+      setJustReviewed(true);
+      setIsOpen(false);
+      setRating(5);
+      setContent("");
+      setImageUrls([]);
+    } else {
+      setError(result.error || "Failed to submit review");
+    }
+  }, [content, rating, imageUrls, onSubmit]);
 
   const handleCancel = useCallback(() => {
     setIsOpen(false);
@@ -132,9 +125,57 @@ export function ReviewForm({
   // Show form
   return (
     <form
-      onSubmit={handleSubmit}
+      action={handleSubmitAction}
       className="shadow-soft mt-1 rounded-xl border border-gray-100 bg-white p-4"
     >
+      <ReviewFormFields
+        title={title}
+        rating={rating}
+        hoveredRating={hoveredRating}
+        content={content}
+        imageUrls={imageUrls}
+        error={error}
+        onCancel={handleCancel}
+        onRatingChange={setRating}
+        onRatingHover={setHoveredRating}
+        onContentChange={setContent}
+        onImagesChange={setImageUrls}
+      />
+    </form>
+  );
+}
+
+interface ReviewFormFieldsProps {
+  title: string;
+  rating: number;
+  hoveredRating: number;
+  content: string;
+  imageUrls: string[];
+  error: string | null;
+  onCancel: () => void;
+  onRatingChange: (value: number) => void;
+  onRatingHover: (value: number) => void;
+  onContentChange: (value: string) => void;
+  onImagesChange: (value: string[]) => void;
+}
+
+function ReviewFormFields({
+  title,
+  rating,
+  hoveredRating,
+  content,
+  imageUrls,
+  error,
+  onCancel,
+  onRatingChange,
+  onRatingHover,
+  onContentChange,
+  onImagesChange,
+}: ReviewFormFieldsProps) {
+  const { pending } = useFormStatus();
+
+  return (
+    <>
       <p className="mb-4 text-sm font-semibold text-gray-900">{title}</p>
 
       {/* Star Rating */}
@@ -145,9 +186,9 @@ export function ReviewForm({
             <button
               key={star}
               type="button"
-              onClick={() => setRating(star)}
-              onMouseEnter={() => setHoveredRating(star)}
-              onMouseLeave={() => setHoveredRating(0)}
+              onClick={() => onRatingChange(star)}
+              onMouseEnter={() => onRatingHover(star)}
+              onMouseLeave={() => onRatingHover(0)}
               className="p-0.5 transition-transform hover:scale-110 focus:outline-none"
             >
               <Star
@@ -174,9 +215,10 @@ export function ReviewForm({
         <Textarea
           id="review-content"
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => onContentChange(e.target.value)}
           placeholder="Share your experience..."
           className="focus:border-primary focus:ring-primary h-24 resize-none rounded-lg border-gray-200 text-sm focus:ring-1"
+          disabled={pending}
         />
       </div>
 
@@ -190,8 +232,8 @@ export function ReviewForm({
           multiple
           maxFiles={MAX_REVIEW_IMAGES}
           value={imageUrls}
-          onChange={setImageUrls}
-          disabled={isSubmitting}
+          onChange={onImagesChange}
+          disabled={pending}
         />
       </div>
 
@@ -203,8 +245,8 @@ export function ReviewForm({
           type="button"
           variant="ghost"
           size="sm"
-          onClick={handleCancel}
-          disabled={isSubmitting}
+          onClick={onCancel}
+          disabled={pending}
           className="rounded-full px-4"
         >
           Cancel
@@ -212,12 +254,12 @@ export function ReviewForm({
         <Button
           type="submit"
           size="sm"
-          disabled={rating === 0 || isSubmitting}
+          disabled={rating === 0 || pending}
           className="rounded-full px-4"
         >
-          {isSubmitting ? "Submitting..." : "Submit Review"}
+          {pending ? "Submitting..." : "Submit Review"}
         </Button>
       </div>
-    </form>
+    </>
   );
 }

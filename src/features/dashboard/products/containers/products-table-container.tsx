@@ -42,9 +42,11 @@ export function ProductsTableContainer({
         params.delete("search");
       }
       params.set("page", "1");
-      router.push(`/dashboard/products?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/products?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleCategoryFilter = useCallback(
@@ -56,9 +58,11 @@ export function ProductsTableContainer({
         params.delete("category");
       }
       params.set("page", "1");
-      router.push(`/dashboard/products?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/products?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleActiveFilter = useCallback(
@@ -70,18 +74,22 @@ export function ProductsTableContainer({
         params.delete("status");
       }
       params.set("page", "1");
-      router.push(`/dashboard/products?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/products?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handlePageChange = useCallback(
     (page: number) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set("page", page.toString());
-      router.push(`/dashboard/products?${params.toString()}`);
+      startTransition(() => {
+        router.push(`/dashboard/products?${params.toString()}`);
+      });
     },
-    [router, searchParams],
+    [router, searchParams, startTransition],
   );
 
   const handleToggleActive = useCallback(

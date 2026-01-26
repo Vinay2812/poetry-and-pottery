@@ -18,9 +18,11 @@ export function EventCardWrapper({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       className="group relative"
     >
       <Link
@@ -48,9 +50,11 @@ export function EventCardWrapperWithActions({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:bg-neutral-900",
         className,

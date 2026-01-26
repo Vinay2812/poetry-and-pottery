@@ -2,6 +2,7 @@
 
 import { CONTACT_SUBJECT_OPTIONS } from "@/consts/forms";
 import { ArrowRight } from "lucide-react";
+import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 
@@ -9,14 +10,13 @@ import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
 
 export function ContactForm() {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     // Form submission logic would go here
   };
 
   return (
     <div className="shadow-card overflow-hidden rounded-3xl bg-white p-8 lg:p-10">
-      <form className="space-y-5" onSubmit={handleSubmit}>
+      <form className="space-y-5" action={handleSubmit}>
         <div className="grid gap-5 sm:grid-cols-2">
           <FormInput
             label="Name"
@@ -44,15 +44,24 @@ export function ContactForm() {
           rows={5}
           placeholder="Tell us what's on your mind..."
         />
-        <Button
-          type="submit"
-          className="shadow-primary/20 h-12 w-full rounded-full shadow-lg"
-          size="lg"
-        >
-          Send Message
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
+        <SubmitButton />
       </form>
     </div>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      className="shadow-primary/20 h-12 w-full rounded-full shadow-lg"
+      size="lg"
+      disabled={pending}
+    >
+      {pending ? "Sending..." : "Send Message"}
+      <ArrowRight className="ml-2 h-5 w-5" />
+    </Button>
   );
 }

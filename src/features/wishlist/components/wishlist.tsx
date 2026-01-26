@@ -7,6 +7,7 @@ import { Heart, Loader2 } from "lucide-react";
 
 import { ProductCard } from "@/components/cards";
 import { EmptyState } from "@/components/sections";
+import { StaggeredGrid } from "@/components/shared";
 
 import type { WishlistProps } from "../types";
 
@@ -20,11 +21,11 @@ function RecommendationsSection({
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">You might also like</h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {recommendations.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-      </div>
+      </StaggeredGrid>
     </section>
   );
 }

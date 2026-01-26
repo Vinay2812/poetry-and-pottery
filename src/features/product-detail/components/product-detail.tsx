@@ -4,10 +4,12 @@ import type { ProductDetail as ProductDetailType } from "@/data/products/types";
 import { RecommendedProductsContainer } from "@/features/recommended-products";
 import { motion } from "framer-motion";
 import { Check, Heart, Loader2, Share2, ShoppingCartIcon } from "lucide-react";
+import { Suspense } from "react";
 
 import { ReviewCard } from "@/components/cards";
 import { ProductImageGallery } from "@/components/products";
 import { Rating, ReviewsSheet } from "@/components/shared";
+import { ProductCarouselSkeleton } from "@/components/skeletons";
 import {
   Accordion,
   AccordionContent,
@@ -398,7 +400,10 @@ export function ProductDetail({
         <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
           <div className="grid grid-cols-1 gap-0 lg:grid-cols-2 lg:gap-10">
             {/* Image Gallery */}
-            <div className="min-w-0 overflow-hidden">
+            <div
+              className="min-w-0 overflow-hidden"
+              style={{ viewTransitionName: `product-image-${product.id}` }}
+            >
               <ProductImageGallery
                 images={product.image_urls}
                 productName={product.name}
@@ -468,11 +473,15 @@ export function ProductDetail({
           </div>
 
           {/* Recommended Products */}
-          <RecommendedProductsContainer
-            productId={product.id}
-            title="You might also like"
-            className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16 dark:border-neutral-800"
-          />
+          <Suspense
+            fallback={<ProductCarouselSkeleton className="mt-12 lg:mt-20" />}
+          >
+            <RecommendedProductsContainer
+              productId={product.id}
+              title="You might also like"
+              className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16 dark:border-neutral-800"
+            />
+          </Suspense>
         </div>
       </main>
 
