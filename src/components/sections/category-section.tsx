@@ -41,6 +41,8 @@ export function CategorySection({ categories }: CategorySectionProps) {
           {categories.map((category) => (
             <motion.div
               key={category.name}
+              initial="hidden"
+              animate="visible"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 },
