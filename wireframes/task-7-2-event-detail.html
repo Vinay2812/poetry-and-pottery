@@ -903,11 +903,7 @@
       }
 
       .photo-gallery .photo:nth-child(6) {
-        background: linear-gradient(
-          135deg,
-          #e0e8e0 0%,
-          #b0c8b0 100%
-        );
+        background: linear-gradient(135deg, #e0e8e0 0%, #b0c8b0 100%);
       }
     </style>
   </head>
@@ -922,10 +918,10 @@
     <h1>Task 7.2: Event Detail Pages</h1>
     <p class="subtitle">
       Unified layout system for all event detail pages. Each option covers
-      <strong>3 event states</strong>: Upcoming (register), Registered
-      (status + ticket), and Completed/Past (gallery + reviews). All states
-      share the same header, hero, content layout, and instructor card.
-      Additional Sold Out and Cancelled variants shown at the end.
+      <strong>3 event states</strong>: Upcoming (register), Registered (status +
+      ticket), and Completed/Past (gallery + reviews). All states share the same
+      header, hero, content layout, and instructor card. Additional Sold Out and
+      Cancelled variants shown at the end.
     </p>
 
     <div style="text-align: center; margin-bottom: 40px">
@@ -1082,7 +1078,9 @@
         stroke="currentColor"
         stroke-width="2"
       >
-        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+        <path
+          d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+        />
         <circle cx="12" cy="13" r="4" />
       </symbol>
     </svg>
@@ -1406,7 +1404,9 @@
                     </div>
                     <div class="meta-row">
                       <svg><use href="#map-pin-icon" /></svg
-                      ><span>Poetry & Pottery Studio, Koramangala, Bangalore</span>
+                      ><span
+                        >Poetry & Pottery Studio, Koramangala, Bangalore</span
+                      >
                     </div>
                   </div>
                   <div class="action-bar">
@@ -1438,10 +1438,7 @@
                   <h3 class="section-header">What's Included</h3>
                   <div
                     class="included-list"
-                    style="
-                      grid-template-columns: 1fr 1fr;
-                      margin-bottom: 24px;
-                    "
+                    style="grid-template-columns: 1fr 1fr; margin-bottom: 24px"
                   >
                     <div class="included-item">
                       <svg><use href="#check-icon" /></svg
@@ -1542,9 +1539,9 @@
               <div class="reg-status-card">
                 <div class="reg-status-header">
                   <span class="reg-status-title">
-                    <svg style="width: 18px; height: 18px; color: #16a34a"
-                      ><use href="#check-circle-icon"
-                    /></svg>
+                    <svg style="width: 18px; height: 18px; color: #16a34a">
+                      <use href="#check-circle-icon" />
+                    </svg>
                     Your Registration
                   </span>
                   <span class="reg-status-pill confirmed">Confirmed</span>
@@ -1615,8 +1612,9 @@
                       margin-right: 6px;
                       color: white;
                     "
-                    ><use href="#ticket-icon"
-                  /></svg>
+                  >
+                    <use href="#ticket-icon" />
+                  </svg>
                   View Ticket
                 </button>
                 <button class="sticky-btn danger">Cancel</button>
@@ -1655,10 +1653,9 @@
                   <div class="reg-status-card">
                     <div class="reg-status-header">
                       <span class="reg-status-title">
-                        <svg
-                          style="width: 18px; height: 18px; color: #16a34a"
-                          ><use href="#check-circle-icon"
-                        /></svg>
+                        <svg style="width: 18px; height: 18px; color: #16a34a">
+                          <use href="#check-circle-icon" />
+                        </svg>
                         Your Registration
                       </span>
                       <span class="reg-status-pill confirmed">Confirmed</span>
@@ -1725,14 +1722,13 @@
                   <div class="ticket-card">
                     <div class="ticket-header">Workshop Ticket</div>
                     <div
-                      style="
-                        display: flex;
-                        gap: 16px;
-                        align-items: flex-start;
-                      "
+                      style="display: flex; gap: 16px; align-items: flex-start"
                     >
                       <div class="ticket-qr">QR Code</div>
-                      <div class="ticket-info" style="grid-template-columns: 1fr">
+                      <div
+                        class="ticket-info"
+                        style="grid-template-columns: 1fr"
+                      >
                         <div>
                           <div class="label">ID</div>
                           <div class="value">#REG-A7X9K2</div>
@@ -1748,17 +1744,28 @@
                       </div>
                     </div>
                   </div>
-                  <div class="sidebar-details" style="border-bottom: none; margin-bottom: 0; padding-bottom: 12px">
+                  <div
+                    class="sidebar-details"
+                    style="
+                      border-bottom: none;
+                      margin-bottom: 0;
+                      padding-bottom: 12px;
+                    "
+                  >
                     <div class="sidebar-row">
                       <span class="label">Status</span
-                      ><span class="value" style="color: #16a34a">Confirmed</span>
+                      ><span class="value" style="color: #16a34a"
+                        >Confirmed</span
+                      >
                     </div>
                     <div class="sidebar-row">
                       <span class="label">Paid</span
                       ><span class="value">Rs. 2,500</span>
                     </div>
                   </div>
-                  <button class="sidebar-btn" style="margin-bottom: 8px">View Full Ticket</button>
+                  <button class="sidebar-btn" style="margin-bottom: 8px">
+                    View Full Ticket
+                  </button>
                   <button class="sidebar-btn sidebar-btn-danger">
                     Cancel Registration
                   </button>
@@ -1802,24 +1809,47 @@
                   <div class="reg-status-card">
                     <div class="reg-status-header">
                       <span class="reg-status-title">
-                        <svg
-                          style="width: 18px; height: 18px; color: #16a34a"
-                          ><use href="#check-circle-icon"
-                        /></svg>
+                        <svg style="width: 18px; height: 18px; color: #16a34a">
+                          <use href="#check-circle-icon" />
+                        </svg>
                         Your Registration
                       </span>
                       <span class="reg-status-pill confirmed">Confirmed</span>
                     </div>
-                    <div class="reg-details" style="flex-direction: row; gap: 24px">
-                      <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                    <div
+                      class="reg-details"
+                      style="flex-direction: row; gap: 24px"
+                    >
+                      <div
+                        class="reg-detail-row"
+                        style="
+                          flex-direction: column;
+                          align-items: flex-start;
+                          gap: 2px;
+                        "
+                      >
                         <span class="label">Registration ID</span>
                         <span class="value">#REG-A7X9K2</span>
                       </div>
-                      <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                      <div
+                        class="reg-detail-row"
+                        style="
+                          flex-direction: column;
+                          align-items: flex-start;
+                          gap: 2px;
+                        "
+                      >
                         <span class="label">Registered on</span>
                         <span class="value">Jan 20, 2025</span>
                       </div>
-                      <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                      <div
+                        class="reg-detail-row"
+                        style="
+                          flex-direction: column;
+                          align-items: flex-start;
+                          gap: 2px;
+                        "
+                      >
                         <span class="label">Amount Paid</span>
                         <span class="value">Rs. 2,500</span>
                       </div>
@@ -1837,7 +1867,9 @@
                     </div>
                     <div class="meta-row">
                       <svg><use href="#map-pin-icon" /></svg
-                      ><span>Poetry & Pottery Studio, Koramangala, Bangalore</span>
+                      ><span
+                        >Poetry & Pottery Studio, Koramangala, Bangalore</span
+                      >
                     </div>
                   </div>
 
@@ -1882,16 +1914,18 @@
                   <div class="ticket-card">
                     <div class="ticket-header">Workshop Ticket</div>
                     <div
-                      style="
-                        display: flex;
-                        gap: 20px;
-                        align-items: flex-start;
-                      "
+                      style="display: flex; gap: 20px; align-items: flex-start"
                     >
-                      <div class="ticket-qr" style="width: 100px; height: 100px">
+                      <div
+                        class="ticket-qr"
+                        style="width: 100px; height: 100px"
+                      >
                         QR Code
                       </div>
-                      <div class="ticket-info" style="grid-template-columns: 1fr; flex: 1">
+                      <div
+                        class="ticket-info"
+                        style="grid-template-columns: 1fr; flex: 1"
+                      >
                         <div>
                           <div class="label">Registration ID</div>
                           <div class="value">#REG-A7X9K2</div>
@@ -1911,10 +1945,19 @@
                       </div>
                     </div>
                   </div>
-                  <div class="sidebar-details" style="border-bottom: none; margin-bottom: 0; padding-bottom: 12px">
+                  <div
+                    class="sidebar-details"
+                    style="
+                      border-bottom: none;
+                      margin-bottom: 0;
+                      padding-bottom: 12px;
+                    "
+                  >
                     <div class="sidebar-row">
                       <span class="label">Status</span
-                      ><span class="value" style="color: #16a34a">Confirmed</span>
+                      ><span class="value" style="color: #16a34a"
+                        >Confirmed</span
+                      >
                     </div>
                     <div class="sidebar-row">
                       <span class="label">Amount Paid</span
@@ -2065,7 +2108,10 @@
                 <div style="font-size: 13px; color: #737373">
                   Attended this workshop?
                 </div>
-                <button class="sticky-btn outline" style="max-width: none; flex: 1">
+                <button
+                  class="sticky-btn outline"
+                  style="max-width: none; flex: 1"
+                >
                   Write a Review
                 </button>
               </div>
@@ -2196,17 +2242,13 @@
                     "
                   >
                     <div
-                      style="
-                        font-size: 12px;
-                        color: #999;
-                        margin-bottom: 4px;
-                      "
+                      style="font-size: 12px; color: #999; margin-bottom: 4px"
                     >
                       This event has ended
                     </div>
                     <div
                       style="
-                        font-family: 'Plus Jakarta Sans';
+                        font-family: &quot;Plus Jakarta Sans&quot;;
                         font-weight: 700;
                         color: #737373;
                       "
@@ -2299,7 +2341,9 @@
                     </div>
                     <div class="meta-row">
                       <svg><use href="#map-pin-icon" /></svg
-                      ><span>Poetry & Pottery Studio, Koramangala, Bangalore</span>
+                      ><span
+                        >Poetry & Pottery Studio, Koramangala, Bangalore</span
+                      >
                     </div>
                     <div class="meta-row">
                       <svg><use href="#users-icon" /></svg
@@ -2315,7 +2359,10 @@
                   </p>
 
                   <h3 class="section-header">Workshop Gallery</h3>
-                  <div class="photo-gallery" style="grid-template-columns: repeat(4, 1fr)">
+                  <div
+                    class="photo-gallery"
+                    style="grid-template-columns: repeat(4, 1fr)"
+                  >
                     <div class="photo"></div>
                     <div class="photo"></div>
                     <div class="photo"></div>
@@ -2371,17 +2418,13 @@
                     "
                   >
                     <div
-                      style="
-                        font-size: 12px;
-                        color: #999;
-                        margin-bottom: 4px;
-                      "
+                      style="font-size: 12px; color: #999; margin-bottom: 4px"
                     >
                       This event has ended
                     </div>
                     <div
                       style="
-                        font-family: 'Plus Jakarta Sans';
+                        font-family: &quot;Plus Jakarta Sans&quot;;
                         font-weight: 700;
                         color: #737373;
                       "
@@ -2394,9 +2437,7 @@
                     <div class="instructor-avatar">PS</div>
                     <div class="instructor-info">
                       <h4>Priya Sharma</h4>
-                      <p>
-                        Master potter with 15 years of experience.
-                      </p>
+                      <p>Master potter with 15 years of experience.</p>
                     </div>
                   </div>
                   <button class="sidebar-btn sidebar-btn-outline">
@@ -2526,10 +2567,7 @@
                 <div>
                   <div
                     class="hero-image"
-                    style="
-                      aspect-ratio: 3/4;
-                      border-radius: 16px;
-                    "
+                    style="aspect-ratio: 3/4; border-radius: 16px"
                   >
                     <svg class="hero-image-placeholder">
                       <use href="#palette-icon" />
@@ -2558,13 +2596,8 @@
                     </div>
                   </div>
 
-                  <div
-                    class="sidebar-spots low"
-                    style="margin-bottom: 16px"
-                  >
-                    <svg width="16" height="16"
-                      ><use href="#users-icon"
-                    /></svg>
+                  <div class="sidebar-spots low" style="margin-bottom: 16px">
+                    <svg width="16" height="16"><use href="#users-icon" /></svg>
                     Only 5 spots left!
                   </div>
 
@@ -2710,9 +2743,9 @@
                       </div>
                     </div>
                     <div class="sidebar-spots low">
-                      <svg width="16" height="16"
-                        ><use href="#users-icon"
-                      /></svg>
+                      <svg width="16" height="16">
+                        <use href="#users-icon" />
+                      </svg>
                       Only 5 spots left!
                     </div>
                     <button class="sidebar-btn">Register Now</button>
@@ -2794,10 +2827,9 @@
               <div class="reg-status-card pending">
                 <div class="reg-status-header">
                   <span class="reg-status-title">
-                    <svg
-                      style="width: 18px; height: 18px; color: #d97706"
-                      ><use href="#alert-circle-icon"
-                    /></svg>
+                    <svg style="width: 18px; height: 18px; color: #d97706">
+                      <use href="#alert-circle-icon" />
+                    </svg>
                     Your Registration
                   </span>
                   <span class="reg-status-pill pending">Pending</span>
@@ -2852,8 +2884,9 @@
                       margin-right: 6px;
                       color: white;
                     "
-                    ><use href="#ticket-icon"
-                  /></svg>
+                  >
+                    <use href="#ticket-icon" />
+                  </svg>
                   View Ticket
                 </button>
                 <button class="sticky-btn danger">Cancel</button>
@@ -2898,10 +2931,9 @@
                   <div class="reg-status-card pending">
                     <div class="reg-status-header">
                       <span class="reg-status-title">
-                        <svg
-                          style="width: 18px; height: 18px; color: #d97706"
-                          ><use href="#alert-circle-icon"
-                        /></svg>
+                        <svg style="width: 18px; height: 18px; color: #d97706">
+                          <use href="#alert-circle-icon" />
+                        </svg>
                         Your Registration
                       </span>
                       <span class="reg-status-pill pending">Pending</span>
@@ -2996,24 +3028,49 @@
                   <div class="reg-status-card pending">
                     <div class="reg-status-header">
                       <span class="reg-status-title">
-                        <svg
-                          style="width: 18px; height: 18px; color: #d97706"
-                          ><use href="#alert-circle-icon"
-                        /></svg>
+                        <svg style="width: 18px; height: 18px; color: #d97706">
+                          <use href="#alert-circle-icon" />
+                        </svg>
                         Your Registration
                       </span>
-                      <span class="reg-status-pill pending">Pending Approval</span>
+                      <span class="reg-status-pill pending"
+                        >Pending Approval</span
+                      >
                     </div>
-                    <div class="reg-details" style="flex-direction: row; gap: 24px">
-                      <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                    <div
+                      class="reg-details"
+                      style="flex-direction: row; gap: 24px"
+                    >
+                      <div
+                        class="reg-detail-row"
+                        style="
+                          flex-direction: column;
+                          align-items: flex-start;
+                          gap: 2px;
+                        "
+                      >
                         <span class="label">Registration ID</span>
                         <span class="value">#REG-B3M8P1</span>
                       </div>
-                      <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                      <div
+                        class="reg-detail-row"
+                        style="
+                          flex-direction: column;
+                          align-items: flex-start;
+                          gap: 2px;
+                        "
+                      >
                         <span class="label">Registered on</span>
                         <span class="value">Jan 25, 2025</span>
                       </div>
-                      <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                      <div
+                        class="reg-detail-row"
+                        style="
+                          flex-direction: column;
+                          align-items: flex-start;
+                          gap: 2px;
+                        "
+                      >
                         <span class="label">Amount</span>
                         <span class="value">Rs. 3,000</span>
                       </div>
@@ -3053,10 +3110,16 @@
                           align-items: flex-start;
                         "
                       >
-                        <div class="ticket-qr" style="width: 100px; height: 100px">
+                        <div
+                          class="ticket-qr"
+                          style="width: 100px; height: 100px"
+                        >
                           QR Code
                         </div>
-                        <div class="ticket-info" style="grid-template-columns: 1fr; flex: 1">
+                        <div
+                          class="ticket-info"
+                          style="grid-template-columns: 1fr; flex: 1"
+                        >
                           <div>
                             <div class="label">Registration ID</div>
                             <div class="value">#REG-B3M8P1</div>
@@ -3072,7 +3135,10 @@
                         </div>
                       </div>
                     </div>
-                    <button class="sidebar-btn" style="margin-top: 12px; margin-bottom: 8px">
+                    <button
+                      class="sidebar-btn"
+                      style="margin-top: 12px; margin-bottom: 8px"
+                    >
                       View Full Ticket
                     </button>
                     <button class="sidebar-btn sidebar-btn-danger">
@@ -3189,7 +3255,10 @@
                 <div style="font-size: 13px; color: #737373">
                   Attended this workshop?
                 </div>
-                <button class="sticky-btn outline" style="max-width: none; flex: 1">
+                <button
+                  class="sticky-btn outline"
+                  style="max-width: none; flex: 1"
+                >
                   Write a Review
                 </button>
               </div>
@@ -3216,7 +3285,11 @@
                 <div>
                   <div
                     class="hero-image"
-                    style="aspect-ratio: 3/4; border-radius: 16px; margin-bottom: 8px"
+                    style="
+                      aspect-ratio: 3/4;
+                      border-radius: 16px;
+                      margin-bottom: 8px;
+                    "
                   >
                     <svg class="hero-image-placeholder">
                       <use href="#camera-icon" />
@@ -3321,7 +3394,11 @@
                 <div>
                   <div
                     class="hero-image"
-                    style="aspect-ratio: 4/5; border-radius: 20px; margin-bottom: 8px"
+                    style="
+                      aspect-ratio: 4/5;
+                      border-radius: 20px;
+                      margin-bottom: 8px;
+                    "
                   >
                     <svg
                       class="hero-image-placeholder"
@@ -3338,7 +3415,13 @@
                     <div class="gallery-thumb t4"></div>
                     <div
                       class="gallery-thumb"
-                      style="background: linear-gradient(135deg, #e8e0d4 0%, #c4a882 100%)"
+                      style="
+                        background: linear-gradient(
+                          135deg,
+                          #e8e0d4 0%,
+                          #c4a882 100%
+                        );
+                      "
                     ></div>
                   </div>
                 </div>
@@ -3377,8 +3460,9 @@
 
                   <h3 class="section-header">About This Workshop</h3>
                   <p class="detail-description">
-                    A beginner-friendly workshop covering coiling, slab building,
-                    and pinching techniques for creating unique pottery pieces.
+                    A beginner-friendly workshop covering coiling, slab
+                    building, and pinching techniques for creating unique
+                    pottery pieces.
                   </p>
 
                   <h3 class="section-header">Instructor</h3>
@@ -3390,7 +3474,10 @@
                     </div>
                   </div>
 
-                  <button class="sidebar-btn sidebar-btn-outline" style="margin-bottom: 24px">
+                  <button
+                    class="sidebar-btn sidebar-btn-outline"
+                    style="margin-bottom: 24px"
+                  >
                     Write a Review
                   </button>
 
@@ -3446,8 +3533,8 @@
             <p class="wf-option-desc">
               Full-bleed hero image with a floating content card that overlaps
               the hero. Creates a magazine-style editorial feel. Content is
-              centered with a narrower max-width for focused reading.
-              Premium, editorial aesthetic.
+              centered with a narrower max-width for focused reading. Premium,
+              editorial aesthetic.
             </p>
           </div>
         </div>
@@ -3468,11 +3555,7 @@
               <!-- Full-bleed hero -->
               <div
                 class="hero-image"
-                style="
-                  aspect-ratio: 4/3;
-                  border-radius: 0;
-                  margin-bottom: 0;
-                "
+                style="aspect-ratio: 4/3; border-radius: 0; margin-bottom: 0"
               >
                 <svg class="hero-image-placeholder">
                   <use href="#palette-icon" />
@@ -3570,11 +3653,7 @@
               <!-- Full-bleed hero -->
               <div
                 class="hero-image"
-                style="
-                  aspect-ratio: 16/9;
-                  border-radius: 0;
-                  margin-bottom: 0;
-                "
+                style="aspect-ratio: 16/9; border-radius: 0; margin-bottom: 0"
               >
                 <svg class="hero-image-placeholder">
                   <use href="#palette-icon" />
@@ -3594,8 +3673,7 @@
                 "
               >
                 <div class="wf-breadcrumbs" style="margin-bottom: 12px">
-                  <a href="#">Home</a> / <a href="#">Events</a> / Clay
-                  Sculpture
+                  <a href="#">Home</a> / <a href="#">Events</a> / Clay Sculpture
                 </div>
 
                 <h1 class="detail-title" style="font-size: 26px">
@@ -3675,9 +3753,9 @@
                       </div>
                     </div>
                     <div class="sidebar-spots">
-                      <svg width="16" height="16"
-                        ><use href="#users-icon"
-                      /></svg>
+                      <svg width="16" height="16">
+                        <use href="#users-icon" />
+                      </svg>
                       12 spots remaining
                     </div>
                     <button class="sidebar-btn">Register Now</button>
@@ -3697,11 +3775,7 @@
               <!-- Full-bleed hero -->
               <div
                 class="hero-image"
-                style="
-                  aspect-ratio: 21/9;
-                  border-radius: 0;
-                  margin-bottom: 0;
-                "
+                style="aspect-ratio: 21/9; border-radius: 0; margin-bottom: 0"
               >
                 <svg
                   class="hero-image-placeholder"
@@ -3742,7 +3816,9 @@
                       </div>
                       <div class="meta-row">
                         <svg><use href="#map-pin-icon" /></svg
-                        ><span>Poetry & Pottery Studio, Koramangala, Bangalore</span>
+                        ><span
+                          >Poetry & Pottery Studio, Koramangala, Bangalore</span
+                        >
                       </div>
                     </div>
 
@@ -3820,9 +3896,9 @@
                       </div>
                     </div>
                     <div class="sidebar-spots">
-                      <svg width="16" height="16"
-                        ><use href="#users-icon"
-                      /></svg>
+                      <svg width="16" height="16">
+                        <use href="#users-icon" />
+                      </svg>
                       12 spots remaining
                     </div>
                     <button class="sidebar-btn">Register Now</button>
@@ -3858,11 +3934,7 @@
             <div class="viewport-content" style="padding: 0">
               <div
                 class="hero-image"
-                style="
-                  aspect-ratio: 4/3;
-                  border-radius: 0;
-                  margin-bottom: 0;
-                "
+                style="aspect-ratio: 4/3; border-radius: 0; margin-bottom: 0"
               >
                 <svg class="hero-image-placeholder">
                   <use href="#palette-icon" />
@@ -3878,10 +3950,9 @@
                 <div class="reg-status-card">
                   <div class="reg-status-header">
                     <span class="reg-status-title">
-                      <svg
-                        style="width: 18px; height: 18px; color: #16a34a"
-                        ><use href="#check-circle-icon"
-                      /></svg>
+                      <svg style="width: 18px; height: 18px; color: #16a34a">
+                        <use href="#check-circle-icon" />
+                      </svg>
                       Your Registration
                     </span>
                     <span class="reg-status-pill confirmed">Confirmed</span>
@@ -3945,11 +4016,7 @@
             <div class="viewport-content" style="padding: 0">
               <div
                 class="hero-image"
-                style="
-                  aspect-ratio: 16/9;
-                  border-radius: 0;
-                  margin-bottom: 0;
-                "
+                style="aspect-ratio: 16/9; border-radius: 0; margin-bottom: 0"
               >
                 <svg class="hero-image-placeholder">
                   <use href="#palette-icon" />
@@ -3984,13 +4051,12 @@
                         <span class="reg-status-title">
                           <svg
                             style="width: 18px; height: 18px; color: #16a34a"
-                            ><use href="#check-circle-icon"
-                          /></svg>
+                          >
+                            <use href="#check-circle-icon" />
+                          </svg>
                           Your Registration
                         </span>
-                        <span class="reg-status-pill confirmed"
-                          >Confirmed</span
-                        >
+                        <span class="reg-status-pill confirmed">Confirmed</span>
                       </div>
                       <div class="reg-details">
                         <div class="reg-detail-row">
@@ -4033,21 +4099,42 @@
                   <div class="detail-sidebar" style="height: fit-content">
                     <div class="ticket-card">
                       <div class="ticket-header">Ticket</div>
-                      <div style="display: flex; gap: 12px; align-items: flex-start">
-                        <div class="ticket-qr" style="width: 64px; height: 64px; font-size: 9px">QR</div>
-                        <div class="ticket-info" style="grid-template-columns: 1fr">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 12px;
+                          align-items: flex-start;
+                        "
+                      >
+                        <div
+                          class="ticket-qr"
+                          style="width: 64px; height: 64px; font-size: 9px"
+                        >
+                          QR
+                        </div>
+                        <div
+                          class="ticket-info"
+                          style="grid-template-columns: 1fr"
+                        >
                           <div>
                             <div class="label">ID</div>
-                            <div class="value" style="font-size: 12px">#REG-C5N2W7</div>
+                            <div class="value" style="font-size: 12px">
+                              #REG-C5N2W7
+                            </div>
                           </div>
                           <div>
                             <div class="label">Date</div>
-                            <div class="value" style="font-size: 12px">Apr 5, 2025</div>
+                            <div class="value" style="font-size: 12px">
+                              Apr 5, 2025
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <button class="sidebar-btn" style="margin-bottom: 8px; font-size: 13px">
+                    <button
+                      class="sidebar-btn"
+                      style="margin-bottom: 8px; font-size: 13px"
+                    >
                       View Full Ticket
                     </button>
                     <button class="sidebar-btn sidebar-btn-danger">
@@ -4068,11 +4155,7 @@
             <div class="viewport-content" style="padding: 0">
               <div
                 class="hero-image"
-                style="
-                  aspect-ratio: 21/9;
-                  border-radius: 0;
-                  margin-bottom: 0;
-                "
+                style="aspect-ratio: 21/9; border-radius: 0; margin-bottom: 0"
               >
                 <svg
                   class="hero-image-placeholder"
@@ -4106,24 +4189,47 @@
                         <span class="reg-status-title">
                           <svg
                             style="width: 18px; height: 18px; color: #16a34a"
-                            ><use href="#check-circle-icon"
-                          /></svg>
+                          >
+                            <use href="#check-circle-icon" />
+                          </svg>
                           Your Registration
                         </span>
-                        <span class="reg-status-pill confirmed"
-                          >Confirmed</span
-                        >
+                        <span class="reg-status-pill confirmed">Confirmed</span>
                       </div>
-                      <div class="reg-details" style="flex-direction: row; gap: 24px">
-                        <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                      <div
+                        class="reg-details"
+                        style="flex-direction: row; gap: 24px"
+                      >
+                        <div
+                          class="reg-detail-row"
+                          style="
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 2px;
+                          "
+                        >
                           <span class="label">Registration ID</span>
                           <span class="value">#REG-C5N2W7</span>
                         </div>
-                        <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                        <div
+                          class="reg-detail-row"
+                          style="
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 2px;
+                          "
+                        >
                           <span class="label">Registered on</span>
                           <span class="value">Mar 1, 2025</span>
                         </div>
-                        <div class="reg-detail-row" style="flex-direction: column; align-items: flex-start; gap: 2px">
+                        <div
+                          class="reg-detail-row"
+                          style="
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 2px;
+                          "
+                        >
                           <span class="label">Amount Paid</span>
                           <span class="value">Rs. 3,500</span>
                         </div>
@@ -4150,7 +4256,9 @@
                       <div class="instructor-avatar">MR</div>
                       <div class="instructor-info">
                         <h4>Maya Rao</h4>
-                        <p>Sculptor and ceramic artist with 10 years experience.</p>
+                        <p>
+                          Sculptor and ceramic artist with 10 years experience.
+                        </p>
                       </div>
                     </div>
 
@@ -4182,9 +4290,23 @@
                   <div class="detail-sidebar" style="height: fit-content">
                     <div class="ticket-card">
                       <div class="ticket-header">Workshop Ticket</div>
-                      <div style="display: flex; gap: 20px; align-items: flex-start">
-                        <div class="ticket-qr" style="width: 100px; height: 100px">QR Code</div>
-                        <div class="ticket-info" style="grid-template-columns: 1fr; flex: 1">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 20px;
+                          align-items: flex-start;
+                        "
+                      >
+                        <div
+                          class="ticket-qr"
+                          style="width: 100px; height: 100px"
+                        >
+                          QR Code
+                        </div>
+                        <div
+                          class="ticket-info"
+                          style="grid-template-columns: 1fr; flex: 1"
+                        >
                           <div>
                             <div class="label">Registration ID</div>
                             <div class="value">#REG-C5N2W7</div>
@@ -4200,21 +4322,39 @@
                         </div>
                       </div>
                     </div>
-                    <div class="sidebar-details" style="border-bottom: none; margin-bottom: 0; padding-bottom: 12px">
+                    <div
+                      class="sidebar-details"
+                      style="
+                        border-bottom: none;
+                        margin-bottom: 0;
+                        padding-bottom: 12px;
+                      "
+                    >
                       <div class="sidebar-row">
                         <span class="label">Status</span>
-                        <span class="value" style="color: #16a34a">Confirmed</span>
+                        <span class="value" style="color: #16a34a"
+                          >Confirmed</span
+                        >
                       </div>
                       <div class="sidebar-row">
                         <span class="label">Amount Paid</span>
                         <span class="value">Rs. 3,500</span>
                       </div>
                     </div>
-                    <button class="sidebar-btn" style="margin-bottom: 8px">View Full Ticket</button>
+                    <button class="sidebar-btn" style="margin-bottom: 8px">
+                      View Full Ticket
+                    </button>
                     <button class="sidebar-btn sidebar-btn-danger">
                       Cancel Registration
                     </button>
-                    <p style="font-size: 12px; color: #999; text-align: center; margin-top: 12px">
+                    <p
+                      style="
+                        font-size: 12px;
+                        color: #999;
+                        text-align: center;
+                        margin-top: 12px;
+                      "
+                    >
                       Free cancellation up to 48 hours before
                     </p>
                   </div>
@@ -4308,7 +4448,10 @@
                     text-align: center;
                   "
                 >
-                  <button class="sticky-btn outline" style="max-width: none; width: 100%">
+                  <button
+                    class="sticky-btn outline"
+                    style="max-width: none; width: 100%"
+                  >
                     Write a Review
                   </button>
                 </div>
@@ -4418,12 +4561,14 @@
                         margin-bottom: 16px;
                       "
                     >
-                      <div style="font-size: 12px; color: #999; margin-bottom: 4px">
+                      <div
+                        style="font-size: 12px; color: #999; margin-bottom: 4px"
+                      >
                         This event has ended
                       </div>
                       <div
                         style="
-                          font-family: 'Plus Jakarta Sans';
+                          font-family: &quot;Plus Jakarta Sans&quot;;
                           font-weight: 700;
                           color: #737373;
                         "
@@ -4525,7 +4670,10 @@
                     </p>
 
                     <h3 class="section-header">Workshop Gallery</h3>
-                    <div class="photo-gallery" style="grid-template-columns: repeat(4, 1fr)">
+                    <div
+                      class="photo-gallery"
+                      style="grid-template-columns: repeat(4, 1fr)"
+                    >
                       <div class="photo"></div>
                       <div class="photo"></div>
                       <div class="photo"></div>
@@ -4580,12 +4728,14 @@
                         margin-bottom: 20px;
                       "
                     >
-                      <div style="font-size: 12px; color: #999; margin-bottom: 4px">
+                      <div
+                        style="font-size: 12px; color: #999; margin-bottom: 4px"
+                      >
                         This event has ended
                       </div>
                       <div
                         style="
-                          font-family: 'Plus Jakarta Sans';
+                          font-family: &quot;Plus Jakarta Sans&quot;;
                           font-weight: 700;
                           color: #737373;
                         "
@@ -4631,12 +4781,9 @@
       >
         Additional Event States
       </h2>
-      <p
-        class="subtitle"
-        style="margin-bottom: 32px"
-      >
-        These states share the same layout as the selected option above. Only the
-        CTA area changes. Shown here in mobile for reference.
+      <p class="subtitle" style="margin-bottom: 32px">
+        These states share the same layout as the selected option above. Only
+        the CTA area changes. Shown here in mobile for reference.
       </p>
 
       <div
@@ -4679,11 +4826,7 @@
               </div>
               <div class="meta-row">
                 <svg><use href="#users-icon" /></svg>
-                <span
-                  style="
-                    color: #dc2626;
-                    font-weight: 600;
-                  "
+                <span style="color: #dc2626; font-weight: 600"
                   >All spots filled</span
                 >
               </div>
@@ -4693,7 +4836,10 @@
               <div style="font-size: 13px; color: #999">
                 This event is sold out
               </div>
-              <button class="sticky-btn disabled" style="max-width: none; flex: 1">
+              <button
+                class="sticky-btn disabled"
+                style="max-width: none; flex: 1"
+              >
                 Sold Out
               </button>
             </div>
@@ -4732,7 +4878,7 @@
             >
               <div
                 style="
-                  font-family: 'Plus Jakarta Sans';
+                  font-family: &quot;Plus Jakarta Sans&quot;;
                   font-weight: 700;
                   color: #dc2626;
                   margin-bottom: 4px;
@@ -4757,7 +4903,10 @@
 
             <div class="mobile-sticky-cta">
               <div style="font-size: 13px; color: #999">Event cancelled</div>
-              <button class="sticky-btn outline" style="max-width: none; flex: 1">
+              <button
+                class="sticky-btn outline"
+                style="max-width: none; flex: 1"
+              >
                 Browse Other Events
               </button>
             </div>
@@ -4852,22 +5001,33 @@
       <strong>Implementation Notes:</strong><br />
       <br />
       <strong>3 Event States per Option:</strong><br />
-      - <strong>Upcoming:</strong> Register CTA, pricing, spots available, full event info<br />
-      - <strong>Registered:</strong> Registration status card (Confirmed/Pending), ticket with QR code, Cancel Registration option<br />
-      - <strong>Completed:</strong> Gallery with thumbnails, rating summary, reviews section, Write Review CTA<br />
+      - <strong>Upcoming:</strong> Register CTA, pricing, spots available, full
+      event info<br />
+      - <strong>Registered:</strong> Registration status card
+      (Confirmed/Pending), ticket with QR code, Cancel Registration option<br />
+      - <strong>Completed:</strong> Gallery with thumbnails, rating summary,
+      reviews section, Write Review CTA<br />
       <br />
       <strong>3 Layout Options:</strong><br />
-      - <strong>Option A (Stacked):</strong> Full-width hero on top, content + sidebar below. Classic and clean<br />
-      - <strong>Option B (Side-by-Side):</strong> Image left, content right (50/50). Gallery-friendly, visual<br />
-      - <strong>Option C (Magazine):</strong> Full-bleed hero with floating card overlay. Premium editorial feel<br />
+      - <strong>Option A (Stacked):</strong> Full-width hero on top, content +
+      sidebar below. Classic and clean<br />
+      - <strong>Option B (Side-by-Side):</strong> Image left, content right
+      (50/50). Gallery-friendly, visual<br />
+      - <strong>Option C (Magazine):</strong> Full-bleed hero with floating card
+      overlay. Premium editorial feel<br />
       <br />
-      <strong>Additional States:</strong> Sold Out (disabled CTA) and Cancelled (cancellation notice + redirect) share the selected layout<br />
+      <strong>Additional States:</strong> Sold Out (disabled CTA) and Cancelled
+      (cancellation notice + redirect) share the selected layout<br />
       <br />
-      <strong>Mobile CTA Bar:</strong> Sticky bottom bar on all mobile views — adapts per state (Register / View Ticket + Cancel / Write Review)<br />
+      <strong>Mobile CTA Bar:</strong> Sticky bottom bar on all mobile views —
+      adapts per state (Register / View Ticket + Cancel / Write Review)<br />
       <br />
-      <strong>Registration Status:</strong> Shows Confirmed (green) or Pending (yellow) with registration ID, date, and amount<br />
+      <strong>Registration Status:</strong> Shows Confirmed (green) or Pending
+      (yellow) with registration ID, date, and amount<br />
       <br />
-      <strong>Files to Modify:</strong> event-detail.tsx, past-workshop-detail.tsx, event-hero.tsx, event-sidebar.tsx, instructor-card.tsx, workshop-gallery.tsx
+      <strong>Files to Modify:</strong> event-detail.tsx,
+      past-workshop-detail.tsx, event-hero.tsx, event-sidebar.tsx,
+      instructor-card.tsx, workshop-gallery.tsx
     </div>
   </body>
 </html>
