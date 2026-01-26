@@ -1115,7 +1115,7 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 48px">
-      <span class="status-badge">Awaiting Approval</span>
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a">Approved</span>
     </div>
 
     <!-- SVG Icons -->
@@ -2075,7 +2075,8 @@
       "
     >
       On mobile, the search takes over the full screen. Back button to dismiss.
-      Results scroll naturally. Showing all key states + result layout options.
+      Underline tabs match the desktop layout. Results scroll naturally within
+      each tab.
     </p>
 
     <div class="options-row" style="gap: 32px; align-items: flex-start">
@@ -2188,10 +2189,10 @@
         </div>
       </div>
 
-      <!-- Mobile: Results (Option A - Grouped) -->
+      <!-- Mobile: Results (Tab Navigation - matches Desktop B) -->
       <div style="text-align: center">
         <div class="state-label">
-          <span class="state-dot success"></span> Results (Option A)
+          <span class="state-dot success"></span> Results (Tab Navigation)
         </div>
         <div class="mobile-demo-frame" style="height: 680px">
           <div class="mobile-search-header">
@@ -2203,20 +2204,26 @@
               <input type="text" value="ceramic" disabled />
             </div>
           </div>
+          <!-- Underline Tabs (matching desktop Option B) -->
+          <div class="search-tabs" style="background: white; padding: 0 16px">
+            <button class="search-tab active">
+              Products <span class="search-tab-count">4</span>
+            </button>
+            <button class="search-tab">
+              Events <span class="search-tab-count">1</span>
+            </button>
+            <button class="search-tab">
+              Orders <span class="search-tab-count">0</span>
+            </button>
+          </div>
           <div
             style="
               background: #fafaf9;
-              height: calc(100% - 64px);
+              flex: 1;
               overflow-y: auto;
             "
           >
-            <div class="search-group">
-              <div class="search-group-header">
-                <div class="search-group-title">
-                  Products <span class="search-group-count">4</span>
-                </div>
-                <button class="search-group-viewall">View all &rarr;</button>
-              </div>
+            <div style="padding-top: 4px">
               <div class="search-item" style="background: white">
                 <div class="search-item-thumb product"></div>
                 <div class="search-item-info">
@@ -2249,27 +2256,49 @@
                 </div>
                 <div class="search-item-price">&#8377;2,200</div>
               </div>
-            </div>
-            <div class="search-group-divider"></div>
-            <div class="search-group">
-              <div class="search-group-header">
-                <div class="search-group-title">
-                  Events <span class="search-group-count">1</span>
-                </div>
-              </div>
               <div class="search-item" style="background: white">
-                <div class="search-item-thumb event-date">
-                  <span class="date-month">Feb</span>
-                  <span class="date-day">15</span>
-                </div>
+                <div
+                  class="search-item-thumb product"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #e0e0e0 0%,
+                      #d4c4b0 100%
+                    );
+                  "
+                ></div>
                 <div class="search-item-info">
-                  <div class="search-item-title">Ceramic Glazing Workshop</div>
+                  <div class="search-item-title">Large Mixing Bowl</div>
                   <div class="search-item-meta">
-                    10:00 AM <span class="dot"></span> 5 spots
+                    Stoneware <span class="dot"></span> In Stock
                   </div>
                 </div>
-                <div class="search-item-price">&#8377;3,500</div>
+                <div class="search-item-price">&#8377;2,100</div>
               </div>
+              <div class="search-item" style="background: white">
+                <div
+                  class="search-item-thumb product"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      #e8e0d4 0%,
+                      #c4a882 100%
+                    );
+                  "
+                ></div>
+                <div class="search-item-info">
+                  <div class="search-item-title">Mini Dipping Bowl</div>
+                  <div class="search-item-meta">
+                    Handmade <span class="dot"></span> In Stock
+                  </div>
+                </div>
+                <div class="search-item-price">&#8377;650</div>
+              </div>
+            </div>
+            <div style="padding: 4px 20px 12px; text-align: center">
+              <button class="search-group-viewall" style="font-size: 13px">
+                View all 4 products &rarr;
+              </button>
             </div>
           </div>
         </div>
@@ -2318,12 +2347,12 @@
 
     <div style="height: 32px"></div>
 
-    <!-- Mobile with Pill Tabs (Option B/C) -->
+    <!-- Mobile: Tab Switching + Error State -->
     <div class="options-row" style="gap: 32px; align-items: flex-start">
-      <!-- Mobile: Results with Pills -->
+      <!-- Mobile: Events Tab Active -->
       <div style="text-align: center">
         <div class="state-label">
-          <span class="state-dot success"></span> Results (Option B/C Tabs)
+          <span class="state-dot success"></span> Events Tab Active
         </div>
         <div class="mobile-demo-frame" style="height: 680px">
           <div class="mobile-search-header">
@@ -2335,66 +2364,20 @@
               <input type="text" value="ceramic" disabled />
             </div>
           </div>
-          <!-- Mobile Pill Tabs (scrollable) -->
-          <div class="search-pills" style="background: white">
-            <button class="search-pill active">
-              All <span class="search-pill-count">5</span>
+          <!-- Underline Tabs with Events active -->
+          <div class="search-tabs" style="background: white; padding: 0 16px">
+            <button class="search-tab">
+              Products <span class="search-tab-count">4</span>
             </button>
-            <button class="search-pill">
-              Products <span class="search-pill-count">4</span>
+            <button class="search-tab active">
+              Events <span class="search-tab-count">1</span>
             </button>
-            <button class="search-pill">
-              Events <span class="search-pill-count">1</span>
-            </button>
-            <button class="search-pill">
-              Orders <span class="search-pill-count">0</span>
+            <button class="search-tab">
+              Orders <span class="search-tab-count">0</span>
             </button>
           </div>
           <div style="background: #fafaf9; flex: 1; overflow-y: auto">
-            <div class="search-group">
-              <div class="search-group-header">
-                <div class="search-group-title">
-                  Products <span class="search-group-count">4</span>
-                </div>
-                <button class="search-group-viewall">View all &rarr;</button>
-              </div>
-              <div class="search-item" style="background: white">
-                <div class="search-item-thumb product"></div>
-                <div class="search-item-info">
-                  <div class="search-item-title">Ceramic Serving Bowl</div>
-                  <div class="search-item-meta">
-                    Handmade <span class="dot"></span> &#8377;1,450
-                  </div>
-                </div>
-                <div class="search-item-price">&#8377;1,450</div>
-              </div>
-              <div class="search-item" style="background: white">
-                <div
-                  class="search-item-thumb product"
-                  style="
-                    background: linear-gradient(
-                      135deg,
-                      #d4c4b0 0%,
-                      #c4a882 100%
-                    );
-                  "
-                ></div>
-                <div class="search-item-info">
-                  <div class="search-item-title">Ceramic Vase - Green</div>
-                  <div class="search-item-meta">
-                    Handmade <span class="dot"></span> &#8377;2,200
-                  </div>
-                </div>
-                <div class="search-item-price">&#8377;2,200</div>
-              </div>
-            </div>
-            <div class="search-group-divider"></div>
-            <div class="search-group">
-              <div class="search-group-header">
-                <div class="search-group-title">
-                  Events <span class="search-group-count">1</span>
-                </div>
-              </div>
+            <div style="padding-top: 4px">
               <div class="search-item" style="background: white">
                 <div class="search-item-thumb event-date">
                   <span class="date-month">Feb</span>
@@ -2403,7 +2386,7 @@
                 <div class="search-item-info">
                   <div class="search-item-title">Ceramic Glazing Workshop</div>
                   <div class="search-item-meta">
-                    10:00 AM <span class="dot"></span> 5 spots
+                    10:00 AM <span class="dot"></span> 5 spots left
                   </div>
                 </div>
                 <div class="search-item-price">&#8377;3,500</div>
@@ -2614,7 +2597,7 @@
         Approval Section
       </h3>
       <p style="color: #666; font-size: 14px; margin-bottom: 24px">
-        Select your preferred result layout for each viewport:
+        Approved design selections:
       </p>
 
       <div class="approval-grid">
@@ -2622,16 +2605,16 @@
           <div class="approval-viewport-label">
             Desktop &mdash; Result Layout
           </div>
-          <label>
-            <input type="radio" name="desktop" value="a" checked />
-            Option A &mdash; Unified Grouped List (Recommended)
+          <label style="opacity: 0.5">
+            <input type="radio" name="desktop" value="a" disabled />
+            Option A &mdash; Unified Grouped List
           </label>
           <label>
-            <input type="radio" name="desktop" value="b" />
-            Option B &mdash; Tab Navigation
+            <input type="radio" name="desktop" value="b" checked disabled />
+            Option B &mdash; Tab Navigation (Selected)
           </label>
-          <label>
-            <input type="radio" name="desktop" value="c" />
+          <label style="opacity: 0.5">
+            <input type="radio" name="desktop" value="c" disabled />
             Option C &mdash; Pill Filter Tabs
           </label>
         </div>
@@ -2640,28 +2623,28 @@
           <div class="approval-viewport-label">
             Mobile &mdash; Result Layout
           </div>
-          <label>
-            <input type="radio" name="mobile" value="a" checked />
-            Option A &mdash; Grouped List (Recommended)
+          <label style="opacity: 0.5">
+            <input type="radio" name="mobile" value="a" disabled />
+            Option A &mdash; Grouped List
           </label>
           <label>
-            <input type="radio" name="mobile" value="bc" />
-            Option B/C &mdash; With Pill Tabs
+            <input type="radio" name="mobile" value="b" checked disabled />
+            Tab Navigation (matching desktop) (Selected)
           </label>
         </div>
 
         <div class="approval-item">
           <div class="approval-viewport-label">Idle State</div>
           <label>
-            <input type="radio" name="idle" value="full" checked />
-            Recent Searches + Trending Tags (Recommended)
+            <input type="radio" name="idle" value="full" checked disabled />
+            Recent Searches + Trending Tags (Selected)
           </label>
-          <label>
-            <input type="radio" name="idle" value="recent" />
+          <label style="opacity: 0.5">
+            <input type="radio" name="idle" value="recent" disabled />
             Recent Searches Only
           </label>
-          <label>
-            <input type="radio" name="idle" value="none" />
+          <label style="opacity: 0.5">
+            <input type="radio" name="idle" value="none" disabled />
             No Idle State (blank until typing)
           </label>
         </div>
@@ -2669,27 +2652,22 @@
         <div class="approval-item">
           <div class="approval-viewport-label">Event Thumbnails</div>
           <label>
-            <input type="radio" name="event-thumb" value="date" checked />
-            Date Block (Month + Day) &mdash; Recommended
+            <input type="radio" name="event-thumb" value="date" checked disabled />
+            Date Block (Month + Day) (Selected)
           </label>
-          <label>
-            <input type="radio" name="event-thumb" value="image" />
+          <label style="opacity: 0.5">
+            <input type="radio" name="event-thumb" value="image" disabled />
             Event Image Thumbnail
           </label>
         </div>
-      </div>
-
-      <div class="notes-area" style="margin-top: 24px">
-        <div class="approval-viewport-label">Notes / Feedback</div>
-        <textarea
-          placeholder="Add any notes or modification requests here..."
-        ></textarea>
       </div>
     </div>
 
     <!-- Implementation Notes -->
     <div class="notes" style="margin-top: 48px">
-      <strong>Implementation Specs (Task 9.5):</strong><br /><br />
+      <strong>Implementation Specs (Task 9.5) &mdash; Approved: Option B (Tab
+        Navigation)</strong
+      ><br /><br />
       &bull;
       <strong>File:</strong>
       src/features/global-search/components/global-search.tsx<br />
@@ -2704,15 +2682,19 @@
       &bull; <strong>Backdrop:</strong> bg-black/50, backdrop-blur-sm<br />
       &bull; <strong>Input:</strong> text-lg, no border, auto-focus, clear
       button on right<br />
-      &bull; <strong>Groups:</strong> Products, Events, Orders (auth only)<br />
-      &bull; <strong>Thumbnails:</strong> 48px, rounded-[10px]<br />
+      &bull; <strong>Result Layout:</strong> Underline tabs (Products, Events,
+      Orders) with count badges. Tab key to switch. 5 items per tab<br />
+      &bull; <strong>Orders Tab:</strong> Only shown for authenticated
+      users<br />
+      &bull; <strong>Thumbnails:</strong> 48px, rounded-[10px]. Events use date
+      block (month + day)<br />
       &bull; <strong>Skeleton:</strong> Shimmer animation, 3 items<br />
-      &bull; <strong>Recent Searches:</strong> localStorage, max 5, clock icon,
-      removable<br />
-      &bull; <strong>Mobile:</strong> Full-screen overlay, back button, no
-      footer shortcuts<br />
+      &bull; <strong>Idle State:</strong> Recent searches (localStorage, max 5,
+      clock icon, removable) + trending tags<br />
+      &bull; <strong>Mobile:</strong> Full-screen overlay, back button,
+      underline tabs matching desktop. No footer shortcuts<br />
       &bull; <strong>Keyboard:</strong> ⌘K/Ctrl+K open, ↑↓ navigate, ↵ select,
-      ESC close
+      Tab to switch tabs, ESC close
     </div>
 
     <footer

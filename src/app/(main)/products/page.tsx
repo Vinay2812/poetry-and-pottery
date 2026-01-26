@@ -1,3 +1,4 @@
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import { getProducts } from "@/data/products/gateway/server";
 import type { ProductsFilterParams } from "@/data/products/types";
 import { MobileHeaderContainer } from "@/features/layout";
@@ -73,7 +74,7 @@ async function ProductsContent({
     materials: params.materials?.split(","),
     order_by: mapSortToOrderBy(params.sort),
     page: params.page ? parseInt(params.page, 10) : 1,
-    limit: 12,
+    limit: DEFAULT_PAGE_SIZE,
     min_price: params.minPrice ? parseInt(params.minPrice) : undefined,
     max_price: params.maxPrice ? parseInt(params.maxPrice) : undefined,
     search: params.search,

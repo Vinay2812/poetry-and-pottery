@@ -170,11 +170,12 @@ Every component MUST include subtle, performant animations. These are **mandator
 | Toasts | Slide in from edge | Slide out + fade | `300ms` |
 | Page sections | Fade in + slide up | - | `400ms` |
 
-**Scroll Animations (Desktop only):**
+**Scroll Animations (All Devices):**
 
-- Staggered reveals: `staggerChildren: 0.05-0.1`
-- Fade in from bottom: `opacity: 0 → 1`, `y: 20 → 0`
-- Trigger: When element enters viewport (IntersectionObserver)
+- Staggered reveals: `staggerChildren: 0.1`
+- Fade in from bottom: `opacity: 0 → 1`, `y: 20 → 0`, `duration: 200ms`, `ease: easeOut`
+- Trigger: `whileInView` with `viewport: { once: true, amount: 0.1 }`
+- Use `StaggeredGrid` wrapper component with child `variants: { hidden, visible }`
 
 **Performance Rules:**
 
@@ -646,8 +647,9 @@ Once user approves, the section is updated to:
 
 #### Task 5.1: Product Detail Layout
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-5-1-product-detail-layout.html](wireframes/task-5-1-product-detail-layout.html)
+**Approved Option:** Option B (Modern Gallery) — All Viewports (Mobile, Tablet, Desktop)
 
 **Scope:**
 
@@ -1375,8 +1377,13 @@ _Completed Card (Past registrations):_
 
 #### Task 9.2: Mobile Header
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-9-2-mobile-header.html](wireframes/task-9-2-mobile-header.html)
+**Approved Selection:**
+
+- Mobile: Option A - Full Actions
+- Tablet: Option A - Full Actions
+- Desktop: Option A - Full Actions
 
 **Scope:**
 
@@ -1400,7 +1407,11 @@ _Completed Card (Past registrations):_
 
 #### Task 9.3: Mobile Bottom Navigation
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved — No Changes Needed
+
+**Wireframe:** [task-9-3-mobile-bottom-nav.html](wireframes/task-9-3-mobile-bottom-nav.html)
+
+**Approved Selection:** Current implementation retained as-is. The existing mobile bottom navigation already meets all design requirements.
 
 **Scope:**
 
@@ -1412,18 +1423,26 @@ _Completed Card (Past registrations):_
 - Height: `h-16` (64px) + safe area
 - Items: Home, Shop, Events, Cart
 - Icons only, no text labels
-- Active: Primary color
-- Cart: Count badge
+- Active: Primary color with animated pill indicator (Framer Motion `layoutId`)
+- Cart: Count badge with animated scale in/out
+- Frosted glass background: `bg-white/80 backdrop-blur-xl`
+- Dark mode support: `bg-black/80`, `bg-neutral-800` pill
+- Spring animation: `bounce: 0.15, duration: 0.5`
 
-**Files to Modify (after approval):**
-
-- `src/features/layout/components/mobile-nav.tsx`
+**Files:** No modifications required — current implementation approved.
 
 ---
 
 #### Task 9.4: Account Dropdown
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
+
+**Wireframe:** [task-9-4-account-dropdown.html](wireframes/task-9-4-account-dropdown.html)
+
+**Approved Selections:**
+
+- **Desktop & Mobile Dropdown:** Option A — Standard (same dropdown for all devices)
+- **Mobile Behavior:** Same dropdown as desktop (no bottom sheet)
 
 **Scope:**
 
@@ -1438,7 +1457,7 @@ _Completed Card (Past registrations):_
 - Links: Orders, Wishlist, Registrations, Addresses
 - Divider before Sign Out
 
-**Files to Modify (after approval):**
+**Files to Modify:**
 
 - `src/features/layout/components/account-dropdown.tsx`
 
@@ -1704,25 +1723,39 @@ _Completed Card (Past registrations):_
 
 #### Task 11.3: Scroll Animations
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✔️ Completed
 **Wireframe:** [task-11-3-scroll-animations.html](wireframes/task-11-3-scroll-animations.html)
+**Approved Selection:**
+
+- Mobile: Option A - Subtle Fade-Up (all devices)
+- Tablet: Option A - Subtle Fade-Up (all devices)
+- Desktop: Option A - Subtle Fade-Up (all devices)
 
 **Scope:**
 
-- Staggered reveal animations on product grids
-- Scroll-triggered fade-in effects
+- Staggered reveal animations on product and event grids
+- Scroll-triggered fade-in effects on all devices
 
 **Design Specifications:**
 
-- Product grids: `staggerChildren: 0.1`
-- Cards: Fade in from bottom (`y: 20` → `y: 0`)
-- Desktop only (reduce motion on mobile)
-- Respect `prefers-reduced-motion`
+- Product/event grids: `staggerChildren: 0.1`
+- Cards: Fade in from bottom (`opacity: 0→1`, `y: 20→0`)
+- Duration: `200ms`, easing: `easeOut`
+- All devices (not desktop-only)
+- Trigger: `whileInView` with `viewport: { once: true, amount: 0.1 }`
 
-**Files to Modify (after approval):**
+**Files Modified:**
 
-- `src/features/product-card/components/product-card.tsx`
-- `src/components/cards/event-card.tsx`
+- `src/components/shared/staggered-grid.tsx` (new - reusable stagger container)
+- `src/components/shared/index.ts` (added StaggeredGrid export)
+- `src/features/product-card/components/product-card.tsx` (switched to variants)
+- `src/components/cards/event/event-card-wrapper.tsx` (switched to variants)
+- `src/features/products/components/product-list.tsx` (wrapped grid with StaggeredGrid)
+- `src/features/events/components/all-events.tsx` (wrapped both grids)
+- `src/components/events/upcoming-events-client.tsx` (wrapped grid)
+- `src/components/events/past-workshops-client.tsx` (wrapped grid)
+- `src/features/wishlist/components/wishlist.tsx` (recommendations grid)
+- `src/components/sections/category-section.tsx` (category cards with motion.div variants)
 
 ---
 
@@ -1791,8 +1824,13 @@ _Completed Card (Past registrations):_
 
 #### Task 12.1: Sign In/Sign Up Pages
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-12-1-sign-in-sign-up.html](wireframes/task-12-1-sign-in-sign-up.html)
+**Approved Selection:**
+
+- Mobile: Option B - Centered Card with Pattern Background
+- Tablet: Option B - Centered Card with Pattern Background
+- Desktop: Option B - Centered Card with Pattern Background
 
 **Scope:**
 

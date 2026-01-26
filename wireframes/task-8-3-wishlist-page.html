@@ -177,38 +177,71 @@
         padding: 16px;
       }
 
-      /* Page Header (Tablet/Desktop) */
+      /* Page Header (Tablet/Desktop) - Content-integrated style (matches products page) */
       .page-header {
-        padding: 16px;
-        background: white;
-        border-bottom: 1px solid #f0f0f0;
+        padding: 24px 16px 0;
       }
 
       .page-header.desktop {
-        padding: 24px 32px;
+        padding: 32px 32px 0;
       }
 
       .page-title {
         font-family: "Plus Jakarta Sans", sans-serif;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 700;
         color: #1a1a1a;
         margin-bottom: 4px;
-      }
-
-      .page-title-underline {
-        width: 48px;
-        height: 3px;
-        background: #4f6f52;
-        border-radius: 2px;
-        margin-top: 8px;
       }
 
       .page-subtitle {
         font-family: "Outfit", sans-serif;
         font-size: 13px;
         color: #737373;
-        margin-top: 8px;
+        margin-top: 4px;
+        line-height: 1.5;
+      }
+
+      /* Sort/Action Toolbar */
+      .sort-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+        margin-bottom: 4px;
+      }
+
+      .sort-toolbar .item-count {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .sort-toolbar .item-count strong {
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .sort-select {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        background: white;
+        font-family: "Outfit", sans-serif;
+        font-size: 12px;
+        color: #555;
+        cursor: pointer;
+      }
+
+      .sort-select svg {
+        width: 14px;
+        height: 14px;
+        stroke: #999;
+        stroke-width: 2;
+        fill: none;
       }
 
       /* Breadcrumbs */
@@ -568,26 +601,7 @@
         line-height: 1.6;
       }
 
-      /* ============================================
-         STATS HEADER
-         ============================================ */
-      .wishlist-stats {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 16px;
-      }
-
-      .wishlist-count {
-        font-family: "Outfit", sans-serif;
-        font-size: 14px;
-        color: #737373;
-      }
-
-      .wishlist-count strong {
-        font-weight: 600;
-        color: #1a1a1a;
-      }
+      /* Stats header styles moved to .sort-toolbar above */
 
       /* ============================================
          BUTTON STYLES
@@ -765,12 +779,27 @@
         <line x1="3" y1="6" x2="21" y2="6" />
         <path d="M16 10a4 4 0 0 1-8 0" />
       </symbol>
+      <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" />
+      </symbol>
+      <symbol id="icon-sliders" viewBox="0 0 24 24">
+        <line x1="4" y1="21" x2="4" y2="14" />
+        <line x1="4" y1="10" x2="4" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12" y2="3" />
+        <line x1="20" y1="21" x2="20" y2="16" />
+        <line x1="20" y1="12" x2="20" y2="3" />
+        <line x1="1" y1="14" x2="7" y2="14" />
+        <line x1="9" y1="8" x2="15" y2="8" />
+        <line x1="17" y1="16" x2="23" y2="16" />
+      </symbol>
     </svg>
 
     <h1>Task 8.3: Wishlist Page</h1>
     <p class="subtitle">
-      Wishlist page with product grid layout, compact list variant, and empty
-      state. Consistent page header across all viewports.
+      Wishlist page matching products page layout pattern. Content-integrated
+      header, sort toolbar, product grid, compact list variant, and empty
+      state.
     </p>
 
     <div style="text-align: center; margin-bottom: 40px">
@@ -794,11 +823,13 @@
           <h3>NEW DESIGN</h3>
           <ul>
             <li>
-              Consistent page header with breadcrumbs &amp; green underline
+              Listing-page layout matching products page (content-integrated
+              header, sort toolbar)
             </li>
             <li>
               Product cards with stock status (In Stock / Low / Out of Stock)
             </li>
+            <li>Sort toolbar with item count and sort dropdown</li>
             <li>Remove button and Add to Cart on each card</li>
             <li>Disabled state for out-of-stock items</li>
             <li>Engaging empty state with CTA</li>
@@ -849,11 +880,15 @@
 
               <!-- Content -->
               <div class="mobile-content">
-                <!-- Stats -->
-                <div class="wishlist-stats">
-                  <span class="wishlist-count"
+                <!-- Sort Toolbar -->
+                <div class="sort-toolbar">
+                  <span class="item-count"
                     ><strong>6</strong> items saved</span
                   >
+                  <div class="sort-select">
+                    Recently Added
+                    <svg><use href="#icon-chevron-down" /></svg>
+                  </div>
                 </div>
 
                 <!-- 2-Column Grid -->
@@ -990,17 +1025,25 @@
                 <div class="breadcrumbs">
                   <a href="#">Home</a>
                   <svg><use href="#icon-chevron-right" /></svg>
-                  <a href="#">Account</a>
-                  <svg><use href="#icon-chevron-right" /></svg>
                   Wishlist
                 </div>
                 <div class="page-title">My Wishlist</div>
-                <div class="page-title-underline"></div>
-                <div class="page-subtitle">6 items saved for later</div>
+                <div class="page-subtitle">
+                  Your curated collection of handcrafted pieces
+                </div>
               </div>
 
-              <!-- 3-Column Grid -->
+              <!-- Sort Toolbar + 3-Column Grid -->
               <div class="page-content">
+                <div class="sort-toolbar">
+                  <span class="item-count"
+                    ><strong>6</strong> items saved</span
+                  >
+                  <div class="sort-select">
+                    Recently Added
+                    <svg><use href="#icon-chevron-down" /></svg>
+                  </div>
+                </div>
                 <div class="wishlist-grid-3">
                   <!-- Card 1 -->
                   <div class="wishlist-card">
@@ -1134,19 +1177,27 @@
                 <div class="breadcrumbs">
                   <a href="#">Home</a>
                   <svg><use href="#icon-chevron-right" /></svg>
-                  <a href="#">Account</a>
-                  <svg><use href="#icon-chevron-right" /></svg>
                   Wishlist
                 </div>
                 <div class="page-title" style="font-size: 24px">
                   My Wishlist
                 </div>
-                <div class="page-title-underline"></div>
-                <div class="page-subtitle">6 items saved for later</div>
+                <div class="page-subtitle">
+                  Your curated collection of handcrafted pieces
+                </div>
               </div>
 
-              <!-- 4-Column Grid -->
+              <!-- Sort Toolbar + 4-Column Grid -->
               <div class="page-content desktop">
+                <div class="sort-toolbar">
+                  <span class="item-count"
+                    ><strong>6</strong> items saved</span
+                  >
+                  <div class="sort-select">
+                    Recently Added
+                    <svg><use href="#icon-chevron-down" /></svg>
+                  </div>
+                </div>
                 <div class="wishlist-grid-4">
                   <!-- Card 1 -->
                   <div class="wishlist-card">
@@ -1306,11 +1357,15 @@
 
               <!-- Content -->
               <div class="mobile-content">
-                <!-- Stats -->
-                <div class="wishlist-stats">
-                  <span class="wishlist-count"
+                <!-- Sort Toolbar -->
+                <div class="sort-toolbar">
+                  <span class="item-count"
                     ><strong>6</strong> items saved</span
                   >
+                  <div class="sort-select">
+                    Recently Added
+                    <svg><use href="#icon-chevron-down" /></svg>
+                  </div>
                 </div>
 
                 <!-- Stacked List Cards -->
@@ -1468,17 +1523,25 @@
                 <div class="breadcrumbs">
                   <a href="#">Home</a>
                   <svg><use href="#icon-chevron-right" /></svg>
-                  <a href="#">Account</a>
-                  <svg><use href="#icon-chevron-right" /></svg>
                   Wishlist
                 </div>
                 <div class="page-title">My Wishlist</div>
-                <div class="page-title-underline"></div>
-                <div class="page-subtitle">6 items saved for later</div>
+                <div class="page-subtitle">
+                  Your curated collection of handcrafted pieces
+                </div>
               </div>
 
-              <!-- 2-Column List -->
+              <!-- Sort Toolbar + 2-Column List -->
               <div class="page-content">
+                <div class="sort-toolbar">
+                  <span class="item-count"
+                    ><strong>6</strong> items saved</span
+                  >
+                  <div class="sort-select">
+                    Recently Added
+                    <svg><use href="#icon-chevron-down" /></svg>
+                  </div>
+                </div>
                 <div class="wishlist-list-grid-2">
                   <!-- Card 1 -->
                   <div class="wishlist-card-compact">
@@ -1607,19 +1670,27 @@
                 <div class="breadcrumbs">
                   <a href="#">Home</a>
                   <svg><use href="#icon-chevron-right" /></svg>
-                  <a href="#">Account</a>
-                  <svg><use href="#icon-chevron-right" /></svg>
                   Wishlist
                 </div>
                 <div class="page-title" style="font-size: 24px">
                   My Wishlist
                 </div>
-                <div class="page-title-underline"></div>
-                <div class="page-subtitle">6 items saved for later</div>
+                <div class="page-subtitle">
+                  Your curated collection of handcrafted pieces
+                </div>
               </div>
 
-              <!-- 3-Column List -->
+              <!-- Sort Toolbar + 3-Column List -->
               <div class="page-content desktop">
+                <div class="sort-toolbar">
+                  <span class="item-count"
+                    ><strong>6</strong> items saved</span
+                  >
+                  <div class="sort-select">
+                    Recently Added
+                    <svg><use href="#icon-chevron-down" /></svg>
+                  </div>
+                </div>
                 <div class="wishlist-list-grid-3">
                   <!-- Card 1 -->
                   <div class="wishlist-card-compact">
@@ -1809,12 +1880,12 @@
                 <div class="breadcrumbs">
                   <a href="#">Home</a>
                   <svg><use href="#icon-chevron-right" /></svg>
-                  <a href="#">Account</a>
-                  <svg><use href="#icon-chevron-right" /></svg>
                   Wishlist
                 </div>
                 <div class="page-title">My Wishlist</div>
-                <div class="page-title-underline"></div>
+                <div class="page-subtitle">
+                  Your curated collection of handcrafted pieces
+                </div>
               </div>
 
               <!-- Empty State -->
@@ -1859,14 +1930,14 @@
                 <div class="breadcrumbs">
                   <a href="#">Home</a>
                   <svg><use href="#icon-chevron-right" /></svg>
-                  <a href="#">Account</a>
-                  <svg><use href="#icon-chevron-right" /></svg>
                   Wishlist
                 </div>
                 <div class="page-title" style="font-size: 24px">
                   My Wishlist
                 </div>
-                <div class="page-title-underline"></div>
+                <div class="page-subtitle">
+                  Your curated collection of handcrafted pieces
+                </div>
               </div>
 
               <!-- Empty State - Centered (consistent with mobile/tablet) -->
@@ -1975,10 +2046,14 @@
     <!-- ====================================== -->
     <div class="notes" style="margin-top: 48px">
       <strong>Implementation Specs (Task 8.3):</strong><br /><br />
-      &bull; <strong>Page Header:</strong> Consistent with other pages -
-      breadcrumbs (tablet/desktop), title, green underline accent, subtitle<br />
+      &bull; <strong>Layout Pattern:</strong> Matches products page
+      (ListingPageHeader style) - content-integrated header, sort toolbar, responsive grid<br />
+      &bull; <strong>Page Header:</strong> Breadcrumbs (Home &gt; Wishlist),
+      title, subtitle - no green underline, no separate white bar<br />
       &bull; <strong>Mobile Header:</strong> Back button + centered title (h-14,
       56px)<br />
+      &bull; <strong>Sort Toolbar:</strong> Item count on left, sort dropdown on
+      right (Recently Added, Price Low-High, Price High-Low)<br />
       &bull; <strong>Grid Layout:</strong> Mobile 2-col, Tablet 3-col, Desktop
       4-col<br />
       &bull; <strong>Card Corners:</strong> rounded-2xl (16px)<br />

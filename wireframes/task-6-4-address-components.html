@@ -52,7 +52,8 @@
         min-height: 130px;
         display: flex;
         flex-direction: column;
-        transition: background 0.2s;
+        transition: all 0.2s;
+        border: 2px solid transparent;
       }
 
       .address-card:hover {
@@ -60,7 +61,7 @@
       }
 
       .address-card.selected {
-        outline: 2px solid #4f6f52;
+        border-color: #4f6f52;
       }
 
       .address-name {
@@ -482,7 +483,10 @@
           <ul>
             <li>Horizontal carousel on ALL viewports (unified)</li>
             <li>Partial peek: 1 mobile, 2 tablet, 3 desktop</li>
-            <li>Cards: bg-neutral-50, no border/shadow, ring-2 selection</li>
+            <li>
+              Cards: bg-neutral-50, border-2 transparent, border-primary
+              selection
+            </li>
             <li>Edit/delete as icon buttons in top-right corner</li>
             <li>Bottom sheet form for add/edit on all devices</li>
           </ul>
@@ -501,17 +505,17 @@
       </h2>
       <p class="wf-section-desc">
         Address cards in a horizontal carousel with partial peek across all
-        viewports. Cards use neutral-50 background with no borders or shadows.
-        Selected state uses ring-2 ring-primary. Edit/delete as subtle icon
-        buttons in top-right corner. Check circle for selected state. "Add New"
-        button in header, form opens in bottom sheet.
+        viewports. Cards use neutral-50 background with transparent 2px border.
+        Selected state uses border-primary. Edit/delete as subtle icon buttons
+        in top-right corner. Check circle for selected state. "Add New" button
+        in header, form opens in bottom sheet.
       </p>
 
       <div class="option-details">
         <strong>Card Style:</strong> bg-neutral-50 • rounded-2xl (16px) •
-        hover:bg-neutral-100 • no border/shadow<br />
-        <strong>Selection:</strong> ring-2 ring-primary • green check circle
-        (24px) in top-right<br />
+        border-2 border-transparent • hover:bg-neutral-100<br />
+        <strong>Selection:</strong> border-primary (2px solid) • green check
+        circle (24px) in top-right<br />
         <strong>Actions:</strong> 28px icon buttons (top-right) • edit:
         hover:bg-neutral-200 • delete: hover:bg-red-50 hover:text-red-500<br />
         <strong>Carousel:</strong> basis-[85%] mobile • basis-[48%] tablet •
@@ -1188,12 +1192,12 @@
       lg:basis-[33.33%] desktop<br />
       • <strong>Card gap:</strong> -ml-3 on CarouselContent, pl-3 on each
       CarouselItem<br />
-      • <strong>Card style:</strong> bg-neutral-50, rounded-2xl, no border, no
-      shadow<br />
+      • <strong>Card style:</strong> bg-neutral-50, rounded-2xl, border-2
+      border-transparent<br />
       • <strong>Hover:</strong> hover:bg-neutral-100 (cursor-pointer when
       onSelect provided)<br />
-      • <strong>Selected state:</strong> ring-2 ring-primary + green check
-      circle (24px) in top-right<br />
+      • <strong>Selected state:</strong> border-primary (2px solid) + green
+      check circle (24px) in top-right<br />
       • <strong>Actions:</strong> 28x28px icon buttons — edit:
       hover:bg-neutral-200, delete: hover:bg-red-50 hover:text-red-500<br />
       • <strong>Content icons:</strong> User (primary), Phone/MapPin
