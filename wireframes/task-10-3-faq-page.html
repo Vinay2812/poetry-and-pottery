@@ -1,0 +1,2373 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 10.3: FAQ Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+
+      .page-header-desktop {
+        padding-bottom: 24px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .page-title-desktop {
+        font-size: 36px;
+      }
+
+      .title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-bottom: 12px;
+      }
+
+      .page-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 500px;
+      }
+
+      /* FAQ Category */
+      .faq-category {
+        margin-bottom: 32px;
+      }
+
+      .faq-category-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #4f6f52;
+        display: inline-block;
+      }
+
+      /* Search Bar (for Option C) */
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        background: #f5f5f5;
+        border-radius: 12px;
+        margin-bottom: 24px;
+      }
+
+      .search-bar input {
+        border: none;
+        background: transparent;
+        font-size: 14px;
+        color: #1a1a1a;
+        outline: none;
+        width: 100%;
+        font-family: "Outfit", sans-serif;
+      }
+
+      .search-icon {
+        width: 18px;
+        height: 18px;
+        color: #999;
+        flex-shrink: 0;
+      }
+
+      /* Accordion Base Styles (from Task 4.8 Option A: Clean Minimal) */
+      .accordion {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .accordion-item {
+        overflow: hidden;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .accordion-item:last-child {
+        border-bottom: none;
+      }
+
+      .accordion-trigger {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.15s ease-out;
+      }
+
+      .accordion-trigger:hover {
+        background: transparent;
+      }
+
+      .accordion-trigger:hover .accordion-title {
+        color: #4f6f52;
+      }
+
+      .accordion-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a1a;
+        flex: 1;
+      }
+
+      .accordion-chevron {
+        width: 20px;
+        height: 20px;
+        color: #737373;
+        transition: transform 0.2s ease-out;
+        flex-shrink: 0;
+      }
+
+      .accordion-chevron svg {
+        width: 100%;
+        height: 100%;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .accordion-item.open .accordion-chevron {
+        transform: rotate(180deg);
+      }
+
+      .accordion-content {
+        padding: 0 0 16px;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #555;
+      }
+
+      .accordion-content.collapsed {
+        display: none;
+      }
+
+      .accordion-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 12px;
+        color: #4f6f52;
+        flex-shrink: 0;
+      }
+
+      .accordion-icon svg {
+        width: 100%;
+        height: 100%;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Option Layouts */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e5e5;
+      }
+
+      .page-frame-content {
+        padding: 16px;
+        max-height: 700px;
+        overflow-y: auto;
+      }
+
+      .page-frame-content.desktop {
+        padding: 32px 48px;
+      }
+
+      .page-frame-content.tablet {
+        padding: 24px 32px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #d1fae5;
+        color: #059669;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 10.3: FAQ Page</h1>
+    <p class="subtitle">
+      Frequently Asked Questions page with grouped accordion sections, search
+      functionality option, and consistent page header pattern. Uses approved
+      Task 4.8 accordion component (Option A: Clean Minimal).
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">APPROVED — OPTION C</span>
+    </div>
+
+    <!-- SVG Icons (from Task 4.8) -->
+    <svg style="display: none">
+      <symbol id="chevron-down" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" />
+      </symbol>
+      <symbol id="truck-icon" viewBox="0 0 24 24">
+        <rect x="1" y="3" width="15" height="13" rx="2" ry="2" />
+        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+        <circle cx="5.5" cy="18.5" r="2.5" />
+        <circle cx="18.5" cy="18.5" r="2.5" />
+      </symbol>
+      <symbol id="refresh-icon" viewBox="0 0 24 24">
+        <polyline points="23 4 23 10 17 10" />
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+      </symbol>
+      <symbol id="package-icon" viewBox="0 0 24 24">
+        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+        />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </symbol>
+      <symbol id="search-icon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>No dedicated FAQ page</li>
+            <li>FAQ content scattered across pages</li>
+            <li>No category grouping</li>
+            <li>No search functionality</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Dedicated FAQ page with consistent header</li>
+            <li>FAQ items grouped by category</li>
+            <li>Approved accordion component (Task 4.8)</li>
+            <li>Category section headings with green accent</li>
+            <li>Optional search bar for filtering</li>
+            <li>Breadcrumb navigation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Grouped Accordion (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Grouped Accordion
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              FAQ items grouped by category with section headings. Each category
+              uses the approved Task 4.8 accordion (Option A: Clean Minimal).
+              Categories: Orders &amp; Shipping, Products, Returns &amp;
+              Refunds.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                  </div>
+                  <h1
+                    class="page-title"
+                    style="font-size: 24px; text-align: left"
+                  >
+                    Frequently Asked Questions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Find answers to common questions about our products, orders,
+                    and policies.
+                  </p>
+                </div>
+
+                <!-- Category: Orders & Shipping -->
+                <div class="faq-category">
+                  <div class="faq-category-title">Orders &amp; Shipping</div>
+                  <div class="accordion">
+                    <div class="accordion-item open">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long does shipping take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content">
+                        Standard shipping takes 5-7 business days. Express
+                        shipping is available for 2-3 business day delivery.
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Do you ship internationally?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How can I track my order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What are the shipping charges?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Category: Products -->
+                <div class="faq-category">
+                  <div class="faq-category-title">Products</div>
+                  <div class="accordion">
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Are your products food safe?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I customize an order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How should I care for my pottery?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Category: Returns & Refunds -->
+                <div class="faq-category">
+                  <div class="faq-category-title">Returns &amp; Refunds</div>
+                  <div class="accordion">
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What is your return policy?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long do refunds take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I exchange an item?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <div style="max-width: 600px">
+                  <!-- Page Header -->
+                  <div class="page-header">
+                    <div class="wf-breadcrumbs">
+                      <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                    </div>
+                    <h1 class="page-title" style="text-align: left">
+                      Frequently Asked Questions
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="page-subtitle">
+                      Find answers to common questions about our products,
+                      orders, and policies.
+                    </p>
+                  </div>
+
+                  <!-- Category: Orders & Shipping -->
+                  <div class="faq-category">
+                    <div class="faq-category-title">
+                      Orders &amp; Shipping
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item open">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long does shipping take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content">
+                          Standard shipping takes 5-7 business days. Express
+                          shipping is available for 2-3 business day delivery.
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Do you ship internationally?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How can I track my order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What are the shipping charges?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Products -->
+                  <div class="faq-category">
+                    <div class="faq-category-title">Products</div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Are your products food safe?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I customize an order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How should I care for my pottery?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Returns & Refunds -->
+                  <div class="faq-category">
+                    <div class="faq-category-title">
+                      Returns &amp; Refunds
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What is your return policy?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long do refunds take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I exchange an item?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <div style="max-width: 720px">
+                  <!-- Page Header -->
+                  <div class="page-header page-header-desktop">
+                    <div class="wf-breadcrumbs">
+                      <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                    </div>
+                    <h1
+                      class="page-title page-title-desktop"
+                      style="text-align: left"
+                    >
+                      Frequently Asked Questions
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="page-subtitle">
+                      Find answers to common questions about our products,
+                      orders, and policies.
+                    </p>
+                  </div>
+
+                  <!-- Category: Orders & Shipping -->
+                  <div class="faq-category">
+                    <div class="faq-category-title" style="font-size: 20px">
+                      Orders &amp; Shipping
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item open">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long does shipping take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content">
+                          Standard shipping takes 5-7 business days. Express
+                          shipping is available for 2-3 business day delivery.
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Do you ship internationally?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How can I track my order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What are the shipping charges?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Products -->
+                  <div class="faq-category">
+                    <div class="faq-category-title" style="font-size: 20px">
+                      Products
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Are your products food safe?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I customize an order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How should I care for my pottery?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Returns & Refunds -->
+                  <div class="faq-category">
+                    <div class="faq-category-title" style="font-size: 20px">
+                      Returns &amp; Refunds
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What is your return policy?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long do refunds take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I exchange an item?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Flat Accordion List -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Flat Accordion List</h3>
+            <p class="wf-option-desc">
+              All FAQ items in a single flat accordion list without category
+              groupings. Same content but no category headers &mdash; simpler
+              and more compact, though less organized.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                  </div>
+                  <h1
+                    class="page-title"
+                    style="font-size: 24px; text-align: left"
+                  >
+                    Frequently Asked Questions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Find answers to common questions about our products, orders,
+                    and policies.
+                  </p>
+                </div>
+
+                <!-- Flat Accordion -->
+                <div class="accordion">
+                  <div class="accordion-item open">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#truck-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >How long does shipping take?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content">
+                      Standard shipping takes 5-7 business days. Express
+                      shipping is available for 2-3 business day delivery.
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#truck-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >Do you ship internationally?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#truck-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >How can I track my order?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#truck-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >What are the shipping charges?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#package-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >Are your products food safe?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#package-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >Can I customize an order?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#package-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >How should I care for my pottery?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#refresh-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >What is your return policy?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#refresh-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >How long do refunds take?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                  <div class="accordion-item">
+                    <button class="accordion-trigger">
+                      <span class="accordion-icon"
+                        ><svg><use href="#refresh-icon" /></svg
+                      ></span>
+                      <span class="accordion-title"
+                        >Can I exchange an item?</span
+                      >
+                      <span class="accordion-chevron"
+                        ><svg><use href="#chevron-down" /></svg
+                      ></span>
+                    </button>
+                    <div class="accordion-content collapsed"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <div style="max-width: 600px">
+                  <!-- Page Header -->
+                  <div class="page-header">
+                    <div class="wf-breadcrumbs">
+                      <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                    </div>
+                    <h1 class="page-title" style="text-align: left">
+                      Frequently Asked Questions
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="page-subtitle">
+                      Find answers to common questions about our products,
+                      orders, and policies.
+                    </p>
+                  </div>
+
+                  <!-- Flat Accordion -->
+                  <div class="accordion">
+                    <div class="accordion-item open">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long does shipping take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content">
+                        Standard shipping takes 5-7 business days. Express
+                        shipping is available for 2-3 business day delivery.
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Do you ship internationally?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How can I track my order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What are the shipping charges?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Are your products food safe?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I customize an order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How should I care for my pottery?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What is your return policy?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long do refunds take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I exchange an item?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <div style="max-width: 720px">
+                  <!-- Page Header -->
+                  <div class="page-header page-header-desktop">
+                    <div class="wf-breadcrumbs">
+                      <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                    </div>
+                    <h1
+                      class="page-title page-title-desktop"
+                      style="text-align: left"
+                    >
+                      Frequently Asked Questions
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="page-subtitle">
+                      Find answers to common questions about our products,
+                      orders, and policies.
+                    </p>
+                  </div>
+
+                  <!-- Flat Accordion -->
+                  <div class="accordion">
+                    <div class="accordion-item open">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long does shipping take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content">
+                        Standard shipping takes 5-7 business days. Express
+                        shipping is available for 2-3 business day delivery.
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Do you ship internationally?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How can I track my order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What are the shipping charges?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Are your products food safe?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I customize an order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How should I care for my pottery?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What is your return policy?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long do refunds take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I exchange an item?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Search + Grouped Accordion -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Search + Grouped Accordion</h3>
+            <p class="wf-option-desc">
+              Same grouped accordion layout as Option A but with a search bar at
+              the top of the content area, below the page header. Allows users
+              to filter FAQ items by keyword.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                  </div>
+                  <h1
+                    class="page-title"
+                    style="font-size: 24px; text-align: left"
+                  >
+                    Frequently Asked Questions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Find answers to common questions about our products, orders,
+                    and policies.
+                  </p>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar">
+                  <span class="search-icon">
+                    <svg
+                      style="
+                        width: 18px;
+                        height: 18px;
+                        stroke: currentColor;
+                        stroke-width: 2;
+                        fill: none;
+                      "
+                    >
+                      <use href="#search-icon" />
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Search frequently asked questions..."
+                    disabled
+                  />
+                </div>
+
+                <!-- Category: Orders & Shipping -->
+                <div class="faq-category">
+                  <div class="faq-category-title">Orders &amp; Shipping</div>
+                  <div class="accordion">
+                    <div class="accordion-item open">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long does shipping take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content">
+                        Standard shipping takes 5-7 business days. Express
+                        shipping is available for 2-3 business day delivery.
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Do you ship internationally?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How can I track my order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#truck-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What are the shipping charges?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Category: Products -->
+                <div class="faq-category">
+                  <div class="faq-category-title">Products</div>
+                  <div class="accordion">
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Are your products food safe?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I customize an order?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#package-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How should I care for my pottery?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Category: Returns & Refunds -->
+                <div class="faq-category">
+                  <div class="faq-category-title">Returns &amp; Refunds</div>
+                  <div class="accordion">
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >What is your return policy?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >How long do refunds take?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                    <div class="accordion-item">
+                      <button class="accordion-trigger">
+                        <span class="accordion-icon"
+                          ><svg><use href="#refresh-icon" /></svg
+                        ></span>
+                        <span class="accordion-title"
+                          >Can I exchange an item?</span
+                        >
+                        <span class="accordion-chevron"
+                          ><svg><use href="#chevron-down" /></svg
+                        ></span>
+                      </button>
+                      <div class="accordion-content collapsed"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <div style="max-width: 600px">
+                  <!-- Page Header -->
+                  <div class="page-header">
+                    <div class="wf-breadcrumbs">
+                      <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                    </div>
+                    <h1 class="page-title" style="text-align: left">
+                      Frequently Asked Questions
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="page-subtitle">
+                      Find answers to common questions about our products,
+                      orders, and policies.
+                    </p>
+                  </div>
+
+                  <!-- Search Bar -->
+                  <div class="search-bar">
+                    <span class="search-icon">
+                      <svg
+                        style="
+                          width: 18px;
+                          height: 18px;
+                          stroke: currentColor;
+                          stroke-width: 2;
+                          fill: none;
+                        "
+                      >
+                        <use href="#search-icon" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search frequently asked questions..."
+                      disabled
+                    />
+                  </div>
+
+                  <!-- Category: Orders & Shipping -->
+                  <div class="faq-category">
+                    <div class="faq-category-title">
+                      Orders &amp; Shipping
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item open">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long does shipping take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content">
+                          Standard shipping takes 5-7 business days. Express
+                          shipping is available for 2-3 business day delivery.
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Do you ship internationally?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How can I track my order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What are the shipping charges?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Products -->
+                  <div class="faq-category">
+                    <div class="faq-category-title">Products</div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Are your products food safe?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I customize an order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How should I care for my pottery?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Returns & Refunds -->
+                  <div class="faq-category">
+                    <div class="faq-category-title">
+                      Returns &amp; Refunds
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What is your return policy?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long do refunds take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I exchange an item?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <div style="max-width: 720px">
+                  <!-- Page Header -->
+                  <div class="page-header page-header-desktop">
+                    <div class="wf-breadcrumbs">
+                      <a href="#">Home</a> / <a href="#">Help</a> / FAQ
+                    </div>
+                    <h1
+                      class="page-title page-title-desktop"
+                      style="text-align: left"
+                    >
+                      Frequently Asked Questions
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="page-subtitle">
+                      Find answers to common questions about our products,
+                      orders, and policies.
+                    </p>
+                  </div>
+
+                  <!-- Search Bar -->
+                  <div class="search-bar">
+                    <span class="search-icon">
+                      <svg
+                        style="
+                          width: 18px;
+                          height: 18px;
+                          stroke: currentColor;
+                          stroke-width: 2;
+                          fill: none;
+                        "
+                      >
+                        <use href="#search-icon" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search frequently asked questions..."
+                      disabled
+                    />
+                  </div>
+
+                  <!-- Category: Orders & Shipping -->
+                  <div class="faq-category">
+                    <div class="faq-category-title" style="font-size: 20px">
+                      Orders &amp; Shipping
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item open">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long does shipping take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content">
+                          Standard shipping takes 5-7 business days. Express
+                          shipping is available for 2-3 business day delivery.
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Do you ship internationally?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How can I track my order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#truck-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What are the shipping charges?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Products -->
+                  <div class="faq-category">
+                    <div class="faq-category-title" style="font-size: 20px">
+                      Products
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Are your products food safe?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I customize an order?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#package-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How should I care for my pottery?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Category: Returns & Refunds -->
+                  <div class="faq-category">
+                    <div class="faq-category-title" style="font-size: 20px">
+                      Returns &amp; Refunds
+                    </div>
+                    <div class="accordion">
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >What is your return policy?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >How long do refunds take?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                      <div class="accordion-item">
+                        <button class="accordion-trigger">
+                          <span class="accordion-icon"
+                            ><svg><use href="#refresh-icon" /></svg
+                          ></span>
+                          <span class="accordion-title"
+                            >Can I exchange an item?</span
+                          >
+                          <span class="accordion-chevron"
+                            ><svg><use href="#chevron-down" /></svg
+                          ></span>
+                        </button>
+                        <div class="accordion-content collapsed"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred FAQ page layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Grouped
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Flat
+            Accordion List</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Search +
+            Grouped Accordion</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Grouped
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Flat
+            Accordion List</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Search +
+            Grouped Accordion</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Grouped
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Flat
+            Accordion List</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Search
+            + Grouped Accordion</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 10.3):</strong><br /><br />
+      &bull; <strong>Page:</strong>
+      src/app/(main)/(with-footer)/help/faq/page.tsx<br />
+      &bull; <strong>Page Header:</strong> Left-aligned on ALL devices,
+      Breadcrumb (Home / Help / FAQ) &rarr; Title &rarr; Green Underline &rarr;
+      Subtitle<br />
+      &bull; <strong>Components:</strong> Uses approved Accordion component from
+      Task 4.8 (Option A: Clean Minimal)<br />
+      &bull; <strong>FAQ Categories:</strong> Section headings with inline green
+      bottom-border accent<br />
+      &bull; <strong>Icons:</strong> truck-icon for shipping, package-icon for
+      products, refresh-icon for returns<br />
+      &bull; <strong>Content Width:</strong> max-w-3xl (768px) for optimal
+      reading<br />
+      &bull; <strong>Mobile Title:</strong> 24px, Tablet: 28px, Desktop:
+      36px<br />
+      &bull; <strong>Search (Option C):</strong> Client-side filtering of FAQ
+      items by question text
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

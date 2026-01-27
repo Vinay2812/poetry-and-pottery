@@ -925,7 +925,7 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 40px">
-      <span class="status-badge">AWAITING APPROVAL</span>
+      <span class="status-badge" style="background: #dcfce7; color: #16a34a">APPROVED — Option A (All Viewports)</span>
     </div>
 
     <!-- SVG Icons -->
@@ -1717,30 +1717,25 @@
                   </div>
                 </div>
 
-                <!-- Sidebar - Ticket View -->
+                <!-- Sidebar - Ticket View (No QR for completed events) -->
                 <div class="detail-sidebar">
                   <div class="ticket-card">
                     <div class="ticket-header">Workshop Ticket</div>
                     <div
-                      style="display: flex; gap: 16px; align-items: flex-start"
+                      class="ticket-info"
+                      style="grid-template-columns: 1fr"
                     >
-                      <div class="ticket-qr">QR Code</div>
-                      <div
-                        class="ticket-info"
-                        style="grid-template-columns: 1fr"
-                      >
-                        <div>
-                          <div class="label">ID</div>
-                          <div class="value">#REG-A7X9K2</div>
-                        </div>
-                        <div>
-                          <div class="label">Date</div>
-                          <div class="value">Feb 15, 2025</div>
-                        </div>
-                        <div>
-                          <div class="label">Time</div>
-                          <div class="value">10 AM - 1 PM</div>
-                        </div>
+                      <div>
+                        <div class="label">ID</div>
+                        <div class="value">#REG-A7X9K2</div>
+                      </div>
+                      <div>
+                        <div class="label">Date</div>
+                        <div class="value">Feb 15, 2025</div>
+                      </div>
+                      <div>
+                        <div class="label">Time</div>
+                        <div class="value">10 AM - 1 PM</div>
                       </div>
                     </div>
                   </div>
@@ -1909,39 +1904,29 @@
                   </div>
                 </div>
 
-                <!-- Sidebar - Ticket -->
+                <!-- Sidebar - Ticket (No QR for completed events) -->
                 <div class="detail-sidebar">
                   <div class="ticket-card">
                     <div class="ticket-header">Workshop Ticket</div>
                     <div
-                      style="display: flex; gap: 20px; align-items: flex-start"
+                      class="ticket-info"
+                      style="grid-template-columns: 1fr"
                     >
-                      <div
-                        class="ticket-qr"
-                        style="width: 100px; height: 100px"
-                      >
-                        QR Code
+                      <div>
+                        <div class="label">Registration ID</div>
+                        <div class="value">#REG-A7X9K2</div>
                       </div>
-                      <div
-                        class="ticket-info"
-                        style="grid-template-columns: 1fr; flex: 1"
-                      >
-                        <div>
-                          <div class="label">Registration ID</div>
-                          <div class="value">#REG-A7X9K2</div>
-                        </div>
-                        <div>
-                          <div class="label">Date</div>
-                          <div class="value">Feb 15, 2025</div>
-                        </div>
-                        <div>
-                          <div class="label">Time</div>
-                          <div class="value">10:00 AM - 1:00 PM</div>
-                        </div>
-                        <div>
-                          <div class="label">Location</div>
-                          <div class="value">Koramangala, Bangalore</div>
-                        </div>
+                      <div>
+                        <div class="label">Date</div>
+                        <div class="value">Feb 15, 2025</div>
+                      </div>
+                      <div>
+                        <div class="label">Time</div>
+                        <div class="value">10:00 AM - 1:00 PM</div>
+                      </div>
+                      <div>
+                        <div class="label">Location</div>
+                        <div class="value">Koramangala, Bangalore</div>
                       </div>
                     </div>
                   </div>
@@ -4921,7 +4906,7 @@
     <!-- APPROVAL SECTION                                              -->
     <!-- ============================================================ -->
     <div class="approval-section">
-      <h2 class="approval-title">Select Your Preferred Option</h2>
+      <h2 class="approval-title" style="color: #16a34a">Approved — Option A (All Viewports)</h2>
       <p
         style="
           font-size: 14px;
@@ -4930,69 +4915,40 @@
           line-height: 1.6;
         "
       >
-        Choose one option per viewport. Each option provides the same 3 event
-        states (Upcoming, Registered, Completed) — you're selecting the
-        <strong>layout style</strong> you prefer.
+        <strong>Option A — Stacked Layout</strong> has been approved for all viewports (Mobile, Tablet, Desktop).
+        Full-width hero on top, content + sidebar below. Classic and clean layout.
       </p>
 
       <div class="approval-grid">
-        <!-- Mobile -->
         <div class="approval-item">
           <div class="approval-viewport-label">Mobile (375 x 812)</div>
           <label>
-            <input type="radio" name="mobile" value="A" />
-            Option A — Stacked Layout
-          </label>
-          <label>
-            <input type="radio" name="mobile" value="B" />
-            Option B — Side-by-Side (stacks on mobile)
-          </label>
-          <label>
-            <input type="radio" name="mobile" value="C" />
-            Option C — Magazine / Editorial
+            <input type="radio" name="mobile" value="A" checked disabled />
+            <strong>Option A — Stacked Layout ✓</strong>
           </label>
         </div>
-
-        <!-- Tablet -->
         <div class="approval-item">
           <div class="approval-viewport-label">Tablet (768 x 1024)</div>
           <label>
-            <input type="radio" name="tablet" value="A" />
-            Option A — Stacked Layout
-          </label>
-          <label>
-            <input type="radio" name="tablet" value="B" />
-            Option B — Side-by-Side
-          </label>
-          <label>
-            <input type="radio" name="tablet" value="C" />
-            Option C — Magazine / Editorial
+            <input type="radio" name="tablet" value="A" checked disabled />
+            <strong>Option A — Stacked Layout ✓</strong>
           </label>
         </div>
-
-        <!-- Desktop -->
         <div class="approval-item">
           <div class="approval-viewport-label">Desktop (1440 x 900)</div>
           <label>
-            <input type="radio" name="desktop" value="A" />
-            Option A — Stacked Layout
-          </label>
-          <label>
-            <input type="radio" name="desktop" value="B" />
-            Option B — Side-by-Side
-          </label>
-          <label>
-            <input type="radio" name="desktop" value="C" />
-            Option C — Magazine / Editorial
+            <input type="radio" name="desktop" value="A" checked disabled />
+            <strong>Option A — Stacked Layout ✓</strong>
           </label>
         </div>
       </div>
 
       <div class="notes-area">
-        <div class="approval-viewport-label">Notes / Feedback</div>
-        <textarea
-          placeholder="Any specific feedback on these options? Preferences for specific states, layout adjustments, etc."
-        ></textarea>
+        <div class="approval-viewport-label">Approval Notes</div>
+        <p style="font-size: 13px; color: #666; line-height: 1.6; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+          For completed events, QR code is removed from the registered/ticket view.
+          Registration status is shown as approved without QR code.
+        </p>
       </div>
     </div>
 
@@ -5004,17 +4960,13 @@
       - <strong>Upcoming:</strong> Register CTA, pricing, spots available, full
       event info<br />
       - <strong>Registered:</strong> Registration status card
-      (Confirmed/Pending), ticket with QR code, Cancel Registration option<br />
+      (Confirmed/Pending), ticket info (no QR code), Cancel Registration option<br />
       - <strong>Completed:</strong> Gallery with thumbnails, rating summary,
       reviews section, Write Review CTA<br />
       <br />
-      <strong>3 Layout Options:</strong><br />
-      - <strong>Option A (Stacked):</strong> Full-width hero on top, content +
-      sidebar below. Classic and clean<br />
-      - <strong>Option B (Side-by-Side):</strong> Image left, content right
-      (50/50). Gallery-friendly, visual<br />
-      - <strong>Option C (Magazine):</strong> Full-bleed hero with floating card
-      overlay. Premium editorial feel<br />
+      <strong>Selected Layout: Option A (Stacked)</strong><br />
+      - Full-width hero on top, content + sidebar below. Classic and clean<br />
+      - Approved for all viewports (Mobile, Tablet, Desktop)<br />
       <br />
       <strong>Additional States:</strong> Sold Out (disabled CTA) and Cancelled
       (cancellation notice + redirect) share the selected layout<br />

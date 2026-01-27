@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 10.7: Care Instructions Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+
+      .page-header-desktop {
+        padding-bottom: 24px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .page-title-desktop {
+        font-size: 36px;
+      }
+
+      .title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-bottom: 12px;
+      }
+
+      .page-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 500px;
+      }
+
+      /* Care Cards Grid */
+      .care-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .care-card {
+        background: #fafaf9;
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .care-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+
+      .care-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+      }
+
+      .care-text {
+        font-size: 12px;
+        color: #555;
+        line-height: 1.5;
+      }
+
+      /* Pro Tips Callout */
+      .pro-tips {
+        background: #f5f0e8;
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .pro-tips-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .pro-tips-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .pro-tips-list li {
+        padding: 6px 0 6px 20px;
+        font-size: 13px;
+        color: #555;
+        line-height: 1.5;
+        position: relative;
+      }
+
+      .pro-tips-list li::before {
+        content: "\2713";
+        color: #4f6f52;
+        font-weight: 700;
+        position: absolute;
+        left: 0;
+        top: 6px;
+      }
+
+      /* Do/Don't Grid (Option B) */
+      .dos-donts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .do-column,
+      .dont-column {
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .do-column {
+        background: #e8ece8;
+      }
+
+      .dont-column {
+        background: #fef2f2;
+      }
+
+      .column-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .do-column .column-title {
+        color: #4f6f52;
+      }
+
+      .dont-column .column-title {
+        color: #dc2626;
+      }
+
+      .column-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .column-list li {
+        padding: 6px 0;
+        font-size: 13px;
+        line-height: 1.5;
+        position: relative;
+        padding-left: 20px;
+      }
+
+      .do-column .column-list li::before {
+        content: "\2713";
+        color: #4f6f52;
+        font-weight: 700;
+        position: absolute;
+        left: 0;
+      }
+
+      .dont-column .column-list li::before {
+        content: "\2717";
+        color: #dc2626;
+        font-weight: 700;
+        position: absolute;
+        left: 0;
+      }
+
+      .do-column .column-list li {
+        color: #3d5640;
+      }
+
+      .dont-column .column-list li {
+        color: #991b1b;
+      }
+
+      /* Illustrated Cards (Option C) */
+      .illustrated-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .illustrated-card {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        background: #fafaf9;
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .illustrated-card-icon {
+        font-size: 40px;
+        flex-shrink: 0;
+      }
+
+      .illustrated-card-content {
+        flex: 1;
+      }
+
+      .illustrated-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .illustrated-card-text {
+        font-size: 13px;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      /* Option Layouts */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e5e5;
+      }
+
+      .page-frame-content {
+        padding: 16px;
+        max-height: 600px;
+        overflow-y: auto;
+      }
+
+      .page-frame-content.desktop {
+        padding: 32px 48px;
+      }
+
+      .page-frame-content.tablet {
+        padding: 24px 32px;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #d1fae5;
+        color: #059669;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 10.7: Care Instructions Page</h1>
+    <p class="subtitle">
+      Informational page with care instructions for handcrafted pottery. Icon
+      cards grid, do's &amp; don'ts layout, and illustrated guide cards with pro
+      tips callout.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">APPROVED — OPTION C</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>No dedicated care instructions page</li>
+            <li>No structured care content</li>
+            <li>Missing visual care guidance</li>
+            <li>No pro tips or best practices</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Icon cards grid with care categories</li>
+            <li>Do's and Don'ts comparison layout</li>
+            <li>Illustrated guide cards with details</li>
+            <li>Pro Tips callout box</li>
+            <li>Consistent page header pattern</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Icon Cards Grid + Pro Tips -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Icon Cards Grid + Pro Tips
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              2x2 grid of care instruction cards with emoji icons, each
+              summarizing a key care topic. Followed by a warm "Pro Tips" callout
+              box with additional best practices.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title" style="font-size: 24px">
+                    Care Instructions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come.
+                  </p>
+                </div>
+
+                <!-- Care Cards Grid -->
+                <div class="care-grid">
+                  <div class="care-card">
+                    <div class="care-icon">&#129531;</div>
+                    <h3 class="care-title">Hand Wash Only</h3>
+                    <p class="care-text">
+                      Use mild soap and warm water. Avoid dishwasher for glazed
+                      pieces.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#127777;&#65039;</div>
+                    <h3 class="care-title">Avoid Extreme Heat</h3>
+                    <p class="care-text">
+                      Don't expose to sudden temperature changes. Let cool
+                      naturally.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#10052;&#65039;</div>
+                    <h3 class="care-title">No Freezer</h3>
+                    <p class="care-text">
+                      Do not place pottery in the freezer. Moisture can cause
+                      cracking.
+                    </p>
+                  </div>
+                  <div class="care-card">
+                    <div class="care-icon">&#9832;</div>
+                    <h3 class="care-title">Microwave Safe</h3>
+                    <p class="care-text">
+                      Check the label. Most of our pieces are microwave safe for
+                      reheating.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips">
+                  <h3 class="pro-tips-title">&#128161; Pro Tips</h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title">Care Instructions</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle" style="max-width: 600px">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come with these simple care guidelines.
+                  </p>
+                </div>
+
+                <!-- Care Cards Grid -->
+                <div class="care-grid" style="gap: 16px">
+                  <div class="care-card" style="padding: 24px">
+                    <div class="care-icon">&#129531;</div>
+                    <h3 class="care-title">Hand Wash Only</h3>
+                    <p class="care-text">
+                      Use mild soap and warm water. Avoid dishwasher for glazed
+                      pieces.
+                    </p>
+                  </div>
+                  <div class="care-card" style="padding: 24px">
+                    <div class="care-icon">&#127777;&#65039;</div>
+                    <h3 class="care-title">Avoid Extreme Heat</h3>
+                    <p class="care-text">
+                      Don't expose to sudden temperature changes. Let cool
+                      naturally.
+                    </p>
+                  </div>
+                  <div class="care-card" style="padding: 24px">
+                    <div class="care-icon">&#10052;&#65039;</div>
+                    <h3 class="care-title">No Freezer</h3>
+                    <p class="care-text">
+                      Do not place pottery in the freezer. Moisture can cause
+                      cracking.
+                    </p>
+                  </div>
+                  <div class="care-card" style="padding: 24px">
+                    <div class="care-icon">&#9832;</div>
+                    <h3 class="care-title">Microwave Safe</h3>
+                    <p class="care-text">
+                      Check the label. Most of our pieces are microwave safe for
+                      reheating.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips" style="padding: 24px">
+                  <h3 class="pro-tips-title">&#128161; Pro Tips</h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                    <li>
+                      Keep pottery away from direct sunlight to preserve glaze
+                      color
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title page-title-desktop">
+                    Care Instructions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle" style="max-width: 720px">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come. Follow these simple guidelines to ensure your pieces
+                    last a lifetime.
+                  </p>
+                </div>
+
+                <!-- Care Cards Grid -->
+                <div class="care-grid" style="gap: 20px; margin-bottom: 32px">
+                  <div class="care-card" style="padding: 28px">
+                    <div class="care-icon" style="font-size: 36px">
+                      &#129531;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      Hand Wash Only
+                    </h3>
+                    <p class="care-text" style="font-size: 13px">
+                      Use mild soap and warm water. Avoid dishwasher for glazed
+                      pieces.
+                    </p>
+                  </div>
+                  <div class="care-card" style="padding: 28px">
+                    <div class="care-icon" style="font-size: 36px">
+                      &#127777;&#65039;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      Avoid Extreme Heat
+                    </h3>
+                    <p class="care-text" style="font-size: 13px">
+                      Don't expose to sudden temperature changes. Let cool
+                      naturally.
+                    </p>
+                  </div>
+                  <div class="care-card" style="padding: 28px">
+                    <div class="care-icon" style="font-size: 36px">
+                      &#10052;&#65039;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      No Freezer
+                    </h3>
+                    <p class="care-text" style="font-size: 13px">
+                      Do not place pottery in the freezer. Moisture can cause
+                      cracking.
+                    </p>
+                  </div>
+                  <div class="care-card" style="padding: 28px">
+                    <div class="care-icon" style="font-size: 36px">
+                      &#9832;
+                    </div>
+                    <h3 class="care-title" style="font-size: 15px">
+                      Microwave Safe
+                    </h3>
+                    <p class="care-text" style="font-size: 13px">
+                      Check the label. Most of our pieces are microwave safe for
+                      reheating.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips" style="padding: 28px">
+                  <h3 class="pro-tips-title" style="font-size: 18px">
+                    &#128161; Pro Tips
+                  </h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                    <li>
+                      Keep pottery away from direct sunlight to preserve glaze
+                      color
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Do's & Don'ts Grid -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Do's &amp; Don'ts Grid</h3>
+            <p class="wf-option-desc">
+              Two-column layout with a green "Do" column and a red "Don't"
+              column, clearly contrasting good and bad practices. Followed by a
+              Pro Tips callout box.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title" style="font-size: 24px">
+                    Care Instructions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come.
+                  </p>
+                </div>
+
+                <!-- Do's & Don'ts - Stacked on Mobile -->
+                <div
+                  class="dos-donts"
+                  style="grid-template-columns: 1fr; gap: 12px"
+                >
+                  <div class="do-column">
+                    <h3 class="column-title">&#9989; Do</h3>
+                    <ul class="column-list">
+                      <li>Hand wash with mild soap</li>
+                      <li>Use soft sponge or cloth</li>
+                      <li>Store with felt between pieces</li>
+                      <li>Let cool before washing</li>
+                      <li>Check microwave-safe label</li>
+                    </ul>
+                  </div>
+                  <div class="dont-column">
+                    <h3 class="column-title">&#10060; Don't</h3>
+                    <ul class="column-list">
+                      <li>Don't use dishwasher</li>
+                      <li>Don't expose to sudden temperature changes</li>
+                      <li>Don't use abrasive scrubbers</li>
+                      <li>Don't place in freezer</li>
+                      <li>Don't stack without protection</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips">
+                  <h3 class="pro-tips-title">&#128161; Pro Tips</h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title">Care Instructions</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle" style="max-width: 600px">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come with these simple care guidelines.
+                  </p>
+                </div>
+
+                <!-- Do's & Don'ts - Side by Side -->
+                <div class="dos-donts">
+                  <div class="do-column" style="padding: 24px">
+                    <h3 class="column-title">&#9989; Do</h3>
+                    <ul class="column-list">
+                      <li>Hand wash with mild soap</li>
+                      <li>Use soft sponge or cloth</li>
+                      <li>Store with felt between pieces</li>
+                      <li>Let cool before washing</li>
+                      <li>Check microwave-safe label</li>
+                    </ul>
+                  </div>
+                  <div class="dont-column" style="padding: 24px">
+                    <h3 class="column-title">&#10060; Don't</h3>
+                    <ul class="column-list">
+                      <li>Don't use dishwasher</li>
+                      <li>Don't expose to sudden temperature changes</li>
+                      <li>Don't use abrasive scrubbers</li>
+                      <li>Don't place in freezer</li>
+                      <li>Don't stack without protection</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips" style="padding: 24px">
+                  <h3 class="pro-tips-title">&#128161; Pro Tips</h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                    <li>
+                      Keep pottery away from direct sunlight to preserve glaze
+                      color
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title page-title-desktop">
+                    Care Instructions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle" style="max-width: 720px">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come. Follow these simple guidelines to ensure your pieces
+                    last a lifetime.
+                  </p>
+                </div>
+
+                <!-- Do's & Don'ts - Side by Side -->
+                <div class="dos-donts" style="gap: 24px; margin-bottom: 32px">
+                  <div class="do-column" style="padding: 28px">
+                    <h3 class="column-title" style="font-size: 18px">
+                      &#9989; Do
+                    </h3>
+                    <ul class="column-list">
+                      <li>Hand wash with mild soap</li>
+                      <li>Use soft sponge or cloth</li>
+                      <li>Store with felt between pieces</li>
+                      <li>Let cool before washing</li>
+                      <li>Check microwave-safe label</li>
+                    </ul>
+                  </div>
+                  <div class="dont-column" style="padding: 28px">
+                    <h3 class="column-title" style="font-size: 18px">
+                      &#10060; Don't
+                    </h3>
+                    <ul class="column-list">
+                      <li>Don't use dishwasher</li>
+                      <li>Don't expose to sudden temperature changes</li>
+                      <li>Don't use abrasive scrubbers</li>
+                      <li>Don't place in freezer</li>
+                      <li>Don't stack without protection</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips" style="padding: 28px">
+                  <h3 class="pro-tips-title" style="font-size: 18px">
+                    &#128161; Pro Tips
+                  </h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                    <li>
+                      Keep pottery away from direct sunlight to preserve glaze
+                      color
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Illustrated Guide Cards -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Illustrated Guide Cards</h3>
+            <p class="wf-option-desc">
+              Horizontal cards with a large emoji icon on the left and detailed
+              care text on the right. More editorial, guide-style layout.
+              Followed by a Pro Tips callout.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title" style="font-size: 24px">
+                    Care Instructions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come.
+                  </p>
+                </div>
+
+                <!-- Illustrated Cards -->
+                <div class="illustrated-grid">
+                  <div class="illustrated-card">
+                    <div class="illustrated-card-icon">&#129531;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">
+                        Washing Your Pottery
+                      </h3>
+                      <p class="illustrated-card-text">
+                        Always hand wash your pottery with mild soap and warm
+                        water. Avoid placing handcrafted pieces in the
+                        dishwasher as the intense heat and harsh detergents can
+                        damage the glaze over time.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card">
+                    <div class="illustrated-card-icon">&#127777;&#65039;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">Temperature Care</h3>
+                      <p class="illustrated-card-text">
+                        Avoid exposing your pottery to sudden temperature
+                        changes. Don't pour boiling water into a cold pot, and
+                        let heated pieces cool naturally before washing.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card">
+                    <div class="illustrated-card-icon">&#10052;&#65039;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">Storage Tips</h3>
+                      <p class="illustrated-card-text">
+                        Store your pottery in a dry place. When stacking pieces,
+                        place felt or soft cloth between them to prevent
+                        scratching. Avoid storing in freezing conditions.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card">
+                    <div class="illustrated-card-icon">&#9832;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">
+                        Microwave &amp; Oven Use
+                      </h3>
+                      <p class="illustrated-card-text">
+                        Most of our pieces are microwave safe for reheating
+                        &mdash; check the label on the bottom of each piece. Not
+                        all pieces are oven safe; look for the oven-safe mark.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips">
+                  <h3 class="pro-tips-title">&#128161; Pro Tips</h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title">Care Instructions</h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle" style="max-width: 600px">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come with these simple care guidelines.
+                  </p>
+                </div>
+
+                <!-- Illustrated Cards -->
+                <div class="illustrated-grid">
+                  <div class="illustrated-card" style="padding: 24px">
+                    <div class="illustrated-card-icon">&#129531;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">
+                        Washing Your Pottery
+                      </h3>
+                      <p class="illustrated-card-text">
+                        Always hand wash your pottery with mild soap and warm
+                        water. Avoid placing handcrafted pieces in the
+                        dishwasher as the intense heat and harsh detergents can
+                        damage the glaze over time.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card" style="padding: 24px">
+                    <div class="illustrated-card-icon">&#127777;&#65039;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">Temperature Care</h3>
+                      <p class="illustrated-card-text">
+                        Avoid exposing your pottery to sudden temperature
+                        changes. Don't pour boiling water into a cold pot, and
+                        let heated pieces cool naturally before washing.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card" style="padding: 24px">
+                    <div class="illustrated-card-icon">&#10052;&#65039;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">Storage Tips</h3>
+                      <p class="illustrated-card-text">
+                        Store your pottery in a dry place. When stacking pieces,
+                        place felt or soft cloth between them to prevent
+                        scratching. Avoid storing in freezing conditions.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card" style="padding: 24px">
+                    <div class="illustrated-card-icon">&#9832;</div>
+                    <div class="illustrated-card-content">
+                      <h3 class="illustrated-card-title">
+                        Microwave &amp; Oven Use
+                      </h3>
+                      <p class="illustrated-card-text">
+                        Most of our pieces are microwave safe for reheating
+                        &mdash; check the label on the bottom of each piece. Not
+                        all pieces are oven safe; look for the oven-safe mark.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips" style="padding: 24px">
+                  <h3 class="pro-tips-title">&#128161; Pro Tips</h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                    <li>
+                      Keep pottery away from direct sunlight to preserve glaze
+                      color
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Care
+                  </div>
+                  <h1 class="page-title page-title-desktop">
+                    Care Instructions
+                  </h1>
+                  <div class="title-underline"></div>
+                  <p class="page-subtitle" style="max-width: 720px">
+                    Keep your handcrafted pottery looking beautiful for years to
+                    come. Follow these simple guidelines to ensure your pieces
+                    last a lifetime.
+                  </p>
+                </div>
+
+                <!-- Illustrated Cards -->
+                <div
+                  class="illustrated-grid"
+                  style="gap: 20px; margin-bottom: 32px"
+                >
+                  <div class="illustrated-card" style="padding: 28px">
+                    <div class="illustrated-card-icon" style="font-size: 48px">
+                      &#129531;
+                    </div>
+                    <div class="illustrated-card-content">
+                      <h3
+                        class="illustrated-card-title"
+                        style="font-size: 17px; margin-bottom: 6px"
+                      >
+                        Washing Your Pottery
+                      </h3>
+                      <p class="illustrated-card-text" style="font-size: 14px">
+                        Always hand wash your pottery with mild soap and warm
+                        water. Avoid placing handcrafted pieces in the
+                        dishwasher as the intense heat and harsh detergents can
+                        damage the glaze over time.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card" style="padding: 28px">
+                    <div class="illustrated-card-icon" style="font-size: 48px">
+                      &#127777;&#65039;
+                    </div>
+                    <div class="illustrated-card-content">
+                      <h3
+                        class="illustrated-card-title"
+                        style="font-size: 17px; margin-bottom: 6px"
+                      >
+                        Temperature Care
+                      </h3>
+                      <p class="illustrated-card-text" style="font-size: 14px">
+                        Avoid exposing your pottery to sudden temperature
+                        changes. Don't pour boiling water into a cold pot, and
+                        let heated pieces cool naturally before washing.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card" style="padding: 28px">
+                    <div class="illustrated-card-icon" style="font-size: 48px">
+                      &#10052;&#65039;
+                    </div>
+                    <div class="illustrated-card-content">
+                      <h3
+                        class="illustrated-card-title"
+                        style="font-size: 17px; margin-bottom: 6px"
+                      >
+                        Storage Tips
+                      </h3>
+                      <p class="illustrated-card-text" style="font-size: 14px">
+                        Store your pottery in a dry place. When stacking pieces,
+                        place felt or soft cloth between them to prevent
+                        scratching. Avoid storing in freezing conditions.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="illustrated-card" style="padding: 28px">
+                    <div class="illustrated-card-icon" style="font-size: 48px">
+                      &#9832;
+                    </div>
+                    <div class="illustrated-card-content">
+                      <h3
+                        class="illustrated-card-title"
+                        style="font-size: 17px; margin-bottom: 6px"
+                      >
+                        Microwave &amp; Oven Use
+                      </h3>
+                      <p class="illustrated-card-text" style="font-size: 14px">
+                        Most of our pieces are microwave safe for reheating
+                        &mdash; check the label on the bottom of each piece. Not
+                        all pieces are oven safe; look for the oven-safe mark.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="pro-tips" style="padding: 28px">
+                  <h3 class="pro-tips-title" style="font-size: 18px">
+                    &#128161; Pro Tips
+                  </h3>
+                  <ul class="pro-tips-list">
+                    <li>
+                      Store pottery with felt or cloth between stacked pieces
+                    </li>
+                    <li>Use a soft sponge &mdash; avoid abrasive scrubbers</li>
+                    <li>
+                      Natural variations in glaze are part of the handcrafted
+                      charm
+                    </li>
+                    <li>
+                      For stubborn stains, soak in warm water with baking soda
+                    </li>
+                    <li>
+                      Keep pottery away from direct sunlight to preserve glaze
+                      color
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred Care Instructions page layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Icon
+            Cards Grid + Pro Tips</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Do's
+            &amp; Don'ts Grid</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            Illustrated Guide Cards</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Icon
+            Cards Grid + Pro Tips</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Do's
+            &amp; Don'ts Grid</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            Illustrated Guide Cards</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Icon
+            Cards Grid + Pro Tips</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Do's
+            &amp; Don'ts Grid</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            Illustrated Guide Cards</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 10.7):</strong><br /><br />
+      &bull; <strong>Page:</strong>
+      src/app/(main)/(with-footer)/help/care/page.tsx<br />
+      &bull; <strong>Page Header:</strong> Left-aligned on ALL devices &mdash;
+      Breadcrumb &rarr; Title &rarr; Green Underline<br />
+      &bull; <strong>Components:</strong> CareCard, ProTips callout, DosDonts
+      (Option B), IllustratedCard (Option C)<br />
+      &bull; <strong>Content Width:</strong> max-w-3xl (768px)<br />
+      &bull; <strong>Care Grid:</strong> 2x2 grid on all viewports, larger
+      padding on desktop<br />
+      &bull; <strong>Do's &amp; Don'ts:</strong> Stacked on mobile, side-by-side
+      on tablet/desktop<br />
+      &bull; <strong>Illustrated Cards:</strong> Horizontal layout with icon +
+      text on all viewports<br />
+      &bull; <strong>Pro Tips:</strong> Cream background (#f5f0e8) callout box,
+      checkmark list items
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

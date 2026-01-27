@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Task 10.6: Terms of Service Page - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Page Header */
+      .page-header {
+        margin-bottom: 32px;
+      }
+
+      .page-header-desktop {
+        padding-bottom: 24px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .page-title-desktop {
+        font-size: 36px;
+      }
+
+      .title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-bottom: 12px;
+      }
+
+      .page-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 500px;
+      }
+
+      /* Last Updated */
+      .last-updated {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 24px;
+      }
+
+      /* Prose Sections */
+      .prose-section {
+        margin-bottom: 28px;
+      }
+
+      .prose-heading {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .prose-text {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.8;
+      }
+
+      .prose-list {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0;
+      }
+
+      .prose-list li {
+        padding: 6px 0 6px 20px;
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        position: relative;
+      }
+
+      .prose-list li::before {
+        content: "\2022";
+        color: #4f6f52;
+        font-size: 16px;
+        position: absolute;
+        left: 0;
+        top: 6px;
+      }
+
+      /* Numbered Sections (Option B) */
+      .numbered-section {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+
+      .section-number {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #e8ece8;
+        color: #4f6f52;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      .section-content {
+        flex: 1;
+      }
+
+      /* Options Container */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e5e5;
+      }
+
+      .page-frame-content {
+        padding: 16px;
+        max-height: 600px;
+        overflow-y: auto;
+      }
+
+      .page-frame-content.desktop {
+        padding: 32px 48px;
+      }
+
+      .page-frame-content.tablet {
+        padding: 24px 32px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #d1fae5;
+        color: #059669;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 10.6: Terms of Service Page</h1>
+    <p class="subtitle">
+      Legal terms page with clean prose sections, bullet lists for payment
+      methods, and a numbered-section variant for a structured legal-document
+      feel.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">APPROVED — OPTION A</span>
+    </div>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>No dedicated Terms page</li>
+            <li>Missing legal content structure</li>
+            <li>No breadcrumb navigation</li>
+            <li>No consistent page header</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Clean prose layout with section headings</li>
+            <li>Bullet lists for payment methods</li>
+            <li>Last updated date at top</li>
+            <li>Consistent page header pattern</li>
+            <li>Numbered section variant for legal structure</li>
+            <li>Max-width constrained for readability</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Clean Prose -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Clean Prose
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Simple prose pattern shared with Privacy Policy. Section headings
+              with body text and bullet lists. "Last updated" date at top.
+              Content constrained to max-w-3xl for readability.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Terms
+                  </div>
+                  <h1 class="page-title" style="font-size: 24px">
+                    Terms of Service
+                  </h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <div class="last-updated">Last updated: January 15, 2026</div>
+
+                <!-- Section: General Terms -->
+                <div class="prose-section">
+                  <h2 class="prose-heading" style="font-size: 16px">
+                    General Terms
+                  </h2>
+                  <p class="prose-text">
+                    By accessing and using Poetry &amp; Pottery ("the Site"), you
+                    agree to be bound by these terms and conditions. We reserve
+                    the right to update these terms at any time. Continued use of
+                    the Site after changes constitutes acceptance.
+                  </p>
+                </div>
+
+                <!-- Section: Orders & Payment -->
+                <div class="prose-section">
+                  <h2 class="prose-heading" style="font-size: 16px">
+                    Orders &amp; Payment
+                  </h2>
+                  <p class="prose-text">
+                    All orders are subject to availability and confirmation.
+                    Prices are listed in Indian Rupees (INR) and include
+                    applicable taxes. We reserve the right to cancel orders due
+                    to pricing errors or stock issues.
+                  </p>
+                </div>
+
+                <!-- Section: Returns & Refunds -->
+                <div class="prose-section">
+                  <h2 class="prose-heading" style="font-size: 16px">
+                    Returns &amp; Refunds
+                  </h2>
+                  <p class="prose-text">
+                    You may return undamaged items within 7 days of delivery for
+                    a full refund to your original payment method. Items must be
+                    in original packaging. Handcrafted items with natural
+                    variations in color, texture, or glaze are characteristic of
+                    the craft and are not considered defective.
+                  </p>
+                </div>
+
+                <!-- Section: Workshop Registrations -->
+                <div class="prose-section">
+                  <h2 class="prose-heading" style="font-size: 16px">
+                    Workshop Registrations
+                  </h2>
+                  <p class="prose-text">
+                    Workshop fees are non-refundable within 48 hours of the
+                    scheduled event. Cancellations made more than 48 hours in
+                    advance are eligible for a full refund. Date transfers may be
+                    available subject to seat availability.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Terms of
+                    Service
+                  </div>
+                  <h1 class="page-title">Terms of Service</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <div style="max-width: 600px">
+                  <div class="last-updated">
+                    Last updated: January 15, 2026
+                  </div>
+
+                  <!-- Section: General Terms -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading">General Terms</h2>
+                    <p class="prose-text">
+                      By accessing and using Poetry &amp; Pottery ("the Site"),
+                      you agree to be bound by these terms and conditions. We
+                      reserve the right to update these terms at any time.
+                      Continued use of the Site after changes constitutes
+                      acceptance.
+                    </p>
+                  </div>
+
+                  <!-- Section: Orders & Payment -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading">Orders &amp; Payment</h2>
+                    <p class="prose-text">
+                      All orders are subject to availability and confirmation.
+                      Prices are listed in Indian Rupees (INR) and include
+                      applicable taxes. We reserve the right to cancel orders due
+                      to pricing errors or stock issues. Payment methods
+                      accepted:
+                    </p>
+                    <ul class="prose-list">
+                      <li>Credit/Debit Cards (Visa, Mastercard, RuPay)</li>
+                      <li>UPI Payments</li>
+                      <li>Net Banking</li>
+                      <li>Wallet Payments</li>
+                    </ul>
+                  </div>
+
+                  <!-- Section: Returns & Refunds -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading">Returns &amp; Refunds</h2>
+                    <p class="prose-text">
+                      You may return undamaged items within 7 days of delivery
+                      for a full refund to your original payment method. Items
+                      must be in original packaging. Handcrafted items with
+                      natural variations in color, texture, or glaze are
+                      characteristic of the craft and are not considered
+                      defective.
+                    </p>
+                  </div>
+
+                  <!-- Section: Workshop Registrations -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading">Workshop Registrations</h2>
+                    <p class="prose-text">
+                      Workshop fees are non-refundable within 48 hours of the
+                      scheduled event. Cancellations made more than 48 hours in
+                      advance are eligible for a full refund. Date transfers may
+                      be available subject to seat availability.
+                    </p>
+                  </div>
+
+                  <!-- Section: Intellectual Property -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading">Intellectual Property</h2>
+                    <p class="prose-text">
+                      All content, product designs, photographs, and other
+                      materials on this site are the intellectual property of
+                      Poetry &amp; Pottery and may not be reproduced,
+                      distributed, or used without prior written permission.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Terms of
+                    Service
+                  </div>
+                  <h1 class="page-title page-title-desktop">
+                    Terms of Service
+                  </h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <div style="max-width: 720px">
+                  <div class="last-updated" style="margin-bottom: 32px">
+                    Last updated: January 15, 2026
+                  </div>
+
+                  <!-- Section: General Terms -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading" style="font-size: 20px">
+                      General Terms
+                    </h2>
+                    <p class="prose-text">
+                      By accessing and using Poetry &amp; Pottery ("the Site"),
+                      you agree to be bound by these terms and conditions. We
+                      reserve the right to update these terms at any time.
+                      Continued use of the Site after changes constitutes
+                      acceptance.
+                    </p>
+                  </div>
+
+                  <!-- Section: Orders & Payment -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading" style="font-size: 20px">
+                      Orders &amp; Payment
+                    </h2>
+                    <p class="prose-text">
+                      All orders are subject to availability and confirmation.
+                      Prices are listed in Indian Rupees (INR) and include
+                      applicable taxes. We reserve the right to cancel orders due
+                      to pricing errors or stock issues. Payment methods
+                      accepted:
+                    </p>
+                    <ul class="prose-list">
+                      <li>Credit/Debit Cards (Visa, Mastercard, RuPay)</li>
+                      <li>UPI Payments</li>
+                      <li>Net Banking</li>
+                      <li>Wallet Payments</li>
+                    </ul>
+                  </div>
+
+                  <!-- Section: Returns & Refunds -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading" style="font-size: 20px">
+                      Returns &amp; Refunds
+                    </h2>
+                    <p class="prose-text">
+                      You may return undamaged items within 7 days of delivery
+                      for a full refund to your original payment method. Items
+                      must be in original packaging. Handcrafted items with
+                      natural variations in color, texture, or glaze are
+                      characteristic of the craft and are not considered
+                      defective.
+                    </p>
+                  </div>
+
+                  <!-- Section: Workshop Registrations -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading" style="font-size: 20px">
+                      Workshop Registrations
+                    </h2>
+                    <p class="prose-text">
+                      Workshop fees are non-refundable within 48 hours of the
+                      scheduled event. Cancellations made more than 48 hours in
+                      advance are eligible for a full refund. Date transfers may
+                      be available subject to seat availability.
+                    </p>
+                  </div>
+
+                  <!-- Section: Intellectual Property -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading" style="font-size: 20px">
+                      Intellectual Property
+                    </h2>
+                    <p class="prose-text">
+                      All content, product designs, photographs, and other
+                      materials on this site are the intellectual property of
+                      Poetry &amp; Pottery and may not be reproduced,
+                      distributed, or used without prior written permission.
+                    </p>
+                  </div>
+
+                  <!-- Section: Limitation of Liability -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading" style="font-size: 20px">
+                      Limitation of Liability
+                    </h2>
+                    <p class="prose-text">
+                      Poetry &amp; Pottery shall not be liable for any indirect,
+                      incidental, or consequential damages arising from the use
+                      of our products or services. Our total liability is limited
+                      to the amount paid for the specific product or service in
+                      question.
+                    </p>
+                  </div>
+
+                  <!-- Section: Contact -->
+                  <div class="prose-section">
+                    <h2 class="prose-heading" style="font-size: 20px">
+                      Contact
+                    </h2>
+                    <p class="prose-text">
+                      For questions about these terms, please contact us at
+                      legal@poetryandpottery.com or through our contact page.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Numbered Sections -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Numbered Sections</h3>
+            <p class="wf-option-desc">
+              Each section has a numbered circle on the left with content on the
+              right. Gives a more structured, legal-document feel with clear
+              section numbering.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Terms
+                  </div>
+                  <h1 class="page-title" style="font-size: 24px">
+                    Terms of Service
+                  </h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <div class="last-updated">Last updated: January 15, 2026</div>
+
+                <!-- Section 1: General Terms -->
+                <div class="numbered-section">
+                  <div
+                    class="section-number"
+                    style="width: 30px; height: 30px; font-size: 14px"
+                  >
+                    1
+                  </div>
+                  <div class="section-content">
+                    <h2 class="prose-heading" style="font-size: 16px">
+                      General Terms
+                    </h2>
+                    <p class="prose-text">
+                      By accessing and using Poetry &amp; Pottery ("the Site"),
+                      you agree to be bound by these terms and conditions. We
+                      reserve the right to update these terms at any time.
+                      Continued use of the Site after changes constitutes
+                      acceptance.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Section 2: Orders & Payment -->
+                <div class="numbered-section">
+                  <div
+                    class="section-number"
+                    style="width: 30px; height: 30px; font-size: 14px"
+                  >
+                    2
+                  </div>
+                  <div class="section-content">
+                    <h2 class="prose-heading" style="font-size: 16px">
+                      Orders &amp; Payment
+                    </h2>
+                    <p class="prose-text">
+                      All orders are subject to availability and confirmation.
+                      Prices are listed in Indian Rupees (INR) and include
+                      applicable taxes. We reserve the right to cancel orders due
+                      to pricing errors or stock issues.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Section 3: Returns & Refunds -->
+                <div class="numbered-section">
+                  <div
+                    class="section-number"
+                    style="width: 30px; height: 30px; font-size: 14px"
+                  >
+                    3
+                  </div>
+                  <div class="section-content">
+                    <h2 class="prose-heading" style="font-size: 16px">
+                      Returns &amp; Refunds
+                    </h2>
+                    <p class="prose-text">
+                      You may return undamaged items within 7 days of delivery
+                      for a full refund to your original payment method. Items
+                      must be in original packaging. Handcrafted items with
+                      natural variations in color, texture, or glaze are
+                      characteristic of the craft and are not considered
+                      defective.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Section 4: Workshop Registrations -->
+                <div class="numbered-section">
+                  <div
+                    class="section-number"
+                    style="width: 30px; height: 30px; font-size: 14px"
+                  >
+                    4
+                  </div>
+                  <div class="section-content">
+                    <h2 class="prose-heading" style="font-size: 16px">
+                      Workshop Registrations
+                    </h2>
+                    <p class="prose-text">
+                      Workshop fees are non-refundable within 48 hours of the
+                      scheduled event. Cancellations made more than 48 hours in
+                      advance are eligible for a full refund. Date transfers may
+                      be available subject to seat availability.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content tablet">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Terms of
+                    Service
+                  </div>
+                  <h1 class="page-title">Terms of Service</h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <div style="max-width: 600px">
+                  <div class="last-updated">
+                    Last updated: January 15, 2026
+                  </div>
+
+                  <!-- Section 1: General Terms -->
+                  <div class="numbered-section">
+                    <div class="section-number">1</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading">General Terms</h2>
+                      <p class="prose-text">
+                        By accessing and using Poetry &amp; Pottery ("the Site"),
+                        you agree to be bound by these terms and conditions. We
+                        reserve the right to update these terms at any time.
+                        Continued use of the Site after changes constitutes
+                        acceptance.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 2: Orders & Payment -->
+                  <div class="numbered-section">
+                    <div class="section-number">2</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading">Orders &amp; Payment</h2>
+                      <p class="prose-text">
+                        All orders are subject to availability and confirmation.
+                        Prices are listed in Indian Rupees (INR) and include
+                        applicable taxes. We reserve the right to cancel orders
+                        due to pricing errors or stock issues. Payment methods
+                        accepted:
+                      </p>
+                      <ul class="prose-list">
+                        <li>Credit/Debit Cards (Visa, Mastercard, RuPay)</li>
+                        <li>UPI Payments</li>
+                        <li>Net Banking</li>
+                        <li>Wallet Payments</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Section 3: Returns & Refunds -->
+                  <div class="numbered-section">
+                    <div class="section-number">3</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading">Returns &amp; Refunds</h2>
+                      <p class="prose-text">
+                        You may return undamaged items within 7 days of delivery
+                        for a full refund to your original payment method. Items
+                        must be in original packaging. Handcrafted items with
+                        natural variations in color, texture, or glaze are
+                        characteristic of the craft and are not considered
+                        defective.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 4: Workshop Registrations -->
+                  <div class="numbered-section">
+                    <div class="section-number">4</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading">Workshop Registrations</h2>
+                      <p class="prose-text">
+                        Workshop fees are non-refundable within 48 hours of the
+                        scheduled event. Cancellations made more than 48 hours in
+                        advance are eligible for a full refund. Date transfers
+                        may be available subject to seat availability.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 5: Intellectual Property -->
+                  <div class="numbered-section">
+                    <div class="section-number">5</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading">Intellectual Property</h2>
+                      <p class="prose-text">
+                        All content, product designs, photographs, and other
+                        materials on this site are the intellectual property of
+                        Poetry &amp; Pottery and may not be reproduced,
+                        distributed, or used without prior written permission.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+            <div class="page-frame">
+              <div class="page-frame-content desktop">
+                <!-- Page Header -->
+                <div class="page-header page-header-desktop">
+                  <div class="wf-breadcrumbs">
+                    <a href="#">Home</a> / <a href="#">Help</a> / Terms of
+                    Service
+                  </div>
+                  <h1 class="page-title page-title-desktop">
+                    Terms of Service
+                  </h1>
+                  <div class="title-underline"></div>
+                </div>
+
+                <div style="max-width: 720px">
+                  <div class="last-updated" style="margin-bottom: 32px">
+                    Last updated: January 15, 2026
+                  </div>
+
+                  <!-- Section 1: General Terms -->
+                  <div class="numbered-section">
+                    <div class="section-number">1</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading" style="font-size: 20px">
+                        General Terms
+                      </h2>
+                      <p class="prose-text">
+                        By accessing and using Poetry &amp; Pottery ("the Site"),
+                        you agree to be bound by these terms and conditions. We
+                        reserve the right to update these terms at any time.
+                        Continued use of the Site after changes constitutes
+                        acceptance.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 2: Orders & Payment -->
+                  <div class="numbered-section">
+                    <div class="section-number">2</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading" style="font-size: 20px">
+                        Orders &amp; Payment
+                      </h2>
+                      <p class="prose-text">
+                        All orders are subject to availability and confirmation.
+                        Prices are listed in Indian Rupees (INR) and include
+                        applicable taxes. We reserve the right to cancel orders
+                        due to pricing errors or stock issues. Payment methods
+                        accepted:
+                      </p>
+                      <ul class="prose-list">
+                        <li>Credit/Debit Cards (Visa, Mastercard, RuPay)</li>
+                        <li>UPI Payments</li>
+                        <li>Net Banking</li>
+                        <li>Wallet Payments</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Section 3: Returns & Refunds -->
+                  <div class="numbered-section">
+                    <div class="section-number">3</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading" style="font-size: 20px">
+                        Returns &amp; Refunds
+                      </h2>
+                      <p class="prose-text">
+                        You may return undamaged items within 7 days of delivery
+                        for a full refund to your original payment method. Items
+                        must be in original packaging. Handcrafted items with
+                        natural variations in color, texture, or glaze are
+                        characteristic of the craft and are not considered
+                        defective.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 4: Workshop Registrations -->
+                  <div class="numbered-section">
+                    <div class="section-number">4</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading" style="font-size: 20px">
+                        Workshop Registrations
+                      </h2>
+                      <p class="prose-text">
+                        Workshop fees are non-refundable within 48 hours of the
+                        scheduled event. Cancellations made more than 48 hours in
+                        advance are eligible for a full refund. Date transfers
+                        may be available subject to seat availability.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 5: Intellectual Property -->
+                  <div class="numbered-section">
+                    <div class="section-number">5</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading" style="font-size: 20px">
+                        Intellectual Property
+                      </h2>
+                      <p class="prose-text">
+                        All content, product designs, photographs, and other
+                        materials on this site are the intellectual property of
+                        Poetry &amp; Pottery and may not be reproduced,
+                        distributed, or used without prior written permission.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 6: Limitation of Liability -->
+                  <div class="numbered-section">
+                    <div class="section-number">6</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading" style="font-size: 20px">
+                        Limitation of Liability
+                      </h2>
+                      <p class="prose-text">
+                        Poetry &amp; Pottery shall not be liable for any
+                        indirect, incidental, or consequential damages arising
+                        from the use of our products or services. Our total
+                        liability is limited to the amount paid for the specific
+                        product or service in question.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Section 7: Contact -->
+                  <div class="numbered-section">
+                    <div class="section-number">7</div>
+                    <div class="section-content">
+                      <h2 class="prose-heading" style="font-size: 20px">
+                        Contact
+                      </h2>
+                      <p class="prose-text">
+                        For questions about these terms, please contact us at
+                        legal@poetryandpottery.com or through our contact page.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred Terms of Service page layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Clean
+            Prose</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Numbered
+            Sections</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Clean
+            Prose</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Numbered
+            Sections</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Clean
+            Prose</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            Numbered Sections</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 10.6):</strong><br /><br />
+      &bull; <strong>Page:</strong>
+      src/app/(main)/(with-footer)/help/terms/page.tsx<br />
+      &bull; <strong>Page Header:</strong> Left-aligned on ALL devices,
+      Breadcrumb &rarr; Title &rarr; Green Underline<br />
+      &bull; <strong>Components:</strong> ProseSection (shared with Privacy
+      Policy page), NumberedSection (Option B)<br />
+      &bull; <strong>Content Width:</strong> max-w-3xl (768px)<br />
+      &bull; <strong>"Last updated"</strong> date shown at top of content
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

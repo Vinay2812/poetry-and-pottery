@@ -672,7 +672,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.2: Product Image Gallery
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ❌ Discarded
 **Wireframe:** [task-5-2-product-image-gallery.html](wireframes/task-5-2-product-image-gallery.html)
 
 **Scope:**
@@ -930,7 +930,7 @@ Once user approves, the section is updated to:
 
 #### Task 6.2: Cart Item Card
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-6-2-cart-item-card.html](wireframes/task-6-2-cart-item-card.html)
 
 **Scope:**
@@ -1075,8 +1075,14 @@ _Grid Layout (same for all):_
 
 #### Task 7.2: Event Detail Pages (Unified Layout)
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-7-2-event-detail.html](wireframes/task-7-2-event-detail.html)
+**Approved Selection:**
+
+- Mobile: Option A - Stacked Layout
+- Tablet: Option A - Stacked Layout
+- Desktop: Option A - Stacked Layout
+  **Note:** For completed events, QR code is removed from the registered/ticket view. Registration status shown as approved without QR.
 
 **Scope:**
 This task establishes a **unified layout system** for ALL event detail pages:
@@ -1288,7 +1294,7 @@ _Completed Card (Past registrations):_
 
 #### Task 8.3: Wishlist Page
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ❌ Discarded
 **Wireframe:** [task-8-3-wishlist-page.html](wireframes/task-8-3-wishlist-page.html)
 
 **Scope:**
@@ -1465,7 +1471,7 @@ _Completed Card (Past registrations):_
 
 #### Task 9.5: Global Search
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ✅ Approved
 
 **Scope:**
 
@@ -1616,37 +1622,126 @@ _Completed Card (Past registrations):_
 
 ---
 
-#### Task 10.3: Info Pages (FAQ, Shipping, Privacy, Terms, Care)
+#### Task 10.3: FAQ Page
 
 **Status:** ⏳ Awaiting Approval
-**Wireframe:** [task-10-3-info-pages.html](wireframes/task-10-3-info-pages.html)
+**Wireframe:** [task-10-3-faq-page.html](wireframes/task-10-3-faq-page.html)
 
 **Scope:**
 
-- Consistent header across all info pages
-- Clean content layouts
+- FAQ page with grouped accordion by category
+- Consistent left-aligned page header
 
 **Design Specifications:**
 
-- Page headers: Consistent title + breadcrumbs for all
+- Page header: "Frequently Asked Questions", breadcrumbs (Home / Help / FAQ)
 - Content: `max-w-3xl` for readability
-- FAQ: Accordion with smooth animations
+- Grouped accordion organized by category (Orders & Shipping, Products, Returns & Refunds)
+- Category headings with `font-display`, border-bottom separator
+- Expandable items: `rounded-xl`, subtle shadow, hover background
 - Heading hierarchy: h2 in `font-display`
-
-**Pages:**
-
-- `/faq` - FAQ with grouped accordion
-- `/shipping` - Shipping info
-- `/privacy` - Privacy policy
-- `/terms` - Terms of service
-- `/care` - Pottery care guide
 
 **Files to Modify (after approval):**
 
 - `src/app/(main)/(with-footer)/faq/page.tsx`
+
+---
+
+#### Task 10.4: Shipping Page
+
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-10-4-shipping-page.html](wireframes/task-10-4-shipping-page.html)
+
+**Scope:**
+
+- Shipping information page with rate table
+- Packaging and tracking sections
+
+**Design Specifications:**
+
+- Page header: "Shipping Information", breadcrumbs (Home / Help / Shipping)
+- Content: `max-w-3xl` for readability
+- Shipping rates table (Standard / Express / Free) with clean styling
+- Packaging info with bullet list
+- Order tracking section
+- Heading hierarchy: h2 in `font-display`
+
+**Files to Modify (after approval):**
+
 - `src/app/(main)/(with-footer)/shipping/page.tsx`
+
+---
+
+#### Task 10.5: Privacy Policy Page
+
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-10-5-privacy-page.html](wireframes/task-10-5-privacy-page.html)
+
+**Scope:**
+
+- Privacy policy page with prose layout
+- "Last updated" date, section headings, body text, bullet lists
+
+**Design Specifications:**
+
+- Page header: "Privacy Policy", breadcrumbs (Home / Help / Privacy Policy)
+- Content: `max-w-3xl` for readability
+- "Last updated" date at top
+- Sections: Information We Collect, How We Use Your Data, Cookies, Data Protection, Your Rights, Contact
+- Simple prose pattern: heading + text + optional bullet list
+- Heading hierarchy: h2 in `font-display`
+
+**Files to Modify (after approval):**
+
 - `src/app/(main)/(with-footer)/privacy/page.tsx`
+
+---
+
+#### Task 10.6: Terms of Service Page
+
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-10-6-terms-page.html](wireframes/task-10-6-terms-page.html)
+
+**Scope:**
+
+- Terms of service page with prose layout
+- Same pattern as Privacy Policy
+
+**Design Specifications:**
+
+- Page header: "Terms of Service", breadcrumbs (Home / Help / Terms of Service)
+- Content: `max-w-3xl` for readability
+- "Last updated" date at top
+- Sections: General Terms, Orders & Payment, Returns & Refunds, Workshop Registrations, Intellectual Property, Limitation of Liability, Contact
+- Simple prose pattern: heading + text + optional bullet list
+- Heading hierarchy: h2 in `font-display`
+
+**Files to Modify (after approval):**
+
 - `src/app/(main)/(with-footer)/terms/page.tsx`
+
+---
+
+#### Task 10.7: Pottery Care Guide Page
+
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-10-7-care-page.html](wireframes/task-10-7-care-page.html)
+
+**Scope:**
+
+- Care instructions page with icon cards grid
+- Pro tips callout card
+
+**Design Specifications:**
+
+- Page header: "Care Instructions", breadcrumbs (Home / Help / Care Instructions)
+- Care cards grid: 1-col mobile, 2x2 tablet, 4-col desktop
+- Cards: Icon + title + description, `rounded-xl`, subtle shadow
+- Pro Tips callout: Cream background (`#F5F0E8`), icon, bullet list
+- Content width: Cards grid max-w-[900px] on desktop, Pro Tips max-w-3xl
+
+**Files to Modify (after approval):**
+
 - `src/app/(main)/(with-footer)/care/page.tsx`
 
 ---
@@ -1761,7 +1856,7 @@ _Completed Card (Past registrations):_
 
 #### Task 11.4: Smooth Scrolling
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-11-4-smooth-scrolling.html](wireframes/task-11-4-smooth-scrolling.html)
 
 **Scope:**
@@ -2357,13 +2452,13 @@ export function RouteAnimationProvider({
 | 7      | Events                   | 5      | HIGH            | Yes                                                   |
 | 8      | User Account             | 4      | MEDIUM          | Yes                                                   |
 | 9      | Navigation & Layout      | 7      | HIGH            | Yes                                                   |
-| 10     | Content Pages            | 3      | LOW             | Yes                                                   |
+| 10     | Content Pages            | 7      | LOW             | Yes                                                   |
 | 11     | Polish & Animations      | 5      | -               | No - Run last                                         |
 | 12     | Auth Pages               | 1      | LOW             | Yes (independent)                                     |
 | 13     | Skeletons                | 1      | -               | No - Run after designs                                |
 | **14** | **React 19 Performance** | **11** | **HIGH**        | **Integrate during Phases 4-13 OR refactor existing** |
 
-**Total:** 59 tasks (Phase 14 tasks are integrated, not separate)
+**Total:** 63 tasks (Phase 14 tasks are integrated, not separate)
 
 ### Execution Order
 
