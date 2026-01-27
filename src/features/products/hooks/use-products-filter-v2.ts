@@ -59,12 +59,12 @@ export function useProductsFilterV2({
 
   const filters_meta = useMemo(() => {
     return {
-      categories: filters.categories,
-      materials: filters.materials,
+      categories: productsWithFiltersAndMetadata.meta.categories,
+      materials: productsWithFiltersAndMetadata.meta.materials,
       price_range: productsWithFiltersAndMetadata.meta.price_range,
       price_histogram: productsWithFiltersAndMetadata.meta.price_histogram,
     };
-  }, [filters, productsWithFiltersAndMetadata]);
+  }, [productsWithFiltersAndMetadata]);
 
   const onFilterChange = useCallback(
     (filter: Partial<Filters>) => {

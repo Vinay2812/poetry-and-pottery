@@ -156,7 +156,7 @@ export function PriceRangeSlider({
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3 px-1">
         <div className="relative flex-1">
           <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-neutral-400">
             ₹

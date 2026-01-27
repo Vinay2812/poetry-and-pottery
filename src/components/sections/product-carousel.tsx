@@ -106,25 +106,6 @@ export function ProductCarousel({
           ))}
         </div>
       </div>
-
-      {/* Carousel Dots */}
-      {scrollSnaps.length > 1 && (
-        <div className="mt-4 flex justify-center gap-2">
-          {scrollSnaps.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => scrollTo(index)}
-              className={cn(
-                "h-2 w-2 rounded-full transition-all duration-300",
-                index === selectedIndex
-                  ? "bg-primary w-6"
-                  : "bg-neutral-300 hover:bg-neutral-400 dark:bg-neutral-600",
-              )}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
     </section>
   );
 }

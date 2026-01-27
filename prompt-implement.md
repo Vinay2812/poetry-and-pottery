@@ -47,6 +47,7 @@ Wireframes fall into three categories. Each has different implementation concern
 **Examples:** `task-4-1-button-styles.html`, `task-4-2-badge-component.html`, `task-4-3-form-inputs.html`, `task-4-4-rating-component.html`, `task-4-7-dialog-sheet.html`, `task-13-1-skeleton-components.html`
 
 **Implementation approach:**
+
 - These map to files in `src/components/ui/` or reusable feature components
 - Must be pixel-perfect — other wireframes depend on these foundations
 - Test in isolation first, then verify inside pages that consume them
@@ -59,6 +60,7 @@ Wireframes fall into three categories. Each has different implementation concern
 **Examples:** `task-5-1-product-detail-layout.html`, `task-6-1-cart-page.html`, `task-8-1-orders-page.html`, `task-10-1-about-page.html`
 
 **Implementation approach:**
+
 - These map to route pages in `src/app/` and feature containers/components
 - Compose foundation components from Phase 4 — do NOT re-implement buttons, badges, etc.
 - Verify the full page at all three viewports (mobile, tablet, desktop)
@@ -71,6 +73,7 @@ Wireframes fall into three categories. Each has different implementation concern
 **Examples:** `task-9-1-desktop-navbar.html`, `task-9-2-mobile-header.html`, `task-9-3-mobile-bottom-nav.html`, `task-9-6-footer.html`, `task-11-1-section-backgrounds.html`
 
 **Implementation approach:**
+
 - These map to layout files in `src/app/layout.tsx` and shared components like `Header`, `Footer`, `BottomNav`
 - Must work correctly on EVERY page, not just one — verify on at least 3 different pages
 - Navigation wireframes define breakpoint behavior (when to show desktop vs mobile nav)
@@ -87,7 +90,8 @@ Wireframes fall into three categories. Each has different implementation concern
 2. Implement the approved designs **with React 19 performance patterns**
 3. Verify implementation matches wireframe at all viewports
 4. Verify React 19 patterns are applied (see Phase 14 in `design-refactor.md`)
-5. Update status to completed
+5. Present implementation to user and **wait for explicit approval**
+6. Only after user confirms → update status to completed
 
 > ⚠️ **MANDATORY:** Every implementation MUST include relevant React 19 patterns from Phase 14.
 > These are not optional optimizations - they are part of the implementation standard.
@@ -99,73 +103,95 @@ Wireframes fall into three categories. Each has different implementation concern
 ### Step 1: Capture Wireframe Reference
 
 > **The wireframe is your design spec.** Treat it as the definitive reference for every visual decision.
-> Do NOT guess colors, spacing, or typography — extract them from the wireframe source.
+> Do NOT guess colors, spacing, or typography — extract them from the wireframe via `agent-browser`.
+>
+> **CONTEXT CONSERVATION:** NEVER read wireframe HTML files with `cat`/`read` — this dumps thousands
+> of tokens into context. Instead, use `agent-browser` to visually inspect wireframes and extract
+> specific CSS values on-demand with `get styles`.
 
-1. **Read the wireframe HTML source code FIRST**
+1. **Identify which wireframe(s) you need**
 
-   Before taking any screenshots, read the wireframe file to extract exact design values:
+   Check `design-refactor.md` for the current task. Only open the wireframe(s) relevant to your task — do NOT browse all wireframes.
 
    ```bash
-   # Read the wireframe source to get exact CSS values
-   cat wireframes/task-X-X-name.html
-   # Also read the shared theme stylesheet
-   cat wireframes/_shared-styles.css
+   # The wireframe index page is already running at:
+   # http://127.0.0.1:5500/poetry-and-pottery/wireframes/index.html
+   # Use it to find the correct wireframe URL if needed
+
+   # Open ONLY the wireframe for your current task
+   agent-browser open http://127.0.0.1:5500/poetry-and-pottery/wireframes/task-X-X-name.html
    ```
 
-   From the source, extract and document:
-   - **Colors**: Exact hex values (e.g., `#4F6F52`, `#C4785A`, `#F5F0E8`)
-   - **Spacing**: Exact `padding`, `margin`, `gap` values
-   - **Typography**: `font-family`, `font-size`, `font-weight`, `line-height`
-   - **Border radius**: Exact `border-radius` values
-   - **Shadows**: Exact `box-shadow` values
-   - **Breakpoints**: Media query breakpoints and what changes at each
+2. **Capture the wireframe at all three viewports**
 
-2. **Capture approved wireframe at all viewports**
+   For each viewport: take a screenshot (visual reference) and a compact snapshot (DOM structure).
 
    ```bash
-   # Open the approved wireframe
-   agent-browser open http://127.0.0.1:5500/poetry-and-pottery/wireframes/task-X-X-name.html
-
-   # Capture Mobile reference (375 x 812)
+   # Mobile (375 x 812)
    agent-browser set viewport 375 812
    agent-browser screenshot reference-mobile.png --full
-   agent-browser snapshot > reference-mobile-snapshot.txt
+   agent-browser snapshot -c
 
-   # Capture Tablet reference (768 x 1024)
+   # Tablet (768 x 1024)
    agent-browser set viewport 768 1024
    agent-browser screenshot reference-tablet.png --full
-   agent-browser snapshot > reference-tablet-snapshot.txt
+   agent-browser snapshot -c
 
-   # Capture Desktop reference (1440 x 900)
+   # Desktop (1440 x 900)
    agent-browser set viewport 1440 900
    agent-browser screenshot reference-desktop.png --full
-   agent-browser snapshot > reference-desktop-snapshot.txt
+   agent-browser snapshot -c
    ```
 
-3. **Study the wireframe structure by category**
+   > **Use `-c` (compact) snapshots** to save context. Only use full `snapshot` if you need
+   > detailed element refs for interaction testing.
+
+3. **Extract exact design values on-demand**
+
+   Do NOT read the full HTML/CSS source. Instead, use `agent-browser get styles` to query specific elements:
+
+   ```bash
+   # Get computed styles for a specific element (colors, spacing, font, shadows, etc.)
+   agent-browser get styles ".product-card"
+   agent-browser get styles ".hero-section h1"
+   agent-browser get styles ".cta-button"
+
+   # Get element dimensions and position
+   agent-browser get box ".product-card"
+   agent-browser get box ".hero-section"
+   ```
+
+   Extract only what you need:
+   - **Colors**: `agent-browser get styles "[sel]"` → look at `color`, `background-color`, `border-color`
+   - **Spacing**: `agent-browser get box "[sel]"` → check dimensions; `get styles` → `padding`, `margin`, `gap`
+   - **Typography**: `get styles` → `font-family`, `font-size`, `font-weight`, `line-height`
+   - **Border radius**: `get styles` → `border-radius`
+   - **Shadows**: `get styles` → `box-shadow`
+
+4. **Study the wireframe structure by category**
 
    **For Component wireframes (Phase 4, 13):**
-   - List every variant shown (sizes, states, disabled, active, hover)
+   - Scroll through the wireframe to find every variant (sizes, states, disabled, active, hover)
    - Note which props control each variant
    - Check if the component is used inside other wireframes
 
    **For Page wireframes (Phase 5–8, 10, 12):**
-   - Map the wireframe sections to component hierarchy (header, body sections, footer)
+   - Use the screenshot and snapshot to map sections to component hierarchy
    - Identify which foundation components (Phase 4) are used on the page
-   - Note section ordering and how it changes across mobile/tablet/desktop
-   - Document scroll behavior (sticky elements, lazy sections, infinite scroll)
+   - Resize viewport to see how section ordering changes across mobile/tablet/desktop
+   - Note scroll behavior (sticky elements, lazy sections, infinite scroll)
 
    **For Layout wireframes (Phase 9, 11):**
-   - Identify the breakpoint where layout changes (e.g., desktop nav → mobile header + bottom nav)
+   - Resize between viewports to find the breakpoint where layout changes
    - Note fixed/sticky positioning and z-index layering
    - Check how the layout wraps around page content (padding, max-width, centering)
-   - Document animation/transition values for polish wireframes
+   - Use `get styles` to extract animation/transition timing values
 
    **For all wireframes:**
-   - Note exact colors, spacing, typography from the HTML source
-   - Identify component hierarchy and nesting
-   - List all interactive elements (buttons, links, inputs, toggles)
-   - Document responsive differences between mobile, tablet, and desktop
+   - Use screenshots for visual layout reference
+   - Use compact snapshots (`-c`) for DOM structure and hierarchy
+   - Use `get styles` / `get box` for exact CSS values — only for elements you need
+   - Identify all interactive elements (buttons, links, inputs, toggles)
 
 ---
 
@@ -175,11 +201,10 @@ Wireframes fall into three categories. Each has different implementation concern
    - Change status in `design-refactor.md` from `✅ Approved` to `🚧 In Progress`
 
 4. **Implement the design (follow wireframe category approach)**
-
    - Follow the files listed in `design-refactor.md` under "Files to Modify"
    - Match the wireframe exactly for each viewport
    - Use forest theme colors only
-   - **Reference the wireframe HTML source** for exact values — do NOT approximate
+   - **Use `agent-browser get styles`** on wireframe elements for exact values — do NOT approximate
 
    **Category-specific implementation:**
 
@@ -447,16 +472,36 @@ Wireframes fall into three categories. Each has different implementation concern
 
 ---
 
-### Step 6: Finalization
+### Step 6: User Review & Approval
 
-13. **Update documentation**
+13. **Present to user and ask for feedback**
+    - Show before/after comparison (wireframe vs implementation)
+    - Show all three viewports (mobile, tablet, desktop)
+    - **ASK the user:** _"Does everything look good, or do you have any feedback/changes?"_
+    - **WAIT for the user's response before proceeding**
+
+14. **Handle user response**
+
+    **If user says everything looks good** → proceed to Step 7 (mark complete)
+
+    **If user has feedback or requests changes:**
+    - Note the specific feedback
+    - Go back to Step 2 (Implementation) to make the requested changes
+    - Re-run Step 3 (Verification) to confirm fixes
+    - Re-run Step 4 (Fix Discrepancies) if needed
+    - Return to Step 6 and present updated implementation to the user again
+    - **Repeat this loop until the user confirms they are satisfied**
+
+    > **CRITICAL:** Do NOT mark a task as completed until the user explicitly confirms the implementation is acceptable. Never skip user approval.
+
+---
+
+### Step 7: Finalization (Only After User Approval)
+
+15. **Update documentation**
     - Update `design-refactor.md`: Change status to `✔️ Completed`
     - Update wireframe file: Mark as `✔️ IMPLEMENTED`
-
-14. **Present to user**
-    - Show before/after comparison (wireframe vs implementation)
-    - Show all three viewports
-    - Confirm implementation matches expectations
+    - Only do this AFTER user has confirmed everything looks good in Step 6
 
 ---
 
@@ -511,10 +556,10 @@ Before marking task as completed:
 
 ### Wireframe Fidelity (Source of Truth)
 
-- [ ] Read the wireframe HTML source — extracted exact CSS values (colors, spacing, font sizes, shadows)
-- [ ] Read `_shared-styles.css` for forest theme tokens
-- [ ] Implementation uses values from wireframe source, not approximations
-- [ ] Screenshots captured at all 3 viewports and compared side-by-side with wireframe
+- [ ] Opened wireframe in `agent-browser` — captured screenshots at all 3 viewports
+- [ ] Used `agent-browser get styles` to extract exact CSS values for key elements (colors, spacing, fonts, shadows)
+- [ ] Implementation uses exact values from wireframe, not approximations
+- [ ] Compared wireframe screenshots side-by-side with implementation screenshots
 
 ### Layout Verification
 
@@ -525,9 +570,9 @@ Before marking task as completed:
 
 ### Visual Verification
 
-- [ ] Colors match forest theme exactly (compare hex values from wireframe source)
-- [ ] Typography correct (font-family, size, weight, line-height from wireframe source)
-- [ ] Spacing matches wireframe (padding, margin, gap from wireframe source)
+- [ ] Colors match forest theme exactly (compare via `get styles` on wireframe vs implementation)
+- [ ] Typography correct (font-family, size, weight, line-height — compare via `get styles`)
+- [ ] Spacing matches wireframe (padding, margin, gap — compare via `get styles` / `get box`)
 - [ ] Border radius correct
 - [ ] Shadows correct
 
@@ -541,17 +586,20 @@ Before marking task as completed:
 ### Category-Specific Verification
 
 **Component wireframes (Phase 4, 13):**
+
 - [ ] ALL variants from wireframe implemented (sizes, states, colors)
 - [ ] Component works in isolation
 - [ ] Component works when composed inside pages
 
 **Page wireframes (Phase 5–8, 10, 12):**
+
 - [ ] Section order matches wireframe at all viewports
 - [ ] Uses foundation components from Phase 4 (no re-implementations)
 - [ ] Scroll behavior matches (sticky elements, lazy sections)
 - [ ] Mobile stacking order matches wireframe
 
 **Layout wireframes (Phase 9, 11):**
+
 - [ ] Layout works on at least 3 different pages
 - [ ] Breakpoint transitions correct (desktop nav → mobile nav switch)
 - [ ] Fixed/sticky elements don't overlap content or each other
@@ -575,6 +623,13 @@ Before marking task as completed:
 - [ ] No manual optimistic rollback patterns (use `useOptimistic`)
 - [ ] DOM measurements/mutations before paint use `useLayoutEffect` (not `useEffect`)
 
+### User Approval (REQUIRED)
+
+- [ ] Presented implementation screenshots to user (all 3 viewports)
+- [ ] Asked user: "Does everything look good, or do you have any feedback?"
+- [ ] User explicitly confirmed the implementation is acceptable
+- [ ] Only THEN marked task as `✔️ Completed` in `design-refactor.md`
+
 ---
 
 ## Output Expectations
@@ -586,9 +641,10 @@ At the end of this workflow:
    - `reference-mobile.png` vs `impl-mobile.png`
    - `reference-tablet.png` vs `impl-tablet.png`
    - `reference-desktop.png` vs `impl-desktop.png`
-3. **Updated design-refactor.md** with `✔️ Completed` status
-4. **Updated wireframe file** marked as `✔️ IMPLEMENTED`
-5. **Clean code** passing TypeScript and formatted
+3. **User approval** — user has explicitly confirmed the implementation looks good
+4. **Updated design-refactor.md** with `✔️ Completed` status (only after user approval)
+5. **Updated wireframe file** marked as `✔️ IMPLEMENTED` (only after user approval)
+6. **Clean code** passing TypeScript and formatted
 
 ---
 
@@ -608,16 +664,16 @@ At the end of this workflow:
 
 **When to use each hook:**
 
-| Scenario                | Hook/Pattern                    | Example                      |
-| ----------------------- | ------------------------------- | ---------------------------- |
-| Page navigation         | `useTransition` + `router.push` | Product card → detail page   |
-| Cart/wishlist mutations | `useOptimistic`                 | Add to cart, toggle wishlist |
-| Form submissions        | `useFormStatus`                 | Submit button pending state  |
-| Async data sections     | `Suspense`                      | Related products, reviews    |
-| Cross-page animations   | `viewTransitionName`            | Product image morph          |
-| Modal/sheet rendering   | `Activity`                      | Order detail dialog          |
-| Filter updates          | `startTransition`               | Price range, category filter |
-| Review likes            | `useOptimistic`                 | Like/unlike with rollback    |
+| Scenario                | Hook/Pattern                    | Example                       |
+| ----------------------- | ------------------------------- | ----------------------------- |
+| Page navigation         | `useTransition` + `router.push` | Product card → detail page    |
+| Cart/wishlist mutations | `useOptimistic`                 | Add to cart, toggle wishlist  |
+| Form submissions        | `useFormStatus`                 | Submit button pending state   |
+| Async data sections     | `Suspense`                      | Related products, reviews     |
+| Cross-page animations   | `viewTransitionName`            | Product image morph           |
+| Modal/sheet rendering   | `Activity`                      | Order detail dialog           |
+| Filter updates          | `startTransition`               | Price range, category filter  |
+| Review likes            | `useOptimistic`                 | Like/unlike with rollback     |
 | DOM reads before paint  | `useLayoutEffect`               | Tooltip position, scroll sync |
 
 **Import locations:**
@@ -670,11 +726,11 @@ useLayoutEffect(() => {
 
 **If implementation differs from wireframe:**
 
-1. Re-read the wireframe HTML source — compare exact CSS values (colors, spacing, font sizes, shadows)
-2. Re-check the wireframe at the exact viewport size in `agent-browser`
-3. Use `agent-browser get styles [sel]` to compare computed CSS on implementation
-4. Use `agent-browser get box [sel]` to compare element dimensions
-5. Fix discrepancies using values from wireframe source and re-verify
+1. Open the wireframe in `agent-browser` at the exact viewport size
+2. Use `agent-browser get styles [sel]` on the **wireframe** element to get the expected CSS values
+3. Open the implementation and use `agent-browser get styles [sel]` on the **same element** to compare
+4. Use `agent-browser get box [sel]` on both to compare dimensions
+5. Fix discrepancies using the wireframe values and re-verify
 
 **If a component looks wrong inside a page:**
 
@@ -696,7 +752,7 @@ useLayoutEffect(() => {
 
 **If responsive behavior is wrong:**
 
-1. Re-read wireframe source for media query breakpoints
+1. Open the wireframe in `agent-browser` and resize across breakpoints (375, 768, 1440) to see expected behavior
 2. Check breakpoint values in Tailwind config
 3. Verify correct responsive prefixes (`md:`, `lg:`, `xl:`)
-4. Test each breakpoint transition point
+4. Test each breakpoint transition point on both wireframe and implementation

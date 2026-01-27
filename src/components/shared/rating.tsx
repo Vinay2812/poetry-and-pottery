@@ -6,10 +6,22 @@ interface RatingProps {
   rating: number;
   reviewCount?: number;
   showCount?: boolean;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   className?: string;
   textClassName?: string;
 }
+
+const sizeClasses = {
+  sm: "size-3",
+  md: "size-4",
+  lg: "size-5",
+};
+
+const textSizeClasses = {
+  sm: "text-xs",
+  md: "text-sm",
+  lg: "text-base",
+};
 
 export function Rating({
   rating,
@@ -19,30 +31,34 @@ export function Rating({
   className,
   textClassName,
 }: RatingProps) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating - fullStars >= 0.5;
+
   return (
     <div className={cn("flex items-center gap-1", className)}>
-      <Star
-        className={cn(
-          "fill-yellow-400 text-yellow-400",
-          size === "sm" ? "h-3 w-3" : "h-4 w-4",
-        )}
-      />
-      <span
-        className={cn(
-          "font-medium",
-          size === "sm" ? "text-xs" : "text-sm",
-          textClassName,
-        )}
-      >
+      <div className="flex items-center gap-0.5">
+        {Array.from({ length: 5 }, (_, i) => {
+          const isFilled = i < fullStars;
+          const isHalf = i === fullStars && hasHalfStar;
+
+          return (
+            <Star
+              key={i}
+              className={cn(
+                sizeClasses[size],
+                isFilled || isHalf
+                  ? "fill-primary text-primary"
+                  : "fill-[#D4E5D6] text-[#D4E5D6]",
+              )}
+            />
+          );
+        })}
+      </div>
+      <span className={cn("font-medium", textSizeClasses[size], textClassName)}>
         {rating.toFixed(1)}
       </span>
       {showCount && reviewCount != null && reviewCount > 0 && (
-        <span
-          className={cn(
-            "text-muted-foreground",
-            size === "sm" ? "text-xs" : "text-sm",
-          )}
-        >
+        <span className={cn("text-muted-foreground", textSizeClasses[size])}>
           ({reviewCount})
         </span>
       )}

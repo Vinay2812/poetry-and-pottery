@@ -373,7 +373,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.1: Button Styles
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-1-button-styles.html](wireframes/task-4-1-button-styles.html)
 **Approved Selection:**
 
@@ -403,7 +403,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.2: Badge Component
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-2-badge-component.html](wireframes/task-4-2-badge-component.html)
 **Approved Selection:**
 
@@ -435,7 +435,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.3: Form Inputs
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-3-form-inputs.html](wireframes/task-4-3-form-inputs.html)
 **Approved Selection:**
 
@@ -467,7 +467,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.4: Rating Component
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-4-rating-component.html](wireframes/task-4-4-rating-component.html)
 **Approved Selection:**
 
@@ -495,7 +495,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.5: Quantity Selector
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-5-quantity-selector.html](wireframes/task-4-5-quantity-selector.html)
 **Approved Selection:**
 
@@ -523,7 +523,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.6: Empty States
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-6-empty-states.html](wireframes/task-4-6-empty-states.html)
 **Approved Selection:**
 
@@ -551,7 +551,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.7: Dialog & Sheet
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-7-dialog-sheet.html](wireframes/task-4-7-dialog-sheet.html)
 **Approved Selection:**
 
@@ -581,7 +581,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.8: Accordion
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-8-accordion.html](wireframes/task-4-8-accordion.html)
 **Approved Selection:**
 
@@ -612,7 +612,7 @@ Once user approves, the section is updated to:
 
 #### Task 4.9: Tabs
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-4-9-tabs.html](wireframes/task-4-9-tabs.html)
 **Approved Selection:**
 
@@ -647,7 +647,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.1: Product Detail Layout
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-1-product-detail-layout.html](wireframes/task-5-1-product-detail-layout.html)
 **Approved Option:** Option B (Modern Gallery) — All Viewports (Mobile, Tablet, Desktop)
 
@@ -750,8 +750,13 @@ Once user approves, the section is updated to:
 
 #### Task 5.5: Related Products Grid
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-5-5-related-products-grid.html](wireframes/task-5-5-related-products-grid.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
 
 **Scope:**
 
@@ -983,8 +988,13 @@ Once user approves, the section is updated to:
 
 #### Task 6.4: Address Components
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-6-4-address-components.html](wireframes/task-6-4-address-components.html)
+**Approved Selection:**
+
+- Mobile: Horizontal carousel (1 card + peek)
+- Tablet: Horizontal carousel (2 cards + peek)
+- Desktop: Horizontal carousel (3 cards + peek)
 
 **Scope:**
 
@@ -1624,8 +1634,13 @@ _Completed Card (Past registrations):_
 
 #### Task 10.3: FAQ Page
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-10-3-faq-page.html](wireframes/task-10-3-faq-page.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
 
 **Scope:**
 
@@ -1649,8 +1664,13 @@ _Completed Card (Past registrations):_
 
 #### Task 10.4: Shipping Page
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-10-4-shipping-page.html](wireframes/task-10-4-shipping-page.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
 
 **Scope:**
 
@@ -1674,8 +1694,13 @@ _Completed Card (Past registrations):_
 
 #### Task 10.5: Privacy Policy Page
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-10-5-privacy-page.html](wireframes/task-10-5-privacy-page.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -1699,8 +1724,13 @@ _Completed Card (Past registrations):_
 
 #### Task 10.6: Terms of Service Page
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-10-6-terms-page.html](wireframes/task-10-6-terms-page.html)
+**Approved Selection:**
+
+- Mobile: Option A
+- Tablet: Option A
+- Desktop: Option A
 
 **Scope:**
 
@@ -1724,8 +1754,13 @@ _Completed Card (Past registrations):_
 
 #### Task 10.7: Pottery Care Guide Page
 
-**Status:** ⏳ Awaiting Approval
+**Status:** ✅ Approved
 **Wireframe:** [task-10-7-care-page.html](wireframes/task-10-7-care-page.html)
+**Approved Selection:**
+
+- Mobile: Option C
+- Tablet: Option C
+- Desktop: Option C
 
 **Scope:**
 

@@ -4,15 +4,12 @@ import { X } from "lucide-react";
 import { useCallback, useState } from "react";
 
 import { ImageCarousel } from "@/components/shared";
-import { CarouselApi } from "@/components/ui/carousel";
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { cn } from "@/lib/utils";
 
 interface ProductImageGalleryProps {
   images: string[];
@@ -42,6 +39,8 @@ export function ProductImageGallery({
           onImageClick={handleImageClick}
           className="w-full"
           imageClassName="object-cover cursor-zoom-in"
+          dotsClassName="bottom-10 lg:bottom-4"
+          showCounter
         />
       </div>
 
