@@ -1,4 +1,6 @@
-import type { ProductBase } from "@/data/products/types";
+import { type ProductBase } from "@/data/products/types";
+
+import { ProductOrderBy } from "@/graphql/generated/types";
 
 export interface Category {
   id: string;
@@ -11,24 +13,17 @@ export interface PriceHistogram {
   count: number;
 }
 
-export type SortOption =
-  | "featured"
-  | "best-sellers"
-  | "price-low"
-  | "price-high"
-  | "newest";
-
 export interface SortOptionConfig {
-  value: SortOption;
+  value: ProductOrderBy;
   label: string;
 }
 
 export const SORT_OPTIONS: SortOptionConfig[] = [
-  { value: "featured", label: "Featured" },
-  { value: "best-sellers", label: "Best Sellers" },
-  { value: "price-low", label: "Price: Low to High" },
-  { value: "price-high", label: "Price: High to Low" },
-  { value: "newest", label: "Newest" },
+  { value: ProductOrderBy.Featured, label: "Featured" },
+  { value: ProductOrderBy.BestSellers, label: "Best Sellers" },
+  { value: ProductOrderBy.PriceLowToHigh, label: "Price: Low to High" },
+  { value: ProductOrderBy.PriceHighToLow, label: "Price: High to Low" },
+  { value: ProductOrderBy.New, label: "Newest" },
 ];
 
 export interface ProductFilterState {
@@ -62,13 +57,4 @@ export interface ProductListProps {
   onSortChange: (sort: string) => void;
   onSearchChange: (query: string) => void;
   onClearFilters: () => void;
-}
-
-export interface ProductListContainerProps {
-  products: ProductBase[];
-  categories: Category[];
-  materials: string[];
-  totalProducts: number;
-  priceRange?: { min: number; max: number };
-  priceHistogram?: PriceHistogram[];
 }

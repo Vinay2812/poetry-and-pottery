@@ -1,80 +1,96 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+
+import { ProductOrderBy, ProductsResponse } from "@/graphql/generated/types";
+
 import { ProductList } from "../components/product-list";
-import { useProductFilters } from "../hooks/use-product-filters";
-import { useProductsQuery } from "../hooks/use-products-query";
-import type { ProductListContainerProps, ProductListViewModel } from "../types";
+import { useProductsFilterV2 } from "../hooks/use-products-filter-v2";
+import { useProductsV2 } from "../hooks/use-products-v2";
+
+interface ProductListContainerProps {
+  productsWithFiltersAndMetadata: ProductsResponse;
+}
 
 export function ProductListContainer({
-  products: initialProducts,
-  categories,
-  materials,
-  totalProducts,
-  priceRange,
-  priceHistogram,
+  productsWithFiltersAndMetadata,
 }: ProductListContainerProps) {
-  // Use the filter hook for URL param management
-  const {
-    selectedCategories,
-    selectedMaterials,
-    sortBy,
-    localPriceRange,
-    searchQuery,
-    filterParams,
-    isPending,
-    onCategoryToggle,
-    onMaterialToggle,
-    onPriceChange,
-    onPriceCommit,
-    onSortChange,
-    onSearchChange,
-    onClearFilters,
-  } = useProductFilters({ priceRange });
-
-  // Use the query hook for data fetching
   const {
     products,
-    totalProducts: currentTotal,
-    hasNextPage,
-    isFetchingNextPage,
-    loadMoreRef,
-  } = useProductsQuery({
-    filterParams,
-    initialProducts,
-    totalProducts,
+    filterMetadata,
+    hasNextProductsPage,
+    isFetchingProducts,
+    fetchNextProductsPageRef,
+    filters,
+    onFilterChange,
+    onFilterClear,
+  } = useProductsV2({
+    productsWithFiltersAndMetadata,
   });
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Build the view model
-  const viewModel: ProductListViewModel = {
-    products,
-    totalProducts: currentTotal,
-    hasNextPage,
-    isFetchingNextPage,
-    filterState: {
-      selectedCategories,
-      selectedMaterials,
-      sortBy,
-      localPriceRange,
-      searchQuery,
+  const onSearchChange = useDebouncedCallback((search: string) => {
+    onFilterChange({ ...filters, search });
+  }, 200);
+
+  const onFilterOpen = useCallback(() => {
+    setIsFilterOpen(true);
+  }, []);
+
+  const onFilterClose = useCallback(() => {
+    setIsFilterOpen(false);
+  }, []);
+
+  const onSortChange = useCallback(
+    (sort: ProductOrderBy) => {
+      onFilterChange({ ...filters, sort });
     },
-    isFiltering: isPending,
-    categories,
-    materials,
-    priceRange,
-    priceHistogram,
-  };
+    [filters, onFilterChange],
+  );
+
+  const onPriceRangeChange = useDebouncedCallback((value: [number, number]) => {
+    onFilterChange({ ...filters, min_price: value[0], max_price: value[1] });
+  }, 200);
+
+  const onCategoryToggle = useCallback(
+    (category: string) => {
+      onFilterChange({
+        ...filters,
+        categories: [...filters.categories, category],
+      });
+    },
+    [filters, onFilterChange],
+  );
+
+  const onMaterialToggle = useCallback(
+    (material: string) => {
+      onFilterChange({
+        ...filters,
+        materials: [...filters.materials, material],
+      });
+    },
+    [filters, onFilterChange],
+  );
 
   return (
     <ProductList
-      viewModel={viewModel}
-      loadMoreRef={loadMoreRef}
+      products={products}
+      filters={filters}
+      filterMetadata={filterMetadata}
+      isFetchingProducts={isFetchingProducts}
+      isFilterOpen={isFilterOpen}
+      hasNextProductsPage={hasNextProductsPage}
+      fetchNextProductsPageRef={fetchNextProductsPageRef}
+      onSearchChange={onSearchChange}
+      onFilterOpen={onFilterOpen}
+      onFilterClose={onFilterClose}
+      onSortChange={onSortChange}
+      onFilterClear={onFilterClear}
       onCategoryToggle={onCategoryToggle}
       onMaterialToggle={onMaterialToggle}
-      onPriceChange={onPriceChange}
-      onPriceCommit={onPriceCommit}
-      onSortChange={onSortChange}
-      onSearchChange={onSearchChange}
-      onClearFilters={onClearFilters}
+      onPriceRangeChange={onPriceRangeChange}
     />
   );
 }

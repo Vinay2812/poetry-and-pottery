@@ -1,6 +1,10 @@
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import { getProducts } from "@/data/products/gateway/server";
-import type { ProductsFilterParams } from "@/data/products/types";
+import {
+  ProductOrderBy,
+  type ProductsFilterParams,
+  getProductsOrderBy,
+} from "@/data/products/types";
 import { MobileHeaderContainer } from "@/features/layout";
 import { ProductListContainer } from "@/features/products";
 import type { Metadata } from "next";
@@ -39,27 +43,12 @@ interface ProductsPageProps {
   searchParams: Promise<{
     categories?: string;
     materials?: string;
-    sort?: string;
+    sort?: ProductOrderBy;
     page?: string;
-    minPrice?: string;
-    maxPrice?: string;
+    min_price?: string;
+    max_price?: string;
     search?: string;
   }>;
-}
-
-function mapSortToOrderBy(
-  sort?: string,
-): ProductsFilterParams["order_by"] | undefined {
-  switch (sort) {
-    case "price-low":
-      return "price_low_to_high";
-    case "price-high":
-      return "price_high_to_low";
-    case "newest":
-      return "new";
-    default:
-      return "featured";
-  }
 }
 
 async function ProductsContent({
@@ -72,38 +61,17 @@ async function ProductsContent({
   const filterParams: ProductsFilterParams = {
     categories: params.categories?.split(","),
     materials: params.materials?.split(","),
-    order_by: mapSortToOrderBy(params.sort),
+    order_by: getProductsOrderBy(params.sort),
     page: params.page ? parseInt(params.page, 10) : 1,
     limit: DEFAULT_PAGE_SIZE,
-    min_price: params.minPrice ? parseInt(params.minPrice) : undefined,
-    max_price: params.maxPrice ? parseInt(params.maxPrice) : undefined,
+    min_price: params.min_price ? parseInt(params.min_price) : undefined,
+    max_price: params.max_price ? parseInt(params.max_price) : undefined,
     search: params.search,
   };
 
   const result = await getProducts(filterParams);
 
-  const categories = result.meta.categories.map((cat) => ({
-    id: cat,
-    name: cat.charAt(0).toUpperCase() + cat.slice(1),
-  }));
-
-  const minPrice = result.meta.price_range.min;
-  const maxPrice = result.meta.price_range.max;
-  const priceRange =
-    minPrice != null && maxPrice != null
-      ? { min: minPrice, max: maxPrice }
-      : undefined;
-
-  return (
-    <ProductListContainer
-      products={result.products}
-      categories={categories}
-      materials={result.meta.materials}
-      totalProducts={result.total_products}
-      priceRange={priceRange}
-      priceHistogram={result.meta.price_histogram}
-    />
-  );
+  return <ProductListContainer productsWithFiltersAndMetadata={result} />;
 }
 
 export default async function ProductsPage({

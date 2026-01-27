@@ -1,7 +1,9 @@
 "use client";
 
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { Product } from "@/types";
 import { Loader2, Search, SlidersHorizontal, X } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { ProductCard } from "@/components/cards";
 import { EmptyState } from "@/components/sections";
@@ -20,53 +22,60 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { type ProductListProps, SORT_OPTIONS } from "../types";
+import { ProductBase, ProductOrderBy } from "@/graphql/generated/types";
 
-const PRODUCTS_PER_PAGE = 12;
+import { Filters } from "../hooks/use-products-filter-v2";
+import { useProductsV2 } from "../hooks/use-products-v2";
+import { SORT_OPTIONS } from "../types";
+
+export type UseProductsV2Props = ReturnType<typeof useProductsV2>;
+
+type ProductListProps = {
+  products: ProductBase[];
+  filters: Filters;
+  filterMetadata: UseProductsV2Props["filterMetadata"];
+  isFetchingProducts: boolean;
+  isFilterOpen: boolean;
+  hasNextProductsPage: boolean;
+  fetchNextProductsPageRef: UseProductsV2Props["fetchNextProductsPageRef"];
+  onSearchChange: (search: string) => void;
+  onFilterOpen: () => void;
+  onFilterClose: () => void;
+  onSortChange: (sort: ProductOrderBy) => void;
+  onFilterClear: () => void;
+  onPriceRangeChange: (value: [number, number]) => void;
+  onCategoryToggle: (category: string) => void;
+  onMaterialToggle: (material: string) => void;
+};
 
 export function ProductList({
-  viewModel,
-  loadMoreRef,
+  products,
+  filters,
+  filterMetadata,
+  isFetchingProducts,
+  isFilterOpen,
+  hasNextProductsPage,
+  fetchNextProductsPageRef,
+  onSearchChange,
+  onFilterOpen,
+  onSortChange,
+  onFilterClose,
+  onFilterClear,
+  onPriceRangeChange,
   onCategoryToggle,
   onMaterialToggle,
-  onPriceChange,
-  onPriceCommit,
-  onSortChange,
-  onSearchChange,
-  onClearFilters,
 }: ProductListProps) {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-
-  const {
-    products,
-    totalProducts,
-    hasNextPage,
-    isFetchingNextPage,
-    isFiltering,
-    filterState,
-    categories,
-    materials,
-    priceRange,
-    priceHistogram,
-  } = viewModel;
-
-  const {
-    selectedCategories,
-    selectedMaterials,
-    sortBy,
-    localPriceRange,
-    searchQuery,
-  } = filterState;
-
   const activeFilterCount =
-    selectedCategories.length + selectedMaterials.length;
+    filters.categories.length + filters.materials.length;
+
+  const totalProducts = filterMetadata.total_products;
 
   return (
     <>
       {/* Search Bar - Mobile */}
       <div className="px-4 pb-2 lg:hidden">
         <SearchInput
-          value={searchQuery}
+          value={filters.search}
           onChange={onSearchChange}
           placeholder="Search products..."
           className="mt-2 flex w-full items-center justify-center"
@@ -79,7 +88,7 @@ export function ProductList({
           variant="outline"
           size="sm"
           className="h-9 rounded-full"
-          onClick={() => setIsFilterOpen(true)}
+          onClick={onFilterOpen}
         >
           <SlidersHorizontal className="mr-2 h-4 w-4" />
           Filter
@@ -90,7 +99,7 @@ export function ProductList({
           )}
         </Button>
 
-        <Select value={sortBy} onValueChange={onSortChange}>
+        <Select value={filters.sort} onValueChange={onSortChange}>
           <SelectTrigger className="h-9 w-48 rounded-full text-sm">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
@@ -102,7 +111,7 @@ export function ProductList({
             ))}
           </SelectContent>
         </Select>
-        {isFiltering && (
+        {isFetchingProducts && (
           <div className="text-muted-foreground flex items-center gap-1 text-xs">
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
             Updating
@@ -117,7 +126,7 @@ export function ProductList({
           <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4 dark:border-neutral-800">
             <h2 className="font-display text-lg font-bold">Filters</h2>
             <button
-              onClick={() => setIsFilterOpen(false)}
+              onClick={onFilterClose}
               className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-200 dark:bg-neutral-800"
             >
               <X className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
@@ -127,19 +136,13 @@ export function ProductList({
           {/* Scrollable Body */}
           <div className="flex-1 overflow-y-auto px-5 py-4">
             <FilterSidebar
-              selectedCategories={selectedCategories}
-              selectedMaterials={selectedMaterials}
-              categories={categories}
-              materials={materials}
+              filters={filters}
+              filterMetadata={filterMetadata}
+              filtersClassName="hidden"
+              onFilterClear={onFilterClear}
+              onPriceRangeChange={onPriceRangeChange}
               onCategoryToggle={onCategoryToggle}
               onMaterialToggle={onMaterialToggle}
-              onClear={onClearFilters}
-              priceRange={priceRange}
-              selectedPriceRange={localPriceRange}
-              onPriceChange={onPriceChange}
-              onPriceChangeCommit={onPriceCommit}
-              priceHistogram={priceHistogram}
-              filtersClassName="hidden"
             />
           </div>
 
@@ -148,15 +151,13 @@ export function ProductList({
             <Button
               variant="secondary"
               className="flex-1 rounded-xl"
-              onClick={() => {
-                onClearFilters();
-              }}
+              onClick={onFilterClear}
             >
               Reset
             </Button>
             <Button
               className="shadow-primary/20 flex-2 rounded-xl shadow-lg"
-              onClick={() => setIsFilterOpen(false)}
+              onClick={onFilterClose}
             >
               Show {totalProducts} Products
             </Button>
@@ -175,19 +176,13 @@ export function ProductList({
           <aside className="hidden w-64 shrink-0 lg:block">
             <div className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto lg:pr-6">
               <FilterSidebar
-                selectedCategories={selectedCategories}
-                selectedMaterials={selectedMaterials}
-                categories={categories}
-                materials={materials}
+                filters={filters}
+                filterMetadata={filterMetadata}
+                filtersClassName="px-0"
+                onFilterClear={onFilterClear}
+                onPriceRangeChange={onPriceRangeChange}
                 onCategoryToggle={onCategoryToggle}
                 onMaterialToggle={onMaterialToggle}
-                onClear={onClearFilters}
-                priceRange={priceRange}
-                selectedPriceRange={localPriceRange}
-                onPriceChange={onPriceChange}
-                onPriceChangeCommit={onPriceCommit}
-                priceHistogram={priceHistogram}
-                filtersClassName="px-0"
               />
             </div>
           </aside>
@@ -197,19 +192,19 @@ export function ProductList({
             {/* Desktop Search and Sort */}
             <div className="mb-6 hidden flex-col gap-4 lg:flex">
               <SearchInput
-                value={searchQuery}
+                value={filters.search}
                 onChange={onSearchChange}
                 placeholder="Search products..."
                 className="w-full max-w-md"
               />
               <div className="flex items-center justify-end gap-3">
-                {isFiltering && (
+                {isFetchingProducts && (
                   <div className="text-muted-foreground flex items-center gap-2 text-xs">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     Updating results...
                   </div>
                 )}
-                <Select value={sortBy} onValueChange={onSortChange}>
+                <Select value={filters.sort} onValueChange={onSortChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
@@ -234,20 +229,21 @@ export function ProductList({
 
                 {/* Infinite scroll trigger */}
                 <div
-                  ref={loadMoreRef}
+                  ref={fetchNextProductsPageRef}
                   className="mt-8 mb-4 flex justify-center"
                 >
-                  {isFetchingNextPage && (
+                  {isFetchingProducts && (
                     <div className="text-muted-foreground flex items-center gap-2">
                       <Loader2 className="h-5 w-5 animate-spin" />
                       <span className="text-sm">Loading more products...</span>
                     </div>
                   )}
-                  {!hasNextPage && products.length >= PRODUCTS_PER_PAGE && (
-                    <p className="text-muted-foreground text-sm">
-                      You&apos;ve seen all {totalProducts} products
-                    </p>
-                  )}
+                  {!hasNextProductsPage &&
+                    products.length >= DEFAULT_PAGE_SIZE && (
+                      <p className="text-muted-foreground text-sm">
+                        You&apos;ve seen all {totalProducts} products
+                      </p>
+                    )}
                 </div>
               </>
             ) : (
@@ -256,7 +252,7 @@ export function ProductList({
                 title="No products found"
                 description="No products found matching your filters."
                 actionText="Clear Filters"
-                onAction={onClearFilters}
+                onAction={onFilterClear}
               />
             )}
           </div>

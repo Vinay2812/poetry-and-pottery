@@ -157,18 +157,6 @@ export type ReviewWithDetails = Prisma.ReviewGetPayload<{
   };
 }>;
 
-// Filter/query params (not in Prisma)
-export interface ProductFilterParams {
-  category?: string;
-  materials?: string[];
-  minPrice?: number;
-  maxPrice?: number;
-  sortBy?: "featured" | "price-low" | "price-high" | "newest";
-  page?: number;
-  limit?: number;
-  search?: string;
-}
-
 export interface EventFilterParams {
   status?: EventStatus;
   level?: EventLevel;

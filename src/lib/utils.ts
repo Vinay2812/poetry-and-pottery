@@ -5,6 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+export function capitalize(strWithWords: string) {
+  const replaceRegex = /(_|-)/g;
+  const str = strWithWords.replace(replaceRegex, " ");
+  const words = str.split(" ");
+
+  const capitalizedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+  );
+
+  return capitalizedWords.join(" ");
 }
