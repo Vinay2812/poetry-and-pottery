@@ -8,7 +8,7 @@ You are a frontend developer working on the `poetry-and-pottery` project. Your t
 
 1. Only implement tasks with status `✅ Approved` in design-refactor.md
 2. **ALWAYS apply React 19 patterns** from Phase 14 during implementation (not as a separate step)
-3. React 19 patterns include: `useTransition`, `useOptimistic`, `Suspense`, `Activity`, `ViewTransition`, `useFormStatus`
+3. React 19 patterns include: `useTransition`, `useOptimistic`, `Suspense`, `Activity`, `ViewTransition`, `useFormStatus`, `useLayoutEffect`
 
 ---
 
@@ -34,6 +34,53 @@ Before starting, ensure:
 
 ---
 
+## Wireframe Categories
+
+Wireframes are the **single source of truth** for all visual implementation. Every wireframe file is an HTML document located in `wireframes/` and follows the naming pattern `task-[phase]-[number]-[name].html`. All wireframes share a common stylesheet (`_shared-styles.css`) that defines the forest theme tokens.
+
+Wireframes fall into three categories. Each has different implementation concerns:
+
+### 1. Component Wireframes (Reusable UI primitives)
+
+**Phases:** 4 (Foundation), 13 (Skeletons)
+
+**Examples:** `task-4-1-button-styles.html`, `task-4-2-badge-component.html`, `task-4-3-form-inputs.html`, `task-4-4-rating-component.html`, `task-4-7-dialog-sheet.html`, `task-13-1-skeleton-components.html`
+
+**Implementation approach:**
+- These map to files in `src/components/ui/` or reusable feature components
+- Must be pixel-perfect — other wireframes depend on these foundations
+- Test in isolation first, then verify inside pages that consume them
+- Include ALL variants shown in the wireframe (sizes, states, colors)
+
+### 2. Page Wireframes (Full page designs)
+
+**Phases:** 5 (Product), 6 (Cart), 7 (Events), 8 (Account), 10 (Content), 12 (Auth)
+
+**Examples:** `task-5-1-product-detail-layout.html`, `task-6-1-cart-page.html`, `task-8-1-orders-page.html`, `task-10-1-about-page.html`
+
+**Implementation approach:**
+- These map to route pages in `src/app/` and feature containers/components
+- Compose foundation components from Phase 4 — do NOT re-implement buttons, badges, etc.
+- Verify the full page at all three viewports (mobile, tablet, desktop)
+- Check scroll behavior, section ordering, and responsive stacking
+
+### 3. Layout Wireframes (Shared structural elements)
+
+**Phases:** 9 (Navigation & Layout), 11 (Polish & Animations)
+
+**Examples:** `task-9-1-desktop-navbar.html`, `task-9-2-mobile-header.html`, `task-9-3-mobile-bottom-nav.html`, `task-9-6-footer.html`, `task-11-1-section-backgrounds.html`
+
+**Implementation approach:**
+- These map to layout files in `src/app/layout.tsx` and shared components like `Header`, `Footer`, `BottomNav`
+- Must work correctly on EVERY page, not just one — verify on at least 3 different pages
+- Navigation wireframes define breakpoint behavior (when to show desktop vs mobile nav)
+- Test sticky/fixed positioning, z-index stacking, and scroll behavior
+
+> **Phase dependency:** Phase 4 (Foundation Components) MUST be implemented before Phases 5–13.
+> Phases 5–10 can be implemented in parallel. Phase 11 (Polish) runs last.
+
+---
+
 ## Task Overview
 
 1. Capture snapshots of approved wireframes
@@ -51,7 +98,29 @@ Before starting, ensure:
 
 ### Step 1: Capture Wireframe Reference
 
-1. **Capture approved wireframe at all viewports**
+> **The wireframe is your design spec.** Treat it as the definitive reference for every visual decision.
+> Do NOT guess colors, spacing, or typography — extract them from the wireframe source.
+
+1. **Read the wireframe HTML source code FIRST**
+
+   Before taking any screenshots, read the wireframe file to extract exact design values:
+
+   ```bash
+   # Read the wireframe source to get exact CSS values
+   cat wireframes/task-X-X-name.html
+   # Also read the shared theme stylesheet
+   cat wireframes/_shared-styles.css
+   ```
+
+   From the source, extract and document:
+   - **Colors**: Exact hex values (e.g., `#4F6F52`, `#C4785A`, `#F5F0E8`)
+   - **Spacing**: Exact `padding`, `margin`, `gap` values
+   - **Typography**: `font-family`, `font-size`, `font-weight`, `line-height`
+   - **Border radius**: Exact `border-radius` values
+   - **Shadows**: Exact `box-shadow` values
+   - **Breakpoints**: Media query breakpoints and what changes at each
+
+2. **Capture approved wireframe at all viewports**
 
    ```bash
    # Open the approved wireframe
@@ -73,11 +142,30 @@ Before starting, ensure:
    agent-browser snapshot > reference-desktop-snapshot.txt
    ```
 
-2. **Study the wireframe structure**
-   - Note exact colors, spacing, typography
-   - Identify component hierarchy
-   - List all interactive elements
-   - Document responsive differences between viewports
+3. **Study the wireframe structure by category**
+
+   **For Component wireframes (Phase 4, 13):**
+   - List every variant shown (sizes, states, disabled, active, hover)
+   - Note which props control each variant
+   - Check if the component is used inside other wireframes
+
+   **For Page wireframes (Phase 5–8, 10, 12):**
+   - Map the wireframe sections to component hierarchy (header, body sections, footer)
+   - Identify which foundation components (Phase 4) are used on the page
+   - Note section ordering and how it changes across mobile/tablet/desktop
+   - Document scroll behavior (sticky elements, lazy sections, infinite scroll)
+
+   **For Layout wireframes (Phase 9, 11):**
+   - Identify the breakpoint where layout changes (e.g., desktop nav → mobile header + bottom nav)
+   - Note fixed/sticky positioning and z-index layering
+   - Check how the layout wraps around page content (padding, max-width, centering)
+   - Document animation/transition values for polish wireframes
+
+   **For all wireframes:**
+   - Note exact colors, spacing, typography from the HTML source
+   - Identify component hierarchy and nesting
+   - List all interactive elements (buttons, links, inputs, toggles)
+   - Document responsive differences between mobile, tablet, and desktop
 
 ---
 
@@ -86,10 +174,32 @@ Before starting, ensure:
 3. **Update task status**
    - Change status in `design-refactor.md` from `✅ Approved` to `🚧 In Progress`
 
-4. **Implement the design**
+4. **Implement the design (follow wireframe category approach)**
+
    - Follow the files listed in `design-refactor.md` under "Files to Modify"
    - Match the wireframe exactly for each viewport
    - Use forest theme colors only
+   - **Reference the wireframe HTML source** for exact values — do NOT approximate
+
+   **Category-specific implementation:**
+
+   **Component wireframes** (Phase 4, 13):
+   - Implement in `src/components/ui/` or as reusable feature components
+   - Build ALL variants shown in the wireframe (size, state, color variants)
+   - Export a clean props API that supports every variant
+   - Test each variant in isolation before integrating into pages
+
+   **Page wireframes** (Phase 5–8, 10, 12):
+   - Implement using Container/Component pattern (see `CLAUDE.md`)
+   - Compose from existing foundation components (Phase 4) — never re-implement base UI
+   - Build mobile-first, then add tablet (`md:`) and desktop (`lg:`, `xl:`) styles
+   - Match exact section order, spacing between sections, and responsive stacking from wireframe
+
+   **Layout wireframes** (Phase 9, 11):
+   - Implement in layout files (`src/app/layout.tsx`) and shared structural components
+   - Test the layout on multiple pages — it must work universally, not just on one page
+   - Verify breakpoint transitions (e.g., desktop nav collapses to mobile nav)
+   - Test fixed/sticky elements don't overlap page content or other fixed elements
 
 5. **Implementation checklist**
    While implementing, verify:
@@ -113,6 +223,7 @@ Before starting, ensure:
    - Does this load async data? → Use `Suspense`
    - Does this have dialogs/sheets? → Use `Activity`
    - Does this have shared images across pages? → Use `viewTransitionName`
+   - Does this need synchronous DOM measurement/mutation before paint? → Use `useLayoutEffect`
 
    **Navigation with Transitions:**
 
@@ -185,6 +296,42 @@ Before starting, ensure:
    </Dialog>
    ```
 
+   **useLayoutEffect for Synchronous DOM Updates:**
+
+   ```tsx
+   // USE useLayoutEffect when you need to read/write DOM before the browser paints
+   // State updates inside useLayoutEffect are flushed synchronously before repaint
+   import { useLayoutEffect, useRef, useState } from "react";
+
+   function Tooltip({ anchorRef, children }) {
+     const tooltipRef = useRef<HTMLDivElement>(null);
+     const [position, setPosition] = useState({ top: 0, left: 0 });
+
+     useLayoutEffect(() => {
+       // Measure DOM and update position BEFORE browser paints
+       // Prevents visible flicker of tooltip jumping from wrong to correct position
+       const anchorRect = anchorRef.current?.getBoundingClientRect();
+       const tooltipRect = tooltipRef.current?.getBoundingClientRect();
+       if (anchorRect && tooltipRect) {
+         setPosition({
+           top: anchorRect.top - tooltipRect.height - 8,
+           left: anchorRect.left + (anchorRect.width - tooltipRect.width) / 2,
+         });
+       }
+     }, [anchorRef]);
+
+     return (
+       <div ref={tooltipRef} style={{ position: "fixed", ...position }}>
+         {children}
+       </div>
+     );
+   }
+   ```
+
+   **When to use `useLayoutEffect` vs `useEffect`:**
+   - **`useLayoutEffect`**: DOM measurements (getBoundingClientRect), scroll position reads/writes, element dimensions, preventing visual flicker from state updates that affect layout
+   - **`useEffect`**: Data fetching, subscriptions, logging, analytics — anything that doesn't need to block painting
+
    **Checklist:**
    - [ ] Navigation uses `useTransition` + `startTransition`
    - [ ] Mutations use `useOptimistic` (not manual rollback)
@@ -192,6 +339,7 @@ Before starting, ensure:
    - [ ] Async sections wrapped in `Suspense`
    - [ ] Shared elements have `viewTransitionName`
    - [ ] Dialogs/sheets use `Activity` component
+   - [ ] DOM measurements/mutations before paint use `useLayoutEffect` (not `useEffect`)
 
 ---
 
@@ -361,6 +509,13 @@ agent-browser errors                  # View page errors
 
 Before marking task as completed:
 
+### Wireframe Fidelity (Source of Truth)
+
+- [ ] Read the wireframe HTML source — extracted exact CSS values (colors, spacing, font sizes, shadows)
+- [ ] Read `_shared-styles.css` for forest theme tokens
+- [ ] Implementation uses values from wireframe source, not approximations
+- [ ] Screenshots captured at all 3 viewports and compared side-by-side with wireframe
+
 ### Layout Verification
 
 - [ ] Mobile layout matches wireframe (375px)
@@ -370,9 +525,9 @@ Before marking task as completed:
 
 ### Visual Verification
 
-- [ ] Colors match forest theme exactly
-- [ ] Typography correct (font-family, size, weight)
-- [ ] Spacing matches wireframe
+- [ ] Colors match forest theme exactly (compare hex values from wireframe source)
+- [ ] Typography correct (font-family, size, weight, line-height from wireframe source)
+- [ ] Spacing matches wireframe (padding, margin, gap from wireframe source)
 - [ ] Border radius correct
 - [ ] Shadows correct
 
@@ -382,6 +537,25 @@ Before marking task as completed:
 - [ ] Hover states match design
 - [ ] Focus states accessible
 - [ ] Click handlers functional
+
+### Category-Specific Verification
+
+**Component wireframes (Phase 4, 13):**
+- [ ] ALL variants from wireframe implemented (sizes, states, colors)
+- [ ] Component works in isolation
+- [ ] Component works when composed inside pages
+
+**Page wireframes (Phase 5–8, 10, 12):**
+- [ ] Section order matches wireframe at all viewports
+- [ ] Uses foundation components from Phase 4 (no re-implementations)
+- [ ] Scroll behavior matches (sticky elements, lazy sections)
+- [ ] Mobile stacking order matches wireframe
+
+**Layout wireframes (Phase 9, 11):**
+- [ ] Layout works on at least 3 different pages
+- [ ] Breakpoint transitions correct (desktop nav → mobile nav switch)
+- [ ] Fixed/sticky elements don't overlap content or each other
+- [ ] Animations/transitions match wireframe timing values
 
 ### Code Quality
 
@@ -399,6 +573,7 @@ Before marking task as completed:
 - [ ] Shared elements have `viewTransitionName` for page animations
 - [ ] Dialogs/sheets use `Activity` for render isolation
 - [ ] No manual optimistic rollback patterns (use `useOptimistic`)
+- [ ] DOM measurements/mutations before paint use `useLayoutEffect` (not `useEffect`)
 
 ---
 
@@ -443,11 +618,12 @@ At the end of this workflow:
 | Modal/sheet rendering   | `Activity`                      | Order detail dialog          |
 | Filter updates          | `startTransition`               | Price range, category filter |
 | Review likes            | `useOptimistic`                 | Like/unlike with rollback    |
+| DOM reads before paint  | `useLayoutEffect`               | Tooltip position, scroll sync |
 
 **Import locations:**
 
 ```tsx
-import { Suspense, useOptimistic, useTransition } from "react";
+import { Suspense, useLayoutEffect, useOptimistic, useTransition } from "react";
 import { Activity } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -474,6 +650,18 @@ router.push("/products/123");
 
 // ✅ GOOD: Wrapped in transition
 startTransition(() => router.push("/products/123"));
+
+// ❌ BAD: useEffect for DOM measurement that affects layout (causes flicker)
+useEffect(() => {
+  const rect = ref.current?.getBoundingClientRect();
+  setPosition({ top: rect.top, left: rect.left });
+}, []);
+
+// ✅ GOOD: useLayoutEffect for DOM measurement before paint (no flicker)
+useLayoutEffect(() => {
+  const rect = ref.current?.getBoundingClientRect();
+  setPosition({ top: rect.top, left: rect.left });
+}, []);
 ```
 
 ---
@@ -482,10 +670,23 @@ startTransition(() => router.push("/products/123"));
 
 **If implementation differs from wireframe:**
 
-1. Re-check the wireframe at exact viewport size
-2. Use `agent-browser get styles [sel]` to compare CSS
-3. Use `agent-browser get box [sel]` to compare dimensions
-4. Fix discrepancies and re-verify
+1. Re-read the wireframe HTML source — compare exact CSS values (colors, spacing, font sizes, shadows)
+2. Re-check the wireframe at the exact viewport size in `agent-browser`
+3. Use `agent-browser get styles [sel]` to compare computed CSS on implementation
+4. Use `agent-browser get box [sel]` to compare element dimensions
+5. Fix discrepancies using values from wireframe source and re-verify
+
+**If a component looks wrong inside a page:**
+
+1. Check the component wireframe (Phase 4) — does the isolated component match?
+2. If yes, the issue is page-level composition (spacing, container width, nesting)
+3. If no, fix the component first, then re-check the page
+
+**If a layout element breaks on certain pages:**
+
+1. Test the layout wireframe (Phase 9) on at least 3 different page routes
+2. Check for page-specific content that pushes layout boundaries (long titles, many items)
+3. Verify z-index and fixed positioning doesn't conflict with page-level elements
 
 **If technical constraints prevent exact match:**
 
@@ -495,6 +696,7 @@ startTransition(() => router.push("/products/123"));
 
 **If responsive behavior is wrong:**
 
-1. Check breakpoint values in Tailwind config
-2. Verify correct responsive prefixes (`md:`, `lg:`, `xl:`)
-3. Test each breakpoint transition point
+1. Re-read wireframe source for media query breakpoints
+2. Check breakpoint values in Tailwind config
+3. Verify correct responsive prefixes (`md:`, `lg:`, `xl:`)
+4. Test each breakpoint transition point
