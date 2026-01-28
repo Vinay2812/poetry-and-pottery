@@ -1255,7 +1255,7 @@ _Completed Card (Past registrations):_
 
 #### Task 8.1: Orders Page
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-8-1-orders-page.html](wireframes/task-8-1-orders-page.html)
 **Approved Selection:**
 

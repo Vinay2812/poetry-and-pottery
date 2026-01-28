@@ -3,6 +3,8 @@ import { MobileHeaderContainer } from "@/features/layout";
 import { OrdersListContainer } from "@/features/orders";
 import type { Metadata } from "next";
 
+import { ListingPageHeader } from "@/components/shared";
+
 import { requireAuth } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -18,6 +20,7 @@ export const metadata: Metadata = {
 interface OrdersPageProps {
   searchParams: Promise<{
     search?: string;
+    status?: string;
   }>;
 }
 
@@ -38,10 +41,17 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
       <MobileHeaderContainer title="My Orders" showBack backHref="/" />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
-        <div className="container mx-auto px-4 py-6 lg:px-8">
-          <h1 className="font-display mb-6 hidden text-2xl font-bold lg:block">
-            My Orders
-          </h1>
+        <div className="container mx-auto px-4 py-0 lg:px-8">
+          {/* Desktop Page Header */}
+          <ListingPageHeader
+            title="My Orders"
+            subtitle="Track your orders, view details, and manage your purchase history."
+            breadcrumbs={[
+              { label: "Home", href: "/" },
+              { label: "My Account", href: "/profile" },
+              { label: "My Orders" },
+            ]}
+          />
 
           <OrdersListContainer
             initialOrders={orders}

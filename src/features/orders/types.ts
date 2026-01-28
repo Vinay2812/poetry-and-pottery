@@ -137,12 +137,23 @@ export interface OrderCardViewModel {
   total: number;
   firstProductName: string;
   otherItemsCount: number;
+  totalItemsCount: number;
   productImages: Array<{
     id: number;
     src: string;
     alt: string;
   }>;
 }
+
+/**
+ * Filter option for order status.
+ */
+export type OrderStatusFilter =
+  | "all"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
 
 /**
  * View model for the OrdersList component.
@@ -153,6 +164,7 @@ export interface OrdersListViewModel {
   hasMore: boolean;
   isLoading: boolean;
   searchQuery: string;
+  statusFilter: OrderStatusFilter;
 }
 
 /**
@@ -162,6 +174,7 @@ export interface OrdersListProps {
   viewModel: OrdersListViewModel;
   loadMoreRef: (node?: Element | null) => void;
   onSearchChange: (query: string) => void;
+  onStatusFilterChange: (status: OrderStatusFilter) => void;
 }
 
 /**
@@ -187,6 +200,7 @@ export function buildOrderCardViewModel(order: Order): OrderCardViewModel {
     total: order.total,
     firstProductName,
     otherItemsCount: items.length - 1,
+    totalItemsCount: items.length,
     productImages: items.slice(0, 3).map((item) => ({
       id: item.id,
       src: item.product?.image_urls?.[0] || "/placeholder.jpg",
