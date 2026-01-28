@@ -136,29 +136,29 @@ export function RegisteredEventCard({
         <div>
           {/* Header: Title + Status */}
           <div className="mb-1.5 flex items-start justify-between gap-2">
-          <Link
-            href={`/events/${event.id}`}
-            className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
-          >
-            {event.title}
-          </Link>
-          <Badge
-            className={cn(
-              "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold",
-              statusConfig.className,
-            )}
-          >
-            {statusConfig.label}
-          </Badge>
-        </div>
+            <Link
+              href={`/events/${event.id}`}
+              className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
+            >
+              {event.title}
+            </Link>
+            <Badge
+              className={cn(
+                "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold",
+                statusConfig.className,
+              )}
+            >
+              {statusConfig.label}
+            </Badge>
+          </div>
 
-        {/* Date/Time */}
-        <div className="mb-1 flex items-center gap-1.5 text-xs text-neutral-500 lg:text-sm">
-          <Calendar className="h-3.5 w-3.5 shrink-0" />
-          <span>
-            {formattedDate} • {formattedTime}
-          </span>
-        </div>
+          {/* Date/Time */}
+          <div className="mb-1 flex items-center gap-1.5 text-xs text-neutral-500 lg:text-sm">
+            <Calendar className="h-3.5 w-3.5 shrink-0" />
+            <span>
+              {formattedDate} • {formattedTime}
+            </span>
+          </div>
 
           {/* Location */}
           {event.location && (
