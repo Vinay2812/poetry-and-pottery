@@ -53,12 +53,12 @@ export default function Home() {
           title="Where earth meets artistry"
           subtitle="Each piece tells a story of patience, fire, and the quiet beauty of handmade things."
         >
-          <div className="flex gap-2.5 md:gap-3">
+          <div className="flex gap-2.5 pt-2 pb-6 md:gap-3 md:pt-0 md:pb-0">
             <Link
               className="bg-primary inline-flex h-9 items-center rounded-lg px-5 text-[13px] font-semibold text-white transition-transform hover:scale-[1.03] md:h-11 md:rounded-[10px] md:px-7 md:text-[15px] lg:h-12"
               href="/products"
             >
-              Shop Collection
+              Shop
             </Link>
             <Link
               className="inline-flex h-9 items-center rounded-lg border-[1.5px] border-white/40 px-5 text-[13px] font-medium text-white transition-all hover:border-white hover:bg-white/10 md:h-11 md:rounded-[10px] md:px-7 md:text-[15px] lg:h-12"
