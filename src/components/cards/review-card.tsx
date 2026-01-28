@@ -1,14 +1,24 @@
 "use client";
 
-import { ThumbsUp } from "lucide-react";
+import { BadgeCheck, ThumbsUp } from "lucide-react";
 
 import { OptimizedImage, Rating } from "@/components/shared";
 
 import { cn } from "@/lib/utils";
 
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
 interface ReviewCardProps {
   author: string;
-  avatar: string;
+  avatar?: string;
   rating: number;
   content: string;
   date: string;
@@ -16,6 +26,7 @@ interface ReviewCardProps {
   isLiked?: boolean;
   isOwnReview?: boolean;
   isCompact?: boolean;
+  isVerified?: boolean;
   images?: string[];
   onLike?: () => void;
   onImageClick?: (imageUrl: string) => void;
@@ -23,7 +34,6 @@ interface ReviewCardProps {
 
 export function ReviewCard({
   author,
-  avatar,
   rating,
   content,
   date,
@@ -31,43 +41,59 @@ export function ReviewCard({
   isLiked = false,
   isOwnReview = false,
   isCompact = false,
+  isVerified = false,
   images,
   onLike,
   onImageClick,
 }: ReviewCardProps) {
+  const initials = getInitials(author);
+
   return (
     <div
       className={cn(
-        "shadow-soft rounded-[2rem] border border-neutral-100 bg-white p-5 transition-all duration-300 dark:border-neutral-800 dark:bg-neutral-900",
+        "rounded-2xl bg-neutral-50 p-5",
         isCompact ? "w-[280px] shrink-0" : "w-full",
       )}
     >
+      {/* Header: Avatar + Name + Stars + Date */}
       <div className="mb-3 flex items-start gap-3">
-        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
-          <OptimizedImage
-            src={avatar}
-            alt={author}
-            fill
-            className="object-cover"
-          />
+        {/* Initials Avatar */}
+        <div className="bg-primary-light text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-medium">
+          {initials}
         </div>
+
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-2">
-            <p className="truncate text-sm font-medium">{author}</p>
-            <span className="text-muted-foreground shrink-0 text-xs">
-              {date}
-            </span>
+            <p className="font-display truncate text-sm font-semibold text-neutral-900">
+              {author}
+            </p>
+            <span className="shrink-0 text-xs text-neutral-400">{date}</span>
           </div>
-          <Rating rating={rating} showCount={false} size="sm" />
+          <div className="mt-0.5 flex items-center gap-2">
+            <Rating rating={rating} showCount={false} size="sm" />
+            {isVerified && (
+              <span className="text-primary flex items-center gap-1 text-[11px] font-medium">
+                <BadgeCheck className="h-3.5 w-3.5" />
+                <span className="hidden md:inline">Verified</span>
+              </span>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Review Content */}
       {content && (
         <p
-          className={`text-muted-foreground text-sm ${isCompact ? "line-clamp-3" : ""}`}
+          className={cn(
+            "text-sm leading-relaxed text-neutral-600",
+            isCompact && "line-clamp-3",
+          )}
         >
           {content}
         </p>
       )}
+
+      {/* Review Images */}
       {!isCompact && images && images.length > 0 && (
         <div className="mt-3 flex gap-2 overflow-x-auto">
           {images.map((image, index) => (
@@ -87,21 +113,24 @@ export function ReviewCard({
           ))}
         </div>
       )}
+
+      {/* Helpful Button */}
       {!isOwnReview && (
-        <div className="mt-3 flex items-center gap-1.5">
+        <div className="mt-3 flex items-center">
           <button
             type="button"
             onClick={onLike}
-            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition-colors ${
+            className={cn(
+              "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs transition-colors",
               isLiked
                 ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-muted"
-            }`}
+                : "text-neutral-500 hover:bg-neutral-100",
+            )}
           >
             <ThumbsUp
-              className={`h-3.5 w-3.5 ${isLiked ? "fill-primary" : ""}`}
+              className={cn("h-3.5 w-3.5", isLiked && "fill-primary")}
             />
-            <span>{likes ?? 0}</span>
+            <span>Helpful ({likes ?? 0})</span>
           </button>
         </div>
       )}

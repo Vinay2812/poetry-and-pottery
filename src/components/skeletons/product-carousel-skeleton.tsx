@@ -21,10 +21,10 @@ export function ProductCarouselSkeleton({
       )}
 
       <div className="flex gap-4 overflow-hidden">
-        {[1, 2, 3, 4].map((i) => (
+        {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className="min-w-0 shrink-0 basis-full sm:basis-[50%] lg:basis-[33.33%]"
+            className="min-w-0 shrink-0 basis-[47%] sm:basis-[34%] lg:basis-[24%]"
           >
             <Skeleton className="aspect-square rounded-xl lg:rounded-2xl" />
             <div className="mt-3 space-y-1.5">

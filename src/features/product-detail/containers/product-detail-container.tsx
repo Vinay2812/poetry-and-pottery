@@ -2,7 +2,13 @@
 
 import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
-import { useCallback, useMemo, useOptimistic, useState } from "react";
+import {
+  startTransition,
+  useCallback,
+  useMemo,
+  useOptimistic,
+  useState,
+} from "react";
 
 import { ProductDetail } from "../components/product-detail";
 import type { ProductDetailContainerProps } from "../types";
@@ -98,10 +104,12 @@ export function ProductDetailContainer({
         // Optimistically update UI
         const newIsLiked = !currentIsLiked;
         const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-        applyOptimisticReviewLike({
-          reviewId,
-          likes: newLikes,
-          isLiked: newIsLiked,
+        startTransition(() => {
+          applyOptimisticReviewLike({
+            reviewId,
+            likes: newLikes,
+            isLiked: newIsLiked,
+          });
         });
 
         // Call mutation

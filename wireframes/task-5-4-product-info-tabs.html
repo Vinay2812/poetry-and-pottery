@@ -94,43 +94,6 @@
         border-radius: 50%;
       }
 
-      /* Pill Tabs Variant */
-      .tabs-list.pill {
-        border-bottom: none;
-        gap: 8px;
-        background: #f5f5f4;
-        padding: 4px;
-        border-radius: 12px;
-        display: inline-flex;
-        width: auto;
-      }
-
-      .tabs-list.pill .tab-trigger {
-        border-radius: 8px;
-        padding: 10px 16px;
-        font-size: 13px;
-      }
-
-      .tabs-list.pill .tab-trigger.active {
-        background: white;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-      }
-
-      .tabs-list.pill .tab-trigger.active::after {
-        display: none;
-      }
-
-      /* Full Width Tabs Variant */
-      .tabs-list.full-width {
-        display: flex;
-      }
-
-      .tabs-list.full-width .tab-trigger {
-        flex: 1;
-        text-align: center;
-        padding: 14px 12px;
-      }
-
       /* Mobile Scrollable Indicator */
       .scroll-indicator {
         position: relative;
@@ -156,6 +119,31 @@
         font-size: 10px;
         color: #999;
         text-align: center;
+      }
+
+      /* Inline description preview */
+      .inline-description {
+        background: #f9f9f8;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        border-left: 3px solid #4f6f52;
+      }
+
+      .inline-description .label {
+        font-size: 10px;
+        color: #4f6f52;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+
+      .inline-description p {
+        font-size: 13px;
+        color: #525252;
+        line-height: 1.5;
+        margin: 0;
       }
 
       /* Reviews Summary in Tab */
@@ -196,31 +184,49 @@
         border-radius: 10px;
         margin-left: 6px;
       }
+
+      /* Section heading for materials */
+      .section-heading {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
     </style>
   </head>
   <body>
     <h1>Task 5.4: Product Info Tabs</h1>
     <p class="subtitle">
-      Tabbed interface for product information: Description, Materials & Care,
-      and Reviews. Replaces accordion pattern for better content organization.
+      Tabbed interface for product information: Materials & Care and Reviews.
+      Description is displayed inline in the product info header (not in tabs).
+      Approved Option A — Underlined Tabs.
     </p>
 
-    <!-- ======================= OPTION A ======================= -->
+    <div class="notes" style="margin-bottom: 32px">
+      <strong>Status:</strong> ✅ APPROVED & IMPLEMENTED<br />
+      <strong>Approved:</strong> Option A — Underlined Tabs (all viewports)<br />
+      <strong>Change:</strong> Description tab removed. Description is now shown
+      inline in the ProductInfoHeader below the price. Only 2 tabs remain:
+      Materials & Care (default) and Reviews.
+    </div>
+
+    <!-- ======================= APPROVED DESIGN ======================= -->
     <section class="wf-section">
-      <span class="wf-task-label">Option A</span>
+      <span class="wf-task-label">Approved</span>
       <h2 class="wf-section-title">
-        Underlined Tabs
-        <span class="recommended-badge">RECOMMENDED</span>
+        Underlined Tabs — 2 Tabs (Materials & Care, Reviews)
       </h2>
       <p class="wf-section-desc">
-        Classic underlined tab style with primary color indicator. Clean and
-        minimal. Mobile uses horizontal scroll for additional tabs.
+        Classic underlined tab style with primary color indicator. Description is
+        shown inline above the tabs in the product info section. Default active
+        tab is Materials & Care.
       </p>
 
       <div class="option-details">
         <strong>Tab Style:</strong> Underlined active indicator (2px, primary) |
-        <strong>Spacing:</strong> 20px horizontal padding |
-        <strong>Mobile:</strong> Horizontally scrollable |
+        <strong>Tabs:</strong> Materials & Care (default), Reviews |
+        <strong>Description:</strong> Inline in header, not a tab |
         <strong>Font:</strong> Plus Jakarta Sans, 14px, 600 weight
       </div>
 
@@ -231,28 +237,50 @@
           <div class="wf-mobile-frame">
             <div class="wf-page-content">
               <div class="product-context">
-                [ Product Image + Price + CTA Above ]
+                [ Product Image + Price Above ]
+              </div>
+
+              <!-- Inline description (shown in product info header) -->
+              <div class="inline-description">
+                <div class="label">Description (inline, not in tabs)</div>
+                <p>
+                  This beautifully handcrafted ceramic vase features a unique
+                  speckled glaze that catches the light.
+                </p>
+              </div>
+
+              <div class="product-context">
+                [ Material, Color, Stock, Add to Cart, Trust Badges Above ]
               </div>
 
               <div class="tabs-container">
                 <div class="tabs-list scroll-indicator">
-                  <button class="tab-trigger active">Description</button>
-                  <button class="tab-trigger">Materials & Care</button>
+                  <button class="tab-trigger active">Materials & Care</button>
                   <button class="tab-trigger">
                     Reviews <span class="tab-badge">24</span>
                   </button>
                 </div>
                 <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze that catches the light. Each piece is
-                    wheel-thrown and finished by hand, making every vase
-                    one-of-a-kind.
-                  </p>
-                  <p style="margin-top: 12px">
-                    Perfect for displaying fresh or dried flowers, or as a
-                    standalone decorative piece.
-                  </p>
+                  <div class="section-heading">Material</div>
+                  <p>Made from high-quality Ceramic</p>
+
+                  <div class="section-heading" style="margin-top: 16px">
+                    Care Instructions
+                  </div>
+                  <ul>
+                    <li>Dishwasher and microwave safe</li>
+                    <li>Hand wash recommended for longevity</li>
+                    <li>Avoid sudden temperature changes</li>
+                  </ul>
+
+                  <div class="section-heading" style="margin-top: 16px">
+                    Shipping & Returns
+                  </div>
+                  <ul>
+                    <li>Free shipping on orders over ₹2,000</li>
+                    <li>Standard delivery 5-7 business days</li>
+                    <li>30-day return policy for unused items</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -268,30 +296,47 @@
                 [ Product Layout - Image Left, Info Right ]
               </div>
 
+              <div class="inline-description">
+                <div class="label">Description (inline, not in tabs)</div>
+                <p>
+                  This beautifully handcrafted ceramic vase features a unique
+                  speckled glaze that catches the light. Each piece is
+                  wheel-thrown and finished by hand.
+                </p>
+              </div>
+
+              <div class="product-context">
+                [ Material, Color, Stock, Add to Cart, Trust Badges Above ]
+              </div>
+
               <div class="tabs-container">
                 <div class="tabs-list">
-                  <button class="tab-trigger active">Description</button>
-                  <button class="tab-trigger">Materials & Care</button>
+                  <button class="tab-trigger active">Materials & Care</button>
                   <button class="tab-trigger">
                     Reviews <span class="tab-badge">24</span>
                   </button>
                 </div>
                 <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze that catches the light. Each piece is
-                    wheel-thrown and finished by hand in our studio, making
-                    every vase one-of-a-kind.
-                  </p>
-                  <p style="margin-top: 12px">
-                    Perfect for displaying fresh or dried flowers, or as a
-                    standalone decorative piece that brings warmth and artistry
-                    to any space.
-                  </p>
-                  <ul style="margin-top: 16px">
-                    <li>Height: 8 inches (20 cm)</li>
-                    <li>Width: 5 inches (12.7 cm)</li>
-                    <li>Weight: 1.2 lbs (0.54 kg)</li>
+                  <div class="section-heading">Material</div>
+                  <p>Made from high-quality Ceramic</p>
+
+                  <div class="section-heading" style="margin-top: 16px">
+                    Care Instructions
+                  </div>
+                  <ul>
+                    <li>Dishwasher and microwave safe</li>
+                    <li>Hand wash recommended for longevity</li>
+                    <li>Avoid sudden temperature changes</li>
+                  </ul>
+
+                  <div class="section-heading" style="margin-top: 16px">
+                    Shipping & Returns
+                  </div>
+                  <ul>
+                    <li>Free shipping on orders over ₹2,000</li>
+                    <li>Standard delivery 5-7 business days</li>
+                    <li>Express delivery 2-3 business days</li>
+                    <li>30-day return policy for unused items</li>
                   </ul>
                 </div>
               </div>
@@ -316,32 +361,48 @@
                 [ Full Product Layout Above - Image Gallery Left, Info Right ]
               </div>
 
+              <div class="inline-description" style="max-width: 800px">
+                <div class="label">Description (inline, not in tabs)</div>
+                <p>
+                  This beautifully handcrafted ceramic vase features a unique
+                  speckled glaze that catches the light beautifully. Each piece
+                  is wheel-thrown and finished by hand in our studio, making
+                  every vase truly one-of-a-kind.
+                </p>
+              </div>
+
+              <div class="product-context" style="max-width: 800px">
+                [ Material, Color, Stock, Add to Cart, Trust Badges Above ]
+              </div>
+
               <div class="tabs-container" style="max-width: 800px">
                 <div class="tabs-list">
-                  <button class="tab-trigger active">Description</button>
-                  <button class="tab-trigger">Materials & Care</button>
+                  <button class="tab-trigger active">Materials & Care</button>
                   <button class="tab-trigger">
                     Reviews <span class="tab-badge">24</span>
                   </button>
                 </div>
                 <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze that catches the light beautifully. Each
-                    piece is wheel-thrown and finished by hand in our Portland
-                    studio, making every vase truly one-of-a-kind.
-                  </p>
-                  <p style="margin-top: 12px">
-                    The organic form and earthy tones make this vase perfect for
-                    displaying fresh or dried flowers, or as a standalone
-                    decorative piece that brings warmth and artistry to any
-                    space.
-                  </p>
-                  <ul style="margin-top: 16px">
-                    <li>Height: 8 inches (20 cm)</li>
-                    <li>Width: 5 inches (12.7 cm)</li>
-                    <li>Opening diameter: 3 inches (7.6 cm)</li>
-                    <li>Weight: 1.2 lbs (0.54 kg)</li>
+                  <div class="section-heading">Material</div>
+                  <p>Made from high-quality Ceramic</p>
+
+                  <div class="section-heading" style="margin-top: 16px">
+                    Care Instructions
+                  </div>
+                  <ul>
+                    <li>Dishwasher and microwave safe</li>
+                    <li>Hand wash recommended for longevity</li>
+                    <li>Avoid sudden temperature changes</li>
+                  </ul>
+
+                  <div class="section-heading" style="margin-top: 16px">
+                    Shipping & Returns
+                  </div>
+                  <ul>
+                    <li>Free shipping on orders over ₹2,000</li>
+                    <li>Standard delivery 5-7 business days</li>
+                    <li>Express delivery 2-3 business days</li>
+                    <li>30-day return policy for unused items</li>
                   </ul>
                 </div>
               </div>
@@ -353,262 +414,13 @@
 
     <div class="divider"></div>
 
-    <!-- ======================= OPTION B ======================= -->
-    <section class="wf-section">
-      <span class="wf-task-label">Option B</span>
-      <h2 class="wf-section-title">Pill/Segment Tabs</h2>
-      <p class="wf-section-desc">
-        Tabs contained within a pill-shaped container. Active tab has white
-        background with shadow. More modern and contained look.
-      </p>
-
-      <div class="option-details">
-        <strong>Tab Style:</strong> Pill container with rounded-lg tabs |
-        <strong>Active:</strong> White background + shadow |
-        <strong>Container:</strong> bg-neutral-100 with padding |
-        <strong>Font:</strong> 13px, 600 weight
-      </div>
-
-      <div class="wf-viewport-row">
-        <!-- Mobile -->
-        <div>
-          <div class="wf-viewport-label">Mobile (375px)</div>
-          <div class="wf-mobile-frame">
-            <div class="wf-page-content">
-              <div class="product-context">
-                [ Product Image + Price + CTA Above ]
-              </div>
-
-              <div class="tabs-container">
-                <div class="tabs-list pill" style="width: 100%">
-                  <button class="tab-trigger active" style="flex: 1">
-                    Description
-                  </button>
-                  <button class="tab-trigger" style="flex: 1">Care</button>
-                  <button class="tab-trigger" style="flex: 1">Reviews</button>
-                </div>
-                <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze. Each piece is wheel-thrown and finished by
-                    hand.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tablet -->
-        <div>
-          <div class="wf-viewport-label">Tablet (768px)</div>
-          <div class="wf-tablet-frame">
-            <div class="wf-page-content tablet">
-              <div class="product-context">
-                [ Product Layout - Image Left, Info Right ]
-              </div>
-
-              <div class="tabs-container">
-                <div class="tabs-list pill">
-                  <button class="tab-trigger active">Description</button>
-                  <button class="tab-trigger">Materials & Care</button>
-                  <button class="tab-trigger">Reviews (24)</button>
-                </div>
-                <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze that catches the light. Each piece is
-                    wheel-thrown and finished by hand, making every vase
-                    one-of-a-kind.
-                  </p>
-                  <ul style="margin-top: 16px">
-                    <li>Height: 8 inches (20 cm)</li>
-                    <li>Width: 5 inches (12.7 cm)</li>
-                    <li>Weight: 1.2 lbs (0.54 kg)</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Desktop -->
-        <div>
-          <div class="wf-viewport-label">Desktop (1440px)</div>
-          <div class="wf-desktop-frame">
-            <div class="wf-browser-bar">
-              <div class="wf-browser-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="wf-url-bar">
-                poetryandpottery.com/products/ceramic-vase
-              </div>
-            </div>
-            <div class="wf-page-content desktop">
-              <div class="product-context" style="max-width: 100%">
-                [ Full Product Layout Above ]
-              </div>
-
-              <div class="tabs-container" style="max-width: 800px">
-                <div class="tabs-list pill">
-                  <button class="tab-trigger active">Description</button>
-                  <button class="tab-trigger">Materials & Care</button>
-                  <button class="tab-trigger">Reviews (24)</button>
-                </div>
-                <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze that catches the light beautifully. Each
-                    piece is wheel-thrown and finished by hand in our Portland
-                    studio.
-                  </p>
-                  <ul style="margin-top: 16px">
-                    <li>Height: 8 inches (20 cm)</li>
-                    <li>Width: 5 inches (12.7 cm)</li>
-                    <li>Opening diameter: 3 inches (7.6 cm)</li>
-                    <li>Weight: 1.2 lbs (0.54 kg)</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ======================= OPTION C ======================= -->
-    <section class="wf-section">
-      <span class="wf-task-label">Option C</span>
-      <h2 class="wf-section-title">Full-Width Equal Tabs</h2>
-      <p class="wf-section-desc">
-        Tabs stretch to fill available width equally. Bold, prominent design
-        that works well on mobile. Border bottom spans full width.
-      </p>
-
-      <div class="option-details">
-        <strong>Tab Style:</strong> Full-width, equal distribution |
-        <strong>Active:</strong> Primary underline (2px) |
-        <strong>Alignment:</strong> Center-aligned text |
-        <strong>Font:</strong> 14px, 600 weight
-      </div>
-
-      <div class="wf-viewport-row">
-        <!-- Mobile -->
-        <div>
-          <div class="wf-viewport-label">Mobile (375px)</div>
-          <div class="wf-mobile-frame">
-            <div class="wf-page-content">
-              <div class="product-context">
-                [ Product Image + Price + CTA Above ]
-              </div>
-
-              <div class="tabs-container">
-                <div class="tabs-list full-width">
-                  <button class="tab-trigger active">Details</button>
-                  <button class="tab-trigger">Care</button>
-                  <button class="tab-trigger">Reviews</button>
-                </div>
-                <div class="tab-content">
-                  <p>
-                    Handcrafted ceramic vase with unique speckled glaze. Each
-                    piece is wheel-thrown and finished by hand.
-                  </p>
-                  <ul style="margin-top: 12px">
-                    <li>Height: 8" (20 cm)</li>
-                    <li>Width: 5" (12.7 cm)</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tablet -->
-        <div>
-          <div class="wf-viewport-label">Tablet (768px)</div>
-          <div class="wf-tablet-frame">
-            <div class="wf-page-content tablet">
-              <div class="product-context">
-                [ Product Layout - Image Left, Info Right ]
-              </div>
-
-              <div class="tabs-container" style="max-width: 500px">
-                <div class="tabs-list full-width">
-                  <button class="tab-trigger active">Description</button>
-                  <button class="tab-trigger">Materials</button>
-                  <button class="tab-trigger">Reviews</button>
-                </div>
-                <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze. Each piece is wheel-thrown and finished by
-                    hand.
-                  </p>
-                  <ul style="margin-top: 16px">
-                    <li>Height: 8 inches (20 cm)</li>
-                    <li>Width: 5 inches (12.7 cm)</li>
-                    <li>Weight: 1.2 lbs</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Desktop -->
-        <div>
-          <div class="wf-viewport-label">Desktop (1440px)</div>
-          <div class="wf-desktop-frame">
-            <div class="wf-browser-bar">
-              <div class="wf-browser-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="wf-url-bar">
-                poetryandpottery.com/products/ceramic-vase
-              </div>
-            </div>
-            <div class="wf-page-content desktop">
-              <div class="product-context" style="max-width: 100%">
-                [ Full Product Layout Above ]
-              </div>
-
-              <div class="tabs-container" style="max-width: 600px">
-                <div class="tabs-list full-width">
-                  <button class="tab-trigger active">Description</button>
-                  <button class="tab-trigger">Materials & Care</button>
-                  <button class="tab-trigger">Reviews (24)</button>
-                </div>
-                <div class="tab-content">
-                  <p>
-                    This beautifully handcrafted ceramic vase features a unique
-                    speckled glaze that catches the light. Each piece is
-                    wheel-thrown by hand in our Portland studio.
-                  </p>
-                  <ul style="margin-top: 16px">
-                    <li>Height: 8 inches (20 cm)</li>
-                    <li>Width: 5 inches (12.7 cm)</li>
-                    <li>Opening diameter: 3 inches (7.6 cm)</li>
-                    <li>Weight: 1.2 lbs (0.54 kg)</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ======================= REVIEWS TAB CONTENT EXAMPLE ======================= -->
+    <!-- ======================= REVIEWS TAB CONTENT ======================= -->
     <section class="wf-section">
       <span class="wf-task-label">Example</span>
       <h2 class="wf-section-title">Reviews Tab Content Preview</h2>
       <p class="wf-section-desc">
-        Example of what the Reviews tab content would look like when selected.
-        Shows summary stats and review cards.
+        Example of what the Reviews tab content looks like when selected. Shows
+        summary stats, review cards, and "View All" link.
       </p>
 
       <div class="wf-viewport-row">
@@ -619,8 +431,7 @@
             <div class="wf-page-content">
               <div class="tabs-container">
                 <div class="tabs-list">
-                  <button class="tab-trigger">Description</button>
-                  <button class="tab-trigger">Care</button>
+                  <button class="tab-trigger">Materials & Care</button>
                   <button class="tab-trigger active">
                     Reviews <span class="tab-badge">24</span>
                   </button>
@@ -703,7 +514,6 @@
             <div class="wf-page-content tablet">
               <div class="tabs-container">
                 <div class="tabs-list">
-                  <button class="tab-trigger">Description</button>
                   <button class="tab-trigger">Materials & Care</button>
                   <button class="tab-trigger active">
                     Reviews <span class="tab-badge">24</span>
@@ -808,7 +618,6 @@
             <div class="wf-page-content desktop">
               <div class="tabs-container" style="max-width: 800px">
                 <div class="tabs-list">
-                  <button class="tab-trigger">Description</button>
                   <button class="tab-trigger">Materials & Care</button>
                   <button class="tab-trigger active">
                     Reviews <span class="tab-badge">24</span>
@@ -950,27 +759,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ======================= APPROVAL SECTION ======================= -->
-    <section class="wf-section">
-      <h2 class="wf-section-title">Approval Selection</h2>
-      <p class="wf-section-desc">
-        Please select your preferred option for each viewport.
-      </p>
-
-      <div class="notes">
-        <strong>Option A (Recommended):</strong> Underlined Tabs - Classic style
-        with primary color underline indicator. Clean, minimal, and familiar UX
-        pattern.<br />
-        <strong>Option B:</strong> Pill/Segment Tabs - Modern contained look
-        with white active background. More playful and contemporary.<br />
-        <strong>Option C:</strong> Full-Width Equal Tabs - Bold, prominent tabs
-        that stretch to fill width. Works well on mobile but may feel heavy on
-        desktop.
       </div>
     </section>
   </body>

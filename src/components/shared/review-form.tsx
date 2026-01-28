@@ -2,7 +2,7 @@
 
 import { MAX_REVIEW_IMAGES } from "@/consts/uploads";
 import { R2ImageUploaderContainer } from "@/features/uploads";
-import { Star } from "lucide-react";
+import { Camera, Star } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -11,10 +11,12 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { cn } from "@/lib/utils";
 
+const MAX_CHARACTERS = 500;
+
 interface ReviewFormProps {
   title: string;
   hasReviewed?: boolean;
-  /** Variant for trigger button styling */
+  /** Variant for form styling */
   variant?: "compact" | "full-width";
   onSubmit: (
     rating: number,
@@ -71,25 +73,17 @@ export function ReviewForm({
 
   // Show reviewed state
   if (reviewed) {
-    if (variant === "full-width") {
-      return (
-        <div className="text-primary flex items-center gap-2 text-sm font-medium">
-          <Star className="fill-primary h-4 w-4" />
-          {justReviewed
-            ? "Thank you for your review!"
-            : "You've reviewed this product"}
-        </div>
-      );
-    }
     return (
-      <div className="text-primary mt-2 flex items-center justify-center gap-2 text-sm font-medium">
+      <div className="text-primary flex items-center gap-2 text-sm font-medium">
         <Star className="fill-primary h-4 w-4" />
-        {justReviewed ? "Thank you for your review!" : "Reviewed"}
+        {justReviewed
+          ? "Thank you for your review!"
+          : "You've reviewed this product"}
       </div>
     );
   }
 
-  // Show trigger button
+  // Show trigger button (compact variant or when form is closed)
   if (!isOpen) {
     if (variant === "full-width") {
       return (
@@ -126,7 +120,7 @@ export function ReviewForm({
   return (
     <form
       action={handleSubmitAction}
-      className="shadow-soft mt-1 rounded-xl border border-gray-100 bg-white p-4"
+      className="rounded-2xl bg-neutral-50 p-5 md:p-6"
     >
       <ReviewFormFields
         title={title}
@@ -173,15 +167,14 @@ function ReviewFormFields({
   onImagesChange,
 }: ReviewFormFieldsProps) {
   const { pending } = useFormStatus();
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
 
   return (
     <>
-      <p className="mb-4 text-sm font-semibold text-gray-900">{title}</p>
-
-      {/* Star Rating */}
-      <div className="mb-4">
-        <p className="text-muted-foreground mb-2 text-xs font-medium">Rating</p>
-        <div className="flex gap-1">
+      {/* Title + Star Rating - Inline */}
+      <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <h4 className="text-sm font-semibold text-neutral-900">{title}</h4>
+        <div className="flex gap-0.5">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
@@ -193,10 +186,10 @@ function ReviewFormFields({
             >
               <Star
                 className={cn(
-                  "h-6 w-6 transition-colors",
+                  "h-7 w-7 transition-colors md:h-10 md:w-10",
                   (hoveredRating || rating) >= star
                     ? "fill-amber-400 text-amber-400"
-                    : "text-gray-300",
+                    : "text-neutral-300",
                 )}
               />
             </button>
@@ -204,50 +197,61 @@ function ReviewFormFields({
         </div>
       </div>
 
-      {/* Review Text */}
+      {/* Review Textarea + Character Counter */}
       <div className="mb-4">
-        <label
-          htmlFor="review-content"
-          className="text-muted-foreground mb-2 block text-xs font-medium"
-        >
-          Your review (optional)
-        </label>
         <Textarea
-          id="review-content"
           value={content}
-          onChange={(e) => onContentChange(e.target.value)}
-          placeholder="Share your experience..."
-          className="focus:border-primary focus:ring-primary h-24 resize-none rounded-lg border-gray-200 text-sm focus:ring-1"
+          onChange={(e) => {
+            if (e.target.value.length <= MAX_CHARACTERS) {
+              onContentChange(e.target.value);
+            }
+          }}
+          placeholder="Share your thoughts (optional)"
+          className="focus:border-primary focus:ring-primary min-h-[80px] resize-none rounded-lg border-neutral-200 text-sm focus:ring-1"
           disabled={pending}
         />
+        <p className="mt-1.5 text-right text-xs text-neutral-400">
+          {content.length}/{MAX_CHARACTERS} characters
+        </p>
       </div>
 
-      {/* Image Upload */}
-      <div className="mb-4">
-        <p className="text-muted-foreground mb-2 text-xs font-medium">
-          Add photos (optional, max {MAX_REVIEW_IMAGES})
-        </p>
-        <R2ImageUploaderContainer
-          folder="reviews"
-          multiple
-          maxFiles={MAX_REVIEW_IMAGES}
-          value={imageUrls}
-          onChange={onImagesChange}
-          disabled={pending}
-        />
-      </div>
+      {/* Collapsible Photo Upload */}
+      {!showPhotoUpload && imageUrls.length === 0 ? (
+        <button
+          type="button"
+          onClick={() => setShowPhotoUpload(true)}
+          className="mb-4 flex items-center gap-2 text-sm text-neutral-500 transition-colors hover:text-neutral-700"
+        >
+          <Camera className="h-4 w-4" />
+          <span>Add Photos</span>
+        </button>
+      ) : (
+        <div className="mb-4">
+          <p className="mb-2 text-xs font-medium text-neutral-500">
+            Add photos (optional, max {MAX_REVIEW_IMAGES})
+          </p>
+          <R2ImageUploaderContainer
+            folder="reviews"
+            multiple
+            maxFiles={MAX_REVIEW_IMAGES}
+            value={imageUrls}
+            onChange={onImagesChange}
+            disabled={pending}
+          />
+        </div>
+      )}
 
       {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
       {/* Action Buttons */}
-      <div className="flex justify-end gap-2">
+      <div className="flex flex-col gap-2 md:flex-row md:justify-end">
         <Button
           type="button"
           variant="ghost"
           size="sm"
           onClick={onCancel}
           disabled={pending}
-          className="rounded-full px-4"
+          className="order-2 rounded-lg px-4 md:order-1"
         >
           Cancel
         </Button>
@@ -255,7 +259,7 @@ function ReviewFormFields({
           type="submit"
           size="sm"
           disabled={rating === 0 || pending}
-          className="rounded-full px-4"
+          className="order-1 rounded-lg px-6 md:order-2"
         >
           {pending ? "Submitting..." : "Submit Review"}
         </Button>

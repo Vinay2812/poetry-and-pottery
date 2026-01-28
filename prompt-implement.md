@@ -129,17 +129,17 @@ Wireframes fall into three categories. Each has different implementation concern
    ```bash
    # Mobile (375 x 812)
    agent-browser set viewport 375 812
-   agent-browser screenshot reference-mobile.png --full
+   agent-browser screenshot wireframes/screenshots/reference-mobile.png --full
    agent-browser snapshot -c
 
    # Tablet (768 x 1024)
    agent-browser set viewport 768 1024
-   agent-browser screenshot reference-tablet.png --full
+   agent-browser screenshot wireframes/screenshots/reference-tablet.png --full
    agent-browser snapshot -c
 
    # Desktop (1440 x 900)
    agent-browser set viewport 1440 900
-   agent-browser screenshot reference-desktop.png --full
+   agent-browser screenshot wireframes/screenshots/reference-desktop.png --full
    agent-browser snapshot -c
    ```
 
@@ -277,7 +277,12 @@ Wireframes fall into three categories. Each has different implementation concern
      (state, action) => applyAction(state, action),
    );
 
-   // Automatic rollback on error - no manual try/catch needed
+   // ⚠️ IMPORTANT: useOptimistic updates MUST be called inside startTransition
+   // or a form action. Calling outside causes a React 19 console error:
+   // "An optimistic state update occurred outside a transition or action."
+   startTransition(() => {
+     addOptimistic(newItem);
+   });
    ```
 
    **Form Submissions:**
@@ -378,18 +383,18 @@ Wireframes fall into three categories. Each has different implementation concern
 
    # Capture Mobile implementation (375 x 812)
    agent-browser set viewport 375 812
-   agent-browser screenshot impl-mobile.png --full
-   agent-browser snapshot > impl-mobile-snapshot.txt
+   agent-browser screenshot wireframes/screenshots/impl-mobile.png --full
+   agent-browser snapshot > wireframes/screenshots/impl-mobile-snapshot.txt
 
    # Capture Tablet implementation (768 x 1024)
    agent-browser set viewport 768 1024
-   agent-browser screenshot impl-tablet.png --full
-   agent-browser snapshot > impl-tablet-snapshot.txt
+   agent-browser screenshot wireframes/screenshots/impl-tablet.png --full
+   agent-browser snapshot > wireframes/screenshots/impl-tablet-snapshot.txt
 
    # Capture Desktop implementation (1440 x 900)
    agent-browser set viewport 1440 900
-   agent-browser screenshot impl-desktop.png --full
-   agent-browser snapshot > impl-desktop-snapshot.txt
+   agent-browser screenshot wireframes/screenshots/impl-desktop.png --full
+   agent-browser snapshot > wireframes/screenshots/impl-desktop-snapshot.txt
    ```
 
 7. **Compare wireframe vs implementation**
@@ -412,7 +417,7 @@ Wireframes fall into three categories. Each has different implementation concern
    ```bash
    # Test hover states
    agent-browser hover "[selector]"
-   agent-browser screenshot hover-state.png
+   agent-browser screenshot wireframes/screenshots/hover-state.png
 
    # Test click interactions
    agent-browser click "[selector]"
@@ -420,7 +425,7 @@ Wireframes fall into three categories. Each has different implementation concern
 
    # Test scroll behavior
    agent-browser scroll down 500
-   agent-browser screenshot scrolled.png
+   agent-browser screenshot wireframes/screenshots/scrolled.png
 
    # Check element visibility
    agent-browser is visible "[selector]"
@@ -451,15 +456,15 @@ Wireframes fall into three categories. Each has different implementation concern
     # Final Mobile check
     agent-browser set viewport 375 812
     agent-browser open http://127.0.0.1:3005/[page]
-    agent-browser screenshot final-mobile.png --full
+    agent-browser screenshot wireframes/screenshots/final-mobile.png --full
 
     # Final Tablet check
     agent-browser set viewport 768 1024
-    agent-browser screenshot final-tablet.png --full
+    agent-browser screenshot wireframes/screenshots/final-tablet.png --full
 
     # Final Desktop check
     agent-browser set viewport 1440 900
-    agent-browser screenshot final-desktop.png --full
+    agent-browser screenshot wireframes/screenshots/final-desktop.png --full
     ```
 
 12. **Run code quality checks**
@@ -638,9 +643,9 @@ At the end of this workflow:
 
 1. **Implemented code** matching approved wireframes
 2. **Comparison screenshots:**
-   - `reference-mobile.png` vs `impl-mobile.png`
-   - `reference-tablet.png` vs `impl-tablet.png`
-   - `reference-desktop.png` vs `impl-desktop.png`
+   - `wireframes/screenshots/reference-mobile.png` vs `wireframes/screenshots/impl-mobile.png`
+   - `wireframes/screenshots/reference-tablet.png` vs `wireframes/screenshots/impl-tablet.png`
+   - `wireframes/screenshots/reference-desktop.png` vs `wireframes/screenshots/impl-desktop.png`
 3. **User approval** — user has explicitly confirmed the implementation looks good
 4. **Updated design-refactor.md** with `✔️ Completed` status (only after user approval)
 5. **Updated wireframe file** marked as `✔️ IMPLEMENTED` (only after user approval)
@@ -700,6 +705,14 @@ try {
 
 // ✅ GOOD: useOptimistic with automatic rollback
 const [optimistic, addOptimistic] = useOptimistic(items, reducer);
+
+// ❌ BAD: Calling useOptimistic updater outside startTransition
+addOptimistic(newItem); // Console error in React 19
+
+// ✅ GOOD: Wrap useOptimistic updates in startTransition (or call inside a form action)
+startTransition(() => {
+  addOptimistic(newItem);
+});
 
 // ❌ BAD: Direct router.push
 router.push("/products/123");

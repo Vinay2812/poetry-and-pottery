@@ -723,7 +723,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.4: Product Info Tabs
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-4-product-info-tabs.html](wireframes/task-5-4-product-info-tabs.html)
 **Approved Selection:**
 
@@ -734,17 +734,27 @@ Once user approves, the section is updated to:
 **Scope:**
 
 - Convert accordions to tabs
-- Description, Materials & Care, Reviews tabs
+- Materials & Care and Reviews tabs only (2 tabs)
+- Description displayed inline in product info header (not in tabs)
 
 **Design Specifications:**
 
 - Tabs: Underlined active indicator (primary color)
 - Mobile: Horizontally scrollable tab list
 - Content: Smooth fade transition
+- Default active tab: Materials & Care
+- Description: Shown inline below price in `ProductInfoHeader`, not as a tab
 
-**Files to Modify (after approval):**
+**Implementation Notes:**
+
+- Description was removed from tabs and placed inline in `ProductInfoHeader` below the price
+- `ProductTabs` component only has 2 tabs: Materials & Care (default) and Reviews
+- `description` prop was removed from `ProductTabsProps` interface
+
+**Files Modified:**
 
 - `src/features/product-detail/components/product-tabs.tsx` (new)
+- `src/features/product-detail/components/product-detail.tsx` (description inline)
 
 ---
 

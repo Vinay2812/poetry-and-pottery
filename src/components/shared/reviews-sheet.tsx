@@ -3,6 +3,7 @@
 import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { Star } from "lucide-react";
 import {
+  startTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -11,7 +12,7 @@ import {
 } from "react";
 
 import { ReviewCard } from "@/components/cards";
-import { Rating } from "@/components/shared/rating";
+import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselApi,
@@ -65,38 +66,13 @@ interface ReviewLikeAction {
   isLiked: boolean;
 }
 
-interface RatingBreakdownProps {
-  rating: number;
-  count: number;
-  total: number;
-}
-
-function RatingBreakdown({ rating, count, total }: RatingBreakdownProps) {
-  const percentage = total > 0 ? (count / total) * 100 : 0;
-
-  return (
-    <div className="flex items-center gap-2">
-      <span className="w-3 text-xs font-medium">{rating}</span>
-      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-      <div className="bg-muted h-2 flex-1 overflow-hidden rounded-full">
-        <div
-          className="bg-primary h-full rounded-full transition-all duration-300"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
-      <span className="text-muted-foreground w-8 text-right text-xs">
-        {count}
-      </span>
-    </div>
-  );
-}
-
 interface ReviewsSheetProps {
   reviews: Review[];
   averageRating: number;
   totalReviews: number;
   currentUserId?: number | null;
   onLikeUpdate?: (reviewId: string, likes: number, isLiked: boolean) => void;
+  onWriteReview?: () => void;
   children: React.ReactNode;
 }
 
@@ -106,6 +82,7 @@ export function ReviewsSheet({
   totalReviews,
   currentUserId,
   onLikeUpdate,
+  onWriteReview,
   children,
 }: ReviewsSheetProps) {
   const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
@@ -153,10 +130,12 @@ export function ReviewsSheet({
         ? (likeCounts[reviewId] ?? 0) - 1
         : (likeCounts[reviewId] ?? 0) + 1;
 
-      applyOptimisticReview({
-        reviewId,
-        likes: newLikesCount,
-        isLiked: newIsLiked,
+      startTransition(() => {
+        applyOptimisticReview({
+          reviewId,
+          likes: newLikesCount,
+          isLiked: newIsLiked,
+        });
       });
 
       // Notify parent of optimistic update
@@ -201,17 +180,6 @@ export function ReviewsSheet({
     ],
   );
 
-  const ratingCounts = useMemo(() => {
-    const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    reviews.forEach((review) => {
-      const rating = Math.round(review.rating) as 1 | 2 | 3 | 4 | 5;
-      if (rating >= 1 && rating <= 5) {
-        counts[rating]++;
-      }
-    });
-    return counts;
-  }, [reviews]);
-
   const imageWithReview = useMemo(() => {
     return reviews.flatMap((review) =>
       (review.images ?? []).map((image) => ({
@@ -220,10 +188,6 @@ export function ReviewsSheet({
       })),
     );
   }, [reviews]);
-
-  const allImages = useMemo(() => {
-    return imageWithReview.map((item) => item.image);
-  }, [imageWithReview]);
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
@@ -291,96 +255,55 @@ export function ReviewsSheet({
         side="bottom"
         className="h-[85vh] rounded-t-3xl px-0 md:h-[90vh]"
       >
-        <SheetHeader className="border-border border-b px-4 pb-4">
-          <SheetTitle className="text-lg">Customer Reviews</SheetTitle>
+        <SheetHeader className="border-b border-neutral-100 px-4 pb-4">
+          <SheetTitle className="font-display text-lg">
+            Customer Reviews
+          </SheetTitle>
         </SheetHeader>
 
         <div className="scrollbar-hide flex-1 overflow-y-auto">
-          {/* Rating Summary */}
-          <div className="border-border border-b px-4 py-4">
-            <div className="flex gap-6">
-              {/* Average Rating */}
-              <div className="flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold">
+          {/* Rating Summary + Sort */}
+          <div className="border-b border-neutral-100 px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl font-bold text-neutral-900">
                   {averageRating.toFixed(1)}
                 </span>
-                <div className="mb-1 flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`h-4 w-4 ${
-                        star <= Math.round(averageRating)
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "fill-muted text-muted"
-                      }`}
-                    />
-                  ))}
+                <div>
+                  <div className="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`h-4 w-4 ${
+                          star <= Math.round(averageRating)
+                            ? "fill-amber-400 text-amber-400"
+                            : "fill-neutral-200 text-neutral-200"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="mt-0.5 text-xs text-neutral-500">
+                    Based on {totalReviews} reviews
+                  </span>
                 </div>
-                <span className="text-muted-foreground text-sm">
-                  {totalReviews} reviews
-                </span>
               </div>
 
-              {/* Rating Breakdown */}
-              <div className="flex flex-1 flex-col justify-center gap-1.5">
-                {[5, 4, 3, 2, 1].map((rating) => (
-                  <RatingBreakdown
-                    key={rating}
-                    rating={rating}
-                    count={ratingCounts[rating as 1 | 2 | 3 | 4 | 5]}
-                    total={reviews.length}
-                  />
-                ))}
-              </div>
+              <Select value={sortBy} onValueChange={handleSortChange}>
+                <SelectTrigger size="sm" className="w-auto">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="recent">Most Recent</SelectItem>
+                  <SelectItem value="top">Most Helpful</SelectItem>
+                  <SelectItem value="highest">Highest Rated</SelectItem>
+                  <SelectItem value="lowest">Lowest Rated</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </div>
-
-          {/* Customer Photos */}
-          {allImages.length > 0 && (
-            <div className="border-border border-b px-4 py-4">
-              <h3 className="mb-3 text-sm font-medium">
-                Customer Photos ({allImages.length})
-              </h3>
-              <div className="scrollbar-hide flex gap-2 overflow-x-auto">
-                {allImages.map((image, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => handleImageClick(image)}
-                    className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg"
-                  >
-                    <OptimizedImage
-                      src={image}
-                      alt={`Customer photo ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Sort Controls */}
-          <div className="flex items-center justify-between px-4 py-3">
-            <span className="text-muted-foreground text-sm">
-              {reviews.length} reviews
-            </span>
-            <Select value={sortBy} onValueChange={handleSortChange}>
-              <SelectTrigger size="sm" className="w-auto">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="recent">Most Recent</SelectItem>
-                <SelectItem value="top">Top Reviews</SelectItem>
-                <SelectItem value="highest">Highest Rated</SelectItem>
-                <SelectItem value="lowest">Lowest Rated</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
 
           {/* Reviews List */}
-          <div className="space-y-3 px-4 pb-8">
+          <div className="space-y-3 px-4 py-4 pb-8">
             {sortedReviews.map((review) => (
               <ReviewCard
                 key={review.id}
@@ -402,6 +325,16 @@ export function ReviewsSheet({
           </div>
         </div>
 
+        {/* Write a Review CTA */}
+        {onWriteReview && (
+          <div className="border-t border-neutral-100 px-4 py-3">
+            <Button className="w-full rounded-lg" onClick={onWriteReview}>
+              <Star className="mr-2 h-4 w-4" />
+              Write a Review
+            </Button>
+          </div>
+        )}
+
         {/* Fullscreen Image Viewer with Carousel */}
         <Dialog
           open={selectedImageIndex !== null}
@@ -421,28 +354,35 @@ export function ReviewsSheet({
                       <div className="space-y-4">
                         {/* Reviewer info */}
                         <div className="flex items-center gap-3">
-                          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
-                            <OptimizedImage
-                              src={item.review.avatar}
-                              alt={item.review.author}
-                              fill
-                              className="object-cover"
-                            />
+                          <div className="bg-primary-light text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-medium">
+                            {item.review.author
+                              .split(" ")
+                              .map((w) => w[0])
+                              .slice(0, 2)
+                              .join("")
+                              .toUpperCase()}
                           </div>
                           <div>
-                            <p className="text-foreground text-sm font-medium">
+                            <p className="text-sm font-medium text-neutral-900">
                               {item.review.author}
                             </p>
-                            <Rating
-                              rating={item.review.rating}
-                              showCount={false}
-                              size="sm"
-                            />
+                            <div className="flex gap-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={`h-3.5 w-3.5 ${
+                                    star <= Math.round(item.review.rating)
+                                      ? "fill-amber-400 text-amber-400"
+                                      : "fill-neutral-200 text-neutral-200"
+                                  }`}
+                                />
+                              ))}
+                            </div>
                           </div>
                         </div>
 
                         {/* Image with aspect ratio */}
-                        <div className="bg-muted relative aspect-square max-h-[50vh] w-full overflow-hidden rounded-lg">
+                        <div className="relative aspect-square max-h-[50vh] w-full overflow-hidden rounded-lg bg-neutral-100">
                           <OptimizedImage
                             src={item.image}
                             alt={`Review image by ${item.review.author}`}
@@ -452,7 +392,7 @@ export function ReviewsSheet({
                         </div>
 
                         {/* Review content */}
-                        <p className="text-muted-foreground line-clamp-3 text-sm">
+                        <p className="line-clamp-3 text-sm text-neutral-600">
                           {item.review.content}
                         </p>
                       </div>
@@ -469,7 +409,7 @@ export function ReviewsSheet({
 
               {/* Counter */}
               {imageWithReview.length > 1 && (
-                <div className="text-muted-foreground mt-4 text-center text-sm">
+                <div className="mt-4 text-center text-sm text-neutral-500">
                   {currentSlide + 1} / {imageWithReview.length}
                 </div>
               )}

@@ -47,3 +47,5 @@ plan.md
 # data
 prisma/generated
 src/lib/reset-db.ts
+
+wireframes/screenshots/
