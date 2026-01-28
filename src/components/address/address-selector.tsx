@@ -53,32 +53,12 @@ function AddressCarousel({
     return index >= 0 ? index : 0;
   }, [addresses, selectedAddressId]);
 
-  const [current, setCurrent] = useState(selectedIndex);
-
-  // Setup API events (matches ImageCarousel pattern)
-  useEffect(() => {
-    if (!api) return;
-
-    const onSelect = () => {
-      setCurrent(api.selectedScrollSnap());
-    };
-
-    onSelect();
-    api.on("select", onSelect);
-
-    return () => {
-      api.off("select", onSelect);
-    };
-  }, [api]);
-
   // Sync carousel position with selected address
   useEffect(() => {
     if (api) {
       api.scrollTo(selectedIndex);
     }
   }, [api, selectedIndex]);
-
-  const hasMultiple = addresses.length > 1;
 
   return (
     <div className="relative w-full">
@@ -95,7 +75,7 @@ function AddressCarousel({
           {addresses.map((address) => (
             <CarouselItem
               key={address.id}
-              className="basis-[85%] pl-3 md:basis-[48%] lg:basis-[33.33%]"
+              className="basis-[85%] pl-3 md:basis-[45%]"
             >
               <AddressCard
                 address={address}
@@ -109,26 +89,6 @@ function AddressCarousel({
           ))}
         </CarouselContent>
       </Carousel>
-
-      {/* Dots */}
-      {hasMultiple && (
-        <div className="mt-3 flex justify-center gap-1.5">
-          {addresses.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={() => api?.scrollTo(index)}
-              className={cn(
-                "h-2 w-2 rounded-full transition-all duration-300",
-                current === index
-                  ? "bg-primary w-5"
-                  : "bg-neutral-300 hover:bg-neutral-400",
-              )}
-              aria-label={`Go to address ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

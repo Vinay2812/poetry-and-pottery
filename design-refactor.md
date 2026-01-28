@@ -998,7 +998,7 @@ Once user approves, the section is updated to:
 
 #### Task 6.4: Address Components
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-6-4-address-components.html](wireframes/task-6-4-address-components.html)
 **Approved Selection:**
 

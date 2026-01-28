@@ -74,7 +74,7 @@ export function AddressCard({
         }
       }}
       className={cn(
-        "relative flex h-full flex-col overflow-hidden rounded-2xl border-2 border-transparent bg-neutral-50 p-4 transition-all duration-200",
+        "relative flex min-h-[130px] flex-col overflow-hidden rounded-2xl border-2 border-transparent bg-neutral-50 p-4 transition-all duration-200",
         onSelect && "cursor-pointer hover:bg-neutral-100",
         isSelected && "border-primary",
         isDeleting && "pointer-events-none opacity-50",

@@ -79,7 +79,7 @@ export function AddressForm({
     }
     if (
       formData.contactNumber &&
-      !/^[6-9]\d{9}$/.test(formData.contactNumber.trim())
+      !/^(\+91|91)?[6-9]\d{9}$/.test(formData.contactNumber.trim())
     ) {
       newErrors.contactNumber = "Enter a valid 10-digit mobile number";
     }
