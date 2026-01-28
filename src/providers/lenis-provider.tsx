@@ -11,9 +11,9 @@ export function LenisProvider({ children }: LenisProviderProps) {
     <ReactLenis
       root
       options={{
-        lerp: 0.1,
+        lerp: 0.5,
         smoothWheel: true,
-        syncTouch: true,
+        // syncTouch: true,
         autoRaf: true,
       }}
     >

@@ -695,7 +695,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.3: Trust Badges
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-3-trust-badges.html](wireframes/task-5-3-trust-badges.html)
 **Approved Selection:**
 
@@ -760,7 +760,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.5: Related Products Grid
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-5-related-products-grid.html](wireframes/task-5-5-related-products-grid.html)
 **Approved Selection:**
 
@@ -788,7 +788,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.6: Sticky Mobile CTA
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-6-sticky-mobile-cta.html](wireframes/task-5-6-sticky-mobile-cta.html)
 **Approved Selection:**
 
@@ -817,7 +817,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.7: Review Cards
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-7-review-cards.html](wireframes/task-5-7-review-cards.html)
 **Approved Selection:**
 
@@ -848,7 +848,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.8: Review Form
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-8-review-form.html](wireframes/task-5-8-review-form.html)
 **Approved Selection:**
 
@@ -881,7 +881,7 @@ Once user approves, the section is updated to:
 
 #### Task 5.9: Reviews Sheet
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-5-9-reviews-sheet.html](wireframes/task-5-9-reviews-sheet.html)
 **Approved Selection:**
 
@@ -917,7 +917,7 @@ Once user approves, the section is updated to:
 
 #### Task 6.1: Cart Page
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-6-1-cart-page.html](wireframes/task-6-1-cart-page.html)
 **Approved Selection:**
 
@@ -945,7 +945,7 @@ Once user approves, the section is updated to:
 
 #### Task 6.2: Cart Item Card
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-6-2-cart-item-card.html](wireframes/task-6-2-cart-item-card.html)
 
 **Scope:**
@@ -969,7 +969,7 @@ Once user approves, the section is updated to:
 
 #### Task 6.3: Order Summary Component
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-6-3-order-summary.html](wireframes/task-6-3-order-summary.html)
 **Approved Selection:**
 

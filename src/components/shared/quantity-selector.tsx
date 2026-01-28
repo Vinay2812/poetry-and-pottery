@@ -16,22 +16,19 @@ interface QuantitySelectorProps {
 
 const sizeConfig = {
   sm: {
-    container: "h-7",
     button: "h-7 w-7",
-    icon: "size-3",
-    text: "text-xs w-6",
+    icon: "size-3.5",
+    text: "text-sm w-5",
   },
   md: {
-    container: "h-9",
-    button: "h-9 w-9",
-    icon: "size-3.5",
-    text: "text-sm w-8",
+    button: "h-8 w-8",
+    icon: "size-4",
+    text: "text-sm w-6",
   },
   lg: {
-    container: "h-11",
-    button: "h-11 w-11",
+    button: "h-9 w-9",
     icon: "size-4",
-    text: "text-base w-10",
+    text: "text-base w-7",
   },
 };
 
@@ -51,9 +48,8 @@ export function QuantitySelector({
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border border-neutral-200 bg-white",
-        disabled && "opacity-50",
-        config.container,
+        "bg-primary/15 inline-flex w-fit items-center gap-0.5 rounded-full p-0.5",
+        disabled && "opacity-60",
       )}
     >
       <button
@@ -61,19 +57,18 @@ export function QuantitySelector({
         onClick={onDecrease}
         disabled={disabled || isMin}
         className={cn(
-          "inline-flex items-center justify-center rounded-full text-neutral-600 transition-colors duration-150",
-          "hover:bg-neutral-100 hover:text-neutral-900",
-          "active:scale-95",
-          "disabled:pointer-events-none disabled:text-neutral-300",
+          "inline-flex items-center justify-center rounded-full bg-white text-neutral-800 transition-colors",
+          "hover:bg-neutral-100",
+          "disabled:pointer-events-none disabled:text-neutral-400",
           config.button,
         )}
         aria-label="Decrease quantity"
       >
-        <Minus className={config.icon} />
+        <Minus className={config.icon} strokeWidth={2.5} />
       </button>
       <span
         className={cn(
-          "text-center font-medium text-neutral-900 select-none",
+          "text-center font-semibold text-neutral-900 select-none",
           config.text,
         )}
       >
@@ -84,15 +79,14 @@ export function QuantitySelector({
         onClick={onIncrease}
         disabled={disabled || isMax}
         className={cn(
-          "inline-flex items-center justify-center rounded-full text-neutral-600 transition-colors duration-150",
-          "hover:bg-neutral-100 hover:text-neutral-900",
-          "active:scale-95",
-          "disabled:pointer-events-none disabled:text-neutral-300",
+          "inline-flex items-center justify-center rounded-full bg-white text-neutral-800 transition-colors",
+          "hover:bg-neutral-100",
+          "disabled:pointer-events-none disabled:text-neutral-400",
           config.button,
         )}
         aria-label="Increase quantity"
       >
-        <Plus className={config.icon} />
+        <Plus className={config.icon} strokeWidth={2.5} />
       </button>
     </div>
   );

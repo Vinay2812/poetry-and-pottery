@@ -8,7 +8,7 @@ import {
 import { useLoadingTransition } from "@/hooks/use-loading-transition";
 import { useUIStore } from "@/store";
 import { useAuth } from "@clerk/nextjs";
-import { useCallback, useOptimistic, useState } from "react";
+import { useCallback, useOptimistic, useState, useTransition } from "react";
 
 type WishlistOptimisticAction =
   | { type: "toggle"; productId: number }
@@ -38,6 +38,7 @@ function applyWishlistAction(
       return next;
   }
 }
+
 export function useWishlist() {
   const { isSignedIn } = useAuth();
   const {
@@ -57,6 +58,8 @@ export function useWishlist() {
   const { isLoading, isAnyLoading, runWithLoading } =
     useLoadingTransition<number>();
 
+  const [, startTransition] = useTransition();
+
   // Use mutation hooks
   const { mutate: addToWishlistMutate } = useAddToWishlist();
   const { mutate: removeFromWishlistMutate } = useRemoveFromWishlist();
@@ -68,7 +71,7 @@ export function useWishlist() {
   );
 
   const toggleWishlist = useCallback(
-    async (productId: number) => {
+    (productId: number) => {
       if (!isSignedIn) {
         setSignInRedirectUrl(window.location.pathname);
         setSignInModalOpen(true);
@@ -79,32 +82,31 @@ export function useWishlist() {
         type: "toggle",
         productId,
       };
-      updateOptimisticWishlist(optimisticAction);
-      const nextIds = applyWishlistAction(
-        optimisticWishlistIds,
-        optimisticAction,
-      );
-      setWishlistCount(nextIds.size);
 
-      const actionResult = await runWithLoading(productId, () =>
-        toggleWishlistMutate(productId),
-      );
-      if (!actionResult.success) {
-        addToast({
-          type: "error",
-          message: actionResult.error || "Failed to update wishlist",
-        });
-        setWishlistIds(new Set(wishlistIds));
-        setWishlistCount(wishlistIds.size);
-        return false;
-      }
+      startTransition(async () => {
+        // Update wishlist count optimistically
+        const nextIds = applyWishlistAction(wishlistIds, optimisticAction);
+        setWishlistCount(nextIds.size);
+        updateOptimisticWishlist(optimisticAction);
+        const actionResult = await runWithLoading(productId, () =>
+          toggleWishlistMutate(productId),
+        );
 
-      setWishlistIds(nextIds);
-      return true;
+        if (!actionResult.success) {
+          addToast({
+            type: "error",
+            message: actionResult.error || "Failed to update wishlist",
+          });
+          // Revert wishlist count
+          setWishlistCount(wishlistIds.size);
+        }
+
+        // Update base state
+        setWishlistIds(nextIds);
+      });
     },
     [
       isSignedIn,
-      optimisticWishlistIds,
       wishlistIds,
       addToast,
       setSignInModalOpen,
@@ -112,53 +114,59 @@ export function useWishlist() {
       toggleWishlistMutate,
       runWithLoading,
       setWishlistCount,
-      setWishlistIds,
       updateOptimisticWishlist,
+      startTransition,
     ],
   );
 
   const addToWishlist = useCallback(
-    async (productId: number) => {
+    (productId: number) => {
       if (wishlistIds.has(productId)) {
-        return true;
+        return Promise.resolve(true);
       }
 
       if (!isSignedIn) {
         setSignInRedirectUrl(window.location.pathname);
         setSignInModalOpen(true);
-        return false;
+        return Promise.resolve(false);
       }
 
       const optimisticAction: WishlistOptimisticAction = {
         type: "add",
         productId,
       };
-      updateOptimisticWishlist(optimisticAction);
-      const nextIds = applyWishlistAction(
-        optimisticWishlistIds,
-        optimisticAction,
-      );
+
+      // Update wishlist count optimistically
+      const nextIds = applyWishlistAction(wishlistIds, optimisticAction);
       setWishlistCount(nextIds.size);
 
-      const actionResult = await runWithLoading(productId, () =>
-        addToWishlistMutate(productId),
-      );
-      if (!actionResult.success) {
-        addToast({
-          type: "error",
-          message: actionResult.error || "Failed to add to wishlist",
-        });
-        setWishlistIds(new Set(wishlistIds));
-        setWishlistCount(wishlistIds.size);
-        return false;
-      }
+      return new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          updateOptimisticWishlist(optimisticAction);
 
-      setWishlistIds(nextIds);
-      return true;
+          const actionResult = await runWithLoading(productId, () =>
+            addToWishlistMutate(productId),
+          );
+
+          if (!actionResult.success) {
+            addToast({
+              type: "error",
+              message: actionResult.error || "Failed to add to wishlist",
+            });
+            // Revert wishlist count
+            setWishlistCount(wishlistIds.size);
+            resolve(false);
+            return;
+          }
+
+          // Update base state
+          setWishlistIds(nextIds);
+          resolve(true);
+        });
+      });
     },
     [
       isSignedIn,
-      optimisticWishlistIds,
       wishlistIds,
       addToast,
       setSignInModalOpen,
@@ -166,83 +174,79 @@ export function useWishlist() {
       addToWishlistMutate,
       runWithLoading,
       setWishlistCount,
-      setWishlistIds,
       updateOptimisticWishlist,
+      startTransition,
     ],
   );
 
   const removeFromWishlist = useCallback(
-    async (productId: number) => {
-      if (!isSignedIn) return false;
+    (productId: number) => {
+      if (!isSignedIn) return Promise.resolve(false);
 
       const optimisticAction: WishlistOptimisticAction = {
         type: "remove",
         productId,
       };
-      updateOptimisticWishlist(optimisticAction);
-      const nextIds = applyWishlistAction(
-        optimisticWishlistIds,
-        optimisticAction,
-      );
+
+      // Update wishlist count optimistically
+      const nextIds = applyWishlistAction(wishlistIds, optimisticAction);
       setWishlistCount(nextIds.size);
 
-      const actionResult = await runWithLoading(productId, () =>
-        removeFromWishlistMutate(productId),
-      );
-      if (!actionResult.success) {
-        addToast({
-          type: "error",
-          message: actionResult.error || "Failed to remove from wishlist",
-        });
-        setWishlistIds(new Set(wishlistIds));
-        setWishlistCount(wishlistIds.size);
-        return false;
-      }
+      return new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          updateOptimisticWishlist(optimisticAction);
 
-      setWishlistIds(nextIds);
-      return true;
+          const actionResult = await runWithLoading(productId, () =>
+            removeFromWishlistMutate(productId),
+          );
+
+          if (!actionResult.success) {
+            addToast({
+              type: "error",
+              message: actionResult.error || "Failed to remove from wishlist",
+            });
+            // Revert wishlist count
+            setWishlistCount(wishlistIds.size);
+            resolve(false);
+            return;
+          }
+
+          // Update base state
+          setWishlistIds(nextIds);
+          resolve(true);
+        });
+      });
     },
     [
       isSignedIn,
-      optimisticWishlistIds,
       wishlistIds,
       addToast,
       removeFromWishlistMutate,
       runWithLoading,
       setWishlistCount,
-      setWishlistIds,
       updateOptimisticWishlist,
+      startTransition,
     ],
   );
 
   const moveToCart = useCallback(
-    async (productId: number) => {
-      if (!isSignedIn) return false;
+    (productId: number) => {
+      if (!isSignedIn) return Promise.resolve(false);
 
       const optimisticAction: WishlistOptimisticAction = {
         type: "remove",
         productId,
       };
-      updateOptimisticWishlist(optimisticAction);
-      const nextIds = applyWishlistAction(
-        optimisticWishlistIds,
-        optimisticAction,
-      );
+
+      // Apply optimistic update
+      const nextIds = applyWishlistAction(wishlistIds, optimisticAction);
       setWishlistIds(nextIds);
       setWishlistCount(nextIds.size);
       setCartCount(cartCount + 1);
 
-      return true;
+      return Promise.resolve(true);
     },
-    [
-      isSignedIn,
-      cartCount,
-      setWishlistCount,
-      setCartCount,
-      optimisticWishlistIds,
-      setWishlistIds,
-      updateOptimisticWishlist,
-    ],
+    [isSignedIn, cartCount, setWishlistCount, setCartCount, wishlistIds],
   );
 
   // Hydrate wishlist IDs (called on mount with initial data)

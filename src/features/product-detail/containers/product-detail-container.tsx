@@ -3,11 +3,11 @@
 import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
 import {
-  startTransition,
   useCallback,
   useMemo,
   useOptimistic,
   useState,
+  useTransition,
 } from "react";
 
 import { ProductDetail } from "../components/product-detail";
@@ -33,6 +33,7 @@ export function ProductDetailContainer({
         [update.reviewId]: { likes: update.likes, isLiked: update.isLiked },
       }),
     );
+  const [, startTransition] = useTransition();
 
   const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
   const { requireAuth, userId: currentUserId } = useAuthAction();
@@ -98,39 +99,46 @@ export function ProductDetailContainer({
   );
 
   const handleReviewLike = useCallback(
-    async (reviewId: string, currentLikes: number, currentIsLiked: boolean) => {
+    (reviewId: string, currentLikes: number, currentIsLiked: boolean) => {
       // Debounce check
-      const result = requireAuth(async () => {
+      const result = requireAuth(() => {
         // Optimistically update UI
         const newIsLiked = !currentIsLiked;
         const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-        startTransition(() => {
+
+        // Wrap entire async operation in transition
+        startTransition(async () => {
           applyOptimisticReviewLike({
             reviewId,
             likes: newLikes,
             isLiked: newIsLiked,
           });
+
+          // Call mutation
+          const result = await toggleReviewLikeMutate(Number(reviewId));
+
+          if (!result.success) {
+            setReviewLikeUpdates((prev) => ({
+              ...prev,
+              [reviewId]: { likes: currentLikes, isLiked: currentIsLiked },
+            }));
+          } else if (result.likesCount !== undefined) {
+            // Sync with server count
+            setReviewLikeUpdates((prev) => ({
+              ...prev,
+              [reviewId]: { likes: result.likesCount, isLiked: newIsLiked },
+            }));
+          }
         });
-
-        // Call mutation
-        const result = await toggleReviewLikeMutate(Number(reviewId));
-
-        if (!result.success) {
-          setReviewLikeUpdates((prev) => ({
-            ...prev,
-            [reviewId]: { likes: currentLikes, isLiked: currentIsLiked },
-          }));
-        } else if (result.likesCount !== undefined) {
-          // Sync with server count
-          setReviewLikeUpdates((prev) => ({
-            ...prev,
-            [reviewId]: { likes: result.likesCount, isLiked: newIsLiked },
-          }));
-        }
       });
-      return (await result) ?? false;
+      return result ?? false;
     },
-    [requireAuth, applyOptimisticReviewLike, toggleReviewLikeMutate],
+    [
+      requireAuth,
+      applyOptimisticReviewLike,
+      toggleReviewLikeMutate,
+      startTransition,
+    ],
   );
 
   return (

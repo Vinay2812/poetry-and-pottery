@@ -3,12 +3,12 @@
 import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { Star } from "lucide-react";
 import {
-  startTransition,
   useCallback,
   useEffect,
   useMemo,
   useOptimistic,
   useState,
+  useTransition,
 } from "react";
 
 import { ReviewCard } from "@/components/cards";
@@ -121,54 +121,56 @@ export function ReviewsSheet({
   );
 
   const { likedReviews, likeCounts } = optimisticReviewState;
+  const [, startTransition] = useTransition();
 
   const handleLike = useCallback(
-    async (reviewId: string) => {
+    (reviewId: string) => {
       const wasLiked = likedReviews.has(reviewId);
       const newIsLiked = !wasLiked;
       const newLikesCount = wasLiked
         ? (likeCounts[reviewId] ?? 0) - 1
         : (likeCounts[reviewId] ?? 0) + 1;
 
-      startTransition(() => {
+      // Notify parent of optimistic update
+      onLikeUpdate?.(reviewId, newLikesCount, newIsLiked);
+
+      // Wrap entire async operation in transition
+      startTransition(async () => {
         applyOptimisticReview({
           reviewId,
           likes: newLikesCount,
           isLiked: newIsLiked,
         });
+
+        // Call mutation
+        const result = await toggleReviewLikeMutate(Number(reviewId));
+
+        if (!result.success) {
+          const baseLikes = reviewState.likeCounts[reviewId] ?? 0;
+          const baseIsLiked = reviewState.likedReviews.has(reviewId);
+          setReviewState({
+            likedReviews: new Set(reviewState.likedReviews),
+            likeCounts: { ...reviewState.likeCounts },
+          });
+          onLikeUpdate?.(reviewId, baseLikes, baseIsLiked);
+        } else if (result.likesCount !== undefined) {
+          // Sync with server count
+          const serverCount = result.likesCount;
+          setReviewState((prev) => ({
+            likedReviews: new Set(
+              newIsLiked
+                ? [...prev.likedReviews, reviewId]
+                : [...prev.likedReviews].filter((id) => id !== reviewId),
+            ),
+            likeCounts: {
+              ...prev.likeCounts,
+              [reviewId]: serverCount,
+            },
+          }));
+          // Notify parent of server-synced count
+          onLikeUpdate?.(reviewId, serverCount, newIsLiked);
+        }
       });
-
-      // Notify parent of optimistic update
-      onLikeUpdate?.(reviewId, newLikesCount, newIsLiked);
-
-      // Call mutation
-      const result = await toggleReviewLikeMutate(Number(reviewId));
-
-      if (!result.success) {
-        const baseLikes = reviewState.likeCounts[reviewId] ?? 0;
-        const baseIsLiked = reviewState.likedReviews.has(reviewId);
-        setReviewState({
-          likedReviews: new Set(reviewState.likedReviews),
-          likeCounts: { ...reviewState.likeCounts },
-        });
-        onLikeUpdate?.(reviewId, baseLikes, baseIsLiked);
-      } else if (result.likesCount !== undefined) {
-        // Sync with server count
-        const serverCount = result.likesCount;
-        setReviewState((prev) => ({
-          likedReviews: new Set(
-            newIsLiked
-              ? [...prev.likedReviews, reviewId]
-              : [...prev.likedReviews].filter((id) => id !== reviewId),
-          ),
-          likeCounts: {
-            ...prev.likeCounts,
-            [reviewId]: serverCount,
-          },
-        }));
-        // Notify parent of server-synced count
-        onLikeUpdate?.(reviewId, serverCount, newIsLiked);
-      }
     },
     [
       applyOptimisticReview,
@@ -177,6 +179,7 @@ export function ReviewsSheet({
       onLikeUpdate,
       reviewState,
       toggleReviewLikeMutate,
+      startTransition,
     ],
   );
 

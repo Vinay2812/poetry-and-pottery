@@ -148,7 +148,7 @@ export function useCart() {
   }, [optimisticItems]);
 
   const addToCart = useCallback(
-    async (
+    (
       productId: number,
       quantity: number = 1,
       product?: ProductWithCategories,
@@ -156,12 +156,10 @@ export function useCart() {
       if (!isSignedIn) {
         setSignInRedirectUrl(window.location.pathname);
         setSignInModalOpen(true);
-        return false;
+        return Promise.resolve(false);
       }
 
-      const existingItem = optimisticItems.find(
-        (i) => i.product_id === productId,
-      );
+      const existingItem = items.find((i) => i.product_id === productId);
       const currentQuantity = existingItem?.quantity ?? 0;
 
       if (currentQuantity >= MAX_CART_QUANTITY) {
@@ -169,7 +167,7 @@ export function useCart() {
           type: "error",
           message: `Maximum ${MAX_CART_QUANTITY} items per product allowed`,
         });
-        return false;
+        return Promise.resolve(false);
       }
 
       const newQuantity = Math.min(
@@ -179,7 +177,7 @@ export function useCart() {
       const quantityToAdd = newQuantity - currentQuantity;
 
       if (quantityToAdd <= 0) {
-        return false;
+        return Promise.resolve(false);
       }
 
       const optimisticAction: CartOptimisticAction = {
@@ -188,38 +186,42 @@ export function useCart() {
         quantity: quantityToAdd,
         product,
       };
-      startTransition(() => {
-        updateOptimisticItems(optimisticAction);
-      });
-      const nextItems = applyCartOptimisticAction(
-        optimisticItems,
-        optimisticAction,
-      );
+
+      // Update cart count optimistically
+      const nextItems = applyCartOptimisticAction(items, optimisticAction);
       setCartCount(getTotalItemsFrom(nextItems));
 
-      const actionResult = await runWithLoading(productId, () =>
-        addToCartMutate(productId, quantityToAdd),
-      );
-      if (!actionResult.success) {
-        addToast({
-          type: "error",
-          message: actionResult.error || "Failed to add to cart",
-        });
-        setItems((prev) => [...prev]);
-        setCartCount(getTotalItemsFrom(items));
-        return false;
-      }
+      return new Promise<boolean>((resolve) => {
+        // Wrap entire async operation in transition
+        startTransition(async () => {
+          updateOptimisticItems(optimisticAction);
 
-      // Update with actual server data
-      const newItem = mapToCartWithProduct(actionResult.data);
-      setItems((prev) =>
-        applyCartOptimisticAction(prev, { type: "replace", item: newItem }),
-      );
-      return true;
+          const actionResult = await runWithLoading(productId, () =>
+            addToCartMutate(productId, quantityToAdd),
+          );
+
+          if (!actionResult.success) {
+            addToast({
+              type: "error",
+              message: actionResult.error || "Failed to add to cart",
+            });
+            // Revert cart count
+            setCartCount(getTotalItemsFrom(items));
+            resolve(false);
+            return;
+          }
+
+          // Update base state with server data
+          const newItem = mapToCartWithProduct(actionResult.data);
+          setItems((prev) =>
+            applyCartOptimisticAction(prev, { type: "replace", item: newItem }),
+          );
+          resolve(true);
+        });
+      });
     },
     [
       isSignedIn,
-      optimisticItems,
       items,
       addToast,
       setSignInModalOpen,
@@ -228,57 +230,63 @@ export function useCart() {
       runWithLoading,
       setCartCount,
       updateOptimisticItems,
+      startTransition,
     ],
   );
 
   const removeFromCart = useCallback(
-    async (productId: number) => {
-      if (!isSignedIn) return false;
+    (productId: number) => {
+      if (!isSignedIn) return Promise.resolve(false);
 
       const optimisticAction: CartOptimisticAction = {
         type: "remove",
         productId,
       };
-      startTransition(() => {
-        updateOptimisticItems(optimisticAction);
-      });
-      const nextItems = applyCartOptimisticAction(
-        optimisticItems,
-        optimisticAction,
-      );
+
+      // Update cart count optimistically
+      const nextItems = applyCartOptimisticAction(items, optimisticAction);
       setCartCount(getTotalItemsFrom(nextItems));
 
-      const actionResult = await runWithLoading(productId, () =>
-        removeFromCartMutate(productId),
-      );
-      if (!actionResult.success) {
-        addToast({
-          type: "error",
-          message: actionResult.error || "Failed to remove from cart",
-        });
-        setItems((prev) => [...prev]);
-        setCartCount(getTotalItemsFrom(items));
-        return false;
-      }
+      return new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          updateOptimisticItems(optimisticAction);
 
-      setItems((prev) => applyCartOptimisticAction(prev, optimisticAction));
-      return true;
+          const actionResult = await runWithLoading(productId, () =>
+            removeFromCartMutate(productId),
+          );
+
+          if (!actionResult.success) {
+            addToast({
+              type: "error",
+              message: actionResult.error || "Failed to remove from cart",
+            });
+            // Revert cart count
+            setCartCount(getTotalItemsFrom(items));
+            resolve(false);
+            return;
+          }
+
+          // Update base state
+          setItems((prev) => applyCartOptimisticAction(prev, optimisticAction));
+          resolve(true);
+        });
+      });
     },
     [
       isSignedIn,
-      optimisticItems,
       items,
       addToast,
       removeFromCartMutate,
       runWithLoading,
       setCartCount,
       updateOptimisticItems,
+      startTransition,
     ],
   );
 
   const updateQuantity = useCallback(
-    async (productId: number, quantity: number) => {
-      if (!isSignedIn) return false;
+    (productId: number, quantity: number) => {
+      if (!isSignedIn) return Promise.resolve(false);
 
       const clampedQuantity = Math.min(
         Math.max(quantity, 0),
@@ -289,38 +297,45 @@ export function useCart() {
         productId,
         quantity: clampedQuantity,
       };
-      updateOptimisticItems(optimisticAction);
-      const nextItems = applyCartOptimisticAction(
-        optimisticItems,
-        optimisticAction,
-      );
+
+      // Update cart count optimistically
+      const nextItems = applyCartOptimisticAction(items, optimisticAction);
       setCartCount(getTotalItemsFrom(nextItems));
 
-      const actionResult = await runWithLoading(productId, () =>
-        updateCartQuantityMutate(productId, clampedQuantity),
-      );
-      if (!actionResult.success) {
-        addToast({
-          type: "error",
-          message: actionResult.error || "Failed to update cart",
-        });
-        setItems((prev) => [...prev]);
-        setCartCount(getTotalItemsFrom(items));
-        return false;
-      }
+      return new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          updateOptimisticItems(optimisticAction);
 
-      setItems((prev) => applyCartOptimisticAction(prev, optimisticAction));
-      return true;
+          const actionResult = await runWithLoading(productId, () =>
+            updateCartQuantityMutate(productId, clampedQuantity),
+          );
+
+          if (!actionResult.success) {
+            addToast({
+              type: "error",
+              message: actionResult.error || "Failed to update cart",
+            });
+            // Revert cart count
+            setCartCount(getTotalItemsFrom(items));
+            resolve(false);
+            return;
+          }
+
+          // Update base state
+          setItems((prev) => applyCartOptimisticAction(prev, optimisticAction));
+          resolve(true);
+        });
+      });
     },
     [
       isSignedIn,
-      optimisticItems,
       items,
       addToast,
       updateCartQuantityMutate,
       runWithLoading,
       setCartCount,
       updateOptimisticItems,
+      startTransition,
     ],
   );
 

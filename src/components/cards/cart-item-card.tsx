@@ -6,15 +6,8 @@ import { motion } from "framer-motion";
 import { Loader2, Trash2 } from "lucide-react";
 import Link from "next/link";
 
-import { OptimizedImage } from "@/components/shared";
+import { OptimizedImage, QuantitySelector } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface CartItemCardProps {
   product: ProductBase;
@@ -33,12 +26,19 @@ export function CartItemCard({
 }: CartItemCardProps) {
   const imageUrl = product.image_urls[0] || "/placeholder.jpg";
   const category = product.material || "Pottery";
-
-  const quantityOptions = Array.from(
-    { length: MAX_CART_QUANTITY },
-    (_, i) => i + 1,
-  );
   const itemTotal = product.price * quantity;
+
+  const handleIncrease = () => {
+    if (quantity < MAX_CART_QUANTITY) {
+      onQuantityChange(quantity + 1);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      onQuantityChange(quantity - 1);
+    }
+  };
 
   return (
     <motion.div
@@ -47,13 +47,13 @@ export function CartItemCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.2 }}
-      className="group shadow-soft relative overflow-hidden rounded-[2rem] border border-neutral-100 bg-white p-3 transition-all duration-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
+      className="group shadow-soft hover:shadow-card relative overflow-hidden rounded-2xl bg-white p-4 transition-all duration-300"
     >
       {/* Mobile Layout */}
-      <div className="flex gap-4 lg:hidden">
+      <div className="flex gap-3 lg:hidden">
         <Link
           href={`/products/${product.id}`}
-          className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800"
+          className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100"
         >
           <OptimizedImage
             src={imageUrl}
@@ -67,18 +67,16 @@ export function CartItemCard({
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
               <Link href={`/products/${product.id}`}>
-                <h3 className="line-clamp-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                <h3 className="line-clamp-2 text-sm font-semibold text-neutral-900">
                   {product.name}
                 </h3>
               </Link>
-              <p className="mt-1 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                {category}
-              </p>
+              <p className="mt-0.5 text-xs text-neutral-500">{category}</p>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 shrink-0 rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-red-500 dark:text-neutral-500 dark:hover:bg-neutral-800"
+              className="h-8 w-8 shrink-0 rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-500"
               onClick={onRemove}
               disabled={isLoading}
             >
@@ -90,94 +88,89 @@ export function CartItemCard({
             </Button>
           </div>
 
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-bold text-neutral-900 dark:text-white">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5">
+              <QuantitySelector
+                quantity={quantity}
+                onIncrease={handleIncrease}
+                onDecrease={handleDecrease}
+                min={1}
+                max={MAX_CART_QUANTITY}
+                size="sm"
+                disabled={isLoading}
+              />
+              <span className="text-xs text-neutral-500">×</span>
+              <span className="text-sm font-medium text-neutral-700">
+                ₹{product.price.toLocaleString()}
+              </span>
+            </div>
+            <span className="text-base font-bold text-neutral-900">
               ₹{itemTotal.toLocaleString()}
             </span>
-            <Select
-              value={quantity.toString()}
-              onValueChange={(value) => onQuantityChange(parseInt(value, 10))}
-              disabled={isLoading}
-            >
-              <SelectTrigger className="h-8 w-[4.5rem] rounded-full text-xs font-medium">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {quantityOptions.map((num) => (
-                  <SelectItem key={num} value={num.toString()}>
-                    {num}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
         </div>
       </div>
 
-      {/* Desktop Layout */}
-      <div className="hidden gap-4 lg:flex">
-        <Link
-          href={`/products/${product.id}`}
-          className="focus-visible:ring-primary/30 relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl focus-visible:ring-2 focus-visible:outline-none"
-        >
-          <OptimizedImage
-            src={imageUrl}
-            alt={product.name}
-            fill
-            className="object-cover"
-          />
-        </Link>
-
-        <div className="flex flex-1 items-center justify-between">
-          <div className="min-w-0 flex-1">
+      {/* Desktop Layout - Grid aligned with table header */}
+      <div className="hidden lg:grid lg:grid-cols-[1fr_120px_160px_100px_40px] lg:items-center lg:gap-4">
+        {/* Product Info */}
+        <div className="flex items-center gap-4">
+          <Link
+            href={`/products/${product.id}`}
+            className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100"
+          >
+            <OptimizedImage
+              src={imageUrl}
+              alt={product.name}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
+          <div className="min-w-0">
             <Link href={`/products/${product.id}`}>
-              <h3 className="hover:text-primary font-semibold transition-colors">
+              <h3 className="hover:text-primary line-clamp-1 font-medium text-neutral-900 transition-colors">
                 {product.name}
               </h3>
             </Link>
-            <p className="text-muted-foreground text-sm">{category}</p>
-            <p className="text-muted-foreground mt-1 text-sm">
-              ₹{product.price.toLocaleString()} each
-            </p>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <Select
-              value={quantity.toString()}
-              onValueChange={(value) => onQuantityChange(parseInt(value, 10))}
-              disabled={isLoading}
-            >
-              <SelectTrigger className="h-9 w-20">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {quantityOptions.map((num) => (
-                  <SelectItem key={num} value={num.toString()}>
-                    {num}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <span className="w-24 text-right font-semibold">
-              ₹{itemTotal.toLocaleString()}
-            </span>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 text-red-400 hover:bg-red-50 hover:text-red-500"
-              onClick={onRemove}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Trash2 className="h-4 w-4" />
-              )}
-            </Button>
+            <p className="mt-0.5 text-sm text-neutral-500">{category}</p>
           </div>
         </div>
+
+        {/* Price */}
+        <span className="text-primary text-sm font-semibold">
+          ₹{product.price.toLocaleString()}
+        </span>
+
+        {/* Quantity */}
+        <QuantitySelector
+          quantity={quantity}
+          onIncrease={handleIncrease}
+          onDecrease={handleDecrease}
+          min={1}
+          max={MAX_CART_QUANTITY}
+          size="sm"
+          disabled={isLoading}
+        />
+
+        {/* Total */}
+        <span className="text-right text-sm font-bold text-neutral-900">
+          ₹{itemTotal.toLocaleString()}
+        </span>
+
+        {/* Remove Button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-500"
+          onClick={onRemove}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Trash2 className="h-4 w-4" />
+          )}
+        </Button>
       </div>
     </motion.div>
   );
