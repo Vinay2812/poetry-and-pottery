@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Calendar,
-  CheckCircle2,
-  History,
-  Sparkles,
-  Ticket,
-} from "lucide-react";
+import { Calendar } from "lucide-react";
 
 import {
   CompletedEventCard,
@@ -15,7 +9,7 @@ import {
 } from "@/components/cards";
 import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
-import { InfiniteScrollTrigger, SectionHeader } from "@/components/shared";
+import { InfiniteScrollTrigger } from "@/components/shared";
 
 import type { RegistrationsProps } from "../types";
 
@@ -66,15 +60,9 @@ export function Registrations({ viewModel, loadMoreRef }: RegistrationsProps) {
       ) : (
         <div className="space-y-8">
           {/* Upcoming Registrations Section */}
-          <section>
-            <SectionHeader
-              icon={Ticket}
-              iconClassName="text-sky-600"
-              title="My Upcoming Events"
-              description="Your registered workshops that haven't started yet"
-            />
-            {hasUpcomingRegistrations ? (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
+          {hasUpcomingRegistrations ? (
+            <section>
+              <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
                 {upcomingRegistrations.map((registration) => (
                   <RegisteredEventCard
                     key={registration.id}
@@ -82,29 +70,23 @@ export function Registrations({ viewModel, loadMoreRef }: RegistrationsProps) {
                   />
                 ))}
               </div>
-            ) : (
-              <div className="border-border bg-muted/30 flex min-h-[150px] items-center justify-center rounded-2xl border border-dashed p-6">
-                <EmptyState
-                  icon={Calendar}
-                  title="No Active Registrations"
-                  description="You don't have any upcoming workshop registrations. Browse our workshops to find your next creative experience!"
-                  actionText="Browse Workshops"
-                  actionHref="/events/upcoming"
-                />
-              </div>
-            )}
-          </section>
+            </section>
+          ) : (
+            <div className="border-border bg-muted/30 flex min-h-[150px] items-center justify-center rounded-2xl border border-dashed p-6">
+              <EmptyState
+                icon={Calendar}
+                title="No Active Registrations"
+                description="You don't have any upcoming workshop registrations. Browse our workshops to find your next creative experience!"
+                actionText="Browse Workshops"
+                actionHref="/events/upcoming"
+              />
+            </div>
+          )}
 
           {/* Completed Registrations Section */}
           {hasCompletedRegistrations && (
             <section>
-              <SectionHeader
-                icon={CheckCircle2}
-                iconClassName="text-emerald-600"
-                title="Completed Events"
-                description="Past workshops you attended - share your experience!"
-              />
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
+              <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
                 {completedRegistrations.map((registration) => (
                   <CompletedEventCard
                     key={registration.id}

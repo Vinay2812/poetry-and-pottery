@@ -4,13 +4,17 @@ import { MobileHeaderContainer } from "@/features/layout";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  Bookmark,
+  Calendar,
   Check,
   CheckCircle,
   ChevronRight,
+  Clock,
   Loader2,
   MapPin,
   Share2,
   User,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -62,6 +66,27 @@ export function EventDetail({
 
       <main className="pt-14 pb-40 lg:pt-20 lg:pb-12">
         <div className="container mx-auto px-0 py-0 lg:px-8 lg:py-12">
+          {/* Mobile Breadcrumbs */}
+          <nav className="flex items-center gap-1.5 px-4 py-3 text-xs lg:hidden">
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Home
+            </Link>
+            <span className="text-neutral-300">/</span>
+            <Link
+              href="/events"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              Events
+            </Link>
+            <span className="text-neutral-300">/</span>
+            <span className="text-foreground line-clamp-1 font-medium">
+              {title}
+            </span>
+          </nav>
+
           {/* Desktop Breadcrumbs */}
           <nav className="mb-6 hidden items-center gap-2 text-sm lg:flex">
             <Link
@@ -94,31 +119,26 @@ export function EventDetail({
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
-            {/* Share Button */}
-            <button
-              onClick={onShare}
-              className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-              aria-label="Share event"
-            >
-              <Share2 className="text-foreground h-5 w-5" />
-            </button>
-
-            {/* Badges on Image */}
-            <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-              {level && (
+            {/* Level Badge on Image */}
+            {level && (
+              <div className="absolute top-4 left-4">
                 <Badge className="bg-primary rounded-lg px-3 py-1.5 text-xs font-semibold text-white">
                   {level}
                 </Badge>
-              )}
-              {availableSeats && availableSeats <= 5 && (
+              </div>
+            )}
+
+            {/* Low Spots Warning Badge */}
+            {availableSeats != null && availableSeats <= 5 && !soldOut && (
+              <div className="absolute bottom-4 left-4">
                 <Badge
                   variant="secondary"
                   className="text-foreground rounded-lg bg-white/90 px-3 py-1.5 text-xs font-semibold"
                 >
                   Only {availableSeats} spots left
                 </Badge>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Content Grid: 3fr 1fr */}
@@ -127,32 +147,78 @@ export function EventDetail({
             <div>
               <div className="px-4 pt-6 lg:px-0 lg:pt-0">
                 {/* Title */}
-                <h1 className="font-display mb-2 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
+                <h1 className="font-display mb-4 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
                   {title}
                 </h1>
 
-                {/* Inline Metadata */}
-                <p className="mb-6 text-sm text-neutral-500 lg:text-base">
-                  {formattedDate} · {formattedTime} · {duration}
-                  {location && ` · ${location}`}
-                  {availableSeats && ` · ${availableSeats} spots left`}
-                </p>
+                {/* Metadata Rows with Icons */}
+                <div className="mb-5 space-y-2.5">
+                  <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+                    <Calendar className="h-4 w-4 text-neutral-400" />
+                    <span>{formattedDate}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+                    <Clock className="h-4 w-4 text-neutral-400" />
+                    <span>
+                      {formattedTime} ({duration})
+                    </span>
+                  </div>
+                  {location && (
+                    <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+                      <MapPin className="h-4 w-4 text-neutral-400" />
+                      <span>{fullLocation || location}</span>
+                    </div>
+                  )}
+                  {availableSeats != null && (
+                    <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
+                      <Users className="h-4 w-4 text-neutral-400" />
+                      <span
+                        className={cn(
+                          availableSeats <= 5 && "font-medium text-amber-600",
+                        )}
+                      >
+                        {availableSeats} spots remaining
+                      </span>
+                    </div>
+                  )}
+                </div>
 
-                {/* About */}
+                {/* Share & Save Buttons */}
+                <div className="mb-6 flex gap-3">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 rounded-lg px-4"
+                    onClick={onShare}
+                  >
+                    <Share2 className="mr-2 h-4 w-4" />
+                    Share
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 rounded-lg px-4"
+                  >
+                    <Bookmark className="mr-2 h-4 w-4" />
+                    Save
+                  </Button>
+                </div>
+
+                {/* About This Workshop */}
                 <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                   <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                    About
+                    About This Workshop
                   </h2>
                   <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
                     {description}
                   </p>
                 </div>
 
-                {/* Instructor */}
+                {/* Your Instructor */}
                 {instructor && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                     <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                      Instructor
+                      Your Instructor
                     </h2>
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
@@ -198,7 +264,7 @@ export function EventDetail({
                 {includes && includes.length > 0 && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                     <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                      What&apos;s included
+                      What&apos;s Included
                     </h2>
                     <ul className="grid gap-3 sm:grid-cols-2">
                       {includes.map((item, index) => (
@@ -217,7 +283,7 @@ export function EventDetail({
               </div>
             </div>
 
-            {/* Desktop Sidebar - Minimal */}
+            {/* Desktop Sidebar */}
             <div className="hidden lg:block">
               <div className="sticky top-24">
                 <div className="text-primary mb-1 text-2xl font-extrabold">
@@ -257,7 +323,7 @@ export function EventDetail({
                   </Button>
                 </motion.div>
 
-                {availableSeats && !soldOut && !registered && (
+                {availableSeats != null && !soldOut && !registered && (
                   <p className="mt-3 text-center text-xs font-semibold text-emerald-600">
                     ✓ {availableSeats} seats available
                   </p>

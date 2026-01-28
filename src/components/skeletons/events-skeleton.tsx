@@ -1,51 +1,87 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Horizontal event card skeleton matching the new card layout
+ * Square image thumbnail on left, content on right
+ */
 export function EventCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
-      {/* Image with badges */}
-      <div className="relative aspect-[4/3]">
-        <Skeleton className="h-full w-full" />
-        {/* Status badge */}
-        <div className="absolute top-3 left-3">
-          <Skeleton className="h-6 w-20 rounded-full" />
-        </div>
-        {/* Price pill */}
-        <div className="absolute right-3 bottom-3">
-          <Skeleton className="h-7 w-16 rounded-full" />
-        </div>
-      </div>
+    <div className="flex gap-4 rounded-2xl bg-white p-3 lg:p-4 dark:bg-neutral-900">
+      {/* Image Thumbnail */}
+      <Skeleton className="h-24 w-24 shrink-0 rounded-xl lg:h-28 lg:w-28" />
 
       {/* Content */}
-      <div className="space-y-3 p-4">
-        {/* Title and date/time */}
-        <div className="space-y-1">
-          <Skeleton className="h-5 w-3/4" />
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-4 w-20" />
-          </div>
+      <div className="flex min-w-0 flex-1 flex-col justify-between">
+        {/* Title */}
+        <Skeleton className="mb-1.5 h-5 w-3/4" />
+
+        {/* Date/Time */}
+        <div className="mb-1 flex items-center gap-1.5">
+          <Skeleton className="h-3.5 w-3.5 rounded" />
+          <Skeleton className="h-4 w-32" />
         </div>
 
-        {/* Description */}
-        <Skeleton className="h-4 w-full" />
+        {/* Location */}
+        <div className="mb-2 flex items-center gap-1.5">
+          <Skeleton className="h-3.5 w-3.5 rounded" />
+          <Skeleton className="h-4 w-24" />
+        </div>
 
-        {/* Footer - location and seats */}
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-1">
-            <Skeleton className="h-4 w-4" />
-            <Skeleton className="h-4 w-24" />
-          </div>
+        {/* Footer: Spots + Price */}
+        <div className="flex items-center justify-between">
           <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-5 w-14" />
         </div>
       </div>
     </div>
   );
 }
 
-export function EventsGridSkeleton({ count = 6 }: { count?: number }) {
+/**
+ * Registration card skeleton with status badge and action button
+ */
+export function RegistrationCardSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+    <div className="flex gap-4 rounded-2xl bg-white p-3 lg:p-4 dark:bg-neutral-900">
+      {/* Image Thumbnail */}
+      <Skeleton className="h-24 w-24 shrink-0 rounded-xl lg:h-28 lg:w-28" />
+
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 flex-col justify-between">
+        {/* Top section */}
+        <div>
+          {/* Title + Status */}
+          <div className="mb-1.5 flex items-start justify-between gap-2">
+            <Skeleton className="h-5 w-3/4" />
+            <Skeleton className="h-5 w-16 shrink-0 rounded-full" />
+          </div>
+
+          {/* Date/Time */}
+          <div className="mb-1 flex items-center gap-1.5">
+            <Skeleton className="h-3.5 w-3.5 rounded" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+
+          {/* Location */}
+          <div className="flex items-center gap-1.5">
+            <Skeleton className="h-3.5 w-3.5 rounded" />
+            <Skeleton className="h-4 w-24" />
+          </div>
+        </div>
+
+        {/* Bottom row: Reg ID + Button */}
+        <div className="flex items-center justify-between gap-2">
+          <Skeleton className="h-3 w-28" />
+          <Skeleton className="h-8 w-24 rounded-lg" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function EventsGridSkeleton({ count = 4 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
       {Array.from({ length: count }).map((_, i) => (
         <EventCardSkeleton key={i} />
       ))}
@@ -94,16 +130,8 @@ export function EventsSkeleton() {
   );
 }
 
-export function PastEventsSkeleton({ count = 3 }: { count?: number }) {
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-5 w-16 rounded-full" />
-      </div>
-      <EventsGridSkeleton count={count} />
-    </div>
-  );
+export function PastEventsSkeleton({ count = 4 }: { count?: number }) {
+  return <EventsGridSkeleton count={count} />;
 }
 
 export function EventDetailSkeleton() {

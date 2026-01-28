@@ -18,6 +18,8 @@ interface ReviewFormProps {
   hasReviewed?: boolean;
   /** Variant for form styling */
   variant?: "compact" | "full-width";
+  /** Start with form visible (skip trigger button) */
+  defaultOpen?: boolean;
   onSubmit: (
     rating: number,
     review?: string,
@@ -29,9 +31,10 @@ export function ReviewForm({
   title,
   hasReviewed = false,
   variant = "full-width",
+  defaultOpen = false,
   onSubmit,
 }: ReviewFormProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [justReviewed, setJustReviewed] = useState(false);
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState("");

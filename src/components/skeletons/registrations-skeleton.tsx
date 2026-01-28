@@ -1,10 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { EventCardSkeleton, EventsListLayoutSkeleton } from "./events-skeleton";
-
-export function RegistrationCardSkeleton() {
-  return <EventCardSkeleton />;
-}
+import {
+  EventsListLayoutSkeleton,
+  RegistrationCardSkeleton,
+} from "./events-skeleton";
 
 export function RegistrationsSkeleton() {
   return (
@@ -12,14 +11,7 @@ export function RegistrationsSkeleton() {
       <div className="space-y-8">
         {/* Upcoming Registrations Section */}
         <section>
-          <div className="mb-4 flex items-center gap-2">
-            <Skeleton className="h-8 w-8 rounded-full bg-sky-50" />
-            <div className="space-y-1">
-              <Skeleton className="h-5 w-32" />
-              <Skeleton className="h-3 w-48" />
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
             {[1, 2, 3].map((i) => (
               <RegistrationCardSkeleton key={i} />
             ))}
@@ -28,14 +20,7 @@ export function RegistrationsSkeleton() {
 
         {/* Completed Registrations Section */}
         <section>
-          <div className="mb-4 flex items-center gap-2">
-            <Skeleton className="h-8 w-8 rounded-full bg-emerald-50" />
-            <div className="space-y-1">
-              <Skeleton className="h-5 w-36" />
-              <Skeleton className="h-3 w-52" />
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
             {[1, 2].map((i) => (
               <RegistrationCardSkeleton key={i} />
             ))}

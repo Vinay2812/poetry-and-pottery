@@ -18,9 +18,9 @@ export {
   EventsSkeleton,
   EventDetailSkeleton,
   PastEventsSkeleton,
+  RegistrationCardSkeleton,
 } from "./events-skeleton";
 export {
-  RegistrationCardSkeleton,
   RegistrationsSkeleton,
   RegistrationDetailSkeleton,
 } from "./registrations-skeleton";

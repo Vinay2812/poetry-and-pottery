@@ -109,7 +109,7 @@ export function UpcomingEventsClient({
     >
       {events.length > 0 ? (
         <>
-          <StaggeredGrid className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
+          <StaggeredGrid className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
             {events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}

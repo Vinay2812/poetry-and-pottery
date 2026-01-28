@@ -1095,7 +1095,7 @@ _Grid Layout (same for all):_
 
 #### Task 7.2: Event Detail Pages (Unified Layout)
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-7-2-event-detail.html](wireframes/task-7-2-event-detail.html)
 **Approved Selection:**
 
@@ -1152,7 +1152,7 @@ _Sidebar (same structure, different CTAs):_
 
 #### Task 7.3: Event Card
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-7-3-event-card.html](wireframes/task-7-3-event-card.html)
 **Approved Selection:**
 
@@ -1182,7 +1182,7 @@ _Sidebar (same structure, different CTAs):_
 
 #### Task 7.4: Registration Cards
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-7-4-registration-cards.html](wireframes/task-7-4-registration-cards.html)
 **Approved Selection:**
 
@@ -1218,7 +1218,7 @@ _Completed Card (Past registrations):_
 
 #### Task 7.5: Event Ticket
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-7-5-event-ticket.html](wireframes/task-7-5-event-ticket.html)
 **Approved Selection:**
 
