@@ -19,11 +19,7 @@ import { InfiniteScrollTrigger, SectionHeader } from "@/components/shared";
 
 import type { RegistrationsProps } from "../types";
 
-export function Registrations({
-  viewModel,
-  loadMoreRef,
-  onSearchChange,
-}: RegistrationsProps) {
+export function Registrations({ viewModel, loadMoreRef }: RegistrationsProps) {
   const {
     upcomingRegistrations,
     completedRegistrations,
@@ -34,15 +30,10 @@ export function Registrations({
     hasUpcomingEvents,
     hasMore,
     isLoading,
-    searchQuery,
   } = viewModel;
 
   return (
-    <EventsListLayout
-      onSearchChange={onSearchChange}
-      searchQuery={searchQuery}
-      searchPlaceholder="Search registrations..."
-    >
+    <EventsListLayout>
       {!hasAnyRegistrations ? (
         <div className="grid gap-8 lg:grid-cols-5">
           {/* Empty State */}
@@ -83,7 +74,7 @@ export function Registrations({
               description="Your registered workshops that haven't started yet"
             />
             {hasUpcomingRegistrations ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
                 {upcomingRegistrations.map((registration) => (
                   <RegisteredEventCard
                     key={registration.id}
@@ -113,7 +104,7 @@ export function Registrations({
                 title="Completed Events"
                 description="Past workshops you attended - share your experience!"
               />
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
                 {completedRegistrations.map((registration) => (
                   <CompletedEventCard
                     key={registration.id}

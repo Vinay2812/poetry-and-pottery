@@ -1,11 +1,10 @@
 "use client";
 
 import { useAuthAction } from "@/hooks/use-auth-action";
-import { motion } from "framer-motion";
-import { CalendarDays, Ticket } from "lucide-react";
+import { CalendarDays, History, Sparkles, Ticket } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 
@@ -13,6 +12,8 @@ import { cn } from "@/lib/utils";
 
 export enum TabType {
   ALL = "all",
+  UPCOMING = "upcoming",
+  PAST = "past",
   REGISTRATIONS = "registrations",
 }
 
@@ -23,6 +24,20 @@ export const EVENTS_TABS = [
     icon: CalendarDays,
     mobileLabel: "All",
     desktopLabel: "All Events",
+  },
+  {
+    type: TabType.UPCOMING,
+    href: "/events/upcoming",
+    icon: Sparkles,
+    mobileLabel: "Upcoming",
+    desktopLabel: "Upcoming",
+  },
+  {
+    type: TabType.PAST,
+    href: "/events/past",
+    icon: History,
+    mobileLabel: "Past",
+    desktopLabel: "Past Workshops",
   },
   {
     type: TabType.REGISTRATIONS,
@@ -44,6 +59,7 @@ export function EventsTabs({
 }: EventsTabsProps) {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   const { requireAuth } = useAuthAction();
 
@@ -66,72 +82,50 @@ export function EventsTabs({
   );
 
   return (
-    <div className="mb-6 flex justify-start gap-2 sm:gap-4">
-      {EVENTS_TABS.map((tab) => {
-        const isActive = tab.type === activeTab;
-        const Icon = tab.icon;
-        const showBadge =
-          tab.type === TabType.REGISTRATIONS && registeredCount > 0;
+    <div className="mb-4 lg:mb-6">
+      {/* Tabs container with horizontal scroll on mobile */}
+      <div
+        ref={tabsRef}
+        className="scrollbar-hide -mx-4 flex items-center gap-1 overflow-x-auto px-4 sm:mx-0 sm:gap-2 sm:px-0"
+      >
+        {EVENTS_TABS.map((tab) => {
+          const isActive = tab.type === activeTab;
+          const showBadge =
+            tab.type === TabType.REGISTRATIONS && registeredCount > 0;
 
-        return (
-          <Link
-            key={tab.type}
-            href={tab.href}
-            className={cn(
-              "group relative flex min-w-32 flex-col items-center gap-2 rounded-2xl px-4 py-3 transition-all duration-200 sm:min-w-32 sm:px-6 sm:py-4 lg:min-w-48",
-              isActive
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground",
-            )}
-            onClick={(e) => handleTabClick(e, tab.type, tab.href)}
-          >
-            {/* Icon container */}
-            <div className="relative">
-              <motion.div
-                initial={false}
-                animate={{
-                  scale: isActive ? 1.1 : 1,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 25,
-                }}
-              >
-                <Icon
-                  className={cn(
-                    "size-6 transition-colors duration-200 sm:size-7",
-                    isActive
-                      ? "text-primary"
-                      : "text-muted-foreground group-hover:text-foreground",
-                  )}
-                  strokeWidth={isActive ? 2.5 : 2}
-                />
-              </motion.div>
-
-              {/* Badge */}
-              {showBadge && (
-                <span className="bg-primary text-primary-foreground absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-bold shadow-sm">
-                  {registeredCount}
-                </span>
-              )}
-            </div>
-
-            {/* Label */}
-            <span
+          return (
+            <Link
+              key={tab.type}
+              href={tab.href}
               className={cn(
-                "text-xs font-medium transition-colors duration-200 sm:text-sm",
+                "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
                 isActive
                   ? "text-primary"
-                  : "text-muted-foreground group-hover:text-foreground",
+                  : "text-muted-foreground hover:text-foreground",
               )}
+              onClick={(e) => handleTabClick(e, tab.type, tab.href)}
             >
               <span className="hidden sm:inline">{tab.desktopLabel}</span>
               <span className="sm:hidden">{tab.mobileLabel}</span>
-            </span>
-          </Link>
-        );
-      })}
+
+              {/* Badge for registrations */}
+              {showBadge && (
+                <span className="bg-primary text-primary-foreground ml-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold">
+                  {registeredCount}
+                </span>
+              )}
+
+              {/* Active underline indicator */}
+              {isActive && (
+                <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
+              )}
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Bottom border */}
+      <div className="border-border -mx-4 border-b sm:mx-0" />
     </div>
   );
 }

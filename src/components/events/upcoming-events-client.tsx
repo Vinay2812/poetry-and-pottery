@@ -4,11 +4,11 @@ import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { EventCard } from "@/components/cards";
-import { EventsListLayout } from "@/components/events";
+import { type EventSortOption, EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 import { StaggeredGrid } from "@/components/shared";
 
@@ -24,6 +24,8 @@ export function UpcomingEventsClient({
   initialEvents,
   initialPagination,
 }: UpcomingEventsClientProps) {
+  const [sortBy, setSortBy] = useState<EventSortOption>("soonest");
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["upcoming-events"],
@@ -73,26 +75,41 @@ export function UpcomingEventsClient({
   const events = useMemo(() => {
     const allEvents = data?.pages.flatMap((page) => page.data) ?? [];
     const seen = new Set<string>();
-    return allEvents.filter((event) => {
+    const uniqueEvents = allEvents.filter((event) => {
       if (seen.has(event.id)) {
         return false;
       }
       seen.add(event.id);
       return true;
     });
-  }, [data]);
+
+    // Sort events based on sortBy
+    return [...uniqueEvents].sort((a, b) => {
+      switch (sortBy) {
+        case "price-low":
+          return a.price - b.price;
+        case "price-high":
+          return b.price - a.price;
+        case "soonest":
+        default:
+          return (
+            new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime()
+          );
+      }
+    });
+  }, [data, sortBy]);
+
+  const totalEvents = data?.pages[0]?.total ?? initialPagination.total;
 
   return (
-    <EventsListLayout>
-      <div className="text-muted-foreground mb-6 flex items-center gap-2">
-        <Sparkles className="h-5 w-5" />
-        <p className="text-sm">
-          Reserve your spot in one of our upcoming pottery sessions.
-        </p>
-      </div>
+    <EventsListLayout
+      totalEvents={totalEvents}
+      sortBy={sortBy}
+      onSortChange={setSortBy}
+    >
       {events.length > 0 ? (
         <>
-          <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <StaggeredGrid className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
             {events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}

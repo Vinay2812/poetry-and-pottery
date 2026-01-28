@@ -123,10 +123,13 @@ export function useAllEventsQuery({
     });
   }, [upcomingData]);
 
+  const total = upcomingData?.pages[0]?.total ?? 0;
+
   return {
     upcomingEvents,
     hasNextPage: hasNextUpcoming ?? false,
     isFetchingNextPage: isFetchingNextUpcoming,
     loadMoreRef,
+    total,
   };
 }

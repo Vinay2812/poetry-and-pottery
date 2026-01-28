@@ -112,7 +112,7 @@ export function CartItemCard({
       </div>
 
       {/* Desktop Layout - Grid aligned with table header */}
-      <div className="hidden lg:grid lg:grid-cols-[1fr_120px_160px_100px_40px] lg:items-center lg:gap-4">
+      <div className="hidden lg:grid lg:grid-cols-[1fr_200px_100px_40px] lg:items-center lg:gap-4">
         {/* Product Info */}
         <div className="flex items-center gap-4">
           <Link
@@ -136,21 +136,22 @@ export function CartItemCard({
           </div>
         </div>
 
-        {/* Price */}
-        <span className="text-primary text-sm font-semibold">
-          ₹{product.price.toLocaleString()}
-        </span>
-
-        {/* Quantity */}
-        <QuantitySelector
-          quantity={quantity}
-          onIncrease={handleIncrease}
-          onDecrease={handleDecrease}
-          min={1}
-          max={MAX_CART_QUANTITY}
-          size="sm"
-          disabled={isLoading}
-        />
+        {/* Quantity with price */}
+        <div className="flex items-center gap-3">
+          <QuantitySelector
+            quantity={quantity}
+            onIncrease={handleIncrease}
+            onDecrease={handleDecrease}
+            min={1}
+            max={MAX_CART_QUANTITY}
+            size="sm"
+            disabled={isLoading}
+          />
+          <span className="text-sm text-neutral-500">×</span>
+          <span className="text-primary text-sm font-semibold">
+            ₹{product.price.toLocaleString()}
+          </span>
+        </div>
 
         {/* Total */}
         <span className="text-right text-sm font-bold text-neutral-900">

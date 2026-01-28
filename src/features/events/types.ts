@@ -4,6 +4,8 @@ import type {
   EventRegistration,
 } from "@/data/events/types";
 
+import type { EventSortOption } from "@/components/events";
+
 /**
  * View model for event quick info.
  */
@@ -143,6 +145,7 @@ export interface AllEventsViewModel {
   hasMore: boolean;
   isLoading: boolean;
   searchQuery: string;
+  totalEvents: number;
 }
 
 /**
@@ -151,7 +154,8 @@ export interface AllEventsViewModel {
 export interface AllEventsProps {
   viewModel: AllEventsViewModel;
   loadMoreRef: (node?: Element | null) => void;
-  onSearchChange: (query: string) => void;
+  sortBy?: EventSortOption;
+  onSortChange?: (sort: EventSortOption) => void;
   pastEventsLoading?: boolean;
   pastEventsSkeleton?: React.ReactNode;
 }
@@ -177,7 +181,6 @@ export interface RegistrationsViewModel {
   hasUpcomingEvents: boolean;
   hasMore: boolean;
   isLoading: boolean;
-  searchQuery: string;
 }
 
 /**
@@ -186,7 +189,6 @@ export interface RegistrationsViewModel {
 export interface RegistrationsProps {
   viewModel: RegistrationsViewModel;
   loadMoreRef: (node?: Element | null) => void;
-  onSearchChange: (query: string) => void;
 }
 
 /**

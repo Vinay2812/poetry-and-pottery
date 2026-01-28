@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useCallback, useMemo, useTransition } from "react";
+import { Suspense, useCallback, useMemo, useState, useTransition } from "react";
 
+import type { EventSortOption } from "@/components/events";
 import { PastEventsSkeleton } from "@/components/skeletons";
 
 import { AllEvents } from "../components/all-events";
@@ -18,13 +19,15 @@ export function AllEventsContainer({
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
   const searchQuery = searchParams.get("search") || "";
+  const [sortBy, setSortBy] = useState<EventSortOption>("soonest");
 
   // Upcoming events with initial data from server
   const {
-    upcomingEvents,
+    upcomingEvents: rawUpcomingEvents,
     hasNextPage: hasNextUpcoming,
     isFetchingNextPage: isFetchingNextUpcoming,
     loadMoreRef: upcomingLoadMoreRef,
+    total: upcomingTotal,
   } = useAllEventsQuery({
     initialUpcomingEvents,
     initialUpcomingPagination,
@@ -32,35 +35,56 @@ export function AllEventsContainer({
   });
 
   const {
-    pastEvents,
+    pastEvents: rawPastEvents,
     hasNextPage: hasNextPast,
     isFetchingNextPage: isFetchingNextPast,
     isLoading: isPastEventsLoading,
     loadMoreRef: pastLoadMoreRef,
+    total: pastTotal,
   } = usePastEventsQuery({
     searchQuery: searchQuery || undefined,
     enabled: !hasNextUpcoming && !isFetchingNextUpcoming,
   });
 
-  const handleSearchChange = useCallback(
-    (query: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (query) {
-        params.set("search", query);
-      } else {
-        params.delete("search");
-      }
-      startTransition(() => {
-        router.push(`/events?${params.toString()}`, { scroll: false });
-      });
-    },
-    [router, searchParams],
-  );
+  // Sort events based on sortBy
+  const upcomingEvents = useMemo(() => {
+    const sorted = [...rawUpcomingEvents];
+    switch (sortBy) {
+      case "price-low":
+        return sorted.sort((a, b) => a.price - b.price);
+      case "price-high":
+        return sorted.sort((a, b) => b.price - a.price);
+      case "soonest":
+      default:
+        return sorted.sort(
+          (a, b) =>
+            new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime(),
+        );
+    }
+  }, [rawUpcomingEvents, sortBy]);
+
+  const pastEvents = useMemo(() => {
+    const sorted = [...rawPastEvents];
+    switch (sortBy) {
+      case "price-low":
+        return sorted.sort((a, b) => a.price - b.price);
+      case "price-high":
+        return sorted.sort((a, b) => b.price - a.price);
+      case "soonest":
+      default:
+        // For past events, "soonest" means most recent first
+        return sorted.sort(
+          (a, b) =>
+            new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime(),
+        );
+    }
+  }, [rawPastEvents, sortBy]);
 
   // Build the view model
   const viewModel: AllEventsViewModel = useMemo(() => {
     const hasUpcoming = upcomingEvents.length > 0;
     const hasPast = pastEvents.length > 0;
+    const totalEvents = (upcomingTotal ?? 0) + (pastTotal ?? 0);
 
     return {
       upcomingEvents,
@@ -71,6 +95,7 @@ export function AllEventsContainer({
       hasMore: hasNextUpcoming || hasNextPast,
       isLoading: isFetchingNextUpcoming || isFetchingNextPast,
       searchQuery,
+      totalEvents,
     };
   }, [
     upcomingEvents,
@@ -81,6 +106,8 @@ export function AllEventsContainer({
     isFetchingNextPast,
     isPastEventsLoading,
     searchQuery,
+    upcomingTotal,
+    pastTotal,
   ]);
 
   // Combined load more ref - prioritize upcoming, then past
@@ -100,7 +127,8 @@ export function AllEventsContainer({
       <AllEvents
         viewModel={viewModel}
         loadMoreRef={loadMoreRef}
-        onSearchChange={handleSearchChange}
+        sortBy={sortBy}
+        onSortChange={setSortBy}
         pastEventsLoading={isPastEventsLoading}
         pastEventsSkeleton={<PastEventsSkeleton />}
       />

@@ -110,5 +110,6 @@ export function usePastEventsQuery({
     isFetchingNextPage,
     isLoading,
     loadMoreRef,
+    total: pagination.total,
   };
 }

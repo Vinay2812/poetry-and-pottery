@@ -3,7 +3,7 @@
 import { Calendar, History, Sparkles } from "lucide-react";
 
 import { EventCard, PastWorkshopCard } from "@/components/cards";
-import { EventsListLayout } from "@/components/events";
+import { type EventSortOption, EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 import {
   InfiniteScrollTrigger,
@@ -16,7 +16,8 @@ import type { AllEventsProps } from "../types";
 export function AllEvents({
   viewModel,
   loadMoreRef,
-  onSearchChange,
+  sortBy,
+  onSortChange,
   pastEventsLoading,
   pastEventsSkeleton,
 }: AllEventsProps) {
@@ -28,14 +29,14 @@ export function AllEvents({
     hasNoEvents,
     hasMore,
     isLoading,
-    searchQuery,
+    totalEvents,
   } = viewModel;
 
   return (
     <EventsListLayout
-      onSearchChange={onSearchChange}
-      searchQuery={searchQuery}
-      searchPlaceholder="Search events..."
+      totalEvents={totalEvents}
+      sortBy={sortBy}
+      onSortChange={onSortChange}
     >
       {hasNoEvents ? (
         <EmptyState
@@ -57,7 +58,7 @@ export function AllEvents({
                 <p className="text-muted-foreground mb-4 text-sm lg:mb-8 lg:text-base">
                   Reserve your spot in one of our upcoming pottery sessions.
                 </p>
-                <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                <StaggeredGrid className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
                   {upcomingEvents.map((event) => (
                     <EventCard key={event.id} event={event} />
                   ))}
@@ -87,7 +88,7 @@ export function AllEvents({
                 Explore our previous workshops and the amazing pieces created by
                 our community.
               </p>
-              <StaggeredGrid className="grid grid-cols-1 gap-4 opacity-75 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              <StaggeredGrid className="grid grid-cols-1 gap-4 opacity-75 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
                 {pastEvents.map((event) => (
                   <PastWorkshopCard key={event.id} event={event} />
                 ))}

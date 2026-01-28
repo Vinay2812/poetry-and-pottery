@@ -4,11 +4,11 @@ import { getPastEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { History, Loader2 } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { PastWorkshopCard } from "@/components/cards";
-import { EventsListLayout } from "@/components/events";
+import { type EventSortOption, EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 import { StaggeredGrid } from "@/components/shared";
 
@@ -24,6 +24,8 @@ export function PastWorkshopsClient({
   initialEvents,
   initialPagination,
 }: PastWorkshopsClientProps) {
+  const [sortBy, setSortBy] = useState<EventSortOption>("soonest");
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["past-events"],
@@ -73,27 +75,42 @@ export function PastWorkshopsClient({
   const events = useMemo(() => {
     const allEvents = data?.pages.flatMap((page) => page.data) ?? [];
     const seen = new Set<string>();
-    return allEvents.filter((event) => {
+    const uniqueEvents = allEvents.filter((event) => {
       if (seen.has(event.id)) {
         return false;
       }
       seen.add(event.id);
       return true;
     });
-  }, [data]);
+
+    // Sort events based on sortBy (for past events, "soonest" means most recent)
+    return [...uniqueEvents].sort((a, b) => {
+      switch (sortBy) {
+        case "price-low":
+          return a.price - b.price;
+        case "price-high":
+          return b.price - a.price;
+        case "soonest":
+        default:
+          // For past events, show most recent first
+          return (
+            new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime()
+          );
+      }
+    });
+  }, [data, sortBy]);
+
+  const totalEvents = data?.pages[0]?.total ?? initialPagination.total;
 
   return (
-    <EventsListLayout>
-      <div className="text-muted-foreground mb-6 flex items-center gap-2">
-        <History className="h-5 w-5" />
-        <p className="text-sm">
-          Explore our previous workshops and the amazing pieces created by our
-          community.
-        </p>
-      </div>
+    <EventsListLayout
+      totalEvents={totalEvents}
+      sortBy={sortBy}
+      onSortChange={setSortBy}
+    >
       {events.length > 0 ? (
         <>
-          <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <StaggeredGrid className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
             {events.map((event) => (
               <PastWorkshopCard key={event.id} event={event} />
             ))}

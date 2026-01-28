@@ -21,7 +21,7 @@ export function ListingPageHeader({
   className,
 }: ListingPageHeaderProps) {
   return (
-    <div className={cn("mb-6 pb-7 lg:mb-8", className)}>
+    <div className={cn("mb-6 pt-4 pb-7 lg:mb-8", className)}>
       {breadcrumbs && breadcrumbs.length > 0 && (
         <nav className="text-muted-foreground mb-2 hidden items-center gap-2 text-[13px] lg:flex">
           {breadcrumbs.map((crumb, index) => (

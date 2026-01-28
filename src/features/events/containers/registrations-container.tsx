@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { startTransition, useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 import { Registrations } from "../components/registrations";
 import { useRegistrationsQuery } from "../hooks/use-registrations-query";
@@ -17,10 +16,6 @@ export function RegistrationsContainer({
   initialCompletedPagination,
   upcomingEvents = [],
 }: RegistrationsContainerProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const searchQuery = searchParams.get("search") || "";
-
   const {
     upcomingRegistrations,
     completedRegistrations,
@@ -32,23 +27,7 @@ export function RegistrationsContainer({
     initialUpcomingPagination,
     initialCompletedRegistrations,
     initialCompletedPagination,
-    searchQuery: searchQuery || undefined,
   });
-
-  const handleSearchChange = useCallback(
-    (query: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (query) {
-        params.set("search", query);
-      } else {
-        params.delete("search");
-      }
-      startTransition(() => {
-        router.push(`/events?${params.toString()}`, { scroll: false });
-      });
-    },
-    [router, searchParams],
-  );
 
   // Build the view model
   const viewModel: RegistrationsViewModel = useMemo(() => {
@@ -66,7 +45,6 @@ export function RegistrationsContainer({
       hasUpcomingEvents: upcomingEvents.length > 0,
       hasMore,
       isLoading,
-      searchQuery: searchQuery || "",
     };
   }, [
     upcomingRegistrations,
@@ -74,14 +52,7 @@ export function RegistrationsContainer({
     upcomingEvents,
     hasMore,
     isLoading,
-    searchQuery,
   ]);
 
-  return (
-    <Registrations
-      viewModel={viewModel}
-      loadMoreRef={loadMoreRef}
-      onSearchChange={handleSearchChange}
-    />
-  );
+  return <Registrations viewModel={viewModel} loadMoreRef={loadMoreRef} />;
 }

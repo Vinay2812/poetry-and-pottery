@@ -1037,7 +1037,7 @@ Once user approves, the section is updated to:
 
 #### Task 7.1: Events Listing Pages (Unified Layout)
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-7-1-events-listing.html](wireframes/task-7-1-events-listing.html)
 **Approved Selection:**
 
