@@ -105,6 +105,10 @@ Wireframes fall into three categories. Each has different implementation concern
 > **The wireframe is your design spec.** Treat it as the definitive reference for every visual decision.
 > Do NOT guess colors, spacing, or typography — extract them from the wireframe via `agent-browser`.
 >
+> **WIREFRAME LAYOUT:** Each wireframe HTML file displays all viewport designs (Mobile, Tablet, Desktop)
+> as labeled sections within a single page at desktop width. You do NOT need to change the browser viewport
+> to view different designs — just **scroll down** to find the Mobile, Tablet, or Desktop section.
+>
 > **CONTEXT CONSERVATION:** NEVER read wireframe HTML files with `cat`/`read` — this dumps thousands
 > of tokens into context. Instead, use `agent-browser` to visually inspect wireframes and extract
 > specific CSS values on-demand with `get styles`.
@@ -122,29 +126,34 @@ Wireframes fall into three categories. Each has different implementation concern
    agent-browser open http://127.0.0.1:5500/poetry-and-pottery/wireframes/task-X-X-name.html
    ```
 
-2. **Capture the wireframe at all three viewports**
+2. **Capture the wireframe reference**
 
-   For each viewport: take a screenshot (visual reference) and a compact snapshot (DOM structure).
+   Wireframe HTML files contain **all three viewport designs** (Mobile, Tablet, Desktop) as labeled sections within a single page. You do NOT need to change the browser viewport — keep the default desktop layout and scroll to find each viewport section.
 
    ```bash
-   # Mobile (375 x 812)
-   agent-browser set viewport 375 812
-   agent-browser screenshot wireframes/screenshots/reference-mobile.png --full
-   agent-browser snapshot -c
-
-   # Tablet (768 x 1024)
-   agent-browser set viewport 768 1024
-   agent-browser screenshot wireframes/screenshots/reference-tablet.png --full
-   agent-browser snapshot -c
-
-   # Desktop (1440 x 900)
+   # Use desktop viewport (default) — wireframe page shows all viewports as sections
    agent-browser set viewport 1440 900
-   agent-browser screenshot wireframes/screenshots/reference-desktop.png --full
+
+   # Take a full-page screenshot to capture all viewport sections at once
+   agent-browser screenshot wireframes/screenshots/reference.png --full
    agent-browser snapshot -c
+
+   # Scroll to specific viewport sections as needed:
+   # - Look for headings like "Mobile", "Tablet", "Desktop" in the wireframe
+   # - Use scrollintoview to jump to a specific section
+   agent-browser scrollintoview ".mobile-section"    # or whatever the section selector is
+   agent-browser screenshot wireframes/screenshots/reference-mobile.png
+   agent-browser scrollintoview ".tablet-section"
+   agent-browser screenshot wireframes/screenshots/reference-tablet.png
+   agent-browser scrollintoview ".desktop-section"
+   agent-browser screenshot wireframes/screenshots/reference-desktop.png
    ```
 
    > **Use `-c` (compact) snapshots** to save context. Only use full `snapshot` if you need
    > detailed element refs for interaction testing.
+   >
+   > **Scroll if needed** — the viewport design you need may not be visible initially.
+   > Use `agent-browser scroll down` or `agent-browser scrollintoview` to locate it.
 
 3. **Extract exact design values on-demand**
 
@@ -178,11 +187,11 @@ Wireframes fall into three categories. Each has different implementation concern
    **For Page wireframes (Phase 5–8, 10, 12):**
    - Use the screenshot and snapshot to map sections to component hierarchy
    - Identify which foundation components (Phase 4) are used on the page
-   - Resize viewport to see how section ordering changes across mobile/tablet/desktop
+   - Scroll through the wireframe to compare Mobile, Tablet, and Desktop sections — note how section ordering changes
    - Note scroll behavior (sticky elements, lazy sections, infinite scroll)
 
    **For Layout wireframes (Phase 9, 11):**
-   - Resize between viewports to find the breakpoint where layout changes
+   - Scroll through the wireframe to find the Mobile, Tablet, and Desktop layout sections
    - Note fixed/sticky positioning and z-index layering
    - Check how the layout wraps around page content (padding, max-width, centering)
    - Use `get styles` to extract animation/transition timing values
@@ -561,10 +570,10 @@ Before marking task as completed:
 
 ### Wireframe Fidelity (Source of Truth)
 
-- [ ] Opened wireframe in `agent-browser` — captured screenshots at all 3 viewports
+- [ ] Opened wireframe in `agent-browser` at desktop layout — scrolled to find Mobile, Tablet, and Desktop sections
 - [ ] Used `agent-browser get styles` to extract exact CSS values for key elements (colors, spacing, fonts, shadows)
 - [ ] Implementation uses exact values from wireframe, not approximations
-- [ ] Compared wireframe screenshots side-by-side with implementation screenshots
+- [ ] Compared wireframe reference with implementation screenshots at each viewport
 
 ### Layout Verification
 
@@ -643,9 +652,8 @@ At the end of this workflow:
 
 1. **Implemented code** matching approved wireframes
 2. **Comparison screenshots:**
-   - `wireframes/screenshots/reference-mobile.png` vs `wireframes/screenshots/impl-mobile.png`
-   - `wireframes/screenshots/reference-tablet.png` vs `wireframes/screenshots/impl-tablet.png`
-   - `wireframes/screenshots/reference-desktop.png` vs `wireframes/screenshots/impl-desktop.png`
+   - `wireframes/screenshots/reference.png` (full wireframe with all viewport sections) or per-section screenshots (`reference-mobile.png`, `reference-tablet.png`, `reference-desktop.png`)
+   - `wireframes/screenshots/impl-mobile.png`, `wireframes/screenshots/impl-tablet.png`, `wireframes/screenshots/impl-desktop.png`
 3. **User approval** — user has explicitly confirmed the implementation looks good
 4. **Updated design-refactor.md** with `✔️ Completed` status (only after user approval)
 5. **Updated wireframe file** marked as `✔️ IMPLEMENTED` (only after user approval)
@@ -739,7 +747,7 @@ useLayoutEffect(() => {
 
 **If implementation differs from wireframe:**
 
-1. Open the wireframe in `agent-browser` at the exact viewport size
+1. Open the wireframe in `agent-browser` and scroll to the relevant viewport section (Mobile, Tablet, or Desktop)
 2. Use `agent-browser get styles [sel]` on the **wireframe** element to get the expected CSS values
 3. Open the implementation and use `agent-browser get styles [sel]` on the **same element** to compare
 4. Use `agent-browser get box [sel]` on both to compare dimensions
@@ -765,7 +773,7 @@ useLayoutEffect(() => {
 
 **If responsive behavior is wrong:**
 
-1. Open the wireframe in `agent-browser` and resize across breakpoints (375, 768, 1440) to see expected behavior
+1. Open the wireframe in `agent-browser` and scroll to the Mobile, Tablet, and Desktop sections to compare expected behavior at each breakpoint
 2. Check breakpoint values in Tailwind config
 3. Verify correct responsive prefixes (`md:`, `lg:`, `xl:`)
-4. Test each breakpoint transition point on both wireframe and implementation
+4. Test each breakpoint on the implementation by setting the viewport (`set viewport 375 812`, `768 1024`, `1440 900`)
