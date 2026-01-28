@@ -88,7 +88,7 @@ export function GlobalSearch({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-4 right-4 left-4 z-50 mx-auto max-w-2xl lg:top-24"
+            className="fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 lg:top-24"
           >
             <div className="bg-background flex flex-col justify-center overflow-hidden rounded-2xl border border-neutral-200/50 shadow-2xl dark:border-neutral-700/50 dark:bg-neutral-900">
               {/* Search Input */}
@@ -121,101 +121,67 @@ export function GlobalSearch({
                       onValueChange={(v) => onTabChange(v as SearchTab)}
                       className="w-full"
                     >
-                      <div className="sticky top-0 z-10 border-b border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">
-                        <div className="flex justify-center gap-2">
+                      <div className="sticky top-0 z-10 border-b border-neutral-200 bg-white px-4 dark:border-neutral-700 dark:bg-neutral-900">
+                        <div className="flex gap-6">
                           <button
                             onClick={() => onTabChange("products")}
                             className={cn(
-                              "group relative flex min-w-24 flex-col items-center gap-1.5 rounded-xl px-4 py-2.5 transition-all duration-200",
+                              "relative flex items-center gap-2 py-3 text-sm font-medium transition-colors",
                               viewModel.activeTab === "products"
-                                ? "bg-primary/10 text-primary"
-                                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                                ? "text-primary"
+                                : "text-muted-foreground hover:text-foreground",
                             )}
                           >
-                            <div className="relative">
-                              <ShoppingBag
-                                className={cn(
-                                  "h-5 w-5 transition-colors duration-200",
-                                  viewModel.activeTab === "products"
-                                    ? "text-primary"
-                                    : "text-muted-foreground group-hover:text-foreground",
-                                )}
-                                strokeWidth={
-                                  viewModel.activeTab === "products" ? 2.5 : 2
-                                }
-                              />
-                              {viewModel.counts.products > 0 && (
-                                <span className="bg-primary text-primary-foreground absolute -top-2 -right-3 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold">
-                                  {viewModel.counts.products}
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-xs font-medium">
-                              Products
-                            </span>
+                            <span>Products</span>
+                            {viewModel.counts.products > 0 && (
+                              <span className="bg-primary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white">
+                                {viewModel.counts.products}
+                              </span>
+                            )}
+                            {viewModel.activeTab === "products" && (
+                              <span className="bg-primary absolute bottom-0 left-0 h-0.5 w-full" />
+                            )}
                           </button>
 
                           <button
                             onClick={() => onTabChange("events")}
                             className={cn(
-                              "group relative flex min-w-24 flex-col items-center gap-1.5 rounded-xl px-4 py-2.5 transition-all duration-200",
+                              "relative flex items-center gap-2 py-3 text-sm font-medium transition-colors",
                               viewModel.activeTab === "events"
-                                ? "bg-primary/10 text-primary"
-                                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                                ? "text-primary"
+                                : "text-muted-foreground hover:text-foreground",
                             )}
                           >
-                            <div className="relative">
-                              <Calendar
-                                className={cn(
-                                  "h-5 w-5 transition-colors duration-200",
-                                  viewModel.activeTab === "events"
-                                    ? "text-primary"
-                                    : "text-muted-foreground group-hover:text-foreground",
-                                )}
-                                strokeWidth={
-                                  viewModel.activeTab === "events" ? 2.5 : 2
-                                }
-                              />
-                              {viewModel.counts.events > 0 && (
-                                <span className="bg-primary text-primary-foreground absolute -top-2 -right-3 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold">
-                                  {viewModel.counts.events}
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-xs font-medium">Events</span>
+                            <span>Events</span>
+                            {viewModel.counts.events > 0 && (
+                              <span className="bg-primary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white">
+                                {viewModel.counts.events}
+                              </span>
+                            )}
+                            {viewModel.activeTab === "events" && (
+                              <span className="bg-primary absolute bottom-0 left-0 h-0.5 w-full" />
+                            )}
                           </button>
 
                           {viewModel.isAuthenticated && (
                             <button
                               onClick={() => onTabChange("orders")}
                               className={cn(
-                                "group relative flex min-w-24 flex-col items-center gap-1.5 rounded-xl px-4 py-2.5 transition-all duration-200",
+                                "relative flex items-center gap-2 py-3 text-sm font-medium transition-colors",
                                 viewModel.activeTab === "orders"
-                                  ? "bg-primary/10 text-primary"
-                                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                                  ? "text-primary"
+                                  : "text-muted-foreground hover:text-foreground",
                               )}
                             >
-                              <div className="relative">
-                                <Package
-                                  className={cn(
-                                    "h-5 w-5 transition-colors duration-200",
-                                    viewModel.activeTab === "orders"
-                                      ? "text-primary"
-                                      : "text-muted-foreground group-hover:text-foreground",
-                                  )}
-                                  strokeWidth={
-                                    viewModel.activeTab === "orders" ? 2.5 : 2
-                                  }
-                                />
-                                {viewModel.counts.orders > 0 && (
-                                  <span className="bg-primary text-primary-foreground absolute -top-2 -right-3 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold">
-                                    {viewModel.counts.orders}
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-xs font-medium">
-                                Orders
-                              </span>
+                              <span>Orders</span>
+                              {viewModel.counts.orders > 0 && (
+                                <span className="bg-primary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white">
+                                  {viewModel.counts.orders}
+                                </span>
+                              )}
+                              {viewModel.activeTab === "orders" && (
+                                <span className="bg-primary absolute bottom-0 left-0 h-0.5 w-full" />
+                              )}
                             </button>
                           )}
                         </div>
@@ -238,13 +204,13 @@ export function GlobalSearch({
                                 onClick={() => onProductClick(product.id)}
                                 className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
                               >
-                                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">
+                                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[10px] bg-neutral-100 dark:bg-neutral-800">
                                   <OptimizedImage
                                     src={product.imageUrl}
                                     alt={product.name}
                                     fill
                                     className="object-cover"
-                                    sizes="40px"
+                                    sizes="48px"
                                   />
                                 </div>
                                 <div className="min-w-0 flex-1">
@@ -292,11 +258,11 @@ export function GlobalSearch({
                                 onClick={() => onEventClick(event.id)}
                                 className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
                               >
-                                <div className="bg-primary/10 flex h-10 w-10 shrink-0 flex-col items-center justify-center rounded-lg">
-                                  <span className="text-primary text-[9px] leading-none font-bold uppercase">
+                                <div className="bg-primary/10 flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-[10px]">
+                                  <span className="text-primary text-[10px] leading-none font-bold uppercase">
                                     {event.startsAt.split(" ")[0]}
                                   </span>
-                                  <span className="text-primary text-sm leading-none font-bold">
+                                  <span className="text-primary text-base leading-none font-bold">
                                     {event.startsAt
                                       .split(" ")[1]
                                       ?.replace(",", "")}
@@ -346,13 +312,13 @@ export function GlobalSearch({
                                   onClick={() => onOrderClick(order.id)}
                                   className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
                                 >
-                                  <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">
+                                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[10px] bg-neutral-100 dark:bg-neutral-800">
                                     <OptimizedImage
                                       src={order.firstProductImage}
                                       alt={order.firstProductName}
                                       fill
                                       className="object-cover"
-                                      sizes="40px"
+                                      sizes="48px"
                                     />
                                   </div>
                                   <div className="min-w-0 flex-1">

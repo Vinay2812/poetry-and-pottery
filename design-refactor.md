@@ -1367,14 +1367,14 @@ _Completed Card (Past registrations):_
 
 ### Phase 9: Navigation & Layout
 
-**Phase Status:** 🚧 In Progress
+**Phase Status:** ✅ Completed
 
 > 🧭 **Customer Impact: HIGH** - Site-wide experience
 > **Files owned by this phase:** `src/features/layout/`, `src/features/global-search/`
 
 #### Task 9.1: Desktop Navbar
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-9-1-desktop-navbar.html](wireframes/task-9-1-desktop-navbar.html)
 **Approved Selection:**
 
@@ -1403,7 +1403,7 @@ _Completed Card (Past registrations):_
 
 #### Task 9.2: Mobile Header
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-9-2-mobile-header.html](wireframes/task-9-2-mobile-header.html)
 **Approved Selection:**
 
@@ -1461,7 +1461,7 @@ _Completed Card (Past registrations):_
 
 #### Task 9.4: Account Dropdown
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 
 **Wireframe:** [task-9-4-account-dropdown.html](wireframes/task-9-4-account-dropdown.html)
 
@@ -1491,7 +1491,7 @@ _Completed Card (Past registrations):_
 
 #### Task 9.5: Global Search
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 
 **Scope:**
 
@@ -1514,7 +1514,7 @@ _Completed Card (Past registrations):_
 
 #### Task 9.6: Footer
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-9-6-footer.html](wireframes/task-9-6-footer.html)
 **Approved Selection:**
 
@@ -1550,7 +1550,7 @@ _Completed Card (Past registrations):_
 
 #### Task 9.7: WhatsApp Button
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-9-7-whatsapp-button.html](wireframes/task-9-7-whatsapp-button.html)
 **Approved Selection:**
 

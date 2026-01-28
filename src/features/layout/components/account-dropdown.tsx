@@ -36,98 +36,130 @@ export function AccountDropdown({
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "focus-visible:ring-primary/30 relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/5 focus-visible:ring-2 focus-visible:outline-none active:bg-black/10 dark:hover:bg-white/10",
+            "ring-primary/50 relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-150 hover:ring-2 focus-visible:ring-2 focus-visible:outline-none",
           )}
         >
           {viewModel.user?.imageUrl ? (
-            <div className="relative h-5 w-5">
+            <div className="relative h-8 w-8 overflow-hidden rounded-full">
               <OptimizedImage
                 src={viewModel.user.imageUrl}
                 alt={viewModel.user.firstName || "User avatar"}
                 fill
-                className={cn("rounded-full object-cover")}
+                className="object-cover"
               />
             </div>
           ) : (
-            <User
-              className={cn("h-5 w-5 text-neutral-600 dark:text-neutral-300")}
-            />
+            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+              <span className="text-primary text-sm font-semibold">
+                {viewModel.user?.firstName?.[0] || "U"}
+                {viewModel.user?.lastName?.[0] || ""}
+              </span>
+            </div>
           )}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent
+        align="end"
+        className="min-w-[220px] rounded-xl shadow-lg"
+      >
         {viewModel.user && (
           <>
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm leading-none font-medium">
+            <DropdownMenuLabel className="px-3 py-3 font-normal">
+              <div className="flex flex-col gap-0.5">
+                <p className="font-display text-sm font-semibold">
                   {viewModel.user.firstName} {viewModel.user.lastName}
                 </p>
-                <p className="text-muted-foreground text-xs leading-none">
+                <p className="text-muted-foreground text-xs">
                   {viewModel.user.email}
                 </p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="bg-neutral-100" />
           </>
         )}
-        <DropdownMenuItem
-          onClick={onProfileSettings}
-          className="cursor-pointer"
-        >
-          <User className="mr-2 h-4 w-4" />
-          Profile & Settings
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => onNavigate("/orders")}
-          className="cursor-pointer"
-        >
-          <Package className="mr-2 h-4 w-4" />
-          My Orders
-        </DropdownMenuItem>
-        {viewModel.isAdmin && (
+
+        <div className="p-1">
           <DropdownMenuItem
-            onClick={() => onNavigate("/dashboard")}
-            className="cursor-pointer"
+            onClick={onProfileSettings}
+            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
           >
-            <LayoutDashboard className="mr-2 h-4 w-4" />
-            Dashboard
+            <User className="h-[18px] w-[18px] text-neutral-500" />
+            <span>Profile & Settings</span>
           </DropdownMenuItem>
-        )}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => onNavigate("/about")}
-          className="cursor-pointer"
-        >
-          <Info className="mr-2 h-4 w-4" />
-          About
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => onNavigate("/contact")}
-          className="cursor-pointer"
-        >
-          <Mail className="mr-2 h-4 w-4" />
-          Contact
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => onNavigate("/faq")}
-          className="cursor-pointer"
-        >
-          <HelpCircle className="mr-2 h-4 w-4" />
-          FAQ
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => onNavigate("/shipping")}
-          className="cursor-pointer"
-        >
-          <Truck className="mr-2 h-4 w-4" />
-          Shipping
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onSignOut} className="cursor-pointer">
-          <LogOut className="mr-2 h-4 w-4" />
-          Sign Out
-        </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onNavigate("/orders")}
+            className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+          >
+            <span className="flex items-center gap-2.5">
+              <Package className="h-[18px] w-[18px] text-neutral-500" />
+              <span>My Orders</span>
+            </span>
+            {viewModel.pendingOrdersCount > 0 && (
+              <span className="bg-primary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white">
+                {viewModel.pendingOrdersCount}
+              </span>
+            )}
+          </DropdownMenuItem>
+
+          {viewModel.isAdmin && (
+            <DropdownMenuItem
+              onClick={() => onNavigate("/dashboard")}
+              className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+            >
+              <LayoutDashboard className="h-[18px] w-[18px] text-neutral-500" />
+              <span>Dashboard</span>
+            </DropdownMenuItem>
+          )}
+        </div>
+
+        <DropdownMenuSeparator className="my-1 bg-neutral-100" />
+
+        <div className="p-1">
+          <DropdownMenuItem
+            onClick={() => onNavigate("/about")}
+            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+          >
+            <Info className="h-[18px] w-[18px] text-neutral-500" />
+            <span>About</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onNavigate("/contact")}
+            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+          >
+            <Mail className="h-[18px] w-[18px] text-neutral-500" />
+            <span>Contact</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onNavigate("/faq")}
+            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+          >
+            <HelpCircle className="h-[18px] w-[18px] text-neutral-500" />
+            <span>FAQ</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onNavigate("/shipping")}
+            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+          >
+            <Truck className="h-[18px] w-[18px] text-neutral-500" />
+            <span>Shipping</span>
+          </DropdownMenuItem>
+        </div>
+
+        <DropdownMenuSeparator className="my-1 bg-neutral-100" />
+
+        <div className="p-1">
+          <DropdownMenuItem
+            onClick={onSignOut}
+            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 text-red-500 hover:bg-red-50 hover:text-red-600"
+          >
+            <LogOut className="h-[18px] w-[18px]" />
+            <span>Sign Out</span>
+          </DropdownMenuItem>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
