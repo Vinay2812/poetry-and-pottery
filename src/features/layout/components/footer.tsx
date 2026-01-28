@@ -114,7 +114,7 @@ function NewsletterSubmitButton() {
     <Button
       type="submit"
       disabled={pending}
-      className="h-12 min-w-[180px] rounded-full"
+      className="bg-primary hover:bg-primary-hover shadow-primary/20 h-121 rounded-full px-7 text-sm font-semibold shadow-lg transition-transform duration-200 hover:scale-[1.03] lg:h-12 lg:px-8 lg:text-base"
     >
       {pending ? (
         <Loader2 className="h-4 w-4 animate-spin" />
@@ -132,13 +132,13 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
   return (
     <footer className="mt-auto bg-neutral-50 dark:bg-neutral-900">
       {/* Newsletter Section */}
-      <div className="bg-primary/5 dark:bg-primary/10">
+      <section className="bg-primary/5 dark:bg-primary/10">
         <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
           <div className="mx-auto max-w-2xl text-center">
-            <h3 className="font-display mb-2 text-xl font-semibold text-neutral-900 lg:text-2xl dark:text-neutral-100">
+            <h2 className="font-display mb-3 text-2xl font-bold tracking-tight lg:text-3xl">
               Join Our Community
-            </h3>
-            <p className="text-muted-foreground mb-6 text-sm lg:text-base">
+            </h2>
+            <p className="text-muted-foreground mb-6 text-sm leading-relaxed lg:text-base">
               Subscribe to receive updates on new collections, workshops, and
               exclusive offers.
             </p>
@@ -148,7 +148,7 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
             />
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">

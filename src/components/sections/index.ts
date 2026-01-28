@@ -1,10 +1,15 @@
+export { BehindScenesSection } from "./behind-scenes-section";
 export { CategorySection } from "./category-section";
 export { CategorySectionContainer } from "./category-section-container";
 export { CTASection } from "./cta-section";
 export { EmptyState } from "./empty-state";
+export { ExploreSection } from "./explore-section";
+export { ExploreSectionContainer } from "./explore-section-container";
 export { HeroSection } from "./hero-section";
 export { ProductCarousel } from "./product-carousel";
 export { SectionHeader } from "./section-header";
 export { TestimonialsSection } from "./testimonials-section";
 export { TestimonialsSectionContainer } from "./testimonials-section-container";
 export { USPStrip } from "./usp-strip";
+export { WorkshopsSection } from "./workshops-section";
+export { WorkshopsSectionContainer } from "./workshops-section-container";

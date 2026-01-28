@@ -24,46 +24,12 @@ export function ProductCarousel({
   className,
   viewAllHref,
 }: ProductCarouselProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({
+  const [emblaRef] = useEmblaCarousel({
     align: "start",
     skipSnaps: false,
     dragFree: true,
     containScroll: "trimSnaps",
   });
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    function updateScrollSnaps() {
-      if (!emblaApi) return;
-      setScrollSnaps(emblaApi.scrollSnapList());
-    }
-
-    function onSelect() {
-      if (!emblaApi) return;
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-    }
-
-    updateScrollSnaps();
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-
-    return () => {
-      emblaApi.off("select", onSelect);
-      emblaApi.off("reInit", onSelect);
-    };
-  }, [emblaApi]);
-
-  const scrollTo = useCallback(
-    (index: number) => {
-      if (emblaApi) emblaApi.scrollTo(index);
-    },
-    [emblaApi],
-  );
 
   if (products.length === 0) return null;
 
@@ -99,7 +65,7 @@ export function ProductCarousel({
           {products.map((product) => (
             <div
               key={product.id}
-              className="min-w-0 shrink-0 basis-[47%] pl-4 sm:basis-[34%] lg:basis-[24%]"
+              className="min-w-0 shrink-0 basis-[80%] pl-4 sm:basis-[34%] lg:basis-[24%]"
             >
               <ProductCard product={product} disableImageCarousel />
             </div>

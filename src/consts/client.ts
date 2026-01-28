@@ -7,6 +7,12 @@ export const HERO_IMAGES = {
     "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
 };
 
+export const HERO_VIDEOS = {
+  hero: "https://cdn.poetryandpottery.prodapp.club/videos/poetry-pottery-video.mp4",
+  behindTheScenes:
+    "https://cdn.poetryandpottery.prodapp.club/videos/poetry-pottery-behind-scenes.mp4",
+};
+
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Shop" },
