@@ -1285,7 +1285,7 @@ _Completed Card (Past registrations):_
 
 #### Task 8.2: Order Progress Stepper
 
-**Status:** ✅ Approved
+**Status:** ✔️ Completed
 **Wireframe:** [task-8-2-order-progress.html](wireframes/task-8-2-order-progress.html)
 **Approved Selection:**
 

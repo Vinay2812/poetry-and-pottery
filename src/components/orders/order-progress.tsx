@@ -3,10 +3,10 @@
 import { OrderStatus } from "@/types";
 import {
   Ban,
-  CheckCircle2,
-  Clock,
   CreditCard,
+  Home,
   Package,
+  PackageCheck,
   Truck,
 } from "lucide-react";
 import { useCallback } from "react";
@@ -21,26 +21,26 @@ import { formatProgressDate } from "@/lib/date";
 export const ORDER_STEPS: readonly ProgressStep[] = [
   {
     status: OrderStatus.PENDING,
-    label: "Requested",
-    pastDescription: "Request was received",
-    currentDescription: "Request received",
-    futureDescription: "Request will be received",
-    icon: Clock,
-  },
-  {
-    status: OrderStatus.PROCESSING,
-    label: "Approved",
-    pastDescription: "Order was approved",
-    currentDescription: "Order approved",
-    futureDescription: "Order will be approved",
+    label: "Order Placed",
+    pastDescription: "Order was placed",
+    currentDescription: "Order placed",
+    futureDescription: "Order will be placed",
     icon: Package,
   },
   {
+    status: OrderStatus.PROCESSING,
+    label: "Processing",
+    pastDescription: "Order was processed",
+    currentDescription: "Order being processed",
+    futureDescription: "Order will be processed",
+    icon: PackageCheck,
+  },
+  {
     status: OrderStatus.PAID,
-    label: "Payment Received",
-    pastDescription: "Payment was received",
-    currentDescription: "Payment received",
-    futureDescription: "Payment will be received",
+    label: "Payment Confirmed",
+    pastDescription: "Payment was confirmed",
+    currentDescription: "Payment confirmed",
+    futureDescription: "Payment will be confirmed",
     icon: CreditCard,
   },
   {
@@ -57,7 +57,7 @@ export const ORDER_STEPS: readonly ProgressStep[] = [
     pastDescription: "Order was delivered",
     currentDescription: "Order delivered",
     futureDescription: "Order will be delivered",
-    icon: CheckCircle2,
+    icon: Home,
   },
 ] as const;
 

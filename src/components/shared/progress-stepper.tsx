@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideIcon } from "lucide-react";
+import { Check, LucideIcon } from "lucide-react";
 
 import { formatProgressDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
@@ -35,15 +35,6 @@ function getStepStatus(
   return "upcoming";
 }
 
-function getDescription(
-  step: ProgressStep,
-  stepStatus: "completed" | "current" | "upcoming",
-): string {
-  if (stepStatus === "completed") return step.pastDescription;
-  if (stepStatus === "current") return step.currentDescription;
-  return step.futureDescription;
-}
-
 export function ProgressStepper({
   title,
   steps,
@@ -57,93 +48,189 @@ export function ProgressStepper({
         {title}
       </h2>
 
-      <div className="relative">
-        {steps.map((step, index) => {
-          const StepIcon = step.icon;
-          const stepStatus = getStepStatus(
-            step.status,
-            currentStatus,
-            statusOrder,
-          );
-          const stepDate = getStepDate(step.status);
-          const isFirst = index === 0;
-          const isLast = index === steps.length - 1;
-          const description = getDescription(step, stepStatus);
+      {/* Mobile: Vertical Layout */}
+      <div className="md:hidden">
+        <div className="relative">
+          {steps.map((step, index) => {
+            const StepIcon = step.icon;
+            const stepStatus = getStepStatus(
+              step.status,
+              currentStatus,
+              statusOrder,
+            );
+            const stepDate = getStepDate(step.status);
+            const isLast = index === steps.length - 1;
+            const nextStepStatus =
+              index < steps.length - 1
+                ? getStepStatus(
+                    steps[index + 1].status,
+                    currentStatus,
+                    statusOrder,
+                  )
+                : null;
 
-          return (
-            <div key={step.status} className="relative flex">
-              {/* Left side: Icon + Line */}
-              <div className="mr-4 flex flex-col items-center">
-                {/* Icon */}
-                <div
-                  className={cn(
-                    "z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300",
-                    stepStatus === "completed" &&
-                      "border-primary bg-primary text-white",
-                    stepStatus === "current" &&
-                      "border-primary bg-primary text-white",
-                    stepStatus === "upcoming" &&
-                      "border-neutral-200 bg-neutral-50 text-neutral-300 dark:border-neutral-700 dark:bg-neutral-800",
-                  )}
-                >
-                  <StepIcon className="h-4 w-4" />
-                </div>
-
-                {/* Connector Line */}
-                {!isLast && (
+            return (
+              <div key={step.status} className="relative flex">
+                {/* Left side: Icon + Line */}
+                <div className="mr-4 flex flex-col items-center">
+                  {/* Icon Circle */}
                   <div
                     className={cn(
-                      "h-12 w-0.5",
-                      isFirst ||
-                        getStepStatus(
-                          steps[index].status,
-                          currentStatus,
-                          statusOrder,
-                        ) === "completed"
-                        ? "bg-primary"
-                        : "bg-neutral-100 dark:bg-neutral-800",
+                      "z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-300",
+                      stepStatus === "completed" && "bg-primary text-white",
+                      stepStatus === "current" &&
+                        "bg-primary-light text-primary",
+                      stepStatus === "upcoming" &&
+                        "bg-neutral-100 text-neutral-400",
                     )}
-                  />
-                )}
-              </div>
+                  >
+                    {stepStatus === "completed" ? (
+                      <Check className="h-5 w-5" strokeWidth={2.5} />
+                    ) : (
+                      <StepIcon className="h-5 w-5" />
+                    )}
+                  </div>
 
-              {/* Right side: Content */}
-              <div
-                className={cn(
-                  "flex-1 pb-8",
-                  isLast && "pb-0",
-                  stepStatus === "upcoming" && "opacity-40",
-                )}
-              >
-                <div className="flex items-center gap-2">
+                  {/* Connector Line */}
+                  {!isLast && (
+                    <div
+                      className={cn(
+                        "h-14 w-0.5",
+                        nextStepStatus === "upcoming"
+                          ? "border-l-2 border-dashed border-neutral-200"
+                          : "bg-primary",
+                      )}
+                    />
+                  )}
+                </div>
+
+                {/* Right side: Content */}
+                <div className={cn("flex-1 pb-6", isLast && "pb-0")}>
                   <h3
                     className={cn(
-                      "text-sm font-bold",
+                      "text-sm font-semibold",
                       stepStatus === "upcoming"
-                        ? "text-neutral-500"
+                        ? "text-neutral-400"
                         : "text-neutral-900 dark:text-neutral-100",
                     )}
                   >
                     {step.label}
                   </h3>
-                  {stepStatus === "current" && (
-                    <span className="bg-primary ring-primary/20 flex h-1.5 w-1.5 animate-pulse rounded-full ring-4" />
+
+                  {stepDate && stepStatus !== "upcoming" ? (
+                    <time className="mt-0.5 block text-xs text-neutral-500">
+                      {formatProgressDate(stepDate)}
+                    </time>
+                  ) : stepStatus === "upcoming" ? (
+                    <span className="mt-0.5 block text-xs text-neutral-400">
+                      Pending
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Tablet/Desktop: Horizontal Layout */}
+      <div className="hidden md:block">
+        <div className="flex items-start justify-between">
+          {steps.map((step, index) => {
+            const StepIcon = step.icon;
+            const stepStatus = getStepStatus(
+              step.status,
+              currentStatus,
+              statusOrder,
+            );
+            const stepDate = getStepDate(step.status);
+            const isLast = index === steps.length - 1;
+            const nextStepStatus =
+              index < steps.length - 1
+                ? getStepStatus(
+                    steps[index + 1].status,
+                    currentStatus,
+                    statusOrder,
+                  )
+                : null;
+
+            return (
+              <div
+                key={step.status}
+                className="flex flex-1 flex-col items-center"
+              >
+                {/* Circle + Line Row */}
+                <div className="flex w-full items-center">
+                  {/* Left connector line (for non-first items) */}
+                  {index > 0 && (
+                    <div
+                      className={cn(
+                        "h-0.5 flex-1",
+                        stepStatus === "upcoming"
+                          ? "border-t-2 border-dashed border-neutral-200"
+                          : "bg-primary",
+                      )}
+                    />
+                  )}
+
+                  {/* Icon Circle */}
+                  <div
+                    className={cn(
+                      "z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all duration-300",
+                      stepStatus === "completed" && "bg-primary text-white",
+                      stepStatus === "current" &&
+                        "bg-primary-light text-primary",
+                      stepStatus === "upcoming" &&
+                        "bg-neutral-100 text-neutral-400",
+                    )}
+                  >
+                    {stepStatus === "completed" ? (
+                      <Check className="h-5 w-5" strokeWidth={2.5} />
+                    ) : (
+                      <StepIcon className="h-5 w-5" />
+                    )}
+                  </div>
+
+                  {/* Right connector line (for non-last items) */}
+                  {!isLast && (
+                    <div
+                      className={cn(
+                        "h-0.5 flex-1",
+                        nextStepStatus === "upcoming"
+                          ? "border-t-2 border-dashed border-neutral-200"
+                          : "bg-primary",
+                      )}
+                    />
                   )}
                 </div>
 
-                <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
-                  {description}
-                </p>
+                {/* Text below circle */}
+                <div className="mt-3 text-center">
+                  <h3
+                    className={cn(
+                      "text-sm font-semibold",
+                      stepStatus === "upcoming"
+                        ? "text-neutral-400"
+                        : "text-neutral-900 dark:text-neutral-100",
+                    )}
+                  >
+                    {step.label}
+                  </h3>
 
-                {stepDate && stepStatus !== "upcoming" && (
-                  <time className="text-primary mt-1.5 block text-[10px] font-bold tracking-wider uppercase">
-                    {formatProgressDate(stepDate)}
-                  </time>
-                )}
+                  {stepDate && stepStatus !== "upcoming" ? (
+                    <time className="mt-0.5 block text-xs text-neutral-500">
+                      {formatProgressDate(stepDate)}
+                    </time>
+                  ) : stepStatus === "upcoming" ? (
+                    <span className="mt-0.5 block text-xs text-neutral-400">
+                      Pending
+                    </span>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

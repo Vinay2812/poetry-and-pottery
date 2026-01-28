@@ -7,7 +7,6 @@ import { OrderProgress } from "@/components/orders";
 import {
   OptimizedImage,
   ReviewForm,
-  StatusIcon,
   WhatsAppContactButton,
 } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
@@ -103,7 +102,7 @@ function PaymentSummaryCard({ summary, className }: PaymentSummaryCardProps) {
   return (
     <div
       className={cn(
-        "shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 lg:p-6 dark:border-neutral-800 dark:bg-neutral-900",
+        "shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 md:p-6 dark:border-neutral-800 dark:bg-neutral-900",
         className,
       )}
     >
@@ -162,14 +161,14 @@ function ShippingAddressCard({ address, className }: ShippingAddressCardProps) {
   return (
     <div
       className={cn(
-        "shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 lg:p-6 dark:border-neutral-800 dark:bg-neutral-900",
+        "shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 md:p-6 dark:border-neutral-800 dark:bg-neutral-900",
         className,
       )}
     >
-      <p className="mb-3 text-[10px] font-bold tracking-widest text-neutral-400 uppercase lg:mb-4">
+      <p className="mb-3 text-[10px] font-bold tracking-widest text-neutral-400 uppercase md:mb-4">
         Shipping Address
       </p>
-      <div className="space-y-2 lg:space-y-3">
+      <div className="space-y-2 md:space-y-3">
         <div className="flex items-center gap-2">
           <User className="text-primary h-4 w-4 shrink-0" />
           <span className="font-semibold text-neutral-900 dark:text-neutral-100">
@@ -194,85 +193,6 @@ function ShippingAddressCard({ address, className }: ShippingAddressCardProps) {
             {` - ${address.zip}`}
           </p>
         </div>
-      </div>
-    </div>
-  );
-}
-
-interface StatusCardProps {
-  viewModel: OrderDetailViewModel;
-}
-
-function StatusCard({ viewModel }: StatusCardProps) {
-  return (
-    <div className="shadow-soft rounded-2xl border border-neutral-100 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
-      <p className="mb-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
-        Order Status
-      </p>
-      <div className="mb-6 flex items-center gap-3">
-        <div
-          className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
-            viewModel.status === OrderStatus.Delivered &&
-              "bg-emerald-50 text-emerald-600",
-            viewModel.status === OrderStatus.Shipped &&
-              "bg-blue-50 text-blue-600",
-            viewModel.status === OrderStatus.Processing &&
-              "bg-amber-50 text-amber-600",
-          )}
-        >
-          <StatusIcon status={viewModel.status} className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-            {viewModel.statusLabel}
-          </p>
-          <p className="mt-0.5 font-mono text-[9px] text-neutral-400">
-            #{viewModel.orderId.toUpperCase()}
-          </p>
-        </div>
-      </div>
-
-      <OrderProgress
-        status={viewModel.status || OrderStatus.Processing}
-        createdAt={viewModel.createdAt}
-        shippedAt={viewModel.shippedAt}
-        deliveredAt={viewModel.deliveredAt}
-        requestAt={viewModel.requestAt}
-        approvedAt={viewModel.approvedAt}
-        paidAt={viewModel.paidAt}
-        cancelledAt={viewModel.cancelledAt}
-      />
-    </div>
-  );
-}
-
-interface DesktopSidebarProps {
-  viewModel: OrderDetailViewModel;
-  onWhatsAppContact: () => void;
-}
-
-function DesktopSidebar({ viewModel, onWhatsAppContact }: DesktopSidebarProps) {
-  return (
-    <div className="hidden lg:block">
-      <div className="sticky top-24 space-y-6">
-        <StatusCard viewModel={viewModel} />
-        <PaymentSummaryCard summary={viewModel.paymentSummary} />
-        {viewModel.shippingAddress && (
-          <ShippingAddressCard address={viewModel.shippingAddress} />
-        )}
-
-        {viewModel.canReview && (
-          <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-950/20">
-            <p className="text-center text-xs font-medium text-emerald-700 dark:text-emerald-400">
-              Your order has been delivered! Leave reviews for your items.
-            </p>
-          </div>
-        )}
-
-        {viewModel.showWhatsAppButton && (
-          <WhatsAppContactButton onClick={onWhatsAppContact} />
-        )}
       </div>
     </div>
   );
@@ -306,104 +226,94 @@ export function OrderDetail({
   }
 
   return (
-    <div className="container mx-auto px-4 py-4 lg:px-8 lg:py-12">
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left Sidebar - Order Details (Desktop) */}
-        <DesktopSidebar
-          viewModel={viewModel}
-          onWhatsAppContact={onWhatsAppContact}
-        />
-
-        {/* Right Content - Items (Desktop) / Full Content (Mobile) */}
-        <div className="lg:col-span-2">
-          {/* Mobile Header */}
-          <div className="mb-8 lg:hidden">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="mb-1 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                  Order
-                </p>
-                <h1 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
-                  #{viewModel.orderId.toUpperCase()}
-                </h1>
-                <p className="mt-1 text-xs text-neutral-500">
-                  Placed on {formatOrderDate(viewModel.createdAt)}
-                </p>
-              </div>
-              <Badge
-                className={cn(
-                  "border-none px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase",
-                  viewModel.status === OrderStatus.Delivered &&
-                    "bg-emerald-50 text-emerald-600",
-                  viewModel.status === OrderStatus.Shipped &&
-                    "bg-blue-50 text-blue-600",
-                  viewModel.status === OrderStatus.Processing &&
-                    "bg-amber-50 text-amber-600",
-                )}
-              >
-                {viewModel.statusLabel}
-              </Badge>
-            </div>
-
-            {/* Mobile Progress */}
-            <div className="mt-6">
-              <OrderProgress
-                status={viewModel.status || OrderStatus.Processing}
-                createdAt={viewModel.createdAt}
-                shippedAt={viewModel.shippedAt}
-                deliveredAt={viewModel.deliveredAt}
-              />
-            </div>
+    <div className="container mx-auto max-w-2xl px-4 py-4 md:px-8 md:py-12">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="mb-1 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+              Order
+            </p>
+            <h1 className="text-sm font-bold text-neutral-900 md:text-base dark:text-neutral-100">
+              #{viewModel.orderId.toUpperCase()}
+            </h1>
+            <p className="mt-1 text-xs text-neutral-500">
+              Placed on {formatOrderDate(viewModel.createdAt)}
+            </p>
           </div>
+          <Badge
+            className={cn(
+              "border-none px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase",
+              viewModel.status === OrderStatus.Delivered &&
+                "bg-emerald-50 text-emerald-600",
+              viewModel.status === OrderStatus.Shipped &&
+                "bg-blue-50 text-blue-600",
+              viewModel.status === OrderStatus.Processing &&
+                "bg-amber-50 text-amber-600",
+            )}
+          >
+            {viewModel.statusLabel}
+          </Badge>
+        </div>
 
-          {/* Order Items */}
-          <div className="mb-8">
-            <h3 className="mb-4 text-sm font-semibold text-neutral-900 lg:text-lg dark:text-neutral-100">
-              Items ({viewModel.items.length})
-            </h3>
-            <div className="space-y-4">
-              {viewModel.items.map((item) => (
-                <OrderItemCard
-                  key={item.id}
-                  item={item}
-                  canReview={viewModel.canReview}
-                  onReviewSubmit={(rating, review, imageUrls) =>
-                    onReviewSubmit(item.productId, rating, review, imageUrls)
-                  }
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile Payment Summary */}
-          <PaymentSummaryCard
-            summary={viewModel.paymentSummary}
-            className="lg:hidden"
+        {/* Progress */}
+        <div className="mt-6">
+          <OrderProgress
+            status={viewModel.status || OrderStatus.Processing}
+            createdAt={viewModel.createdAt}
+            shippedAt={viewModel.shippedAt}
+            deliveredAt={viewModel.deliveredAt}
+            requestAt={viewModel.requestAt}
+            approvedAt={viewModel.approvedAt}
+            paidAt={viewModel.paidAt}
+            cancelledAt={viewModel.cancelledAt}
           />
-
-          {/* Mobile Shipping Address */}
-          {viewModel.shippingAddress && (
-            <ShippingAddressCard
-              address={viewModel.shippingAddress}
-              className="mt-4 lg:hidden"
-            />
-          )}
-
-          {viewModel.canReview && (
-            <div className="mt-6 rounded-2xl bg-emerald-50 p-4 text-center lg:hidden dark:bg-emerald-950/20">
-              <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
-                Your order has been delivered! Leave reviews for your items.
-              </p>
-            </div>
-          )}
-
-          {viewModel.showWhatsAppButton && (
-            <div className="mt-6 lg:hidden">
-              <WhatsAppContactButton onClick={onWhatsAppContact} />
-            </div>
-          )}
         </div>
       </div>
+
+      {/* Order Items */}
+      <div className="mb-8">
+        <h3 className="mb-4 text-sm font-semibold text-neutral-900 md:text-lg dark:text-neutral-100">
+          Items ({viewModel.items.length})
+        </h3>
+        <div className="space-y-4">
+          {viewModel.items.map((item) => (
+            <OrderItemCard
+              key={item.id}
+              item={item}
+              canReview={viewModel.canReview}
+              onReviewSubmit={(rating, review, imageUrls) =>
+                onReviewSubmit(item.productId, rating, review, imageUrls)
+              }
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Payment Summary */}
+      <PaymentSummaryCard summary={viewModel.paymentSummary} />
+
+      {/* Shipping Address */}
+      {viewModel.shippingAddress && (
+        <ShippingAddressCard
+          address={viewModel.shippingAddress}
+          className="mt-4"
+        />
+      )}
+
+      {viewModel.canReview && (
+        <div className="mt-6 rounded-2xl bg-emerald-50 p-4 text-center dark:bg-emerald-950/20">
+          <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+            Your order has been delivered! Leave reviews for your items.
+          </p>
+        </div>
+      )}
+
+      {viewModel.showWhatsAppButton && (
+        <div className="mt-6">
+          <WhatsAppContactButton onClick={onWhatsAppContact} />
+        </div>
+      )}
     </div>
   );
 }
