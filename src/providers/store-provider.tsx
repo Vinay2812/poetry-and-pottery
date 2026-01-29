@@ -1,6 +1,7 @@
 "use client";
 
 import { getUserCounts } from "@/data/user/gateway/server";
+import { getWishlistIds } from "@/data/wishlist/gateway/server";
 import { useUIStore } from "@/store";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef } from "react";
@@ -8,13 +9,14 @@ import { useEffect, useRef } from "react";
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser();
   const setCartCount = useUIStore((state) => state.setCartCount);
-  const setWishlistCount = useUIStore((state) => state.setWishlistCount);
   const setEventRegistrationsCount = useUIStore(
     (state) => state.setEventRegistrationsCount,
   );
   const setPendingOrdersCount = useUIStore(
     (state) => state.setPendingOrdersCount,
   );
+  const hydrateWishlistIds = useUIStore((state) => state.hydrateWishlistIds);
+  const resetWishlist = useUIStore((state) => state.resetWishlist);
   const hasFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     // Reset counts when user signs out
     if (!user) {
       setCartCount(0);
-      setWishlistCount(0);
+      resetWishlist();
       setEventRegistrationsCount(0);
       setPendingOrdersCount(0);
       hasFetchedRef.current = false;
@@ -34,20 +36,27 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     if (user && !hasFetchedRef.current) {
       hasFetchedRef.current = true;
 
-      getUserCounts().then((result) => {
-        if (result.success) {
-          setCartCount(result.data.cartCount);
-          setWishlistCount(result.data.wishlistCount);
-          setEventRegistrationsCount(result.data.eventRegistrationsCount);
-          setPendingOrdersCount(result.data.pendingOrdersCount);
-        }
-      });
+      // Fetch user counts and wishlist IDs in parallel
+      Promise.all([getUserCounts(), getWishlistIds()]).then(
+        ([countsResult, wishlistIds]) => {
+          if (countsResult.success) {
+            setCartCount(countsResult.data.cartCount);
+            setEventRegistrationsCount(
+              countsResult.data.eventRegistrationsCount,
+            );
+            setPendingOrdersCount(countsResult.data.pendingOrdersCount);
+          }
+          // Hydrate wishlist IDs (this also sets wishlistCount)
+          hydrateWishlistIds(wishlistIds);
+        },
+      );
     }
   }, [
     user,
     isLoaded,
     setCartCount,
-    setWishlistCount,
+    hydrateWishlistIds,
+    resetWishlist,
     setEventRegistrationsCount,
     setPendingOrdersCount,
   ]);

@@ -1,12 +1,20 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Heart, ShoppingBag, X } from "lucide-react";
+import {
+  Archive,
+  Check,
+  Heart,
+  MessageCircle,
+  ShoppingBag,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Rating } from "@/components/shared";
 import { ImageCarousel } from "@/components/shared/image-carousel";
 
+import { openWhatsAppProductRequest } from "@/lib/contact-business";
 import { cn } from "@/lib/utils";
 
 import type { ProductCardProps } from "../types";
@@ -19,6 +27,7 @@ export function ProductCard({
   addedToCart,
   canAddToCart,
   disableImageCarousel = false,
+  isArchiveView = false,
   onImageClick,
   onWishlistClick,
   onAddToCart,
@@ -28,6 +37,51 @@ export function ProductCard({
   const inStock = product.available_quantity > 0;
   const formattedPrice = `₹${product.price.toLocaleString()}`;
   const category = product.material || "Pottery";
+
+  // Check if product is inactive
+  const isInactive = product.is_active === false;
+
+  // Determine if product is archived based on collection date window
+  const isCollectionArchived = (() => {
+    if (!product.collection) return false;
+    const now = new Date();
+    // Collection ended (ends_at < now)
+    if (product.collection.ends_at) {
+      const endsAt = new Date(product.collection.ends_at);
+      if (now > endsAt) return true;
+    }
+    // Collection hasn't started yet (starts_at > now)
+    if (product.collection.starts_at) {
+      const startsAt = new Date(product.collection.starts_at);
+      if (now < startsAt) return true;
+    }
+    return false;
+  })();
+
+  // Show sold out badge when out of stock
+  const showSoldOutBadge = !inStock;
+  // Show archived badge for inactive products or collection-archived products
+  // Show in archive view or wishlist variant (so users know the item is unavailable)
+  const showArchivedBadge =
+    (isArchiveView || isWishlistVariant) &&
+    (isInactive || isCollectionArchived) &&
+    inStock;
+
+  // Product is unavailable if sold out, inactive, or in archived collection
+  const isUnavailable = showSoldOutBadge || isInactive || isCollectionArchived;
+
+  // Handle WhatsApp request for unavailable products
+  const handleRequestProduct = () => {
+    openWhatsAppProductRequest({
+      type: "product-request",
+      productId: product.id,
+      productName: product.name,
+      productPrice: product.price,
+      productUrl: `${typeof window !== "undefined" ? window.location.origin : ""}/products/${product.id}`,
+      isSoldOut: showSoldOutBadge,
+      isArchived: showArchivedBadge,
+    });
+  };
 
   return (
     <motion.div
@@ -66,12 +120,16 @@ export function ProductCard({
             showCounter={false}
           />
 
-          {/* Out of stock overlay */}
-          {!inStock && (
-            <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-white/60 backdrop-blur-[2px] dark:bg-black/60">
-              <span className="rounded-full bg-neutral-900/90 px-4 py-1.5 text-xs font-semibold tracking-wide text-white dark:bg-white/90 dark:text-neutral-900">
-                Out of Stock
-              </span>
+          {/* Status Badges */}
+          {showSoldOutBadge && (
+            <div className="bg-terracotta absolute top-2.5 left-2.5 z-20 flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white uppercase">
+              Sold Out
+            </div>
+          )}
+          {showArchivedBadge && (
+            <div className="absolute top-2.5 left-2.5 z-20 flex items-center gap-1 rounded-full bg-neutral-500 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white uppercase">
+              <Archive className="h-3 w-3" />
+              Archived
             </div>
           )}
         </div>
@@ -89,7 +147,14 @@ export function ProductCard({
               {category}
             </p>
             <div className="mt-0.5 flex items-center justify-between gap-2">
-              <span className="text-sm font-bold text-neutral-900 lg:text-base dark:text-neutral-100">
+              <span
+                className={cn(
+                  "text-sm font-bold lg:text-base",
+                  isUnavailable
+                    ? "text-neutral-500 dark:text-neutral-400"
+                    : "text-neutral-900 dark:text-neutral-100",
+                )}
+              >
                 {formattedPrice}
               </span>
               {product.avg_rating > 0 && product.reviews_count > 0 && (
@@ -105,33 +170,51 @@ export function ProductCard({
           {/* Action Buttons - Always Visible */}
           <div className="mt-auto flex items-center gap-2 pt-2">
             <AnimatePresence mode="wait">
-              {canAddToCart && (
+              {isUnavailable ? (
                 <motion.button
-                  key={addedToCart ? "added" : "add"}
+                  key="request"
                   initial={{ scale: 0.95 }}
                   animate={{ scale: 1 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    onAddToCart();
+                    handleRequestProduct();
                   }}
-                  disabled={!inStock}
-                  className={cn(
-                    "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors duration-200 lg:text-sm",
-                    addedToCart
-                      ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-                      : "bg-primary hover:bg-primary-hover text-white",
-                    !inStock && "cursor-not-allowed opacity-50",
-                  )}
+                  className="border-primary/30 text-primary hover:bg-primary/10 flex flex-1 items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-colors duration-200 lg:text-sm"
                 >
-                  {addedToCart ? (
-                    <Check className="h-3.5 w-3.5" />
-                  ) : (
-                    <ShoppingBag className="h-3.5 w-3.5" />
-                  )}
-                  <span>{addedToCart ? "Added" : "Add to Cart"}</span>
+                  <MessageCircle className="h-3.5 w-3.5" />
+                  <span>Request</span>
                 </motion.button>
+              ) : (
+                canAddToCart && (
+                  <motion.button
+                    key={addedToCart ? "added" : "add"}
+                    initial={{ scale: 0.95 }}
+                    animate={{ scale: 1 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onAddToCart();
+                    }}
+                    disabled={!inStock}
+                    className={cn(
+                      "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors duration-200 lg:text-sm",
+                      addedToCart
+                        ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                        : "bg-primary hover:bg-primary-hover text-white",
+                      !inStock && "cursor-not-allowed opacity-50",
+                    )}
+                  >
+                    {addedToCart ? (
+                      <Check className="h-3.5 w-3.5" />
+                    ) : (
+                      <ShoppingBag className="h-3.5 w-3.5" />
+                    )}
+                    <span>{addedToCart ? "Added" : "Add to Cart"}</span>
+                  </motion.button>
+                )
               )}
             </AnimatePresence>
 

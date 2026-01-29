@@ -1,21 +1,23 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 import { ProductOrderBy, ProductsResponse } from "@/graphql/generated/types";
 
 import { ProductList } from "../components/product-list";
-import { useProductsFilterV2 } from "../hooks/use-products-filter-v2";
 import { useProductsV2 } from "../hooks/use-products-v2";
 
 interface ProductListContainerProps {
   productsWithFiltersAndMetadata: ProductsResponse;
+  activeProductsCount?: number;
+  archivedProductsCount?: number;
 }
 
 export function ProductListContainer({
   productsWithFiltersAndMetadata,
+  activeProductsCount = 0,
+  archivedProductsCount = 0,
 }: ProductListContainerProps) {
   const {
     products,
@@ -56,9 +58,12 @@ export function ProductListContainer({
 
   const onCategoryToggle = useCallback(
     (category: string) => {
+      const newCategories = filters.categories.includes(category)
+        ? filters.categories.filter((c) => c !== category)
+        : [...filters.categories, category];
       onFilterChange({
         ...filters,
-        categories: [...filters.categories, category],
+        categories: newCategories,
       });
     },
     [filters, onFilterChange],
@@ -66,13 +71,47 @@ export function ProductListContainer({
 
   const onMaterialToggle = useCallback(
     (material: string) => {
+      const newMaterials = filters.materials.includes(material)
+        ? filters.materials.filter((m) => m !== material)
+        : [...filters.materials, material];
       onFilterChange({
         ...filters,
-        materials: [...filters.materials, material],
+        materials: newMaterials,
       });
     },
     [filters, onFilterChange],
   );
+
+  const onCollectionToggle = useCallback(
+    (collectionId: number) => {
+      const newCollectionIds = filters.collection_ids.includes(collectionId)
+        ? filters.collection_ids.filter((id) => id !== collectionId)
+        : [...filters.collection_ids, collectionId];
+      onFilterChange({
+        ...filters,
+        collection_ids: newCollectionIds,
+      });
+    },
+    [filters, onFilterChange],
+  );
+
+  const onArchiveToggle = useCallback(
+    (archive: boolean) => {
+      onFilterChange({
+        ...filters,
+        archive,
+      });
+    },
+    [filters, onFilterChange],
+  );
+
+  // Calculate display counts - use current total when in that view
+  const displayActiveCount = filters.archive
+    ? activeProductsCount
+    : filterMetadata.total_products;
+  const displayArchivedCount = filters.archive
+    ? filterMetadata.total_products
+    : archivedProductsCount;
 
   return (
     <ProductList
@@ -82,6 +121,8 @@ export function ProductListContainer({
       isFetchingProducts={isFetchingProducts}
       isFilterOpen={isFilterOpen}
       hasNextProductsPage={hasNextProductsPage}
+      activeProductsCount={displayActiveCount}
+      archivedProductsCount={displayArchivedCount}
       fetchNextProductsPageRef={fetchNextProductsPageRef}
       onSearchChange={onSearchChange}
       onFilterOpen={onFilterOpen}
@@ -90,6 +131,8 @@ export function ProductListContainer({
       onFilterClear={onFilterClear}
       onCategoryToggle={onCategoryToggle}
       onMaterialToggle={onMaterialToggle}
+      onCollectionToggle={onCollectionToggle}
+      onArchiveToggle={onArchiveToggle}
       onPriceRangeChange={onPriceRangeChange}
     />
   );

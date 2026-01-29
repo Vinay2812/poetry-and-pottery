@@ -21,6 +21,7 @@ import type {
   CartItemViewModel,
   CartViewModel,
 } from "../types";
+import { getProductAvailability } from "../types";
 
 function mapToCartWithProduct(item: CartItem): CartWithProduct {
   return {
@@ -43,10 +44,11 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
       color_name: item.product.color_name,
       description: null,
       instructions: [],
-      is_active: true,
+      is_active: item.product.is_active,
       created_at: new Date(),
       updated_at: new Date(),
       product_categories: [],
+      collection: item.product.collection ?? null,
     },
   };
 }
@@ -89,6 +91,84 @@ export function CartContainer({
     }
   }, [mappedInitialItems, cartItems.length, hydrate]);
 
+  // Build cart item view models with availability status
+  const allCartItemViewModels: CartItemViewModel[] = useMemo(
+    () =>
+      displayItems.map((item) => {
+        const product = {
+          id: item.product.id,
+          slug: item.product.slug,
+          name: item.product.name,
+          price: item.product.price,
+          image_urls: item.product.image_urls,
+          material: item.product.material,
+          available_quantity: item.product.available_quantity,
+          total_quantity: item.product.total_quantity,
+          color_code: item.product.color_code,
+          color_name: item.product.color_name,
+          avg_rating: 0,
+          reviews_count: 0,
+          in_wishlist: false,
+          is_active: item.product.is_active ?? true,
+          collection: item.product.collection
+            ? {
+                id: item.product.collection.id,
+                slug: item.product.collection.slug,
+                name: item.product.collection.name,
+                description: item.product.collection.description ?? null,
+                image_url: item.product.collection.image_url ?? null,
+                starts_at: item.product.collection.starts_at,
+                ends_at: item.product.collection.ends_at,
+                created_at: item.product.collection.created_at,
+                updated_at: item.product.collection.updated_at,
+                products_count: 0,
+              }
+            : null,
+        };
+
+        const availability = getProductAvailability(product, item.quantity);
+
+        return {
+          productId: item.product.id,
+          product,
+          quantity: item.quantity,
+          isLoading: isLoading(item.product.id),
+          availability,
+        };
+      }),
+    [displayItems, isLoading],
+  );
+
+  // Split into available and unavailable items
+  const availableItems = useMemo(
+    () => allCartItemViewModels.filter((item) => item.availability.isAvailable),
+    [allCartItemViewModels],
+  );
+  const unavailableItems = useMemo(
+    () =>
+      allCartItemViewModels.filter((item) => !item.availability.isAvailable),
+    [allCartItemViewModels],
+  );
+
+  // Calculate order summary only from AVAILABLE items
+  const availableSubtotal = useMemo(
+    () =>
+      availableItems.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0,
+      ),
+    [availableItems],
+  );
+  const availableShipping = 150;
+  const availableTax = 0;
+  const availableTotal =
+    availableItems.length > 0
+      ? availableSubtotal + availableShipping + availableTax
+      : 0;
+
+  const hasUnavailableItems = unavailableItems.length > 0;
+  const availableItemCount = availableItems.length;
+
   const handleUpdateQuantity = useCallback(
     async (productId: number, newQuantity: number) => {
       if (newQuantity < 1) return;
@@ -108,18 +188,9 @@ export function CartContainer({
     setSelectedAddress(address);
   }, []);
 
-  // Calculate order summary
-  const subtotal = displayItems.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0,
-  );
-  const shipping = subtotal > 2000 ? 0 : 150;
-  const tax = 0;
-  const total = subtotal + shipping + tax;
-
   const handleCheckout = useCallback(() => {
     requireAuth(async () => {
-      if (isOrdering || displayItems.length === 0) return;
+      if (isOrdering || availableItems.length === 0) return;
 
       if (!selectedAddress) {
         addToast({
@@ -133,7 +204,7 @@ export function CartContainer({
 
       try {
         const result = await createOrderMutate({
-          shippingFee: subtotal > 2000 ? 0 : 150,
+          shippingFee: 150,
           shippingAddress: {
             name: selectedAddress.name,
             address_line_1: selectedAddress.address_line_1,
@@ -208,9 +279,8 @@ export function CartContainer({
   }, [
     requireAuth,
     isOrdering,
-    displayItems.length,
+    availableItems.length,
     selectedAddress,
-    subtotal,
     addToast,
     clear,
     router,
@@ -218,45 +288,29 @@ export function CartContainer({
     createOrderMutate,
   ]);
 
-  // Build cart item view models
-  const cartItemViewModels: CartItemViewModel[] = displayItems.map((item) => ({
-    productId: item.product.id,
-    product: {
-      id: item.product.id,
-      slug: item.product.slug,
-      name: item.product.name,
-      price: item.product.price,
-      image_urls: item.product.image_urls,
-      material: item.product.material,
-      available_quantity: item.product.available_quantity,
-      total_quantity: item.product.total_quantity,
-      color_code: item.product.color_code,
-      color_name: item.product.color_name,
-      avg_rating: 0,
-      reviews_count: 0,
-      in_wishlist: false,
-    },
-    quantity: item.quantity,
-    isLoading: isLoading(item.product.id),
-  }));
-
-  const canCheckout = displayItems.length > 0 && selectedAddress !== null;
+  const canCheckout =
+    availableItems.length > 0 &&
+    selectedAddress !== null &&
+    !hasUnavailableItems;
 
   // Build checkout button text
   const checkoutButtonText = isOrdering
     ? "Placing Order..."
-    : !selectedAddress
-      ? "Select Address to Continue"
-      : "Request Order";
+    : hasUnavailableItems
+      ? "Remove unavailable items to continue"
+      : !selectedAddress
+        ? "Select Address to Continue"
+        : "Request Order";
 
   // Build the view model
   const viewModel: CartViewModel = {
-    cartItems: cartItemViewModels,
+    cartItems: availableItems,
+    unavailableItems,
     orderSummary: {
-      subtotal,
-      shipping,
-      tax,
-      total,
+      subtotal: availableSubtotal,
+      shipping: availableShipping,
+      tax: availableTax,
+      total: availableTotal,
     },
     selectedAddress,
     addresses: initialAddresses,
@@ -264,6 +318,8 @@ export function CartContainer({
     isOrdering,
     canCheckout,
     checkoutButtonText,
+    hasUnavailableItems,
+    availableItemCount,
   };
 
   return (

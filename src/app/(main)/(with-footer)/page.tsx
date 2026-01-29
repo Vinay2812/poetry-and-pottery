@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import {
   BehindScenesSection,
+  CollectionsSectionContainer,
   ExploreSectionContainer,
   HeroSection,
   TestimonialsSectionContainer,
@@ -72,8 +73,18 @@ export default function Home() {
         {/* Explore Categories */}
         <ExploreSectionContainer />
 
+        {/* Collections Carousel */}
+        <section className="bg-white">
+          <CollectionsSectionContainer
+            title="Shop by Collection"
+            subtitle="Explore our curated seasonal collections"
+            className="container mx-auto px-4 py-8 lg:px-8 lg:py-16"
+            viewAllHref="/products"
+          />
+        </section>
+
         {/* Featured Products */}
-        <section className="bg-primary/5">
+        <section>
           <RecommendedProductsContainer
             title="Featured Pieces"
             subtitle="Handpicked pieces for your home."
@@ -83,10 +94,12 @@ export default function Home() {
         </section>
 
         {/* Behind the Scenes + Workshops — side by side on desktop */}
-        <section className="bg-background container mx-auto px-4 py-8 lg:px-8 lg:py-16">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
-            <BehindScenesSection />
-            <WorkshopsSectionContainer />
+        <section className="bg-white px-4 py-8 lg:px-8 lg:py-16">
+          <div className="container mx-auto">
+            <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
+              <BehindScenesSection />
+              <WorkshopsSectionContainer />
+            </div>
           </div>
         </section>
 

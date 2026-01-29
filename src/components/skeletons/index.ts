@@ -30,3 +30,4 @@ export { ProfileSkeleton } from "./profile-skeleton";
 export { DashboardSkeleton } from "./dashboard-skeleton";
 export { ProductCarouselSkeleton } from "./product-carousel-skeleton";
 export { ReviewsSkeleton } from "./reviews-skeleton";
+export { CollectionsSectionSkeleton } from "./collections-section-skeleton";

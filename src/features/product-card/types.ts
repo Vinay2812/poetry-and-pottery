@@ -9,6 +9,7 @@ export interface ProductCardProps {
   addedToCart: boolean;
   canAddToCart: boolean;
   disableImageCarousel?: boolean;
+  isArchiveView?: boolean;
   // Handlers
   onImageClick: () => void;
   onWishlistClick: () => void;
@@ -22,4 +23,5 @@ export interface ProductCardContainerProps {
   onRemoveFromWishlist?: () => void;
   className?: string;
   disableImageCarousel?: boolean;
+  isArchiveView?: boolean;
 }

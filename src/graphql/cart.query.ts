@@ -20,10 +20,21 @@ export const CART_QUERY = gql`
           avg_rating
           material
           in_wishlist
+          is_active
           available_quantity
           total_quantity
           color_code
           color_name
+          collection {
+            id
+            slug
+            name
+            starts_at
+            ends_at
+            created_at
+            updated_at
+            products_count
+          }
         }
       }
       total

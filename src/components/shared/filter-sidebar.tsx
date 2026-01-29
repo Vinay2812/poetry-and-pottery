@@ -28,6 +28,7 @@ interface FilterSidebarProps {
   onPriceRangeChange: (value: [number, number]) => void;
   onCategoryToggle: (category: string) => void;
   onMaterialToggle: (material: string) => void;
+  onCollectionToggle: (collectionId: number) => void;
 }
 
 export function FilterSidebar({
@@ -38,9 +39,12 @@ export function FilterSidebar({
   onPriceRangeChange,
   onCategoryToggle,
   onMaterialToggle,
+  onCollectionToggle,
 }: FilterSidebarProps) {
   const hasActiveFilters =
-    filters.categories.length > 0 || filters.materials.length > 0;
+    filters.categories.length > 0 ||
+    filters.materials.length > 0 ||
+    filters.collection_ids.length > 0;
 
   const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([
     filters.min_price,
@@ -70,7 +74,7 @@ export function FilterSidebar({
 
       <Accordion
         type="multiple"
-        defaultValue={["categories", "materials", "price"]}
+        defaultValue={["collections", "categories", "materials", "price"]}
         className={cn("w-full", filtersClassName)}
       >
         <AccordionItem value="price" className="border-b border-neutral-100">
@@ -91,6 +95,48 @@ export function FilterSidebar({
             </div>
           </AccordionContent>
         </AccordionItem>
+
+        {/* Collections Filter */}
+        {filterMetadata.collections &&
+          filterMetadata.collections.length > 0 && (
+            <AccordionItem
+              value="collections"
+              className="border-b border-neutral-100"
+            >
+              <AccordionTrigger className="font-display py-4 text-sm font-semibold hover:no-underline">
+                Collections
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-3 pt-1 pb-2">
+                  {filterMetadata.collections.map((collection) => (
+                    <label
+                      key={collection.id}
+                      className="group hover:text-primary flex cursor-pointer items-center gap-3 rounded-lg py-1 transition-colors"
+                    >
+                      <Checkbox
+                        checked={filters.collection_ids.includes(collection.id)}
+                        onCheckedChange={() =>
+                          onCollectionToggle(collection.id)
+                        }
+                        className="data-[state=checked]:border-primary data-[state=checked]:bg-primary border-neutral-300"
+                      />
+                      <span
+                        className={cn(
+                          "text-sm transition-colors",
+                          filters.collection_ids.includes(collection.id)
+                            ? "text-foreground font-medium"
+                            : "text-muted-foreground group-hover:text-foreground",
+                        )}
+                      >
+                        {collection.name}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
+
         <AccordionItem
           value="categories"
           className="border-b border-neutral-100"

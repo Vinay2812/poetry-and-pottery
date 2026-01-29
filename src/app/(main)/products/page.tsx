@@ -43,11 +43,13 @@ interface ProductsPageProps {
   searchParams: Promise<{
     categories?: string;
     materials?: string;
+    collection_ids?: string;
     sort?: ProductOrderBy;
     page?: string;
     min_price?: string;
     max_price?: string;
     search?: string;
+    archive?: string;
   }>;
 }
 
@@ -57,21 +59,38 @@ async function ProductsContent({
   searchParams: ProductsPageProps["searchParams"];
 }) {
   const params = await searchParams;
+  const isArchive = params.archive === "true";
 
   const filterParams: ProductsFilterParams = {
     categories: params.categories?.split(","),
     materials: params.materials?.split(","),
+    collection_ids: params.collection_ids
+      ?.split(",")
+      .map((id) => parseInt(id, 10))
+      .filter((id) => !isNaN(id)),
     order_by: getProductsOrderBy(params.sort),
     page: params.page ? parseInt(params.page, 10) : 1,
     limit: DEFAULT_PAGE_SIZE,
     min_price: params.min_price ? parseInt(params.min_price) : undefined,
     max_price: params.max_price ? parseInt(params.max_price) : undefined,
     search: params.search,
+    archive: isArchive,
   };
 
-  const result = await getProducts(filterParams);
+  // Fetch both active and archived counts in parallel
+  const [result, activeResult, archivedResult] = await Promise.all([
+    getProducts(filterParams),
+    getProducts({ ...filterParams, archive: false, page: 1, limit: 1 }),
+    getProducts({ ...filterParams, archive: true, page: 1, limit: 1 }),
+  ]);
 
-  return <ProductListContainer productsWithFiltersAndMetadata={result} />;
+  return (
+    <ProductListContainer
+      productsWithFiltersAndMetadata={result}
+      activeProductsCount={activeResult.total_products}
+      archivedProductsCount={archivedResult.total_products}
+    />
+  );
 }
 
 export default async function ProductsPage({

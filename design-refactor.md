@@ -46,6 +46,7 @@ agent-browser snapshot                # Get accessibility tree
 
 | Status                 | Meaning                                                |
 | ---------------------- | ------------------------------------------------------ |
+| `🔲 Not Started`       | Task not started yet (non-UI or pending setup work)    |
 | `🔲 Wireframe Pending` | Task available — pick this up                          |
 | `🚧 In Progress`       | Agent is actively working on this — **SKIP** (claimed) |
 | `⏳ Awaiting Approval` | Wireframes created, waiting for user to select options |
@@ -905,6 +906,42 @@ Once user approves, the section is updated to:
 **Files to Modify (after approval):**
 
 - `src/components/shared/reviews-sheet.tsx`
+
+---
+
+### Phase 5A: Collections & Archive
+
+**Phase Status:** 🚧 In Progress
+
+> 🧩 **Customer Impact: HIGH** - Merchandising and product lifecycle
+> **Central Factor:** Collections with archive
+> **Files owned by this phase:** `src/features/products/`, `src/app/(main)/products/`, `src/app/(main)/(with-footer)/page.tsx`, `src/features/dashboard/products/`, `src/app/dashboard/collections/`
+
+#### Task 5A.1: Collections Filter + Archive Tabs + Homepage Collections
+
+**Status:** ⏳ Awaiting Approval
+**Wireframe:** [task-5a-1-collections-archive.html](wireframes/task-5a-1-collections-archive.html)
+
+**Scope:**
+
+- Add collections filter on products listing
+- Add archive tab/section for inactive, sold-out, or out-of-window collections
+- Add homepage collections section (grid/carousel)
+
+**Design Specifications:**
+
+- Collections filter: consistent with existing filter UI patterns
+- Archive: tabbed layout (Active | Archive) with clear counts
+- Homepage: section title + short subtitle, collection cards consistent with forest theme
+
+**Files to Modify (after approval):**
+
+- `src/app/(main)/products/page.tsx`
+- `src/features/products/hooks/use-products-filter-v2.ts`
+- `src/app/(main)/(with-footer)/page.tsx`
+- `src/components/sections/` (new section component)
+- `src/app/dashboard/collections/page.tsx`
+- `src/features/dashboard/products/components/product-form.tsx`
 
 ---
 
@@ -2487,6 +2524,120 @@ export function RouteAnimationProvider({
 
 ---
 
+### Phase 15: Custom Mug Experience
+
+**Phase Status:** 🔲 Not Started
+
+> 🎨 **Customer Impact: HIGH** - Custom orders and personalization
+> **Files owned by this phase:** `src/app/(main)/custom-mug/`, `src/features/custom-mug/`, `src/features/orders/`, `src/features/dashboard/`, `src/data/custom-mug/`, `src/graphql/custom-mug.*`
+
+#### Task 15.1: Schema Update (Custom Options + Order JSON)
+
+**Status:** 🔲 Not Started
+
+**Scope:**
+
+- Add `CustomMugOptionType` enum
+- Add `CustomMugOption` model
+- Add `custom_data Json?` to `PurchasedProductItem`
+
+**Files to Modify:**
+
+- `poetry-and-pottery-api/src/prisma/schema.prisma`
+
+---
+
+#### Task 15.2: API GraphQL (Custom Options + Order Item JSON)
+
+**Status:** 🔲 Not Started
+
+**Scope:**
+
+- Custom options queries/mutations (public + admin)
+- Expose `custom_data` on order items
+
+**Files to Modify:**
+
+- `poetry-and-pottery-api/src/resolvers/custom-mug/`
+- `poetry-and-pottery-api/src/resolvers/orders/`
+
+---
+
+#### Task 15.3: Admin Options Management UI
+
+**Status:** 🔲 Wireframe Pending
+**Wireframe:** [task-15-3-custom-mug-options-admin.html](wireframes/task-15-3-custom-mug-options-admin.html)
+
+**Scope:**
+
+- CRUD for size/color/finish/shape options
+- Active toggle
+
+**Files to Modify (after approval):**
+
+- `src/app/dashboard/custom-mug-options/page.tsx`
+- `src/features/dashboard/custom-mug-options/`
+
+---
+
+#### Task 15.4: Custom Mug Page (Customer)
+
+**Status:** 🔲 Wireframe Pending
+**Wireframe:** [task-15-4-custom-mug-page.html](wireframes/task-15-4-custom-mug-page.html)
+
+**Scope:**
+
+- New customization page for mugs with selectable options
+- Fields: size, color, finish, shape, custom text
+- “Contact on WhatsApp for quote” pricing notice
+- Submit request flow with success state
+
+**Files to Modify (after approval):**
+
+- `src/app/(main)/custom-mug/page.tsx`
+- `src/features/custom-mug/components/custom-mug-form.tsx`
+- `src/features/custom-mug/containers/custom-mug-container.tsx`
+- `src/features/custom-mug/types.ts`
+
+---
+
+#### Task 15.5: Orders UI Integration
+
+**Status:** 🔲 Wireframe Pending
+**Wireframe:** [task-15-5-custom-mug-orders-ui.html](wireframes/task-15-5-custom-mug-orders-ui.html)
+
+**Scope:**
+
+- Custom order badge in list
+- Show custom selections in order detail
+- WhatsApp CTA for custom items
+
+**Files to Modify (after approval):**
+
+- `src/features/orders/containers/orders-list-container.tsx`
+- `src/features/orders/components/orders-list.tsx`
+- `src/features/orders/containers/order-detail-container.tsx`
+- `src/features/orders/components/order-detail.tsx`
+
+---
+
+#### Task 15.6: Entry Points
+
+**Status:** 🔲 Wireframe Pending
+**Wireframe:** [task-15-6-custom-mug-entrypoints.html](wireframes/task-15-6-custom-mug-entrypoints.html)
+
+**Scope:**
+
+- Add hero CTA to `/custom-mug`
+- Add account dropdown link
+
+**Files to Modify (after approval):**
+
+- `src/app/(main)/(with-footer)/page.tsx`
+- `src/features/layout/components/account-dropdown.tsx`
+
+---
+
 ## Progress Tracking
 
 | Phase  | Name                     | Tasks  | Customer Impact | Integration                                           |
@@ -2502,8 +2653,9 @@ export function RouteAnimationProvider({
 | 12     | Auth Pages               | 1      | LOW             | Yes (independent)                                     |
 | 13     | Skeletons                | 1      | -               | No - Run after designs                                |
 | **14** | **React 19 Performance** | **11** | **HIGH**        | **Integrate during Phases 4-13 OR refactor existing** |
+| 15     | Custom Mug Experience    | 6      | HIGH            | Yes                                                   |
 
-**Total:** 63 tasks (Phase 14 tasks are integrated, not separate)
+**Total:** 69 tasks (Phase 14 tasks are integrated, not separate)
 
 ### Execution Order
 

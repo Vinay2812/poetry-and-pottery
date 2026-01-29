@@ -49,6 +49,7 @@ export const CREATE_ORDER_MUTATION = gql`
             avg_rating
             material
             in_wishlist
+            is_active
             available_quantity
             total_quantity
             color_code
@@ -109,6 +110,7 @@ export const CANCEL_ORDER_MUTATION = gql`
             avg_rating
             material
             in_wishlist
+            is_active
             available_quantity
             total_quantity
             color_code

@@ -32,6 +32,16 @@ interface UIState {
   setEventRegistrationsCount: (count: number) => void;
   pendingOrdersCount: number;
   setPendingOrdersCount: (count: number) => void;
+
+  // Wishlist IDs (for optimistic updates)
+  wishlistIds: Set<number>;
+  isWishlistHydrated: boolean;
+  hydrateWishlistIds: (ids: number[]) => void;
+  addWishlistId: (id: number) => void;
+  removeWishlistId: (id: number) => void;
+  toggleWishlistId: (id: number) => void;
+  isInWishlist: (id: number) => boolean;
+  resetWishlist: () => void;
 }
 
 interface Toast {
@@ -43,7 +53,7 @@ interface Toast {
 
 let toastId = 0;
 
-export const useUIStore = create<UIState>((set) => ({
+export const useUIStore = create<UIState>((set, get) => ({
   // Filter sheet
   isFilterSheetOpen: false,
   setFilterSheetOpen: (isFilterSheetOpen) => set({ isFilterSheetOpen }),
@@ -84,4 +94,43 @@ export const useUIStore = create<UIState>((set) => ({
     set({ eventRegistrationsCount }),
   pendingOrdersCount: 0,
   setPendingOrdersCount: (pendingOrdersCount) => set({ pendingOrdersCount }),
+
+  // Wishlist IDs (for optimistic updates)
+  wishlistIds: new Set<number>(),
+  isWishlistHydrated: false,
+  hydrateWishlistIds: (ids) =>
+    set({
+      wishlistIds: new Set(ids),
+      isWishlistHydrated: true,
+      wishlistCount: ids.length,
+    }),
+  addWishlistId: (id) =>
+    set((state) => {
+      const next = new Set(state.wishlistIds);
+      next.add(id);
+      return { wishlistIds: next, wishlistCount: next.size };
+    }),
+  removeWishlistId: (id) =>
+    set((state) => {
+      const next = new Set(state.wishlistIds);
+      next.delete(id);
+      return { wishlistIds: next, wishlistCount: next.size };
+    }),
+  toggleWishlistId: (id) =>
+    set((state) => {
+      const next = new Set(state.wishlistIds);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return { wishlistIds: next, wishlistCount: next.size };
+    }),
+  isInWishlist: (id) => get().wishlistIds.has(id),
+  resetWishlist: () =>
+    set({
+      wishlistIds: new Set<number>(),
+      isWishlistHydrated: false,
+      wishlistCount: 0,
+    }),
 }));

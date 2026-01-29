@@ -21,6 +21,7 @@ export const ADD_TO_CART_MUTATION = gql`
           avg_rating
           material
           in_wishlist
+          is_active
           available_quantity
           total_quantity
           color_code
@@ -52,6 +53,7 @@ export const UPDATE_CART_QUANTITY_MUTATION = gql`
           avg_rating
           material
           in_wishlist
+          is_active
           available_quantity
           total_quantity
           color_code

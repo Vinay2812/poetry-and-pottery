@@ -47,6 +47,7 @@ export const ORDERS_QUERY = gql`
             avg_rating
             material
             in_wishlist
+            is_active
             available_quantity
             total_quantity
             color_code
@@ -107,6 +108,7 @@ export const ORDER_QUERY = gql`
           avg_rating
           material
           in_wishlist
+          is_active
           available_quantity
           total_quantity
           color_code

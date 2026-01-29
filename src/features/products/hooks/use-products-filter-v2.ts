@@ -3,15 +3,21 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 
-import { ProductOrderBy, ProductsResponse } from "@/graphql/generated/types";
+import {
+  CollectionBase,
+  ProductOrderBy,
+  ProductsResponse,
+} from "@/graphql/generated/types";
 
 export type Filters = {
   categories: string[];
   materials: string[];
+  collection_ids: number[];
   sort: ProductOrderBy;
   search: string;
   min_price: number;
   max_price: number;
+  archive: boolean;
 };
 
 export function useProductsFilterV2({
@@ -33,6 +39,14 @@ export function useProductsFilterV2({
       searchParams.get("materials")?.split(",") ??
       productsWithFiltersAndMetadata.filter.materials ??
       [];
+    const selectedCollectionIds =
+      searchParams
+        .get("collection_ids")
+        ?.split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id)) ??
+      productsWithFiltersAndMetadata.filter.collection_ids ??
+      [];
     const sortBy: ProductOrderBy = getProductsOrderBy(searchParams.get("sort"));
     const searchQuery =
       searchParams.get("search") ??
@@ -46,14 +60,19 @@ export function useProductsFilterV2({
       searchParams.get("max_price") ??
       productsWithFiltersAndMetadata.filter.max_price ??
       productsWithFiltersAndMetadata.meta.price_range.max;
+    const archiveParam =
+      searchParams.get("archive") === "true" ||
+      productsWithFiltersAndMetadata.filter.archive === true;
 
     return {
       categories: selectedCategories,
       materials: selectedMaterials,
+      collection_ids: selectedCollectionIds,
       sort: sortBy,
       search: searchQuery,
       min_price: parseInt(minPriceParam.toString()),
       max_price: parseInt(maxPriceParam.toString()),
+      archive: archiveParam,
     };
   });
 
@@ -61,6 +80,7 @@ export function useProductsFilterV2({
     return {
       categories: productsWithFiltersAndMetadata.meta.categories,
       materials: productsWithFiltersAndMetadata.meta.materials,
+      collections: productsWithFiltersAndMetadata.meta.collections ?? [],
       price_range: productsWithFiltersAndMetadata.meta.price_range,
       price_histogram: productsWithFiltersAndMetadata.meta.price_histogram,
     };
@@ -96,27 +116,38 @@ export function useProductsFilterV2({
         queryKey: ["products"],
       });
 
-      router.replace(`/products?${newParams.toString()}`, { scroll: false });
+      router.push(`/products?${newParams.toString()}`, { scroll: false });
     },
     [searchParams, router, queryClient],
   );
 
   const onFilterClear = useCallback(() => {
     startTransition(() => {
-      router.replace("/products", { scroll: false });
-      setFilters({
+      // Preserve archive tab when clearing filters
+      const archiveParam = filters.archive ? "?archive=true" : "";
+
+      setFilters((prev) => ({
         categories: [],
         materials: [],
+        collection_ids: [],
         sort: ProductOrderBy.Featured,
         search: "",
         min_price: productsWithFiltersAndMetadata.meta.price_range.min,
         max_price: productsWithFiltersAndMetadata.meta.price_range.max,
-      });
+        archive: prev.archive, // Keep archive state
+      }));
+
+      router.push(`/products${archiveParam}`, { scroll: false });
       queryClient.invalidateQueries({
         queryKey: ["products"],
       });
     });
-  }, [router, productsWithFiltersAndMetadata.meta.price_range, queryClient]);
+  }, [
+    router,
+    productsWithFiltersAndMetadata.meta.price_range,
+    queryClient,
+    filters.archive,
+  ]);
 
   return {
     filters,

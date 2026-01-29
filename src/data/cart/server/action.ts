@@ -22,6 +22,7 @@ function mapToProductBase(product: {
   total_quantity: number;
   color_code: string;
   color_name: string;
+  is_active?: boolean;
   reviews?: { rating: number }[];
 }) {
   const reviews = product.reviews ?? [];
@@ -41,6 +42,7 @@ function mapToProductBase(product: {
     avg_rating: avgRating,
     material: product.material,
     in_wishlist: false,
+    is_active: product.is_active ?? true,
     available_quantity: product.available_quantity,
     total_quantity: product.total_quantity,
     color_code: product.color_code,

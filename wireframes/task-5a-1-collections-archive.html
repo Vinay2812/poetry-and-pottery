@@ -1,0 +1,1889 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Task 5A.1: Collections & Archive - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Collection Card Styles */
+      .collection-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s ease-out;
+        cursor: pointer;
+      }
+
+      .collection-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .collection-image {
+        aspect-ratio: 16/9;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .collection-image.spring {
+        background: linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%);
+      }
+
+      .collection-image.winter {
+        background: linear-gradient(135deg, #dde4e8 0%, #b0c4d4 100%);
+      }
+
+      .collection-image.autumn {
+        background: linear-gradient(135deg, #f0e8e0 0%, #d4b89c 100%);
+      }
+
+      .collection-image.summer {
+        background: linear-gradient(135deg, #f5ebe0 0%, #e8d8c4 100%);
+      }
+
+      .collection-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .badge-active {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .badge-limited {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .collection-count {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #666;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .collection-content {
+        padding: 16px;
+      }
+
+      .collection-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+        line-height: 1.4;
+      }
+
+      .collection-desc {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      /* Filter Sidebar Styles (Task 4.6) */
+      .filter-sidebar {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .filter-group {
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+      }
+
+      .filter-group:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+
+      .filter-group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 4px 0;
+      }
+
+      .filter-group-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .filter-group-chevron {
+        width: 16px;
+        height: 16px;
+        color: #999;
+        transition: transform 0.2s;
+      }
+
+      .filter-group-content {
+        margin-top: 12px;
+      }
+
+      /* Checkbox Styles (Task 4.6) */
+      .filter-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        cursor: pointer;
+      }
+
+      .filter-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        accent-color: #4f6f52;
+      }
+
+      .filter-checkbox-label {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .filter-checkbox-count {
+        font-size: 12px;
+        color: #999;
+        margin-left: auto;
+      }
+
+      /* Page-Level Tabs - Underline Style (Task 4.9 Option A) */
+      .page-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 24px;
+      }
+
+      .page-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px 20px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        background: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+      }
+
+      .page-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      .page-tab:hover:not(.active) {
+        color: #666;
+      }
+
+      .page-tab .tab-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+        height: 20px;
+        padding: 0 8px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-left: 8px;
+        background: #f0f0f0;
+      }
+
+      .page-tab.active .tab-count {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      /* Price Range Inputs */
+      .price-inputs {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .price-input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      /* Product Card */
+      .product-card-mini {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s;
+      }
+
+      .product-card-mini:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .product-image-mini {
+        aspect-ratio: 1;
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+        position: relative;
+      }
+
+      .product-image-mini.archived {
+        opacity: 0.6;
+      }
+
+      .product-content-mini {
+        padding: 12px;
+      }
+
+      .product-title-mini {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .product-category-mini {
+        font-size: 11px;
+        color: #999;
+        margin-bottom: 6px;
+      }
+
+      .product-price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .product-price-mini {
+        font-size: 14px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        color: #999;
+      }
+
+      .wishlist-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        background: white;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+
+      /* Archived Product Badge */
+      .archived-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 4px 10px;
+        background: #737373;
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .sold-out-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 4px 10px;
+        background: #c4785a;
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Mobile Filter Button */
+      .mobile-filter-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 16px;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      /* Section Title for Homepage */
+      .section-header {
+        margin-bottom: 24px;
+      }
+
+      .section-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .section-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-bottom: 8px;
+      }
+
+      .section-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      /* Page Header */
+      .page-header {
+        margin-bottom: 24px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+      }
+
+      /* Option Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .option-info {
+        flex: 1;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 768px 1fr;
+        gap: 32px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .viewport-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .viewport-size {
+        font-size: 11px;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        padding: 16px;
+        max-height: 700px;
+        overflow-y: auto;
+      }
+
+      .viewport-content.tablet {
+        padding: 24px;
+      }
+
+      .viewport-content.desktop {
+        padding: 32px 48px;
+      }
+
+      /* Grid Layouts */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+
+      /* Layout with Sidebar */
+      .products-layout {
+        display: grid;
+        gap: 24px;
+      }
+
+      .products-layout.desktop {
+        grid-template-columns: 280px 1fr;
+        gap: 32px;
+      }
+
+      .products-layout.tablet {
+        grid-template-columns: 240px 1fr;
+        gap: 24px;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Divider */
+      .part-divider {
+        background: #e8ece8;
+        padding: 16px 24px;
+        border-radius: 12px;
+        margin: 48px 0;
+        text-align: center;
+      }
+
+      .part-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .part-desc {
+        font-size: 13px;
+        color: #666;
+        margin-top: 4px;
+      }
+
+      /* View All Link */
+      .view-all-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      /* Search Input */
+      .search-input {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        flex: 1;
+      }
+
+      .search-input input {
+        border: none;
+        outline: none;
+        flex: 1;
+        font-size: 14px;
+      }
+
+      /* Sort Dropdown */
+      .sort-dropdown {
+        padding: 12px 16px;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      /* Carousel Styles - matching ProductCarousel */
+      .carousel-section {
+        position: relative;
+      }
+
+      .carousel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      .carousel-track {
+        display: flex;
+        margin-left: -16px;
+        overflow: hidden;
+      }
+
+      .carousel-card {
+        flex-shrink: 0;
+        padding-left: 16px;
+      }
+
+      /* Mobile: 80% basis */
+      .carousel-card.mobile {
+        flex-basis: 80%;
+      }
+
+      /* Tablet: ~34% basis */
+      .carousel-card.tablet {
+        flex-basis: 34%;
+      }
+
+      /* Desktop: ~25% basis */
+      .carousel-card.desktop {
+        flex-basis: 25%;
+      }
+
+      .drag-hint {
+        text-align: center;
+        font-size: 11px;
+        color: #999;
+        margin-top: 16px;
+        font-style: italic;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 5A.1: Collections & Archive</h1>
+    <p class="subtitle">
+      Page-level archive tabs for products (active vs archived/sold-out),
+      collections filter in sidebar, and homepage collections carousel. Uses
+      approved Tabs (Task 4.9) and Filter Sidebar (Task 4.6) components.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">AWAITING APPROVAL</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol
+        id="search-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </symbol>
+      <symbol
+        id="filter-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="4" y1="6" x2="20" y2="6" />
+        <line x1="6" y1="12" x2="18" y2="12" />
+        <line x1="8" y1="18" x2="16" y2="18" />
+      </symbol>
+      <symbol
+        id="chevron-down"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="6 9 12 15 18 9" />
+      </symbol>
+      <symbol
+        id="arrow-right"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </symbol>
+      <symbol
+        id="heart-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        />
+      </symbol>
+      <symbol
+        id="star-icon"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        stroke="none"
+      >
+        <polygon
+          points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+        />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>No archive section for discontinued/sold-out products</li>
+            <li>No collection-based product grouping</li>
+            <li>Filter sidebar has Price Range and Categories only</li>
+            <li>No homepage collections showcase</li>
+            <li>Limited merchandising capabilities</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Page-level tabs: "Active" / "Archive" (like Events page)</li>
+            <li>Archive shows sold-out and discontinued products</li>
+            <li>Collections filter added to sidebar</li>
+            <li>Homepage carousel showcasing active collections</li>
+            <li>Drag-free carousel matching ProductCarousel pattern</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== PART 1: PRODUCTS PAGE ==================== -->
+    <div class="part-divider">
+      <div class="part-title">
+        Part 1: Products Page - Archive Tabs + Collections Filter
+      </div>
+      <div class="part-desc">
+        Page-level underline tabs for Active/Archive products, with Collections
+        as a sidebar filter (approved Option A from Task 4.9)
+      </div>
+    </div>
+
+    <div class="options-container">
+      <div class="viewport-grid">
+        <!-- Mobile -->
+        <div class="viewport-box" style="width: 375px">
+          <div class="viewport-header">
+            <span class="viewport-label">Mobile</span>
+            <span class="viewport-size">375 x 812</span>
+          </div>
+          <div class="viewport-content">
+            <!-- Page Header -->
+            <div class="page-header" style="margin-bottom: 16px">
+              <div class="wf-breadcrumbs" style="margin-bottom: 8px">
+                <a href="#">Home</a> / Shop
+              </div>
+              <h1 class="page-title" style="font-size: 22px">Shop Pottery</h1>
+              <p style="font-size: 13px; color: #737373">
+                Handcrafted ceramic pieces
+              </p>
+            </div>
+
+            <!-- Page-Level Archive Tabs -->
+            <div class="page-tabs">
+              <button class="page-tab active">
+                Active<span class="tab-count">48</span>
+              </button>
+              <button class="page-tab">
+                Archive<span class="tab-count">12</span>
+              </button>
+            </div>
+
+            <!-- Filter + Sort Row -->
+            <div style="display: flex; gap: 10px; margin-bottom: 16px">
+              <button class="mobile-filter-btn">
+                <svg style="width: 16px; height: 16px; color: #666">
+                  <use href="#filter-icon" />
+                </svg>
+                Filter
+              </button>
+              <div class="sort-dropdown" style="flex: 1">
+                Featured
+                <svg
+                  style="
+                    width: 14px;
+                    height: 14px;
+                    color: #999;
+                    margin-left: auto;
+                  "
+                >
+                  <use href="#chevron-down" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Product Grid (Active) -->
+            <div class="grid-2" style="gap: 12px">
+              <div class="product-card-mini">
+                <div class="product-image-mini pottery-1">
+                  <button class="wishlist-btn">
+                    <svg style="width: 16px; height: 16px; color: #999">
+                      <use href="#heart-icon" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="product-content-mini">
+                  <div class="product-title-mini">Incense Holder #151</div>
+                  <div class="product-category-mini">Ceramic</div>
+                  <div class="product-price-row">
+                    <span class="product-price-mini">Rs. 4,857</span>
+                    <span class="product-rating">
+                      <svg style="width: 12px; height: 12px; color: #4f6f52">
+                        <use href="#star-icon" />
+                      </svg>
+                      4.0
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="product-card-mini">
+                <div class="product-image-mini pottery-2">
+                  <button class="wishlist-btn">
+                    <svg style="width: 16px; height: 16px; color: #999">
+                      <use href="#heart-icon" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="product-content-mini">
+                  <div class="product-title-mini">Sculpted Vase #2</div>
+                  <div class="product-category-mini">Stoneware</div>
+                  <div class="product-price-row">
+                    <span class="product-price-mini">Rs. 848</span>
+                    <span class="product-rating">
+                      <svg style="width: 12px; height: 12px; color: #4f6f52">
+                        <use href="#star-icon" />
+                      </svg>
+                      4.5
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Archive Tab Preview -->
+            <div
+              style="
+                margin-top: 32px;
+                padding: 16px;
+                background: #f5f5f4;
+                border-radius: 12px;
+              "
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  font-weight: 600;
+                  color: #999;
+                  margin-bottom: 12px;
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
+                "
+              >
+                When "Archive" tab is selected:
+              </div>
+              <div class="grid-2" style="gap: 12px">
+                <div class="product-card-mini">
+                  <div class="product-image-mini pottery-3 archived">
+                    <span class="sold-out-badge">Sold Out</span>
+                  </div>
+                  <div class="product-content-mini">
+                    <div class="product-title-mini">Classic Bowl Set</div>
+                    <div class="product-category-mini">Earthenware</div>
+                    <div class="product-price-row">
+                      <span class="product-price-mini" style="color: #999"
+                        >Rs. 2,100</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="product-card-mini">
+                  <div class="product-image-mini pottery-4 archived">
+                    <span class="archived-badge">Discontinued</span>
+                  </div>
+                  <div class="product-content-mini">
+                    <div class="product-title-mini">Vintage Planter</div>
+                    <div class="product-category-mini">Ceramic</div>
+                    <div class="product-price-row">
+                      <span class="product-price-mini" style="color: #999"
+                        >Rs. 1,500</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div class="viewport-box" style="width: 768px">
+          <div class="viewport-header">
+            <span class="viewport-label">Tablet</span>
+            <span class="viewport-size">768 x 1024</span>
+          </div>
+          <div class="viewport-content tablet">
+            <!-- Breadcrumbs -->
+            <div class="wf-breadcrumbs" style="margin-bottom: 8px">
+              <a href="#">Home</a> / Shop
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+              <h1 class="page-title" style="font-size: 28px">Shop Pottery</h1>
+              <p style="font-size: 14px; color: #737373">
+                Discover handcrafted ceramic pieces
+              </p>
+            </div>
+
+            <!-- Page-Level Archive Tabs -->
+            <div class="page-tabs">
+              <button class="page-tab active">
+                Active Products<span class="tab-count">48</span>
+              </button>
+              <button class="page-tab">
+                Archive<span class="tab-count">12</span>
+              </button>
+            </div>
+
+            <!-- Layout with Sidebar -->
+            <div class="products-layout tablet">
+              <!-- Sidebar -->
+              <div class="filter-sidebar">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <span
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 16px;
+                      font-weight: 700;
+                    "
+                    >Filters</span
+                  >
+                </div>
+
+                <!-- Price Range -->
+                <div class="filter-group">
+                  <div class="filter-group-header">
+                    <span class="filter-group-title">Price Range</span>
+                    <svg
+                      class="filter-group-chevron"
+                      style="width: 16px; height: 16px"
+                    >
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                  <div class="filter-group-content">
+                    <div class="price-inputs">
+                      <input type="text" class="price-input" value="Rs. 299" />
+                      <span style="color: #999">-</span>
+                      <input type="text" class="price-input" value="Rs. 4985" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Collections Filter -->
+                <div
+                  class="filter-group"
+                  style="
+                    background: #f8faf8;
+                    margin: 0 -20px;
+                    padding: 16px 20px;
+                  "
+                >
+                  <div class="filter-group-header">
+                    <span class="filter-group-title" style="color: #4f6f52"
+                      >Collections</span
+                    >
+                    <svg
+                      class="filter-group-chevron"
+                      style="width: 16px; height: 16px"
+                    >
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                  <div class="filter-group-content">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" checked />
+                      <span class="filter-checkbox-label">All Collections</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Spring 2025</span>
+                      <span class="filter-checkbox-count">12</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Winter Warmth</span>
+                      <span class="filter-checkbox-count">8</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Artisan Series</span>
+                      <span class="filter-checkbox-count">6</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="filter-group">
+                  <div class="filter-group-header">
+                    <span class="filter-group-title">Categories</span>
+                    <svg
+                      class="filter-group-chevron"
+                      style="width: 16px; height: 16px"
+                    >
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                  <div class="filter-group-content">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Bowls</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Vases</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Mugs</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Products Area -->
+              <div>
+                <!-- Search + Sort Row -->
+                <div style="display: flex; gap: 12px; margin-bottom: 20px">
+                  <div class="search-input">
+                    <svg style="width: 18px; height: 18px; color: #999">
+                      <use href="#search-icon" />
+                    </svg>
+                    <input type="text" placeholder="Search products..." />
+                  </div>
+                  <div class="sort-dropdown">
+                    Featured
+                    <svg style="width: 14px; height: 14px; color: #999">
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid-2" style="gap: 16px">
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-1">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Incense Holder #151</div>
+                      <div class="product-category-mini">Ceramic</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 4,857</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.0
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-2">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Sculpted Vase #2</div>
+                      <div class="product-category-mini">Stoneware</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 848</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.5
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-3">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Minimal Vase #196</div>
+                      <div class="product-category-mini">Earthenware</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 1,359</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          5.0
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-4">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Dinner Plate Set</div>
+                      <div class="product-category-mini">Porcelain</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 2,400</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.8
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div class="viewport-box" style="min-width: 900px">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1440 x 900</span>
+          </div>
+          <div class="viewport-content desktop">
+            <!-- Breadcrumbs -->
+            <div class="wf-breadcrumbs" style="margin-bottom: 8px">
+              <a href="#">Home</a> / Shop
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+              <h1 class="page-title" style="font-size: 32px">Shop Pottery</h1>
+              <p style="font-size: 15px; color: #737373; max-width: 500px">
+                Discover handcrafted ceramic pieces, each uniquely made by
+                artisan potters
+              </p>
+            </div>
+
+            <!-- Page-Level Archive Tabs -->
+            <div class="page-tabs">
+              <button class="page-tab active">
+                Active Products<span class="tab-count">48</span>
+              </button>
+              <button class="page-tab">
+                Archive<span class="tab-count">12</span>
+              </button>
+            </div>
+
+            <!-- Layout with Sidebar -->
+            <div class="products-layout desktop">
+              <!-- Sidebar -->
+              <div class="filter-sidebar">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <span
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 18px;
+                      font-weight: 700;
+                    "
+                    >Filters</span
+                  >
+                </div>
+
+                <!-- Price Range -->
+                <div class="filter-group">
+                  <div class="filter-group-header">
+                    <span class="filter-group-title">Price Range</span>
+                    <svg
+                      class="filter-group-chevron"
+                      style="width: 16px; height: 16px"
+                    >
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                  <div class="filter-group-content">
+                    <div class="price-inputs">
+                      <input type="text" class="price-input" value="Rs. 299" />
+                      <span style="color: #999">-</span>
+                      <input type="text" class="price-input" value="Rs. 4985" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Collections Filter (Highlighted) -->
+                <div
+                  class="filter-group"
+                  style="
+                    background: #f8faf8;
+                    margin: 0 -20px;
+                    padding: 16px 20px;
+                    border-left: 3px solid #4f6f52;
+                  "
+                >
+                  <div class="filter-group-header">
+                    <span class="filter-group-title" style="color: #4f6f52"
+                      >Collections</span
+                    >
+                    <svg
+                      class="filter-group-chevron"
+                      style="width: 16px; height: 16px"
+                    >
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                  <div class="filter-group-content">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" checked />
+                      <span class="filter-checkbox-label">All Collections</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Spring 2025</span>
+                      <span class="filter-checkbox-count">12</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Winter Warmth</span>
+                      <span class="filter-checkbox-count">8</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Artisan Series</span>
+                      <span class="filter-checkbox-count">6</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Minimalist</span>
+                      <span class="filter-checkbox-count">10</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="filter-group">
+                  <div class="filter-group-header">
+                    <span class="filter-group-title">Categories</span>
+                    <svg
+                      class="filter-group-chevron"
+                      style="width: 16px; height: 16px"
+                    >
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                  <div class="filter-group-content">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Bowls</span>
+                      <span class="filter-checkbox-count">15</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Vases</span>
+                      <span class="filter-checkbox-count">12</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Mugs</span>
+                      <span class="filter-checkbox-count">8</span>
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" />
+                      <span class="filter-checkbox-label">Plates</span>
+                      <span class="filter-checkbox-count">6</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Products Area -->
+              <div>
+                <!-- Search + Sort Row -->
+                <div style="display: flex; gap: 16px; margin-bottom: 24px">
+                  <div class="search-input" style="max-width: 300px">
+                    <svg style="width: 18px; height: 18px; color: #999">
+                      <use href="#search-icon" />
+                    </svg>
+                    <input type="text" placeholder="Search products..." />
+                  </div>
+                  <div style="flex: 1"></div>
+                  <div class="sort-dropdown">
+                    Sort by: Featured
+                    <svg style="width: 14px; height: 14px; color: #999">
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid-3" style="gap: 20px">
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-1">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Incense Holder #151</div>
+                      <div class="product-category-mini">Ceramic</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 4,857</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.0
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-2">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Sculpted Vase #2</div>
+                      <div class="product-category-mini">Stoneware</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 848</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.5
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-3">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Minimal Vase #196</div>
+                      <div class="product-category-mini">Earthenware</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 1,359</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          5.0
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-4">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Dinner Plate Set</div>
+                      <div class="product-category-mini">Porcelain</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 2,400</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.8
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-5">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Tea Cup Set</div>
+                      <div class="product-category-mini">Ceramic</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 1,800</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.7
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-card-mini">
+                    <div class="product-image-mini pottery-1">
+                      <button class="wishlist-btn">
+                        <svg style="width: 16px; height: 16px; color: #999">
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="product-content-mini">
+                      <div class="product-title-mini">Rustic Planter</div>
+                      <div class="product-category-mini">Terracotta</div>
+                      <div class="product-price-row">
+                        <span class="product-price-mini">Rs. 950</span>
+                        <span class="product-rating">
+                          <svg
+                            style="width: 12px; height: 12px; color: #4f6f52"
+                          >
+                            <use href="#star-icon" />
+                          </svg>
+                          4.3
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== PART 2: HOMEPAGE COLLECTIONS CAROUSEL ==================== -->
+    <div class="part-divider">
+      <div class="part-title">Part 2: Homepage - Collections Carousel</div>
+      <div class="part-desc">
+        Drag-free carousel matching ProductCarousel pattern - swipe/drag to
+        scroll, no arrows
+      </div>
+    </div>
+
+    <div class="options-container">
+      <div class="viewport-grid">
+        <!-- Mobile -->
+        <div class="viewport-box" style="width: 375px">
+          <div class="viewport-header">
+            <span class="viewport-label">Mobile</span>
+            <span class="viewport-size">375 x 812</span>
+          </div>
+          <div class="viewport-content">
+            <div class="carousel-section">
+              <!-- Header with View All -->
+              <div
+                class="carousel-header"
+                style="
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 4px;
+                "
+              >
+                <h2
+                  class="section-title"
+                  style="font-size: 20px; margin-bottom: 0"
+                >
+                  Shop by Collection
+                </h2>
+                <p
+                  class="section-subtitle"
+                  style="font-size: 13px; margin-top: 8px"
+                >
+                  Curated pottery sets for every style
+                </p>
+              </div>
+
+              <!-- Carousel Track (80% basis on mobile) -->
+              <div class="carousel-track">
+                <div
+                  class="carousel-card mobile"
+                  style="width: 80%; flex-shrink: 0; padding-left: 0"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image spring">
+                      <span class="collection-badge badge-active">New</span>
+                      <span class="collection-count">12 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Spring 2025</h3>
+                      <p class="collection-desc">
+                        Fresh pastel tones for the new season
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card mobile"
+                  style="width: 80%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card" style="opacity: 0.5">
+                    <div class="collection-image winter">
+                      <span class="collection-count">8 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Winter Warmth</h3>
+                      <p class="collection-desc">Cozy pieces...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="drag-hint">Swipe to see more collections</p>
+
+              <div style="text-align: center; margin-top: 20px">
+                <a href="#" class="view-all-link">
+                  View All Collections
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#arrow-right" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div class="viewport-box" style="width: 768px">
+          <div class="viewport-header">
+            <span class="viewport-label">Tablet</span>
+            <span class="viewport-size">768 x 1024</span>
+          </div>
+          <div class="viewport-content tablet">
+            <div class="carousel-section">
+              <!-- Header with View All on right -->
+              <div class="carousel-header">
+                <div>
+                  <h2
+                    class="section-title"
+                    style="font-size: 24px; margin-bottom: 0"
+                  >
+                    Shop by Collection
+                  </h2>
+                  <p class="section-subtitle" style="margin-top: 8px">
+                    Curated pottery sets for every style
+                  </p>
+                </div>
+                <a href="#" class="view-all-link">
+                  View All
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#arrow-right" />
+                  </svg>
+                </a>
+              </div>
+
+              <!-- Carousel Track (~34% basis on tablet, shows ~3 cards) -->
+              <div class="carousel-track" style="margin-left: -16px">
+                <div
+                  class="carousel-card tablet"
+                  style="width: 34%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image spring">
+                      <span class="collection-badge badge-active">New</span>
+                      <span class="collection-count">12 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Spring 2025</h3>
+                      <p class="collection-desc">
+                        Fresh pastel tones for the new season
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card tablet"
+                  style="width: 34%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image winter">
+                      <span class="collection-count">8 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Winter Warmth</h3>
+                      <p class="collection-desc">Cozy pieces for colder days</p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card tablet"
+                  style="width: 34%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image autumn">
+                      <span class="collection-badge badge-limited"
+                        >Limited</span
+                      >
+                      <span class="collection-count">6 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Artisan Series</h3>
+                      <p class="collection-desc">
+                        Handpicked master craftsman pieces
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card tablet"
+                  style="
+                    width: 34%;
+                    flex-shrink: 0;
+                    padding-left: 16px;
+                    opacity: 0.5;
+                  "
+                >
+                  <div class="collection-card">
+                    <div class="collection-image summer">
+                      <span class="collection-count">10 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Minimalist</h3>
+                      <p class="collection-desc">Clean lines...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="drag-hint">Drag to see more collections</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div class="viewport-box" style="min-width: 900px">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1440 x 900</span>
+          </div>
+          <div class="viewport-content desktop">
+            <div class="carousel-section">
+              <!-- Header with View All on right -->
+              <div class="carousel-header" style="margin-bottom: 32px">
+                <div>
+                  <h2
+                    class="section-title"
+                    style="font-size: 28px; margin-bottom: 0"
+                  >
+                    Shop by Collection
+                  </h2>
+                  <p
+                    class="section-subtitle"
+                    style="margin-top: 8px; max-width: 400px"
+                  >
+                    Curated pottery sets for every style and occasion
+                  </p>
+                </div>
+                <a href="#" class="view-all-link">
+                  View All Collections
+                  <svg style="width: 16px; height: 16px">
+                    <use href="#arrow-right" />
+                  </svg>
+                </a>
+              </div>
+
+              <!-- Carousel Track (~25% basis on desktop, shows ~4 cards) -->
+              <div class="carousel-track" style="margin-left: -16px">
+                <div
+                  class="carousel-card desktop"
+                  style="width: 25%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image spring">
+                      <span class="collection-badge badge-active">New</span>
+                      <span class="collection-count">12 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Spring 2025</h3>
+                      <p class="collection-desc">
+                        Fresh pastel tones for the new season
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card desktop"
+                  style="width: 25%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image winter">
+                      <span class="collection-count">8 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Winter Warmth</h3>
+                      <p class="collection-desc">Cozy pieces for colder days</p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card desktop"
+                  style="width: 25%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image autumn">
+                      <span class="collection-badge badge-limited"
+                        >Limited</span
+                      >
+                      <span class="collection-count">6 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Artisan Series</h3>
+                      <p class="collection-desc">
+                        Handpicked master craftsman pieces
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card desktop"
+                  style="width: 25%; flex-shrink: 0; padding-left: 16px"
+                >
+                  <div class="collection-card">
+                    <div class="collection-image summer">
+                      <span class="collection-count">10 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Minimalist</h3>
+                      <p class="collection-desc">
+                        Clean lines, timeless elegance
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="carousel-card desktop"
+                  style="
+                    width: 25%;
+                    flex-shrink: 0;
+                    padding-left: 16px;
+                    opacity: 0.5;
+                  "
+                >
+                  <div class="collection-card">
+                    <div class="collection-image">
+                      <span class="collection-count">5 items</span>
+                    </div>
+                    <div class="collection-content">
+                      <h3 class="collection-title">Heritage</h3>
+                      <p class="collection-desc">Traditional designs...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="drag-hint">Drag to see more collections</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Implementation Notes -->
+    <div class="notes">
+      <strong>Implementation Notes:</strong><br />
+      <br />
+      <strong>Part 1 - Products Page:</strong><br />
+      - Page-level underline tabs (Active/Archive) using approved Task 4.9
+      Option A pattern<br />
+      - Archive tab shows sold-out and discontinued products with badges<br />
+      - Collections filter highlighted in sidebar with green background
+      (#f8faf8) and left border<br />
+      - Archive products have muted appearance (opacity: 0.6) and grayed-out
+      prices<br />
+      <br />
+      <strong>Part 2 - Homepage Carousel:</strong><br />
+      - Uses Embla Carousel with dragFree: true, align: "start", containScroll:
+      "trimSnaps"<br />
+      - No visible arrows - users drag/swipe to navigate<br />
+      - Responsive sizing: 80% mobile, 34% tablet, 25% desktop<br />
+      - Header pattern: Title + subtitle on left, "View All" link on right
+      (tablet/desktop)<br />
+      - Matches existing ProductCarousel component pattern exactly<br />
+      <br />
+      <strong>Collection Card:</strong><br />
+      - 16:9 aspect ratio image with gradient placeholders<br />
+      - Badges: "New" (green), "Limited" (amber) positioned top-left<br />
+      - Item count badge positioned bottom-right<br />
+      - hover: translateY(-4px) + enhanced shadow<br />
+    </div>
+
+    <footer
+      style="text-align: center; margin-top: 64px; color: #999; font-size: 13px"
+    >
+      <p>Poetry & Pottery Design System - Task 5A.1</p>
+    </footer>
+  </body>
+</html>

@@ -17,6 +17,7 @@ export const GLOBAL_SEARCH_QUERY = gql`
         color_code
         color_name
         in_wishlist
+        is_active
       }
       events {
         id
@@ -91,6 +92,7 @@ export const GLOBAL_SEARCH_QUERY = gql`
             color_code
             color_name
             in_wishlist
+            is_active
           }
         }
       }

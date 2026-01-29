@@ -15,18 +15,20 @@ export function ProductCardContainer({
   onRemoveFromWishlist,
   className,
   disableImageCarousel = false,
+  isArchiveView = false,
 }: ProductCardContainerProps) {
   const [addedToCart, setAddedToCart] = useState(false);
 
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
 
-  const { toggleWishlist, isInWishlist } = useWishlist();
+  const { toggleWishlist, isInWishlist, isWishlistHydrated } = useWishlist();
   const { addToCart, isAtMaxQuantity } = useCart();
 
-  // Use hook's local state if available, fallback to server's in_wishlist
-  const localWishlistState = isInWishlist(product.id);
-  const inWishlist = localWishlistState || product.in_wishlist;
+  // Use local state if hydrated, otherwise fallback to server's in_wishlist
+  const inWishlist = isWishlistHydrated
+    ? isInWishlist(product.id)
+    : product.in_wishlist;
 
   const atMaxQuantity = isAtMaxQuantity(product.id);
   const inStock = product.available_quantity > 0;
@@ -57,7 +59,9 @@ export function ProductCardContainer({
     onRemoveFromWishlist?.();
   }, [onRemoveFromWishlist]);
 
-  if (!canAddToCart) {
+  // In archive view, always show the product even if out of stock
+  // In normal view, hide products that can't be added to cart
+  if (!canAddToCart && !isArchiveView) {
     return null;
   }
 
@@ -70,6 +74,7 @@ export function ProductCardContainer({
       addedToCart={addedToCart}
       canAddToCart={canAddToCart}
       disableImageCarousel={disableImageCarousel}
+      isArchiveView={isArchiveView}
       onImageClick={handleImageClick}
       onWishlistClick={handleWishlistClick}
       onAddToCart={handleAddToCart}

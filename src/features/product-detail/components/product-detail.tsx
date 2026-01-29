@@ -3,7 +3,17 @@
 import type { ProductDetail as ProductDetailType } from "@/data/products/types";
 import { RecommendedProductsContainer } from "@/features/recommended-products";
 import { motion } from "framer-motion";
-import { Check, Heart, Loader2, ShoppingCartIcon } from "lucide-react";
+import {
+  Archive,
+  Check,
+  ChevronRight,
+  Heart,
+  Loader2,
+  MessageCircle,
+  ShoppingCartIcon,
+  Sparkles,
+} from "lucide-react";
+import Link from "next/link";
 import { Suspense, useRef } from "react";
 
 import { ProductImageGallery } from "@/components/products";
@@ -14,23 +24,87 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
-import type { ProductDetailProps } from "../types";
+import type { ProductAvailabilityStatus, ProductDetailProps } from "../types";
 import { ProductTabs } from "./product-tabs";
 import { StickyCTA } from "./sticky-cta";
 import { TrustBadges } from "./trust-badges";
 
 // --- Sub-components ---
 
-interface ProductInfoHeaderProps {
-  product: ProductDetailType;
+interface CollectionBadgeProps {
+  collection: NonNullable<ProductDetailType["collection"]>;
 }
 
-function ProductInfoHeader({ product }: ProductInfoHeaderProps) {
+function CollectionBadge({ collection }: CollectionBadgeProps) {
+  return (
+    <Link
+      href={`/products?collection_ids=${collection.id}`}
+      className="group bg-primary-light/50 hover:bg-primary-light dark:bg-primary/10 dark:hover:bg-primary/20 mb-4 flex items-center gap-2 rounded-xl px-3 py-2.5 transition-colors"
+    >
+      <div className="bg-primary/10 dark:bg-primary/20 flex h-8 w-8 items-center justify-center rounded-lg">
+        <Sparkles className="text-primary h-4 w-4" />
+      </div>
+      <div className="flex flex-1 flex-col">
+        <span className="text-primary/70 text-[10px] font-medium tracking-wider uppercase">
+          Part of Collection
+        </span>
+        <span className="text-primary text-sm font-semibold">
+          {collection.name}
+        </span>
+      </div>
+      <ChevronRight className="text-primary/50 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+    </Link>
+  );
+}
+
+interface StatusBadgesProps {
+  availabilityStatus: ProductAvailabilityStatus;
+}
+
+function StatusBadges({ availabilityStatus }: StatusBadgesProps) {
+  const { isOutOfStock, isInactive, isCollectionArchived } = availabilityStatus;
+
+  if (isOutOfStock) {
+    return (
+      <div className="mb-3">
+        <span className="bg-terracotta inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-white">
+          Sold Out
+        </span>
+      </div>
+    );
+  }
+
+  if (isInactive || isCollectionArchived) {
+    return (
+      <div className="mb-3">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-500 px-3 py-1.5 text-xs font-semibold text-white">
+          <Archive className="h-3.5 w-3.5" />
+          {isInactive ? "Unavailable" : "Collection Ended"}
+        </span>
+      </div>
+    );
+  }
+
+  return null;
+}
+
+interface ProductInfoHeaderProps {
+  product: ProductDetailType;
+  availabilityStatus: ProductAvailabilityStatus;
+}
+
+function ProductInfoHeader({
+  product,
+  availabilityStatus,
+}: ProductInfoHeaderProps) {
   const category = product.categories[0] || product.material || "Pottery";
 
   return (
     <div className="mb-4 md:mb-6">
-      {/* Badge */}
+      {/* Status Badges */}
+      <StatusBadges availabilityStatus={availabilityStatus} />
+
+      {/* Category Badge */}
       <Badge variant="primary" size="sm" className="mb-3">
         {category}
       </Badge>
@@ -53,7 +127,14 @@ function ProductInfoHeader({ product }: ProductInfoHeaderProps) {
 
       {/* Price */}
       <div className="flex items-baseline gap-2">
-        <span className="text-xl font-bold text-neutral-900 md:text-2xl dark:text-white">
+        <span
+          className={cn(
+            "text-xl font-bold md:text-2xl",
+            availabilityStatus.isUnavailable
+              ? "text-neutral-500 dark:text-neutral-400"
+              : "text-neutral-900 dark:text-white",
+          )}
+        >
           ₹{product.price.toLocaleString()}
         </span>
       </div>
@@ -69,16 +150,22 @@ function ProductInfoHeader({ product }: ProductInfoHeaderProps) {
 }
 
 interface StockStatusProps {
-  isOutOfStock: boolean;
-  isLowStock: boolean;
+  availabilityStatus: ProductAvailabilityStatus;
   availableQuantity: number;
 }
 
 function StockStatus({
-  isOutOfStock,
-  isLowStock,
+  availabilityStatus,
   availableQuantity,
 }: StockStatusProps) {
+  const { isOutOfStock, isLowStock, isInactive, isCollectionArchived } =
+    availabilityStatus;
+
+  // Don't show stock status if product is unavailable for other reasons
+  if (isInactive || isCollectionArchived) {
+    return null;
+  }
+
   if (isOutOfStock) {
     return (
       <div className="mb-4">
@@ -158,7 +245,7 @@ function ColorSelector({
 }
 
 interface ActionButtonsProps {
-  isOutOfStock: boolean;
+  availabilityStatus: ProductAvailabilityStatus;
   atMaxQuantity: boolean;
   addedToCart: boolean;
   inWishlist: boolean;
@@ -166,11 +253,12 @@ interface ActionButtonsProps {
   wishlistLoading: boolean;
   onAddToCart: () => void;
   onToggleWishlist: () => void;
+  onRequestProduct: () => void;
   className?: string;
 }
 
 function ActionButtons({
-  isOutOfStock,
+  availabilityStatus,
   atMaxQuantity,
   addedToCart,
   inWishlist,
@@ -178,46 +266,61 @@ function ActionButtons({
   wishlistLoading,
   onAddToCart,
   onToggleWishlist,
+  onRequestProduct,
   className,
 }: ActionButtonsProps) {
-  const isDisabled = isOutOfStock || atMaxQuantity;
+  const { isOutOfStock, isUnavailable } = availabilityStatus;
+  const isDisabled = isUnavailable || atMaxQuantity;
+
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      {/* Add to Cart */}
+      {/* Add to Cart or Request Button */}
       <motion.div className="flex-1" whileTap={{ scale: 0.98 }}>
-        <Button
-          className={cn(
-            "h-12 w-full rounded-xl transition-all",
-            addedToCart && "bg-green-600 hover:bg-green-700",
-          )}
-          size="lg"
-          disabled={isDisabled || cartLoading}
-          onClick={onAddToCart}
-        >
-          {cartLoading ? (
-            <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Adding to cart...
-            </>
-          ) : addedToCart ? (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="mr-2"
-            >
-              <Check className="h-5 w-5" />
-            </motion.div>
-          ) : (
-            <ShoppingCartIcon className="mr-2 h-5 w-5" />
-          )}
-          {isOutOfStock
-            ? "Out of Stock"
-            : atMaxQuantity
-              ? "Max in Cart"
-              : addedToCart
-                ? "Added!"
-                : "Add to Cart"}
-        </Button>
+        {isUnavailable ? (
+          <Button
+            variant="outline"
+            className="border-primary/30 text-primary hover:bg-primary/10 h-12 w-full rounded-xl transition-all"
+            size="lg"
+            onClick={onRequestProduct}
+          >
+            <MessageCircle className="mr-2 h-5 w-5" />
+            Request This Item
+          </Button>
+        ) : (
+          <Button
+            className={cn(
+              "h-12 w-full rounded-xl transition-all",
+              addedToCart && "bg-green-600 hover:bg-green-700",
+            )}
+            size="lg"
+            disabled={isDisabled || cartLoading}
+            onClick={onAddToCart}
+          >
+            {cartLoading ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Adding to cart...
+              </>
+            ) : addedToCart ? (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="mr-2"
+              >
+                <Check className="h-5 w-5" />
+              </motion.div>
+            ) : (
+              <ShoppingCartIcon className="mr-2 h-5 w-5" />
+            )}
+            {isOutOfStock
+              ? "Out of Stock"
+              : atMaxQuantity
+                ? "Max in Cart"
+                : addedToCart
+                  ? "Added!"
+                  : "Add to Cart"}
+          </Button>
+        )}
       </motion.div>
 
       {/* Wishlist */}
@@ -270,15 +373,15 @@ export function ProductDetail({
   wishlistLoading,
   atMaxQuantity,
   currentUserId,
+  availabilityStatus,
   onColorSelect,
   onAddToCart,
   onToggleWishlist,
+  onRequestProduct,
   onReviewLike,
   onLikeUpdate,
 }: ProductDetailProps) {
   const availableQuantity = product.available_quantity ?? 0;
-  const isOutOfStock = availableQuantity === 0;
-  const isLowStock = availableQuantity > 0 && availableQuantity <= 5;
   const mainCtaRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -303,7 +406,15 @@ export function ProductDetail({
               {/* Drag handle indicator (mobile only) */}
               <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-200 lg:hidden dark:bg-neutral-700" />
 
-              <ProductInfoHeader product={product} />
+              <ProductInfoHeader
+                product={product}
+                availabilityStatus={availabilityStatus}
+              />
+
+              {/* Collection Badge */}
+              {product.collection && (
+                <CollectionBadge collection={product.collection} />
+              )}
 
               {/* Specs */}
               <ProductSpecs material={product.material} />
@@ -320,15 +431,14 @@ export function ProductDetail({
 
               {/* Stock Status */}
               <StockStatus
-                isOutOfStock={isOutOfStock}
-                isLowStock={isLowStock}
+                availabilityStatus={availabilityStatus}
                 availableQuantity={availableQuantity}
               />
 
               {/* Action Buttons (observed by StickyCTA) */}
               <div ref={mainCtaRef}>
                 <ActionButtons
-                  isOutOfStock={isOutOfStock}
+                  availabilityStatus={availabilityStatus}
                   atMaxQuantity={atMaxQuantity}
                   addedToCart={addedToCart}
                   inWishlist={inWishlist}
@@ -336,6 +446,7 @@ export function ProductDetail({
                   wishlistLoading={wishlistLoading}
                   onAddToCart={onAddToCart}
                   onToggleWishlist={onToggleWishlist}
+                  onRequestProduct={onRequestProduct}
                   className="mb-4"
                 />
               </div>
@@ -374,11 +485,12 @@ export function ProductDetail({
       {/* Sticky Mobile CTA */}
       <StickyCTA
         price={product.price}
-        isOutOfStock={isOutOfStock}
+        availabilityStatus={availabilityStatus}
         atMaxQuantity={atMaxQuantity}
         addedToCart={addedToCart}
         cartLoading={cartLoading}
         onAddToCart={onAddToCart}
+        onRequestProduct={onRequestProduct}
         mainCtaRef={mainCtaRef}
       />
     </>

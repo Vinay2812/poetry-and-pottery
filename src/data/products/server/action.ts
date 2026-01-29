@@ -47,6 +47,7 @@ function mapToProductBase(product: {
   material: string;
   in_wishlist?: boolean;
   inWishlist?: boolean;
+  is_active?: boolean;
   available_quantity: number;
   total_quantity: number;
   color_code: string;
@@ -62,6 +63,7 @@ function mapToProductBase(product: {
     avg_rating: product.avg_rating ?? product.averageRating ?? 0,
     material: product.material,
     in_wishlist: product.in_wishlist ?? product.inWishlist ?? false,
+    is_active: product.is_active ?? true,
     available_quantity: product.available_quantity,
     total_quantity: product.total_quantity,
     color_code: product.color_code,

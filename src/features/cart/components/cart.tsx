@@ -2,7 +2,7 @@
 
 import { MobileHeaderContainer } from "@/features/layout";
 import { AnimatePresence } from "framer-motion";
-import { ShoppingCartIcon } from "lucide-react";
+import { AlertTriangle, ShoppingCartIcon } from "lucide-react";
 
 import { AddressSelector } from "@/components/address";
 import { CartItemCard } from "@/components/cards";
@@ -21,6 +21,7 @@ export function Cart({
 }: CartProps) {
   const {
     cartItems,
+    unavailableItems,
     orderSummary,
     selectedAddress,
     addresses,
@@ -28,15 +29,17 @@ export function Cart({
     isOrdering,
     canCheckout,
     checkoutButtonText,
+    hasUnavailableItems,
   } = viewModel;
 
   const hasRecommendations = recommendedProducts.length > 0;
-  const itemCount = cartItems.length;
+  const availableItemCount = cartItems.length;
+  const totalItemCount = cartItems.length + unavailableItems.length;
 
   return (
     <>
       <MobileHeaderContainer
-        title={`Cart (${itemCount})`}
+        title={`Cart (${totalItemCount})`}
         showBack
         backHref="/products"
       />
@@ -47,15 +50,15 @@ export function Cart({
           <ListingPageHeader
             title="Your Cart"
             subtitle={
-              itemCount > 0
-                ? `${itemCount} ${itemCount === 1 ? "item" : "items"} in your cart`
+              totalItemCount > 0
+                ? `${totalItemCount} ${totalItemCount === 1 ? "item" : "items"} in your cart`
                 : undefined
             }
             breadcrumbs={[{ label: "Home", href: "/" }, { label: "Your Cart" }]}
             // className="hidden lg:block"
           />
 
-          {cartItems.length > 0 ? (
+          {totalItemCount > 0 ? (
             <div className={hasRecommendations ? "mb-12" : ""}>
               <div className="grid gap-8 lg:grid-cols-3">
                 {/* Cart Items & Address */}
@@ -74,25 +77,66 @@ export function Cart({
                     <span />
                   </div>
 
-                  {/* Cart Items */}
-                  <div>
-                    <div className="space-y-4">
-                      <AnimatePresence mode="popLayout">
-                        {cartItems.map((item) => (
-                          <CartItemCard
-                            key={item.productId}
-                            product={item.product}
-                            quantity={item.quantity}
-                            onQuantityChange={(quantity) =>
-                              onQuantityChange(item.productId, quantity)
-                            }
-                            onRemove={() => onRemoveItem(item.productId)}
-                            isLoading={item.isLoading}
-                          />
-                        ))}
-                      </AnimatePresence>
+                  {/* Unavailable Items Warning */}
+                  {hasUnavailableItems && (
+                    <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-4">
+                      <div className="mb-3 flex items-center gap-2 text-red-700">
+                        <AlertTriangle className="h-5 w-5" />
+                        <h3 className="font-semibold">
+                          Unavailable Items ({unavailableItems.length})
+                        </h3>
+                      </div>
+                      <p className="mb-4 text-sm text-red-600">
+                        These items are no longer available. Please remove them
+                        to continue with your order.
+                      </p>
+                      <div className="space-y-3">
+                        <AnimatePresence mode="popLayout">
+                          {unavailableItems.map((item) => (
+                            <CartItemCard
+                              key={item.productId}
+                              product={item.product}
+                              quantity={item.quantity}
+                              onQuantityChange={(quantity) =>
+                                onQuantityChange(item.productId, quantity)
+                              }
+                              onRemove={() => onRemoveItem(item.productId)}
+                              isLoading={item.isLoading}
+                              availability={item.availability}
+                            />
+                          ))}
+                        </AnimatePresence>
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {/* Available Cart Items */}
+                  {availableItemCount > 0 && (
+                    <div>
+                      {hasUnavailableItems && (
+                        <h3 className="mb-3 text-sm font-medium text-neutral-600">
+                          Available Items ({availableItemCount})
+                        </h3>
+                      )}
+                      <div className="space-y-4">
+                        <AnimatePresence mode="popLayout">
+                          {cartItems.map((item) => (
+                            <CartItemCard
+                              key={item.productId}
+                              product={item.product}
+                              quantity={item.quantity}
+                              onQuantityChange={(quantity) =>
+                                onQuantityChange(item.productId, quantity)
+                              }
+                              onRemove={() => onRemoveItem(item.productId)}
+                              isLoading={item.isLoading}
+                              availability={item.availability}
+                            />
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Address Selector */}
                   <div className="shadow-soft overflow-hidden rounded-2xl border border-neutral-100 bg-white p-4 lg:p-6">
@@ -113,7 +157,7 @@ export function Cart({
                   buttonText={checkoutButtonText}
                   onCheckout={onCheckout}
                   disabled={!canCheckout || isOrdering}
-                  itemCount={itemCount}
+                  itemCount={availableItemCount}
                 />
               </div>
             </div>

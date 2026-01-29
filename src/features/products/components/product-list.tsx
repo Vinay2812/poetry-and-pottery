@@ -1,9 +1,7 @@
 "use client";
 
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
-import { Product } from "@/types";
 import { Loader2, Search, SlidersHorizontal, X } from "lucide-react";
-import { useCallback, useState } from "react";
 
 import { ProductCard } from "@/components/cards";
 import { EmptyState } from "@/components/sections";
@@ -22,6 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { cn } from "@/lib/utils";
+
 import { ProductBase, ProductOrderBy } from "@/graphql/generated/types";
 
 import { Filters } from "../hooks/use-products-filter-v2";
@@ -37,6 +37,8 @@ type ProductListProps = {
   isFetchingProducts: boolean;
   isFilterOpen: boolean;
   hasNextProductsPage: boolean;
+  activeProductsCount: number;
+  archivedProductsCount: number;
   fetchNextProductsPageRef: UseProductsV2Props["fetchNextProductsPageRef"];
   onSearchChange: (search: string) => void;
   onFilterOpen: () => void;
@@ -46,6 +48,8 @@ type ProductListProps = {
   onPriceRangeChange: (value: [number, number]) => void;
   onCategoryToggle: (category: string) => void;
   onMaterialToggle: (material: string) => void;
+  onCollectionToggle: (collectionId: number) => void;
+  onArchiveToggle: (archive: boolean) => void;
 };
 
 export function ProductList({
@@ -55,6 +59,8 @@ export function ProductList({
   isFetchingProducts,
   isFilterOpen,
   hasNextProductsPage,
+  activeProductsCount,
+  archivedProductsCount,
   fetchNextProductsPageRef,
   onSearchChange,
   onFilterOpen,
@@ -64,11 +70,16 @@ export function ProductList({
   onPriceRangeChange,
   onCategoryToggle,
   onMaterialToggle,
+  onCollectionToggle,
+  onArchiveToggle,
 }: ProductListProps) {
   const activeFilterCount =
-    filters.categories.length + filters.materials.length;
+    filters.categories.length +
+    filters.materials.length +
+    filters.collection_ids.length;
 
   const totalProducts = filterMetadata.total_products;
+  const isArchiveView = filters.archive;
 
   return (
     <>
@@ -143,6 +154,7 @@ export function ProductList({
               onPriceRangeChange={onPriceRangeChange}
               onCategoryToggle={onCategoryToggle}
               onMaterialToggle={onMaterialToggle}
+              onCollectionToggle={onCollectionToggle}
             />
           </div>
 
@@ -167,10 +179,76 @@ export function ProductList({
 
       <div className="container mx-auto px-4 py-0 lg:px-8">
         <ListingPageHeader
-          title="Our Collection"
-          subtitle={`Discover ${totalProducts} handcrafted ceramic pieces, each uniquely made by artisan potters.`}
-          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Shop" }]}
+          title={isArchiveView ? "Archive" : "Our Collection"}
+          subtitle={
+            isArchiveView
+              ? `Browse ${totalProducts} archived items from past collections.`
+              : `Discover ${totalProducts} handcrafted ceramic pieces, each uniquely made by artisan potters.`
+          }
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Shop", href: isArchiveView ? "/products" : undefined },
+            ...(isArchiveView ? [{ label: "Archive" }] : []),
+          ]}
         />
+
+        {/* Archive Tabs */}
+        <div className="mb-4 lg:mb-6">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <button
+              onClick={() => onArchiveToggle(false)}
+              className={cn(
+                "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
+                !isArchiveView
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <span className="hidden sm:inline">Active Products</span>
+              <span className="sm:hidden">Active</span>
+              <span
+                className={cn(
+                  "ml-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
+                  !isArchiveView
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground",
+                )}
+              >
+                {activeProductsCount}
+              </span>
+              {!isArchiveView && (
+                <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
+              )}
+            </button>
+            <button
+              onClick={() => onArchiveToggle(true)}
+              className={cn(
+                "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
+                isArchiveView
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <span className="hidden sm:inline">Archive</span>
+              <span className="sm:hidden">Archive</span>
+              <span
+                className={cn(
+                  "ml-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
+                  isArchiveView
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground",
+                )}
+              >
+                {archivedProductsCount}
+              </span>
+              {isArchiveView && (
+                <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
+              )}
+            </button>
+          </div>
+          <div className="border-border border-b" />
+        </div>
+
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
           <aside className="hidden w-64 shrink-0 lg:block">
@@ -183,6 +261,7 @@ export function ProductList({
                 onPriceRangeChange={onPriceRangeChange}
                 onCategoryToggle={onCategoryToggle}
                 onMaterialToggle={onMaterialToggle}
+                onCollectionToggle={onCollectionToggle}
               />
             </div>
           </aside>
@@ -223,7 +302,11 @@ export function ProductList({
               <>
                 <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      isArchiveView={isArchiveView}
+                    />
                   ))}
                 </StaggeredGrid>
 

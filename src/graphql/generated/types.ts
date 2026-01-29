@@ -582,6 +582,19 @@ export type CategoryWithImage = {
   name: Scalars['String']['output'];
 };
 
+export type CollectionBase = {
+  created_at: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  ends_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  products_count: Scalars['Int']['output'];
+  slug: Scalars['String']['output'];
+  starts_at?: Maybe<Scalars['DateTime']['output']>;
+  updated_at: Scalars['DateTime']['output'];
+};
+
 export type ContactInfo = {
   address: Scalars['String']['output'];
   email: Scalars['String']['output'];
@@ -1329,11 +1342,13 @@ export type PrivacySection = {
 export type ProductBase = {
   available_quantity: Scalars['Int']['output'];
   avg_rating: Scalars['Int']['output'];
+  collection?: Maybe<CollectionBase>;
   color_code: Scalars['String']['output'];
   color_name: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   image_urls: Array<Scalars['String']['output']>;
   in_wishlist: Scalars['Boolean']['output'];
+  is_active: Scalars['Boolean']['output'];
   material: Scalars['String']['output'];
   name: Scalars['String']['output'];
   price: Scalars['Int']['output'];
@@ -1346,6 +1361,7 @@ export type ProductDetail = {
   available_quantity: Scalars['Int']['output'];
   avg_rating: Scalars['Int']['output'];
   categories: Array<Scalars['String']['output']>;
+  collection?: Maybe<CollectionBase>;
   color_code: Scalars['String']['output'];
   color_name: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
@@ -1388,7 +1404,9 @@ export type ProductReview = {
 };
 
 export type ProductsFilter = {
+  archive?: Maybe<Scalars['Boolean']['output']>;
   categories?: Maybe<Array<Scalars['String']['output']>>;
+  collection_ids?: Maybe<Array<Scalars['Int']['output']>>;
   limit?: Maybe<Scalars['Int']['output']>;
   materials?: Maybe<Array<Scalars['String']['output']>>;
   max_price?: Maybe<Scalars['Int']['output']>;
@@ -1399,7 +1417,9 @@ export type ProductsFilter = {
 };
 
 export type ProductsFilterInput = {
+  archive?: InputMaybe<Scalars['Boolean']['input']>;
   categories?: InputMaybe<Array<Scalars['String']['input']>>;
+  collection_ids?: InputMaybe<Array<Scalars['Int']['input']>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   materials?: InputMaybe<Array<Scalars['String']['input']>>;
   max_price?: InputMaybe<Scalars['Int']['input']>;
@@ -1411,6 +1431,7 @@ export type ProductsFilterInput = {
 
 export type ProductsMeta = {
   categories: Array<Scalars['String']['output']>;
+  collections: Array<CollectionBase>;
   materials: Array<Scalars['String']['output']>;
   price_histogram: Array<PriceHistogramBucket>;
   price_range: PriceRange;
@@ -1467,6 +1488,7 @@ export type Query = {
   cart: CartResponse;
   categories: Array<Scalars['String']['output']>;
   categoriesWithImages: Array<CategoryWithImage>;
+  collections: Array<CollectionBase>;
   completedRegistrations: RegistrationsResponse;
   eventById?: Maybe<EventDetail>;
   eventBySlug?: Maybe<EventDetail>;
@@ -1609,6 +1631,12 @@ export type QueryAdminUsersArgs = {
 
 
 export type QueryBestSellersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryCollectionsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -2618,14 +2646,14 @@ export type AddToCartMutationVariables = Exact<{
 }>;
 
 
-export type AddToCartMutation = { addToCart: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
+export type AddToCartMutation = { addToCart: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
 
 export type UpdateCartQuantityMutationVariables = Exact<{
   input: UpdateCartQuantityInput;
 }>;
 
 
-export type UpdateCartQuantityMutation = { updateCartQuantity: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
+export type UpdateCartQuantityMutation = { updateCartQuantity: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
 
 export type RemoveFromCartMutationVariables = Exact<{
   productId: Scalars['Int']['input'];
@@ -2642,7 +2670,7 @@ export type ClearCartMutation = { clearCart: boolean };
 export type CartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CartQuery = { cart: { total: number, subtotal: number, items: Array<{ id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } };
+export type CartQuery = { cart: { total: number, subtotal: number, items: Array<{ id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } }> } };
 
 export type MutationRegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string };
 
@@ -2760,49 +2788,51 @@ export type CreateOrderMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrderMutation = { createOrder: { success: boolean, error?: string | null, order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null } };
+export type CreateOrderMutation = { createOrder: { success: boolean, error?: string | null, order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null } };
 
 export type CancelOrderMutationVariables = Exact<{
   orderId: Scalars['String']['input'];
 }>;
 
 
-export type CancelOrderMutation = { cancelOrder: { success: boolean, error?: string | null, order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null } };
+export type CancelOrderMutation = { cancelOrder: { success: boolean, error?: string | null, order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null } };
 
 export type OrdersQueryVariables = Exact<{
   filter?: InputMaybe<OrdersFilterInput>;
 }>;
 
 
-export type OrdersQuery = { orders: { total: number, page: number, total_pages: number, data: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> }> } };
+export type OrdersQuery = { orders: { total: number, page: number, total_pages: number, data: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> }> } };
 
 export type OrderQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type OrderQuery = { order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null };
+export type OrderQuery = { order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null };
+
+export type CollectionFieldsFragment = { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number };
 
 export type ProductsQueryVariables = Exact<{
   filter: ProductsFilterInput;
 }>;
 
 
-export type ProductsQuery = { products: { total_products: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string }>, filter: { limit?: number | null, page?: number | null, search?: string | null, categories?: Array<string> | null, materials?: Array<string> | null, min_price?: number | null, max_price?: number | null, order_by?: ProductOrderBy | null }, meta: { categories: Array<string>, materials: Array<string>, price_range: { min: number, max: number }, price_histogram: Array<{ min: number, max: number, count: number }> } } };
+export type ProductsQuery = { products: { total_products: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }>, filter: { limit?: number | null, page?: number | null, search?: string | null, categories?: Array<string> | null, materials?: Array<string> | null, min_price?: number | null, max_price?: number | null, order_by?: ProductOrderBy | null, collection_ids?: Array<number> | null, archive?: boolean | null }, meta: { categories: Array<string>, materials: Array<string>, price_range: { min: number, max: number }, price_histogram: Array<{ min: number, max: number, count: number }>, collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> } } };
 
 export type ProductBySlugQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
 
-export type ProductBySlugQuery = { productBySlug?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
+export type ProductBySlugQuery = { productBySlug?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
 
 export type ProductByIdQueryVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
 
 
-export type ProductByIdQuery = { productById?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
+export type ProductByIdQuery = { productById?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
 
 export type BestSellersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2810,7 +2840,7 @@ export type BestSellersQueryVariables = Exact<{
 }>;
 
 
-export type BestSellersQuery = { bestSellers: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string }> } };
+export type BestSellersQuery = { bestSellers: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }> } };
 
 export type RecommendedProductsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2819,7 +2849,7 @@ export type RecommendedProductsQueryVariables = Exact<{
 }>;
 
 
-export type RecommendedProductsQuery = { recommendedProducts: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string }> } };
+export type RecommendedProductsQuery = { recommendedProducts: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }> } };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2835,6 +2865,11 @@ export type MaterialsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MaterialsQuery = { materials: Array<string> };
+
+export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CollectionsQuery = { collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> };
 
 export type CreateProductReviewMutationVariables = Exact<{
   input: CreateProductReviewInput;
@@ -2892,7 +2927,7 @@ export type GlobalSearchQueryVariables = Exact<{
 }>;
 
 
-export type GlobalSearchQuery = { globalSearch: { products: Array<{ id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean }>, events: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }>, orders: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean } }> }>, counts: { products: number, events: number, orders: number } } };
+export type GlobalSearchQuery = { globalSearch: { products: Array<{ id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean }>, events: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }>, orders: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean } }> }>, counts: { products: number, events: number, orders: number } } };
 
 export type UserCountsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2904,7 +2939,7 @@ export type AddToWishlistMutationVariables = Exact<{
 }>;
 
 
-export type AddToWishlistMutation = { addToWishlist: { success: boolean, item?: { id: number, user_id: number, product_id: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
+export type AddToWishlistMutation = { addToWishlist: { success: boolean, item?: { id: number, user_id: number, product_id: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } } | null } };
 
 export type RemoveFromWishlistMutationVariables = Exact<{
   productId: Scalars['Int']['input'];
@@ -2918,7 +2953,7 @@ export type ToggleWishlistMutationVariables = Exact<{
 }>;
 
 
-export type ToggleWishlistMutation = { toggleWishlist: { success: boolean, action: ToggleAction, item?: { id: number, user_id: number, product_id: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
+export type ToggleWishlistMutation = { toggleWishlist: { success: boolean, action: ToggleAction, item?: { id: number, user_id: number, product_id: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } } | null } };
 
 export type MoveToCartMutationVariables = Exact<{
   productId: Scalars['Int']['input'];
@@ -2932,7 +2967,7 @@ export type WishlistQueryVariables = Exact<{
 }>;
 
 
-export type WishlistQuery = { wishlist: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, product_id: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } };
+export type WishlistQuery = { wishlist: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, product_id: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } }> } };
 
 export type WishlistIdsQueryVariables = Exact<{ [key: string]: never; }>;
 

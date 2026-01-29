@@ -33,6 +33,8 @@ function mapToProductBase(wishlistItem: WishlistItem): ProductBase {
     avg_rating: wishlistItem.product.avg_rating ?? 0,
     reviews_count: wishlistItem.product.reviews_count ?? 0,
     in_wishlist: true,
+    is_active: wishlistItem.product.is_active ?? true,
+    collection: wishlistItem.product.collection ?? null,
   };
 }
 

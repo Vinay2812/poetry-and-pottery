@@ -17,6 +17,17 @@ export interface FormattedReview {
 }
 
 /**
+ * Product availability status computed from product data.
+ */
+export interface ProductAvailabilityStatus {
+  isOutOfStock: boolean;
+  isLowStock: boolean;
+  isInactive: boolean;
+  isCollectionArchived: boolean;
+  isUnavailable: boolean;
+}
+
+/**
  * Props for the presentational ProductDetail component.
  */
 export interface ProductDetailProps {
@@ -29,12 +40,54 @@ export interface ProductDetailProps {
   wishlistLoading: boolean;
   atMaxQuantity: boolean;
   currentUserId?: number | null;
+  availabilityStatus: ProductAvailabilityStatus;
   onColorSelect: (color: string) => void;
   onShare: () => void;
   onAddToCart: () => void;
   onToggleWishlist: () => void;
+  onRequestProduct: () => void;
   onReviewLike: (reviewId: string, likes: number, isLiked: boolean) => void;
   onLikeUpdate: (reviewId: string, likes: number, isLiked: boolean) => void;
+}
+
+/**
+ * Compute product availability status from product data.
+ */
+export function computeAvailabilityStatus(
+  product: ProductDetail,
+): ProductAvailabilityStatus {
+  const availableQuantity = product.available_quantity ?? 0;
+  const isOutOfStock = availableQuantity === 0;
+  const isLowStock = availableQuantity > 0 && availableQuantity <= 5;
+  const isInactive = product.is_active === false;
+
+  // Check if product is archived based on collection date window
+  const isCollectionArchived = (() => {
+    if (!product.collection) return false;
+    const now = new Date();
+    // Collection ended (ends_at < now)
+    if (product.collection.ends_at) {
+      const endsAt = new Date(product.collection.ends_at);
+      if (now > endsAt) return true;
+    }
+    // Collection hasn't started yet (starts_at > now)
+    if (product.collection.starts_at) {
+      const startsAt = new Date(product.collection.starts_at);
+      if (now < startsAt) return true;
+    }
+    return false;
+  })();
+
+  // Product is unavailable if sold out, inactive, or in archived collection
+  const isUnavailable = isOutOfStock || isInactive || isCollectionArchived;
+
+  return {
+    isOutOfStock,
+    isLowStock,
+    isInactive,
+    isCollectionArchived,
+    isUnavailable,
+  };
 }
 
 /**

@@ -49,3 +49,4 @@ prisma/generated
 src/lib/reset-db.ts
 
 wireframes/screenshots/
+screenshots/

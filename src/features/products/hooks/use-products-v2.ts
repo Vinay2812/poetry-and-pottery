@@ -32,27 +32,37 @@ export const useProductsV2 = (options: {
       const filtersToVariables: ProductsFilterInput = {
         categories: filters.categories,
         materials: filters.materials,
+        collection_ids:
+          filters.collection_ids.length > 0 ? filters.collection_ids : null,
         order_by: filters.sort,
         search: filters.search,
         min_price: filters.min_price,
         max_price: filters.max_price,
+        archive: filters.archive,
         page: pageParam,
         limit: DEFAULT_PAGE_SIZE,
       };
 
-      const { data, error } = await fetchProducts({
+      const { data } = await fetchProducts({
         variables: {
           filter: filtersToVariables,
         },
       });
 
-      if (error) {
-        console.error("Failed to fetch products:", error.message);
-        throw new Error(error.message);
-      }
-
-      if (!data?.products) {
-        throw new Error("No products data returned from GraphQL");
+      if (!data) {
+        return {
+          page: pageParam,
+          total_pages: 0,
+          products: [],
+          total: 0,
+          filter_meta: {
+            categories: [],
+            materials: [],
+            collections: [],
+            price_range: { min: 0, max: 0 },
+            price_histogram: [],
+          },
+        };
       }
 
       const products = data.products.products;
@@ -80,32 +90,26 @@ export const useProductsV2 = (options: {
     [],
   );
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    error,
-  } = useInfiniteQuery({
-    queryKey: ["products", ...Object.values(filters).toSorted(), isGraphQL],
-    queryFn: getProducts,
-    initialPageParam: 1,
-    getNextPageParam: getNextPageParam,
-    initialData: {
-      pages: [
-        {
-          products: productsWithFiltersAndMetadata.products,
-          total_pages: productsWithFiltersAndMetadata.total_pages,
-          page: 1,
-          total: productsWithFiltersAndMetadata.total_products,
-          filter_meta: productsWithFiltersAndMetadata.meta,
-        },
-      ],
-      pageParams: [1],
-    },
-    staleTime: 0,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ["products", ...Object.values(filters).toSorted(), isGraphQL],
+      queryFn: getProducts,
+      initialPageParam: 1,
+      getNextPageParam: getNextPageParam,
+      initialData: {
+        pages: [
+          {
+            products: productsWithFiltersAndMetadata.products,
+            total_pages: productsWithFiltersAndMetadata.total_pages,
+            page: 1,
+            total: productsWithFiltersAndMetadata.total_products,
+            filter_meta: productsWithFiltersAndMetadata.meta,
+          },
+        ],
+        pageParams: [1],
+      },
+      staleTime: 0,
+    });
 
   const debouncedFetchNextPage = useDebouncedCallback(fetchNextPage, 500);
 
@@ -125,11 +129,6 @@ export const useProductsV2 = (options: {
     isLoading,
     debouncedFetchNextPage,
   ]);
-
-  if (error) {
-    console.error("Failed to fetch products:", error.message);
-    throw new Error(error.message);
-  }
 
   const products = useMemo(() => {
     const visitedProducts = new Set<number>();

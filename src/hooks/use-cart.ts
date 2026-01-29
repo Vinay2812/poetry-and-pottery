@@ -24,13 +24,23 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
     created_at: new Date(item.created_at),
     updated_at: new Date(item.updated_at),
     product: {
-      ...item.product,
+      id: item.product.id,
+      slug: item.product.slug,
+      name: item.product.name,
+      price: item.product.price,
+      image_urls: item.product.image_urls,
+      material: item.product.material,
+      available_quantity: item.product.available_quantity,
+      total_quantity: item.product.total_quantity,
+      color_code: item.product.color_code,
+      color_name: item.product.color_name,
+      is_active: item.product.is_active,
       description: null,
       instructions: [],
-      is_active: true,
       created_at: new Date(),
       updated_at: new Date(),
       product_categories: [],
+      collection: item.product.collection ?? null,
     },
   };
 }
@@ -75,7 +85,10 @@ function applyCartOptimisticAction(
         quantity: action.quantity,
         created_at: new Date(),
         updated_at: new Date(),
-        product: action.product,
+        product: {
+          ...action.product,
+          collection: null,
+        },
       };
       return [...state, optimisticItem];
     }

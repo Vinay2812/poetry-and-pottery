@@ -10,9 +10,11 @@ import {
   useTransition,
 } from "react";
 
+import { openWhatsAppProductRequest } from "@/lib/contact-business";
+
 import { ProductDetail } from "../components/product-detail";
 import type { ProductDetailContainerProps } from "../types";
-import { buildFormattedReviews } from "../types";
+import { buildFormattedReviews, computeAvailabilityStatus } from "../types";
 
 export function ProductDetailContainer({
   product,
@@ -41,13 +43,21 @@ export function ProductDetailContainer({
   const {
     toggleWishlist,
     isInWishlist,
+    isWishlistHydrated,
     isLoading: isWishlistLoading,
   } = useWishlist();
   const { share } = useShare();
 
-  // Use hook's local state if available, fallback to server's in_wishlist
-  const localWishlistState = isInWishlist(product.id);
-  const inWishlist = localWishlistState || product.in_wishlist;
+  // Compute availability status
+  const availabilityStatus = useMemo(
+    () => computeAvailabilityStatus(product),
+    [product],
+  );
+
+  // Use local state if hydrated, otherwise fallback to server's in_wishlist
+  const inWishlist = isWishlistHydrated
+    ? isInWishlist(product.id)
+    : product.in_wishlist;
 
   const cartLoading = isCartLoading(product.id);
   const wishlistLoading = isWishlistLoading(product.id);
@@ -87,6 +97,23 @@ export function ProductDetailContainer({
   const handleColorSelect = useCallback((color: string) => {
     setSelectedColor(color);
   }, []);
+
+  const handleRequestProduct = useCallback(() => {
+    openWhatsAppProductRequest({
+      type: "product-request",
+      productId: product.id,
+      productName: product.name,
+      productPrice: product.price,
+      productUrl:
+        typeof window !== "undefined"
+          ? `${window.location.origin}/products/${product.id}`
+          : `/products/${product.id}`,
+      isSoldOut: availabilityStatus.isOutOfStock,
+      isArchived:
+        availabilityStatus.isInactive ||
+        availabilityStatus.isCollectionArchived,
+    });
+  }, [product.id, product.name, product.price, availabilityStatus]);
 
   const handleLikeUpdate = useCallback(
     (reviewId: string, likes: number, isLiked: boolean) => {
@@ -152,10 +179,12 @@ export function ProductDetailContainer({
       wishlistLoading={wishlistLoading}
       atMaxQuantity={atMaxQuantity}
       currentUserId={currentUserId}
+      availabilityStatus={availabilityStatus}
       onColorSelect={handleColorSelect}
       onShare={handleShare}
       onAddToCart={handleAddToCart}
       onToggleWishlist={handleToggleWishlist}
+      onRequestProduct={handleRequestProduct}
       onReviewLike={handleReviewLike}
       onLikeUpdate={handleLikeUpdate}
     />

@@ -1,6 +1,8 @@
 export { BehindScenesSection } from "./behind-scenes-section";
 export { CategorySection } from "./category-section";
 export { CategorySectionContainer } from "./category-section-container";
+export { CollectionsSection } from "./collections-section";
+export { CollectionsSectionContainer } from "./collections-section-container";
 export { CTASection } from "./cta-section";
 export { EmptyState } from "./empty-state";
 export { ExploreSection } from "./explore-section";

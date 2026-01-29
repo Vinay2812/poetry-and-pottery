@@ -125,14 +125,35 @@ export type RegistrationWithEvent = Prisma.EventRegistrationGetPayload<{
   include: { event: true; user: true };
 }>;
 
-// Cart with product (including categories for display)
-export type CartWithProduct = Prisma.CartGetPayload<{
+// Base cart with product from Prisma (without collection)
+type CartWithProductBase = Prisma.CartGetPayload<{
   include: {
     product: {
       include: { product_categories: true };
     };
   };
 }>;
+
+// Collection type for cart items (matches GraphQL CollectionBase)
+export interface CartProductCollection {
+  id: number;
+  slug: string;
+  name: string;
+  description?: string | null;
+  image_url?: string | null;
+  starts_at?: Date | string | null;
+  ends_at?: Date | string | null;
+  created_at?: Date | string;
+  updated_at?: Date | string;
+  products_count?: number;
+}
+
+// Extended cart with product including collection
+export type CartWithProduct = Omit<CartWithProductBase, "product"> & {
+  product: CartWithProductBase["product"] & {
+    collection?: CartProductCollection | null;
+  };
+};
 
 // Wishlist with product (including categories for display)
 export type WishlistWithProduct = Prisma.WishlistGetPayload<{

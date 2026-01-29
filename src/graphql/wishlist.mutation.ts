@@ -20,10 +20,23 @@ export const ADD_TO_WISHLIST_MUTATION = gql`
           avg_rating
           material
           in_wishlist
+          is_active
           available_quantity
           total_quantity
           color_code
           color_name
+          collection {
+            id
+            slug
+            name
+            description
+            image_url
+            starts_at
+            ends_at
+            created_at
+            updated_at
+            products_count
+          }
         }
       }
     }
@@ -57,10 +70,23 @@ export const TOGGLE_WISHLIST_MUTATION = gql`
           avg_rating
           material
           in_wishlist
+          is_active
           available_quantity
           total_quantity
           color_code
           color_name
+          collection {
+            id
+            slug
+            name
+            description
+            image_url
+            starts_at
+            ends_at
+            created_at
+            updated_at
+            products_count
+          }
         }
       }
     }

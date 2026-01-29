@@ -20,9 +20,11 @@ export async function getProducts(params: {
   search?: string;
   categories?: string[];
   materials?: string[];
+  collection_ids?: number[];
   min_price?: number;
   max_price?: number;
   order_by?: ProductOrderBy;
+  archive?: boolean;
 }): Promise<ProductsResponse> {
   return graphqlImpl.getProducts(params);
 }

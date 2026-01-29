@@ -53,6 +53,17 @@ export interface EventFollowUpData {
   customerEmail: string;
 }
 
+// Product request for archived/sold-out items
+export interface ProductRequestData {
+  type: "product-request";
+  productId: number;
+  productName: string;
+  productPrice: number;
+  productUrl: string;
+  isArchived?: boolean;
+  isSoldOut?: boolean;
+}
+
 export type NotificationData = EventNotificationData | OrderNotificationData;
 export type FollowUpData = OrderFollowUpData | EventFollowUpData;
 
@@ -156,6 +167,28 @@ export function openWhatsAppFollowUp(data: FollowUpData): void {
       `Email: ${data.customerEmail}\n\n` +
       `Please help me with an update on my registration.`;
   }
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+}
+
+export function openWhatsAppProductRequest(data: ProductRequestData): void {
+  const phoneNumber = process.env.NEXT_PUBLIC_MOBILE_NUMBER || "";
+
+  const status = data.isSoldOut
+    ? "sold out"
+    : data.isArchived
+      ? "archived/discontinued"
+      : "unavailable";
+
+  const message =
+    `Hi! I'm interested in the following product that is currently ${status}:\n\n` +
+    `*Product:* ${data.productName}\n` +
+    `*Price:* ₹${data.productPrice.toLocaleString()}\n` +
+    `*Link:* ${data.productUrl}\n\n` +
+    `Could you please let me know if this item can be made available or if there are similar alternatives?`;
 
   const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
