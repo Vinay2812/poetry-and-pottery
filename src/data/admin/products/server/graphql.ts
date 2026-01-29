@@ -11,12 +11,14 @@ import {
 } from "@/graphql/admin/products.mutation";
 import {
   ADMIN_ALL_CATEGORIES_QUERY,
+  ADMIN_ALL_COLLECTIONS_QUERY,
   ADMIN_PRODUCTS_QUERY,
   ADMIN_PRODUCT_BY_ID_QUERY,
   ADMIN_PRODUCT_REVIEWS_QUERY,
 } from "@/graphql/admin/products.query";
 import type {
   AdminAllCategoriesQuery,
+  AdminAllCollectionsQuery,
   AdminCreateProductMutation,
   AdminCreateProductMutationVariables,
   AdminDeleteProductMutation,
@@ -25,6 +27,7 @@ import type {
   AdminDeleteProductReviewMutationVariables,
   AdminProductByIdQuery,
   AdminProductByIdQueryVariables,
+  AdminProductCollection,
   AdminProductDetail,
   AdminProductMutationResponse,
   AdminProductReviewsQuery,
@@ -114,6 +117,20 @@ export async function getAllCategories(): Promise<string[]> {
   }
 
   return result.data!.adminAllCategories;
+}
+
+export async function getAllCollections(): Promise<AdminProductCollection[]> {
+  const client = getClient();
+
+  const result = await client.query<AdminAllCollectionsQuery>({
+    query: ADMIN_ALL_COLLECTIONS_QUERY,
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  return result.data!.adminAllCollections;
 }
 
 export async function createProduct(

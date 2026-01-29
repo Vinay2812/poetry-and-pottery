@@ -16,6 +16,7 @@ import { buildProductFormViewModel } from "../types";
 export function ProductFormContainer({
   product,
   categories,
+  collections,
 }: ProductFormContainerProps) {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
@@ -44,6 +45,7 @@ export function ProductFormContainer({
           material: data.material,
           image_urls: data.imageUrls,
           categories: data.categories,
+          collection_id: data.collectionId,
         });
 
         if (result.success) {
@@ -71,6 +73,7 @@ export function ProductFormContainer({
         material: data.material,
         image_urls: data.imageUrls,
         categories: data.categories,
+        collection_id: data.collectionId,
       });
 
       if (result.success) {
@@ -95,6 +98,7 @@ export function ProductFormContainer({
     <ProductForm
       viewModel={viewModel}
       availableCategories={categories}
+      availableCollections={collections}
       isEditing={isEditing}
       onSubmit={handleSubmit}
       onCancel={handleCancel}

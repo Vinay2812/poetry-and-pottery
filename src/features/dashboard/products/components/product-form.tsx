@@ -29,6 +29,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MultiSelect } from "@/components/ui/multi-select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 import type { ProductFormProps } from "../types";
@@ -47,6 +54,7 @@ interface FormValues {
   material: string;
   imageUrls: string[];
   categories: string[];
+  collectionId: number | null;
 }
 
 const productFormSchema = z.object({
@@ -60,8 +68,9 @@ const productFormSchema = z.object({
   colorName: z.string().min(1, "Color name is required"),
   colorCode: z.string().min(1, "Color code is required"),
   material: z.string().min(1, "Material is required"),
-  imageUrls: z.array(z.string()),
+  imageUrls: z.array(z.string()).min(1, "At least one image is required"),
   categories: z.array(z.string()),
+  collectionId: z.number().nullable(),
 });
 
 interface SortableInstructionProps {
@@ -121,6 +130,7 @@ function SortableInstruction({
 export function ProductForm({
   viewModel,
   availableCategories,
+  availableCollections,
   isEditing,
   onSubmit,
   onCancel,
@@ -147,6 +157,7 @@ export function ProductForm({
       material: viewModel.material,
       imageUrls: viewModel.imageUrls,
       categories: viewModel.categories,
+      collectionId: viewModel.collectionId,
     },
   });
 
@@ -170,6 +181,7 @@ export function ProductForm({
   const imageUrls = watch("imageUrls");
   const categories = watch("categories");
   const totalQuantity = watch("totalQuantity");
+  const collectionId = watch("collectionId");
 
   // Calculate sold and available quantities
   const soldQuantity = viewModel.soldQuantity ?? 0;
@@ -188,6 +200,7 @@ export function ProductForm({
         ...data,
         instructions: data.instructions.map((i) => i.value).filter(Boolean),
         availableQuantity, // Pass the calculated available quantity
+        collectionId: data.collectionId,
       });
     },
     [availableQuantity, onSubmit],
@@ -380,6 +393,44 @@ export function ProductForm({
         />
       </div>
 
+      {/* Collection */}
+      <div className="rounded-xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-4 text-lg font-semibold text-neutral-900">
+          Collection
+        </h2>
+        <Select
+          value={collectionId?.toString() ?? ""}
+          onValueChange={(value) =>
+            setValue("collectionId", value ? parseInt(value) : null)
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a collection (optional)" />
+          </SelectTrigger>
+          <SelectContent>
+            {availableCollections.map((collection) => (
+              <SelectItem key={collection.id} value={collection.id.toString()}>
+                {collection.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {collectionId && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="mt-2 text-neutral-500"
+            onClick={() => setValue("collectionId", null)}
+          >
+            Clear collection
+          </Button>
+        )}
+        <p className="mt-2 text-sm text-neutral-500">
+          Optionally assign this product to a collection.
+        </p>
+      </div>
+
       {/* Care Instructions */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">
         <div className="mb-4 flex items-center justify-between">
@@ -428,7 +479,7 @@ export function ProductForm({
       {/* Images */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-neutral-900">
-          Product Images
+          Product Images *
         </h2>
         <R2ImageUploaderContainer
           folder="products"
@@ -437,6 +488,11 @@ export function ProductForm({
           value={imageUrls}
           onChange={handleImageUrlsChange}
         />
+        {errors.imageUrls && (
+          <p className="mt-2 text-sm text-red-500">
+            {errors.imageUrls.message}
+          </p>
+        )}
       </div>
 
       {/* Form Actions */}

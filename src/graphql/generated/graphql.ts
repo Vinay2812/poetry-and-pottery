@@ -88,6 +88,63 @@ export type AdminCategoryMutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type AdminCollection = {
+  created_at: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  ends_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  products_count: Scalars['Int']['output'];
+  slug: Scalars['String']['output'];
+  starts_at?: Maybe<Scalars['DateTime']['output']>;
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminCollectionDetail = {
+  created_at: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  ends_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  products: Array<AdminCollectionProduct>;
+  products_count: Scalars['Int']['output'];
+  slug: Scalars['String']['output'];
+  starts_at?: Maybe<Scalars['DateTime']['output']>;
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminCollectionMutationResponse = {
+  collectionId?: Maybe<Scalars['Int']['output']>;
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type AdminCollectionProduct = {
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  is_active: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Int']['output'];
+  slug: Scalars['String']['output'];
+};
+
+export type AdminCollectionsFilterInput = {
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AdminCollectionsResponse = {
+  collections: Array<AdminCollection>;
+  limit: Scalars['Int']['output'];
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
 export type AdminContentMutationResponse = {
   error?: Maybe<Scalars['String']['output']>;
   success: Scalars['Boolean']['output'];
@@ -262,6 +319,12 @@ export type AdminProduct = {
   total_quantity: Scalars['Int']['output'];
 };
 
+export type AdminProductCollection = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+};
+
 export type AdminProductCount = {
   carts: Scalars['Int']['output'];
   reviews: Scalars['Int']['output'];
@@ -272,6 +335,8 @@ export type AdminProductDetail = {
   _count: AdminProductDetailCount;
   available_quantity: Scalars['Int']['output'];
   categories: Array<Scalars['String']['output']>;
+  collection?: Maybe<AdminProductCollection>;
+  collection_id?: Maybe<Scalars['Int']['output']>;
   color_code: Scalars['String']['output'];
   color_name: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
@@ -538,6 +603,11 @@ export type AdminUsersResponse = {
   users: Array<AdminUser>;
 };
 
+export type AssignProductsToCollectionInput = {
+  collectionId: Scalars['Int']['input'];
+  productIds: Array<Scalars['Int']['input']>;
+};
+
 export type BestSellersResponse = {
   page: Scalars['Int']['output'];
   products: Array<ProductBase>;
@@ -620,6 +690,15 @@ export type CreateAddressInput = {
   zip: Scalars['String']['input'];
 };
 
+export type CreateCollectionInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  ends_at?: InputMaybe<Scalars['DateTime']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  slug: Scalars['String']['input'];
+  starts_at?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type CreateEventInput = {
   available_seats: Scalars['Int']['input'];
   description: Scalars['String']['input'];
@@ -656,6 +735,7 @@ export type CreateOrderInput = {
 export type CreateProductInput = {
   available_quantity: Scalars['Int']['input'];
   categories: Array<Scalars['String']['input']>;
+  collection_id?: InputMaybe<Scalars['Int']['input']>;
   color_code: Scalars['String']['input'];
   color_name: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
@@ -912,18 +992,23 @@ export type Mutation = {
   addToCart: CartMutationResponse;
   addToWishlist: WishlistMutationResponse;
   adminAddCategory: AdminCategoryMutationResponse;
+  adminAssignProductsToCollection: AdminCollectionMutationResponse;
+  adminCreateCollection: AdminCollectionMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
   adminDeleteCategory: AdminCategoryMutationResponse;
+  adminDeleteCollection: AdminCollectionMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
   adminDeleteEventReview: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
   adminDeleteProductReview: AdminMutationResponse;
   adminGetPresignedUploadUrl: PresignedUploadUrlResponse;
+  adminRemoveProductFromCollection: AdminCollectionMutationResponse;
   adminRenameCategory: AdminCategoryMutationResponse;
   adminToggleContentPageActive: AdminContentMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
+  adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
   adminUpdateContentPage: AdminContentMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
@@ -978,6 +1063,16 @@ export type MutationAdminAddCategoryArgs = {
 };
 
 
+export type MutationAdminAssignProductsToCollectionArgs = {
+  input: AssignProductsToCollectionInput;
+};
+
+
+export type MutationAdminCreateCollectionArgs = {
+  input: CreateCollectionInput;
+};
+
+
 export type MutationAdminCreateEventArgs = {
   input: CreateEventInput;
 };
@@ -990,6 +1085,11 @@ export type MutationAdminCreateProductArgs = {
 
 export type MutationAdminDeleteCategoryArgs = {
   name: Scalars['String']['input'];
+};
+
+
+export type MutationAdminDeleteCollectionArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1018,6 +1118,11 @@ export type MutationAdminGetPresignedUploadUrlArgs = {
 };
 
 
+export type MutationAdminRemoveProductFromCollectionArgs = {
+  productId: Scalars['Int']['input'];
+};
+
+
 export type MutationAdminRenameCategoryArgs = {
   newName: Scalars['String']['input'];
   oldName: Scalars['String']['input'];
@@ -1037,6 +1142,12 @@ export type MutationAdminToggleProductActiveArgs = {
 export type MutationAdminUpdateCategoryIconArgs = {
   category: Scalars['String']['input'];
   icon: Scalars['String']['input'];
+};
+
+
+export type MutationAdminUpdateCollectionArgs = {
+  id: Scalars['Int']['input'];
+  input: UpdateCollectionInput;
 };
 
 
@@ -1462,10 +1573,13 @@ export type ProductsStats = {
 export type Query = {
   addressById?: Maybe<UserAddress>;
   adminAllCategories: Array<Scalars['String']['output']>;
+  adminAllCollections: Array<AdminProductCollection>;
   adminAllConfiguredCategories: Array<AdminCategoryConfig>;
   adminAllSettings: Array<AdminSiteSetting>;
   adminAvailableIcons: Array<AdminIconOption>;
   adminCategories: AdminCategoriesResponse;
+  adminCollectionById?: Maybe<AdminCollectionDetail>;
+  adminCollections: AdminCollectionsResponse;
   adminContactInfo: ContactInfo;
   adminContentPageBySlug?: Maybe<AdminContentPage>;
   adminContentPages: Array<AdminContentPageListItem>;
@@ -1538,6 +1652,16 @@ export type Query = {
 
 export type QueryAddressByIdArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryAdminCollectionByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryAdminCollectionsArgs = {
+  filter?: InputMaybe<AdminCollectionsFilterInput>;
 };
 
 
@@ -2021,6 +2145,15 @@ export type UpdateCartQuantityInput = {
   quantity: Scalars['Int']['input'];
 };
 
+export type UpdateCollectionInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  ends_at?: InputMaybe<Scalars['DateTime']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  starts_at?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type UpdateContactInfoInput = {
   address?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
@@ -2062,6 +2195,7 @@ export type UpdateHeroImagesInput = {
 export type UpdateProductInput = {
   available_quantity?: InputMaybe<Scalars['Int']['input']>;
   categories?: InputMaybe<Array<Scalars['String']['input']>>;
+  collection_id?: InputMaybe<Scalars['Int']['input']>;
   color_code?: InputMaybe<Scalars['String']['input']>;
   color_name?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -2276,6 +2410,56 @@ export type AdminAvailableIconsQueryVariables = Exact<{ [key: string]: never; }>
 
 export type AdminAvailableIconsQuery = { adminAvailableIcons: Array<{ value: string, label: string }> };
 
+export type AdminCreateCollectionMutationVariables = Exact<{
+  input: CreateCollectionInput;
+}>;
+
+
+export type AdminCreateCollectionMutation = { adminCreateCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminUpdateCollectionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  input: UpdateCollectionInput;
+}>;
+
+
+export type AdminUpdateCollectionMutation = { adminUpdateCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminDeleteCollectionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteCollectionMutation = { adminDeleteCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminAssignProductsToCollectionMutationVariables = Exact<{
+  input: AssignProductsToCollectionInput;
+}>;
+
+
+export type AdminAssignProductsToCollectionMutation = { adminAssignProductsToCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminRemoveProductFromCollectionMutationVariables = Exact<{
+  productId: Scalars['Int']['input'];
+}>;
+
+
+export type AdminRemoveProductFromCollectionMutation = { adminRemoveProductFromCollection: { success: boolean, error?: string | null } };
+
+export type AdminCollectionsQueryVariables = Exact<{
+  filter?: InputMaybe<AdminCollectionsFilterInput>;
+}>;
+
+
+export type AdminCollectionsQuery = { adminCollections: { total: number, page: number, limit: number, totalPages: number, collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> } };
+
+export type AdminCollectionByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminCollectionByIdQuery = { adminCollectionById?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number, products: Array<{ id: number, name: string, slug: string, image_url?: string | null, price: number, is_active: boolean }> } | null };
+
 export type AdminUpdateContentPageMutationVariables = Exact<{
   slug: Scalars['String']['input'];
   input: UpdateContentPageInput;
@@ -2466,7 +2650,7 @@ export type AdminProductByIdQueryVariables = Exact<{
 }>;
 
 
-export type AdminProductByIdQuery = { adminProductById?: { id: number, name: string, slug: string, description?: string | null, instructions: Array<string>, price: number, available_quantity: number, total_quantity: number, is_active: boolean, categories: Array<string>, material: string, color_code: string, color_name: string, image_urls: Array<string>, created_at: Date | string, updated_at: Date | string, _count: { reviews: number, wishlists: number, carts: number, purchased_products: number } } | null };
+export type AdminProductByIdQuery = { adminProductById?: { id: number, name: string, slug: string, description?: string | null, instructions: Array<string>, price: number, available_quantity: number, total_quantity: number, is_active: boolean, categories: Array<string>, material: string, color_code: string, color_name: string, image_urls: Array<string>, collection_id?: number | null, created_at: Date | string, updated_at: Date | string, collection?: { id: number, name: string, slug: string } | null, _count: { reviews: number, wishlists: number, carts: number, purchased_products: number } } | null };
 
 export type AdminProductReviewsQueryVariables = Exact<{
   productId: Scalars['Int']['input'];
@@ -2479,6 +2663,11 @@ export type AdminAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AdminAllCategoriesQuery = { adminAllCategories: Array<string> };
+
+export type AdminAllCollectionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminAllCollectionsQuery = { adminAllCollections: Array<{ id: number, name: string, slug: string }> };
 
 export type PublicAboutContentQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3971,6 +4160,282 @@ export function useAdminAvailableIconsSuspenseQuery(baseOptions?: ApolloReactHoo
 export type AdminAvailableIconsQueryHookResult = ReturnType<typeof useAdminAvailableIconsQuery>;
 export type AdminAvailableIconsLazyQueryHookResult = ReturnType<typeof useAdminAvailableIconsLazyQuery>;
 export type AdminAvailableIconsSuspenseQueryHookResult = ReturnType<typeof useAdminAvailableIconsSuspenseQuery>;
+export const AdminCreateCollectionDocument = gql`
+    mutation AdminCreateCollection($input: CreateCollectionInput!) {
+  adminCreateCollection(input: $input) {
+    success
+    collectionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminCreateCollectionMutation__
+ *
+ * To run a mutation, you first call `useAdminCreateCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminCreateCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminCreateCollectionMutation, { data, loading, error }] = useAdminCreateCollectionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminCreateCollectionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminCreateCollectionMutation, AdminCreateCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminCreateCollectionMutation, AdminCreateCollectionMutationVariables>(AdminCreateCollectionDocument, options);
+      }
+export type AdminCreateCollectionMutationHookResult = ReturnType<typeof useAdminCreateCollectionMutation>;
+export const AdminUpdateCollectionDocument = gql`
+    mutation AdminUpdateCollection($id: Int!, $input: UpdateCollectionInput!) {
+  adminUpdateCollection(id: $id, input: $input) {
+    success
+    collectionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateCollectionMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateCollectionMutation, { data, loading, error }] = useAdminUpdateCollectionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateCollectionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateCollectionMutation, AdminUpdateCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateCollectionMutation, AdminUpdateCollectionMutationVariables>(AdminUpdateCollectionDocument, options);
+      }
+export type AdminUpdateCollectionMutationHookResult = ReturnType<typeof useAdminUpdateCollectionMutation>;
+export const AdminDeleteCollectionDocument = gql`
+    mutation AdminDeleteCollection($id: Int!) {
+  adminDeleteCollection(id: $id) {
+    success
+    collectionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminDeleteCollectionMutation__
+ *
+ * To run a mutation, you first call `useAdminDeleteCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminDeleteCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminDeleteCollectionMutation, { data, loading, error }] = useAdminDeleteCollectionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminDeleteCollectionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminDeleteCollectionMutation, AdminDeleteCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminDeleteCollectionMutation, AdminDeleteCollectionMutationVariables>(AdminDeleteCollectionDocument, options);
+      }
+export type AdminDeleteCollectionMutationHookResult = ReturnType<typeof useAdminDeleteCollectionMutation>;
+export const AdminAssignProductsToCollectionDocument = gql`
+    mutation AdminAssignProductsToCollection($input: AssignProductsToCollectionInput!) {
+  adminAssignProductsToCollection(input: $input) {
+    success
+    collectionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminAssignProductsToCollectionMutation__
+ *
+ * To run a mutation, you first call `useAdminAssignProductsToCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminAssignProductsToCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminAssignProductsToCollectionMutation, { data, loading, error }] = useAdminAssignProductsToCollectionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminAssignProductsToCollectionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminAssignProductsToCollectionMutation, AdminAssignProductsToCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminAssignProductsToCollectionMutation, AdminAssignProductsToCollectionMutationVariables>(AdminAssignProductsToCollectionDocument, options);
+      }
+export type AdminAssignProductsToCollectionMutationHookResult = ReturnType<typeof useAdminAssignProductsToCollectionMutation>;
+export const AdminRemoveProductFromCollectionDocument = gql`
+    mutation AdminRemoveProductFromCollection($productId: Int!) {
+  adminRemoveProductFromCollection(productId: $productId) {
+    success
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminRemoveProductFromCollectionMutation__
+ *
+ * To run a mutation, you first call `useAdminRemoveProductFromCollectionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminRemoveProductFromCollectionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminRemoveProductFromCollectionMutation, { data, loading, error }] = useAdminRemoveProductFromCollectionMutation({
+ *   variables: {
+ *      productId: // value for 'productId'
+ *   },
+ * });
+ */
+export function useAdminRemoveProductFromCollectionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminRemoveProductFromCollectionMutation, AdminRemoveProductFromCollectionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminRemoveProductFromCollectionMutation, AdminRemoveProductFromCollectionMutationVariables>(AdminRemoveProductFromCollectionDocument, options);
+      }
+export type AdminRemoveProductFromCollectionMutationHookResult = ReturnType<typeof useAdminRemoveProductFromCollectionMutation>;
+export const AdminCollectionsDocument = gql`
+    query AdminCollections($filter: AdminCollectionsFilterInput) {
+  adminCollections(filter: $filter) {
+    collections {
+      id
+      slug
+      name
+      description
+      image_url
+      starts_at
+      ends_at
+      created_at
+      updated_at
+      products_count
+    }
+    total
+    page
+    limit
+    totalPages
+  }
+}
+    `;
+
+/**
+ * __useAdminCollectionsQuery__
+ *
+ * To run a query within a React component, call `useAdminCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCollectionsQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useAdminCollectionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminCollectionsQuery, AdminCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCollectionsQuery, AdminCollectionsQueryVariables>(AdminCollectionsDocument, options);
+      }
+export function useAdminCollectionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCollectionsQuery, AdminCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCollectionsQuery, AdminCollectionsQueryVariables>(AdminCollectionsDocument, options);
+        }
+// @ts-ignore
+export function useAdminCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCollectionsQuery, AdminCollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCollectionsQuery, AdminCollectionsQueryVariables>;
+export function useAdminCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCollectionsQuery, AdminCollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCollectionsQuery | undefined, AdminCollectionsQueryVariables>;
+export function useAdminCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCollectionsQuery, AdminCollectionsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCollectionsQuery, AdminCollectionsQueryVariables>(AdminCollectionsDocument, options);
+        }
+export type AdminCollectionsQueryHookResult = ReturnType<typeof useAdminCollectionsQuery>;
+export type AdminCollectionsLazyQueryHookResult = ReturnType<typeof useAdminCollectionsLazyQuery>;
+export type AdminCollectionsSuspenseQueryHookResult = ReturnType<typeof useAdminCollectionsSuspenseQuery>;
+export const AdminCollectionByIdDocument = gql`
+    query AdminCollectionById($id: Int!) {
+  adminCollectionById(id: $id) {
+    id
+    slug
+    name
+    description
+    image_url
+    starts_at
+    ends_at
+    created_at
+    updated_at
+    products_count
+    products {
+      id
+      name
+      slug
+      image_url
+      price
+      is_active
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminCollectionByIdQuery__
+ *
+ * To run a query within a React component, call `useAdminCollectionByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCollectionByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCollectionByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminCollectionByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables> & ({ variables: AdminCollectionByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>(AdminCollectionByIdDocument, options);
+      }
+export function useAdminCollectionByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>(AdminCollectionByIdDocument, options);
+        }
+// @ts-ignore
+export function useAdminCollectionByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>;
+export function useAdminCollectionByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCollectionByIdQuery | undefined, AdminCollectionByIdQueryVariables>;
+export function useAdminCollectionByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCollectionByIdQuery, AdminCollectionByIdQueryVariables>(AdminCollectionByIdDocument, options);
+        }
+export type AdminCollectionByIdQueryHookResult = ReturnType<typeof useAdminCollectionByIdQuery>;
+export type AdminCollectionByIdLazyQueryHookResult = ReturnType<typeof useAdminCollectionByIdLazyQuery>;
+export type AdminCollectionByIdSuspenseQueryHookResult = ReturnType<typeof useAdminCollectionByIdSuspenseQuery>;
 export const AdminUpdateContentPageDocument = gql`
     mutation AdminUpdateContentPage($slug: String!, $input: UpdateContentPageInput!) {
   adminUpdateContentPage(slug: $slug, input: $input) {
@@ -5028,6 +5493,12 @@ export const AdminProductByIdDocument = gql`
     color_code
     color_name
     image_urls
+    collection_id
+    collection {
+      id
+      name
+      slug
+    }
     created_at
     updated_at
     _count {
@@ -5169,6 +5640,49 @@ export function useAdminAllCategoriesSuspenseQuery(baseOptions?: ApolloReactHook
 export type AdminAllCategoriesQueryHookResult = ReturnType<typeof useAdminAllCategoriesQuery>;
 export type AdminAllCategoriesLazyQueryHookResult = ReturnType<typeof useAdminAllCategoriesLazyQuery>;
 export type AdminAllCategoriesSuspenseQueryHookResult = ReturnType<typeof useAdminAllCategoriesSuspenseQuery>;
+export const AdminAllCollectionsDocument = gql`
+    query AdminAllCollections {
+  adminAllCollections {
+    id
+    name
+    slug
+  }
+}
+    `;
+
+/**
+ * __useAdminAllCollectionsQuery__
+ *
+ * To run a query within a React component, call `useAdminAllCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminAllCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminAllCollectionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminAllCollectionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>(AdminAllCollectionsDocument, options);
+      }
+export function useAdminAllCollectionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>(AdminAllCollectionsDocument, options);
+        }
+// @ts-ignore
+export function useAdminAllCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>;
+export function useAdminAllCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminAllCollectionsQuery | undefined, AdminAllCollectionsQueryVariables>;
+export function useAdminAllCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminAllCollectionsQuery, AdminAllCollectionsQueryVariables>(AdminAllCollectionsDocument, options);
+        }
+export type AdminAllCollectionsQueryHookResult = ReturnType<typeof useAdminAllCollectionsQuery>;
+export type AdminAllCollectionsLazyQueryHookResult = ReturnType<typeof useAdminAllCollectionsLazyQuery>;
+export type AdminAllCollectionsSuspenseQueryHookResult = ReturnType<typeof useAdminAllCollectionsSuspenseQuery>;
 export const PublicAboutContentDocument = gql`
     query PublicAboutContent {
   publicAboutContent {

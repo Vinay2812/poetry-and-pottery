@@ -6,6 +6,7 @@ import {
   FileTextIcon,
   FolderIcon,
   HomeIcon,
+  LayersIcon,
   SettingsIcon,
   UsersIcon,
 } from "lucide-react";
@@ -40,6 +41,11 @@ const navItems: NavItem[] = [
     title: "Categories",
     href: "/dashboard/categories",
     icon: FolderIcon,
+  },
+  {
+    title: "Collections",
+    href: "/dashboard/collections",
+    icon: LayersIcon,
   },
   {
     title: "Events",

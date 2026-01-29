@@ -1,6 +1,7 @@
 "use server";
 
 import type {
+  AdminProductCollection,
   AdminProductDetail,
   AdminProductMutationResponse,
   AdminProductReviewsResponse,
@@ -32,6 +33,10 @@ export async function getProductReviews(
 
 export async function getAllCategories(): Promise<string[]> {
   return graphqlImpl.getAllCategories();
+}
+
+export async function getAllCollections(): Promise<AdminProductCollection[]> {
+  return graphqlImpl.getAllCollections();
 }
 
 export async function createProduct(

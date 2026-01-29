@@ -48,6 +48,12 @@ export const ADMIN_PRODUCT_BY_ID_QUERY = gql`
       color_code
       color_name
       image_urls
+      collection_id
+      collection {
+        id
+        name
+        slug
+      }
       created_at
       updated_at
       _count {
@@ -85,5 +91,15 @@ export const ADMIN_PRODUCT_REVIEWS_QUERY = gql`
 export const ADMIN_ALL_CATEGORIES_QUERY = gql`
   query AdminAllCategories {
     adminAllCategories
+  }
+`;
+
+export const ADMIN_ALL_COLLECTIONS_QUERY = gql`
+  query AdminAllCollections {
+    adminAllCollections {
+      id
+      name
+      slug
+    }
   }
 `;

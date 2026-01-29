@@ -94,6 +94,16 @@ export interface ProductFormViewModel {
   material: string;
   imageUrls: string[];
   categories: string[];
+  collectionId: number | null;
+}
+
+/**
+ * Collection option for the dropdown.
+ */
+export interface CollectionOption {
+  id: number;
+  name: string;
+  slug: string;
 }
 
 /**
@@ -102,6 +112,7 @@ export interface ProductFormViewModel {
 export interface ProductFormProps {
   viewModel: ProductFormViewModel;
   availableCategories: string[];
+  availableCollections: CollectionOption[];
   isEditing: boolean;
   onSubmit: (data: ProductFormData) => Promise<void> | void;
   onCancel: () => void;
@@ -124,6 +135,7 @@ export interface ProductFormData {
   material: string;
   imageUrls: string[];
   categories: string[];
+  collectionId: number | null;
 }
 
 /**
@@ -132,6 +144,7 @@ export interface ProductFormData {
 export interface ProductFormContainerProps {
   product?: AdminProductDetail;
   categories: string[];
+  collections: CollectionOption[];
 }
 
 /**
@@ -219,6 +232,7 @@ export function buildProductFormViewModel(
       material: "",
       imageUrls: [],
       categories: [],
+      collectionId: null,
     };
   }
 
@@ -241,6 +255,7 @@ export function buildProductFormViewModel(
     material: product.material,
     imageUrls: product.image_urls,
     categories: product.categories,
+    collectionId: product.collection_id ?? null,
   };
 }
 

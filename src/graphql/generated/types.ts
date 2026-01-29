@@ -81,6 +81,63 @@ export type AdminCategoryMutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type AdminCollection = {
+  created_at: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  ends_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  products_count: Scalars['Int']['output'];
+  slug: Scalars['String']['output'];
+  starts_at?: Maybe<Scalars['DateTime']['output']>;
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminCollectionDetail = {
+  created_at: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  ends_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  products: Array<AdminCollectionProduct>;
+  products_count: Scalars['Int']['output'];
+  slug: Scalars['String']['output'];
+  starts_at?: Maybe<Scalars['DateTime']['output']>;
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminCollectionMutationResponse = {
+  collectionId?: Maybe<Scalars['Int']['output']>;
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type AdminCollectionProduct = {
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  is_active: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Int']['output'];
+  slug: Scalars['String']['output'];
+};
+
+export type AdminCollectionsFilterInput = {
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AdminCollectionsResponse = {
+  collections: Array<AdminCollection>;
+  limit: Scalars['Int']['output'];
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
 export type AdminContentMutationResponse = {
   error?: Maybe<Scalars['String']['output']>;
   success: Scalars['Boolean']['output'];
@@ -255,6 +312,12 @@ export type AdminProduct = {
   total_quantity: Scalars['Int']['output'];
 };
 
+export type AdminProductCollection = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+};
+
 export type AdminProductCount = {
   carts: Scalars['Int']['output'];
   reviews: Scalars['Int']['output'];
@@ -265,6 +328,8 @@ export type AdminProductDetail = {
   _count: AdminProductDetailCount;
   available_quantity: Scalars['Int']['output'];
   categories: Array<Scalars['String']['output']>;
+  collection?: Maybe<AdminProductCollection>;
+  collection_id?: Maybe<Scalars['Int']['output']>;
   color_code: Scalars['String']['output'];
   color_name: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
@@ -531,6 +596,11 @@ export type AdminUsersResponse = {
   users: Array<AdminUser>;
 };
 
+export type AssignProductsToCollectionInput = {
+  collectionId: Scalars['Int']['input'];
+  productIds: Array<Scalars['Int']['input']>;
+};
+
 export type BestSellersResponse = {
   page: Scalars['Int']['output'];
   products: Array<ProductBase>;
@@ -613,6 +683,15 @@ export type CreateAddressInput = {
   zip: Scalars['String']['input'];
 };
 
+export type CreateCollectionInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  ends_at?: InputMaybe<Scalars['DateTime']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  slug: Scalars['String']['input'];
+  starts_at?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type CreateEventInput = {
   available_seats: Scalars['Int']['input'];
   description: Scalars['String']['input'];
@@ -649,6 +728,7 @@ export type CreateOrderInput = {
 export type CreateProductInput = {
   available_quantity: Scalars['Int']['input'];
   categories: Array<Scalars['String']['input']>;
+  collection_id?: InputMaybe<Scalars['Int']['input']>;
   color_code: Scalars['String']['input'];
   color_name: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
@@ -905,18 +985,23 @@ export type Mutation = {
   addToCart: CartMutationResponse;
   addToWishlist: WishlistMutationResponse;
   adminAddCategory: AdminCategoryMutationResponse;
+  adminAssignProductsToCollection: AdminCollectionMutationResponse;
+  adminCreateCollection: AdminCollectionMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
   adminDeleteCategory: AdminCategoryMutationResponse;
+  adminDeleteCollection: AdminCollectionMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
   adminDeleteEventReview: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
   adminDeleteProductReview: AdminMutationResponse;
   adminGetPresignedUploadUrl: PresignedUploadUrlResponse;
+  adminRemoveProductFromCollection: AdminCollectionMutationResponse;
   adminRenameCategory: AdminCategoryMutationResponse;
   adminToggleContentPageActive: AdminContentMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
+  adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
   adminUpdateContentPage: AdminContentMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
@@ -971,6 +1056,16 @@ export type MutationAdminAddCategoryArgs = {
 };
 
 
+export type MutationAdminAssignProductsToCollectionArgs = {
+  input: AssignProductsToCollectionInput;
+};
+
+
+export type MutationAdminCreateCollectionArgs = {
+  input: CreateCollectionInput;
+};
+
+
 export type MutationAdminCreateEventArgs = {
   input: CreateEventInput;
 };
@@ -983,6 +1078,11 @@ export type MutationAdminCreateProductArgs = {
 
 export type MutationAdminDeleteCategoryArgs = {
   name: Scalars['String']['input'];
+};
+
+
+export type MutationAdminDeleteCollectionArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1011,6 +1111,11 @@ export type MutationAdminGetPresignedUploadUrlArgs = {
 };
 
 
+export type MutationAdminRemoveProductFromCollectionArgs = {
+  productId: Scalars['Int']['input'];
+};
+
+
 export type MutationAdminRenameCategoryArgs = {
   newName: Scalars['String']['input'];
   oldName: Scalars['String']['input'];
@@ -1030,6 +1135,12 @@ export type MutationAdminToggleProductActiveArgs = {
 export type MutationAdminUpdateCategoryIconArgs = {
   category: Scalars['String']['input'];
   icon: Scalars['String']['input'];
+};
+
+
+export type MutationAdminUpdateCollectionArgs = {
+  id: Scalars['Int']['input'];
+  input: UpdateCollectionInput;
 };
 
 
@@ -1455,10 +1566,13 @@ export type ProductsStats = {
 export type Query = {
   addressById?: Maybe<UserAddress>;
   adminAllCategories: Array<Scalars['String']['output']>;
+  adminAllCollections: Array<AdminProductCollection>;
   adminAllConfiguredCategories: Array<AdminCategoryConfig>;
   adminAllSettings: Array<AdminSiteSetting>;
   adminAvailableIcons: Array<AdminIconOption>;
   adminCategories: AdminCategoriesResponse;
+  adminCollectionById?: Maybe<AdminCollectionDetail>;
+  adminCollections: AdminCollectionsResponse;
   adminContactInfo: ContactInfo;
   adminContentPageBySlug?: Maybe<AdminContentPage>;
   adminContentPages: Array<AdminContentPageListItem>;
@@ -1531,6 +1645,16 @@ export type Query = {
 
 export type QueryAddressByIdArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryAdminCollectionByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryAdminCollectionsArgs = {
+  filter?: InputMaybe<AdminCollectionsFilterInput>;
 };
 
 
@@ -2014,6 +2138,15 @@ export type UpdateCartQuantityInput = {
   quantity: Scalars['Int']['input'];
 };
 
+export type UpdateCollectionInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  ends_at?: InputMaybe<Scalars['DateTime']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  starts_at?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type UpdateContactInfoInput = {
   address?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
@@ -2055,6 +2188,7 @@ export type UpdateHeroImagesInput = {
 export type UpdateProductInput = {
   available_quantity?: InputMaybe<Scalars['Int']['input']>;
   categories?: InputMaybe<Array<Scalars['String']['input']>>;
+  collection_id?: InputMaybe<Scalars['Int']['input']>;
   color_code?: InputMaybe<Scalars['String']['input']>;
   color_name?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -2269,6 +2403,56 @@ export type AdminAvailableIconsQueryVariables = Exact<{ [key: string]: never; }>
 
 export type AdminAvailableIconsQuery = { adminAvailableIcons: Array<{ value: string, label: string }> };
 
+export type AdminCreateCollectionMutationVariables = Exact<{
+  input: CreateCollectionInput;
+}>;
+
+
+export type AdminCreateCollectionMutation = { adminCreateCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminUpdateCollectionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  input: UpdateCollectionInput;
+}>;
+
+
+export type AdminUpdateCollectionMutation = { adminUpdateCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminDeleteCollectionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteCollectionMutation = { adminDeleteCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminAssignProductsToCollectionMutationVariables = Exact<{
+  input: AssignProductsToCollectionInput;
+}>;
+
+
+export type AdminAssignProductsToCollectionMutation = { adminAssignProductsToCollection: { success: boolean, collectionId?: number | null, error?: string | null } };
+
+export type AdminRemoveProductFromCollectionMutationVariables = Exact<{
+  productId: Scalars['Int']['input'];
+}>;
+
+
+export type AdminRemoveProductFromCollectionMutation = { adminRemoveProductFromCollection: { success: boolean, error?: string | null } };
+
+export type AdminCollectionsQueryVariables = Exact<{
+  filter?: InputMaybe<AdminCollectionsFilterInput>;
+}>;
+
+
+export type AdminCollectionsQuery = { adminCollections: { total: number, page: number, limit: number, totalPages: number, collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> } };
+
+export type AdminCollectionByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminCollectionByIdQuery = { adminCollectionById?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number, products: Array<{ id: number, name: string, slug: string, image_url?: string | null, price: number, is_active: boolean }> } | null };
+
 export type AdminUpdateContentPageMutationVariables = Exact<{
   slug: Scalars['String']['input'];
   input: UpdateContentPageInput;
@@ -2459,7 +2643,7 @@ export type AdminProductByIdQueryVariables = Exact<{
 }>;
 
 
-export type AdminProductByIdQuery = { adminProductById?: { id: number, name: string, slug: string, description?: string | null, instructions: Array<string>, price: number, available_quantity: number, total_quantity: number, is_active: boolean, categories: Array<string>, material: string, color_code: string, color_name: string, image_urls: Array<string>, created_at: Date | string, updated_at: Date | string, _count: { reviews: number, wishlists: number, carts: number, purchased_products: number } } | null };
+export type AdminProductByIdQuery = { adminProductById?: { id: number, name: string, slug: string, description?: string | null, instructions: Array<string>, price: number, available_quantity: number, total_quantity: number, is_active: boolean, categories: Array<string>, material: string, color_code: string, color_name: string, image_urls: Array<string>, collection_id?: number | null, created_at: Date | string, updated_at: Date | string, collection?: { id: number, name: string, slug: string } | null, _count: { reviews: number, wishlists: number, carts: number, purchased_products: number } } | null };
 
 export type AdminProductReviewsQueryVariables = Exact<{
   productId: Scalars['Int']['input'];
@@ -2472,6 +2656,11 @@ export type AdminAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AdminAllCategoriesQuery = { adminAllCategories: Array<string> };
+
+export type AdminAllCollectionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminAllCollectionsQuery = { adminAllCollections: Array<{ id: number, name: string, slug: string }> };
 
 export type PublicAboutContentQueryVariables = Exact<{ [key: string]: never; }>;
 

@@ -1,5 +1,6 @@
 import {
   getAllCategories,
+  getAllCollections,
   getProductById,
   getProductReviews,
 } from "@/data/admin/products/gateway/server";
@@ -38,9 +39,10 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const [product, categories, reviewsData] = await Promise.all([
+  const [product, categories, collections, reviewsData] = await Promise.all([
     getProductById(productId),
     getAllCategories(),
+    getAllCollections(),
     getProductReviews(productId),
   ]);
 
@@ -90,7 +92,11 @@ export default async function ProductDetailPage({
 
         <TabsContent value="details">
           <Suspense fallback={<SectionFallback />}>
-            <ProductFormContainer product={product} categories={categories} />
+            <ProductFormContainer
+              product={product}
+              categories={categories}
+              collections={collections}
+            />
           </Suspense>
         </TabsContent>
 
