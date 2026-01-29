@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Heart, Search, User } from "lucide-react";
 import Link from "next/link";
 
-import { OptimizedImage } from "@/components/shared";
-
 import { cn } from "@/lib/utils";
 
 import { AccountDropdownContainer } from "../containers/account-dropdown-container";
@@ -29,7 +27,10 @@ export function MobileHeader({
       }}
       animate={isHidden ? "hidden" : "visible"}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="fixed top-0 right-0 left-0 z-50 border-b border-white/20 bg-white/80 backdrop-blur-xl lg:hidden dark:border-white/10 dark:bg-black/80"
+      className={cn(
+        "fixed top-0 right-0 left-0 z-50 bg-white/80 backdrop-blur-xl transition-shadow duration-200 lg:hidden dark:bg-black/80",
+        "border-b border-neutral-200/50 dark:border-neutral-700/50",
+      )}
     >
       <div className="flex h-14 items-center px-4 py-2">
         {/* Left side */}
@@ -46,7 +47,7 @@ export function MobileHeader({
                 <motion.h1
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="bg-gradient-to-br from-neutral-900 to-neutral-600 bg-clip-text text-base font-bold text-transparent dark:from-white dark:to-neutral-400"
+                  className="font-display text-foreground text-base font-bold"
                 >
                   {title}
                 </motion.h1>
@@ -86,7 +87,7 @@ export function MobileHeader({
               )}
             />
             {viewModel.wishlistCount > 0 && (
-              <span className="bg-primary absolute top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
+              <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
                 {viewModel.wishlistCount}
               </span>
             )}

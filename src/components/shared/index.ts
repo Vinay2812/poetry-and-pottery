@@ -1,3 +1,4 @@
+export { AnimatedCounter } from "./animated-counter";
 export { FilterSidebar } from "./filter-sidebar";
 export { ImageCarousel } from "./image-carousel";
 export { InfiniteScrollTrigger } from "./infinite-scroll-trigger";

@@ -12,7 +12,7 @@ import { AccountDropdown } from "../components/account-dropdown";
 import type { AccountDropdownViewModel, UserInfo } from "../types";
 
 export function AccountDropdownContainer() {
-  const { openUserProfile, signOut } = useClerk();
+  const { signOut } = useClerk();
   const { user } = useUser();
   const { sessionClaims } = useAuth();
   const router = useRouter();
@@ -37,8 +37,10 @@ export function AccountDropdownContainer() {
   }, [user, sessionClaims?.role, pendingOrdersCount]);
 
   const handleProfileSettings = useCallback(() => {
-    openUserProfile();
-  }, [openUserProfile]);
+    startNavigation(() => {
+      router.push("/profile");
+    });
+  }, [router, startNavigation]);
 
   const handleSignOut = useCallback(() => {
     signOut({ redirectUrl: "/" });

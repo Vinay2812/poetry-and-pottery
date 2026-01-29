@@ -36,11 +36,11 @@ export function AccountDropdown({
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "ring-primary/50 relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-150 hover:ring-2 focus-visible:ring-2 focus-visible:outline-none",
+            "ring-primary/50 relative flex h-8 w-8 items-center justify-center rounded-full transition-all duration-150 hover:ring-2 focus-visible:ring-2 focus-visible:outline-none",
           )}
         >
           {viewModel.user?.imageUrl ? (
-            <div className="relative h-8 w-8 overflow-hidden rounded-full">
+            <div className="relative h-6 w-6 overflow-hidden rounded-full">
               <OptimizedImage
                 src={viewModel.user.imageUrl}
                 alt={viewModel.user.firstName || "User avatar"}

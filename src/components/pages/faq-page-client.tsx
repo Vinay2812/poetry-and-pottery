@@ -1,9 +1,27 @@
 "use client";
 
 import { MobileHeaderContainer } from "@/features/layout";
-import { HelpCircle, Mail, MessageCircle, Phone } from "lucide-react";
+import {
+  ArrowLeftRight,
+  Calendar,
+  Clock,
+  CreditCard,
+  Gift,
+  Globe,
+  HelpCircle,
+  type LucideIcon,
+  MapPin,
+  Package,
+  Palette,
+  RotateCcw,
+  Shield,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+  Utensils,
+} from "lucide-react";
 
-import { CTASection, SectionHeader } from "@/components/sections";
+import { ListingPageHeader } from "@/components/shared";
 import {
   Accordion,
   AccordionContent,
@@ -12,6 +30,69 @@ import {
 } from "@/components/ui/accordion";
 
 import type { FaqPageContent } from "@/graphql/generated/types";
+
+// Keyword patterns to match questions to icons
+const QUESTION_ICON_PATTERNS: Array<{ keywords: string[]; icon: LucideIcon }> =
+  [
+    // Time-related
+    { keywords: ["how long", "when", "time", "duration"], icon: Clock },
+    // International/location
+    {
+      keywords: ["international", "worldwide", "country", "abroad"],
+      icon: Globe,
+    },
+    // Tracking
+    { keywords: ["track", "tracking", "where is", "status"], icon: MapPin },
+    // Cost/payment
+    { keywords: ["charge", "cost", "price", "pay", "fee"], icon: CreditCard },
+    // Food safety
+    {
+      keywords: ["food safe", "microwave", "dishwasher", "oven"],
+      icon: Utensils,
+    },
+    // Customization
+    {
+      keywords: ["custom", "personalize", "engrave", "special order"],
+      icon: Palette,
+    },
+    // Care/maintenance
+    { keywords: ["care", "clean", "maintain", "wash"], icon: Sparkles },
+    // Returns
+    { keywords: ["return", "send back"], icon: RotateCcw },
+    // Refunds
+    { keywords: ["refund", "money back"], icon: CreditCard },
+    // Exchange
+    { keywords: ["exchange", "swap", "replace"], icon: ArrowLeftRight },
+    // Gift
+    { keywords: ["gift", "wrap", "present"], icon: Gift },
+    // Warranty/guarantee
+    { keywords: ["warranty", "guarantee", "damage", "broken"], icon: Shield },
+    // Workshop/events
+    { keywords: ["workshop", "event", "class", "book"], icon: Calendar },
+    // Safety/quality
+    {
+      keywords: ["safe", "quality", "handmade", "material"],
+      icon: ShieldCheck,
+    },
+    // Shipping general
+    { keywords: ["ship", "deliver", "dispatch"], icon: Truck },
+    // Product general
+    { keywords: ["product", "item", "piece"], icon: Package },
+  ];
+
+function getQuestionIcon(question: string): LucideIcon {
+  const normalizedQuestion = question.toLowerCase();
+
+  for (const pattern of QUESTION_ICON_PATTERNS) {
+    if (
+      pattern.keywords.some((keyword) => normalizedQuestion.includes(keyword))
+    ) {
+      return pattern.icon;
+    }
+  }
+
+  return HelpCircle;
+}
 
 interface FAQPageClientProps {
   content: FaqPageContent;
@@ -22,225 +103,87 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
     <>
       <MobileHeaderContainer title="FAQ" showBack backHref="/" />
 
-      <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
-        {/* Hero Section */}
-        <section className="container mx-auto px-4 py-6 lg:px-8 lg:py-12">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="font-display mb-4 text-4xl font-bold lg:text-6xl">
+      <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
+        <div className="container mx-auto px-4 lg:px-8">
+          {/* Desktop Page Header */}
+          <div className="hidden lg:block">
+            <ListingPageHeader
+              title="Frequently Asked Questions"
+              breadcrumbs={[
+                { label: "Home", href: "/" },
+                { label: "Help", href: "/faq" },
+                { label: "FAQ" },
+              ]}
+            />
+          </div>
+
+          {/* Mobile Page Header */}
+          <div className="mb-6 pt-4 lg:hidden">
+            <h1 className="font-display text-2xl font-bold text-neutral-900">
               Frequently Asked Questions
             </h1>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              Find answers to common questions about our products, shipping,
-              returns, and more. Can&apos;t find what you&apos;re looking for?
-              Contact us anytime.
-            </p>
+            <div className="bg-primary mt-3 h-[3px] w-12 rounded-full" />
           </div>
-        </section>
 
-        {/* FAQ Sections */}
-        <section className="bg-subtle-green py-8 lg:py-16">
-          <div className="container mx-auto px-4 lg:px-8">
-            {/* Mobile Layout */}
-            <div className="space-y-12 lg:hidden">
+          {/* FAQ Content */}
+          <div className="mx-auto max-w-3xl">
+            <div className="space-y-8">
               {content.categories.map((category) => (
                 <div key={category.title}>
-                  <h2 className="mb-6 text-xl font-bold">{category.title}</h2>
-                  <div className="shadow-soft rounded-2xl bg-white p-6">
+                  {/* Category Heading */}
+                  <h2 className="font-display mb-4 border-b border-neutral-200 pb-2 text-lg font-semibold text-neutral-900">
+                    {category.title}
+                  </h2>
+
+                  {/* Accordion Items */}
+                  <div className="space-y-3">
                     <Accordion type="single" collapsible className="w-full">
-                      {category.faqs.map((faq, index) => (
-                        <AccordionItem
-                          key={index}
-                          value={`${category.title}-${index}`}
-                        >
-                          <AccordionTrigger className="text-left font-medium">
-                            {faq.question}
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <p className="text-muted-foreground leading-relaxed">
-                              {faq.answer}
-                            </p>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
+                      {category.faqs.map((faq, index) => {
+                        const QuestionIcon = getQuestionIcon(faq.question);
+                        return (
+                          <AccordionItem
+                            key={index}
+                            value={`${category.title}-${index}`}
+                            className="shadow-soft hover:shadow-card mb-3 overflow-hidden rounded-xl border-0 bg-white transition-shadow"
+                          >
+                            <AccordionTrigger className="px-5 py-4 text-left font-medium hover:no-underline data-[state=open]:bg-neutral-50">
+                              <span className="flex items-center gap-3">
+                                <QuestionIcon className="text-primary size-5 shrink-0" />
+                                <span>{faq.question}</span>
+                              </span>
+                            </AccordionTrigger>
+                            <AccordionContent className="px-5 pb-4">
+                              <p className="text-muted-foreground leading-relaxed">
+                                {faq.answer}
+                              </p>
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      })}
                     </Accordion>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Desktop Layout */}
-            <div className="hidden gap-8 lg:grid lg:grid-cols-2">
-              {/* Info Card */}
-              <div className="bg-primary flex flex-col justify-center rounded-3xl p-10 text-white">
-                <p className="mb-4 text-sm font-medium tracking-wider text-white/70 uppercase">
-                  Help Center
-                </p>
-                <h2 className="mb-6 text-4xl font-bold">
-                  Frequently Asked Questions
-                </h2>
-                <p className="mb-8 text-lg leading-relaxed text-white/90">
-                  Find answers to common questions about our products, shipping,
-                  returns, and more.
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
-                      <HelpCircle className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">
-                        {content.categories.length} Categories
-                      </p>
-                      <p className="text-sm text-white/80">
-                        Covering all your questions
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
-                      <MessageCircle className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Quick Answers</p>
-                      <p className="text-sm text-white/80">
-                        Get help in seconds
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* FAQ Content */}
-              <div className="max-h-[600px] space-y-8 overflow-y-auto pr-2">
-                {content.categories.map((category) => (
-                  <div key={category.title}>
-                    <h2 className="mb-4 text-xl font-bold">{category.title}</h2>
-                    <div className="shadow-soft rounded-2xl bg-white p-6">
-                      <Accordion type="single" collapsible className="w-full">
-                        {category.faqs.map((faq, index) => (
-                          <AccordionItem
-                            key={index}
-                            value={`${category.title}-${index}`}
-                          >
-                            <AccordionTrigger className="text-left font-medium">
-                              {faq.question}
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              <p className="text-muted-foreground leading-relaxed">
-                                {faq.answer}
-                              </p>
-                            </AccordionContent>
-                          </AccordionItem>
-                        ))}
-                      </Accordion>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {/* Contact CTA */}
+            <div className="bg-primary-lighter mt-12 rounded-2xl p-6 text-center lg:p-8">
+              <h3 className="font-display mb-2 text-lg font-semibold text-neutral-900">
+                Still have questions?
+              </h3>
+              <p className="text-muted-foreground mb-4 text-sm">
+                Can&apos;t find the answer you&apos;re looking for? Please reach
+                out to our friendly team.
+              </p>
+              <a
+                href="/contact"
+                className="bg-primary hover:bg-primary-hover inline-flex rounded-lg px-6 py-2.5 text-sm font-medium text-white transition-colors"
+              >
+                Contact Us
+              </a>
             </div>
           </div>
-        </section>
-
-        {/* Still Have Questions */}
-        <section className="py-12 lg:py-20">
-          <div className="container mx-auto px-4 lg:px-8">
-            {/* Mobile Layout */}
-            <div className="lg:hidden">
-              <SectionHeader
-                title="Still Have Questions?"
-                description="Our team is here to help. Reach out and we'll get back to you within 24 hours."
-              />
-              <div className="grid gap-4 sm:grid-cols-2">
-                <a
-                  href="mailto:hello@poetryandpottery.com"
-                  className="group shadow-soft hover:shadow-card rounded-2xl bg-white p-6 transition-shadow"
-                >
-                  <h3 className="group-hover:text-primary mb-2 font-semibold">
-                    Email Us
-                  </h3>
-                  <p className="text-muted-foreground text-sm">
-                    hello@poetryandpottery.com
-                  </p>
-                </a>
-                <a
-                  href="tel:+919876543210"
-                  className="group shadow-soft hover:shadow-card rounded-2xl bg-white p-6 transition-shadow"
-                >
-                  <h3 className="group-hover:text-primary mb-2 font-semibold">
-                    Call Us
-                  </h3>
-                  <p className="text-muted-foreground text-sm">
-                    +91 98765 43210
-                  </p>
-                </a>
-              </div>
-            </div>
-
-            {/* Desktop Layout */}
-            <div className="hidden gap-8 lg:grid lg:grid-cols-2">
-              {/* Info Card */}
-              <div className="bg-primary flex flex-col justify-center rounded-3xl p-10 text-white">
-                <p className="mb-4 text-sm font-medium tracking-wider text-white/70 uppercase">
-                  Need More Help?
-                </p>
-                <h2 className="mb-6 text-4xl font-bold">
-                  Still Have Questions?
-                </h2>
-                <p className="text-lg leading-relaxed text-white/90">
-                  Our team is here to help. Reach out and we&apos;ll get back to
-                  you within 24 hours.
-                </p>
-              </div>
-
-              {/* Contact Options */}
-              <div className="flex flex-col justify-center gap-4">
-                <a
-                  href="mailto:hello@poetryandpottery.com"
-                  className="group shadow-soft hover:shadow-card flex items-center gap-4 rounded-2xl bg-white p-6 transition-shadow"
-                >
-                  <div className="bg-subtle-green flex h-14 w-14 items-center justify-center rounded-2xl">
-                    <Mail className="text-primary h-6 w-6" />
-                  </div>
-                  <div>
-                    <h3 className="group-hover:text-primary mb-1 font-semibold">
-                      Email Us
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      hello@poetryandpottery.com
-                    </p>
-                  </div>
-                </a>
-                <a
-                  href="tel:+919876543210"
-                  className="group shadow-soft hover:shadow-card flex items-center gap-4 rounded-2xl bg-white p-6 transition-shadow"
-                >
-                  <div className="bg-subtle-green flex h-14 w-14 items-center justify-center rounded-2xl">
-                    <Phone className="text-primary h-6 w-6" />
-                  </div>
-                  <div>
-                    <h3 className="group-hover:text-primary mb-1 font-semibold">
-                      Call Us
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      +91 98765 43210
-                    </p>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <CTASection
-          title="Ready to Shop?"
-          description="Explore our collection of handcrafted pottery and find the perfect piece for your home."
-          primaryButtonText="Shop Collection"
-          primaryButtonHref="/products"
-          secondaryButtonText="Contact Us"
-          secondaryButtonHref="/contact"
-          variant="solid"
-        />
+        </div>
       </main>
     </>
   );
