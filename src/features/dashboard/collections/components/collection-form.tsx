@@ -27,7 +27,7 @@ const collectionFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   slug: z.string().min(1, "Slug is required"),
   description: z.string(),
-  imageUrl: z.string(),
+  imageUrl: z.string().min(1, "Collection image is required"),
   startsAt: z.string(),
   endsAt: z.string(),
 });
@@ -168,7 +168,7 @@ export function CollectionForm({
       {/* Collection Image */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-neutral-900">
-          Collection Image
+          Collection Image *
         </h2>
         <R2ImageUploaderContainer
           folder="collections"
@@ -177,6 +177,9 @@ export function CollectionForm({
           value={imageUrl ? [imageUrl] : []}
           onChange={handleImageChange}
         />
+        {errors.imageUrl && (
+          <p className="mt-2 text-sm text-red-500">{errors.imageUrl.message}</p>
+        )}
       </div>
 
       {/* Form Actions */}

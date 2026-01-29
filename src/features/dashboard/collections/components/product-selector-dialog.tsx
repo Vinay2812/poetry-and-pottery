@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckIcon, PackageIcon, SearchIcon } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
@@ -37,13 +37,6 @@ export function ProductSelectorDialog({
   const [search, setSearch] = useState("");
   const [localSelectedIds, setLocalSelectedIds] =
     useState<number[]>(selectedProductIds);
-
-  // Reset local state when dialog opens
-  useMemo(() => {
-    if (isOpen) {
-      setLocalSelectedIds(selectedProductIds);
-    }
-  }, [isOpen, selectedProductIds]);
 
   const { data, loading } = useAdminProductsQuery({
     variables: {

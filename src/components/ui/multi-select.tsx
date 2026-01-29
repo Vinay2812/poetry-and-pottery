@@ -86,13 +86,22 @@ export function MultiSelect({
               selectedOptions.map((option) => (
                 <Badge key={option.value} variant="secondary" className="mr-1">
                   {option.label}
-                  <button
-                    type="button"
+                  <span
+                    role="button"
+                    tabIndex={0}
                     onClick={(e) => handleRemove(option.value, e)}
-                    className="ring-offset-background hover:bg-muted focus:ring-ring ml-1 rounded-full outline-none focus:ring-2 focus:ring-offset-2"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleRemove(
+                          option.value,
+                          e as unknown as React.MouseEvent,
+                        );
+                      }
+                    }}
+                    className="ring-offset-background hover:bg-muted focus:ring-ring ml-1 cursor-pointer rounded-full outline-none focus:ring-2 focus:ring-offset-2"
                   >
                     <X className="size-3" />
-                  </button>
+                  </span>
                 </Badge>
               ))
             ) : (
