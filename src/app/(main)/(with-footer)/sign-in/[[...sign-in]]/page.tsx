@@ -1,5 +1,7 @@
+import { MobileHeaderContainer } from "@/features/layout";
 import { SignIn } from "@clerk/nextjs";
-import Link from "next/link";
+
+import { ListingPageHeader } from "@/components/shared";
 
 import { clerkAppearance } from "@/lib/clerk-appearance";
 
@@ -16,26 +18,24 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
     : "/post-login";
 
   return (
-    <div className="from-background to-cream flex min-h-[70vh] items-center justify-center bg-linear-to-br px-4 py-12">
-      <div className="w-full max-w-[440px]">
-        {/* Brand Logo */}
-        <div className="mb-6 text-center">
-          <Link
-            href="/"
-            className="font-display text-primary text-xl font-extrabold"
-          >
-            Poetry & Pottery
-          </Link>
-        </div>
-
-        {/* Clerk Sign In Card */}
-        <div className="shadow-card rounded-2xl bg-white p-8 sm:p-10">
-          <SignIn
-            forceRedirectUrl={postLoginUrl}
-            appearance={clerkAppearance}
+    <>
+      <MobileHeaderContainer title="Sign In" showBack backHref="/" />
+      <div className="from-background bg-background container mx-auto flex min-h-[70vh] items-center justify-center bg-linear-to-br px-4 py-0 lg:px-8 lg:pt-10">
+        <div className="w-full">
+          <ListingPageHeader
+            title="Sign In"
+            subtitle="Welcome back! Please enter your details."
+            breadcrumbs={[{ label: "Home", href: "/" }, { label: "Sign In" }]}
           />
+          <div className="flex w-full justify-center">
+            {/* Clerk Sign In Card */}
+            <SignIn
+              forceRedirectUrl={postLoginUrl}
+              appearance={clerkAppearance}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

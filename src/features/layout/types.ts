@@ -62,7 +62,6 @@ export interface MobileHeaderProps {
   viewModel: MobileHeaderViewModel;
   currentPath: string;
   isHidden: boolean;
-  isScrolled: boolean;
   onBack: () => void;
   onSearchClick: () => void;
 }
