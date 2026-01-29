@@ -122,8 +122,13 @@ function getTotalItemsFrom(items: CartWithProduct[]) {
 
 export function useCart() {
   const { isSignedIn } = useAuth();
-  const { setCartCount, addToast, setSignInModalOpen, setSignInRedirectUrl } =
-    useUIStore();
+  const {
+    cartCount,
+    setCartCount,
+    addToast,
+    setSignInModalOpen,
+    setSignInRedirectUrl,
+  } = useUIStore();
   const [items, setItems] = useState<CartWithProduct[]>([]);
   const [optimisticItems, updateOptimisticItems] = useOptimistic(
     items,
@@ -200,9 +205,9 @@ export function useCart() {
         product,
       };
 
-      // Update cart count optimistically
-      const nextItems = applyCartOptimisticAction(items, optimisticAction);
-      setCartCount(getTotalItemsFrom(nextItems));
+      // Update cart count optimistically using the global count
+      const previousCount = cartCount;
+      setCartCount(previousCount + quantityToAdd);
 
       return new Promise<boolean>((resolve) => {
         // Wrap entire async operation in transition
@@ -219,7 +224,7 @@ export function useCart() {
               message: actionResult.error || "Failed to add to cart",
             });
             // Revert cart count
-            setCartCount(getTotalItemsFrom(items));
+            setCartCount(previousCount);
             resolve(false);
             return;
           }
@@ -236,6 +241,7 @@ export function useCart() {
     [
       isSignedIn,
       items,
+      cartCount,
       addToast,
       setSignInModalOpen,
       setSignInRedirectUrl,
@@ -256,9 +262,11 @@ export function useCart() {
         productId,
       };
 
-      // Update cart count optimistically
-      const nextItems = applyCartOptimisticAction(items, optimisticAction);
-      setCartCount(getTotalItemsFrom(nextItems));
+      // Update cart count optimistically using the global count
+      const existingItem = items.find((i) => i.product_id === productId);
+      const quantityToRemove = existingItem?.quantity ?? 1;
+      const previousCount = cartCount;
+      setCartCount(Math.max(0, previousCount - quantityToRemove));
 
       return new Promise<boolean>((resolve) => {
         startTransition(async () => {
@@ -274,7 +282,7 @@ export function useCart() {
               message: actionResult.error || "Failed to remove from cart",
             });
             // Revert cart count
-            setCartCount(getTotalItemsFrom(items));
+            setCartCount(previousCount);
             resolve(false);
             return;
           }
@@ -288,6 +296,7 @@ export function useCart() {
     [
       isSignedIn,
       items,
+      cartCount,
       addToast,
       removeFromCartMutate,
       runWithLoading,
@@ -311,9 +320,12 @@ export function useCart() {
         quantity: clampedQuantity,
       };
 
-      // Update cart count optimistically
-      const nextItems = applyCartOptimisticAction(items, optimisticAction);
-      setCartCount(getTotalItemsFrom(nextItems));
+      // Update cart count optimistically using the global count
+      const existingItem = items.find((i) => i.product_id === productId);
+      const currentItemQuantity = existingItem?.quantity ?? 0;
+      const quantityDiff = clampedQuantity - currentItemQuantity;
+      const previousCount = cartCount;
+      setCartCount(Math.max(0, previousCount + quantityDiff));
 
       return new Promise<boolean>((resolve) => {
         startTransition(async () => {
@@ -329,7 +341,7 @@ export function useCart() {
               message: actionResult.error || "Failed to update cart",
             });
             // Revert cart count
-            setCartCount(getTotalItemsFrom(items));
+            setCartCount(previousCount);
             resolve(false);
             return;
           }
@@ -343,6 +355,7 @@ export function useCart() {
     [
       isSignedIn,
       items,
+      cartCount,
       addToast,
       updateCartQuantityMutate,
       runWithLoading,

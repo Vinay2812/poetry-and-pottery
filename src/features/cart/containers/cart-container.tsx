@@ -2,14 +2,13 @@
 
 import { useCreateOrder } from "@/data/orders/gateway/client";
 import type { ShippingAddress } from "@/data/orders/types";
-import { useAuthAction, useCart } from "@/hooks";
+import { useAuthAction, useCart, useWishlist } from "@/hooks";
 import { useUIStore } from "@/store";
 import type { CartWithProduct } from "@/types";
 import { useRouter } from "next/navigation";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
-import { CartSkeleton } from "@/components/skeletons";
 
 import { contactBusiness } from "@/lib/contact-business";
 
@@ -53,11 +52,7 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
   };
 }
 
-export function CartContainer({
-  initialCartItems,
-  recommendedProducts,
-  initialAddresses,
-}: CartContainerProps) {
+export function CartContainer({ initialCartItems }: CartContainerProps) {
   const mappedInitialItems = useMemo(
     () => initialCartItems.map(mapToCartWithProduct),
     [initialCartItems],
@@ -70,8 +65,9 @@ export function CartContainer({
   const { mutate: createOrderMutate } = useCreateOrder();
   const [isOrdering, setIsOrdering] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<UserAddress | null>(
-    initialAddresses[0] || null,
+    null,
   );
+  const [isCleared, setIsCleared] = useState(false);
 
   const {
     items: cartItems,
@@ -82,14 +78,17 @@ export function CartContainer({
     clear,
   } = useCart();
 
+  const { addToWishlist } = useWishlist();
+
   // Use cart items from hook, fallback to initial if not hydrated yet
   const displayItems = cartItems.length > 0 ? cartItems : mappedInitialItems;
 
   useEffect(() => {
-    if (mappedInitialItems.length > 0 && cartItems.length === 0) {
+    // Don't re-hydrate if cart was intentionally cleared (e.g., after placing order)
+    if (mappedInitialItems.length > 0 && cartItems.length === 0 && !isCleared) {
       hydrate(mappedInitialItems);
     }
-  }, [mappedInitialItems, cartItems.length, hydrate]);
+  }, [mappedInitialItems, cartItems.length, hydrate, isCleared]);
 
   // Build cart item view models with availability status
   const allCartItemViewModels: CartItemViewModel[] = useMemo(
@@ -188,6 +187,20 @@ export function CartContainer({
     [removeFromCart],
   );
 
+  const handleMoveToWishlist = useCallback(
+    async (productId: number) => {
+      const success = await addToWishlist(productId);
+      if (success) {
+        await removeFromCart(productId);
+        addToast({
+          type: "success",
+          message: "Moved to wishlist",
+        });
+      }
+    },
+    [addToWishlist, removeFromCart, addToast],
+  );
+
   const handleSelectAddress = useCallback((address: UserAddress | null) => {
     setSelectedAddress(address);
   }, []);
@@ -207,7 +220,11 @@ export function CartContainer({
       setIsOrdering(true);
 
       try {
+        // Get product IDs from available items only
+        const productIds = availableItems.map((item) => item.productId);
+
         const result = await createOrderMutate({
+          productIds,
           shippingFee: 150,
           shippingAddress: {
             name: selectedAddress.name,
@@ -229,6 +246,8 @@ export function CartContainer({
           return;
         }
 
+        // Mark as cleared before calling clear to prevent re-hydration from initial data
+        setIsCleared(true);
         clear();
 
         addToast({
@@ -283,7 +302,7 @@ export function CartContainer({
   }, [
     requireAuth,
     isOrdering,
-    availableItems.length,
+    availableItems,
     selectedAddress,
     addToast,
     clear,
@@ -292,19 +311,14 @@ export function CartContainer({
     createOrderMutate,
   ]);
 
-  const canCheckout =
-    availableItems.length > 0 &&
-    selectedAddress !== null &&
-    !hasUnavailableItems;
+  const canCheckout = availableItems.length > 0 && selectedAddress !== null;
 
   // Build checkout button text
   const checkoutButtonText = isOrdering
     ? "Placing Order..."
-    : hasUnavailableItems
-      ? "Remove unavailable items to continue"
-      : !selectedAddress
-        ? "Select Address to Continue"
-        : "Request Order";
+    : !selectedAddress
+      ? "Select Address to Continue"
+      : "Request Order";
 
   // Build the view model
   const viewModel: CartViewModel = {
@@ -317,8 +331,6 @@ export function CartContainer({
       total: availableTotal,
     },
     selectedAddress,
-    addresses: initialAddresses,
-    recommendedProducts,
     isOrdering,
     canCheckout,
     checkoutButtonText,
@@ -327,14 +339,13 @@ export function CartContainer({
   };
 
   return (
-    <Suspense fallback={<CartSkeleton />}>
-      <Cart
-        viewModel={viewModel}
-        onQuantityChange={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onSelectAddress={handleSelectAddress}
-        onCheckout={handleCheckout}
-      />
-    </Suspense>
+    <Cart
+      viewModel={viewModel}
+      onQuantityChange={handleUpdateQuantity}
+      onRemoveItem={handleRemoveItem}
+      onMoveToWishlist={handleMoveToWishlist}
+      onSelectAddress={handleSelectAddress}
+      onCheckout={handleCheckout}
+    />
   );
 }

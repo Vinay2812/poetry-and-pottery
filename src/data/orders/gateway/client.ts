@@ -22,6 +22,7 @@ export type CancelOrderResult =
 // Hook return types
 interface UseCreateOrderReturn {
   mutate: (data: {
+    productIds: number[];
     shippingFee: number;
     shippingAddress: ShippingAddress;
   }) => Promise<CreateOrderResult>;
@@ -40,6 +41,7 @@ export function useCreateOrder(): UseCreateOrderReturn {
 
   const mutate = useCallback(
     async (data: {
+      productIds: number[];
       shippingFee: number;
       shippingAddress: ShippingAddress;
     }): Promise<CreateOrderResult> => {
@@ -47,6 +49,7 @@ export function useCreateOrder(): UseCreateOrderReturn {
         const { data: result } = await graphqlMutate({
           variables: {
             input: {
+              product_ids: data.productIds,
               shipping_fee: data.shippingFee,
               shipping_address: {
                 name: data.shippingAddress.name,

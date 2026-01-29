@@ -112,8 +112,6 @@ export interface CartViewModel {
   unavailableItems: CartItemViewModel[];
   orderSummary: OrderSummaryViewModel;
   selectedAddress: UserAddress | null;
-  addresses: UserAddress[];
-  recommendedProducts: ProductBase[];
   isOrdering: boolean;
   canCheckout: boolean;
   checkoutButtonText: string;
@@ -128,6 +126,7 @@ export interface CartProps {
   viewModel: CartViewModel;
   onQuantityChange: (productId: number, quantity: number) => void;
   onRemoveItem: (productId: number) => void;
+  onMoveToWishlist: (productId: number) => void;
   onSelectAddress: (address: UserAddress | null) => void;
   onCheckout: () => void;
 }
@@ -137,6 +136,4 @@ export interface CartProps {
  */
 export interface CartContainerProps {
   initialCartItems: CartItem[];
-  recommendedProducts: ProductBase[];
-  initialAddresses: UserAddress[];
 }

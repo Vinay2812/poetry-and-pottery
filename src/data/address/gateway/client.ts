@@ -7,7 +7,23 @@ import {
   useCreateAddressMutation as useCreateAddressGraphQL,
   useDeleteAddressMutation as useDeleteAddressGraphQL,
   useUpdateAddressMutation as useUpdateAddressGraphQL,
+  useUserAddressesQuery,
 } from "@/graphql/generated/graphql";
+
+// Query hook for fetching user addresses
+export function useUserAddresses() {
+  const { data, loading, error, refetch } = useUserAddressesQuery({
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    addresses: (data?.userAddresses.addresses ?? []) as UserAddress[],
+    total: data?.userAddresses.total ?? 0,
+    isLoading: loading,
+    error,
+    refetch,
+  };
+}
 
 // Input types
 export interface AddressFormData {

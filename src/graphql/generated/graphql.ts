@@ -648,6 +648,7 @@ export type CreateEventReviewInput = {
 };
 
 export type CreateOrderInput = {
+  product_ids: Array<Scalars['Int']['input']>;
   shipping_address: ShippingAddressInput;
   shipping_fee: Scalars['Int']['input'];
 };

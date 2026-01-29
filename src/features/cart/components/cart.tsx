@@ -1,14 +1,17 @@
 "use client";
 
 import { MobileHeaderContainer } from "@/features/layout";
-import { AnimatePresence } from "framer-motion";
-import { AlertTriangle, ShoppingCartIcon } from "lucide-react";
+import { RecommendedProductsContainer } from "@/features/recommended-products";
+import { AnimatePresence, motion } from "framer-motion";
+import { AlertCircle, Heart, ShoppingCartIcon, Trash2, X } from "lucide-react";
+import Link from "next/link";
 
-import { AddressSelector } from "@/components/address";
+import { AddressSelectorContainer } from "@/components/address";
 import { CartItemCard } from "@/components/cards";
 import { OrderSummary } from "@/components/orders";
-import { EmptyState, ProductCarousel } from "@/components/sections";
-import { ListingPageHeader } from "@/components/shared";
+import { EmptyState } from "@/components/sections";
+import { ListingPageHeader, OptimizedImage } from "@/components/shared";
+import { Button } from "@/components/ui/button";
 
 import type { CartProps } from "../types";
 
@@ -16,6 +19,7 @@ export function Cart({
   viewModel,
   onQuantityChange,
   onRemoveItem,
+  onMoveToWishlist,
   onSelectAddress,
   onCheckout,
 }: CartProps) {
@@ -24,15 +28,12 @@ export function Cart({
     unavailableItems,
     orderSummary,
     selectedAddress,
-    addresses,
-    recommendedProducts,
     isOrdering,
     canCheckout,
     checkoutButtonText,
     hasUnavailableItems,
   } = viewModel;
 
-  const hasRecommendations = recommendedProducts.length > 0;
   const availableItemCount = cartItems.length;
   const totalItemCount = cartItems.length + unavailableItems.length;
 
@@ -55,70 +56,31 @@ export function Cart({
                 : undefined
             }
             breadcrumbs={[{ label: "Home", href: "/" }, { label: "Your Cart" }]}
-            // className="hidden lg:block"
           />
 
           {totalItemCount > 0 ? (
-            <div className={hasRecommendations ? "mb-12" : ""}>
+            <div className="mb-12">
               <div className="grid gap-8 lg:grid-cols-3">
                 {/* Cart Items & Address */}
                 <div className="min-w-0 space-y-8 lg:col-span-2">
-                  {/* Desktop Table Header */}
-                  <div className="hidden border-b border-neutral-200 pb-3 lg:grid lg:grid-cols-[1fr_200px_100px_40px] lg:gap-4 lg:px-4">
-                    <span className="text-xs font-medium tracking-wider text-neutral-500 uppercase">
-                      Product
-                    </span>
-                    <span className="text-xs font-medium tracking-wider text-neutral-500 uppercase">
-                      Quantity
-                    </span>
-                    <span className="text-right text-xs font-medium tracking-wider text-neutral-500 uppercase">
-                      Total
-                    </span>
-                    <span />
-                  </div>
-
-                  {/* Unavailable Items Warning */}
-                  {hasUnavailableItems && (
-                    <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-4">
-                      <div className="mb-3 flex items-center gap-2 text-red-700">
-                        <AlertTriangle className="h-5 w-5" />
-                        <h3 className="font-semibold">
-                          Unavailable Items ({unavailableItems.length})
-                        </h3>
-                      </div>
-                      <p className="mb-4 text-sm text-red-600">
-                        These items are no longer available. Please remove them
-                        to continue with your order.
-                      </p>
-                      <div className="space-y-3">
-                        <AnimatePresence mode="popLayout">
-                          {unavailableItems.map((item) => (
-                            <CartItemCard
-                              key={item.productId}
-                              product={item.product}
-                              quantity={item.quantity}
-                              onQuantityChange={(quantity) =>
-                                onQuantityChange(item.productId, quantity)
-                              }
-                              onRemove={() => onRemoveItem(item.productId)}
-                              isLoading={item.isLoading}
-                              availability={item.availability}
-                            />
-                          ))}
-                        </AnimatePresence>
-                      </div>
-                    </div>
-                  )}
-
                   {/* Available Cart Items */}
                   {availableItemCount > 0 && (
                     <div>
-                      {hasUnavailableItems && (
-                        <h3 className="mb-3 text-sm font-medium text-neutral-600">
-                          Available Items ({availableItemCount})
-                        </h3>
-                      )}
-                      <div className="space-y-4">
+                      {/* Desktop Table Header */}
+                      <div className="hidden border-b border-neutral-200 pb-3 lg:grid lg:grid-cols-[1fr_200px_100px_80px] lg:gap-4 lg:px-4">
+                        <span className="text-xs font-medium tracking-wider text-neutral-500 uppercase">
+                          Product
+                        </span>
+                        <span className="text-xs font-medium tracking-wider text-neutral-500 uppercase">
+                          Quantity
+                        </span>
+                        <span className="text-right text-xs font-medium tracking-wider text-neutral-500 uppercase">
+                          Total
+                        </span>
+                        <span />
+                      </div>
+
+                      <div className="mt-4 space-y-4">
                         <AnimatePresence mode="popLayout">
                           {cartItems.map((item) => (
                             <CartItemCard
@@ -129,6 +91,9 @@ export function Cart({
                                 onQuantityChange(item.productId, quantity)
                               }
                               onRemove={() => onRemoveItem(item.productId)}
+                              onMoveToWishlist={() =>
+                                onMoveToWishlist(item.productId)
+                              }
                               isLoading={item.isLoading}
                               availability={item.availability}
                             />
@@ -138,11 +103,128 @@ export function Cart({
                     </div>
                   )}
 
+                  {/* Unavailable Items Section */}
+                  {hasUnavailableItems && (
+                    <div className="rounded-2xl border border-amber-200/60 bg-amber-50/30 p-4 lg:p-5">
+                      <div className="mb-4 flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-amber-700">
+                          <AlertCircle className="h-4 w-4" />
+                          <h3 className="text-sm font-medium">
+                            Unavailable ({unavailableItems.length})
+                          </h3>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 gap-1.5 px-2 text-xs text-amber-700 hover:bg-amber-100 hover:text-amber-800"
+                            onClick={() => {
+                              unavailableItems.forEach((item) =>
+                                onMoveToWishlist(item.productId),
+                              );
+                            }}
+                          >
+                            <Heart className="h-3 w-3" />
+                            <span className="hidden sm:inline">
+                              Save all to Wishlist
+                            </span>
+                            <span className="sm:hidden">Save all</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 gap-1.5 px-2 text-xs text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700"
+                            onClick={() => {
+                              unavailableItems.forEach((item) =>
+                                onRemoveItem(item.productId),
+                              );
+                            }}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                            <span className="hidden sm:inline">Remove all</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      <p className="mb-4 text-xs text-amber-600/80">
+                        These items won&apos;t be included in your order.
+                      </p>
+
+                      {/* Unavailable Items List - Simple rows */}
+                      <div className="space-y-2">
+                        <AnimatePresence mode="popLayout">
+                          {unavailableItems.map((item) => (
+                            <motion.div
+                              key={item.productId}
+                              layout
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, scale: 0.95 }}
+                              transition={{ duration: 0.15 }}
+                              className="group flex items-center gap-3 rounded-xl bg-white/60 p-2.5 transition-colors hover:bg-white"
+                            >
+                              {/* Product Image */}
+                              <Link
+                                href={`/products/${item.product.slug}`}
+                                className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-neutral-100 opacity-60 grayscale"
+                              >
+                                <OptimizedImage
+                                  src={
+                                    item.product.image_urls[0] ||
+                                    "/placeholder.jpg"
+                                  }
+                                  alt={item.product.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </Link>
+
+                              {/* Product Info */}
+                              <div className="min-w-0 flex-1">
+                                <Link href={`/products/${item.product.slug}`}>
+                                  <h4 className="line-clamp-1 text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900">
+                                    {item.product.name}
+                                  </h4>
+                                </Link>
+                                <p className="mt-0.5 text-xs text-amber-600">
+                                  {item.availability.message}
+                                </p>
+                              </div>
+
+                              {/* Actions */}
+                              <div className="flex shrink-0 items-center gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="hover:bg-primary/10 hover:text-primary h-7 w-7 rounded-full text-neutral-400"
+                                  onClick={() =>
+                                    onMoveToWishlist(item.productId)
+                                  }
+                                  title="Save to Wishlist"
+                                >
+                                  <Heart className="h-3.5 w-3.5" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-7 w-7 rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-500"
+                                  onClick={() => onRemoveItem(item.productId)}
+                                  title="Remove"
+                                >
+                                  <X className="h-3.5 w-3.5" />
+                                </Button>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Address Selector */}
                   <div className="shadow-soft overflow-hidden rounded-2xl border border-neutral-100 bg-white p-4 lg:p-6">
-                    <AddressSelector
-                      addresses={addresses}
-                      selectedAddressId={selectedAddress?.id || null}
+                    <AddressSelectorContainer
+                      selectedAddressId={selectedAddress?.id}
                       onSelectAddress={onSelectAddress}
                     />
                   </div>
@@ -174,13 +256,10 @@ export function Cart({
           )}
 
           {/* Recommendations */}
-          {hasRecommendations && (
-            <ProductCarousel
-              products={recommendedProducts}
-              title="You might also like"
-              className="mb-42 lg:mb-0"
-            />
-          )}
+          <RecommendedProductsContainer
+            title="You might also like"
+            className="mb-42 lg:mb-0"
+          />
         </div>
       </main>
     </>

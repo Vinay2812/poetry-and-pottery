@@ -1,6 +1,4 @@
-import { getUserAddresses } from "@/data/address/gateway/server";
 import { getCart } from "@/data/cart/gateway/server";
-import { getRecommendedProducts } from "@/data/products/gateway/server";
 import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
 
@@ -21,17 +19,7 @@ export const metadata: Metadata = {
 export default async function CartPage() {
   await requireAuth();
 
-  const [cartResult, recommendedResult, addressResult] = await Promise.all([
-    getCart(),
-    getRecommendedProducts({ limit: 4 }),
-    getUserAddresses(),
-  ]);
+  const cartResult = await getCart();
 
-  return (
-    <CartContainer
-      initialCartItems={cartResult.items}
-      recommendedProducts={recommendedResult.products}
-      initialAddresses={addressResult.success ? addressResult.data : []}
-    />
-  );
+  return <CartContainer initialCartItems={cartResult.items} />;
 }
