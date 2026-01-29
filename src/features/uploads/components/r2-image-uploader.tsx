@@ -107,7 +107,10 @@ function SortableUploadItem({
       {item.isUploading && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30">
           <div className="flex flex-col items-center gap-2">
-            <Loader2 className="size-6 animate-spin text-white" />
+            <>
+              <Loader2 className="size-6 animate-spin text-white" />
+              Uploading...
+            </>
             <span className="text-xs font-medium text-white">
               {Math.round(item.progress)}%
             </span>

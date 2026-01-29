@@ -117,7 +117,10 @@ function NewsletterSubmitButton() {
       className="bg-primary hover:bg-primary-hover shadow-primary/20 h-121 rounded-full px-7 text-sm font-semibold shadow-lg transition-transform duration-200 hover:scale-[1.03] lg:h-12 lg:px-8 lg:text-base"
     >
       {pending ? (
-        <Loader2 className="h-4 w-4 animate-spin" />
+        <>
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Subscribing...
+        </>
       ) : (
         <>
           Subscribe to Newsletter

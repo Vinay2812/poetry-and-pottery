@@ -81,7 +81,10 @@ export function CartItemCard({
               disabled={isLoading}
             >
               {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Removing...
+                </>
               ) : (
                 <Trash2 className="h-4 w-4" />
               )}
@@ -167,7 +170,10 @@ export function CartItemCard({
           disabled={isLoading}
         >
           {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Removing...
+            </>
           ) : (
             <Trash2 className="h-4 w-4" />
           )}

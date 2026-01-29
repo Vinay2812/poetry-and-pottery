@@ -115,7 +115,10 @@ function ContentSaveButton() {
   return (
     <Button type="submit" disabled={pending}>
       {pending ? (
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Saving...
+        </>
       ) : (
         <Save className="mr-2 h-4 w-4" />
       )}

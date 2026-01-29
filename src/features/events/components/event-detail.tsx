@@ -302,7 +302,10 @@ export function EventDetail({
                     onClick={onReserveSeat}
                   >
                     {isLoading ? (
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Reserving seat...
+                      </>
                     ) : registered ? (
                       <motion.div
                         initial={{ scale: 0 }}
@@ -394,7 +397,10 @@ export function EventDetail({
             onClick={onReserveSeat}
           >
             {isLoading ? (
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Reserving seat...
+              </>
             ) : registered ? (
               <motion.div
                 initial={{ scale: 0 }}

@@ -101,7 +101,10 @@ export function GlobalSearch({
                   autoFocus={true}
                 />
                 {viewModel.isLoading ? (
-                  <Loader2 className="text-muted-foreground absolute top-1/2 right-8 h-5 w-5 -translate-y-1/2 animate-spin" />
+                  <>
+                    <Loader2 className="text-muted-foreground absolute top-1/2 right-8 h-5 w-5 -translate-y-1/2 animate-spin" />
+                    Searching...
+                  </>
                 ) : null}
               </div>
 

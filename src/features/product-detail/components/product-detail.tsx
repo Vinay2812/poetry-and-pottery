@@ -195,7 +195,10 @@ function ActionButtons({
           onClick={onAddToCart}
         >
           {cartLoading ? (
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Adding to cart...
+            </>
           ) : addedToCart ? (
             <motion.div
               initial={{ scale: 0 }}
@@ -230,7 +233,10 @@ function ActionButtons({
           disabled={wishlistLoading}
         >
           {wishlistLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Adding to wishlist...
+            </>
           ) : (
             <motion.div
               key={inWishlist ? "filled" : "empty"}
