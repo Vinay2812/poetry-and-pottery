@@ -1,6 +1,7 @@
 "use client";
 
 import { isGraphQL } from "@/consts/env";
+import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import type { ProductBase } from "@/data/products/types";
 import { getWishlist } from "@/data/wishlist/gateway/server";
 import { useRecommendedProductsQuery } from "@/features/recommended-products";
@@ -47,7 +48,7 @@ export function WishlistContainer({
 
   // Recommendations fetched client-side
   const { products: recommendations, isLoading: isRecommendationsLoading } =
-    useRecommendedProductsQuery({ limit: 4 });
+    useRecommendedProductsQuery({ limit: DEFAULT_PAGE_SIZE });
 
   // Infinite query for wishlist items
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =

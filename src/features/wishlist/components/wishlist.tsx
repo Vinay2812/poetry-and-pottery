@@ -1,34 +1,14 @@
 "use client";
 
-import type { ProductBase } from "@/data/products/types";
 import { MobileHeaderContainer } from "@/features/layout";
 import { AnimatePresence } from "framer-motion";
 import { Heart, Loader2 } from "lucide-react";
 
 import { ProductCard } from "@/components/cards";
-import { EmptyState } from "@/components/sections";
-import { StaggeredGrid } from "@/components/shared";
+import { EmptyState, ProductCarousel } from "@/components/sections";
+import { ListingPageHeader } from "@/components/shared";
 
 import type { WishlistProps } from "../types";
-
-interface RecommendationsSectionProps {
-  recommendations: ProductBase[];
-}
-
-function RecommendationsSection({
-  recommendations,
-}: RecommendationsSectionProps) {
-  return (
-    <section>
-      <h2 className="mb-4 text-lg font-semibold">You might also like</h2>
-      <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-        {recommendations.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </StaggeredGrid>
-    </section>
-  );
-}
 
 export function Wishlist({
   viewModel,
@@ -60,13 +40,20 @@ export function Wishlist({
       />
 
       <main className="pt-14 pb-24 lg:pt-20 lg:pb-0">
-        <div className="container mx-auto px-4 py-6 lg:px-8">
-          {/* Header */}
-          <div className="mb-6 flex items-center justify-between">
-            <p className="text-muted-foreground text-sm">
-              {totalItems} Items saved
-            </p>
-          </div>
+        <div className="container mx-auto px-4 py-0 lg:px-8">
+          {/* Page Header */}
+          <ListingPageHeader
+            title="My Wishlist"
+            subtitle={
+              totalItems > 0
+                ? `${totalItems} ${totalItems === 1 ? "item" : "items"} saved`
+                : undefined
+            }
+            breadcrumbs={[
+              { label: "Home", href: "/" },
+              { label: "My Wishlist" },
+            ]}
+          />
 
           {/* Wishlist Items */}
           {items.length > 0 ? (
@@ -119,7 +106,11 @@ export function Wishlist({
           {/* Recommendations - only show when all items are loaded */}
           {showRecommendationsSkeleton && recommendationsSkeleton}
           {displayRecommendations && (
-            <RecommendationsSection recommendations={recommendations} />
+            <ProductCarousel
+              products={recommendations}
+              title="You might also like"
+              subtitle="Handpicked pieces for your home."
+            />
           )}
         </div>
       </main>

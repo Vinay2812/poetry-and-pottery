@@ -1964,7 +1964,7 @@ _Completed Card (Past registrations):_
 
 #### Task 12.1: Sign In/Sign Up Pages
 
-**Status:** ✅ Approved
+**Status:** 🚧 In Progress
 **Wireframe:** [task-12-1-sign-in-sign-up.html](wireframes/task-12-1-sign-in-sign-up.html)
 **Approved Selection:**
 

@@ -65,7 +65,7 @@ export function ProductCarousel({
           {products.map((product) => (
             <div
               key={product.id}
-              className="min-w-0 shrink-0 basis-[80%] pl-4 sm:basis-[34%] lg:basis-[24%]"
+              className="min-w-0 shrink-0 basis-[80%] pl-4 sm:basis-[34%] lg:basis-[22%]"
             >
               <ProductCard product={product} disableImageCarousel />
             </div>
