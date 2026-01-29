@@ -53,12 +53,12 @@ export function WorkshopsSection({ events }: WorkshopsSectionProps) {
             href={`/events/${event.slug}`}
             className="group shadow-soft hover:shadow-card flex items-center gap-4 rounded-2xl bg-white p-4 transition-all duration-200 lg:p-5"
           >
-            <span className="text-2xl lg:text-3xl">
+            <span className="relative aspect-4/3 w-16 overflow-hidden text-2xl lg:text-3xl">
               <OptimizedImage
                 src={event.image}
                 alt={event.title}
-                width={60}
-                height={60}
+                fill
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                 className="rounded-lg object-cover"
               />
             </span>

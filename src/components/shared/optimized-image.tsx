@@ -1,9 +1,12 @@
 "use client";
 
+import { CircleAlertIcon, Loader2 } from "lucide-react";
 import NextImage, { ImageProps } from "next/image";
 import { useCallback, useState } from "react";
 
 import { cn } from "@/lib/utils";
+
+import { Skeleton } from "../ui/skeleton";
 
 export interface OptimizedImageProps extends Omit<ImageProps, "onError"> {
   fallbackSrc?: string;
@@ -13,13 +16,42 @@ export interface OptimizedImageProps extends Omit<ImageProps, "onError"> {
 
 const DEFAULT_FALLBACK = "/placeholder.jpg";
 
-function ImageSkeleton({ alt }: { alt: string }) {
+function ImageSkeleton({
+  width,
+  height,
+}: {
+  width?: number | `${number}`;
+  height?: number | `${number}`;
+}) {
   return (
-    <div className="bg-primary-light absolute inset-0 flex items-center justify-center overflow-hidden dark:bg-neutral-800">
+    <div
+      className={cn(
+        "bg-primary-light absolute inset-0 flex items-center justify-center overflow-hidden dark:bg-neutral-800",
+        width && height && `w-[${width}px] h-[${height}px]`,
+      )}
+    >
       <div className="relative z-10">
-        <div className="border-t-primary dark:border-t-primary h-8 w-8 animate-spin rounded-full border-2 border-neutral-300 dark:border-neutral-600" />
-        Loading {alt}...
+        <Loader2 className="text-primary size-6 animate-spin" />
       </div>
+    </div>
+  );
+}
+
+function FallbackImage({
+  width,
+  height,
+}: {
+  width?: number | `${number}`;
+  height?: number | `${number}`;
+}) {
+  return (
+    <div
+      className={cn(
+        "bg-primary-light absolute inset-0 z-10 flex items-center justify-center overflow-hidden dark:bg-neutral-800",
+        width && height && `w-[${width}px] h-[${height}px]`,
+      )}
+    >
+      <CircleAlertIcon className="text-primary size-6" />
     </div>
   );
 }
@@ -44,6 +76,7 @@ export function OptimizedImage({
       setHasError(true);
       setImgSrc(fallbackSrc);
       onError?.(new Error(`Failed to load image: ${src}`));
+      setIsLoading(false);
     }
   }, [src, fallbackSrc, hasError, onError]);
 
@@ -57,9 +90,14 @@ export function OptimizedImage({
       ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       : sizes;
 
+  const showSkeleton = showLoadingState && isLoading;
+
   return (
     <>
-      {showLoadingState && isLoading && <ImageSkeleton alt={alt} />}
+      {showSkeleton && (
+        <ImageSkeleton width={props.width} height={props.height} />
+      )}
+      {hasError && <FallbackImage width={props.width} height={props.height} />}
       <NextImage
         src={imgSrc}
         alt={alt}
