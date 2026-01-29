@@ -13,11 +13,12 @@ export interface OptimizedImageProps extends Omit<ImageProps, "onError"> {
 
 const DEFAULT_FALLBACK = "/placeholder.jpg";
 
-function ImageSkeleton() {
+function ImageSkeleton({ alt }: { alt: string }) {
   return (
     <div className="bg-primary-light absolute inset-0 flex items-center justify-center overflow-hidden dark:bg-neutral-800">
       <div className="relative z-10">
         <div className="border-t-primary dark:border-t-primary h-8 w-8 animate-spin rounded-full border-2 border-neutral-300 dark:border-neutral-600" />
+        Loading {alt}...
       </div>
     </div>
   );
@@ -58,7 +59,7 @@ export function OptimizedImage({
 
   return (
     <>
-      {showLoadingState && isLoading && <ImageSkeleton />}
+      {showLoadingState && isLoading && <ImageSkeleton alt={alt} />}
       <NextImage
         src={imgSrc}
         alt={alt}

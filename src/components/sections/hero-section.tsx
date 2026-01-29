@@ -59,6 +59,7 @@ export function HeroSection({
               alt={imageAlt}
               fill
               className="object-cover"
+              showLoadingState={false}
             />
           ) : null}
         </motion.div>
