@@ -50,7 +50,7 @@ export function WorkshopsSection({ events }: WorkshopsSectionProps) {
         {events.map((event) => (
           <Link
             key={event.id}
-            href={`/events/${event.slug}`}
+            href={`/events/${event.id}`}
             className="group shadow-soft hover:shadow-card flex items-center gap-4 rounded-2xl bg-white p-4 transition-all duration-200 lg:p-5"
           >
             <span className="relative aspect-4/3 w-16 overflow-hidden text-2xl lg:text-3xl">
