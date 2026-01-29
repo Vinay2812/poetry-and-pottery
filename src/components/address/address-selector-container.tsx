@@ -58,14 +58,13 @@ export function AddressSelectorContainer({
 }: AddressSelectorContainerProps) {
   const { addresses, isLoading } = useUserAddresses();
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
-    initialSelectedId ?? null,
+    initialSelectedId ?? addresses[0]?.id ?? null,
   );
 
   // Auto-select first address when addresses load
   useEffect(() => {
     if (!isLoading && addresses.length > 0 && selectedAddressId === null) {
       const firstAddress = addresses[0];
-      setSelectedAddressId(firstAddress.id);
       onSelectAddress(firstAddress);
     }
   }, [isLoading, addresses, selectedAddressId, onSelectAddress]);
