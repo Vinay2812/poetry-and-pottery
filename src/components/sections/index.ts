@@ -10,6 +10,5 @@ export { ProductCarousel } from "./product-carousel";
 export { SectionHeader } from "./section-header";
 export { TestimonialsSection } from "./testimonials-section";
 export { TestimonialsSectionContainer } from "./testimonials-section-container";
-export { USPStrip } from "./usp-strip";
 export { WorkshopsSection } from "./workshops-section";
 export { WorkshopsSectionContainer } from "./workshops-section-container";

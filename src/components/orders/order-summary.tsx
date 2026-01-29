@@ -1,6 +1,6 @@
 "use client";
 
-import { Hand, Lock, Truck } from "lucide-react";
+import { CreditCard, Hand, Lock, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,6 @@ interface OrderSummaryProps {
   shipping: number;
   tax: number;
   total: number;
-  freeShippingThreshold?: number;
   buttonText?: string;
   onCheckout?: () => void;
   disabled?: boolean;
@@ -24,15 +23,12 @@ export function OrderSummary({
   shipping,
   tax,
   total,
-  freeShippingThreshold = 75,
   buttonText = "Proceed to Checkout",
   onCheckout,
   disabled = false,
   itemCount = 0,
 }: OrderSummaryProps) {
   const [couponCode, setCouponCode] = useState("");
-  const amountToFreeShipping = freeShippingThreshold - subtotal;
-  const showFreeShippingMessage = amountToFreeShipping > 0;
 
   const handleApplyCoupon = () => {
     // TODO: Implement coupon logic
@@ -58,7 +54,7 @@ export function OrderSummary({
             <div className="flex justify-between text-sm">
               <span className="text-neutral-500">Shipping</span>
               <span className="text-primary font-medium">
-                {shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}
+                ₹{shipping.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
@@ -109,14 +105,8 @@ export function OrderSummary({
             {buttonText}
           </Button>
 
-          {showFreeShippingMessage && (
-            <p className="mt-4 text-center text-xs text-neutral-500">
-              Add ₹{amountToFreeShipping.toFixed(2)} more for free shipping!
-            </p>
-          )}
-
           {/* Trust Badges */}
-          <div className="mt-6 flex items-center justify-center gap-6 border-t border-neutral-100 pt-5">
+          <div className="mt-6 flex items-center justify-center gap-5 border-t border-neutral-100 pt-5">
             <div className="flex flex-col items-center gap-1.5">
               <div className="bg-primary-lighter flex h-8 w-8 items-center justify-center rounded-full">
                 <Lock className="text-primary h-4 w-4" />
@@ -124,10 +114,16 @@ export function OrderSummary({
               <span className="text-xs text-neutral-500">Secure</span>
             </div>
             <div className="flex flex-col items-center gap-1.5">
-              <div className="bg-primary-lighter flex h-8 w-8 items-center justify-center rounded-full">
-                <Truck className="text-primary h-4 w-4" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-50">
+                <CreditCard className="h-4 w-4 text-amber-600" />
               </div>
-              <span className="text-xs text-neutral-500">Free Shipping</span>
+              <span className="text-xs text-neutral-500">No COD</span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-50">
+                <RefreshCw className="h-4 w-4 text-amber-600" />
+              </div>
+              <span className="text-xs text-neutral-500">No Returns</span>
             </div>
             <div className="flex flex-col items-center gap-1.5">
               <div className="bg-primary-lighter flex h-8 w-8 items-center justify-center rounded-full">
@@ -152,7 +148,7 @@ export function OrderSummary({
               <div className="flex justify-between">
                 <span className="text-neutral-500">Shipping</span>
                 <span className="text-primary font-medium">
-                  {shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}
+                  ₹{shipping.toFixed(2)}
                 </span>
               </div>
               <Separator className="my-1.5" />
@@ -174,12 +170,6 @@ export function OrderSummary({
           >
             {buttonText}
           </Button>
-
-          {showFreeShippingMessage && (
-            <p className="mt-2 text-center text-xs text-neutral-500">
-              Add ₹{amountToFreeShipping.toFixed(2)} more for free shipping
-            </p>
-          )}
         </div>
       </div>
     </>

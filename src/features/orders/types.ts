@@ -40,7 +40,6 @@ export interface PaymentSummaryViewModel {
   totalDiscount: number;
   shippingFee: number;
   total: number;
-  isFreeShipping: boolean;
 }
 
 /**

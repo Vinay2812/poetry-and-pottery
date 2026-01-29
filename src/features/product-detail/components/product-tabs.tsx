@@ -94,10 +94,10 @@ export function ProductTabs({
               Shipping & Returns
             </h4>
             <ul className="list-inside list-disc space-y-1.5 text-sm text-neutral-500">
-              <li>Free shipping on orders over ₹2,000</li>
               <li>Standard delivery 5-7 business days</li>
               <li>Express delivery 2-3 business days</li>
-              <li>30-day return policy for unused items</li>
+              <li>No COD available</li>
+              <li>No exchange or returns</li>
             </ul>
           </div>
         </div>

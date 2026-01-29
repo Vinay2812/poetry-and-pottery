@@ -13,6 +13,7 @@ import {
   MapPin,
   Package,
   Palette,
+  RefreshCw,
   RotateCcw,
   Shield,
   ShieldCheck,
@@ -166,14 +167,56 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
               ))}
             </div>
 
+            {/* Important Policies */}
+            <div className="mt-12 mb-8">
+              <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
+                Important Policies
+              </h2>
+              <div className="shadow-soft grid gap-4 rounded-2xl bg-white p-5 sm:grid-cols-3 lg:p-6">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50">
+                    <CreditCard className="h-5 w-5 text-amber-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-neutral-900">No COD</h4>
+                    <p className="text-muted-foreground text-sm">
+                      Online payments only
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50">
+                    <RefreshCw className="h-5 w-5 text-amber-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-neutral-900">No Returns</h4>
+                    <p className="text-muted-foreground text-sm">
+                      All sales are final
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary-lighter flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                    <Truck className="text-primary h-5 w-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-neutral-900">India Only</h4>
+                    <p className="text-muted-foreground text-sm">
+                      No international shipping
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Contact CTA */}
-            <div className="bg-primary-lighter mt-12 rounded-2xl p-6 text-center lg:p-8">
+            <div className="bg-primary-lighter rounded-2xl p-6 text-center lg:p-8">
               <h3 className="font-display mb-2 text-lg font-semibold text-neutral-900">
                 Still have questions?
               </h3>
               <p className="text-muted-foreground mb-4 text-sm">
                 Can&apos;t find the answer you&apos;re looking for? Please reach
-                out to our friendly team.
+                out to us on WhatsApp.
               </p>
               <a
                 href="/contact"

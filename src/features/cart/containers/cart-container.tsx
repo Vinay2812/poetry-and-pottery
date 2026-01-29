@@ -257,7 +257,6 @@ export function CartContainer({
       shipping,
       tax,
       total,
-      freeShippingThreshold: 2000,
     },
     selectedAddress,
     addresses: initialAddresses,

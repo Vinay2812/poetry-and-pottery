@@ -1,4 +1,4 @@
-import { Hand, Lock, Truck } from "lucide-react";
+import { Hand, Lock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -24,11 +24,6 @@ export function TrustBadges({ className }: TrustBadgesProps) {
       <span className="flex items-center gap-1.5">
         <Lock className="h-3.5 w-3.5 text-neutral-400" />
         <span>Secure Payment</span>
-      </span>
-
-      <span className="flex items-center gap-1.5">
-        <Truck className="h-3.5 w-3.5 text-neutral-400" />
-        <span>Free Shipping</span>
       </span>
 
       <span className="flex items-center gap-1.5">

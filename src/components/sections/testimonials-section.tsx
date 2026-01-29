@@ -2,6 +2,8 @@
 
 import { Star } from "lucide-react";
 
+import { Marquee } from "@/components/ui/marquee";
+
 import type { FeaturedReviewsQuery } from "@/graphql/generated/types";
 
 interface TestimonialsSectionProps {
@@ -63,9 +65,6 @@ export function TestimonialsSection({ reviews }: TestimonialsSectionProps) {
     return null;
   }
 
-  // Duplicate for seamless loop
-  const duplicated = [...testimonials, ...testimonials];
-
   return (
     <section className="container mx-auto px-4 py-8 lg:px-8 lg:py-16">
       <div className="mb-6 flex flex-col lg:mb-8">
@@ -82,18 +81,17 @@ export function TestimonialsSection({ reviews }: TestimonialsSectionProps) {
         <div className="from-background pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r to-transparent lg:w-20" />
         <div className="from-background pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l to-transparent lg:w-20" />
 
-        {/* Scrolling track */}
-        <div className="animate-marquee flex gap-5">
-          {duplicated.map((testimonial, i) => (
+        <Marquee pauseOnHover className="[--duration:30s] [--gap:1.25rem]">
+          {testimonials.map((testimonial) => (
             <TestimonialCard
-              key={`${testimonial.id}-${i}`}
+              key={testimonial.id}
               rating={testimonial.rating}
               text={testimonial.text}
               name={testimonial.name}
               initial={testimonial.initial}
             />
           ))}
-        </div>
+        </Marquee>
       </div>
     </section>
   );

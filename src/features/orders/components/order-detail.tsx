@@ -126,17 +126,8 @@ function PaymentSummaryCard({ summary, className }: PaymentSummaryCardProps) {
         )}
         <div className="flex justify-between text-sm">
           <span className="text-neutral-500">Shipping</span>
-          <span
-            className={cn(
-              "font-medium",
-              summary.isFreeShipping
-                ? "text-emerald-600"
-                : "text-neutral-900 dark:text-neutral-100",
-            )}
-          >
-            {summary.isFreeShipping
-              ? "Free"
-              : `₹${summary.shippingFee.toLocaleString()}`}
+          <span className="font-medium text-neutral-900 dark:text-neutral-100">
+            ₹{summary.shippingFee.toLocaleString()}
           </span>
         </div>
         <div className="flex items-baseline justify-between border-t border-neutral-100 pt-3 dark:border-neutral-800">

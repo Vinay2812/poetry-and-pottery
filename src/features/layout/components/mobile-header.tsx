@@ -87,7 +87,7 @@ export function MobileHeader({
               )}
             />
             {viewModel.wishlistCount > 0 && (
-              <span className="bg-primary absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
+              <span className="bg-primary absolute top-1 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
                 {viewModel.wishlistCount}
               </span>
             )}

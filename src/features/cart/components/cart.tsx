@@ -110,7 +110,6 @@ export function Cart({
                   shipping={orderSummary.shipping}
                   tax={orderSummary.tax}
                   total={orderSummary.total}
-                  freeShippingThreshold={orderSummary.freeShippingThreshold}
                   buttonText={checkoutButtonText}
                   onCheckout={onCheckout}
                   disabled={!canCheckout || isOrdering}

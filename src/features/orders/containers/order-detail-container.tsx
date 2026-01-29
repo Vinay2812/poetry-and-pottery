@@ -56,7 +56,6 @@ export function OrderDetailContainer({ order }: OrderDetailContainerProps) {
         totalDiscount,
         shippingFee: order.shipping_fee,
         total: order.total,
-        isFreeShipping: order.shipping_fee === 0,
       },
       canReview,
       showWhatsAppButton,

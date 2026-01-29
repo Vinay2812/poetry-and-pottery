@@ -20,7 +20,6 @@ export interface OrderSummaryViewModel {
   shipping: number;
   tax: number;
   total: number;
-  freeShippingThreshold: number;
 }
 
 /**
