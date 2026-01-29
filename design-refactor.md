@@ -1616,7 +1616,7 @@ _Completed Card (Past registrations):_
 
 #### Task 10.2: Contact Page
 
-**Status:** ✅ Approved
+**Status:** Completed
 **Wireframe:** [task-10-2-contact-page.html](wireframes/task-10-2-contact-page.html)
 **Approved Selection:**
 
