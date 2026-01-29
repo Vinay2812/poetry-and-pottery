@@ -1,7 +1,5 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { getRecommendedProducts } from "@/data/products/gateway/server";
 import type { ProductBase } from "@/data/products/types";
 import { useQuery } from "@tanstack/react-query";
 
@@ -21,19 +19,15 @@ export function useRecommendedProductsQuery({
   });
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["recommended-products", limit, productId, isGraphQL],
+    queryKey: ["recommended-products", limit, productId],
     queryFn: async () => {
-      if (isGraphQL) {
-        const { data: gqlData, error: gqlError } = await fetchGraphQL({
-          variables: { limit, productId },
-        });
-        if (gqlError) {
-          throw new Error(gqlError.message);
-        }
-        return (gqlData?.recommendedProducts.products ?? []) as ProductBase[];
+      const { data: gqlData, error: gqlError } = await fetchGraphQL({
+        variables: { limit, productId },
+      });
+      if (gqlError) {
+        throw new Error(gqlError.message);
       }
-      const result = await getRecommendedProducts({ limit, productId });
-      return result.products;
+      return (gqlData?.recommendedProducts.products ?? []) as ProductBase[];
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

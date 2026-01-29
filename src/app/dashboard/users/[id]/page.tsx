@@ -7,7 +7,6 @@ import {
 } from "@/data/admin/users/gateway/server";
 import { OrdersBoardContainer } from "@/features/dashboard/orders";
 import { RegistrationsBoardContainer } from "@/features/dashboard/registrations";
-import { UserRole } from "@/prisma/generated/enums";
 import {
   ArrowLeftIcon,
   PackageIcon,
@@ -23,6 +22,8 @@ import { WishlistView } from "@/components/dashboard/wishlist-view";
 import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
+import { UserRole } from "@/graphql/generated/types";
 
 interface UserDetailPageProps {
   params: Promise<{ id: string }>;
@@ -83,10 +84,10 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
                 {user.name || "Unnamed User"}
               </h1>
               <Badge
-                variant={user.role === UserRole.ADMIN ? "default" : "outline"}
+                variant={user.role === UserRole.Admin ? "default" : "outline"}
                 className="gap-1"
               >
-                {user.role === UserRole.ADMIN && (
+                {user.role === UserRole.Admin && (
                   <ShieldIcon className="size-3" />
                 )}
                 {user.role}

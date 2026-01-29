@@ -1,4 +1,3 @@
-import { isGraphQL } from "@/consts/env";
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
@@ -92,7 +91,7 @@ export const useProductsV2 = (options: {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: ["products", ...Object.values(filters).toSorted(), isGraphQL],
+      queryKey: ["products", ...Object.values(filters).toSorted()],
       queryFn: getProducts,
       initialPageParam: 1,
       getNextPageParam: getNextPageParam,

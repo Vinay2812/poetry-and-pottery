@@ -1,6 +1,5 @@
 "use client";
 
-import { UserRole } from "@/prisma/generated/enums";
 import {
   AlertCircleIcon,
   ArrowDownUpIcon,
@@ -29,6 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import { UserRole } from "@/graphql/generated/types";
 
 import type { UserRowViewModel, UsersTableProps } from "../types";
 
@@ -84,10 +85,10 @@ function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
             >
               <button className="shrink-0 focus:outline-none">
                 <Badge
-                  variant={user.role === UserRole.ADMIN ? "default" : "outline"}
+                  variant={user.role === UserRole.Admin ? "default" : "outline"}
                   className="cursor-pointer gap-1 transition-opacity hover:opacity-80"
                 >
-                  {user.role === UserRole.ADMIN && (
+                  {user.role === UserRole.Admin && (
                     <ShieldIcon className="size-3" />
                   )}
                   {user.role}
@@ -98,9 +99,9 @@ function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
               <DropdownMenuItem
                 onClick={(e) => {
                   e.preventDefault();
-                  onRoleChange(user.id, UserRole.USER);
+                  onRoleChange(user.id, UserRole.User);
                 }}
-                disabled={user.role === UserRole.USER}
+                disabled={user.role === UserRole.User}
               >
                 <UserIcon className="mr-2 size-4" />
                 Set as User
@@ -108,9 +109,9 @@ function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
               <DropdownMenuItem
                 onClick={(e) => {
                   e.preventDefault();
-                  onRoleChange(user.id, UserRole.ADMIN);
+                  onRoleChange(user.id, UserRole.Admin);
                 }}
-                disabled={user.role === UserRole.ADMIN}
+                disabled={user.role === UserRole.Admin}
               >
                 <ShieldIcon className="mr-2 size-4" />
                 Set as Admin
@@ -218,10 +219,10 @@ function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
             <DropdownMenuTrigger asChild disabled={isPending}>
               <button className="focus:outline-none">
                 <Badge
-                  variant={user.role === UserRole.ADMIN ? "default" : "outline"}
+                  variant={user.role === UserRole.Admin ? "default" : "outline"}
                   className="cursor-pointer gap-1 transition-opacity hover:opacity-80"
                 >
-                  {user.role === UserRole.ADMIN && (
+                  {user.role === UserRole.Admin && (
                     <ShieldIcon className="size-3" />
                   )}
                   {user.role}
@@ -230,15 +231,15 @@ function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuItem
-                onClick={() => onRoleChange(user.id, UserRole.USER)}
-                disabled={user.role === UserRole.USER}
+                onClick={() => onRoleChange(user.id, UserRole.User)}
+                disabled={user.role === UserRole.User}
               >
                 <UserIcon className="mr-2 size-4" />
                 Set as User
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => onRoleChange(user.id, UserRole.ADMIN)}
-                disabled={user.role === UserRole.ADMIN}
+                onClick={() => onRoleChange(user.id, UserRole.Admin)}
+                disabled={user.role === UserRole.Admin}
               >
                 <ShieldIcon className="mr-2 size-4" />
                 Set as Admin

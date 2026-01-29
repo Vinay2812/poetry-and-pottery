@@ -1,12 +1,13 @@
 "use client";
 
-import { UserRole } from "@/prisma/generated/enums";
 import { useUIStore } from "@/store";
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
+import { UserRole } from "@/graphql/generated/types";
 
 import { AccountDropdown } from "../components/account-dropdown";
 import type { AccountDropdownViewModel, UserInfo } from "../types";
@@ -31,7 +32,7 @@ export function AccountDropdownContainer() {
 
     return {
       user: userInfo,
-      isAdmin: sessionClaims?.role === UserRole.ADMIN,
+      isAdmin: sessionClaims?.role === UserRole.Admin,
       pendingOrdersCount,
     };
   }, [user, sessionClaims?.role, pendingOrdersCount]);

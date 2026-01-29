@@ -1,13 +1,14 @@
 "use client";
 
 import { usePathInfo } from "@/hooks/use-path-info";
-import { UserRole } from "@/prisma/generated/enums";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useRef } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { DashboardSkeleton } from "@/components/skeletons";
+
+import { UserRole } from "@/graphql/generated/types";
 
 interface AdminRouteGuardProviderProps {
   children: ReactNode;
@@ -35,7 +36,7 @@ export function AdminRouteGuardProvider({
     }
 
     const role = sessionClaims?.role;
-    if (role !== UserRole.ADMIN) {
+    if (role !== UserRole.Admin) {
       startNavigation(() => {
         router.push("/");
       });

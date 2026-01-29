@@ -1,7 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import {
   useAdminUpdateRegistrationDetailsMutation,
@@ -12,8 +11,6 @@ import type {
   AdminRegistrationMutationResponse,
   UpdateRegistrationDetailsInput,
 } from "@/graphql/generated/types";
-
-import * as actionImpl from "../server/action";
 
 // ============ UPDATE REGISTRATION STATUS ============
 
@@ -31,10 +28,7 @@ interface UseAdminUpdateRegistrationStatusReturn {
 }
 
 export function useAdminUpdateRegistrationStatus(): UseAdminUpdateRegistrationStatusReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateRegistrationStatusMutation();
 
   const mutate = useCallback(
@@ -42,56 +36,28 @@ export function useAdminUpdateRegistrationStatus(): UseAdminUpdateRegistrationSt
       registrationId: string,
       status: string,
     ): Promise<UpdateRegistrationStatusResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { registrationId, status },
-          });
-          if (data?.adminUpdateRegistrationStatus) {
-            return { success: true, data: data.adminUpdateRegistrationStatus };
-          }
-          return {
-            success: false,
-            error: "Failed to update registration status",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { registrationId, status },
+        });
+        if (data?.adminUpdateRegistrationStatus) {
+          return { success: true, data: data.adminUpdateRegistrationStatus };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateRegistrationStatus(
-            registrationId,
-            status,
-          );
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update registration status",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: "Failed to update registration status",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE REGISTRATION PRICE ============
@@ -110,10 +76,7 @@ interface UseAdminUpdateRegistrationPriceReturn {
 }
 
 export function useAdminUpdateRegistrationPrice(): UseAdminUpdateRegistrationPriceReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateRegistrationPriceMutation();
 
   const mutate = useCallback(
@@ -121,56 +84,28 @@ export function useAdminUpdateRegistrationPrice(): UseAdminUpdateRegistrationPri
       registrationId: string,
       price: number,
     ): Promise<UpdateRegistrationPriceResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { registrationId, price },
-          });
-          if (data?.adminUpdateRegistrationPrice) {
-            return { success: true, data: data.adminUpdateRegistrationPrice };
-          }
-          return {
-            success: false,
-            error: "Failed to update registration price",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { registrationId, price },
+        });
+        if (data?.adminUpdateRegistrationPrice) {
+          return { success: true, data: data.adminUpdateRegistrationPrice };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateRegistrationPrice(
-            registrationId,
-            price,
-          );
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update registration price",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: "Failed to update registration price",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE REGISTRATION DETAILS ============
@@ -189,10 +124,7 @@ interface UseAdminUpdateRegistrationDetailsReturn {
 }
 
 export function useAdminUpdateRegistrationDetails(): UseAdminUpdateRegistrationDetailsReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateRegistrationDetailsMutation();
 
   const mutate = useCallback(
@@ -200,54 +132,26 @@ export function useAdminUpdateRegistrationDetails(): UseAdminUpdateRegistrationD
       registrationId: string,
       input: UpdateRegistrationDetailsInput,
     ): Promise<UpdateRegistrationDetailsResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { registrationId, input },
-          });
-          if (data?.adminUpdateRegistrationDetails) {
-            return { success: true, data: data.adminUpdateRegistrationDetails };
-          }
-          return {
-            success: false,
-            error: "Failed to update registration details",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { registrationId, input },
+        });
+        if (data?.adminUpdateRegistrationDetails) {
+          return { success: true, data: data.adminUpdateRegistrationDetails };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateRegistrationDetails(
-            registrationId,
-            input,
-          );
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update registration details",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: "Failed to update registration details",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }

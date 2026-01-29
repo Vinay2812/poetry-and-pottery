@@ -1,13 +1,10 @@
 "use server";
 
-import { isGraphQL } from "@/consts/env";
-
 import type {
   FeaturedReviewsQuery,
   ReviewsResponse,
 } from "@/graphql/generated/types";
 
-import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
 
 export async function getFeaturedReviews(
@@ -21,10 +18,7 @@ export async function getProductReviews(
   page: number = 1,
   limit: number = 10,
 ): Promise<ReviewsResponse> {
-  if (isGraphQL) {
-    return graphqlImpl.getProductReviews(productId, page, limit);
-  }
-  return actionImpl.getProductReviews(productId, page, limit);
+  return graphqlImpl.getProductReviews(productId, page, limit);
 }
 
 export async function getEventReviews(
@@ -32,8 +26,5 @@ export async function getEventReviews(
   page: number = 1,
   limit: number = 10,
 ): Promise<ReviewsResponse> {
-  if (isGraphQL) {
-    return graphqlImpl.getEventReviews(eventId, page, limit);
-  }
-  return actionImpl.getEventReviews(eventId, page, limit);
+  return graphqlImpl.getEventReviews(eventId, page, limit);
 }

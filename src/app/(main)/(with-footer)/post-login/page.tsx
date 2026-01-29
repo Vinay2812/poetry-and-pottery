@@ -1,9 +1,10 @@
 import { ENVIRONMENT } from "@/consts/env";
-import { UserRole } from "@/prisma/generated/enums";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { FlowChooser } from "@/components/auth";
+
+import { UserRole } from "@/graphql/generated/types";
 
 interface PostLoginPageProps {
   searchParams: Promise<{ redirect_url?: string }>;
@@ -29,7 +30,7 @@ export default async function PostLoginPage({
   }
 
   // Non-admin users → redirect immediately to intended URL or home
-  if (role !== UserRole.ADMIN) {
+  if (role !== UserRole.Admin) {
     redirect(redirect_url ? decodeURIComponent(redirect_url) : "/");
   }
 

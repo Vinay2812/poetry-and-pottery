@@ -1,18 +1,12 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import type { EventRegistration } from "@/graphql/generated/graphql";
 import {
   useCancelRegistrationMutation as useCancelRegistrationGraphQL,
   useRegisterForEventMutation as useRegisterForEventGraphQL,
 } from "@/graphql/generated/graphql";
-
-import {
-  cancelRegistration as cancelRegistrationAction,
-  registerForEvent as registerForEventAction,
-} from "../server/action";
 
 // Result types
 export type RegisterForEventResult =
@@ -40,133 +34,71 @@ interface UseCancelRegistrationReturn {
 }
 
 export function useRegisterForEvent(): UseRegisterForEventReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useRegisterForEventGraphQL();
+  const [graphqlMutate, { loading, error }] = useRegisterForEventGraphQL();
 
   const mutate = useCallback(
     async (input: {
       eventId: string;
       seats?: number;
     }): Promise<RegisterForEventResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: {
-              input: {
-                eventId: input.eventId,
-                seats: input.seats ?? 1,
-              },
+      try {
+        const { data } = await graphqlMutate({
+          variables: {
+            input: {
+              eventId: input.eventId,
+              seats: input.seats ?? 1,
             },
-          });
-          if (
-            data?.registerForEvent.success &&
-            data.registerForEvent.registration
-          ) {
-            return { success: true, data: data.registerForEvent.registration };
-          }
-          return {
-            success: false,
-            error:
-              data?.registerForEvent.error ?? "Failed to register for event",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+          },
+        });
+        if (
+          data?.registerForEvent.success &&
+          data.registerForEvent.registration
+        ) {
+          return { success: true, data: data.registerForEvent.registration };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await registerForEventAction({
-            eventId: input.eventId,
-            seats: input.seats ?? 1,
-          });
-          if (result.success && result.registration) {
-            return { success: true, data: result.registration };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to register for event",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: data?.registerForEvent.error ?? "Failed to register for event",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 export function useCancelRegistration(): UseCancelRegistrationReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useCancelRegistrationGraphQL();
+  const [graphqlMutate, { loading, error }] = useCancelRegistrationGraphQL();
 
   const mutate = useCallback(
     async (registrationId: string): Promise<CancelRegistrationResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { registrationId },
-          });
-          if (data?.cancelRegistration.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error:
-              data?.cancelRegistration.error ?? "Failed to cancel registration",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { registrationId },
+        });
+        if (data?.cancelRegistration.success) {
+          return { success: true };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await cancelRegistrationAction(registrationId);
-          if (result.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to cancel registration",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error:
+            data?.cancelRegistration.error ?? "Failed to cancel registration",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }

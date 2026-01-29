@@ -4,9 +4,10 @@ import {
   deleteEvent,
   updateEventStatus,
 } from "@/data/admin/events/gateway/server";
-import type { EventStatus } from "@/prisma/generated/enums";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
+
+import type { EventStatus } from "@/graphql/generated/types";
 
 import { EventsTable } from "../components/events-table";
 import type { EventsTableContainerProps } from "../types";

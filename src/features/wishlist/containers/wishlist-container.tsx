@@ -1,9 +1,7 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import type { ProductBase } from "@/data/products/types";
-import { getWishlist } from "@/data/wishlist/gateway/server";
 import { useRecommendedProductsQuery } from "@/features/recommended-products";
 import { useWishlist } from "@/hooks";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
@@ -55,31 +53,25 @@ export function WishlistContainer({
   // Infinite query for wishlist items
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["wishlist", isGraphQL],
+      queryKey: ["wishlist"],
       queryFn: async ({ pageParam = 1 }) => {
-        if (isGraphQL) {
-          // GraphQL mode: use Apollo lazy query
-          const { data: gqlData } = await fetchGraphQL({
-            variables: {
-              filter: {
-                page: pageParam,
-                limit: WISHLIST_PAGE_SIZE,
-              },
+        // GraphQL mode: use Apollo lazy query
+        const { data: gqlData } = await fetchGraphQL({
+          variables: {
+            filter: {
+              page: pageParam,
+              limit: WISHLIST_PAGE_SIZE,
             },
-          });
+          },
+        });
 
-          const wishlist = gqlData?.wishlist;
-          return {
-            data: (wishlist?.data ?? []) as WishlistItem[],
-            total: wishlist?.total ?? 0,
-            page: wishlist?.page ?? pageParam,
-            total_pages: wishlist?.total_pages ?? 0,
-          };
-        } else {
-          // Server action mode
-          const result = await getWishlist(pageParam);
-          return result;
-        }
+        const wishlist = gqlData?.wishlist;
+        return {
+          data: (wishlist?.data ?? []) as WishlistItem[],
+          total: wishlist?.total ?? 0,
+          page: wishlist?.page ?? pageParam,
+          total_pages: wishlist?.total_pages ?? 0,
+        };
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
@@ -133,7 +125,7 @@ export function WishlistContainer({
     async (productId: number) => {
       // Optimistically update the query cache to remove the item immediately
       queryClient.setQueryData(
-        ["wishlist", isGraphQL],
+        ["wishlist"],
         (oldData: typeof data | undefined) => {
           if (!oldData) return oldData;
           return {

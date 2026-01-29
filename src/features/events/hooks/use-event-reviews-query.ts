@@ -1,7 +1,5 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { getEventReviews } from "@/data/reviews/gateway/server";
 import { useQuery } from "@tanstack/react-query";
 
 import { useEventReviewsLazyQuery } from "@/graphql/generated/graphql";
@@ -21,30 +19,22 @@ export function useEventReviewsQuery({
   });
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["event-reviews", eventId, limit, isGraphQL],
+    queryKey: ["event-reviews", eventId, limit],
     queryFn: async () => {
-      if (isGraphQL) {
-        const { data: gqlData, error: gqlError } = await fetchGraphQL({
-          variables: {
-            eventId,
-            filter: { page: 1, limit },
-          },
-        });
+      const { data: gqlData, error: gqlError } = await fetchGraphQL({
+        variables: {
+          eventId,
+          filter: { page: 1, limit },
+        },
+      });
 
-        if (gqlError) {
-          throw new Error(gqlError.message);
-        }
-
-        return {
-          reviews: (gqlData?.eventReviews.data ?? []) as Review[],
-          total: gqlData?.eventReviews.total ?? 0,
-        };
+      if (gqlError) {
+        throw new Error(gqlError.message);
       }
 
-      const result = await getEventReviews(eventId, 1, limit);
       return {
-        reviews: result.data,
-        total: result.total,
+        reviews: (gqlData?.eventReviews.data ?? []) as Review[],
+        total: gqlData?.eventReviews.total ?? 0,
       };
     },
     staleTime: 2 * 60 * 1000, // 2 min cache - reviews change more frequently

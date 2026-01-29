@@ -1,7 +1,5 @@
 "use server";
 
-import { isGraphQL } from "@/consts/env";
-
 import type {
   EventDetail,
   EventRegistration,
@@ -12,7 +10,6 @@ import type {
   RegistrationsResponse,
 } from "@/graphql/generated/types";
 
-import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
 
 // Result types for consistent error handling
@@ -42,11 +39,7 @@ export async function getEvents(
   filter?: EventsFilterInput,
 ): Promise<GetEventsResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getEvents(filter);
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getEvents(filter);
+    const result = await graphqlImpl.getEvents(filter);
     return { success: true, data: result };
   } catch (error) {
     return {
@@ -58,14 +51,7 @@ export async function getEvents(
 
 export async function getEventBySlug(slug: string): Promise<GetEventResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getEventBySlug(slug);
-      if (!result) {
-        return { success: false, error: "Event not found" };
-      }
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getEventBySlug(slug);
+    const result = await graphqlImpl.getEventBySlug(slug);
     if (!result) {
       return { success: false, error: "Event not found" };
     }
@@ -80,14 +66,7 @@ export async function getEventBySlug(slug: string): Promise<GetEventResult> {
 
 export async function getEventById(id: string): Promise<GetEventResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getEventById(id);
-      if (!result) {
-        return { success: false, error: "Event not found" };
-      }
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getEventById(id);
+    const result = await graphqlImpl.getEventById(id);
     if (!result) {
       return { success: false, error: "Event not found" };
     }
@@ -104,11 +83,7 @@ export async function getUpcomingEvents(
   filter?: EventsFilterInput,
 ): Promise<GetEventsResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getUpcomingEvents(filter);
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getUpcomingEvents(filter);
+    const result = await graphqlImpl.getUpcomingEvents(filter);
     return { success: true, data: result };
   } catch (error) {
     return {
@@ -125,11 +100,7 @@ export async function getPastEvents(
   filter?: EventsFilterInput,
 ): Promise<GetEventsResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getPastEvents(filter);
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getPastEvents(filter);
+    const result = await graphqlImpl.getPastEvents(filter);
     return { success: true, data: result };
   } catch (error) {
     return {
@@ -144,14 +115,7 @@ export async function getEventWithUserContext(
   eventId: string,
 ): Promise<GetEventWithContextResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getEventWithUserContext(eventId);
-      if (!result) {
-        return { success: false, error: "Event not found" };
-      }
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getEventWithUserContext(eventId);
+    const result = await graphqlImpl.getEventWithUserContext(eventId);
     if (!result) {
       return { success: false, error: "Event not found" };
     }
@@ -166,24 +130,17 @@ export async function getEventWithUserContext(
 
 // ============ USER CONTEXT QUERIES ============
 
-export type { UserEventContext } from "../server/action";
+export type { UserEventContext } from "../server/graphql";
 
 export type GetUserEventContextResult =
-  | { success: true; data: actionImpl.UserEventContext }
+  | { success: true; data: graphqlImpl.UserEventContext }
   | { success: false; error: string };
 
 export async function getUserEventContext(
   eventId: string,
 ): Promise<GetUserEventContextResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getUserEventContext(eventId);
-      if (!result) {
-        return { success: false, error: "Event not found" };
-      }
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getUserEventContext(eventId);
+    const result = await graphqlImpl.getUserEventContext(eventId);
     if (!result) {
       return { success: false, error: "Event not found" };
     }
@@ -203,11 +160,7 @@ export async function getUserRegistrations(
   filter?: RegistrationsFilterInput,
 ): Promise<GetRegistrationsResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getUserRegistrations(filter);
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getUserRegistrations(filter);
+    const result = await graphqlImpl.getUserRegistrations(filter);
     return { success: true, data: result };
   } catch (error) {
     return {
@@ -222,14 +175,7 @@ export async function getRegistrationById(
   registrationId: string,
 ): Promise<GetRegistrationResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getRegistrationById(registrationId);
-      if (!result) {
-        return { success: false, error: "Registration not found" };
-      }
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getRegistrationById(registrationId);
+    const result = await graphqlImpl.getRegistrationById(registrationId);
     if (!result) {
       return { success: false, error: "Registration not found" };
     }
@@ -247,11 +193,7 @@ export async function getUpcomingRegistrations(
   filter?: RegistrationsFilterInput,
 ): Promise<GetRegistrationsResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getUpcomingRegistrations(filter);
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getUpcomingRegistrations(filter);
+    const result = await graphqlImpl.getUpcomingRegistrations(filter);
     return { success: true, data: result };
   } catch (error) {
     return {
@@ -268,11 +210,7 @@ export async function getCompletedRegistrations(
   filter?: RegistrationsFilterInput,
 ): Promise<GetRegistrationsResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getCompletedRegistrations(filter);
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getCompletedRegistrations(filter);
+    const result = await graphqlImpl.getCompletedRegistrations(filter);
     return { success: true, data: result };
   } catch (error) {
     return {

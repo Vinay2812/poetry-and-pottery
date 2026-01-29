@@ -1,7 +1,5 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useQuery } from "@tanstack/react-query";
 
@@ -21,43 +19,22 @@ export function useUpcomingEventsQuery({
   });
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [
-      "upcoming-events-recommendation",
-      limit,
-      excludeEventId,
-      isGraphQL,
-    ],
+    queryKey: ["upcoming-events-recommendation", limit, excludeEventId],
     queryFn: async (): Promise<EventBase[]> => {
-      if (isGraphQL) {
-        const { data: gqlData, error: gqlError } = await fetchGraphQL({
-          variables: {
-            filter: {
-              page: 1,
-              limit: limit + (excludeEventId ? 1 : 0), // Fetch one extra if we need to exclude
-            },
+      const { data: gqlData, error: gqlError } = await fetchGraphQL({
+        variables: {
+          filter: {
+            page: 1,
+            limit: limit + (excludeEventId ? 1 : 0), // Fetch one extra if we need to exclude
           },
-        });
-
-        if (gqlError) {
-          throw new Error(gqlError.message);
-        }
-
-        const events = (gqlData?.upcomingEvents.data ?? []) as EventBase[];
-        return excludeEventId
-          ? events.filter((e) => e.id !== excludeEventId).slice(0, limit)
-          : events;
-      }
-
-      const result = await getUpcomingEvents({
-        page: 1,
-        limit: limit + (excludeEventId ? 1 : 0),
+        },
       });
 
-      if (!result.success) {
-        throw new Error(result.error);
+      if (gqlError) {
+        throw new Error(gqlError.message);
       }
 
-      const events = result.data.data;
+      const events = (gqlData?.upcomingEvents.data ?? []) as EventBase[];
       return excludeEventId
         ? events.filter((e) => e.id !== excludeEventId).slice(0, limit)
         : events;

@@ -1,7 +1,6 @@
 "use client";
 
 import { updateOrderStatus } from "@/data/admin/orders/gateway/server";
-import { OrderStatus } from "@/prisma/generated/enums";
 import {
   useCallback,
   useMemo,
@@ -14,6 +13,7 @@ import type { KanbanColumn } from "@/components/dashboard/kanban-board";
 
 import { getOrderStatusColor } from "@/lib/status-utils";
 
+import { OrderStatus } from "@/graphql/generated/types";
 import type { AdminUserOrder } from "@/graphql/generated/types";
 
 import { OrdersBoard } from "../components/orders-board";
@@ -21,12 +21,12 @@ import type { OrdersBoardContainerProps } from "../types";
 
 // Define the columns for order status
 const ORDER_COLUMNS: { id: OrderStatus; title: string }[] = [
-  { id: OrderStatus.PENDING, title: "Pending" },
-  { id: OrderStatus.PROCESSING, title: "Approved" },
-  { id: OrderStatus.PAID, title: "Paid" },
-  { id: OrderStatus.SHIPPED, title: "Shipped" },
-  { id: OrderStatus.DELIVERED, title: "Delivered" },
-  { id: OrderStatus.CANCELLED, title: "Cancelled" },
+  { id: OrderStatus.Pending, title: "Pending" },
+  { id: OrderStatus.Processing, title: "Approved" },
+  { id: OrderStatus.Paid, title: "Paid" },
+  { id: OrderStatus.Shipped, title: "Shipped" },
+  { id: OrderStatus.Delivered, title: "Delivered" },
+  { id: OrderStatus.Cancelled, title: "Cancelled" },
 ];
 
 export function OrdersBoardContainer({ orders }: OrdersBoardContainerProps) {

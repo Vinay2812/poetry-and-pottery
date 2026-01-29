@@ -1,7 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import {
   useAdminCreateProductMutation,
@@ -16,8 +15,6 @@ import type {
   UpdateProductInput,
 } from "@/graphql/generated/types";
 
-import * as actionImpl from "../server/action";
-
 // ============ CREATE PRODUCT ============
 
 type CreateProductResult =
@@ -31,56 +28,27 @@ interface UseAdminCreateProductReturn {
 }
 
 export function useAdminCreateProduct(): UseAdminCreateProductReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useAdminCreateProductMutation();
+  const [graphqlMutate, { loading, error }] = useAdminCreateProductMutation();
 
   const mutate = useCallback(
     async (input: CreateProductInput): Promise<CreateProductResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { input } });
-          if (data?.adminCreateProduct) {
-            return { success: true, data: data.adminCreateProduct };
-          }
-          return { success: false, error: "Failed to create product" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { input } });
+        if (data?.adminCreateProduct) {
+          return { success: true, data: data.adminCreateProduct };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.createProduct(input);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to create product",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to create product" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE PRODUCT ============
@@ -99,59 +67,30 @@ interface UseAdminUpdateProductReturn {
 }
 
 export function useAdminUpdateProduct(): UseAdminUpdateProductReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useAdminUpdateProductMutation();
+  const [graphqlMutate, { loading, error }] = useAdminUpdateProductMutation();
 
   const mutate = useCallback(
     async (
       id: number,
       input: UpdateProductInput,
     ): Promise<UpdateProductResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { id, input } });
-          if (data?.adminUpdateProduct) {
-            return { success: true, data: data.adminUpdateProduct };
-          }
-          return { success: false, error: "Failed to update product" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { id, input } });
+        if (data?.adminUpdateProduct) {
+          return { success: true, data: data.adminUpdateProduct };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateProduct(id, input);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update product",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update product" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ DELETE PRODUCT ============
@@ -167,56 +106,27 @@ interface UseAdminDeleteProductReturn {
 }
 
 export function useAdminDeleteProduct(): UseAdminDeleteProductReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useAdminDeleteProductMutation();
+  const [graphqlMutate, { loading, error }] = useAdminDeleteProductMutation();
 
   const mutate = useCallback(
     async (id: number): Promise<DeleteProductResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { id } });
-          if (data?.adminDeleteProduct) {
-            return { success: true, data: data.adminDeleteProduct };
-          }
-          return { success: false, error: "Failed to delete product" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { id } });
+        if (data?.adminDeleteProduct) {
+          return { success: true, data: data.adminDeleteProduct };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.deleteProduct(id);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to delete product",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to delete product" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ TOGGLE PRODUCT ACTIVE ============
@@ -232,56 +142,28 @@ interface UseAdminToggleProductActiveReturn {
 }
 
 export function useAdminToggleProductActive(): UseAdminToggleProductActiveReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminToggleProductActiveMutation();
 
   const mutate = useCallback(
     async (id: number): Promise<ToggleProductActiveResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { id } });
-          if (data?.adminToggleProductActive) {
-            return { success: true, data: data.adminToggleProductActive };
-          }
-          return { success: false, error: "Failed to toggle product status" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { id } });
+        if (data?.adminToggleProductActive) {
+          return { success: true, data: data.adminToggleProductActive };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.toggleProductActive(id);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to toggle product status",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to toggle product status" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ DELETE PRODUCT REVIEW ============
@@ -297,54 +179,26 @@ interface UseAdminDeleteProductReviewReturn {
 }
 
 export function useAdminDeleteProductReview(): UseAdminDeleteProductReviewReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminDeleteProductReviewMutation();
 
   const mutate = useCallback(
     async (reviewId: number): Promise<DeleteProductReviewResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { reviewId } });
-          if (data?.adminDeleteProductReview) {
-            return { success: true, data: data.adminDeleteProductReview };
-          }
-          return { success: false, error: "Failed to delete review" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { reviewId } });
+        if (data?.adminDeleteProductReview) {
+          return { success: true, data: data.adminDeleteProductReview };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.deleteProductReview(reviewId);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to delete review",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to delete review" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }

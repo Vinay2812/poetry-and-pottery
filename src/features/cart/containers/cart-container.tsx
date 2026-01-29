@@ -117,10 +117,14 @@ export function CartContainer({
                 name: item.product.collection.name,
                 description: item.product.collection.description ?? null,
                 image_url: item.product.collection.image_url ?? null,
-                starts_at: item.product.collection.starts_at,
-                ends_at: item.product.collection.ends_at,
-                created_at: item.product.collection.created_at,
-                updated_at: item.product.collection.updated_at,
+                starts_at: item.product.collection.starts_at ?? null,
+                ends_at: item.product.collection.ends_at ?? null,
+                created_at:
+                  item.product.collection.created_at ??
+                  new Date().toISOString(),
+                updated_at:
+                  item.product.collection.updated_at ??
+                  new Date().toISOString(),
                 products_count: 0,
               }
             : null,

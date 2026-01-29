@@ -1,4 +1,4 @@
-import type { UserRole } from "@/prisma/generated/enums";
+import type { UserRole } from "@/graphql/generated/types";
 
 declare global {
   interface CustomJwtSessionClaims {

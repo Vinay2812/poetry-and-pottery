@@ -30,9 +30,3 @@ export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN!;
 
 export const CLIENT_GRAPHQL_ENDPOINT = `${CLIENT_API_ENDPOINT}/graphql`;
 export const SERVER_GRAPHQL_ENDPOINT = `${SERVER_API_ENDPOINT}/graphql`;
-// Data source toggle for gateway pattern (actions vs graphql)
-export type DataSource = "actions" | "graphql";
-const dataSourceEnv = process.env.NEXT_PUBLIC_DATA_SOURCE as DataSource;
-export const DATA_SOURCE: DataSource = dataSourceEnv || "actions";
-export const isGraphQL = DATA_SOURCE === "graphql";
-export const isActions = DATA_SOURCE === "actions";

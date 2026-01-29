@@ -2,7 +2,6 @@
 
 import { updateRegistrationStatus } from "@/data/admin/registrations/gateway/server";
 import { RegistrationDetailDialogContainer } from "@/features/dashboard/registrations";
-import { EventRegistrationStatus } from "@/prisma/generated/enums";
 import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
 import {
   useCallback,
@@ -16,6 +15,7 @@ import { OptimizedImage } from "@/components/shared";
 
 import { getRegistrationStatusColor } from "@/lib/status-utils";
 
+import { EventRegistrationStatus } from "@/graphql/generated/types";
 import type { AdminUserRegistration } from "@/graphql/generated/types";
 
 import { KanbanBoard, KanbanColumn } from "./kanban-board";
@@ -26,12 +26,12 @@ interface RegistrationsBoardProps {
 
 // Define the columns for registration status
 const REGISTRATION_COLUMNS: { id: EventRegistrationStatus; title: string }[] = [
-  { id: EventRegistrationStatus.PENDING, title: "Pending" },
-  { id: EventRegistrationStatus.APPROVED, title: "Approved" },
-  { id: EventRegistrationStatus.PAID, title: "Paid" },
-  { id: EventRegistrationStatus.CONFIRMED, title: "Confirmed" },
-  { id: EventRegistrationStatus.REJECTED, title: "Rejected" },
-  { id: EventRegistrationStatus.CANCELLED, title: "Cancelled" },
+  { id: EventRegistrationStatus.Pending, title: "Pending" },
+  { id: EventRegistrationStatus.Approved, title: "Approved" },
+  { id: EventRegistrationStatus.Paid, title: "Paid" },
+  { id: EventRegistrationStatus.Confirmed, title: "Confirmed" },
+  { id: EventRegistrationStatus.Rejected, title: "Rejected" },
+  { id: EventRegistrationStatus.Cancelled, title: "Cancelled" },
 ];
 
 export function RegistrationsBoard({ registrations }: RegistrationsBoardProps) {

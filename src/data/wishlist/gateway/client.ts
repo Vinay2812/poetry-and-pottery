@@ -1,7 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import type { WishlistItem } from "@/graphql/generated/graphql";
 import {
@@ -10,13 +9,6 @@ import {
   useRemoveFromWishlistMutation as useRemoveFromWishlistGraphQL,
   useToggleWishlistMutation as useToggleWishlistGraphQL,
 } from "@/graphql/generated/graphql";
-
-import {
-  addToWishlist as addToWishlistAction,
-  moveToCart as moveToCartAction,
-  removeFromWishlist as removeFromWishlistAction,
-  toggleWishlist as toggleWishlistAction,
-} from "../server/action";
 
 // Result types
 export type AddWishlistResult =
@@ -61,212 +53,107 @@ interface UseMoveToCartReturn {
 }
 
 export function useAddToWishlist(): UseAddToWishlistReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useAddToWishlistGraphQL();
+  const [graphqlMutate, { loading, error }] = useAddToWishlistGraphQL();
 
   const mutate = useCallback(
     async (productId: number): Promise<AddWishlistResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { productId },
-          });
-          if (data?.addToWishlist.success && data.addToWishlist.item) {
-            return { success: true, data: data.addToWishlist.item };
-          }
-          return { success: false, error: "Failed to add to wishlist" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { productId },
+        });
+        if (data?.addToWishlist.success && data.addToWishlist.item) {
+          return { success: true, data: data.addToWishlist.item };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await addToWishlistAction(productId);
-          if (result.success && result.item) {
-            return { success: true, data: result.item };
-          }
-          return { success: false, error: "Failed to add to wishlist" };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to add to wishlist" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 export function useRemoveFromWishlist(): UseRemoveFromWishlistReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useRemoveFromWishlistGraphQL();
+  const [graphqlMutate, { loading, error }] = useRemoveFromWishlistGraphQL();
 
   const mutate = useCallback(
     async (productId: number): Promise<RemoveWishlistResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { productId },
-          });
-          return data?.removeFromWishlist
-            ? { success: true }
-            : { success: false, error: "Failed to remove from wishlist" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
-        }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await removeFromWishlistAction(productId);
-          return result
-            ? { success: true }
-            : { success: false, error: "Failed to remove from wishlist" };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+      try {
+        const { data } = await graphqlMutate({
+          variables: { productId },
+        });
+        return data?.removeFromWishlist
+          ? { success: true }
+          : { success: false, error: "Failed to remove from wishlist" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 export function useToggleWishlist(): UseToggleWishlistReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useToggleWishlistGraphQL();
+  const [graphqlMutate, { loading, error }] = useToggleWishlistGraphQL();
 
   const mutate = useCallback(
     async (productId: number): Promise<ToggleWishlistResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { productId },
-          });
-          if (data?.toggleWishlist.success) {
-            return {
-              success: true,
-              action:
-                data.toggleWishlist.action === "ADDED" ? "added" : "removed",
-            };
-          }
-          return { success: false, error: "Failed to toggle wishlist" };
-        } catch (e) {
+      try {
+        const { data } = await graphqlMutate({
+          variables: { productId },
+        });
+        if (data?.toggleWishlist.success) {
           return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
+            success: true,
+            action:
+              data.toggleWishlist.action === "ADDED" ? "added" : "removed",
           };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await toggleWishlistAction(productId);
-          if (result.success) {
-            return {
-              success: true,
-              action: result.action === "ADDED" ? "added" : "removed",
-            };
-          }
-          return { success: false, error: "Failed to toggle wishlist" };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to toggle wishlist" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 export function useMoveToCart(): UseMoveToCartReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useMoveToCartGraphQL();
+  const [graphqlMutate, { loading, error }] = useMoveToCartGraphQL();
 
   const mutate = useCallback(
     async (productId: number): Promise<MoveToCartResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { productId },
-          });
-          return data?.moveToCart
-            ? { success: true }
-            : { success: false, error: "Failed to move to cart" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
-        }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await moveToCartAction(productId);
-          return result
-            ? { success: true }
-            : { success: false, error: "Failed to move to cart" };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+      try {
+        const { data } = await graphqlMutate({
+          variables: { productId },
+        });
+        return data?.moveToCart
+          ? { success: true }
+          : { success: false, error: "Failed to move to cart" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }

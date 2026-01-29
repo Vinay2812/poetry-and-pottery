@@ -3,7 +3,7 @@ import {
   EventRegistrationStatus,
   EventStatus,
   OrderStatus,
-} from "@/prisma/generated/enums";
+} from "@/graphql/generated/types";
 
 // Order status options
 export function getOrderStatusOptions(): {
@@ -11,28 +11,28 @@ export function getOrderStatusOptions(): {
   label: string;
 }[] {
   return [
-    { value: OrderStatus.PENDING, label: "Pending" },
-    { value: OrderStatus.PROCESSING, label: "Processing" },
-    { value: OrderStatus.PAID, label: "Paid" },
-    { value: OrderStatus.SHIPPED, label: "Shipped" },
-    { value: OrderStatus.DELIVERED, label: "Delivered" },
-    { value: OrderStatus.CANCELLED, label: "Cancelled" },
-    { value: OrderStatus.RETURNED, label: "Returned" },
-    { value: OrderStatus.REFUNDED, label: "Refunded" },
+    { value: OrderStatus.Pending, label: "Pending" },
+    { value: OrderStatus.Processing, label: "Processing" },
+    { value: OrderStatus.Paid, label: "Paid" },
+    { value: OrderStatus.Shipped, label: "Shipped" },
+    { value: OrderStatus.Delivered, label: "Delivered" },
+    { value: OrderStatus.Cancelled, label: "Cancelled" },
+    { value: OrderStatus.Returned, label: "Returned" },
+    { value: OrderStatus.Refunded, label: "Refunded" },
   ];
 }
 
 // Order status color configuration
 export function getOrderStatusColor(status: OrderStatus): string {
   const colors: Record<OrderStatus, string> = {
-    [OrderStatus.PENDING]: "bg-amber-100 text-amber-700 border-amber-200",
-    [OrderStatus.PROCESSING]: "bg-blue-100 text-blue-700 border-blue-200",
-    [OrderStatus.PAID]: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    [OrderStatus.SHIPPED]: "bg-purple-100 text-purple-700 border-purple-200",
-    [OrderStatus.DELIVERED]: "bg-primary/10 text-primary border-primary/20",
-    [OrderStatus.CANCELLED]: "bg-red-100 text-red-700 border-red-200",
-    [OrderStatus.RETURNED]: "bg-orange-100 text-orange-700 border-orange-200",
-    [OrderStatus.REFUNDED]:
+    [OrderStatus.Pending]: "bg-amber-100 text-amber-700 border-amber-200",
+    [OrderStatus.Processing]: "bg-blue-100 text-blue-700 border-blue-200",
+    [OrderStatus.Paid]: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    [OrderStatus.Shipped]: "bg-purple-100 text-purple-700 border-purple-200",
+    [OrderStatus.Delivered]: "bg-primary/10 text-primary border-primary/20",
+    [OrderStatus.Cancelled]: "bg-red-100 text-red-700 border-red-200",
+    [OrderStatus.Returned]: "bg-orange-100 text-orange-700 border-orange-200",
+    [OrderStatus.Refunded]:
       "bg-neutral-100 text-neutral-700 border-neutral-200",
   };
   return colors[status];
@@ -44,12 +44,12 @@ export function getRegistrationStatusOptions(): {
   label: string;
 }[] {
   return [
-    { value: EventRegistrationStatus.PENDING, label: "Pending" },
-    { value: EventRegistrationStatus.APPROVED, label: "Approved" },
-    { value: EventRegistrationStatus.REJECTED, label: "Rejected" },
-    { value: EventRegistrationStatus.PAID, label: "Paid" },
-    { value: EventRegistrationStatus.CONFIRMED, label: "Confirmed" },
-    { value: EventRegistrationStatus.CANCELLED, label: "Cancelled" },
+    { value: EventRegistrationStatus.Pending, label: "Pending" },
+    { value: EventRegistrationStatus.Approved, label: "Approved" },
+    { value: EventRegistrationStatus.Rejected, label: "Rejected" },
+    { value: EventRegistrationStatus.Paid, label: "Paid" },
+    { value: EventRegistrationStatus.Confirmed, label: "Confirmed" },
+    { value: EventRegistrationStatus.Cancelled, label: "Cancelled" },
   ];
 }
 
@@ -58,17 +58,17 @@ export function getRegistrationStatusColor(
   status: EventRegistrationStatus,
 ): string {
   const colors: Record<EventRegistrationStatus, string> = {
-    [EventRegistrationStatus.PENDING]:
+    [EventRegistrationStatus.Pending]:
       "bg-amber-100 text-amber-700 border-amber-200",
-    [EventRegistrationStatus.APPROVED]:
+    [EventRegistrationStatus.Approved]:
       "bg-blue-100 text-blue-700 border-blue-200",
-    [EventRegistrationStatus.REJECTED]:
+    [EventRegistrationStatus.Rejected]:
       "bg-red-100 text-red-700 border-red-200",
-    [EventRegistrationStatus.PAID]:
+    [EventRegistrationStatus.Paid]:
       "bg-emerald-100 text-emerald-700 border-emerald-200",
-    [EventRegistrationStatus.CONFIRMED]:
+    [EventRegistrationStatus.Confirmed]:
       "bg-primary/10 text-primary border-primary/20",
-    [EventRegistrationStatus.CANCELLED]:
+    [EventRegistrationStatus.Cancelled]:
       "bg-neutral-100 text-neutral-700 border-neutral-200",
   };
   return colors[status];
@@ -77,12 +77,12 @@ export function getRegistrationStatusColor(
 // Event status color configuration
 export function getEventStatusColor(status: EventStatus): string {
   const colors: Record<EventStatus, string> = {
-    [EventStatus.UPCOMING]: "bg-blue-100 text-blue-700 border-blue-200",
-    [EventStatus.ACTIVE]: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    [EventStatus.INACTIVE]:
+    [EventStatus.Upcoming]: "bg-blue-100 text-blue-700 border-blue-200",
+    [EventStatus.Active]: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    [EventStatus.Inactive]:
       "bg-neutral-100 text-neutral-700 border-neutral-200",
-    [EventStatus.COMPLETED]: "bg-primary/10 text-primary border-primary/20",
-    [EventStatus.CANCELLED]: "bg-red-100 text-red-700 border-red-200",
+    [EventStatus.Completed]: "bg-primary/10 text-primary border-primary/20",
+    [EventStatus.Cancelled]: "bg-red-100 text-red-700 border-red-200",
   };
   return colors[status];
 }
@@ -90,9 +90,9 @@ export function getEventStatusColor(status: EventStatus): string {
 // Event level color configuration
 export function getEventLevelColor(level: EventLevel): string {
   const colors: Record<EventLevel, string> = {
-    [EventLevel.BEGINNER]: "bg-green-100 text-green-700 border-green-200",
-    [EventLevel.INTERMEDIATE]: "bg-amber-100 text-amber-700 border-amber-200",
-    [EventLevel.ADVANCED]: "bg-purple-100 text-purple-700 border-purple-200",
+    [EventLevel.Beginner]: "bg-green-100 text-green-700 border-green-200",
+    [EventLevel.Intermediate]: "bg-amber-100 text-amber-700 border-amber-200",
+    [EventLevel.Advanced]: "bg-purple-100 text-purple-700 border-purple-200",
   };
   return colors[level];
 }

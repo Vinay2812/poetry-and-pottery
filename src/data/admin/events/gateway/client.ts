@@ -1,7 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import {
   useAdminCreateEventMutation,
@@ -16,8 +15,6 @@ import type {
   UpdateEventInput,
 } from "@/graphql/generated/types";
 
-import * as actionImpl from "../server/action";
-
 // ============ CREATE EVENT ============
 
 type CreateEventResult =
@@ -31,56 +28,27 @@ interface UseAdminCreateEventReturn {
 }
 
 export function useAdminCreateEvent(): UseAdminCreateEventReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useAdminCreateEventMutation();
+  const [graphqlMutate, { loading, error }] = useAdminCreateEventMutation();
 
   const mutate = useCallback(
     async (input: CreateEventInput): Promise<CreateEventResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { input } });
-          if (data?.adminCreateEvent) {
-            return { success: true, data: data.adminCreateEvent };
-          }
-          return { success: false, error: "Failed to create event" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { input } });
+        if (data?.adminCreateEvent) {
+          return { success: true, data: data.adminCreateEvent };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.createEvent(input);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to create event",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to create event" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE EVENT ============
@@ -96,56 +64,27 @@ interface UseAdminUpdateEventReturn {
 }
 
 export function useAdminUpdateEvent(): UseAdminUpdateEventReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useAdminUpdateEventMutation();
+  const [graphqlMutate, { loading, error }] = useAdminUpdateEventMutation();
 
   const mutate = useCallback(
     async (id: string, input: UpdateEventInput): Promise<UpdateEventResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { id, input } });
-          if (data?.adminUpdateEvent) {
-            return { success: true, data: data.adminUpdateEvent };
-          }
-          return { success: false, error: "Failed to update event" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { id, input } });
+        if (data?.adminUpdateEvent) {
+          return { success: true, data: data.adminUpdateEvent };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateEvent(id, input);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update event",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update event" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ DELETE EVENT ============
@@ -161,56 +100,27 @@ interface UseAdminDeleteEventReturn {
 }
 
 export function useAdminDeleteEvent(): UseAdminDeleteEventReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useAdminDeleteEventMutation();
+  const [graphqlMutate, { loading, error }] = useAdminDeleteEventMutation();
 
   const mutate = useCallback(
     async (id: string): Promise<DeleteEventResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { id } });
-          if (data?.adminDeleteEvent) {
-            return { success: true, data: data.adminDeleteEvent };
-          }
-          return { success: false, error: "Failed to delete event" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { id } });
+        if (data?.adminDeleteEvent) {
+          return { success: true, data: data.adminDeleteEvent };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.deleteEvent(id);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to delete event",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to delete event" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE EVENT STATUS ============
@@ -226,56 +136,28 @@ interface UseAdminUpdateEventStatusReturn {
 }
 
 export function useAdminUpdateEventStatus(): UseAdminUpdateEventStatusReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateEventStatusMutation();
 
   const mutate = useCallback(
     async (id: string, status: string): Promise<UpdateEventStatusResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { id, status } });
-          if (data?.adminUpdateEventStatus) {
-            return { success: true, data: data.adminUpdateEventStatus };
-          }
-          return { success: false, error: "Failed to update event status" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { id, status } });
+        if (data?.adminUpdateEventStatus) {
+          return { success: true, data: data.adminUpdateEventStatus };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateEventStatus(id, status);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update event status",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update event status" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ DELETE EVENT REVIEW ============
@@ -291,54 +173,26 @@ interface UseAdminDeleteEventReviewReturn {
 }
 
 export function useAdminDeleteEventReview(): UseAdminDeleteEventReviewReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminDeleteEventReviewMutation();
 
   const mutate = useCallback(
     async (reviewId: number): Promise<DeleteEventReviewResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { reviewId } });
-          if (data?.adminDeleteEventReview) {
-            return { success: true, data: data.adminDeleteEventReview };
-          }
-          return { success: false, error: "Failed to delete review" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { reviewId } });
+        if (data?.adminDeleteEventReview) {
+          return { success: true, data: data.adminDeleteEventReview };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.deleteEventReview(reviewId);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to delete review",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to delete review" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }

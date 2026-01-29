@@ -1,7 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import {
   useCreateEventReviewMutation as useCreateEventReviewGraphQL,
@@ -9,13 +8,6 @@ import {
   useDeleteReviewMutation as useDeleteReviewGraphQL,
   useToggleReviewLikeMutation as useToggleReviewLikeGraphQL,
 } from "@/graphql/generated/graphql";
-
-import {
-  createEventReview as createEventReviewAction,
-  createProductReview as createProductReviewAction,
-  deleteReview as deleteReviewAction,
-  toggleReviewLike as toggleReviewLikeAction,
-} from "../server/action";
 
 // Result types
 export type CreateReviewResult =
@@ -66,11 +58,7 @@ interface UseToggleReviewLikeReturn {
 }
 
 export function useCreateProductReview(): UseCreateProductReviewReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useCreateProductReviewGraphQL();
+  const [graphqlMutate, { loading, error }] = useCreateProductReviewGraphQL();
 
   const mutate = useCallback(
     async (data: {
@@ -79,69 +67,39 @@ export function useCreateProductReview(): UseCreateProductReviewReturn {
       review?: string;
       imageUrls?: string[];
     }): Promise<CreateReviewResult> => {
-      if (isGraphQL) {
-        try {
-          const { data: result } = await graphqlMutate({
-            variables: {
-              input: {
-                productId: data.productId,
-                rating: data.rating,
-                review: data.review ?? null,
-                imageUrls: data.imageUrls ?? [],
-              },
+      try {
+        const { data: result } = await graphqlMutate({
+          variables: {
+            input: {
+              productId: data.productId,
+              rating: data.rating,
+              review: data.review ?? null,
+              imageUrls: data.imageUrls ?? [],
             },
-          });
-          if (result?.createProductReview.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error:
-              result?.createProductReview.error ?? "Failed to create review",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+          },
+        });
+        if (result?.createProductReview.success) {
+          return { success: true };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await createProductReviewAction(data);
-          if (result.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to create review",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: result?.createProductReview.error ?? "Failed to create review",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 export function useCreateEventReview(): UseCreateEventReviewReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useCreateEventReviewGraphQL();
+  const [graphqlMutate, { loading, error }] = useCreateEventReviewGraphQL();
 
   const mutate = useCallback(
     async (data: {
@@ -150,187 +108,96 @@ export function useCreateEventReview(): UseCreateEventReviewReturn {
       review?: string;
       imageUrls?: string[];
     }): Promise<CreateReviewResult> => {
-      if (isGraphQL) {
-        try {
-          const { data: result } = await graphqlMutate({
-            variables: {
-              input: {
-                eventId: data.eventId,
-                rating: data.rating,
-                review: data.review ?? null,
-                imageUrls: data.imageUrls ?? [],
-              },
+      try {
+        const { data: result } = await graphqlMutate({
+          variables: {
+            input: {
+              eventId: data.eventId,
+              rating: data.rating,
+              review: data.review ?? null,
+              imageUrls: data.imageUrls ?? [],
             },
-          });
-          if (result?.createEventReview.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error: result?.createEventReview.error ?? "Failed to create review",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+          },
+        });
+        if (result?.createEventReview.success) {
+          return { success: true };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await createEventReviewAction(data);
-          if (result.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to create review",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: result?.createEventReview.error ?? "Failed to create review",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 export function useDeleteReview(): UseDeleteReviewReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useDeleteReviewGraphQL();
+  const [graphqlMutate, { loading, error }] = useDeleteReviewGraphQL();
 
   const mutate = useCallback(
     async (reviewId: number): Promise<DeleteReviewResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { reviewId },
-          });
-          if (data?.deleteReview.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error: data?.deleteReview.error ?? "Failed to delete review",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { reviewId },
+        });
+        if (data?.deleteReview.success) {
+          return { success: true };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await deleteReviewAction(reviewId);
-          if (result.success) {
-            return { success: true };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to delete review",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: data?.deleteReview.error ?? "Failed to delete review",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 export function useToggleReviewLike(): UseToggleReviewLikeReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
-    useToggleReviewLikeGraphQL();
+  const [graphqlMutate, { loading, error }] = useToggleReviewLikeGraphQL();
 
   const mutate = useCallback(
     async (reviewId: number): Promise<ToggleReviewLikeResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { reviewId },
-          });
-          if (data?.toggleReviewLike.success) {
-            return {
-              success: true,
-              action:
-                data.toggleReviewLike.action === "LIKED" ? "liked" : "unliked",
-              likesCount: data.toggleReviewLike.likes_count ?? 0,
-            };
-          }
+      try {
+        const { data } = await graphqlMutate({
+          variables: { reviewId },
+        });
+        if (data?.toggleReviewLike.success) {
           return {
-            success: false,
-            error: data?.toggleReviewLike.error ?? "Failed to toggle like",
-          };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
+            success: true,
+            action:
+              data.toggleReviewLike.action === "LIKED" ? "liked" : "unliked",
+            likesCount: data.toggleReviewLike.likes_count ?? 0,
           };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await toggleReviewLikeAction(reviewId);
-          if (
-            result.success &&
-            result.action &&
-            result.likesCount !== undefined
-          ) {
-            return {
-              success: true,
-              action: result.action,
-              likesCount: result.likesCount,
-            };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to toggle like",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return {
+          success: false,
+          error: data?.toggleReviewLike.error ?? "Failed to toggle like",
+        };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }

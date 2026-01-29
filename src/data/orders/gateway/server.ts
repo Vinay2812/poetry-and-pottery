@@ -1,10 +1,7 @@
 "use server";
 
-import { isGraphQL } from "@/consts/env";
-
 import type { Order, OrdersResponse } from "@/graphql/generated/types";
 
-import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
 
 // Result types for consistent error handling
@@ -22,11 +19,7 @@ export async function getOrders(
   search?: string,
 ): Promise<GetOrdersResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getOrders(page, limit, search);
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getOrders(page, limit, search);
+    const result = await graphqlImpl.getOrders(page, limit, search);
     return { success: true, data: result };
   } catch (error) {
     return {
@@ -38,14 +31,7 @@ export async function getOrders(
 
 export async function getOrderById(orderId: string): Promise<GetOrderResult> {
   try {
-    if (isGraphQL) {
-      const result = await graphqlImpl.getOrderById(orderId);
-      if (!result) {
-        return { success: false, error: "Order not found" };
-      }
-      return { success: true, data: result };
-    }
-    const result = await actionImpl.getOrderById(orderId);
+    const result = await graphqlImpl.getOrderById(orderId);
     if (!result) {
       return { success: false, error: "Order not found" };
     }

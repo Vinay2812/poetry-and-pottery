@@ -1,11 +1,10 @@
 "use server";
 
 import { ENVIRONMENT } from "@/consts/env";
-import { UserRole } from "@/prisma/generated/enums";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-import { prisma } from "@/lib/prisma";
+import { UserRole } from "@/graphql/generated/types";
 
 export async function isAdmin(): Promise<boolean> {
   const { sessionClaims, isAuthenticated } = await auth();
@@ -22,7 +21,7 @@ export async function isAdmin(): Promise<boolean> {
     return false;
   }
 
-  return role === UserRole.ADMIN;
+  return role === UserRole.Admin;
 }
 
 export async function getAuthenticatedDbUser() {
@@ -34,23 +33,16 @@ export async function getAuthenticatedDbUser() {
 
   const dbUserId = sessionClaims?.dbUserId;
   const environment = sessionClaims?.environment;
+  const role = sessionClaims?.role;
 
   if (!dbUserId || environment !== ENVIRONMENT) {
     return null;
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: dbUserId },
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      image: true,
-      role: true,
-    },
-  });
-
-  return user;
+  return {
+    id: dbUserId,
+    role: role ?? null,
+  };
 }
 
 export async function requireAdmin(): Promise<void> {
@@ -60,7 +52,7 @@ export async function requireAdmin(): Promise<void> {
     redirect("/sign-in");
   }
 
-  if (user.role !== UserRole.ADMIN) {
+  if (user.role !== UserRole.Admin) {
     redirect("/");
   }
 }
@@ -72,7 +64,7 @@ export async function requireAdminUser() {
     redirect("/sign-in");
   }
 
-  if (user.role !== UserRole.ADMIN) {
+  if (user.role !== UserRole.Admin) {
     redirect("/");
   }
 
@@ -104,7 +96,7 @@ export async function getAdminStatus() {
 
   return {
     isAuthenticated: true,
-    isAdmin: role === UserRole.ADMIN,
+    isAdmin: role === UserRole.Admin,
     role: role ?? null,
   };
 }

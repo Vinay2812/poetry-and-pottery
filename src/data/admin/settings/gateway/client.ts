@@ -1,7 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import {
   useAdminUpdateContactInfoMutation,
@@ -14,8 +13,6 @@ import type {
   HeroImages,
   SocialLinks,
 } from "@/graphql/generated/types";
-
-import * as actionImpl from "../server/action";
 
 // ============ UPDATE HERO IMAGES ============
 
@@ -30,58 +27,30 @@ interface UseAdminUpdateHeroImagesReturn {
 }
 
 export function useAdminUpdateHeroImages(): UseAdminUpdateHeroImagesReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateHeroImagesMutation();
 
   const mutate = useCallback(
     async (images: Partial<HeroImages>): Promise<UpdateHeroImagesResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { input: images },
-          });
-          if (data?.adminUpdateHeroImages) {
-            return { success: true, data: data.adminUpdateHeroImages };
-          }
-          return { success: false, error: "Failed to update hero images" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { input: images },
+        });
+        if (data?.adminUpdateHeroImages) {
+          return { success: true, data: data.adminUpdateHeroImages };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateHeroImages(images);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update hero images",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update hero images" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE CONTACT INFO ============
@@ -97,56 +66,28 @@ interface UseAdminUpdateContactInfoReturn {
 }
 
 export function useAdminUpdateContactInfo(): UseAdminUpdateContactInfoReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateContactInfoMutation();
 
   const mutate = useCallback(
     async (info: Partial<ContactInfo>): Promise<UpdateContactInfoResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { input: info } });
-          if (data?.adminUpdateContactInfo) {
-            return { success: true, data: data.adminUpdateContactInfo };
-          }
-          return { success: false, error: "Failed to update contact info" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { input: info } });
+        if (data?.adminUpdateContactInfo) {
+          return { success: true, data: data.adminUpdateContactInfo };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateContactInfo(info);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update contact info",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update contact info" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE SOCIAL LINKS ============
@@ -162,54 +103,26 @@ interface UseAdminUpdateSocialLinksReturn {
 }
 
 export function useAdminUpdateSocialLinks(): UseAdminUpdateSocialLinksReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateSocialLinksMutation();
 
   const mutate = useCallback(
     async (links: Partial<SocialLinks>): Promise<UpdateSocialLinksResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({ variables: { input: links } });
-          if (data?.adminUpdateSocialLinks) {
-            return { success: true, data: data.adminUpdateSocialLinks };
-          }
-          return { success: false, error: "Failed to update social links" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({ variables: { input: links } });
+        if (data?.adminUpdateSocialLinks) {
+          return { success: true, data: data.adminUpdateSocialLinks };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateSocialLinks(links);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update social links",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update social links" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }

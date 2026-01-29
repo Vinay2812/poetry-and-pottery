@@ -1,7 +1,5 @@
 "use server";
 
-import { isGraphQL } from "@/consts/env";
-
 import type {
   BestSellersResponse,
   CategoryWithImage,
@@ -11,7 +9,6 @@ import type {
   RecommendedProductsResponse,
 } from "@/graphql/generated/types";
 
-import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
 
 export async function getProducts(params: {
@@ -32,29 +29,20 @@ export async function getProducts(params: {
 export async function getProductBySlug(
   slug: string,
 ): Promise<ProductDetail | null> {
-  if (isGraphQL) {
-    return graphqlImpl.getProductBySlug(slug);
-  }
-  return actionImpl.getProductBySlug(slug);
+  return graphqlImpl.getProductBySlug(slug);
 }
 
 export async function getProductById(
   id: number,
 ): Promise<ProductDetail | null> {
-  if (isGraphQL) {
-    return graphqlImpl.getProductById(id);
-  }
-  return actionImpl.getProductById(id);
+  return graphqlImpl.getProductById(id);
 }
 
 export async function getBestSellers(params: {
   limit?: number;
   page?: number;
 }): Promise<BestSellersResponse> {
-  if (isGraphQL) {
-    return graphqlImpl.getBestSellers(params);
-  }
-  return actionImpl.getBestSellers(params);
+  return graphqlImpl.getBestSellers(params);
 }
 
 export async function getRecommendedProducts(params: {
@@ -62,17 +50,11 @@ export async function getRecommendedProducts(params: {
   page?: number;
   productId?: number;
 }): Promise<RecommendedProductsResponse> {
-  if (isGraphQL) {
-    return graphqlImpl.getRecommendedProducts(params);
-  }
-  return actionImpl.getRecommendedProducts(params);
+  return graphqlImpl.getRecommendedProducts(params);
 }
 
 export async function getCategories(): Promise<string[]> {
-  if (isGraphQL) {
-    return graphqlImpl.getCategories();
-  }
-  return actionImpl.getCategories();
+  return graphqlImpl.getCategories();
 }
 
 export async function getCategoriesWithImages(): Promise<CategoryWithImage[]> {
@@ -80,8 +62,5 @@ export async function getCategoriesWithImages(): Promise<CategoryWithImage[]> {
 }
 
 export async function getMaterials(): Promise<string[]> {
-  if (isGraphQL) {
-    return graphqlImpl.getMaterials();
-  }
-  return actionImpl.getMaterials();
+  return graphqlImpl.getMaterials();
 }

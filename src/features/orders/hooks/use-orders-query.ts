@@ -1,7 +1,5 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { getOrders } from "@/data/orders/gateway/server";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -33,39 +31,26 @@ export function useOrdersQuery({
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["orders", searchQuery, isGraphQL],
+      queryKey: ["orders", searchQuery],
       queryFn: async ({ pageParam = 1 }) => {
-        if (isGraphQL) {
-          // GraphQL mode: use Apollo lazy query
-          const { data: gqlData } = await fetchGraphQL({
-            variables: {
-              filter: {
-                page: pageParam,
-                limit: ORDERS_PER_PAGE,
-                search: searchQuery,
-              },
+        // GraphQL mode: use Apollo lazy query
+        const { data: gqlData } = await fetchGraphQL({
+          variables: {
+            filter: {
+              page: pageParam,
+              limit: ORDERS_PER_PAGE,
+              search: searchQuery,
             },
-          });
+          },
+        });
 
-          const orders = gqlData?.orders;
-          return {
-            data: (orders?.data ?? []) as Order[],
-            total: orders?.total ?? 0,
-            page: orders?.page ?? pageParam,
-            total_pages: orders?.total_pages ?? 0,
-          };
-        } else {
-          // Server action mode
-          const result = await getOrders(
-            pageParam,
-            ORDERS_PER_PAGE,
-            searchQuery,
-          );
-          if (!result.success) {
-            throw new Error(result.error);
-          }
-          return result.data;
-        }
+        const orders = gqlData?.orders;
+        return {
+          data: (orders?.data ?? []) as Order[],
+          total: orders?.total ?? 0,
+          page: orders?.page ?? pageParam,
+          total_pages: orders?.total_pages ?? 0,
+        };
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {

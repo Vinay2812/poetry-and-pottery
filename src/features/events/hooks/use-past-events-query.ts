@@ -1,8 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
 import { DEFAULT_EVENTS_LIMIT } from "@/consts/performance";
-import { getPastEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
@@ -25,48 +23,31 @@ export function usePastEventsQuery({
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: ["past-events", searchQuery, isGraphQL],
+      queryKey: ["past-events", searchQuery],
       queryFn: async ({ pageParam = 1 }) => {
         const limit = DEFAULT_EVENTS_LIMIT;
 
-        if (isGraphQL) {
-          const { data: gqlData, error: gqlError } = await fetchGraphQL({
-            variables: {
-              filter: {
-                page: pageParam,
-                limit,
-                search: searchQuery,
-              },
+        const { data: gqlData, error: gqlError } = await fetchGraphQL({
+          variables: {
+            filter: {
+              page: pageParam,
+              limit,
+              search: searchQuery,
             },
-          });
+          },
+        });
 
-          if (gqlError) {
-            throw new Error(gqlError.message);
-          }
-
-          const events = gqlData?.pastEvents;
-          return {
-            data: (events?.data ?? []) as EventBase[],
-            total: events?.total ?? 0,
-            page: events?.page ?? pageParam,
-            totalPages: events?.total_pages ?? 0,
-          };
-        } else {
-          const result = await getPastEvents({
-            page: pageParam,
-            limit,
-            search: searchQuery,
-          });
-          if (!result.success) {
-            throw new Error(result.error);
-          }
-          return {
-            data: result.data.data,
-            total: result.data.total,
-            page: result.data.page,
-            totalPages: result.data.total_pages,
-          };
+        if (gqlError) {
+          throw new Error(gqlError.message);
         }
+
+        const events = gqlData?.pastEvents;
+        return {
+          data: (events?.data ?? []) as EventBase[],
+          total: events?.total ?? 0,
+          page: events?.page ?? pageParam,
+          totalPages: events?.total_pages ?? 0,
+        };
       },
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {

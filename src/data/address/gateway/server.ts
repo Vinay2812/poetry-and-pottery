@@ -1,10 +1,7 @@
 "use server";
 
-import { isGraphQL } from "@/consts/env";
-
 import type { UserAddress } from "@/graphql/generated/types";
 
-import * as actionImpl from "../server/action";
 import * as graphqlImpl from "../server/graphql";
 
 // Result types for gateway functions
@@ -18,11 +15,7 @@ export type GetAddressResult =
 
 export async function getUserAddresses(): Promise<GetAddressesResult> {
   try {
-    if (isGraphQL) {
-      const addresses = await graphqlImpl.getUserAddresses();
-      return { success: true, data: addresses };
-    }
-    const addresses = await actionImpl.getUserAddresses();
+    const addresses = await graphqlImpl.getUserAddresses();
     return { success: true, data: addresses };
   } catch (error) {
     return {
@@ -35,14 +28,7 @@ export async function getUserAddresses(): Promise<GetAddressesResult> {
 
 export async function getAddressById(id: number): Promise<GetAddressResult> {
   try {
-    if (isGraphQL) {
-      const address = await graphqlImpl.getAddressById(id);
-      if (!address) {
-        return { success: false, error: "Address not found" };
-      }
-      return { success: true, data: address };
-    }
-    const address = await actionImpl.getAddressById(id);
+    const address = await graphqlImpl.getAddressById(id);
     if (!address) {
       return { success: false, error: "Address not found" };
     }

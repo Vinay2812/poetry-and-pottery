@@ -1,6 +1,5 @@
 "use client";
 
-import { OrderStatus } from "@/types";
 import {
   Ban,
   CreditCard,
@@ -18,9 +17,11 @@ import {
 
 import { formatProgressDate } from "@/lib/date";
 
+import { OrderStatus } from "@/graphql/generated/types";
+
 export const ORDER_STEPS: readonly ProgressStep[] = [
   {
-    status: OrderStatus.PENDING,
+    status: OrderStatus.Pending,
     label: "Order Placed",
     pastDescription: "Order was placed",
     currentDescription: "Order placed",
@@ -28,7 +29,7 @@ export const ORDER_STEPS: readonly ProgressStep[] = [
     icon: Package,
   },
   {
-    status: OrderStatus.PROCESSING,
+    status: OrderStatus.Processing,
     label: "Processing",
     pastDescription: "Order was processed",
     currentDescription: "Order being processed",
@@ -36,7 +37,7 @@ export const ORDER_STEPS: readonly ProgressStep[] = [
     icon: PackageCheck,
   },
   {
-    status: OrderStatus.PAID,
+    status: OrderStatus.Paid,
     label: "Payment Confirmed",
     pastDescription: "Payment was confirmed",
     currentDescription: "Payment confirmed",
@@ -44,7 +45,7 @@ export const ORDER_STEPS: readonly ProgressStep[] = [
     icon: CreditCard,
   },
   {
-    status: OrderStatus.SHIPPED,
+    status: OrderStatus.Shipped,
     label: "Shipped",
     pastDescription: "Order was shipped",
     currentDescription: "Order shipped",
@@ -52,7 +53,7 @@ export const ORDER_STEPS: readonly ProgressStep[] = [
     icon: Truck,
   },
   {
-    status: OrderStatus.DELIVERED,
+    status: OrderStatus.Delivered,
     label: "Delivered",
     pastDescription: "Order was delivered",
     currentDescription: "Order delivered",
@@ -62,11 +63,11 @@ export const ORDER_STEPS: readonly ProgressStep[] = [
 ] as const;
 
 const ORDER_STATUS_ORDER: readonly string[] = [
-  OrderStatus.PENDING,
-  OrderStatus.PROCESSING,
-  OrderStatus.PAID,
-  OrderStatus.SHIPPED,
-  OrderStatus.DELIVERED,
+  OrderStatus.Pending,
+  OrderStatus.Processing,
+  OrderStatus.Paid,
+  OrderStatus.Shipped,
+  OrderStatus.Delivered,
 ] as const;
 
 interface OrderProgressProps {
@@ -90,20 +91,20 @@ export function OrderProgress({
   deliveredAt,
   cancelledAt,
 }: OrderProgressProps) {
-  const isCancelled = status === OrderStatus.CANCELLED;
+  const isCancelled = status === OrderStatus.Cancelled;
 
   const getStepDate = useCallback(
     (stepStatus: string): Date | string | null => {
       switch (stepStatus) {
-        case OrderStatus.PENDING:
+        case OrderStatus.Pending:
           return requestAt ?? createdAt;
-        case OrderStatus.PROCESSING:
+        case OrderStatus.Processing:
           return approvedAt ?? null;
-        case OrderStatus.PAID:
+        case OrderStatus.Paid:
           return paidAt ?? null;
-        case OrderStatus.SHIPPED:
+        case OrderStatus.Shipped:
           return shippedAt ?? null;
-        case OrderStatus.DELIVERED:
+        case OrderStatus.Delivered:
           return deliveredAt ?? null;
         default:
           return null;

@@ -2,7 +2,6 @@
 
 import { updateOrderStatus } from "@/data/admin/orders/gateway/server";
 import { OrderDetailDialogContainer } from "@/features/dashboard/orders";
-import { OrderStatus } from "@/prisma/generated/enums";
 import { PackageIcon } from "lucide-react";
 import {
   useCallback,
@@ -16,6 +15,7 @@ import { OptimizedImage } from "@/components/shared";
 
 import { getOrderStatusColor } from "@/lib/status-utils";
 
+import { OrderStatus } from "@/graphql/generated/types";
 import type { AdminUserOrder } from "@/graphql/generated/types";
 
 import { KanbanBoard, KanbanColumn } from "./kanban-board";
@@ -26,12 +26,12 @@ interface OrdersBoardProps {
 
 // Define the columns for order status
 const ORDER_COLUMNS: { id: OrderStatus; title: string }[] = [
-  { id: OrderStatus.PENDING, title: "Pending" },
-  { id: OrderStatus.PROCESSING, title: "Approved" },
-  { id: OrderStatus.PAID, title: "Paid" },
-  { id: OrderStatus.SHIPPED, title: "Shipped" },
-  { id: OrderStatus.DELIVERED, title: "Delivered" },
-  { id: OrderStatus.CANCELLED, title: "Cancelled" },
+  { id: OrderStatus.Pending, title: "Pending" },
+  { id: OrderStatus.Processing, title: "Approved" },
+  { id: OrderStatus.Paid, title: "Paid" },
+  { id: OrderStatus.Shipped, title: "Shipped" },
+  { id: OrderStatus.Delivered, title: "Delivered" },
+  { id: OrderStatus.Cancelled, title: "Cancelled" },
 ];
 
 export function OrdersBoard({ orders }: OrdersBoardProps) {

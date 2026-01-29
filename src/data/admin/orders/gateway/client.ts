@@ -1,7 +1,6 @@
 "use client";
 
-import { isGraphQL } from "@/consts/env";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import {
   useAdminUpdateOrderDiscountMutation,
@@ -11,8 +10,6 @@ import {
   useAdminUpdateOrderStatusMutation,
 } from "@/graphql/generated/graphql";
 import type { AdminOrderMutationResponse } from "@/graphql/generated/types";
-
-import * as actionImpl from "../server/action";
 
 // ============ UPDATE ORDER STATUS ============
 
@@ -27,10 +24,7 @@ interface UseAdminUpdateOrderStatusReturn {
 }
 
 export function useAdminUpdateOrderStatus(): UseAdminUpdateOrderStatusReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateOrderStatusMutation();
 
   const mutate = useCallback(
@@ -38,50 +32,25 @@ export function useAdminUpdateOrderStatus(): UseAdminUpdateOrderStatusReturn {
       orderId: string,
       status: string,
     ): Promise<UpdateOrderStatusResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { orderId, status },
-          });
-          if (data?.adminUpdateOrderStatus) {
-            return { success: true, data: data.adminUpdateOrderStatus };
-          }
-          return { success: false, error: "Failed to update order status" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { orderId, status },
+        });
+        if (data?.adminUpdateOrderStatus) {
+          return { success: true, data: data.adminUpdateOrderStatus };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateOrderStatus(orderId, status);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update order status",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update order status" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE ORDER PRICE ============
@@ -97,58 +66,30 @@ interface UseAdminUpdateOrderPriceReturn {
 }
 
 export function useAdminUpdateOrderPrice(): UseAdminUpdateOrderPriceReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateOrderPriceMutation();
 
   const mutate = useCallback(
     async (orderId: string, total: number): Promise<UpdateOrderPriceResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { orderId, total },
-          });
-          if (data?.adminUpdateOrderPrice) {
-            return { success: true, data: data.adminUpdateOrderPrice };
-          }
-          return { success: false, error: "Failed to update order price" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { orderId, total },
+        });
+        if (data?.adminUpdateOrderPrice) {
+          return { success: true, data: data.adminUpdateOrderPrice };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateOrderPrice(orderId, total);
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update order price",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update order price" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE ORDER DISCOUNT ============
@@ -167,10 +108,7 @@ interface UseAdminUpdateOrderDiscountReturn {
 }
 
 export function useAdminUpdateOrderDiscount(): UseAdminUpdateOrderDiscountReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateOrderDiscountMutation();
 
   const mutate = useCallback(
@@ -178,53 +116,25 @@ export function useAdminUpdateOrderDiscount(): UseAdminUpdateOrderDiscountReturn
       orderId: string,
       discount: number,
     ): Promise<UpdateOrderDiscountResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { orderId, discount },
-          });
-          if (data?.adminUpdateOrderDiscount) {
-            return { success: true, data: data.adminUpdateOrderDiscount };
-          }
-          return { success: false, error: "Failed to update order discount" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { orderId, discount },
+        });
+        if (data?.adminUpdateOrderDiscount) {
+          return { success: true, data: data.adminUpdateOrderDiscount };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateOrderDiscount(
-            orderId,
-            discount,
-          );
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update order discount",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update order discount" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE ORDER ITEM DISCOUNT ============
@@ -243,10 +153,7 @@ interface UseAdminUpdateOrderItemDiscountReturn {
 }
 
 export function useAdminUpdateOrderItemDiscount(): UseAdminUpdateOrderItemDiscountReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateOrderItemDiscountMutation();
 
   const mutate = useCallback(
@@ -254,53 +161,25 @@ export function useAdminUpdateOrderItemDiscount(): UseAdminUpdateOrderItemDiscou
       itemId: number,
       discount: number,
     ): Promise<UpdateOrderItemDiscountResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { itemId, discount },
-          });
-          if (data?.adminUpdateOrderItemDiscount) {
-            return { success: true, data: data.adminUpdateOrderItemDiscount };
-          }
-          return { success: false, error: "Failed to update item discount" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { itemId, discount },
+        });
+        if (data?.adminUpdateOrderItemDiscount) {
+          return { success: true, data: data.adminUpdateOrderItemDiscount };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateOrderItemDiscount(
-            itemId,
-            discount,
-          );
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update item discount",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update item discount" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
 
 // ============ UPDATE ORDER ITEM QUANTITY ============
@@ -319,10 +198,7 @@ interface UseAdminUpdateOrderItemQuantityReturn {
 }
 
 export function useAdminUpdateOrderItemQuantity(): UseAdminUpdateOrderItemQuantityReturn {
-  const [actionLoading, setActionLoading] = useState(false);
-  const [actionError, setActionError] = useState<Error | undefined>();
-
-  const [graphqlMutate, { loading: graphqlLoading, error: graphqlError }] =
+  const [graphqlMutate, { loading, error }] =
     useAdminUpdateOrderItemQuantityMutation();
 
   const mutate = useCallback(
@@ -330,51 +206,23 @@ export function useAdminUpdateOrderItemQuantity(): UseAdminUpdateOrderItemQuanti
       itemId: number,
       quantity: number,
     ): Promise<UpdateOrderItemQuantityResult> => {
-      if (isGraphQL) {
-        try {
-          const { data } = await graphqlMutate({
-            variables: { itemId, quantity },
-          });
-          if (data?.adminUpdateOrderItemQuantity) {
-            return { success: true, data: data.adminUpdateOrderItemQuantity };
-          }
-          return { success: false, error: "Failed to update item quantity" };
-        } catch (e) {
-          return {
-            success: false,
-            error: e instanceof Error ? e.message : "Unknown error",
-          };
+      try {
+        const { data } = await graphqlMutate({
+          variables: { itemId, quantity },
+        });
+        if (data?.adminUpdateOrderItemQuantity) {
+          return { success: true, data: data.adminUpdateOrderItemQuantity };
         }
-      } else {
-        setActionLoading(true);
-        setActionError(undefined);
-        try {
-          const result = await actionImpl.updateOrderItemQuantity(
-            itemId,
-            quantity,
-          );
-          if (result.success) {
-            return { success: true, data: result };
-          }
-          return {
-            success: false,
-            error: result.error ?? "Failed to update item quantity",
-          };
-        } catch (e) {
-          const error = e instanceof Error ? e : new Error("Unknown error");
-          setActionError(error);
-          return { success: false, error: error.message };
-        } finally {
-          setActionLoading(false);
-        }
+        return { success: false, error: "Failed to update item quantity" };
+      } catch (e) {
+        return {
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        };
       }
     },
     [graphqlMutate],
   );
 
-  return {
-    mutate,
-    loading: isGraphQL ? graphqlLoading : actionLoading,
-    error: isGraphQL ? graphqlError : actionError,
-  };
+  return { mutate, loading, error };
 }
