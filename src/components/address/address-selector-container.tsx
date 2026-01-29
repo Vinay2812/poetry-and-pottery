@@ -2,7 +2,7 @@
 
 import { useUserAddresses } from "@/data/address/gateway/client";
 import { MapPin } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 
 import type { UserAddress } from "@/graphql/generated/types";
 
@@ -58,14 +58,18 @@ export function AddressSelectorContainer({
 }: AddressSelectorContainerProps) {
   const { addresses, isLoading } = useUserAddresses();
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
-    initialSelectedId ?? addresses[0]?.id ?? null,
+    initialSelectedId ?? null,
   );
+  const [, startTransition] = useTransition();
 
   // Auto-select first address when addresses load
   useEffect(() => {
     if (!isLoading && addresses.length > 0 && selectedAddressId === null) {
-      const firstAddress = addresses[0];
-      onSelectAddress(firstAddress);
+      startTransition(() => {
+        const firstAddress = addresses[0];
+        setSelectedAddressId(firstAddress.id);
+        onSelectAddress(firstAddress);
+      });
     }
   }, [isLoading, addresses, selectedAddressId, onSelectAddress]);
 
