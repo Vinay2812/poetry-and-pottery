@@ -49,6 +49,7 @@ export interface ProductsTableViewModel {
   pagination: PaginationViewModel;
   searchValue: string;
   categoryFilter: string;
+  collectionFilter: string;
   activeFilter: string;
 }
 
@@ -58,9 +59,11 @@ export interface ProductsTableViewModel {
 export interface ProductsTableProps {
   viewModel: ProductsTableViewModel;
   categories: string[];
+  collections: CollectionOption[];
   isPending: boolean;
   onSearch: (value: string) => void;
   onCategoryFilter: (value: string) => void;
+  onCollectionFilter: (value: string) => void;
   onActiveFilter: (value: string) => void;
   onPageChange: (page: number) => void;
   onToggleActive: (productId: number) => void;
@@ -73,6 +76,7 @@ export interface ProductsTableProps {
 export interface ProductsTableContainerProps {
   data: AdminProductsResponse;
   categories: string[];
+  collections: CollectionOption[];
 }
 
 /**
@@ -199,6 +203,7 @@ export function buildProductsTableViewModel(
   data: AdminProductsResponse,
   searchValue: string,
   categoryFilter: string,
+  collectionFilter: string,
   activeFilter: string,
 ): ProductsTableViewModel {
   return {
@@ -206,6 +211,7 @@ export function buildProductsTableViewModel(
     pagination: buildPaginationViewModel(data),
     searchValue,
     categoryFilter,
+    collectionFilter,
     activeFilter,
   };
 }

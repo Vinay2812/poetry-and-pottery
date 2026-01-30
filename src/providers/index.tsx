@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 import { SignInModal, ToastContainer } from "@/components/shared";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 type Props = {
   children: React.ReactNode;
@@ -33,13 +34,15 @@ export default function Providers({ children }: Props) {
       <ApolloProvider>
         <QueryClientProvider client={queryClient}>
           <StoreProvider>
-            <LenisProvider>
-              <AdminRouteGuardProvider>
-                <RouteGuardProvider>{children}</RouteGuardProvider>
-              </AdminRouteGuardProvider>
-            </LenisProvider>
-            <SignInModal />
-            <ToastContainer />
+            <TooltipProvider>
+              <LenisProvider>
+                <AdminRouteGuardProvider>
+                  <RouteGuardProvider>{children}</RouteGuardProvider>
+                </AdminRouteGuardProvider>
+              </LenisProvider>
+              <SignInModal />
+              <ToastContainer />
+            </TooltipProvider>
           </StoreProvider>
         </QueryClientProvider>
       </ApolloProvider>

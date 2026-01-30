@@ -14,6 +14,7 @@ import { buildProductsTableViewModel } from "../types";
 export function ProductsTableContainer({
   data,
   categories,
+  collections,
 }: ProductsTableContainerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,6 +28,7 @@ export function ProductsTableContainer({
         data,
         search,
         searchParams.get("category") || "ALL",
+        searchParams.get("collection") || "ALL",
         searchParams.get("status") || "ALL",
       ),
     [data, search, searchParams],
@@ -56,6 +58,22 @@ export function ProductsTableContainer({
         params.set("category", value);
       } else {
         params.delete("category");
+      }
+      params.set("page", "1");
+      startTransition(() => {
+        router.push(`/dashboard/products?${params.toString()}`);
+      });
+    },
+    [router, searchParams],
+  );
+
+  const handleCollectionFilter = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value && value !== "ALL") {
+        params.set("collection", value);
+      } else {
+        params.delete("collection");
       }
       params.set("page", "1");
       startTransition(() => {
@@ -128,9 +146,11 @@ export function ProductsTableContainer({
     <ProductsTable
       viewModel={viewModel}
       categories={categories}
+      collections={collections}
       isPending={isPending}
       onSearch={handleSearch}
       onCategoryFilter={handleCategoryFilter}
+      onCollectionFilter={handleCollectionFilter}
       onActiveFilter={handleActiveFilter}
       onPageChange={handlePageChange}
       onToggleActive={handleToggleActive}

@@ -410,6 +410,7 @@ export type AdminProductReviewsResponse = {
 
 export type AdminProductsFilterInput = {
   category?: InputMaybe<Scalars['String']['input']>;
+  collectionId?: InputMaybe<Scalars['Int']['input']>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   lowStock?: InputMaybe<Scalars['Boolean']['input']>;

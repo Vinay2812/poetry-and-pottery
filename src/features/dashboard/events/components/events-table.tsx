@@ -225,9 +225,9 @@ export function EventsTable({
   return (
     <div className="space-y-4">
       {/* Header with Add Button */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative w-full sm:w-64">
+      <div className="space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="relative flex-1 sm:max-w-64">
             <SearchIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
             <Input
               placeholder="Search events..."
@@ -237,46 +237,43 @@ export function EventsTable({
             />
           </div>
 
-          <div className="flex gap-2">
-            <Select
-              value={viewModel.statusFilter}
-              onValueChange={onStatusFilter}
-            >
-              <SelectTrigger className="w-[130px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Status</SelectItem>
-                {statusOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={viewModel.levelFilter} onValueChange={onLevelFilter}>
-              <SelectTrigger className="w-[130px]">
-                <SelectValue placeholder="Level" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Levels</SelectItem>
-                {levelOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <Link href="/dashboard/events/new" className="shrink-0">
+            <Button>
+              <PlusIcon className="size-4 sm:mr-2" />
+              <span className="hidden sm:inline">Add Event</span>
+            </Button>
+          </Link>
         </div>
 
-        <Link href="/dashboard/events/new">
-          <Button>
-            <PlusIcon className="mr-2 size-4" />
-            Add Event
-          </Button>
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Select value={viewModel.statusFilter} onValueChange={onStatusFilter}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Status</SelectItem>
+              {statusOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={viewModel.levelFilter} onValueChange={onLevelFilter}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Level" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Levels</SelectItem>
+              {levelOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Top Pagination */}

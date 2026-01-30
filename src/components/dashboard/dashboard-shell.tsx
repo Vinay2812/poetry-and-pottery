@@ -1,10 +1,17 @@
 "use client";
 
 import { useClerk, useUser } from "@clerk/nextjs";
-import { HomeIcon, LogOutIcon, MenuIcon, StoreIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  HomeIcon,
+  LogOutIcon,
+  MenuIcon,
+  StoreIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { OptimizedImage } from "@/components/shared";
@@ -23,6 +30,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import { cn } from "@/lib/utils";
 
 import { DashboardNav } from "./dashboard-nav";
 
@@ -54,14 +68,35 @@ interface DashboardShellProps {
   children: React.ReactNode;
 }
 
+const SIDEBAR_COLLAPSED_KEY = "dashboard-sidebar-collapsed";
+
 export function DashboardShell({ children }: DashboardShellProps) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const { user } = useUser();
   const { signOut } = useClerk();
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
+
+  // Load collapsed state from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
+    if (stored !== null) {
+      setIsCollapsed(stored === "true");
+    }
+    setIsHydrated(true);
+  }, []);
+
+  const toggleCollapsed = useCallback(() => {
+    setIsCollapsed((prev) => {
+      const newValue = !prev;
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(newValue));
+      return newValue;
+    });
+  }, []);
 
   const handleSignOut = useCallback(() => {
     signOut({ redirectUrl: "/" });
@@ -76,40 +111,102 @@ export function DashboardShell({ children }: DashboardShellProps) {
   return (
     <div className="min-h-screen">
       {/* Desktop Sidebar - Fixed */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-white/20 bg-white/70 backdrop-blur-xl lg:block dark:border-white/10 dark:bg-black/70">
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 hidden border-r border-white/20 bg-white/70 backdrop-blur-xl transition-all duration-300 lg:block dark:border-white/10 dark:bg-black/70",
+          isCollapsed ? "w-[72px]" : "w-64",
+        )}
+      >
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex h-16 items-center border-b border-white/20 px-6 dark:border-white/10">
-            <Link href="/dashboard" className="group flex items-center gap-3">
-              <div className="bg-primary shadow-primary/20 flex size-10 items-center justify-center rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+          <div
+            className={cn(
+              "flex h-16 items-center border-b border-white/20 dark:border-white/10",
+              isCollapsed ? "justify-center px-2" : "px-6",
+            )}
+          >
+            <Link
+              href="/dashboard"
+              className={cn(
+                "group flex items-center",
+                isCollapsed ? "justify-center" : "gap-3",
+              )}
+            >
+              <div className="bg-primary shadow-primary/20 flex size-10 shrink-0 items-center justify-center rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
                 <span className="text-lg font-bold text-white">P</span>
               </div>
-              <span className="text-foreground text-xl font-bold tracking-tight">
-                Admin
-              </span>
+              {!isCollapsed && (
+                <span className="text-foreground text-xl font-bold tracking-tight">
+                  Admin
+                </span>
+              )}
             </Link>
           </div>
 
           {/* Navigation */}
-          <div className="flex-1 overflow-y-auto p-4">
-            <DashboardNav />
+          <div
+            className={cn(
+              "flex-1 overflow-y-auto",
+              isCollapsed ? "p-2" : "p-4",
+            )}
+          >
+            <DashboardNav isCollapsed={isCollapsed} />
           </div>
 
           {/* Footer */}
-          <div className="border-t border-white/20 p-4 dark:border-white/10">
-            <Link
-              href="/"
-              className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          <div
+            className={cn(
+              "border-t border-white/20 dark:border-white/10",
+              isCollapsed ? "p-2" : "p-4",
+            )}
+          >
+            {isCollapsed ? (
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <Link
+                    href="/"
+                    className="text-muted-foreground hover:text-foreground flex size-11 items-center justify-center rounded-lg transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                  >
+                    <StoreIcon className="size-5" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">Back to Shop</TooltipContent>
+              </Tooltip>
+            ) : (
+              <Link
+                href="/"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              >
+                <StoreIcon className="size-5" />
+                Back to Shop
+              </Link>
+            )}
+          </div>
+
+          {/* Collapse Toggle Button */}
+          <div className="border-t border-white/20 p-2 dark:border-white/10">
+            <button
+              onClick={toggleCollapsed}
+              className="text-muted-foreground hover:text-foreground flex w-full items-center justify-center rounded-lg p-2.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
-              <StoreIcon className="size-5" />
-              Back to Shop
-            </Link>
+              {isCollapsed ? (
+                <ChevronRightIcon className="size-5" />
+              ) : (
+                <ChevronLeftIcon className="size-5" />
+              )}
+            </button>
           </div>
         </div>
       </aside>
 
       {/* Main Content - with left margin for sidebar on desktop */}
-      <div className="flex min-h-screen flex-col lg:ml-64">
+      <div
+        className={cn(
+          "flex min-h-screen flex-col transition-all duration-300",
+          isHydrated ? (isCollapsed ? "lg:ml-[72px]" : "lg:ml-64") : "lg:ml-64",
+        )}
+      >
         {/* Top Header - Glassmorphism style */}
         <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between px-4 lg:px-6">
           <div className="absolute inset-0 border-b border-white/20 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-black/70" />

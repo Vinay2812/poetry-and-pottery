@@ -221,9 +221,11 @@ function Pagination({
 export function ProductsTable({
   viewModel,
   categories,
+  collections,
   isPending,
   onSearch,
   onCategoryFilter,
+  onCollectionFilter,
   onActiveFilter,
   onPageChange,
   onToggleActive,
@@ -232,9 +234,9 @@ export function ProductsTable({
   return (
     <div className="space-y-4">
       {/* Header with Add Button */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="relative w-full sm:w-64">
+      <div className="space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="relative flex-1 sm:max-w-64">
             <SearchIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
             <Input
               placeholder="Search products..."
@@ -244,46 +246,60 @@ export function ProductsTable({
             />
           </div>
 
-          <div className="flex gap-2">
-            <Select
-              value={viewModel.categoryFilter}
-              onValueChange={onCategoryFilter}
-            >
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Categories</SelectItem>
-                {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={viewModel.activeFilter}
-              onValueChange={onActiveFilter}
-            >
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <Link href="/dashboard/products/new" className="shrink-0">
+            <Button>
+              <PlusIcon className="size-4 sm:mr-2" />
+              <span className="hidden sm:inline">Add Product</span>
+            </Button>
+          </Link>
         </div>
 
-        <Link href="/dashboard/products/new">
-          <Button>
-            <PlusIcon className="mr-2 size-4" />
-            Add Product
-          </Button>
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Select
+            value={viewModel.categoryFilter}
+            onValueChange={onCategoryFilter}
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Categories</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={viewModel.collectionFilter}
+            onValueChange={onCollectionFilter}
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Collection" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Collections</SelectItem>
+              {collections.map((col) => (
+                <SelectItem key={col.id} value={col.id.toString()}>
+                  {col.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={viewModel.activeFilter} onValueChange={onActiveFilter}>
+            <SelectTrigger className="w-[110px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Status</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="inactive">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Top Pagination */}

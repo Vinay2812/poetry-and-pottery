@@ -3,6 +3,7 @@
 import {
   bulkDeleteProducts,
   getAllCategories,
+  getAllCollections,
   getProducts,
 } from "@/data/admin/products/gateway/server";
 import type { AdminBulkDeleteProductsResponse } from "@/data/admin/products/gateway/server";
@@ -48,6 +49,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import type { AdminProductCollection } from "@/graphql/generated/types";
+
 import {
   type BulkDeletePaginationViewModel,
   PAGE_SIZE_OPTIONS,
@@ -71,6 +74,7 @@ export function BulkDeleteProductsDialog({
   // Filter state
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("ALL");
+  const [collectionFilter, setCollectionFilter] = useState("ALL");
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [pageSize, setPageSize] = useState<PageSizeOption>(50);
   const [page, setPage] = useState(1);
@@ -78,6 +82,7 @@ export function BulkDeleteProductsDialog({
   // Data state
   const [products, setProducts] = useState<SelectableProductItem[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [collections, setCollections] = useState<AdminProductCollection[]>([]);
   const [pagination, setPagination] = useState<BulkDeletePaginationViewModel>({
     page: 1,
     totalPages: 1,
@@ -106,10 +111,15 @@ export function BulkDeleteProductsDialog({
   const isAllSelected =
     selectedCount === allProductIds.length && selectedCount > 0;
 
-  // Fetch categories on mount
+  // Fetch categories and collections on mount
   useEffect(() => {
     if (isOpen) {
-      getAllCategories().then(setCategories);
+      Promise.all([getAllCategories(), getAllCollections()]).then(
+        ([cats, cols]) => {
+          setCategories(cats);
+          setCollections(cols);
+        },
+      );
     }
   }, [isOpen]);
 
@@ -121,6 +131,8 @@ export function BulkDeleteProductsDialog({
     getProducts({
       search: search || undefined,
       category: categoryFilter !== "ALL" ? categoryFilter : undefined,
+      collectionId:
+        collectionFilter !== "ALL" ? parseInt(collectionFilter) : undefined,
       isActive:
         activeFilter === "active"
           ? true
@@ -151,13 +163,22 @@ export function BulkDeleteProductsDialog({
         });
       })
       .finally(() => setIsLoading(false));
-  }, [isOpen, search, categoryFilter, activeFilter, page, pageSize]);
+  }, [
+    isOpen,
+    search,
+    categoryFilter,
+    collectionFilter,
+    activeFilter,
+    page,
+    pageSize,
+  ]);
 
   // Reset state when dialog closes
   useEffect(() => {
     if (!isOpen) {
       setSearch("");
       setCategoryFilter("ALL");
+      setCollectionFilter("ALL");
       setActiveFilter("ALL");
       setPageSize(50);
       setPage(1);
@@ -172,6 +193,11 @@ export function BulkDeleteProductsDialog({
 
   const handleCategoryFilter = useCallback((value: string) => {
     setCategoryFilter(value);
+    setPage(1);
+  }, []);
+
+  const handleCollectionFilter = useCallback((value: string) => {
+    setCollectionFilter(value);
     setPage(1);
   }, []);
 
@@ -208,6 +234,8 @@ export function BulkDeleteProductsDialog({
       const data = await getProducts({
         search: search || undefined,
         category: categoryFilter !== "ALL" ? categoryFilter : undefined,
+        collectionId:
+          collectionFilter !== "ALL" ? parseInt(collectionFilter) : undefined,
         isActive:
           activeFilter === "active"
             ? true
@@ -241,6 +269,7 @@ export function BulkDeleteProductsDialog({
     clearSelection,
     search,
     categoryFilter,
+    collectionFilter,
     activeFilter,
     page,
     pageSize,
@@ -298,6 +327,23 @@ export function BulkDeleteProductsDialog({
                   {categories.map((cat) => (
                     <SelectItem key={cat} value={cat}>
                       {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select
+                value={collectionFilter}
+                onValueChange={handleCollectionFilter}
+              >
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Collection" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Collections</SelectItem>
+                  {collections.map((col) => (
+                    <SelectItem key={col.id} value={col.id.toString()}>
+                      {col.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

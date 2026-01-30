@@ -1,5 +1,6 @@
 import {
   getAllCategories,
+  getAllCollections,
   getProducts,
 } from "@/data/admin/products/gateway/server";
 import { ProductsTableContainer } from "@/features/dashboard/products";
@@ -11,6 +12,7 @@ interface ProductsPageProps {
   searchParams: Promise<{
     search?: string;
     category?: string;
+    collection?: string;
     status?: string;
     page?: string;
   }>;
@@ -34,6 +36,7 @@ export default async function ProductsPage({
         <ProductsTableContent
           search={params.search}
           category={params.category}
+          collection={params.collection}
           status={params.status}
           page={params.page}
         />
@@ -45,27 +48,37 @@ export default async function ProductsPage({
 async function ProductsTableContent({
   search,
   category,
+  collection,
   status,
   page,
 }: {
   search?: string;
   category?: string;
+  collection?: string;
   status?: string;
   page?: string;
 }) {
-  const [data, categories] = await Promise.all([
+  const [data, categories, collections] = await Promise.all([
     getProducts({
       search,
       category,
+      collectionId: collection ? parseInt(collection) : undefined,
       isActive:
         status === "active" ? true : status === "inactive" ? false : undefined,
       page: page ? parseInt(page) : 1,
       limit: 20,
     }),
     getAllCategories(),
+    getAllCollections(),
   ]);
 
-  return <ProductsTableContainer data={data} categories={categories} />;
+  return (
+    <ProductsTableContainer
+      data={data}
+      categories={categories}
+      collections={collections}
+    />
+  );
 }
 
 function ProductsTableSkeleton() {

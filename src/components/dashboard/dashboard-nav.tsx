@@ -14,6 +14,12 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -72,9 +78,10 @@ const navItems: NavItem[] = [
 
 interface DashboardNavProps {
   onItemClick?: () => void;
+  isCollapsed?: boolean;
 }
 
-export function DashboardNav({ onItemClick }: DashboardNavProps) {
+export function DashboardNav({ onItemClick, isCollapsed }: DashboardNavProps) {
   const pathname = usePathname();
 
   return (
@@ -84,22 +91,34 @@ export function DashboardNav({ onItemClick }: DashboardNavProps) {
           pathname === item.href ||
           (item.href !== "/dashboard" && pathname.startsWith(item.href));
 
-        return (
+        const linkContent = (
           <Link
             key={item.href}
             href={item.href}
             onClick={onItemClick}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+              "flex items-center rounded-lg text-sm font-medium transition-colors",
+              isCollapsed ? "size-11 justify-center" : "gap-3 px-3 py-2.5",
               isActive
                 ? "bg-primary/10 text-primary"
                 : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900",
             )}
           >
-            <item.icon className="size-5" />
-            {item.title}
+            <item.icon className="size-5 shrink-0" />
+            {!isCollapsed && item.title}
           </Link>
         );
+
+        if (isCollapsed) {
+          return (
+            <Tooltip key={item.href} delayDuration={0}>
+              <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
+              <TooltipContent side="right">{item.title}</TooltipContent>
+            </Tooltip>
+          );
+        }
+
+        return linkContent;
       })}
     </nav>
   );
