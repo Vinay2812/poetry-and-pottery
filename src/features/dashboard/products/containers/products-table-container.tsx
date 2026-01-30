@@ -30,6 +30,7 @@ export function ProductsTableContainer({
         searchParams.get("category") || "ALL",
         searchParams.get("collection") || "ALL",
         searchParams.get("status") || "ALL",
+        searchParams.get("stock") || "ALL",
       ),
     [data, search, searchParams],
   );
@@ -99,6 +100,22 @@ export function ProductsTableContainer({
     [router, searchParams],
   );
 
+  const handleStockFilter = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value && value !== "ALL") {
+        params.set("stock", value);
+      } else {
+        params.delete("stock");
+      }
+      params.set("page", "1");
+      startTransition(() => {
+        router.push(`/dashboard/products?${params.toString()}`);
+      });
+    },
+    [router, searchParams],
+  );
+
   const handlePageChange = useCallback(
     (page: number) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -152,6 +169,7 @@ export function ProductsTableContainer({
       onCategoryFilter={handleCategoryFilter}
       onCollectionFilter={handleCollectionFilter}
       onActiveFilter={handleActiveFilter}
+      onStockFilter={handleStockFilter}
       onPageChange={handlePageChange}
       onToggleActive={handleToggleActive}
       onDelete={handleDelete}

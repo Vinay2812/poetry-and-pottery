@@ -285,10 +285,12 @@ export type AdminEventReviewsResponse = {
 };
 
 export type AdminEventsFilterInput = {
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
   level?: InputMaybe<EventLevel>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
   status?: InputMaybe<EventStatus>;
   upcoming?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -414,6 +416,7 @@ export type AdminProductsFilterInput = {
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   lowStock?: InputMaybe<Scalars['Boolean']['input']>;
+  outOfStock?: InputMaybe<Scalars['Boolean']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
 };

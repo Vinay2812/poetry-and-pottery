@@ -218,6 +218,8 @@ export function EventsTable({
   onSearch,
   onStatusFilter,
   onLevelFilter,
+  onStartDateFilter,
+  onEndDateFilter,
   onPageChange,
   onStatusChange,
   onDelete,
@@ -273,6 +275,24 @@ export function EventsTable({
               ))}
             </SelectContent>
           </Select>
+
+          <div className="flex items-center gap-2">
+            <Input
+              type="date"
+              value={viewModel.startDate}
+              onChange={(e) => onStartDateFilter(e.target.value)}
+              className="w-[140px]"
+              placeholder="Start date"
+            />
+            <span className="text-sm text-neutral-500">to</span>
+            <Input
+              type="date"
+              value={viewModel.endDate}
+              onChange={(e) => onEndDateFilter(e.target.value)}
+              className="w-[140px]"
+              placeholder="End date"
+            />
+          </div>
         </div>
       </div>
 

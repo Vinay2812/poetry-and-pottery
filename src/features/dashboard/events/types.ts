@@ -59,6 +59,8 @@ export interface EventsTableViewModel {
   searchValue: string;
   statusFilter: string;
   levelFilter: string;
+  startDate: string;
+  endDate: string;
 }
 
 /**
@@ -72,6 +74,8 @@ export interface EventsTableProps {
   onSearch: (value: string) => void;
   onStatusFilter: (value: string) => void;
   onLevelFilter: (value: string) => void;
+  onStartDateFilter: (value: string) => void;
+  onEndDateFilter: (value: string) => void;
   onPageChange: (page: number) => void;
   onStatusChange: (eventId: string, status: EventStatus) => void;
   onDelete: (eventId: string) => void;
@@ -210,6 +214,8 @@ export function buildEventsTableViewModel(
   searchValue: string,
   statusFilter: string,
   levelFilter: string,
+  startDate: string,
+  endDate: string,
 ): EventsTableViewModel {
   return {
     events: data.events.map(buildEventRowViewModel),
@@ -217,6 +223,8 @@ export function buildEventsTableViewModel(
     searchValue,
     statusFilter,
     levelFilter,
+    startDate,
+    endDate,
   };
 }
 

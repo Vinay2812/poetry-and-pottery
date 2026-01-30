@@ -227,6 +227,7 @@ export function ProductsTable({
   onCategoryFilter,
   onCollectionFilter,
   onActiveFilter,
+  onStockFilter,
   onPageChange,
   onToggleActive,
   onDelete,
@@ -297,6 +298,17 @@ export function ProductsTable({
               <SelectItem value="ALL">All Status</SelectItem>
               <SelectItem value="active">Active</SelectItem>
               <SelectItem value="inactive">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={viewModel.stockFilter} onValueChange={onStockFilter}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Stock" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Stock</SelectItem>
+              <SelectItem value="low">Low Stock</SelectItem>
+              <SelectItem value="out">Out of Stock</SelectItem>
             </SelectContent>
           </Select>
         </div>

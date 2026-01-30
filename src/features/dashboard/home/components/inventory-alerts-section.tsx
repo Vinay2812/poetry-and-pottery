@@ -16,7 +16,7 @@ export function InventoryAlertsSection({
           <h2 className="text-lg font-semibold">Inventory Alerts</h2>
         </div>
         <Link
-          href="/dashboard/products"
+          href="/dashboard/products?stock=low"
           className="text-primary flex items-center gap-1 text-sm font-medium hover:underline"
         >
           Manage <ArrowRightIcon className="size-3" />

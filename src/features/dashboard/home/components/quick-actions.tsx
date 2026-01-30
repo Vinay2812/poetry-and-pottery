@@ -68,7 +68,7 @@ export function QuickActions({
       )}
       {productsOutOfStock > 0 && (
         <Link
-          href="/dashboard/products"
+          href="/dashboard/products?stock=out"
           className="group flex items-center gap-3 rounded-2xl bg-red-50 p-4 transition-colors hover:bg-red-100"
         >
           <div className="flex size-10 items-center justify-center rounded-xl bg-red-100 text-red-600 group-hover:bg-red-200">
@@ -82,7 +82,7 @@ export function QuickActions({
       )}
       {productsLowStock > 0 && (
         <Link
-          href="/dashboard/products"
+          href="/dashboard/products?stock=low"
           className="group bg-terracotta/10 hover:bg-terracotta/20 flex items-center gap-3 rounded-2xl p-4 transition-colors"
         >
           <div className="bg-terracotta/20 text-terracotta group-hover:bg-terracotta/30 flex size-10 items-center justify-center rounded-xl">
@@ -96,7 +96,7 @@ export function QuickActions({
       )}
       {eventsUpcomingIn7Days > 0 && (
         <Link
-          href="/dashboard/events"
+          href={`/dashboard/events?startDate=${new Date().toISOString().split("T")[0]}&endDate=${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]}`}
           className="group flex items-center gap-3 rounded-2xl bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
         >
           <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 group-hover:bg-emerald-200">

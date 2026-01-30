@@ -51,6 +51,7 @@ export interface ProductsTableViewModel {
   categoryFilter: string;
   collectionFilter: string;
   activeFilter: string;
+  stockFilter: string;
 }
 
 /**
@@ -65,6 +66,7 @@ export interface ProductsTableProps {
   onCategoryFilter: (value: string) => void;
   onCollectionFilter: (value: string) => void;
   onActiveFilter: (value: string) => void;
+  onStockFilter: (value: string) => void;
   onPageChange: (page: number) => void;
   onToggleActive: (productId: number) => void;
   onDelete: (productId: number) => void;
@@ -205,6 +207,7 @@ export function buildProductsTableViewModel(
   categoryFilter: string,
   collectionFilter: string,
   activeFilter: string,
+  stockFilter: string,
 ): ProductsTableViewModel {
   return {
     products: data.products.map(buildProductRowViewModel),
@@ -213,6 +216,7 @@ export function buildProductsTableViewModel(
     categoryFilter,
     collectionFilter,
     activeFilter,
+    stockFilter,
   };
 }
 

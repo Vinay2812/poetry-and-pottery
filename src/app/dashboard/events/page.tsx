@@ -15,6 +15,8 @@ interface EventsPageProps {
     search?: string;
     status?: string;
     level?: string;
+    startDate?: string;
+    endDate?: string;
     page?: string;
   }>;
 }
@@ -36,6 +38,8 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
           search={params.search}
           status={params.status}
           level={params.level}
+          startDate={params.startDate}
+          endDate={params.endDate}
           page={params.page}
         />
       </Suspense>
@@ -47,11 +51,15 @@ async function EventsTableContent({
   search,
   status,
   level,
+  startDate,
+  endDate,
   page,
 }: {
   search?: string;
   status?: string;
   level?: string;
+  startDate?: string;
+  endDate?: string;
   page?: string;
 }) {
   const [data, statusOptions, levelOptions] = await Promise.all([
@@ -59,6 +67,8 @@ async function EventsTableContent({
       search,
       status: status && status !== "ALL" ? (status as EventStatus) : undefined,
       level: level && level !== "ALL" ? (level as EventLevel) : undefined,
+      startDate: startDate ? new Date(startDate).toISOString() : undefined,
+      endDate: endDate ? new Date(endDate).toISOString() : undefined,
       page: page ? parseInt(page) : 1,
       limit: 20,
     }),

@@ -12,7 +12,7 @@ export function UpcomingEventsSection({ events }: UpcomingEventsSectionProps) {
           <h2 className="text-lg font-semibold">Upcoming Events</h2>
         </div>
         <Link
-          href="/dashboard/events"
+          href={`/dashboard/events?startDate=${new Date().toISOString().split("T")[0]}`}
           className="text-primary flex items-center gap-1 text-sm font-medium hover:underline"
         >
           Manage <ArrowRightIcon className="size-3" />

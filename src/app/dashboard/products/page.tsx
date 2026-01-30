@@ -14,6 +14,7 @@ interface ProductsPageProps {
     category?: string;
     collection?: string;
     status?: string;
+    stock?: string;
     page?: string;
   }>;
 }
@@ -38,6 +39,7 @@ export default async function ProductsPage({
           category={params.category}
           collection={params.collection}
           status={params.status}
+          stock={params.stock}
           page={params.page}
         />
       </Suspense>
@@ -50,12 +52,14 @@ async function ProductsTableContent({
   category,
   collection,
   status,
+  stock,
   page,
 }: {
   search?: string;
   category?: string;
   collection?: string;
   status?: string;
+  stock?: string;
   page?: string;
 }) {
   const [data, categories, collections] = await Promise.all([
@@ -65,6 +69,8 @@ async function ProductsTableContent({
       collectionId: collection ? parseInt(collection) : undefined,
       isActive:
         status === "active" ? true : status === "inactive" ? false : undefined,
+      lowStock: stock === "low" ? true : undefined,
+      outOfStock: stock === "out" ? true : undefined,
       page: page ? parseInt(page) : 1,
       limit: 20,
     }),

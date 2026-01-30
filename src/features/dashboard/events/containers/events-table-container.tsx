@@ -31,6 +31,8 @@ export function EventsTableContainer({
         search,
         searchParams.get("status") || "ALL",
         searchParams.get("level") || "ALL",
+        searchParams.get("startDate") || "",
+        searchParams.get("endDate") || "",
       ),
     [data, search, searchParams],
   );
@@ -75,6 +77,38 @@ export function EventsTableContainer({
         params.set("level", value);
       } else {
         params.delete("level");
+      }
+      params.set("page", "1");
+      startTransition(() => {
+        router.push(`/dashboard/events?${params.toString()}`);
+      });
+    },
+    [router, searchParams],
+  );
+
+  const handleStartDateFilter = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value) {
+        params.set("startDate", value);
+      } else {
+        params.delete("startDate");
+      }
+      params.set("page", "1");
+      startTransition(() => {
+        router.push(`/dashboard/events?${params.toString()}`);
+      });
+    },
+    [router, searchParams],
+  );
+
+  const handleEndDateFilter = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value) {
+        params.set("endDate", value);
+      } else {
+        params.delete("endDate");
       }
       params.set("page", "1");
       startTransition(() => {
@@ -136,6 +170,8 @@ export function EventsTableContainer({
       onSearch={handleSearch}
       onStatusFilter={handleStatusFilter}
       onLevelFilter={handleLevelFilter}
+      onStartDateFilter={handleStartDateFilter}
+      onEndDateFilter={handleEndDateFilter}
       onPageChange={handlePageChange}
       onStatusChange={handleStatusChange}
       onDelete={handleDelete}
