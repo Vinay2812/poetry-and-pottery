@@ -46,7 +46,7 @@ export function ProductsTableContainer({
         router.push(`/dashboard/products?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handleCategoryFilter = useCallback(
@@ -62,7 +62,7 @@ export function ProductsTableContainer({
         router.push(`/dashboard/products?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handleActiveFilter = useCallback(
@@ -78,7 +78,7 @@ export function ProductsTableContainer({
         router.push(`/dashboard/products?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handlePageChange = useCallback(
@@ -89,7 +89,7 @@ export function ProductsTableContainer({
         router.push(`/dashboard/products?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handleToggleActive = useCallback(
@@ -116,7 +116,6 @@ export function ProductsTableContainer({
         if (!result.success) {
           console.error("Failed to delete product:", result.error);
         } else if (result.error) {
-          // Product was deactivated instead of deleted
           alert(result.error);
         }
         router.refresh();

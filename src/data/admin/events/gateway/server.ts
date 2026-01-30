@@ -78,3 +78,14 @@ export async function deleteEventReview(
 ): Promise<AdminEventMutationResponse> {
   return graphqlImpl.deleteEventReview(reviewId);
 }
+
+export type {
+  AdminBulkDeleteEventsResponse,
+  BulkDeleteEventResult,
+} from "../server/graphql";
+
+export async function bulkDeleteEvents(
+  ids: string[],
+): Promise<graphqlImpl.AdminBulkDeleteEventsResponse> {
+  return graphqlImpl.bulkDeleteEvents(ids);
+}

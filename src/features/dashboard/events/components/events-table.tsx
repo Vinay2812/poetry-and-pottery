@@ -60,22 +60,24 @@ function EventCard({
 }: EventCardProps) {
   return (
     <div className="hover:shadow-soft overflow-hidden rounded-xl border border-neutral-200 bg-white transition-shadow">
-      <Link href={`/dashboard/events/${event.id}`} className="block">
-        {event.image ? (
-          <div className="relative aspect-video w-full overflow-hidden bg-neutral-100">
-            <OptimizedImage
-              src={event.image}
-              alt={event.title}
-              fill
-              className="object-cover transition-transform hover:scale-105"
-            />
-          </div>
-        ) : (
-          <div className="flex aspect-video w-full items-center justify-center bg-neutral-100 text-neutral-400">
-            <span className="text-sm">No image</span>
-          </div>
-        )}
-      </Link>
+      <div className="relative">
+        <Link href={`/dashboard/events/${event.id}`} className="block">
+          {event.image ? (
+            <div className="relative aspect-video w-full overflow-hidden bg-neutral-100">
+              <OptimizedImage
+                src={event.image}
+                alt={event.title}
+                fill
+                className="object-cover transition-transform hover:scale-105"
+              />
+            </div>
+          ) : (
+            <div className="flex aspect-video w-full items-center justify-center bg-neutral-100 text-neutral-400">
+              <span className="text-sm">No image</span>
+            </div>
+          )}
+        </Link>
+      </div>
 
       <div className="p-4">
         <div className="mb-3 flex items-start justify-between gap-2">

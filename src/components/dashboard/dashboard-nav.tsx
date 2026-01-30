@@ -8,6 +8,7 @@ import {
   HomeIcon,
   LayersIcon,
   SettingsIcon,
+  Trash2Icon,
   UsersIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -61,6 +62,11 @@ const navItems: NavItem[] = [
     title: "Settings",
     href: "/dashboard/settings",
     icon: SettingsIcon,
+  },
+  {
+    title: "Bulk Delete",
+    href: "/dashboard/bulk-delete",
+    icon: Trash2Icon,
   },
 ];
 

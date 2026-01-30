@@ -50,27 +50,29 @@ function ProductCard({
 }: ProductCardProps) {
   return (
     <div className="hover:shadow-soft overflow-hidden rounded-xl border border-neutral-200 bg-white transition-shadow">
-      <Link href={`/dashboard/products/${product.id}`} className="block">
-        {product.imageUrls.length > 0 ? (
-          <div className="relative aspect-square w-full overflow-hidden bg-neutral-100">
-            <OptimizedImage
-              src={product.imageUrls[0]}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform hover:scale-105"
-            />
-            {product.imageUrls.length > 1 && (
-              <div className="absolute right-2 bottom-2 rounded-full bg-black/50 px-2 py-0.5 text-xs font-medium text-white">
-                +{product.imageUrls.length - 1}
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex aspect-square w-full items-center justify-center bg-neutral-100 text-neutral-400">
-            <PackageIcon className="size-12" />
-          </div>
-        )}
-      </Link>
+      <div className="relative">
+        <Link href={`/dashboard/products/${product.id}`} className="block">
+          {product.imageUrls.length > 0 ? (
+            <div className="relative aspect-square w-full overflow-hidden bg-neutral-100">
+              <OptimizedImage
+                src={product.imageUrls[0]}
+                alt={product.name}
+                fill
+                className="object-cover transition-transform hover:scale-105"
+              />
+              {product.imageUrls.length > 1 && (
+                <div className="absolute right-2 bottom-2 rounded-full bg-black/50 px-2 py-0.5 text-xs font-medium text-white">
+                  +{product.imageUrls.length - 1}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex aspect-square w-full items-center justify-center bg-neutral-100 text-neutral-400">
+              <PackageIcon className="size-12" />
+            </div>
+          )}
+        </Link>
+      </div>
 
       <div className="p-4">
         <div className="mb-3 flex items-start justify-between gap-2">

@@ -67,6 +67,26 @@ export type AddressesResponse = {
   total: Scalars['Int']['output'];
 };
 
+export type AdminBulkDeleteEventsResponse = {
+  cancelledCount: Scalars['Int']['output'];
+  deletedCount: Scalars['Int']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  failedCount: Scalars['Int']['output'];
+  results: Array<BulkDeleteEventResult>;
+  success: Scalars['Boolean']['output'];
+  totalRequested: Scalars['Int']['output'];
+};
+
+export type AdminBulkDeleteProductsResponse = {
+  deactivatedCount: Scalars['Int']['output'];
+  deletedCount: Scalars['Int']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  failedCount: Scalars['Int']['output'];
+  results: Array<BulkDeleteProductResult>;
+  success: Scalars['Boolean']['output'];
+  totalRequested: Scalars['Int']['output'];
+};
+
 export type AdminCategoriesResponse = {
   categories: Array<AdminCategory>;
   total: Scalars['Int']['output'];
@@ -615,6 +635,28 @@ export type BestSellersResponse = {
   total_pages: Scalars['Int']['output'];
 };
 
+export type BulkDeleteEventResult = {
+  action: Scalars['String']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
+export type BulkDeleteEventsInput = {
+  ids: Array<Scalars['String']['input']>;
+};
+
+export type BulkDeleteProductResult = {
+  action: Scalars['String']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
+export type BulkDeleteProductsInput = {
+  ids: Array<Scalars['Int']['input']>;
+};
+
 export type CancelRegistrationResponse = {
   error?: Maybe<Scalars['String']['output']>;
   success: Scalars['Boolean']['output'];
@@ -993,6 +1035,8 @@ export type Mutation = {
   addToWishlist: WishlistMutationResponse;
   adminAddCategory: AdminCategoryMutationResponse;
   adminAssignProductsToCollection: AdminCollectionMutationResponse;
+  adminBulkDeleteEvents: AdminBulkDeleteEventsResponse;
+  adminBulkDeleteProducts: AdminBulkDeleteProductsResponse;
   adminCreateCollection: AdminCollectionMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
@@ -1065,6 +1109,16 @@ export type MutationAdminAddCategoryArgs = {
 
 export type MutationAdminAssignProductsToCollectionArgs = {
   input: AssignProductsToCollectionInput;
+};
+
+
+export type MutationAdminBulkDeleteEventsArgs = {
+  input: BulkDeleteEventsInput;
+};
+
+
+export type MutationAdminBulkDeleteProductsArgs = {
+  input: BulkDeleteProductsInput;
 };
 
 
@@ -2524,6 +2578,13 @@ export type AdminDeleteEventReviewMutationVariables = Exact<{
 
 export type AdminDeleteEventReviewMutation = { adminDeleteEventReview: { success: boolean, eventId?: string | null, error?: string | null } };
 
+export type AdminBulkDeleteEventsMutationVariables = Exact<{
+  input: BulkDeleteEventsInput;
+}>;
+
+
+export type AdminBulkDeleteEventsMutation = { adminBulkDeleteEvents: { success: boolean, totalRequested: number, deletedCount: number, cancelledCount: number, failedCount: number, error?: string | null, results: Array<{ id: string, success: boolean, action: string, error?: string | null }> } };
+
 export type AdminEventsQueryVariables = Exact<{
   filter?: InputMaybe<AdminEventsFilterInput>;
 }>;
@@ -2637,6 +2698,13 @@ export type AdminDeleteProductReviewMutationVariables = Exact<{
 
 
 export type AdminDeleteProductReviewMutation = { adminDeleteProductReview: { success: boolean, error?: string | null } };
+
+export type AdminBulkDeleteProductsMutationVariables = Exact<{
+  input: BulkDeleteProductsInput;
+}>;
+
+
+export type AdminBulkDeleteProductsMutation = { adminBulkDeleteProducts: { success: boolean, totalRequested: number, deletedCount: number, deactivatedCount: number, failedCount: number, error?: string | null, results: Array<{ id: number, success: boolean, action: string, error?: string | null }> } };
 
 export type AdminProductsQueryVariables = Exact<{
   filter?: InputMaybe<AdminProductsFilterInput>;
@@ -4753,6 +4821,47 @@ export function useAdminDeleteEventReviewMutation(baseOptions?: ApolloReactHooks
         return ApolloReactHooks.useMutation<AdminDeleteEventReviewMutation, AdminDeleteEventReviewMutationVariables>(AdminDeleteEventReviewDocument, options);
       }
 export type AdminDeleteEventReviewMutationHookResult = ReturnType<typeof useAdminDeleteEventReviewMutation>;
+export const AdminBulkDeleteEventsDocument = gql`
+    mutation AdminBulkDeleteEvents($input: BulkDeleteEventsInput!) {
+  adminBulkDeleteEvents(input: $input) {
+    success
+    totalRequested
+    deletedCount
+    cancelledCount
+    failedCount
+    results {
+      id
+      success
+      action
+      error
+    }
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminBulkDeleteEventsMutation__
+ *
+ * To run a mutation, you first call `useAdminBulkDeleteEventsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminBulkDeleteEventsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminBulkDeleteEventsMutation, { data, loading, error }] = useAdminBulkDeleteEventsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminBulkDeleteEventsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminBulkDeleteEventsMutation, AdminBulkDeleteEventsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminBulkDeleteEventsMutation, AdminBulkDeleteEventsMutationVariables>(AdminBulkDeleteEventsDocument, options);
+      }
+export type AdminBulkDeleteEventsMutationHookResult = ReturnType<typeof useAdminBulkDeleteEventsMutation>;
 export const AdminEventsDocument = gql`
     query AdminEvents($filter: AdminEventsFilterInput) {
   adminEvents(filter: $filter) {
@@ -5411,6 +5520,47 @@ export function useAdminDeleteProductReviewMutation(baseOptions?: ApolloReactHoo
         return ApolloReactHooks.useMutation<AdminDeleteProductReviewMutation, AdminDeleteProductReviewMutationVariables>(AdminDeleteProductReviewDocument, options);
       }
 export type AdminDeleteProductReviewMutationHookResult = ReturnType<typeof useAdminDeleteProductReviewMutation>;
+export const AdminBulkDeleteProductsDocument = gql`
+    mutation AdminBulkDeleteProducts($input: BulkDeleteProductsInput!) {
+  adminBulkDeleteProducts(input: $input) {
+    success
+    totalRequested
+    deletedCount
+    deactivatedCount
+    failedCount
+    results {
+      id
+      success
+      action
+      error
+    }
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminBulkDeleteProductsMutation__
+ *
+ * To run a mutation, you first call `useAdminBulkDeleteProductsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminBulkDeleteProductsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminBulkDeleteProductsMutation, { data, loading, error }] = useAdminBulkDeleteProductsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminBulkDeleteProductsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminBulkDeleteProductsMutation, AdminBulkDeleteProductsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminBulkDeleteProductsMutation, AdminBulkDeleteProductsMutationVariables>(AdminBulkDeleteProductsDocument, options);
+      }
+export type AdminBulkDeleteProductsMutationHookResult = ReturnType<typeof useAdminBulkDeleteProductsMutation>;
 export const AdminProductsDocument = gql`
     query AdminProducts($filter: AdminProductsFilterInput) {
   adminProducts(filter: $filter) {

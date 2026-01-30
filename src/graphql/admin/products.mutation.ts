@@ -45,3 +45,22 @@ export const ADMIN_DELETE_PRODUCT_REVIEW_MUTATION = gql`
     }
   }
 `;
+
+export const ADMIN_BULK_DELETE_PRODUCTS_MUTATION = gql`
+  mutation AdminBulkDeleteProducts($input: BulkDeleteProductsInput!) {
+    adminBulkDeleteProducts(input: $input) {
+      success
+      totalRequested
+      deletedCount
+      deactivatedCount
+      failedCount
+      results {
+        id
+        success
+        action
+        error
+      }
+      error
+    }
+  }
+`;

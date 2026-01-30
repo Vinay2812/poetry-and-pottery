@@ -1,4 +1,7 @@
 export { AnimatedCounter } from "./animated-counter";
+export { BulkActionToolbar } from "./bulk-action-toolbar";
+export { BulkDeleteConfirmDialog } from "./bulk-delete-confirm-dialog";
+export { BulkDeleteResultsDialog } from "./bulk-delete-results-dialog";
 export { FilterSidebar } from "./filter-sidebar";
 export { ImageCarousel } from "./image-carousel";
 export { InfiniteScrollTrigger } from "./infinite-scroll-trigger";

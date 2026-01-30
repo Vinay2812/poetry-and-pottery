@@ -49,7 +49,7 @@ export function EventsTableContainer({
         router.push(`/dashboard/events?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handleStatusFilter = useCallback(
@@ -65,7 +65,7 @@ export function EventsTableContainer({
         router.push(`/dashboard/events?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handleLevelFilter = useCallback(
@@ -81,7 +81,7 @@ export function EventsTableContainer({
         router.push(`/dashboard/events?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handlePageChange = useCallback(
@@ -92,7 +92,7 @@ export function EventsTableContainer({
         router.push(`/dashboard/events?${params.toString()}`);
       });
     },
-    [router, searchParams, startTransition],
+    [router, searchParams],
   );
 
   const handleStatusChange = useCallback(
@@ -119,7 +119,6 @@ export function EventsTableContainer({
         if (!result.success) {
           alert(result.error || "Failed to delete event");
         } else if (result.error) {
-          // Event was cancelled instead of deleted
           alert(result.error);
         }
         router.refresh();

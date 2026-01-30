@@ -69,3 +69,14 @@ export async function deleteProductReview(
 ): Promise<AdminProductMutationResponse> {
   return graphqlImpl.deleteProductReview(reviewId);
 }
+
+export type {
+  AdminBulkDeleteProductsResponse,
+  BulkDeleteProductResult,
+} from "../server/graphql";
+
+export async function bulkDeleteProducts(
+  ids: number[],
+): Promise<graphqlImpl.AdminBulkDeleteProductsResponse> {
+  return graphqlImpl.bulkDeleteProducts(ids);
+}

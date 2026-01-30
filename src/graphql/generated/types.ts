@@ -60,6 +60,26 @@ export type AddressesResponse = {
   total: Scalars['Int']['output'];
 };
 
+export type AdminBulkDeleteEventsResponse = {
+  cancelledCount: Scalars['Int']['output'];
+  deletedCount: Scalars['Int']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  failedCount: Scalars['Int']['output'];
+  results: Array<BulkDeleteEventResult>;
+  success: Scalars['Boolean']['output'];
+  totalRequested: Scalars['Int']['output'];
+};
+
+export type AdminBulkDeleteProductsResponse = {
+  deactivatedCount: Scalars['Int']['output'];
+  deletedCount: Scalars['Int']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  failedCount: Scalars['Int']['output'];
+  results: Array<BulkDeleteProductResult>;
+  success: Scalars['Boolean']['output'];
+  totalRequested: Scalars['Int']['output'];
+};
+
 export type AdminCategoriesResponse = {
   categories: Array<AdminCategory>;
   total: Scalars['Int']['output'];
@@ -608,6 +628,28 @@ export type BestSellersResponse = {
   total_pages: Scalars['Int']['output'];
 };
 
+export type BulkDeleteEventResult = {
+  action: Scalars['String']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
+export type BulkDeleteEventsInput = {
+  ids: Array<Scalars['String']['input']>;
+};
+
+export type BulkDeleteProductResult = {
+  action: Scalars['String']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
+export type BulkDeleteProductsInput = {
+  ids: Array<Scalars['Int']['input']>;
+};
+
 export type CancelRegistrationResponse = {
   error?: Maybe<Scalars['String']['output']>;
   success: Scalars['Boolean']['output'];
@@ -986,6 +1028,8 @@ export type Mutation = {
   addToWishlist: WishlistMutationResponse;
   adminAddCategory: AdminCategoryMutationResponse;
   adminAssignProductsToCollection: AdminCollectionMutationResponse;
+  adminBulkDeleteEvents: AdminBulkDeleteEventsResponse;
+  adminBulkDeleteProducts: AdminBulkDeleteProductsResponse;
   adminCreateCollection: AdminCollectionMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
@@ -1058,6 +1102,16 @@ export type MutationAdminAddCategoryArgs = {
 
 export type MutationAdminAssignProductsToCollectionArgs = {
   input: AssignProductsToCollectionInput;
+};
+
+
+export type MutationAdminBulkDeleteEventsArgs = {
+  input: BulkDeleteEventsInput;
+};
+
+
+export type MutationAdminBulkDeleteProductsArgs = {
+  input: BulkDeleteProductsInput;
 };
 
 
@@ -2517,6 +2571,13 @@ export type AdminDeleteEventReviewMutationVariables = Exact<{
 
 export type AdminDeleteEventReviewMutation = { adminDeleteEventReview: { success: boolean, eventId?: string | null, error?: string | null } };
 
+export type AdminBulkDeleteEventsMutationVariables = Exact<{
+  input: BulkDeleteEventsInput;
+}>;
+
+
+export type AdminBulkDeleteEventsMutation = { adminBulkDeleteEvents: { success: boolean, totalRequested: number, deletedCount: number, cancelledCount: number, failedCount: number, error?: string | null, results: Array<{ id: string, success: boolean, action: string, error?: string | null }> } };
+
 export type AdminEventsQueryVariables = Exact<{
   filter?: InputMaybe<AdminEventsFilterInput>;
 }>;
@@ -2630,6 +2691,13 @@ export type AdminDeleteProductReviewMutationVariables = Exact<{
 
 
 export type AdminDeleteProductReviewMutation = { adminDeleteProductReview: { success: boolean, error?: string | null } };
+
+export type AdminBulkDeleteProductsMutationVariables = Exact<{
+  input: BulkDeleteProductsInput;
+}>;
+
+
+export type AdminBulkDeleteProductsMutation = { adminBulkDeleteProducts: { success: boolean, totalRequested: number, deletedCount: number, deactivatedCount: number, failedCount: number, error?: string | null, results: Array<{ id: number, success: boolean, action: string, error?: string | null }> } };
 
 export type AdminProductsQueryVariables = Exact<{
   filter?: InputMaybe<AdminProductsFilterInput>;

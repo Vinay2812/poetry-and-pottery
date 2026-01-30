@@ -3,6 +3,7 @@
 import { getClient } from "@/lib/apollo";
 
 import {
+  ADMIN_BULK_DELETE_EVENTS_MUTATION,
   ADMIN_CREATE_EVENT_MUTATION,
   ADMIN_DELETE_EVENT_MUTATION,
   ADMIN_DELETE_EVENT_REVIEW_MUTATION,
@@ -258,4 +259,40 @@ export async function deleteEventReview(
   }
 
   return result.data!.adminDeleteEventReview;
+}
+
+export interface BulkDeleteEventResult {
+  id: string;
+  success: boolean;
+  action: string;
+  error: string | null;
+}
+
+export interface AdminBulkDeleteEventsResponse {
+  success: boolean;
+  totalRequested: number;
+  deletedCount: number;
+  cancelledCount: number;
+  failedCount: number;
+  results: BulkDeleteEventResult[];
+  error: string | null;
+}
+
+export async function bulkDeleteEvents(
+  ids: string[],
+): Promise<AdminBulkDeleteEventsResponse> {
+  const client = getClient();
+
+  const result = await client.mutate<{
+    adminBulkDeleteEvents: AdminBulkDeleteEventsResponse;
+  }>({
+    mutation: ADMIN_BULK_DELETE_EVENTS_MUTATION,
+    variables: { input: { ids } },
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  return result.data!.adminBulkDeleteEvents;
 }

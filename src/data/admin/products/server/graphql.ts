@@ -3,6 +3,7 @@
 import { getClient } from "@/lib/apollo";
 
 import {
+  ADMIN_BULK_DELETE_PRODUCTS_MUTATION,
   ADMIN_CREATE_PRODUCT_MUTATION,
   ADMIN_DELETE_PRODUCT_MUTATION,
   ADMIN_DELETE_PRODUCT_REVIEW_MUTATION,
@@ -232,4 +233,40 @@ export async function deleteProductReview(
   }
 
   return result.data!.adminDeleteProductReview;
+}
+
+export interface BulkDeleteProductResult {
+  id: number;
+  success: boolean;
+  action: string;
+  error: string | null;
+}
+
+export interface AdminBulkDeleteProductsResponse {
+  success: boolean;
+  totalRequested: number;
+  deletedCount: number;
+  deactivatedCount: number;
+  failedCount: number;
+  results: BulkDeleteProductResult[];
+  error: string | null;
+}
+
+export async function bulkDeleteProducts(
+  ids: number[],
+): Promise<AdminBulkDeleteProductsResponse> {
+  const client = getClient();
+
+  const result = await client.mutate<{
+    adminBulkDeleteProducts: AdminBulkDeleteProductsResponse;
+  }>({
+    mutation: ADMIN_BULK_DELETE_PRODUCTS_MUTATION,
+    variables: { input: { ids } },
+  });
+
+  if (result.error) {
+    throw new Error(`GraphQL error: ${result.error.message}`);
+  }
+
+  return result.data!.adminBulkDeleteProducts;
 }
