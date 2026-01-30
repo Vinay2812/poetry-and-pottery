@@ -2579,18 +2579,21 @@ export function RouteAnimationProvider({
 **Design Options:**
 
 **Page Layout:**
+
 - **Option A (Recommended):** Tabbed Grid Layout — Pill-style tabs with card grid below
 - **Option B:** Vertical Sidebar Navigation — Vertical nav for option types, more vertical space
 - **Option C:** All-in-One Accordion — All option types on single page with collapsible sections
 - **Option D:** Table Layout — Traditional table view, better for bulk editing
 
 **Option Card Style:**
+
 - **Option A:** Minimal Card — Clean, simple design
 - **Option B:** Detailed Card — More info visible with action buttons
 - **Option C:** Icon-Focused Card — Large visual preview
 - **Option D:** Compact List Item — Dense, scannable
 
 **Add/Edit Dialog:**
+
 - **Option A (Recommended):** Standard Dialog — Clean, focused form
 - **Option B:** With Live Preview — Shows card preview as you type
 - **Option C:** Sectioned Form — Grouped by category

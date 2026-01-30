@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Task 15.3: Admin Custom Mug Options - Poetry & Pottery Wireframes</title>
+    <title>
+      Task 15.3: Admin Custom Mug Options - Poetry & Pottery Wireframes
+    </title>
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
       rel="stylesheet"
@@ -167,9 +169,15 @@
         border-radius: 50%;
       }
 
-      .browser-dots span:nth-child(1) { background: #ef4444; }
-      .browser-dots span:nth-child(2) { background: #f59e0b; }
-      .browser-dots span:nth-child(3) { background: #22c55e; }
+      .browser-dots span:nth-child(1) {
+        background: #ef4444;
+      }
+      .browser-dots span:nth-child(2) {
+        background: #f59e0b;
+      }
+      .browser-dots span:nth-child(3) {
+        background: #22c55e;
+      }
 
       .url-bar {
         flex: 1;
@@ -368,9 +376,15 @@
         gap: 16px;
       }
 
-      .options-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-      .options-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-      .options-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+      .options-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .options-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .options-grid.cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
 
       /* Option Card Base */
       .option-card {
@@ -409,7 +423,7 @@
         height: 40px;
         border-radius: 50%;
         border: 3px solid white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       }
 
       .size-preview {
@@ -432,13 +446,23 @@
         border-radius: 12px;
       }
 
-      .finish-preview.matte { background: var(--neutral-300); }
+      .finish-preview.matte {
+        background: var(--neutral-300);
+      }
       .finish-preview.glossy {
-        background: linear-gradient(135deg, var(--neutral-200) 0%, white 50%, var(--neutral-300) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--neutral-200) 0%,
+          white 50%,
+          var(--neutral-300) 100%
+        );
       }
       .finish-preview.speckled {
         background: var(--cream);
-        background-image: radial-gradient(var(--neutral-400) 1px, transparent 1px);
+        background-image: radial-gradient(
+          var(--neutral-400) 1px,
+          transparent 1px
+        );
         background-size: 6px 6px;
       }
 
@@ -516,7 +540,7 @@
         background: white;
         border-radius: 50%;
         transition: transform 0.2s;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       }
 
       .toggle-switch.active {
@@ -614,7 +638,7 @@
       .add-btn .plus {
         width: 18px;
         height: 18px;
-        background: rgba(255,255,255,0.3);
+        background: rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -687,7 +711,7 @@
       .dialog-overlay {
         position: absolute;
         inset: 0;
-        background: rgba(0,0,0,0.4);
+        background: rgba(0, 0, 0, 0.4);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -701,7 +725,7 @@
         width: 100%;
         max-width: 480px;
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
       }
 
       .dialog-header {
@@ -787,7 +811,7 @@
         height: 48px;
         border-radius: 10px;
         border: 1px solid var(--neutral-200);
-        background: #C4785A;
+        background: #c4785a;
       }
 
       .dialog-footer {
@@ -1072,8 +1096,13 @@
       }
 
       @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
       }
 
       /* Approval Section */
@@ -1208,13 +1237,16 @@
 
   <body>
     <p style="text-align: center; margin-bottom: 24px">
-      <a href="index.html" style="color: var(--primary); text-decoration: none">&larr; Back to Index</a>
+      <a href="index.html" style="color: var(--primary); text-decoration: none"
+        >&larr; Back to Index</a
+      >
     </p>
 
     <h1>Task 15.3: Admin Custom Mug Options</h1>
     <p class="subtitle">
-      CRUD interface for managing custom mug options (size, color, finish, shape) with
-      visual previews, active toggles, drag-to-reorder, and price modifiers.
+      CRUD interface for managing custom mug options (size, color, finish,
+      shape) with visual previews, active toggles, drag-to-reorder, and price
+      modifiers.
     </p>
 
     <div style="text-align: center; margin-bottom: 48px">
@@ -1233,8 +1265,9 @@
             <span class="recommended-badge">RECOMMENDED</span>
           </h3>
           <p>
-            Pill-style tabs for option types with visual card grid below. Each card shows
-            preview, name, price modifier, and active toggle. Clean and familiar admin pattern.
+            Pill-style tabs for option types with visual card grid below. Each
+            card shows preview, name, price modifier, and active toggle. Clean
+            and familiar admin pattern.
           </p>
         </div>
       </div>
@@ -1243,7 +1276,9 @@
         <div class="viewport-row">
           <!-- Mobile -->
           <div class="device-wrapper">
-            <div class="device-label">Mobile <span class="size">375px</span></div>
+            <div class="device-label">
+              Mobile <span class="size">375px</span>
+            </div>
             <div class="mobile-device">
               <div class="mobile-content">
                 <div class="admin-main mobile">
@@ -1261,7 +1296,7 @@
 
                   <div class="header-actions mobile">
                     <div class="option-count">4 size options</div>
-                    <button class="add-btn" style="width: 100%;">
+                    <button class="add-btn" style="width: 100%">
                       <span class="plus">+</span>
                       Add Size Option
                     </button>
@@ -1271,7 +1306,7 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px;"></div>
+                          <div class="size-bar" style="height: 30px"></div>
                         </div>
                       </div>
                       <div class="card-body compact">
@@ -1287,7 +1322,7 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 45px;"></div>
+                          <div class="size-bar" style="height: 45px"></div>
                         </div>
                       </div>
                       <div class="card-body compact">
@@ -1303,7 +1338,7 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 60px;"></div>
+                          <div class="size-bar" style="height: 60px"></div>
                         </div>
                       </div>
                       <div class="card-body compact">
@@ -1319,7 +1354,7 @@
                     <div class="option-card inactive">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 75px;"></div>
+                          <div class="size-bar" style="height: 75px"></div>
                         </div>
                       </div>
                       <div class="card-body compact">
@@ -1339,13 +1374,18 @@
 
           <!-- Tablet -->
           <div class="device-wrapper">
-            <div class="device-label">Tablet <span class="size">768px</span></div>
+            <div class="device-label">
+              Tablet <span class="size">768px</span>
+            </div>
             <div class="tablet-device">
               <div class="tablet-content">
                 <div class="admin-main tablet">
                   <div class="page-header">
                     <h1>Custom Mug Options</h1>
-                    <p>Manage size, color, finish, and shape options for custom mugs</p>
+                    <p>
+                      Manage size, color, finish, and shape options for custom
+                      mugs
+                    </p>
                   </div>
 
                   <div class="admin-tabs pill-style">
@@ -1379,9 +1419,15 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px;"></div>
-                          <div class="size-bar" style="height: 45px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 60px; opacity: 0.3;"></div>
+                          <div class="size-bar" style="height: 30px"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 45px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 60px; opacity: 0.3"
+                          ></div>
                         </div>
                       </div>
                       <div class="card-body">
@@ -1397,9 +1443,11 @@
                           <div class="drag-handle">
                             <span></span><span></span><span></span>
                           </div>
-                          <div style="flex: 1;"></div>
+                          <div style="flex: 1"></div>
                           <div class="action-btn"><div class="icon"></div></div>
-                          <div class="action-btn delete"><div class="icon"></div></div>
+                          <div class="action-btn delete">
+                            <div class="icon"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1407,9 +1455,15 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 45px;"></div>
-                          <div class="size-bar" style="height: 60px; opacity: 0.3;"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 30px; opacity: 0.3"
+                          ></div>
+                          <div class="size-bar" style="height: 45px"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 60px; opacity: 0.3"
+                          ></div>
                         </div>
                       </div>
                       <div class="card-body">
@@ -1425,9 +1479,11 @@
                           <div class="drag-handle">
                             <span></span><span></span><span></span>
                           </div>
-                          <div style="flex: 1;"></div>
+                          <div style="flex: 1"></div>
                           <div class="action-btn"><div class="icon"></div></div>
-                          <div class="action-btn delete"><div class="icon"></div></div>
+                          <div class="action-btn delete">
+                            <div class="icon"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1435,9 +1491,15 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 45px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 60px;"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 30px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 45px; opacity: 0.3"
+                          ></div>
+                          <div class="size-bar" style="height: 60px"></div>
                         </div>
                       </div>
                       <div class="card-body">
@@ -1453,9 +1515,11 @@
                           <div class="drag-handle">
                             <span></span><span></span><span></span>
                           </div>
-                          <div style="flex: 1;"></div>
+                          <div style="flex: 1"></div>
                           <div class="action-btn"><div class="icon"></div></div>
-                          <div class="action-btn delete"><div class="icon"></div></div>
+                          <div class="action-btn delete">
+                            <div class="icon"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1467,13 +1531,17 @@
 
           <!-- Desktop -->
           <div class="device-wrapper">
-            <div class="device-label">Desktop <span class="size">1200px</span></div>
+            <div class="device-label">
+              Desktop <span class="size">1200px</span>
+            </div>
             <div class="desktop-device">
               <div class="browser-bar">
                 <div class="browser-dots">
                   <span></span><span></span><span></span>
                 </div>
-                <div class="url-bar">localhost:3005/dashboard/custom-mug-options</div>
+                <div class="url-bar">
+                  localhost:3005/dashboard/custom-mug-options
+                </div>
               </div>
               <div class="desktop-content">
                 <div class="admin-sidebar">
@@ -1481,13 +1549,18 @@
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
-                  <div class="sidebar-item active"><div class="icon"></div></div>
+                  <div class="sidebar-item active">
+                    <div class="icon"></div>
+                  </div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                 </div>
                 <div class="admin-main">
                   <div class="page-header">
                     <h1>Custom Mug Options</h1>
-                    <p>Manage size, color, finish, and shape options for custom mugs</p>
+                    <p>
+                      Manage size, color, finish, and shape options for custom
+                      mugs
+                    </p>
                   </div>
 
                   <div class="admin-tabs pill-style">
@@ -1521,10 +1594,19 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px;"></div>
-                          <div class="size-bar" style="height: 45px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 60px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 75px; opacity: 0.3;"></div>
+                          <div class="size-bar" style="height: 30px"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 45px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 60px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 75px; opacity: 0.3"
+                          ></div>
                         </div>
                       </div>
                       <div class="card-body">
@@ -1540,9 +1622,11 @@
                           <div class="drag-handle">
                             <span></span><span></span><span></span>
                           </div>
-                          <div style="flex: 1;"></div>
+                          <div style="flex: 1"></div>
                           <div class="action-btn"><div class="icon"></div></div>
-                          <div class="action-btn delete"><div class="icon"></div></div>
+                          <div class="action-btn delete">
+                            <div class="icon"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1550,10 +1634,19 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 45px;"></div>
-                          <div class="size-bar" style="height: 60px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 75px; opacity: 0.3;"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 30px; opacity: 0.3"
+                          ></div>
+                          <div class="size-bar" style="height: 45px"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 60px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 75px; opacity: 0.3"
+                          ></div>
                         </div>
                       </div>
                       <div class="card-body">
@@ -1569,9 +1662,11 @@
                           <div class="drag-handle">
                             <span></span><span></span><span></span>
                           </div>
-                          <div style="flex: 1;"></div>
+                          <div style="flex: 1"></div>
                           <div class="action-btn"><div class="icon"></div></div>
-                          <div class="action-btn delete"><div class="icon"></div></div>
+                          <div class="action-btn delete">
+                            <div class="icon"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1579,10 +1674,19 @@
                     <div class="option-card">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 45px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 60px;"></div>
-                          <div class="size-bar" style="height: 75px; opacity: 0.3;"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 30px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 45px; opacity: 0.3"
+                          ></div>
+                          <div class="size-bar" style="height: 60px"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 75px; opacity: 0.3"
+                          ></div>
                         </div>
                       </div>
                       <div class="card-body">
@@ -1598,9 +1702,11 @@
                           <div class="drag-handle">
                             <span></span><span></span><span></span>
                           </div>
-                          <div style="flex: 1;"></div>
+                          <div style="flex: 1"></div>
                           <div class="action-btn"><div class="icon"></div></div>
-                          <div class="action-btn delete"><div class="icon"></div></div>
+                          <div class="action-btn delete">
+                            <div class="icon"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1608,10 +1714,19 @@
                     <div class="option-card inactive">
                       <div class="card-preview">
                         <div class="size-preview">
-                          <div class="size-bar" style="height: 30px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 45px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 60px; opacity: 0.3;"></div>
-                          <div class="size-bar" style="height: 75px;"></div>
+                          <div
+                            class="size-bar"
+                            style="height: 30px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 45px; opacity: 0.3"
+                          ></div>
+                          <div
+                            class="size-bar"
+                            style="height: 60px; opacity: 0.3"
+                          ></div>
+                          <div class="size-bar" style="height: 75px"></div>
                         </div>
                       </div>
                       <div class="card-body">
@@ -1627,9 +1742,11 @@
                           <div class="drag-handle">
                             <span></span><span></span><span></span>
                           </div>
-                          <div style="flex: 1;"></div>
+                          <div style="flex: 1"></div>
                           <div class="action-btn"><div class="icon"></div></div>
-                          <div class="action-btn delete"><div class="icon"></div></div>
+                          <div class="action-btn delete">
+                            <div class="icon"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1651,8 +1768,9 @@
         <div class="option-info">
           <h3>Vertical Sidebar Navigation</h3>
           <p>
-            Side navigation for option types with content area on the right. Better for
-            viewing many options at once with more vertical space for cards.
+            Side navigation for option types with content area on the right.
+            Better for viewing many options at once with more vertical space for
+            cards.
           </p>
         </div>
       </div>
@@ -1661,7 +1779,9 @@
         <div class="viewport-row">
           <!-- Mobile -->
           <div class="device-wrapper">
-            <div class="device-label">Mobile <span class="size">375px</span></div>
+            <div class="device-label">
+              Mobile <span class="size">375px</span>
+            </div>
             <div class="mobile-device">
               <div class="mobile-content">
                 <div class="admin-main mobile">
@@ -1680,7 +1800,7 @@
 
                   <div class="header-actions mobile">
                     <div class="option-count">8 color options</div>
-                    <button class="add-btn" style="width: 100%;">
+                    <button class="add-btn" style="width: 100%">
                       <span class="plus">+</span>
                       Add Color
                     </button>
@@ -1689,7 +1809,10 @@
                   <div class="options-grid cols-2">
                     <div class="option-card">
                       <div class="card-preview color-preview">
-                        <div class="color-swatch" style="background: #C4785A;"></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #c4785a"
+                        ></div>
                       </div>
                       <div class="card-body compact">
                         <div class="card-title">
@@ -1702,7 +1825,10 @@
 
                     <div class="option-card">
                       <div class="card-preview color-preview">
-                        <div class="color-swatch" style="background: #4F6F52;"></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #4f6f52"
+                        ></div>
                       </div>
                       <div class="card-body compact">
                         <div class="card-title">
@@ -1715,7 +1841,10 @@
 
                     <div class="option-card">
                       <div class="card-preview color-preview">
-                        <div class="color-swatch" style="background: #F5F0E8;"></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #f5f0e8"
+                        ></div>
                       </div>
                       <div class="card-body compact">
                         <div class="card-title">
@@ -1728,7 +1857,10 @@
 
                     <div class="option-card">
                       <div class="card-preview color-preview">
-                        <div class="color-swatch" style="background: #1a1a1a;"></div>
+                        <div
+                          class="color-swatch"
+                          style="background: #1a1a1a"
+                        ></div>
                       </div>
                       <div class="card-body compact">
                         <div class="card-title">
@@ -1746,7 +1878,9 @@
 
           <!-- Tablet -->
           <div class="device-wrapper">
-            <div class="device-label">Tablet <span class="size">768px</span></div>
+            <div class="device-label">
+              Tablet <span class="size">768px</span>
+            </div>
             <div class="tablet-device">
               <div class="tablet-content">
                 <div class="admin-main tablet">
@@ -1777,7 +1911,9 @@
 
                     <div class="vertical-nav-content">
                       <div class="header-actions">
-                        <div class="option-count">8 color options (7 active)</div>
+                        <div class="option-count">
+                          8 color options (7 active)
+                        </div>
                         <button class="add-btn">
                           <span class="plus">+</span>
                           Add Color
@@ -1787,7 +1923,10 @@
                       <div class="options-grid cols-3">
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #C4785A;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #c4785a"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1801,7 +1940,10 @@
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #4F6F52;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #4f6f52"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1815,7 +1957,10 @@
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #F5F0E8;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #f5f0e8"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1829,7 +1974,10 @@
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #8B7355;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #8b7355"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1843,7 +1991,10 @@
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #1a1a1a;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #1a1a1a"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1857,7 +2008,10 @@
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #6B8E9F;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #6b8e9f"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1878,13 +2032,17 @@
 
           <!-- Desktop -->
           <div class="device-wrapper">
-            <div class="device-label">Desktop <span class="size">1200px</span></div>
+            <div class="device-label">
+              Desktop <span class="size">1200px</span>
+            </div>
             <div class="desktop-device">
               <div class="browser-bar">
                 <div class="browser-dots">
                   <span></span><span></span><span></span>
                 </div>
-                <div class="url-bar">localhost:3005/dashboard/custom-mug-options</div>
+                <div class="url-bar">
+                  localhost:3005/dashboard/custom-mug-options
+                </div>
               </div>
               <div class="desktop-content">
                 <div class="admin-sidebar">
@@ -1892,13 +2050,18 @@
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
-                  <div class="sidebar-item active"><div class="icon"></div></div>
+                  <div class="sidebar-item active">
+                    <div class="icon"></div>
+                  </div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                 </div>
                 <div class="admin-main">
                   <div class="page-header">
                     <h1>Custom Mug Options</h1>
-                    <p>Manage size, color, finish, and shape options for custom mugs</p>
+                    <p>
+                      Manage size, color, finish, and shape options for custom
+                      mugs
+                    </p>
                   </div>
 
                   <div class="vertical-nav-layout">
@@ -1923,7 +2086,9 @@
 
                     <div class="vertical-nav-content">
                       <div class="header-actions">
-                        <div class="option-count">8 color options (7 active)</div>
+                        <div class="option-count">
+                          8 color options (7 active)
+                        </div>
                         <button class="add-btn">
                           <span class="plus">+</span>
                           Add Color Option
@@ -1933,7 +2098,10 @@
                       <div class="options-grid cols-4">
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #C4785A;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #c4785a"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1948,16 +2116,23 @@
                               <div class="drag-handle">
                                 <span></span><span></span><span></span>
                               </div>
-                              <div style="flex: 1;"></div>
-                              <div class="action-btn"><div class="icon"></div></div>
-                              <div class="action-btn delete"><div class="icon"></div></div>
+                              <div style="flex: 1"></div>
+                              <div class="action-btn">
+                                <div class="icon"></div>
+                              </div>
+                              <div class="action-btn delete">
+                                <div class="icon"></div>
+                              </div>
                             </div>
                           </div>
                         </div>
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #4F6F52;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #4f6f52"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1972,16 +2147,23 @@
                               <div class="drag-handle">
                                 <span></span><span></span><span></span>
                               </div>
-                              <div style="flex: 1;"></div>
-                              <div class="action-btn"><div class="icon"></div></div>
-                              <div class="action-btn delete"><div class="icon"></div></div>
+                              <div style="flex: 1"></div>
+                              <div class="action-btn">
+                                <div class="icon"></div>
+                              </div>
+                              <div class="action-btn delete">
+                                <div class="icon"></div>
+                              </div>
                             </div>
                           </div>
                         </div>
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #F5F0E8;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #f5f0e8"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -1990,22 +2172,31 @@
                             </div>
                             <div class="card-subtitle">#F5F0E8</div>
                             <div class="card-meta">
-                              <span class="price-badge included">Base Price</span>
+                              <span class="price-badge included"
+                                >Base Price</span
+                              >
                             </div>
                             <div class="card-actions">
                               <div class="drag-handle">
                                 <span></span><span></span><span></span>
                               </div>
-                              <div style="flex: 1;"></div>
-                              <div class="action-btn"><div class="icon"></div></div>
-                              <div class="action-btn delete"><div class="icon"></div></div>
+                              <div style="flex: 1"></div>
+                              <div class="action-btn">
+                                <div class="icon"></div>
+                              </div>
+                              <div class="action-btn delete">
+                                <div class="icon"></div>
+                              </div>
                             </div>
                           </div>
                         </div>
 
                         <div class="option-card">
                           <div class="card-preview color-preview">
-                            <div class="color-swatch" style="background: #8B7355;"></div>
+                            <div
+                              class="color-swatch"
+                              style="background: #8b7355"
+                            ></div>
                           </div>
                           <div class="card-body">
                             <div class="card-title">
@@ -2020,9 +2211,13 @@
                               <div class="drag-handle">
                                 <span></span><span></span><span></span>
                               </div>
-                              <div style="flex: 1;"></div>
-                              <div class="action-btn"><div class="icon"></div></div>
-                              <div class="action-btn delete"><div class="icon"></div></div>
+                              <div style="flex: 1"></div>
+                              <div class="action-btn">
+                                <div class="icon"></div>
+                              </div>
+                              <div class="action-btn delete">
+                                <div class="icon"></div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -2046,8 +2241,9 @@
         <div class="option-info">
           <h3>All-in-One Accordion</h3>
           <p>
-            All option types on a single page with collapsible sections. Good for quick
-            overview and bulk editing across all option types without switching views.
+            All option types on a single page with collapsible sections. Good
+            for quick overview and bulk editing across all option types without
+            switching views.
           </p>
         </div>
       </div>
@@ -2056,7 +2252,9 @@
         <div class="viewport-row">
           <!-- Mobile -->
           <div class="device-wrapper">
-            <div class="device-label">Mobile <span class="size">375px</span></div>
+            <div class="device-label">
+              Mobile <span class="size">375px</span>
+            </div>
             <div class="mobile-device">
               <div class="mobile-content">
                 <div class="admin-main mobile">
@@ -2068,19 +2266,33 @@
                   <div class="accordion-section open">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 16px;">📐</span>
+                        <span style="font-size: 16px">📐</span>
                         Size Options
                         <span class="tab-count">4</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                     <div class="accordion-content">
                       <div class="options-list">
                         <div class="list-item">
                           <div class="list-preview">
-                            <div class="size-bar" style="height: 24px; width: 16px; background: var(--neutral-400); border-radius: 3px;"></div>
+                            <div
+                              class="size-bar"
+                              style="
+                                height: 24px;
+                                width: 16px;
+                                background: var(--neutral-400);
+                                border-radius: 3px;
+                              "
+                            ></div>
                           </div>
                           <div class="list-info">
                             <h4>Small</h4>
@@ -2090,7 +2302,15 @@
                         </div>
                         <div class="list-item">
                           <div class="list-preview">
-                            <div class="size-bar" style="height: 32px; width: 18px; background: var(--neutral-400); border-radius: 3px;"></div>
+                            <div
+                              class="size-bar"
+                              style="
+                                height: 32px;
+                                width: 18px;
+                                background: var(--neutral-400);
+                                border-radius: 3px;
+                              "
+                            ></div>
                           </div>
                           <div class="list-info">
                             <h4>Medium</h4>
@@ -2100,7 +2320,15 @@
                         </div>
                         <div class="list-item">
                           <div class="list-preview">
-                            <div class="size-bar" style="height: 40px; width: 20px; background: var(--neutral-400); border-radius: 3px;"></div>
+                            <div
+                              class="size-bar"
+                              style="
+                                height: 40px;
+                                width: 20px;
+                                background: var(--neutral-400);
+                                border-radius: 3px;
+                              "
+                            ></div>
                           </div>
                           <div class="list-info">
                             <h4>Large</h4>
@@ -2109,7 +2337,10 @@
                           <div class="toggle-switch active"></div>
                         </div>
                       </div>
-                      <button class="add-btn" style="width: 100%; margin-top: 12px;">
+                      <button
+                        class="add-btn"
+                        style="width: 100%; margin-top: 12px"
+                      >
                         <span class="plus">+</span>
                         Add Size
                       </button>
@@ -2119,12 +2350,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 16px;">🎨</span>
+                        <span style="font-size: 16px">🎨</span>
                         Color Options
                         <span class="tab-count">8</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2132,12 +2369,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 16px;">✨</span>
+                        <span style="font-size: 16px">✨</span>
                         Finish Options
                         <span class="tab-count">3</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2145,12 +2388,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 16px;">🏺</span>
+                        <span style="font-size: 16px">🏺</span>
                         Shape Options
                         <span class="tab-count">5</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2161,7 +2410,9 @@
 
           <!-- Tablet -->
           <div class="device-wrapper">
-            <div class="device-label">Tablet <span class="size">768px</span></div>
+            <div class="device-label">
+              Tablet <span class="size">768px</span>
+            </div>
             <div class="tablet-device">
               <div class="tablet-content">
                 <div class="admin-main tablet">
@@ -2173,23 +2424,29 @@
                   <div class="accordion-section open">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">📐</span>
+                        <span style="font-size: 18px">📐</span>
                         Size Options
                         <span class="tab-count">4</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                     <div class="accordion-content">
-                      <div class="header-actions" style="margin-bottom: 16px;">
+                      <div class="header-actions" style="margin-bottom: 16px">
                         <div class="option-count">4 options (3 active)</div>
                         <button class="add-btn">
                           <span class="plus">+</span>
                           Add Size
                         </button>
                       </div>
-                      <div class="options-grid cols-4" style="gap: 12px;">
+                      <div class="options-grid cols-4" style="gap: 12px">
                         <div class="option-card">
                           <div class="card-body compact">
                             <div class="card-title">
@@ -2237,25 +2494,31 @@
                   <div class="accordion-section open">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">✨</span>
+                        <span style="font-size: 18px">✨</span>
                         Finish Options
                         <span class="tab-count">3</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                     <div class="accordion-content">
-                      <div class="header-actions" style="margin-bottom: 16px;">
+                      <div class="header-actions" style="margin-bottom: 16px">
                         <div class="option-count">3 options (all active)</div>
                         <button class="add-btn">
                           <span class="plus">+</span>
                           Add Finish
                         </button>
                       </div>
-                      <div class="options-grid cols-3" style="gap: 12px;">
+                      <div class="options-grid cols-3" style="gap: 12px">
                         <div class="option-card">
-                          <div class="card-preview" style="height: 60px;">
+                          <div class="card-preview" style="height: 60px">
                             <div class="finish-preview matte"></div>
                           </div>
                           <div class="card-body compact">
@@ -2267,7 +2530,7 @@
                           </div>
                         </div>
                         <div class="option-card">
-                          <div class="card-preview" style="height: 60px;">
+                          <div class="card-preview" style="height: 60px">
                             <div class="finish-preview glossy"></div>
                           </div>
                           <div class="card-body compact">
@@ -2279,7 +2542,7 @@
                           </div>
                         </div>
                         <div class="option-card">
-                          <div class="card-preview" style="height: 60px;">
+                          <div class="card-preview" style="height: 60px">
                             <div class="finish-preview speckled"></div>
                           </div>
                           <div class="card-body compact">
@@ -2297,12 +2560,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">🎨</span>
+                        <span style="font-size: 18px">🎨</span>
                         Color Options
                         <span class="tab-count">8</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2310,12 +2579,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">🏺</span>
+                        <span style="font-size: 18px">🏺</span>
                         Shape Options
                         <span class="tab-count">5</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2326,13 +2601,17 @@
 
           <!-- Desktop -->
           <div class="device-wrapper">
-            <div class="device-label">Desktop <span class="size">1200px</span></div>
+            <div class="device-label">
+              Desktop <span class="size">1200px</span>
+            </div>
             <div class="desktop-device">
               <div class="browser-bar">
                 <div class="browser-dots">
                   <span></span><span></span><span></span>
                 </div>
-                <div class="url-bar">localhost:3005/dashboard/custom-mug-options</div>
+                <div class="url-bar">
+                  localhost:3005/dashboard/custom-mug-options
+                </div>
               </div>
               <div class="desktop-content">
                 <div class="admin-sidebar">
@@ -2340,7 +2619,9 @@
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
-                  <div class="sidebar-item active"><div class="icon"></div></div>
+                  <div class="sidebar-item active">
+                    <div class="icon"></div>
+                  </div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                 </div>
                 <div class="admin-main">
@@ -2352,27 +2633,35 @@
                   <div class="accordion-section open">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">📐</span>
+                        <span style="font-size: 18px">📐</span>
                         Size Options
                         <span class="tab-count">4</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                     <div class="accordion-content">
-                      <div class="header-actions" style="margin-bottom: 16px;">
-                        <div class="option-count">4 size options (3 active)</div>
+                      <div class="header-actions" style="margin-bottom: 16px">
+                        <div class="option-count">
+                          4 size options (3 active)
+                        </div>
                         <button class="add-btn">
                           <span class="plus">+</span>
                           Add Size Option
                         </button>
                       </div>
-                      <div class="options-grid cols-4" style="gap: 12px;">
+                      <div class="options-grid cols-4" style="gap: 12px">
                         <div class="option-card">
                           <div class="card-preview">
                             <div class="size-preview">
-                              <div class="size-bar" style="height: 30px;"></div>
+                              <div class="size-bar" style="height: 30px"></div>
                             </div>
                           </div>
                           <div class="card-body compact">
@@ -2387,7 +2676,7 @@
                         <div class="option-card">
                           <div class="card-preview">
                             <div class="size-preview">
-                              <div class="size-bar" style="height: 45px;"></div>
+                              <div class="size-bar" style="height: 45px"></div>
                             </div>
                           </div>
                           <div class="card-body compact">
@@ -2402,7 +2691,7 @@
                         <div class="option-card">
                           <div class="card-preview">
                             <div class="size-preview">
-                              <div class="size-bar" style="height: 60px;"></div>
+                              <div class="size-bar" style="height: 60px"></div>
                             </div>
                           </div>
                           <div class="card-body compact">
@@ -2417,7 +2706,7 @@
                         <div class="option-card inactive">
                           <div class="card-preview">
                             <div class="size-preview">
-                              <div class="size-bar" style="height: 75px;"></div>
+                              <div class="size-bar" style="height: 75px"></div>
                             </div>
                           </div>
                           <div class="card-body compact">
@@ -2436,12 +2725,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">🎨</span>
+                        <span style="font-size: 18px">🎨</span>
                         Color Options
                         <span class="tab-count">8</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2449,12 +2744,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">✨</span>
+                        <span style="font-size: 18px">✨</span>
                         Finish Options
                         <span class="tab-count">3</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2462,12 +2763,18 @@
                   <div class="accordion-section">
                     <div class="accordion-header">
                       <h3>
-                        <span style="font-size: 18px;">🏺</span>
+                        <span style="font-size: 18px">🏺</span>
                         Shape Options
                         <span class="tab-count">5</span>
                       </h3>
-                      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 9l6 6 6-6"/>
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
                       </svg>
                     </div>
                   </div>
@@ -2488,8 +2795,9 @@
         <div class="option-info">
           <h3>Table Layout</h3>
           <p>
-            Traditional table view with inline editing capabilities. Better for bulk
-            editing, scanning many options quickly, and data-heavy workflows.
+            Traditional table view with inline editing capabilities. Better for
+            bulk editing, scanning many options quickly, and data-heavy
+            workflows.
           </p>
         </div>
       </div>
@@ -2498,7 +2806,9 @@
         <div class="viewport-row">
           <!-- Mobile -->
           <div class="device-wrapper">
-            <div class="device-label">Mobile <span class="size">375px</span></div>
+            <div class="device-label">
+              Mobile <span class="size">375px</span>
+            </div>
             <div class="mobile-device">
               <div class="mobile-content">
                 <div class="admin-main mobile">
@@ -2516,7 +2826,7 @@
 
                   <div class="header-actions mobile">
                     <div class="option-count">3 finish options</div>
-                    <button class="add-btn" style="width: 100%;">
+                    <button class="add-btn" style="width: 100%">
                       <span class="plus">+</span>
                       Add Finish
                     </button>
@@ -2526,7 +2836,10 @@
                   <div class="options-list">
                     <div class="list-item">
                       <div class="list-preview">
-                        <div class="finish-preview matte" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+                        <div
+                          class="finish-preview matte"
+                          style="width: 36px; height: 36px; border-radius: 8px"
+                        ></div>
                       </div>
                       <div class="list-info">
                         <h4>Matte</h4>
@@ -2540,7 +2853,10 @@
 
                     <div class="list-item">
                       <div class="list-preview">
-                        <div class="finish-preview glossy" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+                        <div
+                          class="finish-preview glossy"
+                          style="width: 36px; height: 36px; border-radius: 8px"
+                        ></div>
                       </div>
                       <div class="list-info">
                         <h4>Glossy</h4>
@@ -2554,7 +2870,10 @@
 
                     <div class="list-item">
                       <div class="list-preview">
-                        <div class="finish-preview speckled" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+                        <div
+                          class="finish-preview speckled"
+                          style="width: 36px; height: 36px; border-radius: 8px"
+                        ></div>
                       </div>
                       <div class="list-info">
                         <h4>Speckled</h4>
@@ -2573,7 +2892,9 @@
 
           <!-- Tablet -->
           <div class="device-wrapper">
-            <div class="device-label">Tablet <span class="size">768px</span></div>
+            <div class="device-label">
+              Tablet <span class="size">768px</span>
+            </div>
             <div class="tablet-device">
               <div class="tablet-content">
                 <div class="admin-main tablet">
@@ -2583,22 +2904,37 @@
                   </div>
 
                   <div class="admin-tabs">
-                    <div class="admin-tab">Size <span class="tab-count">4</span></div>
-                    <div class="admin-tab">Color <span class="tab-count">8</span></div>
-                    <div class="admin-tab active">Finish <span class="tab-count">3</span></div>
-                    <div class="admin-tab">Shape <span class="tab-count">5</span></div>
+                    <div class="admin-tab">
+                      Size <span class="tab-count">4</span>
+                    </div>
+                    <div class="admin-tab">
+                      Color <span class="tab-count">8</span>
+                    </div>
+                    <div class="admin-tab active">
+                      Finish <span class="tab-count">3</span>
+                    </div>
+                    <div class="admin-tab">
+                      Shape <span class="tab-count">5</span>
+                    </div>
                   </div>
 
                   <div class="header-actions">
-                    <div class="option-count">3 finish options (all active)</div>
+                    <div class="option-count">
+                      3 finish options (all active)
+                    </div>
                     <button class="add-btn">
                       <span class="plus">+</span>
                       Add Finish Option
                     </button>
                   </div>
 
-                  <div class="options-table" style="margin-top: 16px;">
-                    <div class="table-header" style="grid-template-columns: 40px 48px 1fr 120px 80px 60px;">
+                  <div class="options-table" style="margin-top: 16px">
+                    <div
+                      class="table-header"
+                      style="
+                        grid-template-columns: 40px 48px 1fr 120px 80px 60px;
+                      "
+                    >
                       <span></span>
                       <span></span>
                       <span>NAME</span>
@@ -2606,40 +2942,70 @@
                       <span>STATUS</span>
                       <span></span>
                     </div>
-                    <div class="table-row" style="grid-template-columns: 40px 48px 1fr 120px 80px 60px;">
+                    <div
+                      class="table-row"
+                      style="
+                        grid-template-columns: 40px 48px 1fr 120px 80px 60px;
+                      "
+                    >
                       <div class="drag-handle">
                         <span></span><span></span><span></span>
                       </div>
-                      <div class="finish-preview matte" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+                      <div
+                        class="finish-preview matte"
+                        style="width: 36px; height: 36px; border-radius: 8px"
+                      ></div>
                       <div>
                         <strong>Matte</strong>
-                        <div style="font-size: 11px; color: var(--neutral-500);">Smooth, non-reflective surface</div>
+                        <div style="font-size: 11px; color: var(--neutral-500)">
+                          Smooth, non-reflective surface
+                        </div>
                       </div>
                       <span class="price-badge included">Base Price</span>
                       <div class="toggle-switch active"></div>
                       <div class="action-btn"><div class="icon"></div></div>
                     </div>
-                    <div class="table-row" style="grid-template-columns: 40px 48px 1fr 120px 80px 60px;">
+                    <div
+                      class="table-row"
+                      style="
+                        grid-template-columns: 40px 48px 1fr 120px 80px 60px;
+                      "
+                    >
                       <div class="drag-handle">
                         <span></span><span></span><span></span>
                       </div>
-                      <div class="finish-preview glossy" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+                      <div
+                        class="finish-preview glossy"
+                        style="width: 36px; height: 36px; border-radius: 8px"
+                      ></div>
                       <div>
                         <strong>Glossy</strong>
-                        <div style="font-size: 11px; color: var(--neutral-500);">Shiny, reflective finish</div>
+                        <div style="font-size: 11px; color: var(--neutral-500)">
+                          Shiny, reflective finish
+                        </div>
                       </div>
                       <span class="price-badge">+$5.00</span>
                       <div class="toggle-switch active"></div>
                       <div class="action-btn"><div class="icon"></div></div>
                     </div>
-                    <div class="table-row" style="grid-template-columns: 40px 48px 1fr 120px 80px 60px;">
+                    <div
+                      class="table-row"
+                      style="
+                        grid-template-columns: 40px 48px 1fr 120px 80px 60px;
+                      "
+                    >
                       <div class="drag-handle">
                         <span></span><span></span><span></span>
                       </div>
-                      <div class="finish-preview speckled" style="width: 36px; height: 36px; border-radius: 8px;"></div>
+                      <div
+                        class="finish-preview speckled"
+                        style="width: 36px; height: 36px; border-radius: 8px"
+                      ></div>
                       <div>
                         <strong>Speckled</strong>
-                        <div style="font-size: 11px; color: var(--neutral-500);">Textured with colored dots</div>
+                        <div style="font-size: 11px; color: var(--neutral-500)">
+                          Textured with colored dots
+                        </div>
                       </div>
                       <span class="price-badge">+$8.00</span>
                       <div class="toggle-switch active"></div>
@@ -2653,13 +3019,17 @@
 
           <!-- Desktop -->
           <div class="device-wrapper">
-            <div class="device-label">Desktop <span class="size">1200px</span></div>
+            <div class="device-label">
+              Desktop <span class="size">1200px</span>
+            </div>
             <div class="desktop-device">
               <div class="browser-bar">
                 <div class="browser-dots">
                   <span></span><span></span><span></span>
                 </div>
-                <div class="url-bar">localhost:3005/dashboard/custom-mug-options</div>
+                <div class="url-bar">
+                  localhost:3005/dashboard/custom-mug-options
+                </div>
               </div>
               <div class="desktop-content">
                 <div class="admin-sidebar">
@@ -2667,31 +3037,46 @@
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                   <div class="sidebar-item"><div class="icon"></div></div>
-                  <div class="sidebar-item active"><div class="icon"></div></div>
+                  <div class="sidebar-item active">
+                    <div class="icon"></div>
+                  </div>
                   <div class="sidebar-item"><div class="icon"></div></div>
                 </div>
                 <div class="admin-main">
                   <div class="page-header">
                     <h1>Custom Mug Options</h1>
-                    <p>Manage size, color, finish, and shape options for custom mugs</p>
+                    <p>
+                      Manage size, color, finish, and shape options for custom
+                      mugs
+                    </p>
                   </div>
 
                   <div class="admin-tabs">
-                    <div class="admin-tab">Size <span class="tab-count">4</span></div>
-                    <div class="admin-tab">Color <span class="tab-count">8</span></div>
-                    <div class="admin-tab active">Finish <span class="tab-count">3</span></div>
-                    <div class="admin-tab">Shape <span class="tab-count">5</span></div>
+                    <div class="admin-tab">
+                      Size <span class="tab-count">4</span>
+                    </div>
+                    <div class="admin-tab">
+                      Color <span class="tab-count">8</span>
+                    </div>
+                    <div class="admin-tab active">
+                      Finish <span class="tab-count">3</span>
+                    </div>
+                    <div class="admin-tab">
+                      Shape <span class="tab-count">5</span>
+                    </div>
                   </div>
 
                   <div class="header-actions">
-                    <div class="option-count">3 finish options (all active)</div>
+                    <div class="option-count">
+                      3 finish options (all active)
+                    </div>
                     <button class="add-btn">
                       <span class="plus">+</span>
                       Add Finish Option
                     </button>
                   </div>
 
-                  <div class="options-table" style="margin-top: 16px;">
+                  <div class="options-table" style="margin-top: 16px">
                     <div class="table-header">
                       <span></span>
                       <span>PREVIEW</span>
@@ -2705,42 +3090,63 @@
                       <div class="drag-handle">
                         <span></span><span></span><span></span>
                       </div>
-                      <div class="finish-preview matte" style="width: 40px; height: 40px; border-radius: 8px;"></div>
+                      <div
+                        class="finish-preview matte"
+                        style="width: 40px; height: 40px; border-radius: 8px"
+                      ></div>
                       <strong>Matte</strong>
-                      <span style="color: var(--neutral-500);">Smooth, non-reflective surface</span>
+                      <span style="color: var(--neutral-500)"
+                        >Smooth, non-reflective surface</span
+                      >
                       <span class="price-badge included">Base Price</span>
                       <div class="toggle-switch active"></div>
-                      <div style="display: flex; gap: 8px;">
+                      <div style="display: flex; gap: 8px">
                         <div class="action-btn"><div class="icon"></div></div>
-                        <div class="action-btn delete"><div class="icon"></div></div>
+                        <div class="action-btn delete">
+                          <div class="icon"></div>
+                        </div>
                       </div>
                     </div>
                     <div class="table-row">
                       <div class="drag-handle">
                         <span></span><span></span><span></span>
                       </div>
-                      <div class="finish-preview glossy" style="width: 40px; height: 40px; border-radius: 8px;"></div>
+                      <div
+                        class="finish-preview glossy"
+                        style="width: 40px; height: 40px; border-radius: 8px"
+                      ></div>
                       <strong>Glossy</strong>
-                      <span style="color: var(--neutral-500);">Shiny, reflective finish</span>
+                      <span style="color: var(--neutral-500)"
+                        >Shiny, reflective finish</span
+                      >
                       <span class="price-badge">+$5.00</span>
                       <div class="toggle-switch active"></div>
-                      <div style="display: flex; gap: 8px;">
+                      <div style="display: flex; gap: 8px">
                         <div class="action-btn"><div class="icon"></div></div>
-                        <div class="action-btn delete"><div class="icon"></div></div>
+                        <div class="action-btn delete">
+                          <div class="icon"></div>
+                        </div>
                       </div>
                     </div>
                     <div class="table-row">
                       <div class="drag-handle">
                         <span></span><span></span><span></span>
                       </div>
-                      <div class="finish-preview speckled" style="width: 40px; height: 40px; border-radius: 8px;"></div>
+                      <div
+                        class="finish-preview speckled"
+                        style="width: 40px; height: 40px; border-radius: 8px"
+                      ></div>
                       <strong>Speckled</strong>
-                      <span style="color: var(--neutral-500);">Textured with colored dots</span>
+                      <span style="color: var(--neutral-500)"
+                        >Textured with colored dots</span
+                      >
                       <span class="price-badge">+$8.00</span>
                       <div class="toggle-switch active"></div>
-                      <div style="display: flex; gap: 8px;">
+                      <div style="display: flex; gap: 8px">
                         <div class="action-btn"><div class="icon"></div></div>
-                        <div class="action-btn delete"><div class="icon"></div></div>
+                        <div class="action-btn delete">
+                          <div class="icon"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2757,23 +3163,25 @@
     <!-- ==========================================
          ADD/EDIT DIALOG DEMO
          ========================================== -->
-    <div class="wf-section" style="margin-top: 64px;">
+    <div class="wf-section" style="margin-top: 64px">
       <div class="wf-task-label">ADD/EDIT DIALOG</div>
       <h2 class="wf-section-title">Add/Edit Option Dialog</h2>
       <p class="wf-section-desc">
-        Dialog for creating and editing custom mug options. Shows different field
-        configurations for each option type (size, color, finish, shape).
+        Dialog for creating and editing custom mug options. Shows different
+        field configurations for each option type (size, color, finish, shape).
       </p>
 
       <div class="viewport-scroll-container">
         <div class="viewport-row">
           <!-- Mobile Dialog -->
           <div class="device-wrapper">
-            <div class="device-label">Mobile <span class="size">375px</span></div>
+            <div class="device-label">
+              Mobile <span class="size">375px</span>
+            </div>
             <div class="mobile-device">
-              <div class="mobile-content" style="position: relative;">
+              <div class="mobile-content" style="position: relative">
                 <div class="dialog-overlay">
-                  <div class="dialog" style="max-width: 340px;">
+                  <div class="dialog" style="max-width: 340px">
                     <div class="dialog-header">
                       <h2>Add Color Option</h2>
                       <p>Create a new color for custom mugs</p>
@@ -2781,18 +3189,33 @@
                     <div class="dialog-body">
                       <div class="form-group">
                         <label class="form-label">Color Name</label>
-                        <input type="text" class="form-input" placeholder="e.g., Ocean Blue" />
+                        <input
+                          type="text"
+                          class="form-input"
+                          placeholder="e.g., Ocean Blue"
+                        />
                       </div>
                       <div class="form-group">
                         <label class="form-label">Color Code</label>
                         <div class="color-picker-row">
-                          <input type="text" class="form-input" value="#6B8E9F" />
-                          <div class="color-preview-box" style="background: #6B8E9F;"></div>
+                          <input
+                            type="text"
+                            class="form-input"
+                            value="#6B8E9F"
+                          />
+                          <div
+                            class="color-preview-box"
+                            style="background: #6b8e9f"
+                          ></div>
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="form-label">Price Modifier</label>
-                        <input type="text" class="form-input" placeholder="0.00" />
+                        <input
+                          type="text"
+                          class="form-input"
+                          placeholder="0.00"
+                        />
                       </div>
                     </div>
                     <div class="dialog-footer">
@@ -2807,11 +3230,13 @@
 
           <!-- Tablet Dialog -->
           <div class="device-wrapper">
-            <div class="device-label">Tablet <span class="size">768px</span></div>
+            <div class="device-label">
+              Tablet <span class="size">768px</span>
+            </div>
             <div class="tablet-device">
-              <div class="tablet-content" style="position: relative;">
+              <div class="tablet-content" style="position: relative">
                 <div class="dialog-overlay">
-                  <div class="dialog" style="max-width: 440px;">
+                  <div class="dialog" style="max-width: 440px">
                     <div class="dialog-header">
                       <h2>Add Size Option</h2>
                       <p>Create a new size variant for custom mugs</p>
@@ -2819,31 +3244,56 @@
                     <div class="dialog-body">
                       <div class="form-group">
                         <label class="form-label">Size Name</label>
-                        <input type="text" class="form-input" placeholder="e.g., Extra Large" />
+                        <input
+                          type="text"
+                          class="form-input"
+                          placeholder="e.g., Extra Large"
+                        />
                       </div>
                       <div class="form-row">
                         <div class="form-group">
                           <label class="form-label">Capacity (oz)</label>
-                          <input type="text" class="form-input" placeholder="16" />
+                          <input
+                            type="text"
+                            class="form-input"
+                            placeholder="16"
+                          />
                         </div>
                         <div class="form-group">
                           <label class="form-label">Capacity (ml)</label>
-                          <input type="text" class="form-input" placeholder="470" />
+                          <input
+                            type="text"
+                            class="form-input"
+                            placeholder="470"
+                          />
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group">
                           <label class="form-label">Price Modifier ($)</label>
-                          <input type="text" class="form-input" placeholder="0.00" />
+                          <input
+                            type="text"
+                            class="form-input"
+                            placeholder="0.00"
+                          />
                         </div>
                         <div class="form-group">
                           <label class="form-label">Display Order</label>
-                          <input type="text" class="form-input" placeholder="1" />
+                          <input
+                            type="text"
+                            class="form-input"
+                            placeholder="1"
+                          />
                         </div>
                       </div>
-                      <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
+                      <div
+                        class="form-group"
+                        style="display: flex; align-items: center; gap: 12px"
+                      >
                         <div class="toggle-switch active"></div>
-                        <span style="font-size: 13px; color: var(--neutral-700);">Active (visible to customers)</span>
+                        <span style="font-size: 13px; color: var(--neutral-700)"
+                          >Active (visible to customers)</span
+                        >
                       </div>
                     </div>
                     <div class="dialog-footer">
@@ -2858,17 +3308,21 @@
 
           <!-- Desktop Dialog -->
           <div class="device-wrapper">
-            <div class="device-label">Desktop <span class="size">1200px</span></div>
+            <div class="device-label">
+              Desktop <span class="size">1200px</span>
+            </div>
             <div class="desktop-device">
               <div class="browser-bar">
                 <div class="browser-dots">
                   <span></span><span></span><span></span>
                 </div>
-                <div class="url-bar">localhost:3005/dashboard/custom-mug-options</div>
+                <div class="url-bar">
+                  localhost:3005/dashboard/custom-mug-options
+                </div>
               </div>
-              <div class="desktop-content" style="position: relative;">
+              <div class="desktop-content" style="position: relative">
                 <div class="dialog-overlay">
-                  <div class="dialog" style="max-width: 520px;">
+                  <div class="dialog" style="max-width: 520px">
                     <div class="dialog-header">
                       <h2>Edit Finish Option</h2>
                       <p>Modify the finish option details</p>
@@ -2877,7 +3331,11 @@
                       <div class="form-row">
                         <div class="form-group">
                           <label class="form-label">Finish Name</label>
-                          <input type="text" class="form-input" value="Speckled" />
+                          <input
+                            type="text"
+                            class="form-input"
+                            value="Speckled"
+                          />
                         </div>
                         <div class="form-group">
                           <label class="form-label">Price Modifier ($)</label>
@@ -2886,7 +3344,11 @@
                       </div>
                       <div class="form-group">
                         <label class="form-label">Description</label>
-                        <input type="text" class="form-input" value="Textured finish with colored dots pattern" />
+                        <input
+                          type="text"
+                          class="form-input"
+                          value="Textured finish with colored dots pattern"
+                        />
                       </div>
                       <div class="form-row">
                         <div class="form-group">
@@ -2895,15 +3357,40 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">Status</label>
-                          <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+                          <div
+                            style="
+                              display: flex;
+                              align-items: center;
+                              gap: 12px;
+                              margin-top: 8px;
+                            "
+                          >
                             <div class="toggle-switch active"></div>
-                            <span style="font-size: 13px; color: var(--neutral-700);">Active</span>
+                            <span
+                              style="font-size: 13px; color: var(--neutral-700)"
+                              >Active</span
+                            >
                           </div>
                         </div>
                       </div>
-                      <div class="form-group" style="padding-top: 16px; border-top: 1px solid var(--neutral-100);">
-                        <label class="form-label" style="color: #ef4444;">Danger Zone</label>
-                        <button class="btn btn-secondary" style="color: #ef4444; border-color: #fecaca; margin-top: 8px;">
+                      <div
+                        class="form-group"
+                        style="
+                          padding-top: 16px;
+                          border-top: 1px solid var(--neutral-100);
+                        "
+                      >
+                        <label class="form-label" style="color: #ef4444"
+                          >Danger Zone</label
+                        >
+                        <button
+                          class="btn btn-secondary"
+                          style="
+                            color: #ef4444;
+                            border-color: #fecaca;
+                            margin-top: 8px;
+                          "
+                        >
                           Delete This Option
                         </button>
                       </div>
@@ -2926,12 +3413,12 @@
     <!-- Approval Section -->
     <div class="approval-section">
       <h3 class="approval-title">
-        <span style="font-size: 24px;">&#128203;</span>
+        <span style="font-size: 24px">&#128203;</span>
         Approval Section
       </h3>
       <p class="approval-subtitle">
-        Select your preferred layout option for each viewport. The same option can be
-        selected across all viewports for consistency.
+        Select your preferred layout option for each viewport. The same option
+        can be selected across all viewports for consistency.
       </p>
 
       <div class="approval-grid">
@@ -2943,7 +3430,9 @@
           </div>
           <div class="approval-option">
             <input type="radio" name="mobile" value="b" id="mobile-b" />
-            <label for="mobile-b">Option B - Vertical Nav (tabs fallback)</label>
+            <label for="mobile-b"
+              >Option B - Vertical Nav (tabs fallback)</label
+            >
           </div>
           <div class="approval-option">
             <input type="radio" name="mobile" value="c" id="mobile-c" />
@@ -2996,24 +3485,46 @@
         </div>
       </div>
 
-      <textarea class="notes-textarea" placeholder="Add any notes, feedback, or modification requests here..."></textarea>
+      <textarea
+        class="notes-textarea"
+        placeholder="Add any notes, feedback, or modification requests here..."
+      ></textarea>
     </div>
 
     <!-- Implementation Notes -->
-    <div class="notes" style="margin-top: 48px;">
+    <div class="notes" style="margin-top: 48px">
       <strong>Implementation Specs (Task 15.3):</strong><br /><br />
       &bull; <strong>Route:</strong> /dashboard/custom-mug-options<br />
-      &bull; <strong>Option Types:</strong> Size, Color, Finish, Shape (4 tabs/sections)<br />
-      &bull; <strong>Features:</strong> CRUD operations, active toggle, drag-to-reorder, price modifiers<br />
-      &bull; <strong>Card Patterns:</strong> Match existing categories-table.tsx and products-table.tsx patterns<br />
-      &bull; <strong>Shadows:</strong> shadow-soft (default), shadow-card (hover)<br />
-      &bull; <strong>Borders:</strong> rounded-xl (12px) for cards, rounded-2xl (16px) for dialogs<br />
-      &bull; <strong>Colors:</strong> Primary #4F6F52, Terracotta #C4785A for accents<br />
-      &bull; <strong>Files:</strong> src/app/dashboard/custom-mug-options/page.tsx, src/features/dashboard/custom-mug-options/
+      &bull; <strong>Option Types:</strong> Size, Color, Finish, Shape (4
+      tabs/sections)<br />
+      &bull; <strong>Features:</strong> CRUD operations, active toggle,
+      drag-to-reorder, price modifiers<br />
+      &bull; <strong>Card Patterns:</strong> Match existing categories-table.tsx
+      and products-table.tsx patterns<br />
+      &bull; <strong>Shadows:</strong> shadow-soft (default), shadow-card
+      (hover)<br />
+      &bull; <strong>Borders:</strong> rounded-xl (12px) for cards, rounded-2xl
+      (16px) for dialogs<br />
+      &bull; <strong>Colors:</strong> Primary #4F6F52, Terracotta #C4785A for
+      accents<br />
+      &bull;
+      <strong>Files:</strong> src/app/dashboard/custom-mug-options/page.tsx,
+      src/features/dashboard/custom-mug-options/
     </div>
 
-    <footer style="text-align: center; margin-top: 60px; padding-top: 32px; border-top: 1px solid #e5e5e5; color: #999; font-size: 13px;">
-      <a href="index.html" style="color: var(--primary); text-decoration: none">Back to Wireframes Index</a>
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: var(--primary); text-decoration: none"
+        >Back to Wireframes Index</a
+      >
     </footer>
   </body>
 </html>
