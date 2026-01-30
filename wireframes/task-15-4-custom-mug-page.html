@@ -1,0 +1,2728 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 15.4: Custom Mug Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* ========== CUSTOM MUG PAGE WIREFRAME STYLES ========== */
+
+      /* Page Container */
+      .cm-container {
+        background: white;
+        overflow: hidden;
+      }
+
+      /* Mobile Header */
+      .cm-mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: 1px solid #f5f5f4;
+        background: white;
+      }
+
+      .cm-back-btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .cm-header-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .cm-header-spacer {
+        width: 36px;
+      }
+
+      /* Page Header */
+      .cm-page-header {
+        padding: 20px 16px;
+        text-align: center;
+      }
+
+      .cm-page-header.left-aligned {
+        text-align: left;
+      }
+
+      .cm-breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      .cm-breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .cm-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .cm-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin: 8px auto 12px;
+      }
+
+      .cm-title-underline.left {
+        margin: 8px 0 12px;
+      }
+
+      .cm-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      /* Mug Preview */
+      .cm-preview {
+        aspect-ratio: 1/1;
+        background: linear-gradient(135deg, #f5f0e8 0%, #e8ddd4 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cm-preview-mug {
+        width: 60%;
+        height: 55%;
+        background: #d4c4b0;
+        border-radius: 8px 8px 24px 24px;
+        position: relative;
+      }
+
+      .cm-preview-mug::after {
+        content: "";
+        position: absolute;
+        right: -12px;
+        top: 20%;
+        width: 18px;
+        height: 40%;
+        border: 4px solid #d4c4b0;
+        border-left: none;
+        border-radius: 0 20px 20px 0;
+      }
+
+      .cm-preview-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #4f6f52;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Form Section */
+      .cm-form {
+        padding: 20px 16px;
+      }
+
+      .cm-form-section {
+        margin-bottom: 24px;
+      }
+
+      .cm-form-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .cm-form-label-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+
+      /* Option Selectors - Shared */
+      .cm-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      /* Pill Options (Size, Finish) */
+      .cm-pill {
+        padding: 10px 18px;
+        border: 2px solid #e5e5e5;
+        border-radius: 24px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #737373;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+      }
+
+      .cm-pill.selected {
+        border-color: #4f6f52;
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .cm-pill:hover:not(.selected) {
+        border-color: #c4c4c4;
+      }
+
+      /* Card Options (Size with dimensions) */
+      .cm-card {
+        flex: 1;
+        min-width: 100px;
+        padding: 14px;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+      }
+
+      .cm-card.selected {
+        border-color: #4f6f52;
+        background: #f4f6f4;
+      }
+
+      .cm-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .cm-card-subtitle {
+        font-size: 11px;
+        color: #999;
+      }
+
+      .cm-card.selected .cm-card-title {
+        color: #4f6f52;
+      }
+
+      /* Color Swatches */
+      .cm-colors {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .cm-color {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .cm-color.selected {
+        box-shadow: 0 0 0 3px white, 0 0 0 5px #4f6f52;
+      }
+
+      .cm-color-terracotta {
+        background: linear-gradient(135deg, #c4785a 0%, #a85d42 100%);
+      }
+      .cm-color-sage {
+        background: linear-gradient(135deg, #7a9a7e 0%, #5a7a5e 100%);
+      }
+      .cm-color-cream {
+        background: linear-gradient(135deg, #f5f0e8 0%, #e5ddd0 100%);
+      }
+      .cm-color-charcoal {
+        background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+      }
+      .cm-color-ocean {
+        background: linear-gradient(135deg, #5a7a9a 0%, #3a5a7a 100%);
+      }
+      .cm-color-blush {
+        background: linear-gradient(135deg, #d4a5a5 0%, #b48585 100%);
+      }
+
+      .cm-color-name {
+        font-size: 11px;
+        color: #737373;
+        text-align: center;
+        margin-top: 6px;
+      }
+
+      /* Color with Name */
+      .cm-color-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* Shape Options */
+      .cm-shape {
+        flex: 1;
+        min-width: 80px;
+        padding: 16px 12px;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+      }
+
+      .cm-shape.selected {
+        border-color: #4f6f52;
+        background: #f4f6f4;
+      }
+
+      .cm-shape-icon {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto 8px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+
+      .cm-shape.selected .cm-shape-icon {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .cm-shape-name {
+        font-size: 12px;
+        font-weight: 500;
+        color: #737373;
+      }
+
+      .cm-shape.selected .cm-shape-name {
+        color: #4f6f52;
+      }
+
+      /* Custom Text Input */
+      .cm-textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: "Outfit", sans-serif;
+        resize: none;
+        min-height: 100px;
+        transition: border-color 0.2s;
+      }
+
+      .cm-textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+      }
+
+      .cm-textarea-hint {
+        font-size: 12px;
+        color: #999;
+        margin-top: 8px;
+      }
+
+      /* WhatsApp Notice */
+      .cm-whatsapp-notice {
+        background: #e8f5e9;
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 20px 0;
+      }
+
+      .cm-whatsapp-icon {
+        width: 36px;
+        height: 36px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .cm-whatsapp-text {
+        font-size: 13px;
+        color: #2e7d32;
+        line-height: 1.5;
+      }
+
+      .cm-whatsapp-text strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 4px;
+        color: #1b5e20;
+      }
+
+      /* Submit Button */
+      .cm-submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: background 0.2s;
+      }
+
+      .cm-submit-btn:hover {
+        background: #3d5640;
+      }
+
+      .cm-submit-btn-secondary {
+        background: white;
+        color: #4f6f52;
+        border: 2px solid #4f6f52;
+      }
+
+      .cm-submit-btn-secondary:hover {
+        background: #f4f6f4;
+      }
+
+      /* Desktop Split Layout */
+      .cm-desktop-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        padding: 32px 48px;
+      }
+
+      .cm-desktop-preview {
+        position: sticky;
+        top: 32px;
+      }
+
+      /* Stepper Layout */
+      .cm-stepper {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .cm-step {
+        width: 40px;
+        height: 4px;
+        background: #e5e5e5;
+        border-radius: 2px;
+      }
+
+      .cm-step.active {
+        background: #4f6f52;
+      }
+
+      .cm-step.completed {
+        background: #4f6f52;
+      }
+
+      /* Summary Card */
+      .cm-summary {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .cm-summary-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+      }
+
+      .cm-summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        padding: 8px 0;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .cm-summary-row:last-child {
+        border-bottom: none;
+      }
+
+      .cm-summary-label {
+        color: #737373;
+      }
+
+      .cm-summary-value {
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      /* Visual Option Cards with Images */
+      .cm-visual-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .cm-visual-card {
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .cm-visual-card.selected {
+        border-color: #4f6f52;
+      }
+
+      .cm-visual-card-image {
+        aspect-ratio: 4/3;
+        background: linear-gradient(135deg, #f5f0e8 0%, #e8ddd4 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .cm-visual-card-content {
+        padding: 12px;
+        text-align: center;
+      }
+
+      .cm-visual-card-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .cm-visual-card.selected .cm-visual-card-title {
+        color: #4f6f52;
+      }
+
+      /* Horizontal Scroll Options */
+      .cm-scroll-options {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .cm-scroll-options::-webkit-scrollbar {
+        display: none;
+      }
+
+      .cm-scroll-item {
+        flex-shrink: 0;
+        width: 100px;
+        padding: 12px;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+      }
+
+      .cm-scroll-item.selected {
+        border-color: #4f6f52;
+        background: #f4f6f4;
+      }
+
+      /* Inline Segmented Control */
+      .cm-segmented {
+        display: inline-flex;
+        background: #f5f5f4;
+        border-radius: 12px;
+        padding: 4px;
+        gap: 2px;
+      }
+
+      .cm-segment {
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #737373;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .cm-segment.selected {
+        background: white;
+        color: #4f6f52;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Success State */
+      .cm-success {
+        text-align: center;
+        padding: 48px 24px;
+      }
+
+      .cm-success-icon {
+        width: 80px;
+        height: 80px;
+        background: #e8f5e9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        margin: 0 auto 24px;
+        color: #4caf50;
+      }
+
+      .cm-success-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .cm-success-text {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 320px;
+        margin: 0 auto 24px;
+      }
+
+      /* Accordion Style */
+      .cm-accordion {
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+
+      .cm-accordion-header {
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        background: white;
+      }
+
+      .cm-accordion-header.completed {
+        background: #f4f6f4;
+      }
+
+      .cm-accordion-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .cm-accordion-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .cm-accordion-chevron {
+        font-size: 16px;
+        color: #999;
+      }
+
+      .cm-accordion-content {
+        padding: 0 16px 16px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      /* Image carousel dots */
+      .cm-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      .cm-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #e5e5e5;
+      }
+
+      .cm-dot.active {
+        background: #4f6f52;
+        width: 20px;
+        border-radius: 4px;
+      }
+
+      /* Desktop 3-column grid for shapes */
+      .cm-shapes-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      /* Mug shapes in preview */
+      .mug-classic {
+        border-radius: 8px 8px 24px 24px;
+      }
+      .mug-modern {
+        border-radius: 4px;
+      }
+      .mug-round {
+        border-radius: 50% 50% 30% 30%;
+      }
+      .mug-tall {
+        height: 65%;
+        width: 50%;
+        border-radius: 4px 4px 16px 16px;
+      }
+
+      /* Divider */
+      .cm-divider {
+        height: 1px;
+        background: #e5e5e5;
+        margin: 24px 0;
+      }
+
+      /* Price indicator */
+      .cm-price-indicator {
+        font-size: 12px;
+        color: #4f6f52;
+        font-weight: 500;
+        margin-left: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wf-task-label">Task 15.4</div>
+    <h1>Custom Mug Page</h1>
+    <p class="subtitle">
+      Customer-facing customization page for mugs with selectable options (size,
+      color, finish, shape), custom text input, WhatsApp quote notice, and
+      submit request flow.
+    </p>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION A: SINGLE PAGE SCROLL ==================== -->
+    <section class="wf-section">
+      <div class="wf-option-header">
+        Option A — Single Page Scroll
+        <span class="recommended-badge">RECOMMENDED</span>
+      </div>
+      <p class="wf-option-desc">
+        All customization options visible on one scrollable page. Preview image
+        at top (mobile) or sticky sidebar (desktop). Clean, linear form flow
+        with WhatsApp notice at bottom.
+      </p>
+
+      <div class="option-details">
+        <strong>Layout:</strong> Single scroll page with all options visible |
+        <strong>Preview:</strong> Top on mobile, sticky left on desktop |
+        <strong>Flow:</strong> Linear top-to-bottom | <strong>Submit:</strong>
+        Full-width CTA at bottom
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375 x 812)</div>
+          <div class="wf-mobile-frame">
+            <div class="cm-container">
+              <!-- Mobile Header -->
+              <div class="cm-mobile-header">
+                <div class="cm-back-btn">&larr;</div>
+                <div class="cm-header-title">Custom Mug</div>
+                <div class="cm-header-spacer"></div>
+              </div>
+
+              <!-- Preview Image -->
+              <div style="padding: 16px">
+                <div class="cm-preview">
+                  <div class="cm-preview-mug"></div>
+                  <div class="cm-preview-badge">Live Preview</div>
+                </div>
+                <div class="cm-dots">
+                  <div class="cm-dot active"></div>
+                  <div class="cm-dot"></div>
+                  <div class="cm-dot"></div>
+                </div>
+              </div>
+
+              <!-- Form -->
+              <div class="cm-form">
+                <!-- Size -->
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Size</div>
+                  <div class="cm-options">
+                    <div class="cm-pill">Small (8oz)</div>
+                    <div class="cm-pill selected">Medium (12oz)</div>
+                    <div class="cm-pill">Large (16oz)</div>
+                  </div>
+                </div>
+
+                <!-- Color -->
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Color</div>
+                  <div class="cm-colors">
+                    <div class="cm-color cm-color-terracotta selected"></div>
+                    <div class="cm-color cm-color-sage"></div>
+                    <div class="cm-color cm-color-cream"></div>
+                    <div class="cm-color cm-color-charcoal"></div>
+                    <div class="cm-color cm-color-ocean"></div>
+                  </div>
+                </div>
+
+                <!-- Finish -->
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Finish</div>
+                  <div class="cm-options">
+                    <div class="cm-pill selected">Matte</div>
+                    <div class="cm-pill">Glossy</div>
+                    <div class="cm-pill">Speckled</div>
+                  </div>
+                </div>
+
+                <!-- Shape -->
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Shape</div>
+                  <div class="cm-options">
+                    <div class="cm-shape selected">
+                      <div class="cm-shape-icon">U</div>
+                      <div class="cm-shape-name">Classic</div>
+                    </div>
+                    <div class="cm-shape">
+                      <div class="cm-shape-icon">[]</div>
+                      <div class="cm-shape-name">Modern</div>
+                    </div>
+                    <div class="cm-shape">
+                      <div class="cm-shape-icon">O</div>
+                      <div class="cm-shape-name">Round</div>
+                    </div>
+                    <div class="cm-shape">
+                      <div class="cm-shape-icon">|</div>
+                      <div class="cm-shape-name">Tall</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Custom Text -->
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Custom Text (Optional)</div>
+                  <textarea
+                    class="cm-textarea"
+                    placeholder="Enter text to be engraved on your mug..."
+                  ></textarea>
+                  <div class="cm-textarea-hint">Max 50 characters</div>
+                </div>
+
+                <!-- WhatsApp Notice -->
+                <div class="cm-whatsapp-notice">
+                  <div class="cm-whatsapp-icon">W</div>
+                  <div class="cm-whatsapp-text">
+                    <strong>Pricing via WhatsApp</strong>
+                    We'll contact you with a custom quote based on your
+                    selections.
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button class="cm-submit-btn">Request Quote on WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768 x 1024)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content tablet">
+                <!-- Breadcrumbs -->
+                <div class="cm-breadcrumbs">
+                  <a href="#">Home</a> / <span>Custom Mug</span>
+                </div>
+
+                <!-- Two Column Layout -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 32px;
+                    margin-top: 16px;
+                  "
+                >
+                  <!-- Left: Preview -->
+                  <div>
+                    <div class="cm-preview" style="aspect-ratio: 1/1">
+                      <div class="cm-preview-mug"></div>
+                      <div class="cm-preview-badge">Live Preview</div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Form -->
+                  <div>
+                    <h1
+                      class="cm-title"
+                      style="text-align: left; font-size: 28px"
+                    >
+                      Design Your Mug
+                    </h1>
+                    <div class="cm-title-underline left"></div>
+                    <p
+                      class="cm-subtitle"
+                      style="text-align: left; margin: 0 0 24px 0"
+                    >
+                      Create a one-of-a-kind handcrafted mug
+                    </p>
+
+                    <!-- Size -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">Size</div>
+                      <div class="cm-options">
+                        <div class="cm-pill">Small (8oz)</div>
+                        <div class="cm-pill selected">Medium (12oz)</div>
+                        <div class="cm-pill">Large (16oz)</div>
+                      </div>
+                    </div>
+
+                    <!-- Color -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">Color</div>
+                      <div class="cm-colors">
+                        <div
+                          class="cm-color cm-color-terracotta selected"
+                        ></div>
+                        <div class="cm-color cm-color-sage"></div>
+                        <div class="cm-color cm-color-cream"></div>
+                        <div class="cm-color cm-color-charcoal"></div>
+                        <div class="cm-color cm-color-ocean"></div>
+                        <div class="cm-color cm-color-blush"></div>
+                      </div>
+                    </div>
+
+                    <!-- Finish -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">Finish</div>
+                      <div class="cm-options">
+                        <div class="cm-pill selected">Matte</div>
+                        <div class="cm-pill">Glossy</div>
+                        <div class="cm-pill">Speckled</div>
+                      </div>
+                    </div>
+
+                    <!-- Shape -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">Shape</div>
+                      <div class="cm-shapes-grid">
+                        <div class="cm-shape selected">
+                          <div class="cm-shape-icon">U</div>
+                          <div class="cm-shape-name">Classic</div>
+                        </div>
+                        <div class="cm-shape">
+                          <div class="cm-shape-icon">[]</div>
+                          <div class="cm-shape-name">Modern</div>
+                        </div>
+                        <div class="cm-shape">
+                          <div class="cm-shape-icon">O</div>
+                          <div class="cm-shape-name">Round</div>
+                        </div>
+                        <div class="cm-shape">
+                          <div class="cm-shape-icon">|</div>
+                          <div class="cm-shape-name">Tall</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Custom Text -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">Custom Text (Optional)</div>
+                      <textarea
+                        class="cm-textarea"
+                        placeholder="Enter text to be engraved..."
+                        style="min-height: 80px"
+                      ></textarea>
+                    </div>
+
+                    <!-- WhatsApp Notice -->
+                    <div class="cm-whatsapp-notice">
+                      <div class="cm-whatsapp-icon">W</div>
+                      <div class="cm-whatsapp-text">
+                        <strong>Pricing via WhatsApp</strong>
+                        We'll contact you with a custom quote.
+                      </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button class="cm-submit-btn">Request Quote</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440 x 900)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content desktop">
+                <!-- Breadcrumbs -->
+                <div class="cm-breadcrumbs" style="margin-bottom: 24px">
+                  <a href="#">Home</a> / <span>Custom Mug</span>
+                </div>
+
+                <!-- Two Column Layout -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 64px;
+                  "
+                >
+                  <!-- Left: Sticky Preview -->
+                  <div class="cm-desktop-preview">
+                    <div class="cm-preview" style="aspect-ratio: 1/1">
+                      <div class="cm-preview-mug"></div>
+                      <div class="cm-preview-badge">Live Preview</div>
+                    </div>
+                    <div class="cm-dots">
+                      <div class="cm-dot active"></div>
+                      <div class="cm-dot"></div>
+                      <div class="cm-dot"></div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Form -->
+                  <div>
+                    <h1 class="cm-title" style="text-align: left">
+                      Design Your Custom Mug
+                    </h1>
+                    <div class="cm-title-underline left"></div>
+                    <p
+                      class="cm-subtitle"
+                      style="text-align: left; margin: 0 0 32px 0"
+                    >
+                      Create a one-of-a-kind handcrafted ceramic mug, made just
+                      for you.
+                    </p>
+
+                    <!-- Size with Cards -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">Select Size</div>
+                      <div style="display: flex; gap: 12px">
+                        <div class="cm-card">
+                          <div class="cm-card-title">Small</div>
+                          <div class="cm-card-subtitle">8 oz / 240ml</div>
+                        </div>
+                        <div class="cm-card selected">
+                          <div class="cm-card-title">Medium</div>
+                          <div class="cm-card-subtitle">12 oz / 350ml</div>
+                        </div>
+                        <div class="cm-card">
+                          <div class="cm-card-title">Large</div>
+                          <div class="cm-card-subtitle">16 oz / 470ml</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Color with Names -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">Choose Color</div>
+                      <div
+                        style="
+                          display: flex;
+                          gap: 20px;
+                          flex-wrap: wrap;
+                        "
+                      >
+                        <div class="cm-color-item">
+                          <div
+                            class="cm-color cm-color-terracotta selected"
+                          ></div>
+                          <div class="cm-color-name">Terracotta</div>
+                        </div>
+                        <div class="cm-color-item">
+                          <div class="cm-color cm-color-sage"></div>
+                          <div class="cm-color-name">Sage</div>
+                        </div>
+                        <div class="cm-color-item">
+                          <div class="cm-color cm-color-cream"></div>
+                          <div class="cm-color-name">Cream</div>
+                        </div>
+                        <div class="cm-color-item">
+                          <div class="cm-color cm-color-charcoal"></div>
+                          <div class="cm-color-name">Charcoal</div>
+                        </div>
+                        <div class="cm-color-item">
+                          <div class="cm-color cm-color-ocean"></div>
+                          <div class="cm-color-name">Ocean</div>
+                        </div>
+                        <div class="cm-color-item">
+                          <div class="cm-color cm-color-blush"></div>
+                          <div class="cm-color-name">Blush</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+                      <!-- Finish -->
+                      <div class="cm-form-section">
+                        <div class="cm-form-label">Finish</div>
+                        <div class="cm-options">
+                          <div class="cm-pill selected">Matte</div>
+                          <div class="cm-pill">Glossy</div>
+                          <div class="cm-pill">Speckled</div>
+                        </div>
+                      </div>
+
+                      <!-- Shape -->
+                      <div class="cm-form-section">
+                        <div class="cm-form-label">Shape</div>
+                        <div class="cm-options">
+                          <div class="cm-pill selected">Classic</div>
+                          <div class="cm-pill">Modern</div>
+                          <div class="cm-pill">Round</div>
+                          <div class="cm-pill">Tall</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Custom Text -->
+                    <div class="cm-form-section">
+                      <div class="cm-form-label">
+                        Custom Text (Optional)
+                        <span style="font-weight: 400; color: #999">
+                          — engraved on your mug</span
+                        >
+                      </div>
+                      <textarea
+                        class="cm-textarea"
+                        placeholder="Enter your personalized message..."
+                        style="min-height: 80px"
+                      ></textarea>
+                      <div class="cm-textarea-hint">
+                        Max 50 characters. Leave blank for no text.
+                      </div>
+                    </div>
+
+                    <div class="cm-divider"></div>
+
+                    <!-- WhatsApp Notice -->
+                    <div class="cm-whatsapp-notice">
+                      <div class="cm-whatsapp-icon">W</div>
+                      <div class="cm-whatsapp-text">
+                        <strong>Pricing via WhatsApp</strong>
+                        Custom mugs are individually priced based on your
+                        selections. We'll contact you with a personalized quote
+                        within 24 hours.
+                      </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button class="cm-submit-btn">
+                      Request Quote on WhatsApp
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION B: STEP-BY-STEP WIZARD ==================== -->
+    <section class="wf-section">
+      <div class="wf-option-header">Option B — Step-by-Step Wizard</div>
+      <p class="wf-option-desc">
+        Multi-step wizard with progress indicator. One customization category
+        per step. Better for mobile as it reduces scrolling and cognitive load.
+        Summary shown before final submission.
+      </p>
+
+      <div class="option-details">
+        <strong>Layout:</strong> Multi-step wizard (4 steps) |
+        <strong>Progress:</strong> Step dots at top |
+        <strong>Navigation:</strong> Next/Back buttons |
+        <strong>Summary:</strong> Review before submit
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375 x 812)</div>
+          <div class="wf-mobile-frame">
+            <div class="cm-container">
+              <!-- Mobile Header -->
+              <div class="cm-mobile-header">
+                <div class="cm-back-btn">&larr;</div>
+                <div class="cm-header-title">Custom Mug</div>
+                <div class="cm-header-spacer"></div>
+              </div>
+
+              <!-- Stepper -->
+              <div style="padding: 16px">
+                <div class="cm-stepper">
+                  <div class="cm-step completed"></div>
+                  <div class="cm-step active"></div>
+                  <div class="cm-step"></div>
+                  <div class="cm-step"></div>
+                </div>
+                <div
+                  style="
+                    text-align: center;
+                    font-size: 12px;
+                    color: #999;
+                    margin-bottom: 16px;
+                  "
+                >
+                  Step 2 of 4 — Color & Finish
+                </div>
+
+                <!-- Preview Image -->
+                <div class="cm-preview" style="aspect-ratio: 4/3">
+                  <div class="cm-preview-mug"></div>
+                </div>
+              </div>
+
+              <!-- Current Step Form -->
+              <div class="cm-form">
+                <!-- Color Selection -->
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Choose Your Color</div>
+                  <div class="cm-colors" style="justify-content: center">
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-terracotta selected"></div>
+                      <div class="cm-color-name">Terracotta</div>
+                    </div>
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-sage"></div>
+                      <div class="cm-color-name">Sage</div>
+                    </div>
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-cream"></div>
+                      <div class="cm-color-name">Cream</div>
+                    </div>
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-charcoal"></div>
+                      <div class="cm-color-name">Charcoal</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Finish Selection -->
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Select Finish</div>
+                  <div class="cm-options" style="justify-content: center">
+                    <div class="cm-pill selected">Matte</div>
+                    <div class="cm-pill">Glossy</div>
+                    <div class="cm-pill">Speckled</div>
+                  </div>
+                </div>
+
+                <!-- Navigation -->
+                <div
+                  style="display: flex; gap: 12px; margin-top: 24px"
+                >
+                  <button
+                    class="cm-submit-btn cm-submit-btn-secondary"
+                    style="flex: 1"
+                  >
+                    Back
+                  </button>
+                  <button class="cm-submit-btn" style="flex: 2">
+                    Next: Shape
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768 x 1024)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content tablet">
+                <!-- Header -->
+                <div style="text-align: center; margin-bottom: 24px">
+                  <h1 class="cm-title">Design Your Mug</h1>
+                  <div class="cm-title-underline"></div>
+                </div>
+
+                <!-- Stepper -->
+                <div class="cm-stepper" style="margin-bottom: 32px">
+                  <div class="cm-step completed"></div>
+                  <div class="cm-step completed"></div>
+                  <div class="cm-step completed"></div>
+                  <div class="cm-step active"></div>
+                </div>
+
+                <!-- Summary Step -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 32px;
+                  "
+                >
+                  <!-- Preview -->
+                  <div>
+                    <div class="cm-preview">
+                      <div class="cm-preview-mug"></div>
+                    </div>
+                  </div>
+
+                  <!-- Summary -->
+                  <div>
+                    <h2
+                      style="
+                        font-family: 'Plus Jakarta Sans', sans-serif;
+                        font-size: 18px;
+                        margin-bottom: 16px;
+                      "
+                    >
+                      Review Your Design
+                    </h2>
+
+                    <div class="cm-summary">
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Size</span>
+                        <span class="cm-summary-value">Medium (12oz)</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Color</span>
+                        <span class="cm-summary-value">Terracotta</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Finish</span>
+                        <span class="cm-summary-value">Matte</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Shape</span>
+                        <span class="cm-summary-value">Classic</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Custom Text</span>
+                        <span class="cm-summary-value">"For Mom"</span>
+                      </div>
+                    </div>
+
+                    <div class="cm-whatsapp-notice">
+                      <div class="cm-whatsapp-icon">W</div>
+                      <div class="cm-whatsapp-text">
+                        <strong>Pricing via WhatsApp</strong>
+                        We'll send you a custom quote within 24 hours.
+                      </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px">
+                      <button
+                        class="cm-submit-btn cm-submit-btn-secondary"
+                        style="flex: 1"
+                      >
+                        Edit
+                      </button>
+                      <button class="cm-submit-btn" style="flex: 2">
+                        Request Quote
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440 x 900)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content desktop">
+                <!-- Breadcrumbs -->
+                <div class="cm-breadcrumbs">
+                  <a href="#">Home</a> / <span>Custom Mug</span>
+                </div>
+
+                <!-- Centered content -->
+                <div
+                  style="
+                    max-width: 900px;
+                    margin: 0 auto;
+                    text-align: center;
+                    padding-top: 24px;
+                  "
+                >
+                  <h1 class="cm-title">Design Your Custom Mug</h1>
+                  <div class="cm-title-underline"></div>
+                  <p class="cm-subtitle">Step 1 of 4 — Choose Size</p>
+
+                  <!-- Stepper -->
+                  <div class="cm-stepper" style="margin: 32px 0">
+                    <div class="cm-step active"></div>
+                    <div class="cm-step"></div>
+                    <div class="cm-step"></div>
+                    <div class="cm-step"></div>
+                  </div>
+
+                  <!-- Preview + Options -->
+                  <div
+                    style="
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 48px;
+                      text-align: left;
+                    "
+                  >
+                    <div class="cm-preview">
+                      <div class="cm-preview-mug"></div>
+                      <div class="cm-preview-badge">Live Preview</div>
+                    </div>
+
+                    <div style="padding-top: 24px">
+                      <div class="cm-form-label" style="font-size: 16px">
+                        Select Your Size
+                      </div>
+                      <p
+                        style="
+                          font-size: 13px;
+                          color: #737373;
+                          margin-bottom: 24px;
+                        "
+                      >
+                        Choose the perfect size for your daily brew.
+                      </p>
+
+                      <div class="cm-visual-options">
+                        <div class="cm-visual-card">
+                          <div class="cm-visual-card-image">
+                            <div
+                              style="
+                                width: 40px;
+                                height: 50px;
+                                background: #d4c4b0;
+                                border-radius: 4px 4px 12px 12px;
+                              "
+                            ></div>
+                          </div>
+                          <div class="cm-visual-card-content">
+                            <div class="cm-visual-card-title">Small</div>
+                            <div style="font-size: 11px; color: #999">
+                              8 oz / 240ml
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cm-visual-card selected">
+                          <div class="cm-visual-card-image">
+                            <div
+                              style="
+                                width: 50px;
+                                height: 60px;
+                                background: #d4c4b0;
+                                border-radius: 4px 4px 16px 16px;
+                              "
+                            ></div>
+                          </div>
+                          <div class="cm-visual-card-content">
+                            <div class="cm-visual-card-title">Medium</div>
+                            <div style="font-size: 11px; color: #999">
+                              12 oz / 350ml
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cm-visual-card">
+                          <div class="cm-visual-card-image">
+                            <div
+                              style="
+                                width: 60px;
+                                height: 70px;
+                                background: #d4c4b0;
+                                border-radius: 4px 4px 20px 20px;
+                              "
+                            ></div>
+                          </div>
+                          <div class="cm-visual-card-content">
+                            <div class="cm-visual-card-title">Large</div>
+                            <div style="font-size: 11px; color: #999">
+                              16 oz / 470ml
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cm-visual-card">
+                          <div class="cm-visual-card-image">
+                            <div
+                              style="
+                                width: 70px;
+                                height: 80px;
+                                background: #d4c4b0;
+                                border-radius: 4px 4px 24px 24px;
+                              "
+                            ></div>
+                          </div>
+                          <div class="cm-visual-card-content">
+                            <div class="cm-visual-card-title">Extra Large</div>
+                            <div style="font-size: 11px; color: #999">
+                              20 oz / 590ml
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        class="cm-submit-btn"
+                        style="margin-top: 32px"
+                      >
+                        Next: Choose Color
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION C: ACCORDION SECTIONS ==================== -->
+    <section class="wf-section">
+      <div class="wf-option-header">Option C — Accordion Sections</div>
+      <p class="wf-option-desc">
+        Collapsible accordion sections for each customization category.
+        Completed sections show selected value in collapsed state. Good for
+        progressive disclosure while keeping context visible.
+      </p>
+
+      <div class="option-details">
+        <strong>Layout:</strong> Accordion sections |
+        <strong>Behavior:</strong> One section open at a time |
+        <strong>Preview:</strong> Fixed/sticky on desktop |
+        <strong>Completion:</strong> Badge shows selected value
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375 x 812)</div>
+          <div class="wf-mobile-frame">
+            <div class="cm-container">
+              <!-- Mobile Header -->
+              <div class="cm-mobile-header">
+                <div class="cm-back-btn">&larr;</div>
+                <div class="cm-header-title">Custom Mug</div>
+                <div class="cm-header-spacer"></div>
+              </div>
+
+              <!-- Preview -->
+              <div style="padding: 16px">
+                <div class="cm-preview" style="aspect-ratio: 16/9">
+                  <div class="cm-preview-mug"></div>
+                </div>
+              </div>
+
+              <!-- Accordion Sections -->
+              <div style="padding: 0 16px 16px">
+                <!-- Size - Completed -->
+                <div class="cm-accordion">
+                  <div class="cm-accordion-header completed">
+                    <div class="cm-accordion-title">
+                      Size
+                      <span class="cm-accordion-badge">Medium (12oz)</span>
+                    </div>
+                    <div class="cm-accordion-chevron">v</div>
+                  </div>
+                </div>
+
+                <!-- Color - Open -->
+                <div class="cm-accordion">
+                  <div class="cm-accordion-header">
+                    <div class="cm-accordion-title">Color</div>
+                    <div class="cm-accordion-chevron">^</div>
+                  </div>
+                  <div class="cm-accordion-content" style="padding-top: 16px">
+                    <div class="cm-colors">
+                      <div class="cm-color cm-color-terracotta selected"></div>
+                      <div class="cm-color cm-color-sage"></div>
+                      <div class="cm-color cm-color-cream"></div>
+                      <div class="cm-color cm-color-charcoal"></div>
+                      <div class="cm-color cm-color-ocean"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Finish - Pending -->
+                <div class="cm-accordion">
+                  <div class="cm-accordion-header">
+                    <div class="cm-accordion-title">Finish</div>
+                    <div class="cm-accordion-chevron">v</div>
+                  </div>
+                </div>
+
+                <!-- Shape - Pending -->
+                <div class="cm-accordion">
+                  <div class="cm-accordion-header">
+                    <div class="cm-accordion-title">Shape</div>
+                    <div class="cm-accordion-chevron">v</div>
+                  </div>
+                </div>
+
+                <!-- Custom Text - Pending -->
+                <div class="cm-accordion">
+                  <div class="cm-accordion-header">
+                    <div class="cm-accordion-title">Custom Text</div>
+                    <div class="cm-accordion-chevron">v</div>
+                  </div>
+                </div>
+
+                <!-- WhatsApp Notice -->
+                <div class="cm-whatsapp-notice" style="margin-top: 16px">
+                  <div class="cm-whatsapp-icon">W</div>
+                  <div class="cm-whatsapp-text">
+                    <strong>Custom Pricing</strong>
+                    We'll WhatsApp you a quote.
+                  </div>
+                </div>
+
+                <button class="cm-submit-btn">Request Quote</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768 x 1024)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content tablet">
+                <div class="cm-breadcrumbs">
+                  <a href="#">Home</a> / <span>Custom Mug</span>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1.2fr;
+                    gap: 32px;
+                    margin-top: 16px;
+                  "
+                >
+                  <!-- Preview -->
+                  <div>
+                    <div class="cm-preview">
+                      <div class="cm-preview-mug"></div>
+                      <div class="cm-preview-badge">Live Preview</div>
+                    </div>
+                  </div>
+
+                  <!-- Accordion Form -->
+                  <div>
+                    <h1 class="cm-title" style="text-align: left; font-size: 24px">
+                      Design Your Mug
+                    </h1>
+                    <div class="cm-title-underline left"></div>
+
+                    <!-- Accordions -->
+                    <div style="margin-top: 24px">
+                      <!-- Size - Completed -->
+                      <div class="cm-accordion">
+                        <div class="cm-accordion-header completed">
+                          <div class="cm-accordion-title">
+                            Size
+                            <span class="cm-accordion-badge">Medium</span>
+                          </div>
+                          <div class="cm-accordion-chevron">v</div>
+                        </div>
+                      </div>
+
+                      <!-- Color - Completed -->
+                      <div class="cm-accordion">
+                        <div class="cm-accordion-header completed">
+                          <div class="cm-accordion-title">
+                            Color
+                            <span class="cm-accordion-badge">Terracotta</span>
+                          </div>
+                          <div class="cm-accordion-chevron">v</div>
+                        </div>
+                      </div>
+
+                      <!-- Finish - Open -->
+                      <div class="cm-accordion">
+                        <div class="cm-accordion-header">
+                          <div class="cm-accordion-title">Finish</div>
+                          <div class="cm-accordion-chevron">^</div>
+                        </div>
+                        <div
+                          class="cm-accordion-content"
+                          style="padding-top: 16px"
+                        >
+                          <div class="cm-options">
+                            <div class="cm-pill selected">Matte</div>
+                            <div class="cm-pill">Glossy</div>
+                            <div class="cm-pill">Speckled</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Shape -->
+                      <div class="cm-accordion">
+                        <div class="cm-accordion-header">
+                          <div class="cm-accordion-title">Shape</div>
+                          <div class="cm-accordion-chevron">v</div>
+                        </div>
+                      </div>
+
+                      <!-- Custom Text -->
+                      <div class="cm-accordion">
+                        <div class="cm-accordion-header">
+                          <div class="cm-accordion-title">
+                            Custom Text (Optional)
+                          </div>
+                          <div class="cm-accordion-chevron">v</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="cm-whatsapp-notice" style="margin-top: 20px">
+                      <div class="cm-whatsapp-icon">W</div>
+                      <div class="cm-whatsapp-text">
+                        <strong>Pricing via WhatsApp</strong>
+                        Custom quote within 24 hours.
+                      </div>
+                    </div>
+
+                    <button class="cm-submit-btn">Request Quote</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440 x 900)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content desktop">
+                <div class="cm-breadcrumbs">
+                  <a href="#">Home</a> / <span>Custom Mug</span>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 64px;
+                    margin-top: 24px;
+                  "
+                >
+                  <!-- Left: Sticky Preview -->
+                  <div class="cm-desktop-preview">
+                    <div class="cm-preview">
+                      <div class="cm-preview-mug"></div>
+                      <div class="cm-preview-badge">Live Preview</div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Accordion Form -->
+                  <div>
+                    <h1 class="cm-title" style="text-align: left">
+                      Design Your Custom Mug
+                    </h1>
+                    <div class="cm-title-underline left"></div>
+                    <p
+                      class="cm-subtitle"
+                      style="text-align: left; margin: 0 0 32px 0"
+                    >
+                      Customize each detail to create your perfect mug.
+                    </p>
+
+                    <!-- All accordions -->
+                    <!-- Size - Completed -->
+                    <div class="cm-accordion">
+                      <div class="cm-accordion-header completed">
+                        <div class="cm-accordion-title">
+                          1. Size
+                          <span class="cm-accordion-badge">Medium (12oz)</span>
+                        </div>
+                        <div class="cm-accordion-chevron">Edit</div>
+                      </div>
+                    </div>
+
+                    <!-- Color - Completed -->
+                    <div class="cm-accordion">
+                      <div class="cm-accordion-header completed">
+                        <div class="cm-accordion-title">
+                          2. Color
+                          <span class="cm-accordion-badge">Terracotta</span>
+                        </div>
+                        <div class="cm-accordion-chevron">Edit</div>
+                      </div>
+                    </div>
+
+                    <!-- Finish - Completed -->
+                    <div class="cm-accordion">
+                      <div class="cm-accordion-header completed">
+                        <div class="cm-accordion-title">
+                          3. Finish
+                          <span class="cm-accordion-badge">Matte</span>
+                        </div>
+                        <div class="cm-accordion-chevron">Edit</div>
+                      </div>
+                    </div>
+
+                    <!-- Shape - Open -->
+                    <div class="cm-accordion">
+                      <div class="cm-accordion-header">
+                        <div class="cm-accordion-title">4. Shape</div>
+                        <div class="cm-accordion-chevron">^</div>
+                      </div>
+                      <div
+                        class="cm-accordion-content"
+                        style="padding-top: 16px"
+                      >
+                        <div class="cm-shapes-grid">
+                          <div class="cm-shape selected">
+                            <div class="cm-shape-icon">U</div>
+                            <div class="cm-shape-name">Classic</div>
+                          </div>
+                          <div class="cm-shape">
+                            <div class="cm-shape-icon">[]</div>
+                            <div class="cm-shape-name">Modern</div>
+                          </div>
+                          <div class="cm-shape">
+                            <div class="cm-shape-icon">O</div>
+                            <div class="cm-shape-name">Round</div>
+                          </div>
+                          <div class="cm-shape">
+                            <div class="cm-shape-icon">|</div>
+                            <div class="cm-shape-name">Tall</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Custom Text -->
+                    <div class="cm-accordion">
+                      <div class="cm-accordion-header">
+                        <div class="cm-accordion-title">
+                          5. Custom Text (Optional)
+                        </div>
+                        <div class="cm-accordion-chevron">v</div>
+                      </div>
+                    </div>
+
+                    <div class="cm-divider"></div>
+
+                    <div class="cm-whatsapp-notice">
+                      <div class="cm-whatsapp-icon">W</div>
+                      <div class="cm-whatsapp-text">
+                        <strong>Pricing via WhatsApp</strong>
+                        We'll send you a personalized quote within 24 hours.
+                      </div>
+                    </div>
+
+                    <button class="cm-submit-btn">Request Quote on WhatsApp</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== OPTION D: HORIZONTAL TABS ==================== -->
+    <section class="wf-section">
+      <div class="wf-option-header">Option D — Horizontal Tabs</div>
+      <p class="wf-option-desc">
+        Tab-based navigation for each customization category. Preview always
+        visible on the side. Tabs allow quick jumping between options. Summary
+        tab at the end.
+      </p>
+
+      <div class="option-details">
+        <strong>Layout:</strong> Horizontal tabs |
+        <strong>Preview:</strong> Always visible side panel |
+        <strong>Navigation:</strong> Click tabs or use Next |
+        <strong>Summary:</strong> Dedicated summary tab
+      </div>
+
+      <div class="wf-viewport-row">
+        <!-- Mobile -->
+        <div>
+          <div class="wf-viewport-label">Mobile (375 x 812)</div>
+          <div class="wf-mobile-frame">
+            <div class="cm-container">
+              <!-- Mobile Header -->
+              <div class="cm-mobile-header">
+                <div class="cm-back-btn">&larr;</div>
+                <div class="cm-header-title">Custom Mug</div>
+                <div class="cm-header-spacer"></div>
+              </div>
+
+              <!-- Preview (smaller on mobile) -->
+              <div style="padding: 12px 16px 0">
+                <div class="cm-preview" style="aspect-ratio: 2/1">
+                  <div
+                    class="cm-preview-mug"
+                    style="width: 25%; height: 70%"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Scrollable Tabs -->
+              <div style="padding: 16px 16px 0">
+                <div class="cm-scroll-options" style="margin-bottom: 16px">
+                  <div
+                    class="cm-scroll-item"
+                    style="
+                      padding: 8px 16px;
+                      width: auto;
+                      font-size: 13px;
+                      font-weight: 600;
+                      color: #999;
+                    "
+                  >
+                    Size
+                  </div>
+                  <div
+                    class="cm-scroll-item selected"
+                    style="
+                      padding: 8px 16px;
+                      width: auto;
+                      font-size: 13px;
+                      font-weight: 600;
+                    "
+                  >
+                    Color
+                  </div>
+                  <div
+                    class="cm-scroll-item"
+                    style="
+                      padding: 8px 16px;
+                      width: auto;
+                      font-size: 13px;
+                      font-weight: 600;
+                      color: #999;
+                    "
+                  >
+                    Finish
+                  </div>
+                  <div
+                    class="cm-scroll-item"
+                    style="
+                      padding: 8px 16px;
+                      width: auto;
+                      font-size: 13px;
+                      font-weight: 600;
+                      color: #999;
+                    "
+                  >
+                    Shape
+                  </div>
+                  <div
+                    class="cm-scroll-item"
+                    style="
+                      padding: 8px 16px;
+                      width: auto;
+                      font-size: 13px;
+                      font-weight: 600;
+                      color: #999;
+                    "
+                  >
+                    Text
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Content -->
+              <div class="cm-form">
+                <div class="cm-form-section">
+                  <div class="cm-form-label">Choose Your Color</div>
+                  <div class="cm-colors">
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-terracotta selected"></div>
+                      <div class="cm-color-name">Terracotta</div>
+                    </div>
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-sage"></div>
+                      <div class="cm-color-name">Sage</div>
+                    </div>
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-cream"></div>
+                      <div class="cm-color-name">Cream</div>
+                    </div>
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-charcoal"></div>
+                      <div class="cm-color-name">Charcoal</div>
+                    </div>
+                    <div class="cm-color-item">
+                      <div class="cm-color cm-color-ocean"></div>
+                      <div class="cm-color-name">Ocean</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cm-whatsapp-notice">
+                  <div class="cm-whatsapp-icon">W</div>
+                  <div class="cm-whatsapp-text">
+                    <strong>Custom Quote</strong>
+                    Pricing via WhatsApp.
+                  </div>
+                </div>
+
+                <button class="cm-submit-btn">Next: Finish</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet -->
+        <div>
+          <div class="wf-viewport-label">Tablet (768 x 1024)</div>
+          <div class="wf-tablet-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content tablet">
+                <div class="cm-breadcrumbs">
+                  <a href="#">Home</a> / <span>Custom Mug</span>
+                </div>
+
+                <h1
+                  class="cm-title"
+                  style="text-align: left; margin-top: 16px"
+                >
+                  Design Your Mug
+                </h1>
+                <div class="cm-title-underline left"></div>
+
+                <!-- Tabs -->
+                <div
+                  class="wf-tabs wf-tabs-c"
+                  style="margin-top: 24px; margin-bottom: 24px"
+                >
+                  <div class="wf-tab">Size</div>
+                  <div class="wf-tab">Color</div>
+                  <div class="wf-tab active">Finish</div>
+                  <div class="wf-tab">Shape</div>
+                  <div class="wf-tab">Text</div>
+                  <div class="wf-tab">Summary</div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1.2fr;
+                    gap: 32px;
+                  "
+                >
+                  <!-- Preview -->
+                  <div>
+                    <div class="cm-preview">
+                      <div class="cm-preview-mug"></div>
+                    </div>
+                  </div>
+
+                  <!-- Tab Content: Finish -->
+                  <div>
+                    <div class="cm-form-label" style="font-size: 16px">
+                      Select Finish
+                    </div>
+                    <p
+                      style="
+                        font-size: 13px;
+                        color: #737373;
+                        margin-bottom: 20px;
+                      "
+                    >
+                      Choose the surface texture for your mug.
+                    </p>
+
+                    <div class="cm-visual-options" style="grid-template-columns: repeat(3, 1fr)">
+                      <div class="cm-visual-card selected">
+                        <div
+                          class="cm-visual-card-image"
+                          style="background: linear-gradient(135deg, #d4c4b0 0%, #c4b4a0 100%)"
+                        >
+                          <div style="font-size: 24px">~</div>
+                        </div>
+                        <div class="cm-visual-card-content">
+                          <div class="cm-visual-card-title">Matte</div>
+                        </div>
+                      </div>
+                      <div class="cm-visual-card">
+                        <div
+                          class="cm-visual-card-image"
+                          style="background: linear-gradient(135deg, #e8ddd4 0%, #d8cdc4 100%)"
+                        >
+                          <div style="font-size: 24px">*</div>
+                        </div>
+                        <div class="cm-visual-card-content">
+                          <div class="cm-visual-card-title">Glossy</div>
+                        </div>
+                      </div>
+                      <div class="cm-visual-card">
+                        <div
+                          class="cm-visual-card-image"
+                          style="background: linear-gradient(135deg, #e0d5c8 0%, #d0c5b8 100%)"
+                        >
+                          <div style="font-size: 24px">:</div>
+                        </div>
+                        <div class="cm-visual-card-content">
+                          <div class="cm-visual-card-title">Speckled</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 32px">
+                      <button
+                        class="cm-submit-btn cm-submit-btn-secondary"
+                        style="flex: 1"
+                      >
+                        Back
+                      </button>
+                      <button class="cm-submit-btn" style="flex: 2">
+                        Next: Shape
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div>
+          <div class="wf-viewport-label">Desktop (1440 x 900)</div>
+          <div class="wf-desktop-frame">
+            <div class="wf-browser-bar">
+              <div class="wf-browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="wf-url-bar">poetryandpottery.com/custom-mug</div>
+            </div>
+            <div class="cm-container">
+              <div class="wf-page-content desktop">
+                <div class="cm-breadcrumbs">
+                  <a href="#">Home</a> / <span>Custom Mug</span>
+                </div>
+
+                <h1
+                  class="cm-title"
+                  style="text-align: left; margin-top: 24px"
+                >
+                  Design Your Custom Mug
+                </h1>
+                <div class="cm-title-underline left"></div>
+
+                <!-- Tabs -->
+                <div
+                  class="wf-tabs wf-tabs-c"
+                  style="margin-top: 32px; margin-bottom: 32px"
+                >
+                  <div class="wf-tab">Size</div>
+                  <div class="wf-tab">Color</div>
+                  <div class="wf-tab">Finish</div>
+                  <div class="wf-tab">Shape</div>
+                  <div class="wf-tab">Text</div>
+                  <div class="wf-tab active">Summary</div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 64px;
+                  "
+                >
+                  <!-- Preview -->
+                  <div>
+                    <div class="cm-preview">
+                      <div class="cm-preview-mug"></div>
+                      <div class="cm-preview-badge">Your Design</div>
+                    </div>
+                  </div>
+
+                  <!-- Summary Content -->
+                  <div>
+                    <h2
+                      style="
+                        font-family: 'Plus Jakarta Sans', sans-serif;
+                        font-size: 20px;
+                        margin-bottom: 24px;
+                      "
+                    >
+                      Review Your Custom Mug
+                    </h2>
+
+                    <div class="cm-summary">
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Size</span>
+                        <span class="cm-summary-value">Medium (12oz)</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Color</span>
+                        <span class="cm-summary-value">Terracotta</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Finish</span>
+                        <span class="cm-summary-value">Matte</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Shape</span>
+                        <span class="cm-summary-value">Classic</span>
+                      </div>
+                      <div class="cm-summary-row">
+                        <span class="cm-summary-label">Custom Text</span>
+                        <span class="cm-summary-value">"Best Mom Ever"</span>
+                      </div>
+                    </div>
+
+                    <div class="cm-whatsapp-notice">
+                      <div class="cm-whatsapp-icon">W</div>
+                      <div class="cm-whatsapp-text">
+                        <strong>Pricing via WhatsApp</strong>
+                        Custom mugs are individually priced. We'll send you a
+                        personalized quote within 24 hours of your request.
+                      </div>
+                    </div>
+
+                    <button class="cm-submit-btn">Request Quote on WhatsApp</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== SUB-OPTIONS: SIZE SELECTORS ==================== -->
+    <section class="wf-section">
+      <div class="wf-section-title">Sub-Options: Size Selectors</div>
+      <p class="wf-section-desc">
+        Four different UI patterns for the size selection component.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 24px">
+        <!-- Size Option A: Pills -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option A: Pills</div>
+          <div class="cm-options" style="flex-direction: column">
+            <div class="cm-pill" style="text-align: center">Small (8oz)</div>
+            <div class="cm-pill selected" style="text-align: center">Medium (12oz)</div>
+            <div class="cm-pill" style="text-align: center">Large (16oz)</div>
+          </div>
+        </div>
+
+        <!-- Size Option B: Cards with Details -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option B: Cards</div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div class="cm-card">
+              <div class="cm-card-title">Small</div>
+              <div class="cm-card-subtitle">8 oz / 240ml</div>
+            </div>
+            <div class="cm-card selected">
+              <div class="cm-card-title">Medium</div>
+              <div class="cm-card-subtitle">12 oz / 350ml</div>
+            </div>
+            <div class="cm-card">
+              <div class="cm-card-title">Large</div>
+              <div class="cm-card-subtitle">16 oz / 470ml</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Size Option C: Segmented Control -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option C: Segmented</div>
+          <div class="cm-segmented" style="width: 100%">
+            <div class="cm-segment" style="flex: 1; text-align: center">S</div>
+            <div class="cm-segment selected" style="flex: 1; text-align: center">M</div>
+            <div class="cm-segment" style="flex: 1; text-align: center">L</div>
+            <div class="cm-segment" style="flex: 1; text-align: center">XL</div>
+          </div>
+          <div style="margin-top: 12px; text-align: center; font-size: 13px; color: #737373">
+            Medium — 12 oz / 350ml
+          </div>
+        </div>
+
+        <!-- Size Option D: Visual Cards -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option D: Visual</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px">
+            <div class="cm-visual-card" style="border-width: 1px">
+              <div class="cm-visual-card-image" style="aspect-ratio: 1/1; padding: 12px">
+                <div style="width: 30px; height: 36px; background: #d4c4b0; border-radius: 4px"></div>
+              </div>
+              <div class="cm-visual-card-content" style="padding: 8px">
+                <div class="cm-visual-card-title" style="font-size: 11px">Small</div>
+              </div>
+            </div>
+            <div class="cm-visual-card selected" style="border-width: 1px">
+              <div class="cm-visual-card-image" style="aspect-ratio: 1/1; padding: 12px">
+                <div style="width: 36px; height: 42px; background: #d4c4b0; border-radius: 4px"></div>
+              </div>
+              <div class="cm-visual-card-content" style="padding: 8px">
+                <div class="cm-visual-card-title" style="font-size: 11px">Medium</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== SUB-OPTIONS: COLOR SELECTORS ==================== -->
+    <section class="wf-section">
+      <div class="wf-section-title">Sub-Options: Color Selectors</div>
+      <p class="wf-section-desc">
+        Four different UI patterns for the color selection component.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 24px">
+        <!-- Color Option A: Circles Only -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option A: Circles</div>
+          <div class="cm-colors" style="gap: 10px">
+            <div class="cm-color cm-color-terracotta selected" style="width: 36px; height: 36px"></div>
+            <div class="cm-color cm-color-sage" style="width: 36px; height: 36px"></div>
+            <div class="cm-color cm-color-cream" style="width: 36px; height: 36px"></div>
+            <div class="cm-color cm-color-charcoal" style="width: 36px; height: 36px"></div>
+          </div>
+        </div>
+
+        <!-- Color Option B: Circles with Names -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option B: With Names</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 16px">
+            <div class="cm-color-item">
+              <div class="cm-color cm-color-terracotta selected" style="width: 36px; height: 36px"></div>
+              <div class="cm-color-name">Terracotta</div>
+            </div>
+            <div class="cm-color-item">
+              <div class="cm-color cm-color-sage" style="width: 36px; height: 36px"></div>
+              <div class="cm-color-name">Sage</div>
+            </div>
+            <div class="cm-color-item">
+              <div class="cm-color cm-color-cream" style="width: 36px; height: 36px"></div>
+              <div class="cm-color-name">Cream</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Option C: Pill Buttons -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option C: Pill Buttons</div>
+          <div class="cm-options" style="flex-direction: column; gap: 8px">
+            <div class="cm-pill selected" style="display: flex; align-items: center; gap: 10px">
+              <div style="width: 20px; height: 20px; background: #c4785a; border-radius: 50%"></div>
+              Terracotta
+            </div>
+            <div class="cm-pill" style="display: flex; align-items: center; gap: 10px">
+              <div style="width: 20px; height: 20px; background: #7a9a7e; border-radius: 50%"></div>
+              Sage
+            </div>
+            <div class="cm-pill" style="display: flex; align-items: center; gap: 10px">
+              <div style="width: 20px; height: 20px; background: #f5f0e8; border-radius: 50%; border: 1px solid #e5e5e5"></div>
+              Cream
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Option D: Grid Cards -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option D: Grid Cards</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px">
+            <div class="cm-visual-card selected" style="border-width: 1px">
+              <div style="height: 40px; background: linear-gradient(135deg, #c4785a 0%, #a85d42 100%); border-radius: 8px 8px 0 0"></div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500">Terracotta</div>
+            </div>
+            <div class="cm-visual-card" style="border-width: 1px">
+              <div style="height: 40px; background: linear-gradient(135deg, #7a9a7e 0%, #5a7a5e 100%); border-radius: 8px 8px 0 0"></div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500">Sage</div>
+            </div>
+            <div class="cm-visual-card" style="border-width: 1px">
+              <div style="height: 40px; background: linear-gradient(135deg, #f5f0e8 0%, #e5ddd0 100%); border-radius: 8px 8px 0 0"></div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500">Cream</div>
+            </div>
+            <div class="cm-visual-card" style="border-width: 1px">
+              <div style="height: 40px; background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%); border-radius: 8px 8px 0 0"></div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500">Charcoal</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== SUB-OPTIONS: FINISH SELECTORS ==================== -->
+    <section class="wf-section">
+      <div class="wf-section-title">Sub-Options: Finish Selectors</div>
+      <p class="wf-section-desc">
+        Four different UI patterns for the finish/texture selection component.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 24px">
+        <!-- Finish Option A: Pills -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option A: Pills</div>
+          <div class="cm-options">
+            <div class="cm-pill selected">Matte</div>
+            <div class="cm-pill">Glossy</div>
+            <div class="cm-pill">Speckled</div>
+          </div>
+        </div>
+
+        <!-- Finish Option B: Cards with Icons -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option B: Icon Cards</div>
+          <div style="display: flex; gap: 8px">
+            <div class="cm-shape selected" style="min-width: 70px">
+              <div class="cm-shape-icon">~</div>
+              <div class="cm-shape-name">Matte</div>
+            </div>
+            <div class="cm-shape" style="min-width: 70px">
+              <div class="cm-shape-icon">*</div>
+              <div class="cm-shape-name">Glossy</div>
+            </div>
+            <div class="cm-shape" style="min-width: 70px">
+              <div class="cm-shape-icon">:</div>
+              <div class="cm-shape-name">Speckled</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finish Option C: Visual Texture Cards -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option C: Texture Preview</div>
+          <div style="display: flex; gap: 8px">
+            <div class="cm-visual-card selected" style="flex: 1; border-width: 1px">
+              <div style="height: 50px; background: #d4c4b0; border-radius: 8px 8px 0 0"></div>
+              <div style="padding: 6px; text-align: center; font-size: 11px; font-weight: 500">Matte</div>
+            </div>
+            <div class="cm-visual-card" style="flex: 1; border-width: 1px">
+              <div style="height: 50px; background: linear-gradient(135deg, #e8ddd4, #f5f0e8); border-radius: 8px 8px 0 0"></div>
+              <div style="padding: 6px; text-align: center; font-size: 11px; font-weight: 500">Glossy</div>
+            </div>
+            <div class="cm-visual-card" style="flex: 1; border-width: 1px">
+              <div style="height: 50px; background: radial-gradient(circle at 20% 30%, #a08060 1px, transparent 1px), radial-gradient(circle at 60% 70%, #a08060 1px, transparent 1px), radial-gradient(circle at 80% 20%, #a08060 1px, transparent 1px), #d4c4b0; background-size: 20px 20px; border-radius: 8px 8px 0 0"></div>
+              <div style="padding: 6px; text-align: center; font-size: 11px; font-weight: 500">Speckled</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finish Option D: Segmented Control -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option D: Segmented</div>
+          <div class="cm-segmented" style="width: 100%">
+            <div class="cm-segment selected" style="flex: 1; text-align: center; font-size: 12px">Matte</div>
+            <div class="cm-segment" style="flex: 1; text-align: center; font-size: 12px">Glossy</div>
+            <div class="cm-segment" style="flex: 1; text-align: center; font-size: 12px">Speckled</div>
+          </div>
+          <div style="margin-top: 12px; font-size: 12px; color: #737373; line-height: 1.5">
+            Matte finish provides a smooth, non-reflective surface with a subtle texture.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== SUB-OPTIONS: SHAPE SELECTORS ==================== -->
+    <section class="wf-section">
+      <div class="wf-section-title">Sub-Options: Shape Selectors</div>
+      <p class="wf-section-desc">
+        Four different UI patterns for the mug shape selection component.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 24px">
+        <!-- Shape Option A: Icon Grid -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option A: Icon Grid</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px">
+            <div class="cm-shape selected">
+              <div class="cm-shape-icon">U</div>
+              <div class="cm-shape-name">Classic</div>
+            </div>
+            <div class="cm-shape">
+              <div class="cm-shape-icon">[]</div>
+              <div class="cm-shape-name">Modern</div>
+            </div>
+            <div class="cm-shape">
+              <div class="cm-shape-icon">O</div>
+              <div class="cm-shape-name">Round</div>
+            </div>
+            <div class="cm-shape">
+              <div class="cm-shape-icon">|</div>
+              <div class="cm-shape-name">Tall</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shape Option B: Pills -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option B: Pills</div>
+          <div class="cm-options" style="flex-direction: column; gap: 8px">
+            <div class="cm-pill selected" style="text-align: center">Classic</div>
+            <div class="cm-pill" style="text-align: center">Modern</div>
+            <div class="cm-pill" style="text-align: center">Round</div>
+            <div class="cm-pill" style="text-align: center">Tall</div>
+          </div>
+        </div>
+
+        <!-- Shape Option C: Visual Silhouettes -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option C: Silhouettes</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px">
+            <div class="cm-visual-card selected" style="border-width: 1px">
+              <div class="cm-visual-card-image" style="aspect-ratio: 1/1; padding: 16px">
+                <div style="width: 40px; height: 45px; background: #d4c4b0; border-radius: 6px 6px 16px 16px"></div>
+              </div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500; color: #4f6f52">Classic</div>
+            </div>
+            <div class="cm-visual-card" style="border-width: 1px">
+              <div class="cm-visual-card-image" style="aspect-ratio: 1/1; padding: 16px">
+                <div style="width: 40px; height: 45px; background: #d4c4b0; border-radius: 4px"></div>
+              </div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500">Modern</div>
+            </div>
+            <div class="cm-visual-card" style="border-width: 1px">
+              <div class="cm-visual-card-image" style="aspect-ratio: 1/1; padding: 16px">
+                <div style="width: 44px; height: 40px; background: #d4c4b0; border-radius: 50% 50% 20% 20%"></div>
+              </div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500">Round</div>
+            </div>
+            <div class="cm-visual-card" style="border-width: 1px">
+              <div class="cm-visual-card-image" style="aspect-ratio: 1/1; padding: 16px">
+                <div style="width: 32px; height: 55px; background: #d4c4b0; border-radius: 4px 4px 10px 10px"></div>
+              </div>
+              <div style="padding: 8px; text-align: center; font-size: 11px; font-weight: 500">Tall</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shape Option D: Horizontal Scroll -->
+        <div style="background: white; padding: 20px; border-radius: 16px">
+          <div class="cm-form-label">Option D: Scroll Cards</div>
+          <div style="display: flex; gap: 10px; overflow-x: auto">
+            <div class="cm-scroll-item selected" style="width: 80px">
+              <div style="width: 32px; height: 36px; background: #4f6f52; border-radius: 4px 4px 12px 12px; margin: 0 auto 8px"></div>
+              <div style="font-size: 11px; font-weight: 500; color: #4f6f52">Classic</div>
+            </div>
+            <div class="cm-scroll-item" style="width: 80px">
+              <div style="width: 32px; height: 36px; background: #d4c4b0; border-radius: 3px; margin: 0 auto 8px"></div>
+              <div style="font-size: 11px; font-weight: 500">Modern</div>
+            </div>
+            <div class="cm-scroll-item" style="width: 80px">
+              <div style="width: 36px; height: 32px; background: #d4c4b0; border-radius: 50% 50% 15% 15%; margin: 0 auto 8px"></div>
+              <div style="font-size: 11px; font-weight: 500">Round</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== SUCCESS STATE ==================== -->
+    <section class="wf-section">
+      <div class="wf-section-title">Success State</div>
+      <p class="wf-section-desc">
+        Confirmation screen shown after submitting the custom mug request.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px">
+        <!-- Mobile Success -->
+        <div class="wf-mobile-frame" style="width: 100%; max-width: 375px">
+          <div class="cm-container">
+            <div class="cm-mobile-header">
+              <div class="cm-header-spacer"></div>
+              <div class="cm-header-title">Request Sent</div>
+              <div class="cm-header-spacer"></div>
+            </div>
+            <div class="cm-success">
+              <div class="cm-success-icon">✓</div>
+              <div class="cm-success-title">Request Received!</div>
+              <p class="cm-success-text">
+                We've received your custom mug request. Our team will contact
+                you on WhatsApp within 24 hours with a personalized quote.
+              </p>
+              <button class="cm-submit-btn" style="margin-bottom: 12px">
+                Continue Shopping
+              </button>
+              <button class="cm-submit-btn cm-submit-btn-secondary">
+                View My Requests
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Request Summary -->
+        <div style="background: white; padding: 24px; border-radius: 16px; grid-column: span 2">
+          <div class="cm-form-label" style="font-size: 16px; margin-bottom: 16px">
+            Request Summary (shown in success state)
+          </div>
+          <div class="cm-summary" style="max-width: 400px">
+            <div class="cm-summary-title">Your Custom Mug</div>
+            <div class="cm-summary-row">
+              <span class="cm-summary-label">Size</span>
+              <span class="cm-summary-value">Medium (12oz)</span>
+            </div>
+            <div class="cm-summary-row">
+              <span class="cm-summary-label">Color</span>
+              <span class="cm-summary-value">Terracotta</span>
+            </div>
+            <div class="cm-summary-row">
+              <span class="cm-summary-label">Finish</span>
+              <span class="cm-summary-value">Matte</span>
+            </div>
+            <div class="cm-summary-row">
+              <span class="cm-summary-label">Shape</span>
+              <span class="cm-summary-value">Classic</span>
+            </div>
+            <div class="cm-summary-row">
+              <span class="cm-summary-label">Custom Text</span>
+              <span class="cm-summary-value">"Best Mom Ever"</span>
+            </div>
+            <div class="cm-summary-row" style="border-bottom: none; padding-top: 12px">
+              <span class="cm-summary-label">Request ID</span>
+              <span class="cm-summary-value" style="font-family: monospace; font-size: 12px">#CM-2024-0847</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Notes Section -->
+    <div class="notes">
+      <strong>Design Notes:</strong><br />
+      • Option A (Single Page) recommended for simplicity and fast completion<br />
+      • Option B (Wizard) better for mobile users who prefer focused steps<br />
+      • Option C (Accordion) good for users who want to review/edit easily<br />
+      • Option D (Tabs) works well when preview needs to stay visible<br /><br />
+
+      <strong>Implementation Notes:</strong><br />
+      • Live preview should update dynamically as user selects options<br />
+      • WhatsApp button should pre-fill message with selections summary<br />
+      • Form should validate that at least size, color, finish, and shape are
+      selected<br />
+      • Custom text is optional (max 50 characters)
+    </div>
+  </body>
+</html>

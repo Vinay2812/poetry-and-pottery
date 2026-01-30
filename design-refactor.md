@@ -2526,7 +2526,7 @@ export function RouteAnimationProvider({
 
 ### Phase 15: Custom Mug Experience
 
-**Phase Status:** 🔲 Not Started
+**Phase Status:** 🚧 In Progress
 
 > 🎨 **Customer Impact: HIGH** - Custom orders and personalization
 > **Files owned by this phase:** `src/app/(main)/custom-mug/`, `src/features/custom-mug/`, `src/features/orders/`, `src/features/dashboard/`, `src/data/custom-mug/`, `src/graphql/custom-mug.*`
@@ -2565,13 +2565,36 @@ export function RouteAnimationProvider({
 
 #### Task 15.3: Admin Options Management UI
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
 **Wireframe:** [task-15-3-custom-mug-options-admin.html](wireframes/task-15-3-custom-mug-options-admin.html)
 
 **Scope:**
 
 - CRUD for size/color/finish/shape options
 - Active toggle
+- Drag-to-reorder support
+- Price modifier support
+- Visual preview (colors, icons)
+
+**Design Options:**
+
+**Page Layout:**
+- **Option A (Recommended):** Tabbed Grid Layout — Pill-style tabs with card grid below
+- **Option B:** Vertical Sidebar Navigation — Vertical nav for option types, more vertical space
+- **Option C:** All-in-One Accordion — All option types on single page with collapsible sections
+- **Option D:** Table Layout — Traditional table view, better for bulk editing
+
+**Option Card Style:**
+- **Option A:** Minimal Card — Clean, simple design
+- **Option B:** Detailed Card — More info visible with action buttons
+- **Option C:** Icon-Focused Card — Large visual preview
+- **Option D:** Compact List Item — Dense, scannable
+
+**Add/Edit Dialog:**
+- **Option A (Recommended):** Standard Dialog — Clean, focused form
+- **Option B:** With Live Preview — Shows card preview as you type
+- **Option C:** Sectioned Form — Grouped by category
+- **Option D:** Side Sheet — Slides in from right
 
 **Files to Modify (after approval):**
 
@@ -2582,15 +2605,29 @@ export function RouteAnimationProvider({
 
 #### Task 15.4: Custom Mug Page (Customer)
 
-**Status:** 🔲 Wireframe Pending
+**Status:** ⏳ Awaiting Approval
 **Wireframe:** [task-15-4-custom-mug-page.html](wireframes/task-15-4-custom-mug-page.html)
 
 **Scope:**
 
 - New customization page for mugs with selectable options
 - Fields: size, color, finish, shape, custom text
-- “Contact on WhatsApp for quote” pricing notice
+- "Contact on WhatsApp for quote" pricing notice
 - Submit request flow with success state
+
+**Design Options:**
+
+- **Option A (Recommended):** Single Page Scroll — All options visible on one scrollable page with sticky preview
+- **Option B:** Step-by-Step Wizard — Multi-step wizard with progress indicator, one category per step
+- **Option C:** Accordion Sections — Collapsible sections showing selected values when collapsed
+- **Option D:** Horizontal Tabs — Tab-based navigation with always-visible preview
+
+**Sub-Options for Selectors:**
+
+- **Size:** Pills, Cards with dimensions, Segmented control, Visual cards
+- **Color:** Circles only, Circles with names, Pill buttons with swatch, Grid cards
+- **Finish:** Pills, Icon cards, Texture preview cards, Segmented control
+- **Shape:** Icon grid, Pills, Visual silhouettes, Horizontal scroll cards
 
 **Files to Modify (after approval):**
 
@@ -2603,14 +2640,18 @@ export function RouteAnimationProvider({
 
 #### Task 15.5: Orders UI Integration
 
-**Status:** 🔲 Wireframe Pending
-**Wireframe:** [task-15-5-custom-mug-orders-ui.html](wireframes/task-15-5-custom-mug-orders-ui.html)
+**Status:** ⏳ Awaiting Approval
+**Wireframes:**
+
+- [task-15-5-1-custom-order-badge.html](wireframes/task-15-5-1-custom-order-badge.html) - Custom Order Badge
+- [task-15-5-2-custom-selections-detail.html](wireframes/task-15-5-2-custom-selections-detail.html) - Custom Selections Detail
+- [task-15-5-3-whatsapp-cta.html](wireframes/task-15-5-3-whatsapp-cta.html) - WhatsApp CTA
 
 **Scope:**
 
-- Custom order badge in list
-- Show custom selections in order detail
-- WhatsApp CTA for custom items
+- Custom order badge in list (4 options)
+- Show custom selections in order detail (4 options)
+- WhatsApp CTA for custom items (4 options)
 
 **Files to Modify (after approval):**
 

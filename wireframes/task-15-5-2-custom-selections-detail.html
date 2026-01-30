@@ -1,0 +1,1870 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Task 15.5.2: Custom Selections in Order Detail - Poetry & Pottery
+      Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Order Detail Styles */
+      .order-detail-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .order-detail-header {
+        padding: 20px;
+        border-bottom: 1px solid #e8ece8;
+      }
+
+      .order-detail-header.desktop {
+        padding: 24px 28px;
+      }
+
+      .order-number {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .order-meta {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .order-status-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      /* Order Item Styles */
+      .order-item {
+        display: flex;
+        gap: 16px;
+        padding: 20px;
+        border-bottom: 1px solid #e8ece8;
+      }
+
+      .order-item:last-child {
+        border-bottom: none;
+      }
+
+      .order-item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        flex-shrink: 0;
+        position: relative;
+      }
+
+      .order-item-image.large {
+        width: 100px;
+        height: 100px;
+      }
+
+      .order-item-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .order-item-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .order-item-category {
+        font-size: 12px;
+        color: #737373;
+        margin-bottom: 8px;
+      }
+
+      .order-item-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .order-item-qty {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      /* Custom Selections Styles */
+      .custom-badge-sm {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 12px;
+        background: #f5ebe6;
+        color: #c4785a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+
+      /* Option A: Inline Tags */
+      .custom-selections-inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .selection-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: #e8ece8;
+        color: #737373;
+      }
+
+      .selection-tag .label {
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      /* Option B: Two-Section Split Layout */
+      .split-section-top {
+        display: flex;
+        gap: 16px;
+        padding: 16px;
+        border-bottom: 1px solid #e8ece8;
+      }
+
+      .split-section-bottom {
+        padding: 16px;
+        background: #f5f0e8;
+      }
+
+      .split-section-bottom .section-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: #4f6f52;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .split-section-bottom .section-title svg {
+        width: 14px;
+        height: 14px;
+        stroke: #4f6f52;
+      }
+
+      .custom-selections-list {
+        margin-top: 0;
+        padding: 0;
+        background: transparent;
+        border-radius: 0;
+      }
+
+      .custom-selections-list.with-bg {
+        margin-top: 12px;
+        padding: 12px;
+        background: #fafaf9;
+        border-radius: 10px;
+      }
+
+      .selection-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        font-size: 12px;
+      }
+
+      .selection-row:not(:last-child) {
+        border-bottom: 1px solid #e8ece8;
+      }
+
+      .selection-row .label {
+        color: #737373;
+      }
+
+      .selection-row .value {
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      /* Option C: Expandable Accordion */
+      .custom-selections-accordion {
+        margin-top: 8px;
+      }
+
+      .accordion-trigger {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #4f6f52;
+        cursor: pointer;
+        padding: 6px 0;
+      }
+
+      .accordion-trigger svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        stroke-width: 2;
+        transition: transform 0.2s;
+      }
+
+      .accordion-trigger.open svg {
+        transform: rotate(180deg);
+      }
+
+      .accordion-content {
+        padding: 12px;
+        background: #fafaf9;
+        border-radius: 10px;
+        margin-top: 6px;
+      }
+
+      /* Option D: Card Layout */
+      .custom-selections-card {
+        margin-top: 12px;
+        padding: 14px;
+        background: linear-gradient(135deg, #f5f0e8 0%, #fafaf9 100%);
+        border-radius: 12px;
+        border: 1px solid rgba(79, 111, 82, 0.15);
+      }
+
+      .custom-card-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .custom-card-header svg {
+        width: 16px;
+        height: 16px;
+        stroke: #4f6f52;
+      }
+
+      .custom-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        color: #4f6f52;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .custom-card-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .custom-card-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .custom-card-item .label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #737373;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+
+      .custom-card-item .value {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      .custom-text-full {
+        grid-column: 1 / -1;
+        padding-top: 8px;
+        border-top: 1px solid rgba(79, 111, 82, 0.15);
+        margin-top: 4px;
+      }
+
+      /* Page elements */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .page-header {
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #e8ece8;
+      }
+
+      .page-header.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .page-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        color: #737373;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .page-content {
+        padding: 16px;
+      }
+
+      .page-content.desktop {
+        padding: 24px 32px;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e8ece8;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #737373;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #a3a3a3;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f0e8;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #737373;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e8ece8;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Pottery placeholders */
+      .pottery-custom {
+        background: linear-gradient(135deg, #f5f0e8 0%, #e8ece8 100%);
+      }
+
+      .pottery-1 {
+        background: linear-gradient(135deg, #f5f0e8 0%, #e8ddd4 100%);
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 15.5.2: Custom Selections in Order Detail</h1>
+    <p class="subtitle">
+      Display custom mug selections (size, color, finish, shape, custom text) in
+      the order detail view. Part of Custom Mug Experience - Orders UI
+      Integration.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="chevron-down" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" />
+      </symbol>
+      <symbol id="palette-icon" viewBox="0 0 24 24">
+        <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor" />
+        <circle cx="17.5" cy="10.5" r="0.5" fill="currentColor" />
+        <circle cx="8.5" cy="7.5" r="0.5" fill="currentColor" />
+        <circle cx="6.5" cy="12.5" r="0.5" fill="currentColor" />
+        <path
+          d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c0.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"
+        />
+      </symbol>
+      <symbol id="sparkles-icon" viewBox="0 0 24 24">
+        <path
+          d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+        />
+        <path d="M5 3v4" />
+        <path d="M19 17v4" />
+        <path d="M3 5h4" />
+        <path d="M17 19h4" />
+      </symbol>
+    </svg>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Inline Tags -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Inline Tags
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Compact inline tags showing each custom selection. Space-efficient
+              and scannable at a glance. Works well when there are few
+              customizations.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">Jan 10, 2024</div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div class="order-item-image pottery-custom"></div>
+                    <div class="order-item-info">
+                      <span class="custom-badge-sm">Custom</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest Green</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Finish:</span> Matte</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Shape:</span> Rounded</span
+                        >
+                      </div>
+                      <div
+                        class="custom-selections-inline"
+                        style="margin-top: 6px"
+                      >
+                        <span
+                          class="selection-tag"
+                          style="
+                            background: #e8ece8;
+                            font-style: italic;
+                            max-width: 200px;
+                          "
+                        >
+                          "Best Dad Ever"
+                        </span>
+                      </div>
+                      <div class="order-item-price" style="margin-top: 10px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024 at 3:45 PM
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div class="order-item-image large pottery-custom"></div>
+                    <div class="order-item-info">
+                      <span class="custom-badge-sm"
+                        ><svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          style="width: 12px; height: 12px"
+                        >
+                          <use href="#sparkles-icon" />
+                        </svg>
+                        Custom Order</span
+                      >
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large (400ml)</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest Green</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Finish:</span> Matte</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Shape:</span> Rounded Handle</span
+                        >
+                        <span
+                          class="selection-tag"
+                          style="background: #e8ece8; font-style: italic"
+                        >
+                          <span class="label">Text:</span> "Best Dad Ever"
+                        </span>
+                      </div>
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          margin-top: 12px;
+                        "
+                      >
+                        <div class="order-item-price">&#8377;1,850</div>
+                        <div class="order-item-qty">Qty: 1</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="order-detail-card">
+                  <div class="order-detail-header desktop">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024 at 3:45 PM
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item -->
+                  <div class="order-item" style="padding: 24px 28px">
+                    <div class="order-item-image large pottery-custom"></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <div style="display: flex; gap: 12px; align-items: start">
+                        <span class="custom-badge-sm"
+                          ><svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            style="width: 12px; height: 12px"
+                          >
+                            <use href="#sparkles-icon" />
+                          </svg>
+                          Custom Order</span
+                        >
+                      </div>
+                      <div class="order-item-name" style="font-size: 17px">
+                        Custom Ceramic Mug
+                      </div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large (400ml)</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest Green</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Finish:</span> Matte</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Shape:</span> Rounded Handle</span
+                        >
+                        <span
+                          class="selection-tag"
+                          style="background: #e8ece8; font-style: italic"
+                        >
+                          <span class="label">Text:</span> "Best Dad Ever"
+                        </span>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price" style="font-size: 18px">
+                        &#8377;1,850
+                      </div>
+                      <div class="order-item-qty">Qty: 1</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Two-Section Split -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Two-Section Split</h3>
+            <p class="wf-option-desc">
+              Clear horizontal split: top section shows product image + details,
+              bottom section (cream background) shows all customizations. Creates
+              visual hierarchy and makes customization info prominent.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">Jan 10, 2024</div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item - Two Section Split -->
+                  <div style="border-bottom: 1px solid #e8ece8">
+                    <!-- Top Section: Product Info -->
+                    <div class="split-section-top">
+                      <div class="order-item-image pottery-custom"></div>
+                      <div class="order-item-info">
+                        <span class="custom-badge-sm">Custom</span>
+                        <div class="order-item-name">Custom Ceramic Mug</div>
+                        <div class="order-item-category">Personalized</div>
+                        <div class="order-item-price" style="margin-top: 6px">
+                          &#8377;1,850
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Bottom Section: Customizations -->
+                    <div class="split-section-bottom">
+                      <div class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <use href="#sparkles-icon" />
+                        </svg>
+                        Your Customizations
+                      </div>
+                      <div class="custom-selections-list">
+                        <div class="selection-row">
+                          <span class="label">Size</span>
+                          <span class="value">Large (400ml)</span>
+                        </div>
+                        <div class="selection-row">
+                          <span class="label">Color</span>
+                          <span class="value">Forest Green</span>
+                        </div>
+                        <div class="selection-row">
+                          <span class="label">Finish</span>
+                          <span class="value">Matte</span>
+                        </div>
+                        <div class="selection-row">
+                          <span class="label">Shape</span>
+                          <span class="value">Rounded Handle</span>
+                        </div>
+                        <div class="selection-row">
+                          <span class="label">Custom Text</span>
+                          <span class="value" style="font-style: italic"
+                            >"Best Dad Ever"</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024 at 3:45 PM
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item - Two Section Split -->
+                  <div style="border-bottom: 1px solid #e8ece8">
+                    <!-- Top Section: Product Info -->
+                    <div class="split-section-top">
+                      <div class="order-item-image large pottery-custom"></div>
+                      <div class="order-item-info" style="flex: 1">
+                        <span class="custom-badge-sm">Custom Order</span>
+                        <div class="order-item-name">Custom Ceramic Mug</div>
+                        <div class="order-item-category">Personalized Item</div>
+                      </div>
+                      <div style="text-align: right">
+                        <div class="order-item-price">&#8377;1,850</div>
+                        <div class="order-item-qty">Qty: 1</div>
+                      </div>
+                    </div>
+
+                    <!-- Bottom Section: Customizations -->
+                    <div class="split-section-bottom">
+                      <div class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <use href="#sparkles-icon" />
+                        </svg>
+                        Your Customizations
+                      </div>
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px">
+                        <div class="selection-row" style="padding: 4px 0; border: none">
+                          <span class="label">Size</span>
+                          <span class="value">Large (400ml)</span>
+                        </div>
+                        <div class="selection-row" style="padding: 4px 0; border: none">
+                          <span class="label">Color</span>
+                          <span class="value">Forest Green</span>
+                        </div>
+                        <div class="selection-row" style="padding: 4px 0; border: none">
+                          <span class="label">Finish</span>
+                          <span class="value">Matte</span>
+                        </div>
+                        <div class="selection-row" style="padding: 4px 0; border: none">
+                          <span class="label">Shape</span>
+                          <span class="value">Rounded Handle</span>
+                        </div>
+                        <div class="selection-row" style="padding: 4px 0; border: none; grid-column: 1 / -1">
+                          <span class="label">Custom Text</span>
+                          <span class="value" style="font-style: italic"
+                            >"Best Dad Ever"</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="order-detail-card">
+                  <div class="order-detail-header desktop">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024 at 3:45 PM
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item - Two Section Split -->
+                  <div style="border-bottom: 1px solid #e8ece8">
+                    <!-- Top Section: Product Info -->
+                    <div class="split-section-top" style="padding: 20px 28px">
+                      <div class="order-item-image large pottery-custom"></div>
+                      <div class="order-item-info" style="flex: 1">
+                        <span class="custom-badge-sm">Custom Order</span>
+                        <div class="order-item-name" style="font-size: 17px">
+                          Custom Ceramic Mug
+                        </div>
+                        <div class="order-item-category">Personalized Item</div>
+                      </div>
+                      <div style="text-align: right">
+                        <div class="order-item-price" style="font-size: 18px">
+                          &#8377;1,850
+                        </div>
+                        <div class="order-item-qty">Qty: 1</div>
+                      </div>
+                    </div>
+
+                    <!-- Bottom Section: Customizations -->
+                    <div class="split-section-bottom" style="padding: 16px 28px">
+                      <div class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <use href="#sparkles-icon" />
+                        </svg>
+                        Your Customizations
+                      </div>
+                      <div style="display: grid; grid-template-columns: repeat(4, 1fr) 1.5fr; gap: 16px">
+                        <div>
+                          <div style="font-size: 10px; font-weight: 600; color: #737373; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px">Size</div>
+                          <div style="font-size: 13px; font-weight: 500; color: #1a1a1a">Large (400ml)</div>
+                        </div>
+                        <div>
+                          <div style="font-size: 10px; font-weight: 600; color: #737373; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px">Color</div>
+                          <div style="font-size: 13px; font-weight: 500; color: #1a1a1a">Forest Green</div>
+                        </div>
+                        <div>
+                          <div style="font-size: 10px; font-weight: 600; color: #737373; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px">Finish</div>
+                          <div style="font-size: 13px; font-weight: 500; color: #1a1a1a">Matte</div>
+                        </div>
+                        <div>
+                          <div style="font-size: 10px; font-weight: 600; color: #737373; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px">Shape</div>
+                          <div style="font-size: 13px; font-weight: 500; color: #1a1a1a">Rounded Handle</div>
+                        </div>
+                        <div>
+                          <div style="font-size: 10px; font-weight: 600; color: #737373; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px">Custom Text</div>
+                          <div style="font-size: 13px; font-weight: 500; color: #1a1a1a; font-style: italic">"Best Dad Ever"</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Expandable Accordion -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Expandable Accordion</h3>
+            <p class="wf-option-desc">
+              Collapsible section to show/hide custom selections. Keeps the
+              interface clean by hiding details until requested. Good for mixed
+              orders with regular and custom items.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">Jan 10, 2024</div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item - Collapsed -->
+                  <div class="order-item">
+                    <div class="order-item-image pottery-custom"></div>
+                    <div class="order-item-info">
+                      <span class="custom-badge-sm">Custom</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized</div>
+
+                      <div class="custom-selections-accordion">
+                        <div class="accordion-trigger">
+                          View Customizations
+                          <svg viewBox="0 0 24 24" fill="none">
+                            <use href="#chevron-down" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      <div class="order-item-price" style="margin-top: 8px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item - Expanded -->
+                  <div class="order-item" style="background: #fafaf9">
+                    <div class="order-item-image pottery-custom"></div>
+                    <div class="order-item-info">
+                      <span class="custom-badge-sm">Custom</span>
+                      <div class="order-item-name">Another Custom Mug</div>
+                      <div class="order-item-category">Personalized</div>
+
+                      <div class="custom-selections-accordion">
+                        <div class="accordion-trigger open">
+                          Hide Customizations
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            style="transform: rotate(180deg)"
+                          >
+                            <use href="#chevron-down" />
+                          </svg>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="selection-row">
+                            <span class="label">Size</span>
+                            <span class="value">Medium</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Color</span>
+                            <span class="value">Terracotta</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Finish</span>
+                            <span class="value">Glossy</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Shape</span>
+                            <span class="value">Classic</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Text</span>
+                            <span class="value" style="font-style: italic"
+                              >"Morning Coffee"</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="order-item-price" style="margin-top: 8px">
+                        &#8377;1,650
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item - Expanded -->
+                  <div class="order-item">
+                    <div class="order-item-image large pottery-custom"></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized Item</div>
+
+                      <div class="custom-selections-accordion">
+                        <div class="accordion-trigger open">
+                          Hide Customizations
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            style="transform: rotate(180deg)"
+                          >
+                            <use href="#chevron-down" />
+                          </svg>
+                        </div>
+                        <div
+                          class="accordion-content"
+                          style="max-width: 280px"
+                        >
+                          <div class="selection-row">
+                            <span class="label">Size</span>
+                            <span class="value">Large (400ml)</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Color</span>
+                            <span class="value">Forest Green</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Finish</span>
+                            <span class="value">Matte</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Shape</span>
+                            <span class="value">Rounded Handle</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Text</span>
+                            <span class="value" style="font-style: italic"
+                              >"Best Dad Ever"</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price">&#8377;1,850</div>
+                      <div class="order-item-qty">Qty: 1</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="order-detail-card">
+                  <div class="order-detail-header desktop">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024 at 3:45 PM
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item - Expanded -->
+                  <div class="order-item" style="padding: 24px 28px">
+                    <div class="order-item-image large pottery-custom"></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name" style="font-size: 17px">
+                        Custom Ceramic Mug
+                      </div>
+                      <div class="order-item-category">Personalized Item</div>
+
+                      <div class="custom-selections-accordion">
+                        <div class="accordion-trigger open">
+                          Hide Customizations
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            style="transform: rotate(180deg)"
+                          >
+                            <use href="#chevron-down" />
+                          </svg>
+                        </div>
+                        <div
+                          class="accordion-content"
+                          style="max-width: 320px"
+                        >
+                          <div class="selection-row">
+                            <span class="label">Size</span>
+                            <span class="value">Large (400ml)</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Color</span>
+                            <span class="value">Forest Green</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Finish</span>
+                            <span class="value">Matte</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Shape</span>
+                            <span class="value">Rounded Handle</span>
+                          </div>
+                          <div class="selection-row">
+                            <span class="label">Text</span>
+                            <span class="value" style="font-style: italic"
+                              >"Best Dad Ever"</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price" style="font-size: 18px">
+                        &#8377;1,850
+                      </div>
+                      <div class="order-item-qty">Qty: 1</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Highlighted Card -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Highlighted Card</h3>
+            <p class="wf-option-desc">
+              Dedicated highlighted card for custom selections with warm
+              terracotta gradient background. Makes the customization details
+              feel special and premium.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">Jan 10, 2024</div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item -->
+                  <div class="order-item" style="flex-direction: column">
+                    <div style="display: flex; gap: 12px">
+                      <div class="order-item-image pottery-custom"></div>
+                      <div class="order-item-info">
+                        <span class="custom-badge-sm">Custom</span>
+                        <div class="order-item-name">Custom Ceramic Mug</div>
+                        <div class="order-item-category">Personalized</div>
+                        <div class="order-item-price" style="margin-top: 6px">
+                          &#8377;1,850
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="custom-selections-card">
+                      <div class="custom-card-header">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <use href="#sparkles-icon" />
+                        </svg>
+                        <span class="custom-card-title">Your Selections</span>
+                      </div>
+                      <div class="custom-card-grid">
+                        <div class="custom-card-item">
+                          <span class="label">Size</span>
+                          <span class="value">Large (400ml)</span>
+                        </div>
+                        <div class="custom-card-item">
+                          <span class="label">Color</span>
+                          <span class="value">Forest Green</span>
+                        </div>
+                        <div class="custom-card-item">
+                          <span class="label">Finish</span>
+                          <span class="value">Matte</span>
+                        </div>
+                        <div class="custom-card-item">
+                          <span class="label">Shape</span>
+                          <span class="value">Rounded</span>
+                        </div>
+                        <div class="custom-card-item custom-text-full">
+                          <span class="label">Custom Text</span>
+                          <span class="value" style="font-style: italic"
+                            >"Best Dad Ever"</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card">
+                  <div class="order-detail-header">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div class="order-item-image large pottery-custom"></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized Item</div>
+
+                      <div
+                        class="custom-selections-card"
+                        style="max-width: 300px"
+                      >
+                        <div class="custom-card-header">
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <use href="#sparkles-icon" />
+                          </svg>
+                          <span class="custom-card-title">Your Selections</span>
+                        </div>
+                        <div class="custom-card-grid">
+                          <div class="custom-card-item">
+                            <span class="label">Size</span>
+                            <span class="value">Large (400ml)</span>
+                          </div>
+                          <div class="custom-card-item">
+                            <span class="label">Color</span>
+                            <span class="value">Forest Green</span>
+                          </div>
+                          <div class="custom-card-item">
+                            <span class="label">Finish</span>
+                            <span class="value">Matte</span>
+                          </div>
+                          <div class="custom-card-item">
+                            <span class="label">Shape</span>
+                            <span class="value">Rounded</span>
+                          </div>
+                          <div class="custom-card-item custom-text-full">
+                            <span class="label">Custom Text</span>
+                            <span class="value" style="font-style: italic"
+                              >"Best Dad Ever"</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price">&#8377;1,850</div>
+                      <div class="order-item-qty">Qty: 1</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="order-detail-card">
+                  <div class="order-detail-header desktop">
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                      "
+                    >
+                      <div>
+                        <div class="order-number">#ORD-2024-7821</div>
+                        <div class="order-meta">
+                          Placed on January 10, 2024 at 3:45 PM
+                        </div>
+                      </div>
+                      <span class="order-status-badge">Processing</span>
+                    </div>
+                  </div>
+
+                  <!-- Custom Item -->
+                  <div class="order-item" style="padding: 24px 28px">
+                    <div class="order-item-image large pottery-custom"></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name" style="font-size: 17px">
+                        Custom Ceramic Mug
+                      </div>
+                      <div class="order-item-category">Personalized Item</div>
+
+                      <div
+                        class="custom-selections-card"
+                        style="max-width: 360px"
+                      >
+                        <div class="custom-card-header">
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <use href="#sparkles-icon" />
+                          </svg>
+                          <span class="custom-card-title">Your Selections</span>
+                        </div>
+                        <div class="custom-card-grid">
+                          <div class="custom-card-item">
+                            <span class="label">Size</span>
+                            <span class="value">Large (400ml)</span>
+                          </div>
+                          <div class="custom-card-item">
+                            <span class="label">Color</span>
+                            <span class="value">Forest Green</span>
+                          </div>
+                          <div class="custom-card-item">
+                            <span class="label">Finish</span>
+                            <span class="value">Matte</span>
+                          </div>
+                          <div class="custom-card-item">
+                            <span class="label">Shape</span>
+                            <span class="value">Rounded Handle</span>
+                          </div>
+                          <div class="custom-card-item custom-text-full">
+                            <span class="label">Custom Text</span>
+                            <span class="value" style="font-style: italic"
+                              >"Best Dad Ever"</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price" style="font-size: 18px">
+                        &#8377;1,850
+                      </div>
+                      <div class="order-item-qty">Qty: 1</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #737373; font-size: 14px; margin-bottom: 24px">
+        Select your preferred custom selections display for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Inline
+            Tags</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Two-Section
+            Split</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D -
+            Highlighted Card</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Inline
+            Tags</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Two-Section
+            Split</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D -
+            Highlighted Card</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Inline
+            Tags</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Two-Section
+            Split</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D -
+            Highlighted Card</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 15.5.2):</strong><br /><br />
+      &bull; <strong>Data Source:</strong> custom_data JSON field on
+      PurchasedProductItem<br />
+      &bull; <strong>Fields:</strong> size, color, finish, shape, custom_text<br />
+      &bull; <strong>Badge:</strong> "Custom" badge above item name<br />
+      &bull; <strong>Styling:</strong> Terracotta (#C4785A) accent for custom
+      items<br />
+      &bull; <strong>Conditional:</strong> Only show custom section if
+      custom_data exists<br />
+      &bull;
+      <strong>Files:</strong>
+      src/features/orders/components/order-detail.tsx,
+      src/features/orders/components/order-item-card.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e8ece8;
+        color: #737373;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

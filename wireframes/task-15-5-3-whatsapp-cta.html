@@ -1,0 +1,1557 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Task 15.5.3: WhatsApp CTA for Custom Orders - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Order Detail Styles */
+      .order-detail-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .order-detail-header {
+        padding: 20px;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .order-number {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .order-meta {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .order-status-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      /* Order Item Styles */
+      .order-item {
+        display: flex;
+        gap: 16px;
+        padding: 20px;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .order-item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        flex-shrink: 0;
+      }
+
+      .order-item-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .order-item-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .order-item-category {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .order-item-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      /* Custom Badge */
+      .custom-badge-sm {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 12px;
+        background: #f5ebe6;
+        color: #c4785a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+
+      /* WhatsApp Button Styles */
+      .whatsapp-green {
+        background: #25d366;
+        color: white;
+      }
+
+      .whatsapp-green:hover {
+        background: #20bd5a;
+      }
+
+      /* Option A: Full-Width Banner */
+      .whatsapp-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%);
+        border-radius: 12px;
+        margin: 16px;
+        border: 1px solid rgba(37, 211, 102, 0.2);
+      }
+
+      .whatsapp-banner-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .whatsapp-banner-icon {
+        width: 40px;
+        height: 40px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .whatsapp-banner-icon svg {
+        width: 22px;
+        height: 22px;
+        fill: white;
+      }
+
+      .whatsapp-banner-text {
+        flex: 1;
+      }
+
+      .whatsapp-banner-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #166534;
+        margin-bottom: 2px;
+      }
+
+      .whatsapp-banner-desc {
+        font-size: 11px;
+        color: #15803d;
+        line-height: 1.4;
+      }
+
+      /* Option B: Inline Button with Text */
+      .whatsapp-inline {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: #f0fdf4;
+        border-radius: 10px;
+        margin-top: 12px;
+      }
+
+      .whatsapp-inline-text {
+        flex: 1;
+        font-size: 12px;
+        color: #166534;
+        line-height: 1.4;
+      }
+
+      /* Option C: Card Style */
+      .whatsapp-card {
+        padding: 20px;
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #e5e5e5;
+        margin: 16px;
+        text-align: center;
+      }
+
+      .whatsapp-card-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+
+      .whatsapp-card-icon svg {
+        width: 28px;
+        height: 28px;
+        fill: white;
+      }
+
+      .whatsapp-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .whatsapp-card-desc {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+        margin-bottom: 16px;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Option D: Floating Action Button + Tooltip */
+      .whatsapp-fab-container {
+        position: relative;
+        padding: 16px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .whatsapp-fab {
+        width: 56px;
+        height: 56px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .whatsapp-fab:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.5);
+      }
+
+      .whatsapp-fab svg {
+        width: 28px;
+        height: 28px;
+        fill: white;
+      }
+
+      .whatsapp-tooltip {
+        position: absolute;
+        right: 80px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #1a1a1a;
+        color: white;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .whatsapp-tooltip::after {
+        content: "";
+        position: absolute;
+        right: -6px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent transparent transparent #1a1a1a;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: "Outfit", sans-serif;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease-out;
+        border-radius: 8px;
+        text-decoration: none;
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .btn-sm {
+        height: 32px;
+        padding: 0 12px;
+        font-size: 12px;
+      }
+
+      .btn-md {
+        height: 40px;
+        padding: 0 20px;
+        font-size: 13px;
+      }
+
+      .btn-lg {
+        height: 48px;
+        padding: 0 24px;
+        font-size: 14px;
+      }
+
+      .btn svg {
+        width: 18px;
+        height: 18px;
+        fill: currentColor;
+      }
+
+      .btn-sm svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* Page elements */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .page-header {
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .page-header.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .page-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .page-content {
+        padding: 0;
+      }
+
+      .page-content.with-padding {
+        padding: 16px;
+      }
+
+      .page-content.desktop {
+        padding: 24px 32px;
+      }
+
+      /* Custom Selections (simplified) */
+      .custom-selections-inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .selection-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: #f5f5f4;
+        color: #555;
+      }
+
+      .selection-tag .label {
+        font-weight: 600;
+        color: #333;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Pottery placeholders */
+      .pottery-custom {
+        background: linear-gradient(135deg, #f5ebe6 0%, #e8d4c8 100%);
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Task 15.5.3: WhatsApp CTA for Custom Orders</h1>
+    <p class="subtitle">
+      Call-to-action to contact via WhatsApp for questions about custom orders.
+      Helps customers get quick support for their personalized items. Part of
+      Custom Mug Experience - Orders UI Integration.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="whatsapp-icon" viewBox="0 0 24 24">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+        />
+      </symbol>
+      <symbol id="message-circle" viewBox="0 0 24 24">
+        <path
+          d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      </symbol>
+    </svg>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Full-Width Banner -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Full-Width Banner
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Prominent banner below the order item with WhatsApp icon, helpful
+              text, and button. Impossible to miss and provides clear context
+              about why to contact.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div class="order-item-image pottery-custom"></div>
+                    <div class="order-item-info">
+                      <span class="custom-badge-sm">Custom</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest</span
+                        >
+                      </div>
+                      <div class="order-item-price" style="margin-top: 10px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- WhatsApp Banner -->
+                  <div class="whatsapp-banner">
+                    <div class="whatsapp-banner-content">
+                      <div class="whatsapp-banner-icon">
+                        <svg><use href="#whatsapp-icon" /></svg>
+                      </div>
+                      <div class="whatsapp-banner-text">
+                        <div class="whatsapp-banner-title">
+                          Questions about your custom order?
+                        </div>
+                        <div class="whatsapp-banner-desc">
+                          Chat with us for updates or changes
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      href="#"
+                      class="btn btn-sm whatsapp-green"
+                      style="flex-shrink: 0"
+                    >
+                      Chat
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div
+                      class="order-item-image pottery-custom"
+                      style="width: 100px; height: 100px"
+                    ></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large (400ml)</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest Green</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Finish:</span> Matte</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Text:</span> "Best Dad
+                          Ever"</span
+                        >
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price">&#8377;1,850</div>
+                    </div>
+                  </div>
+
+                  <!-- WhatsApp Banner -->
+                  <div class="whatsapp-banner">
+                    <div class="whatsapp-banner-content">
+                      <div class="whatsapp-banner-icon">
+                        <svg><use href="#whatsapp-icon" /></svg>
+                      </div>
+                      <div class="whatsapp-banner-text">
+                        <div class="whatsapp-banner-title">
+                          Questions about your custom order?
+                        </div>
+                        <div class="whatsapp-banner-desc">
+                          Chat with us on WhatsApp for quick updates, changes,
+                          or any questions about your personalized item.
+                        </div>
+                      </div>
+                    </div>
+                    <a href="#" class="btn btn-md whatsapp-green">
+                      <svg><use href="#whatsapp-icon" /></svg>
+                      Chat on WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item" style="padding: 24px 28px">
+                    <div
+                      class="order-item-image pottery-custom"
+                      style="width: 100px; height: 100px"
+                    ></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name" style="font-size: 17px">
+                        Custom Ceramic Mug
+                      </div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large (400ml)</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest Green</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Finish:</span> Matte</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Shape:</span> Rounded</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Text:</span> "Best Dad
+                          Ever"</span
+                        >
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price" style="font-size: 18px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- WhatsApp Banner -->
+                  <div
+                    class="whatsapp-banner"
+                    style="margin: 0 28px 24px; border-radius: 12px"
+                  >
+                    <div class="whatsapp-banner-content">
+                      <div class="whatsapp-banner-icon">
+                        <svg><use href="#whatsapp-icon" /></svg>
+                      </div>
+                      <div class="whatsapp-banner-text">
+                        <div class="whatsapp-banner-title">
+                          Questions about your custom order?
+                        </div>
+                        <div class="whatsapp-banner-desc">
+                          Chat with us on WhatsApp for quick updates, changes,
+                          or any questions about your personalized item.
+                        </div>
+                      </div>
+                    </div>
+                    <a href="#" class="btn btn-md whatsapp-green">
+                      <svg><use href="#whatsapp-icon" /></svg>
+                      Chat on WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Inline Button -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Inline Button with Text</h3>
+            <p class="wf-option-desc">
+              Subtle inline section within the order item area. Less prominent
+              but integrates smoothly with the item details. Good for a
+              non-intrusive approach.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div
+                    class="order-item"
+                    style="flex-direction: column; gap: 12px"
+                  >
+                    <div style="display: flex; gap: 12px">
+                      <div class="order-item-image pottery-custom"></div>
+                      <div class="order-item-info">
+                        <span class="custom-badge-sm">Custom</span>
+                        <div class="order-item-name">Custom Ceramic Mug</div>
+                        <div class="order-item-category">Personalized</div>
+                        <div class="order-item-price" style="margin-top: 6px">
+                          &#8377;1,850
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Inline WhatsApp -->
+                    <div class="whatsapp-inline">
+                      <div class="whatsapp-inline-text">
+                        Need help with your custom order? Chat with us!
+                      </div>
+                      <a href="#" class="btn btn-sm whatsapp-green">
+                        <svg
+                          style="width: 14px; height: 14px"
+                          viewBox="0 0 24 24"
+                        >
+                          <use href="#whatsapp-icon" />
+                        </svg>
+                        Chat
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div
+                      class="order-item-image pottery-custom"
+                      style="width: 100px; height: 100px"
+                    ></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Text:</span> "Best Dad"</span
+                        >
+                      </div>
+
+                      <!-- Inline WhatsApp -->
+                      <div class="whatsapp-inline" style="max-width: 340px">
+                        <div class="whatsapp-inline-text">
+                          Need help with your custom order? Chat with us on
+                          WhatsApp!
+                        </div>
+                        <a href="#" class="btn btn-sm whatsapp-green">
+                          <svg
+                            style="width: 14px; height: 14px"
+                            viewBox="0 0 24 24"
+                          >
+                            <use href="#whatsapp-icon" />
+                          </svg>
+                          Chat
+                        </a>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price">&#8377;1,850</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item" style="padding: 24px 28px">
+                    <div
+                      class="order-item-image pottery-custom"
+                      style="width: 100px; height: 100px"
+                    ></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name" style="font-size: 17px">
+                        Custom Ceramic Mug
+                      </div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large (400ml)</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest Green</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Finish:</span> Matte</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Text:</span> "Best Dad
+                          Ever"</span
+                        >
+                      </div>
+
+                      <!-- Inline WhatsApp -->
+                      <div class="whatsapp-inline" style="max-width: 400px">
+                        <div class="whatsapp-inline-text">
+                          Need help with your custom order? Chat with us on
+                          WhatsApp for quick updates!
+                        </div>
+                        <a href="#" class="btn btn-sm whatsapp-green">
+                          <svg
+                            style="width: 14px; height: 14px"
+                            viewBox="0 0 24 24"
+                          >
+                            <use href="#whatsapp-icon" />
+                          </svg>
+                          Chat Now
+                        </a>
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price" style="font-size: 18px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Help Card Section -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Dedicated Help Card</h3>
+            <p class="wf-option-desc">
+              Separate card section below order items focused on getting help.
+              Centered layout with prominent icon. Feels like a distinct support
+              section.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div class="order-item-image pottery-custom"></div>
+                    <div class="order-item-info">
+                      <span class="custom-badge-sm">Custom</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized</div>
+                      <div class="order-item-price" style="margin-top: 8px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- WhatsApp Help Card -->
+                <div class="whatsapp-card">
+                  <div class="whatsapp-card-icon">
+                    <svg><use href="#whatsapp-icon" /></svg>
+                  </div>
+                  <div class="whatsapp-card-title">Need Help?</div>
+                  <div class="whatsapp-card-desc">
+                    Have questions about your custom order? Chat with us on
+                    WhatsApp for quick support.
+                  </div>
+                  <a href="#" class="btn btn-md whatsapp-green">
+                    <svg><use href="#whatsapp-icon" /></svg>
+                    Chat on WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div
+                      class="order-item-image pottery-custom"
+                      style="width: 100px; height: 100px"
+                    ></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest</span
+                        >
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price">&#8377;1,850</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- WhatsApp Help Card -->
+                <div class="whatsapp-card" style="max-width: 400px; margin: 16px auto">
+                  <div class="whatsapp-card-icon">
+                    <svg><use href="#whatsapp-icon" /></svg>
+                  </div>
+                  <div class="whatsapp-card-title">Need Help with Your Custom Order?</div>
+                  <div class="whatsapp-card-desc">
+                    Have questions or want to make changes? Chat with us on WhatsApp for quick support.
+                  </div>
+                  <a href="#" class="btn btn-md whatsapp-green">
+                    <svg><use href="#whatsapp-icon" /></svg>
+                    Chat on WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div style="display: grid; grid-template-columns: 1fr 300px; gap: 24px; padding: 24px 32px">
+                  <div class="order-detail-card">
+                    <!-- Custom Item -->
+                    <div class="order-item" style="padding: 24px">
+                      <div
+                        class="order-item-image pottery-custom"
+                        style="width: 100px; height: 100px"
+                      ></div>
+                      <div class="order-item-info" style="flex: 1">
+                        <span class="custom-badge-sm">Custom Order</span>
+                        <div class="order-item-name" style="font-size: 17px">
+                          Custom Ceramic Mug
+                        </div>
+                        <div class="order-item-category">Personalized Item</div>
+                        <div class="custom-selections-inline">
+                          <span class="selection-tag"
+                            ><span class="label">Size:</span> Large</span
+                          >
+                          <span class="selection-tag"
+                            ><span class="label">Color:</span> Forest</span
+                          >
+                          <span class="selection-tag"
+                            ><span class="label">Text:</span> "Best Dad"</span
+                          >
+                        </div>
+                      </div>
+                      <div style="text-align: right">
+                        <div class="order-item-price" style="font-size: 18px">
+                          &#8377;1,850
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- WhatsApp Help Card (Sidebar) -->
+                  <div class="whatsapp-card" style="margin: 0; height: fit-content">
+                    <div class="whatsapp-card-icon">
+                      <svg><use href="#whatsapp-icon" /></svg>
+                    </div>
+                    <div class="whatsapp-card-title">Need Help?</div>
+                    <div class="whatsapp-card-desc">
+                      Questions about your custom order? Chat with us on WhatsApp.
+                    </div>
+                    <a href="#" class="btn btn-md whatsapp-green" style="width: 100%">
+                      <svg><use href="#whatsapp-icon" /></svg>
+                      Chat Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Floating Action Button -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Floating Action Button with Tooltip</h3>
+            <p class="wf-option-desc">
+              Floating WhatsApp button on custom order pages with contextual tooltip.
+              Non-intrusive but always accessible. Similar to the global WhatsApp FAB
+              but with custom order context.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame" style="position: relative; min-height: 400px">
+              <div class="page-header">
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div class="order-item-image pottery-custom"></div>
+                    <div class="order-item-info">
+                      <span class="custom-badge-sm">Custom</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized</div>
+                      <div class="order-item-price" style="margin-top: 8px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FAB with Tooltip -->
+              <div class="whatsapp-fab-container" style="position: absolute; bottom: 16px; right: 0">
+                <div class="whatsapp-tooltip">
+                  Questions about your custom order?
+                </div>
+                <div class="whatsapp-fab">
+                  <svg><use href="#whatsapp-icon" /></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame" style="position: relative; min-height: 350px">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item">
+                    <div
+                      class="order-item-image pottery-custom"
+                      style="width: 100px; height: 100px"
+                    ></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name">Custom Ceramic Mug</div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest</span
+                        >
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price">&#8377;1,850</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FAB with Tooltip -->
+              <div class="whatsapp-fab-container" style="position: absolute; bottom: 16px; right: 0">
+                <div class="whatsapp-tooltip">
+                  Questions about your custom order?
+                </div>
+                <div class="whatsapp-fab">
+                  <svg><use href="#whatsapp-icon" /></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame" style="position: relative; min-height: 350px">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">My Account</a> /
+                  <a href="#">Orders</a> / #ORD-2024-7821
+                </div>
+                <div class="page-title">Order Details</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div class="order-detail-card" style="border-radius: 0">
+                  <!-- Custom Item -->
+                  <div class="order-item" style="padding: 24px 28px">
+                    <div
+                      class="order-item-image pottery-custom"
+                      style="width: 100px; height: 100px"
+                    ></div>
+                    <div class="order-item-info" style="flex: 1">
+                      <span class="custom-badge-sm">Custom Order</span>
+                      <div class="order-item-name" style="font-size: 17px">
+                        Custom Ceramic Mug
+                      </div>
+                      <div class="order-item-category">Personalized Item</div>
+                      <div class="custom-selections-inline">
+                        <span class="selection-tag"
+                          ><span class="label">Size:</span> Large (400ml)</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Color:</span> Forest Green</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Finish:</span> Matte</span
+                        >
+                        <span class="selection-tag"
+                          ><span class="label">Text:</span> "Best Dad
+                          Ever"</span
+                        >
+                      </div>
+                    </div>
+                    <div style="text-align: right">
+                      <div class="order-item-price" style="font-size: 18px">
+                        &#8377;1,850
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FAB with Tooltip -->
+              <div class="whatsapp-fab-container" style="position: absolute; bottom: 24px; right: 8px">
+                <div class="whatsapp-tooltip">
+                  Questions about your custom order? Chat with us!
+                </div>
+                <div class="whatsapp-fab">
+                  <svg><use href="#whatsapp-icon" /></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred WhatsApp CTA style for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A -
+            Full-Width Banner</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Inline
+            Button</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Help
+            Card</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D - Floating
+            FAB</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A -
+            Full-Width Banner</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Inline
+            Button</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Help
+            Card</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D - Floating
+            FAB</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A -
+            Full-Width Banner</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Inline
+            Button</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Help
+            Card (Sidebar)</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D - Floating
+            FAB</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Task 15.5.3):</strong><br /><br />
+      &bull; <strong>Trigger:</strong> Show WhatsApp CTA only when order
+      contains items with custom_data<br />
+      &bull; <strong>WhatsApp Link:</strong> Pre-fill message with order number
+      and "Custom Order Inquiry"<br />
+      &bull; <strong>Format:</strong>
+      https://wa.me/PHONE?text=Hi,%20I%20have%20a%20question%20about%20my%20custom%20order%20%23ORD-XXXX<br />
+      &bull; <strong>Color:</strong> WhatsApp Green (#25D366)<br />
+      &bull; <strong>Mobile:</strong> Full-screen tap target for accessibility<br />
+      &bull;
+      <strong>Files:</strong>
+      src/features/orders/components/order-detail.tsx,
+      src/features/orders/components/whatsapp-cta.tsx (new)
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>
