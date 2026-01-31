@@ -1,15 +1,14 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useCallback, useMemo, useState, useTransition } from "react";
+import { Suspense, useCallback, useMemo } from "react";
 
-import type { EventSortOption, EventTypeFilter } from "@/components/events";
 import { PastEventsSkeleton } from "@/components/skeletons";
 
 import { EventType } from "@/graphql/generated/graphql";
 
 import { AllEvents } from "../components/all-events";
 import { useAllEventsQuery } from "../hooks/use-all-events-query";
+import { useEventFilters } from "../hooks/use-event-filters";
 import { usePastEventsQuery } from "../hooks/use-past-events-query";
 import type { AllEventsContainerProps, AllEventsViewModel } from "../types";
 
@@ -17,13 +16,14 @@ export function AllEventsContainer({
   initialUpcomingEvents,
   initialUpcomingPagination,
 }: AllEventsContainerProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [, startTransition] = useTransition();
-  const searchQuery = searchParams.get("search") || "";
-  const [sortBy, setSortBy] = useState<EventSortOption>("soonest");
-  const [eventTypeFilter, setEventTypeFilter] =
-    useState<EventTypeFilter>("all");
+  const { filters, setSearch, setEventType, setSort, getQueryString } =
+    useEventFilters();
+
+  const {
+    search: searchQuery,
+    eventType: eventTypeFilter,
+    sort: sortBy,
+  } = filters;
 
   // Convert UI filter to GraphQL enum
   const eventTypeForQuery =
@@ -142,9 +142,12 @@ export function AllEventsContainer({
         viewModel={viewModel}
         loadMoreRef={loadMoreRef}
         sortBy={sortBy}
-        onSortChange={setSortBy}
+        onSortChange={setSort}
         eventTypeFilter={eventTypeFilter}
-        onEventTypeFilterChange={setEventTypeFilter}
+        onEventTypeFilterChange={setEventType}
+        searchQuery={searchQuery}
+        onSearchChange={setSearch}
+        queryString={getQueryString()}
         pastEventsLoading={isPastEventsLoading}
         pastEventsSkeleton={<PastEventsSkeleton />}
       />

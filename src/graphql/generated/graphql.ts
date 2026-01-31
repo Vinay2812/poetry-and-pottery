@@ -187,6 +187,52 @@ export type AdminContentPageListItem = {
   updated_at: Scalars['DateTime']['output'];
 };
 
+export type AdminCustomizationCategorySummary = {
+  category: Scalars['String']['output'];
+  count: Scalars['Int']['output'];
+};
+
+export type AdminCustomizationMutationResponse = {
+  error?: Maybe<Scalars['String']['output']>;
+  optionId?: Maybe<Scalars['Int']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type AdminCustomizationOption = {
+  category: Scalars['String']['output'];
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  price_modifier: Scalars['Int']['output'];
+  sort_order: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+  updated_at: Scalars['DateTime']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type AdminCustomizationOptionsFilterInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AdminCustomizationOptionsResponse = {
+  limit: Scalars['Int']['output'];
+  options: Array<AdminCustomizationOption>;
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
+export type AdminCustomizationTypeSummary = {
+  count: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+};
+
 export type AdminEvent = {
   _count: AdminEventCount;
   available_seats: Scalars['Int']['output'];
@@ -757,6 +803,16 @@ export type CreateCollectionInput = {
   starts_at?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
+export type CreateCustomizationOptionInput = {
+  category: Scalars['String']['input'];
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  price_modifier?: InputMaybe<Scalars['Int']['input']>;
+  sort_order?: InputMaybe<Scalars['Int']['input']>;
+  type: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
 export type CreateEventInput = {
   available_seats: Scalars['Int']['input'];
   description: Scalars['String']['input'];
@@ -821,6 +877,56 @@ export type CreateReviewResponse = {
   error?: Maybe<Scalars['String']['output']>;
   review?: Maybe<Review>;
   success: Scalars['Boolean']['output'];
+};
+
+export type CustomizationCategoriesFilterInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CustomizationCategoriesResponse = {
+  categories: Array<CustomizationCategory>;
+  has_more: Scalars['Boolean']['output'];
+  limit: Scalars['Int']['output'];
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type CustomizationCategory = {
+  base_price: Scalars['Int']['output'];
+  category: Scalars['String']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  options_count: Scalars['Int']['output'];
+};
+
+export type CustomizationOption = {
+  category: Scalars['String']['output'];
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  price_modifier: Scalars['Int']['output'];
+  sort_order: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+  updated_at: Scalars['DateTime']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type CustomizationOptionsByType = {
+  options: Array<CustomizationOption>;
+  type: Scalars['String']['output'];
+};
+
+export type CustomizationOptionsFilterInput = {
+  category: Scalars['String']['input'];
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CustomizationOptionsResponse = {
+  category: Scalars['String']['output'];
+  options_by_type: Array<CustomizationOptionsByType>;
+  total_options: Scalars['Int']['output'];
 };
 
 export type DashboardStats = {
@@ -1071,10 +1177,12 @@ export type Mutation = {
   adminBulkDeleteEvents: AdminBulkDeleteEventsResponse;
   adminBulkDeleteProducts: AdminBulkDeleteProductsResponse;
   adminCreateCollection: AdminCollectionMutationResponse;
+  adminCreateCustomizationOption: AdminCustomizationMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
   adminDeleteCategory: AdminCategoryMutationResponse;
   adminDeleteCollection: AdminCollectionMutationResponse;
+  adminDeleteCustomizationOption: AdminCustomizationMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
   adminDeleteEventReview: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
@@ -1083,11 +1191,13 @@ export type Mutation = {
   adminRemoveProductFromCollection: AdminCollectionMutationResponse;
   adminRenameCategory: AdminCategoryMutationResponse;
   adminToggleContentPageActive: AdminContentMutationResponse;
+  adminToggleCustomizationOptionActive: AdminCustomizationMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
   adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
   adminUpdateContentPage: AdminContentMutationResponse;
+  adminUpdateCustomizationOption: AdminCustomizationMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
   adminUpdateHeroImages: AdminSettingsMutationResponse;
@@ -1160,6 +1270,11 @@ export type MutationAdminCreateCollectionArgs = {
 };
 
 
+export type MutationAdminCreateCustomizationOptionArgs = {
+  input: CreateCustomizationOptionInput;
+};
+
+
 export type MutationAdminCreateEventArgs = {
   input: CreateEventInput;
 };
@@ -1176,6 +1291,11 @@ export type MutationAdminDeleteCategoryArgs = {
 
 
 export type MutationAdminDeleteCollectionArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationAdminDeleteCustomizationOptionArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -1221,6 +1341,11 @@ export type MutationAdminToggleContentPageActiveArgs = {
 };
 
 
+export type MutationAdminToggleCustomizationOptionActiveArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationAdminToggleProductActiveArgs = {
   id: Scalars['Int']['input'];
 };
@@ -1246,6 +1371,12 @@ export type MutationAdminUpdateContactInfoArgs = {
 export type MutationAdminUpdateContentPageArgs = {
   input: UpdateContentPageInput;
   slug: Scalars['String']['input'];
+};
+
+
+export type MutationAdminUpdateCustomizationOptionArgs = {
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizationOptionInput;
 };
 
 
@@ -1670,6 +1801,10 @@ export type Query = {
   adminContactInfo: ContactInfo;
   adminContentPageBySlug?: Maybe<AdminContentPage>;
   adminContentPages: Array<AdminContentPageListItem>;
+  adminCustomizationCategories: Array<AdminCustomizationCategorySummary>;
+  adminCustomizationOptionById?: Maybe<AdminCustomizationOption>;
+  adminCustomizationOptions: AdminCustomizationOptionsResponse;
+  adminCustomizationTypes: Array<AdminCustomizationTypeSummary>;
   adminDashboardStats: DashboardStats;
   adminEventById?: Maybe<AdminEventDetail>;
   adminEventLevelOptions: Array<AdminLevelOption>;
@@ -1700,6 +1835,9 @@ export type Query = {
   categoriesWithImages: Array<CategoryWithImage>;
   collections: Array<CollectionBase>;
   completedRegistrations: RegistrationsResponse;
+  customizationCategories: CustomizationCategoriesResponse;
+  customizationOptionsByCategory: CustomizationOptionsResponse;
+  customizationTypes: Array<Scalars['String']['output']>;
   eventById?: Maybe<EventDetail>;
   eventBySlug?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
@@ -1755,6 +1893,16 @@ export type QueryAdminCollectionsArgs = {
 
 export type QueryAdminContentPageBySlugArgs = {
   slug: Scalars['String']['input'];
+};
+
+
+export type QueryAdminCustomizationOptionByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryAdminCustomizationOptionsArgs = {
+  filter?: InputMaybe<AdminCustomizationOptionsFilterInput>;
 };
 
 
@@ -1864,6 +2012,16 @@ export type QueryCollectionsArgs = {
 
 export type QueryCompletedRegistrationsArgs = {
   filter?: InputMaybe<RegistrationsFilterInput>;
+};
+
+
+export type QueryCustomizationCategoriesArgs = {
+  filter?: InputMaybe<CustomizationCategoriesFilterInput>;
+};
+
+
+export type QueryCustomizationOptionsByCategoryArgs = {
+  filter: CustomizationOptionsFilterInput;
 };
 
 
@@ -2256,6 +2414,16 @@ export type UpdateContentPageInput = {
   content: Scalars['JSON']['input'];
 };
 
+export type UpdateCustomizationOptionInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  price_modifier?: InputMaybe<Scalars['Int']['input']>;
+  sort_order?: InputMaybe<Scalars['Int']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateEventInput = {
   available_seats?: InputMaybe<Scalars['Int']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -2580,6 +2748,59 @@ export type AdminContentPageBySlugQueryVariables = Exact<{
 
 
 export type AdminContentPageBySlugQuery = { adminContentPageBySlug?: { id: number, slug: string, title: string, content: any, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
+
+export type AdminCreateCustomizationOptionMutationVariables = Exact<{
+  input: CreateCustomizationOptionInput;
+}>;
+
+
+export type AdminCreateCustomizationOptionMutation = { adminCreateCustomizationOption: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminUpdateCustomizationOptionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizationOptionInput;
+}>;
+
+
+export type AdminUpdateCustomizationOptionMutation = { adminUpdateCustomizationOption: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminDeleteCustomizationOptionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteCustomizationOptionMutation = { adminDeleteCustomizationOption: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminToggleCustomizationOptionActiveMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminToggleCustomizationOptionActiveMutation = { adminToggleCustomizationOptionActive: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminCustomizationOptionsQueryVariables = Exact<{
+  filter?: InputMaybe<AdminCustomizationOptionsFilterInput>;
+}>;
+
+
+export type AdminCustomizationOptionsQuery = { adminCustomizationOptions: { total: number, page: number, limit: number, totalPages: number, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } };
+
+export type AdminCustomizationOptionByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminCustomizationOptionByIdQuery = { adminCustomizationOptionById?: { id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
+
+export type AdminCustomizationCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCustomizationCategoriesQuery = { adminCustomizationCategories: Array<{ category: string, count: number }> };
+
+export type AdminCustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCustomizationTypesQuery = { adminCustomizationTypes: Array<{ type: string, count: number }> };
 
 export type AdminCreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -2981,6 +3202,25 @@ export type CartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CartQuery = { cart: { total: number, subtotal: number, items: Array<{ id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } }> } };
+
+export type CustomizationCategoriesQueryVariables = Exact<{
+  filter?: InputMaybe<CustomizationCategoriesFilterInput>;
+}>;
+
+
+export type CustomizationCategoriesQuery = { customizationCategories: { total: number, page: number, limit: number, has_more: boolean, categories: Array<{ category: string, options_count: number, base_price: number, image_url?: string | null }> } };
+
+export type CustomizationOptionsByCategoryQueryVariables = Exact<{
+  filter: CustomizationOptionsFilterInput;
+}>;
+
+
+export type CustomizationOptionsByCategoryQuery = { customizationOptionsByCategory: { category: string, total_options: number, options_by_type: Array<{ type: string, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
+
+export type CustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CustomizationTypesQuery = { customizationTypes: Array<string> };
 
 export type MutationRegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string };
 
@@ -4716,6 +4956,327 @@ export function useAdminContentPageBySlugSuspenseQuery(baseOptions?: ApolloReact
 export type AdminContentPageBySlugQueryHookResult = ReturnType<typeof useAdminContentPageBySlugQuery>;
 export type AdminContentPageBySlugLazyQueryHookResult = ReturnType<typeof useAdminContentPageBySlugLazyQuery>;
 export type AdminContentPageBySlugSuspenseQueryHookResult = ReturnType<typeof useAdminContentPageBySlugSuspenseQuery>;
+export const AdminCreateCustomizationOptionDocument = gql`
+    mutation AdminCreateCustomizationOption($input: CreateCustomizationOptionInput!) {
+  adminCreateCustomizationOption(input: $input) {
+    success
+    optionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminCreateCustomizationOptionMutation__
+ *
+ * To run a mutation, you first call `useAdminCreateCustomizationOptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminCreateCustomizationOptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminCreateCustomizationOptionMutation, { data, loading, error }] = useAdminCreateCustomizationOptionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminCreateCustomizationOptionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminCreateCustomizationOptionMutation, AdminCreateCustomizationOptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminCreateCustomizationOptionMutation, AdminCreateCustomizationOptionMutationVariables>(AdminCreateCustomizationOptionDocument, options);
+      }
+export type AdminCreateCustomizationOptionMutationHookResult = ReturnType<typeof useAdminCreateCustomizationOptionMutation>;
+export const AdminUpdateCustomizationOptionDocument = gql`
+    mutation AdminUpdateCustomizationOption($id: Int!, $input: UpdateCustomizationOptionInput!) {
+  adminUpdateCustomizationOption(id: $id, input: $input) {
+    success
+    optionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateCustomizationOptionMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateCustomizationOptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateCustomizationOptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateCustomizationOptionMutation, { data, loading, error }] = useAdminUpdateCustomizationOptionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateCustomizationOptionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateCustomizationOptionMutation, AdminUpdateCustomizationOptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateCustomizationOptionMutation, AdminUpdateCustomizationOptionMutationVariables>(AdminUpdateCustomizationOptionDocument, options);
+      }
+export type AdminUpdateCustomizationOptionMutationHookResult = ReturnType<typeof useAdminUpdateCustomizationOptionMutation>;
+export const AdminDeleteCustomizationOptionDocument = gql`
+    mutation AdminDeleteCustomizationOption($id: Int!) {
+  adminDeleteCustomizationOption(id: $id) {
+    success
+    optionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminDeleteCustomizationOptionMutation__
+ *
+ * To run a mutation, you first call `useAdminDeleteCustomizationOptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminDeleteCustomizationOptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminDeleteCustomizationOptionMutation, { data, loading, error }] = useAdminDeleteCustomizationOptionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminDeleteCustomizationOptionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminDeleteCustomizationOptionMutation, AdminDeleteCustomizationOptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminDeleteCustomizationOptionMutation, AdminDeleteCustomizationOptionMutationVariables>(AdminDeleteCustomizationOptionDocument, options);
+      }
+export type AdminDeleteCustomizationOptionMutationHookResult = ReturnType<typeof useAdminDeleteCustomizationOptionMutation>;
+export const AdminToggleCustomizationOptionActiveDocument = gql`
+    mutation AdminToggleCustomizationOptionActive($id: Int!) {
+  adminToggleCustomizationOptionActive(id: $id) {
+    success
+    optionId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminToggleCustomizationOptionActiveMutation__
+ *
+ * To run a mutation, you first call `useAdminToggleCustomizationOptionActiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminToggleCustomizationOptionActiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminToggleCustomizationOptionActiveMutation, { data, loading, error }] = useAdminToggleCustomizationOptionActiveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminToggleCustomizationOptionActiveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminToggleCustomizationOptionActiveMutation, AdminToggleCustomizationOptionActiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminToggleCustomizationOptionActiveMutation, AdminToggleCustomizationOptionActiveMutationVariables>(AdminToggleCustomizationOptionActiveDocument, options);
+      }
+export type AdminToggleCustomizationOptionActiveMutationHookResult = ReturnType<typeof useAdminToggleCustomizationOptionActiveMutation>;
+export const AdminCustomizationOptionsDocument = gql`
+    query AdminCustomizationOptions($filter: AdminCustomizationOptionsFilterInput) {
+  adminCustomizationOptions(filter: $filter) {
+    options {
+      id
+      category
+      type
+      name
+      value
+      price_modifier
+      sort_order
+      is_active
+      created_at
+      updated_at
+    }
+    total
+    page
+    limit
+    totalPages
+  }
+}
+    `;
+
+/**
+ * __useAdminCustomizationOptionsQuery__
+ *
+ * To run a query within a React component, call `useAdminCustomizationOptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCustomizationOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCustomizationOptionsQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useAdminCustomizationOptionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>(AdminCustomizationOptionsDocument, options);
+      }
+export function useAdminCustomizationOptionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>(AdminCustomizationOptionsDocument, options);
+        }
+// @ts-ignore
+export function useAdminCustomizationOptionsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>;
+export function useAdminCustomizationOptionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationOptionsQuery | undefined, AdminCustomizationOptionsQueryVariables>;
+export function useAdminCustomizationOptionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCustomizationOptionsQuery, AdminCustomizationOptionsQueryVariables>(AdminCustomizationOptionsDocument, options);
+        }
+export type AdminCustomizationOptionsQueryHookResult = ReturnType<typeof useAdminCustomizationOptionsQuery>;
+export type AdminCustomizationOptionsLazyQueryHookResult = ReturnType<typeof useAdminCustomizationOptionsLazyQuery>;
+export type AdminCustomizationOptionsSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizationOptionsSuspenseQuery>;
+export const AdminCustomizationOptionByIdDocument = gql`
+    query AdminCustomizationOptionById($id: Int!) {
+  adminCustomizationOptionById(id: $id) {
+    id
+    category
+    type
+    name
+    value
+    price_modifier
+    sort_order
+    is_active
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useAdminCustomizationOptionByIdQuery__
+ *
+ * To run a query within a React component, call `useAdminCustomizationOptionByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCustomizationOptionByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCustomizationOptionByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminCustomizationOptionByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables> & ({ variables: AdminCustomizationOptionByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>(AdminCustomizationOptionByIdDocument, options);
+      }
+export function useAdminCustomizationOptionByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>(AdminCustomizationOptionByIdDocument, options);
+        }
+// @ts-ignore
+export function useAdminCustomizationOptionByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>;
+export function useAdminCustomizationOptionByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationOptionByIdQuery | undefined, AdminCustomizationOptionByIdQueryVariables>;
+export function useAdminCustomizationOptionByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCustomizationOptionByIdQuery, AdminCustomizationOptionByIdQueryVariables>(AdminCustomizationOptionByIdDocument, options);
+        }
+export type AdminCustomizationOptionByIdQueryHookResult = ReturnType<typeof useAdminCustomizationOptionByIdQuery>;
+export type AdminCustomizationOptionByIdLazyQueryHookResult = ReturnType<typeof useAdminCustomizationOptionByIdLazyQuery>;
+export type AdminCustomizationOptionByIdSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizationOptionByIdSuspenseQuery>;
+export const AdminCustomizationCategoriesDocument = gql`
+    query AdminCustomizationCategories {
+  adminCustomizationCategories {
+    category
+    count
+  }
+}
+    `;
+
+/**
+ * __useAdminCustomizationCategoriesQuery__
+ *
+ * To run a query within a React component, call `useAdminCustomizationCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCustomizationCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCustomizationCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminCustomizationCategoriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>(AdminCustomizationCategoriesDocument, options);
+      }
+export function useAdminCustomizationCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>(AdminCustomizationCategoriesDocument, options);
+        }
+// @ts-ignore
+export function useAdminCustomizationCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>;
+export function useAdminCustomizationCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationCategoriesQuery | undefined, AdminCustomizationCategoriesQueryVariables>;
+export function useAdminCustomizationCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCustomizationCategoriesQuery, AdminCustomizationCategoriesQueryVariables>(AdminCustomizationCategoriesDocument, options);
+        }
+export type AdminCustomizationCategoriesQueryHookResult = ReturnType<typeof useAdminCustomizationCategoriesQuery>;
+export type AdminCustomizationCategoriesLazyQueryHookResult = ReturnType<typeof useAdminCustomizationCategoriesLazyQuery>;
+export type AdminCustomizationCategoriesSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizationCategoriesSuspenseQuery>;
+export const AdminCustomizationTypesDocument = gql`
+    query AdminCustomizationTypes {
+  adminCustomizationTypes {
+    type
+    count
+  }
+}
+    `;
+
+/**
+ * __useAdminCustomizationTypesQuery__
+ *
+ * To run a query within a React component, call `useAdminCustomizationTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCustomizationTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCustomizationTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminCustomizationTypesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>(AdminCustomizationTypesDocument, options);
+      }
+export function useAdminCustomizationTypesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>(AdminCustomizationTypesDocument, options);
+        }
+// @ts-ignore
+export function useAdminCustomizationTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>;
+export function useAdminCustomizationTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizationTypesQuery | undefined, AdminCustomizationTypesQueryVariables>;
+export function useAdminCustomizationTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCustomizationTypesQuery, AdminCustomizationTypesQueryVariables>(AdminCustomizationTypesDocument, options);
+        }
+export type AdminCustomizationTypesQueryHookResult = ReturnType<typeof useAdminCustomizationTypesQuery>;
+export type AdminCustomizationTypesLazyQueryHookResult = ReturnType<typeof useAdminCustomizationTypesLazyQuery>;
+export type AdminCustomizationTypesSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizationTypesSuspenseQuery>;
 export const AdminCreateEventDocument = gql`
     mutation AdminCreateEvent($input: CreateEventInput!) {
   adminCreateEvent(input: $input) {
@@ -7411,6 +7972,154 @@ export function useCartSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | 
 export type CartQueryHookResult = ReturnType<typeof useCartQuery>;
 export type CartLazyQueryHookResult = ReturnType<typeof useCartLazyQuery>;
 export type CartSuspenseQueryHookResult = ReturnType<typeof useCartSuspenseQuery>;
+export const CustomizationCategoriesDocument = gql`
+    query CustomizationCategories($filter: CustomizationCategoriesFilterInput) {
+  customizationCategories(filter: $filter) {
+    categories {
+      category
+      options_count
+      base_price
+      image_url
+    }
+    total
+    page
+    limit
+    has_more
+  }
+}
+    `;
+
+/**
+ * __useCustomizationCategoriesQuery__
+ *
+ * To run a query within a React component, call `useCustomizationCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCustomizationCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCustomizationCategoriesQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useCustomizationCategoriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>(CustomizationCategoriesDocument, options);
+      }
+export function useCustomizationCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>(CustomizationCategoriesDocument, options);
+        }
+// @ts-ignore
+export function useCustomizationCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>;
+export function useCustomizationCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CustomizationCategoriesQuery | undefined, CustomizationCategoriesQueryVariables>;
+export function useCustomizationCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<CustomizationCategoriesQuery, CustomizationCategoriesQueryVariables>(CustomizationCategoriesDocument, options);
+        }
+export type CustomizationCategoriesQueryHookResult = ReturnType<typeof useCustomizationCategoriesQuery>;
+export type CustomizationCategoriesLazyQueryHookResult = ReturnType<typeof useCustomizationCategoriesLazyQuery>;
+export type CustomizationCategoriesSuspenseQueryHookResult = ReturnType<typeof useCustomizationCategoriesSuspenseQuery>;
+export const CustomizationOptionsByCategoryDocument = gql`
+    query CustomizationOptionsByCategory($filter: CustomizationOptionsFilterInput!) {
+  customizationOptionsByCategory(filter: $filter) {
+    category
+    options_by_type {
+      type
+      options {
+        id
+        category
+        type
+        name
+        value
+        price_modifier
+        sort_order
+        is_active
+        created_at
+        updated_at
+      }
+    }
+    total_options
+  }
+}
+    `;
+
+/**
+ * __useCustomizationOptionsByCategoryQuery__
+ *
+ * To run a query within a React component, call `useCustomizationOptionsByCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCustomizationOptionsByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCustomizationOptionsByCategoryQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useCustomizationOptionsByCategoryQuery(baseOptions: ApolloReactHooks.QueryHookOptions<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables> & ({ variables: CustomizationOptionsByCategoryQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>(CustomizationOptionsByCategoryDocument, options);
+      }
+export function useCustomizationOptionsByCategoryLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>(CustomizationOptionsByCategoryDocument, options);
+        }
+// @ts-ignore
+export function useCustomizationOptionsByCategorySuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>;
+export function useCustomizationOptionsByCategorySuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CustomizationOptionsByCategoryQuery | undefined, CustomizationOptionsByCategoryQueryVariables>;
+export function useCustomizationOptionsByCategorySuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<CustomizationOptionsByCategoryQuery, CustomizationOptionsByCategoryQueryVariables>(CustomizationOptionsByCategoryDocument, options);
+        }
+export type CustomizationOptionsByCategoryQueryHookResult = ReturnType<typeof useCustomizationOptionsByCategoryQuery>;
+export type CustomizationOptionsByCategoryLazyQueryHookResult = ReturnType<typeof useCustomizationOptionsByCategoryLazyQuery>;
+export type CustomizationOptionsByCategorySuspenseQueryHookResult = ReturnType<typeof useCustomizationOptionsByCategorySuspenseQuery>;
+export const CustomizationTypesDocument = gql`
+    query CustomizationTypes {
+  customizationTypes
+}
+    `;
+
+/**
+ * __useCustomizationTypesQuery__
+ *
+ * To run a query within a React component, call `useCustomizationTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCustomizationTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCustomizationTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCustomizationTypesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CustomizationTypesQuery, CustomizationTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CustomizationTypesQuery, CustomizationTypesQueryVariables>(CustomizationTypesDocument, options);
+      }
+export function useCustomizationTypesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CustomizationTypesQuery, CustomizationTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CustomizationTypesQuery, CustomizationTypesQueryVariables>(CustomizationTypesDocument, options);
+        }
+// @ts-ignore
+export function useCustomizationTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CustomizationTypesQuery, CustomizationTypesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CustomizationTypesQuery, CustomizationTypesQueryVariables>;
+export function useCustomizationTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CustomizationTypesQuery, CustomizationTypesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CustomizationTypesQuery | undefined, CustomizationTypesQueryVariables>;
+export function useCustomizationTypesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CustomizationTypesQuery, CustomizationTypesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<CustomizationTypesQuery, CustomizationTypesQueryVariables>(CustomizationTypesDocument, options);
+        }
+export type CustomizationTypesQueryHookResult = ReturnType<typeof useCustomizationTypesQuery>;
+export type CustomizationTypesLazyQueryHookResult = ReturnType<typeof useCustomizationTypesLazyQuery>;
+export type CustomizationTypesSuspenseQueryHookResult = ReturnType<typeof useCustomizationTypesSuspenseQuery>;
 export const RegisterForEventDocument = gql`
     mutation RegisterForEvent($input: RegisterForEventInput!) {
   registerForEvent(input: $input) {

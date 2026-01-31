@@ -145,7 +145,7 @@ export function CollectionsSection({
     <section className={cn("relative", className)}>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="font-display text-2xl font-bold tracking-tight lg:text-3xl">
+        <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
           {title}
         </h2>
         {viewAllHref && (

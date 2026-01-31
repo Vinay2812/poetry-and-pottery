@@ -75,17 +75,20 @@ export function useAllEventsQuery({
       }
       return undefined;
     },
-    initialData: {
-      pages: [
-        {
-          data: initialUpcomingEvents,
-          total: initialUpcomingPagination.total,
-          page: 1,
-          totalPages: initialUpcomingPagination.totalPages,
-        },
-      ],
-      pageParams: [1],
-    },
+    initialData:
+      !searchQuery && !eventType
+        ? {
+            pages: [
+              {
+                data: initialUpcomingEvents,
+                total: initialUpcomingPagination.total,
+                page: 1,
+                totalPages: initialUpcomingPagination.totalPages,
+              },
+            ],
+            pageParams: [1],
+          }
+        : undefined,
   });
 
   const { ref: loadMoreRef, inView } = useInView({

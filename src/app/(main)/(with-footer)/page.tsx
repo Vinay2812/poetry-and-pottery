@@ -1,4 +1,5 @@
 import { HERO_VIDEOS } from "@/consts/client";
+import { CustomizeSection } from "@/features/home";
 import { MobileHeaderContainer } from "@/features/layout";
 import { RecommendedProductsContainer } from "@/features/recommended-products";
 import type { Metadata } from "next";
@@ -78,7 +79,7 @@ export default function Home() {
           <CollectionsSectionContainer
             title="Shop by Collection"
             subtitle="Explore our curated seasonal collections"
-            className="container mx-auto px-4 py-8 lg:px-8 lg:py-16"
+            className="container mx-auto px-4 py-8 lg:px-8 lg:py-12"
             viewAllHref="/products"
           />
         </section>
@@ -88,17 +89,20 @@ export default function Home() {
           <RecommendedProductsContainer
             title="Featured Pieces"
             subtitle="Handpicked pieces for your home."
-            className="container mx-auto px-4 py-6 lg:px-8 lg:py-16"
+            className="container mx-auto px-4 py-8 lg:px-8 lg:py-12"
             viewAllHref="/products"
           />
         </section>
 
+        {/* Customize Your Pottery */}
+        <CustomizeSection />
+
         {/* Behind the Scenes + Workshops — side by side on desktop */}
-        <section className="bg-white px-4 py-8 lg:px-8 lg:py-16">
-          <div className="container mx-auto">
-            <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
-              <BehindScenesSection />
+        <section className="bg-white">
+          <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
+            <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
               <WorkshopsSectionContainer />
+              <BehindScenesSection />
             </div>
           </div>
         </section>

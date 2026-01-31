@@ -5,7 +5,7 @@ import { useUIStore } from "@/store";
 import { Filter, SlidersHorizontal } from "lucide-react";
 import { redirect, usePathname } from "next/navigation";
 
-import { ListingPageHeader } from "../shared";
+import { ListingPageHeader, SearchInput } from "../shared";
 import { Button } from "../ui/button";
 import {
   Select,
@@ -26,8 +26,11 @@ interface EventsListLayoutProps {
   onSortChange?: (sort: EventSortOption) => void;
   eventTypeFilter?: EventTypeFilter;
   onEventTypeFilterChange?: (filter: EventTypeFilter) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
   onFilterClick?: () => void;
   showFilters?: boolean;
+  queryString?: string;
 }
 
 export function EventsListLayout({
@@ -37,8 +40,11 @@ export function EventsListLayout({
   onSortChange,
   eventTypeFilter = "all",
   onEventTypeFilterChange,
+  searchQuery = "",
+  onSearchChange,
   onFilterClick,
   showFilters = false,
+  queryString = "",
 }: EventsListLayoutProps) {
   const pathname = usePathname();
   const registrationCount = useUIStore(
@@ -74,7 +80,20 @@ export function EventsListLayout({
           <EventsTabs
             activeTab={activeTab}
             registeredCount={registrationCount}
+            queryString={queryString}
           />
+
+          {/* Search Bar */}
+          {onSearchChange && (
+            <div className="mb-4">
+              <SearchInput
+                value={searchQuery}
+                onChange={onSearchChange}
+                placeholder="Search events..."
+                className="max-w-md"
+              />
+            </div>
+          )}
 
           {/* Filter Row - Desktop/Tablet only */}
           {(showFilters || onSortChange || onEventTypeFilterChange) && (

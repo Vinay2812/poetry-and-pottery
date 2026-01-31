@@ -51,11 +51,13 @@ export const EVENTS_TABS = [
 interface EventsTabsProps {
   activeTab: TabType;
   registeredCount?: number;
+  queryString?: string;
 }
 
 export function EventsTabs({
   activeTab,
   registeredCount = 0,
+  queryString = "",
 }: EventsTabsProps) {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
@@ -63,22 +65,30 @@ export function EventsTabs({
 
   const { requireAuth } = useAuthAction();
 
+  const getTabHref = useCallback(
+    (baseHref: string) => {
+      return queryString ? `${baseHref}?${queryString}` : baseHref;
+    },
+    [queryString],
+  );
+
   const handleTabClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, tab: TabType, href: string) => {
       e.preventDefault();
+      const fullHref = getTabHref(href);
       if (tab === TabType.REGISTRATIONS) {
         requireAuth(async () => {
           startNavigation(() => {
-            router.push(href);
+            router.push(fullHref);
           });
         });
       } else {
         startNavigation(() => {
-          router.push(href);
+          router.push(fullHref);
         });
       }
     },
-    [router, requireAuth, startNavigation],
+    [router, requireAuth, startNavigation, getTabHref],
   );
 
   return (
@@ -96,7 +106,7 @@ export function EventsTabs({
           return (
             <Link
               key={tab.type}
-              href={tab.href}
+              href={getTabHref(tab.href)}
               className={cn(
                 "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
                 isActive

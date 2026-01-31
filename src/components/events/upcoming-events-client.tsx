@@ -2,15 +2,18 @@
 
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
+import { useEventFilters } from "@/features/events/hooks/use-event-filters";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { EventCard } from "@/components/cards";
-import { type EventSortOption, EventsListLayout } from "@/components/events";
+import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 import { StaggeredGrid } from "@/components/shared";
+
+import { EventType } from "@/graphql/generated/graphql";
 
 interface UpcomingEventsClientProps {
   initialEvents: EventBase[];
@@ -24,13 +27,32 @@ export function UpcomingEventsClient({
   initialEvents,
   initialPagination,
 }: UpcomingEventsClientProps) {
-  const [sortBy, setSortBy] = useState<EventSortOption>("soonest");
+  const { filters, setSearch, setEventType, setSort, getQueryString } =
+    useEventFilters();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const {
+    search: searchQuery,
+    eventType: eventTypeFilter,
+    sort: sortBy,
+  } = filters;
+
+  // Convert UI filter to GraphQL enum
+  const eventTypeForQuery =
+    eventTypeFilter === "all"
+      ? undefined
+      : eventTypeFilter === "workshop"
+        ? EventType.PotteryWorkshop
+        : EventType.OpenMic;
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteQuery({
-      queryKey: ["upcoming-events"],
+      queryKey: ["upcoming-events", eventTypeForQuery, searchQuery],
       queryFn: async ({ pageParam = 1 }) => {
-        const result = await getUpcomingEvents({ page: pageParam });
+        const result = await getUpcomingEvents({
+          page: pageParam,
+          event_type: eventTypeForQuery,
+          search: searchQuery || undefined,
+        });
         if (!result.success) {
           throw new Error(result.error);
         }
@@ -48,17 +70,20 @@ export function UpcomingEventsClient({
         }
         return undefined;
       },
-      initialData: {
-        pages: [
-          {
-            data: initialEvents,
-            total: initialPagination.total,
-            page: 1,
-            totalPages: initialPagination.totalPages,
-          },
-        ],
-        pageParams: [1],
-      },
+      initialData:
+        eventTypeFilter === "all" && !searchQuery
+          ? {
+              pages: [
+                {
+                  data: initialEvents,
+                  total: initialPagination.total,
+                  page: 1,
+                  totalPages: initialPagination.totalPages,
+                },
+              ],
+              pageParams: [1],
+            }
+          : undefined,
     });
 
   const { ref: loadMoreRef, inView } = useInView({
@@ -105,7 +130,12 @@ export function UpcomingEventsClient({
     <EventsListLayout
       totalEvents={totalEvents}
       sortBy={sortBy}
-      onSortChange={setSortBy}
+      onSortChange={setSort}
+      eventTypeFilter={eventTypeFilter}
+      onEventTypeFilterChange={setEventType}
+      searchQuery={searchQuery}
+      onSearchChange={setSearch}
+      queryString={getQueryString()}
     >
       {events.length > 0 ? (
         <>

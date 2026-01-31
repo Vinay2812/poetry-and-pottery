@@ -1,12 +1,11 @@
 "use client";
 
-import {
-  type GlobalSearchResponse,
-  globalSearch,
-} from "@/data/search/gateway/server";
+import { globalSearch } from "@/data/search/gateway/server";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
+
+import type { GlobalSearchResponse } from "@/graphql/generated/types";
 
 import {
   type GlobalSearchViewModel,

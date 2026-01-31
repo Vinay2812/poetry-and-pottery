@@ -66,17 +66,19 @@ export function useRegistrationsQuery({
       }
       return undefined;
     },
-    initialData: {
-      pages: [
-        {
-          data: initialUpcomingRegistrations,
-          total: initialUpcomingPagination.total,
-          page: 1,
-          totalPages: initialUpcomingPagination.totalPages,
-        },
-      ],
-      pageParams: [1],
-    },
+    initialData: !searchQuery
+      ? {
+          pages: [
+            {
+              data: initialUpcomingRegistrations,
+              total: initialUpcomingPagination.total,
+              page: 1,
+              totalPages: initialUpcomingPagination.totalPages,
+            },
+          ],
+          pageParams: [1],
+        }
+      : undefined,
   });
 
   // Completed registrations infinite query
@@ -86,7 +88,7 @@ export function useRegistrationsQuery({
     hasNextPage: hasNextCompleted,
     isFetchingNextPage: isFetchingNextCompleted,
   } = useInfiniteQuery({
-    queryKey: ["registrations-completed"],
+    queryKey: ["registrations-completed", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
       // GraphQL mode: use Apollo lazy query
       const { data: gqlData } = await fetchCompletedGraphQL({
@@ -94,6 +96,7 @@ export function useRegistrationsQuery({
           filter: {
             page: pageParam,
             limit: DEFAULT_PAGE_SIZE,
+            search: searchQuery,
           },
         },
       });
@@ -113,17 +116,19 @@ export function useRegistrationsQuery({
       }
       return undefined;
     },
-    initialData: {
-      pages: [
-        {
-          data: initialCompletedRegistrations,
-          total: initialCompletedPagination.total,
-          page: 1,
-          totalPages: initialCompletedPagination.totalPages,
-        },
-      ],
-      pageParams: [1],
-    },
+    initialData: !searchQuery
+      ? {
+          pages: [
+            {
+              data: initialCompletedRegistrations,
+              total: initialCompletedPagination.total,
+              page: 1,
+              totalPages: initialCompletedPagination.totalPages,
+            },
+          ],
+          pageParams: [1],
+        }
+      : undefined,
   });
 
   const { ref: loadMoreRef, inView } = useInView({

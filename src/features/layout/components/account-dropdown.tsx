@@ -7,6 +7,7 @@ import {
   LogOut,
   Mail,
   Package,
+  Palette,
   Truck,
   User,
 } from "lucide-react";
@@ -100,6 +101,14 @@ export function AccountDropdown({
                 {viewModel.pendingOrdersCount}
               </span>
             )}
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => onNavigate("/customize")}
+            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+          >
+            <Palette className="h-[18px] w-[18px] text-neutral-500" />
+            <span>Customize Pottery</span>
           </DropdownMenuItem>
 
           {viewModel.isAdmin && (

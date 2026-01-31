@@ -169,6 +169,9 @@ export interface AllEventsProps {
   onSortChange?: (sort: EventSortOption) => void;
   eventTypeFilter?: EventTypeFilter;
   onEventTypeFilterChange?: (filter: EventTypeFilter) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
+  queryString?: string;
   pastEventsLoading?: boolean;
   pastEventsSkeleton?: React.ReactNode;
 }
@@ -202,6 +205,9 @@ export interface RegistrationsViewModel {
 export interface RegistrationsProps {
   viewModel: RegistrationsViewModel;
   loadMoreRef: (node?: Element | null) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
+  queryString?: string;
 }
 
 /**

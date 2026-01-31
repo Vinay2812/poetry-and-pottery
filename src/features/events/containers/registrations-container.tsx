@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 
 import { Registrations } from "../components/registrations";
+import { useEventFilters } from "../hooks/use-event-filters";
 import { useRegistrationsQuery } from "../hooks/use-registrations-query";
 import type {
   RegistrationsContainerProps,
@@ -16,6 +17,9 @@ export function RegistrationsContainer({
   initialCompletedPagination,
   upcomingEvents = [],
 }: RegistrationsContainerProps) {
+  const { filters, setSearch, getQueryString } = useEventFilters();
+  const { search: searchQuery } = filters;
+
   const {
     upcomingRegistrations,
     completedRegistrations,
@@ -27,6 +31,7 @@ export function RegistrationsContainer({
     initialUpcomingPagination,
     initialCompletedRegistrations,
     initialCompletedPagination,
+    searchQuery: searchQuery || undefined,
   });
 
   // Build the view model
@@ -54,5 +59,13 @@ export function RegistrationsContainer({
     isLoading,
   ]);
 
-  return <Registrations viewModel={viewModel} loadMoreRef={loadMoreRef} />;
+  return (
+    <Registrations
+      viewModel={viewModel}
+      loadMoreRef={loadMoreRef}
+      searchQuery={searchQuery}
+      onSearchChange={setSearch}
+      queryString={getQueryString()}
+    />
+  );
 }

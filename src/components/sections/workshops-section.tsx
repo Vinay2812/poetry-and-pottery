@@ -33,12 +33,98 @@ function getEventTypeIcon(type: EventType) {
   }
 }
 
-interface WorkshopsSectionProps {
-  events: EventBase[];
+interface EventCardProps {
+  event: EventBase;
 }
 
-export function WorkshopsSection({ events }: WorkshopsSectionProps) {
-  if (events.length === 0) {
+function EventCard({ event }: EventCardProps) {
+  return (
+    <Link
+      href={`/events/${event.id}`}
+      className="bg-primary-lighter group shadow-soft hover:shadow-card flex items-center gap-4 rounded-2xl p-4 transition-all duration-200 lg:p-5"
+    >
+      <span className="relative aspect-4/3 w-16 overflow-hidden text-2xl lg:text-3xl">
+        <OptimizedImage
+          src={event.image}
+          alt={event.title}
+          fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          className="rounded-lg object-cover"
+        />
+      </span>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-1.5">
+          <span className="text-primary">
+            {getEventTypeIcon(event.event_type)}
+          </span>
+          <h3 className="font-display truncate text-sm font-semibold text-stone-900 lg:text-base">
+            {event.title}
+          </h3>
+        </div>
+        <p className="text-muted-foreground mt-0.5 text-xs lg:text-sm">
+          {formatEventDate(event.starts_at)}
+          {event.level && <> • {formatEventLevel(event.level)}</>}
+          <span className="hidden lg:inline">
+            {" "}
+            • {formatPrice(event.price)}
+          </span>
+        </p>
+      </div>
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="border-primary/20 text-primary hover:bg-primary hidden shrink-0 rounded-lg transition-colors hover:text-white lg:inline-flex"
+        asChild
+      >
+        <span>Book</span>
+      </Button>
+    </Link>
+  );
+}
+
+interface EventCategoryProps {
+  title: string;
+  events: EventBase[];
+  viewAllHref: string;
+}
+
+function EventCategory({ title, events, viewAllHref }: EventCategoryProps) {
+  if (events.length === 0) return null;
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between lg:mb-4">
+        <h3 className="text-sm font-semibold text-stone-700 lg:text-base">
+          {title}
+        </h3>
+        <Link
+          href={viewAllHref}
+          className="text-primary hover:text-primary-hover text-xs font-medium transition-colors"
+        >
+          View All →
+        </Link>
+      </div>
+      <div className="space-y-3">
+        {events.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+interface WorkshopsSectionProps {
+  potteryEvents: EventBase[];
+  poetryEvents: EventBase[];
+}
+
+export function WorkshopsSection({
+  potteryEvents,
+  poetryEvents,
+}: WorkshopsSectionProps) {
+  if (potteryEvents.length === 0 && poetryEvents.length === 0) {
     return null;
   }
 
@@ -48,61 +134,19 @@ export function WorkshopsSection({ events }: WorkshopsSectionProps) {
         <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
           <span className="hidden lg:inline">Upcoming </span>Events
         </h2>
-        <Link
-          href="/events/upcoming"
-          className="text-primary hover:text-primary-hover group flex items-center gap-1 text-sm font-medium transition-colors"
-        >
-          <span className="hidden lg:inline">View </span>All
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </Link>
       </div>
 
-      <div className="space-y-3 lg:space-y-4">
-        {events.map((event) => (
-          <Link
-            key={event.id}
-            href={`/events/${event.id}`}
-            className="bg-primary-lighter group shadow-soft hover:shadow-card flex items-center gap-4 rounded-2xl p-4 transition-all duration-200 lg:p-5"
-          >
-            <span className="relative aspect-4/3 w-16 overflow-hidden text-2xl lg:text-3xl">
-              <OptimizedImage
-                src={event.image}
-                alt={event.title}
-                fill
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                className="rounded-lg object-cover"
-              />
-            </span>
-
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-1.5">
-                <span className="text-primary">
-                  {getEventTypeIcon(event.event_type)}
-                </span>
-                <h3 className="font-display truncate text-sm font-semibold text-stone-900 lg:text-base">
-                  {event.title}
-                </h3>
-              </div>
-              <p className="text-muted-foreground mt-0.5 text-xs lg:text-sm">
-                {formatEventDate(event.starts_at)}
-                {event.level && <> • {formatEventLevel(event.level)}</>}
-                <span className="hidden lg:inline">
-                  {" "}
-                  • {formatPrice(event.price)}
-                </span>
-              </p>
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-primary/20 text-primary hover:bg-primary hidden shrink-0 rounded-lg transition-colors hover:text-white lg:inline-flex"
-              asChild
-            >
-              <span>Book</span>
-            </Button>
-          </Link>
-        ))}
+      <div className="space-y-6">
+        <EventCategory
+          title="Pottery Workshops"
+          events={potteryEvents}
+          viewAllHref="/events/upcoming?type=pottery"
+        />
+        <EventCategory
+          title="Poetry Open Mics"
+          events={poetryEvents}
+          viewAllHref="/events/upcoming?type=openmic"
+        />
       </div>
     </div>
   );

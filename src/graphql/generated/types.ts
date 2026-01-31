@@ -180,6 +180,52 @@ export type AdminContentPageListItem = {
   updated_at: Scalars['DateTime']['output'];
 };
 
+export type AdminCustomizationCategorySummary = {
+  category: Scalars['String']['output'];
+  count: Scalars['Int']['output'];
+};
+
+export type AdminCustomizationMutationResponse = {
+  error?: Maybe<Scalars['String']['output']>;
+  optionId?: Maybe<Scalars['Int']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type AdminCustomizationOption = {
+  category: Scalars['String']['output'];
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  price_modifier: Scalars['Int']['output'];
+  sort_order: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+  updated_at: Scalars['DateTime']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type AdminCustomizationOptionsFilterInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AdminCustomizationOptionsResponse = {
+  limit: Scalars['Int']['output'];
+  options: Array<AdminCustomizationOption>;
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
+export type AdminCustomizationTypeSummary = {
+  count: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+};
+
 export type AdminEvent = {
   _count: AdminEventCount;
   available_seats: Scalars['Int']['output'];
@@ -750,6 +796,16 @@ export type CreateCollectionInput = {
   starts_at?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
+export type CreateCustomizationOptionInput = {
+  category: Scalars['String']['input'];
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  price_modifier?: InputMaybe<Scalars['Int']['input']>;
+  sort_order?: InputMaybe<Scalars['Int']['input']>;
+  type: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
 export type CreateEventInput = {
   available_seats: Scalars['Int']['input'];
   description: Scalars['String']['input'];
@@ -814,6 +870,56 @@ export type CreateReviewResponse = {
   error?: Maybe<Scalars['String']['output']>;
   review?: Maybe<Review>;
   success: Scalars['Boolean']['output'];
+};
+
+export type CustomizationCategoriesFilterInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CustomizationCategoriesResponse = {
+  categories: Array<CustomizationCategory>;
+  has_more: Scalars['Boolean']['output'];
+  limit: Scalars['Int']['output'];
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type CustomizationCategory = {
+  base_price: Scalars['Int']['output'];
+  category: Scalars['String']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  options_count: Scalars['Int']['output'];
+};
+
+export type CustomizationOption = {
+  category: Scalars['String']['output'];
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  price_modifier: Scalars['Int']['output'];
+  sort_order: Scalars['Int']['output'];
+  type: Scalars['String']['output'];
+  updated_at: Scalars['DateTime']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type CustomizationOptionsByType = {
+  options: Array<CustomizationOption>;
+  type: Scalars['String']['output'];
+};
+
+export type CustomizationOptionsFilterInput = {
+  category: Scalars['String']['input'];
+  type?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CustomizationOptionsResponse = {
+  category: Scalars['String']['output'];
+  options_by_type: Array<CustomizationOptionsByType>;
+  total_options: Scalars['Int']['output'];
 };
 
 export type DashboardStats = {
@@ -1064,10 +1170,12 @@ export type Mutation = {
   adminBulkDeleteEvents: AdminBulkDeleteEventsResponse;
   adminBulkDeleteProducts: AdminBulkDeleteProductsResponse;
   adminCreateCollection: AdminCollectionMutationResponse;
+  adminCreateCustomizationOption: AdminCustomizationMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
   adminDeleteCategory: AdminCategoryMutationResponse;
   adminDeleteCollection: AdminCollectionMutationResponse;
+  adminDeleteCustomizationOption: AdminCustomizationMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
   adminDeleteEventReview: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
@@ -1076,11 +1184,13 @@ export type Mutation = {
   adminRemoveProductFromCollection: AdminCollectionMutationResponse;
   adminRenameCategory: AdminCategoryMutationResponse;
   adminToggleContentPageActive: AdminContentMutationResponse;
+  adminToggleCustomizationOptionActive: AdminCustomizationMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
   adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
   adminUpdateContentPage: AdminContentMutationResponse;
+  adminUpdateCustomizationOption: AdminCustomizationMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
   adminUpdateHeroImages: AdminSettingsMutationResponse;
@@ -1153,6 +1263,11 @@ export type MutationAdminCreateCollectionArgs = {
 };
 
 
+export type MutationAdminCreateCustomizationOptionArgs = {
+  input: CreateCustomizationOptionInput;
+};
+
+
 export type MutationAdminCreateEventArgs = {
   input: CreateEventInput;
 };
@@ -1169,6 +1284,11 @@ export type MutationAdminDeleteCategoryArgs = {
 
 
 export type MutationAdminDeleteCollectionArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationAdminDeleteCustomizationOptionArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -1214,6 +1334,11 @@ export type MutationAdminToggleContentPageActiveArgs = {
 };
 
 
+export type MutationAdminToggleCustomizationOptionActiveArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationAdminToggleProductActiveArgs = {
   id: Scalars['Int']['input'];
 };
@@ -1239,6 +1364,12 @@ export type MutationAdminUpdateContactInfoArgs = {
 export type MutationAdminUpdateContentPageArgs = {
   input: UpdateContentPageInput;
   slug: Scalars['String']['input'];
+};
+
+
+export type MutationAdminUpdateCustomizationOptionArgs = {
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizationOptionInput;
 };
 
 
@@ -1663,6 +1794,10 @@ export type Query = {
   adminContactInfo: ContactInfo;
   adminContentPageBySlug?: Maybe<AdminContentPage>;
   adminContentPages: Array<AdminContentPageListItem>;
+  adminCustomizationCategories: Array<AdminCustomizationCategorySummary>;
+  adminCustomizationOptionById?: Maybe<AdminCustomizationOption>;
+  adminCustomizationOptions: AdminCustomizationOptionsResponse;
+  adminCustomizationTypes: Array<AdminCustomizationTypeSummary>;
   adminDashboardStats: DashboardStats;
   adminEventById?: Maybe<AdminEventDetail>;
   adminEventLevelOptions: Array<AdminLevelOption>;
@@ -1693,6 +1828,9 @@ export type Query = {
   categoriesWithImages: Array<CategoryWithImage>;
   collections: Array<CollectionBase>;
   completedRegistrations: RegistrationsResponse;
+  customizationCategories: CustomizationCategoriesResponse;
+  customizationOptionsByCategory: CustomizationOptionsResponse;
+  customizationTypes: Array<Scalars['String']['output']>;
   eventById?: Maybe<EventDetail>;
   eventBySlug?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
@@ -1748,6 +1886,16 @@ export type QueryAdminCollectionsArgs = {
 
 export type QueryAdminContentPageBySlugArgs = {
   slug: Scalars['String']['input'];
+};
+
+
+export type QueryAdminCustomizationOptionByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryAdminCustomizationOptionsArgs = {
+  filter?: InputMaybe<AdminCustomizationOptionsFilterInput>;
 };
 
 
@@ -1857,6 +2005,16 @@ export type QueryCollectionsArgs = {
 
 export type QueryCompletedRegistrationsArgs = {
   filter?: InputMaybe<RegistrationsFilterInput>;
+};
+
+
+export type QueryCustomizationCategoriesArgs = {
+  filter?: InputMaybe<CustomizationCategoriesFilterInput>;
+};
+
+
+export type QueryCustomizationOptionsByCategoryArgs = {
+  filter: CustomizationOptionsFilterInput;
 };
 
 
@@ -2249,6 +2407,16 @@ export type UpdateContentPageInput = {
   content: Scalars['JSON']['input'];
 };
 
+export type UpdateCustomizationOptionInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  price_modifier?: InputMaybe<Scalars['Int']['input']>;
+  sort_order?: InputMaybe<Scalars['Int']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateEventInput = {
   available_seats?: InputMaybe<Scalars['Int']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -2573,6 +2741,59 @@ export type AdminContentPageBySlugQueryVariables = Exact<{
 
 
 export type AdminContentPageBySlugQuery = { adminContentPageBySlug?: { id: number, slug: string, title: string, content: any, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
+
+export type AdminCreateCustomizationOptionMutationVariables = Exact<{
+  input: CreateCustomizationOptionInput;
+}>;
+
+
+export type AdminCreateCustomizationOptionMutation = { adminCreateCustomizationOption: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminUpdateCustomizationOptionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizationOptionInput;
+}>;
+
+
+export type AdminUpdateCustomizationOptionMutation = { adminUpdateCustomizationOption: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminDeleteCustomizationOptionMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteCustomizationOptionMutation = { adminDeleteCustomizationOption: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminToggleCustomizationOptionActiveMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminToggleCustomizationOptionActiveMutation = { adminToggleCustomizationOptionActive: { success: boolean, optionId?: number | null, error?: string | null } };
+
+export type AdminCustomizationOptionsQueryVariables = Exact<{
+  filter?: InputMaybe<AdminCustomizationOptionsFilterInput>;
+}>;
+
+
+export type AdminCustomizationOptionsQuery = { adminCustomizationOptions: { total: number, page: number, limit: number, totalPages: number, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } };
+
+export type AdminCustomizationOptionByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminCustomizationOptionByIdQuery = { adminCustomizationOptionById?: { id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
+
+export type AdminCustomizationCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCustomizationCategoriesQuery = { adminCustomizationCategories: Array<{ category: string, count: number }> };
+
+export type AdminCustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCustomizationTypesQuery = { adminCustomizationTypes: Array<{ type: string, count: number }> };
 
 export type AdminCreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -2974,6 +3195,25 @@ export type CartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CartQuery = { cart: { total: number, subtotal: number, items: Array<{ id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } }> } };
+
+export type CustomizationCategoriesQueryVariables = Exact<{
+  filter?: InputMaybe<CustomizationCategoriesFilterInput>;
+}>;
+
+
+export type CustomizationCategoriesQuery = { customizationCategories: { total: number, page: number, limit: number, has_more: boolean, categories: Array<{ category: string, options_count: number, base_price: number, image_url?: string | null }> } };
+
+export type CustomizationOptionsByCategoryQueryVariables = Exact<{
+  filter: CustomizationOptionsFilterInput;
+}>;
+
+
+export type CustomizationOptionsByCategoryQuery = { customizationOptionsByCategory: { category: string, total_options: number, options_by_type: Array<{ type: string, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
+
+export type CustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CustomizationTypesQuery = { customizationTypes: Array<string> };
 
 export type MutationRegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string };
 

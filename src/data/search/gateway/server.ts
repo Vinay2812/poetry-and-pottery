@@ -4,8 +4,6 @@ import type { GlobalSearchResponse } from "@/graphql/generated/types";
 
 import * as graphqlImpl from "../server/graphql";
 
-export type { GlobalSearchResponse };
-
 export async function globalSearch(
   query: string,
   limit: number = 5,

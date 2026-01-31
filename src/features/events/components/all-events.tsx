@@ -16,6 +16,9 @@ export function AllEvents({
   onSortChange,
   eventTypeFilter,
   onEventTypeFilterChange,
+  searchQuery,
+  onSearchChange,
+  queryString,
   pastEventsLoading,
   pastEventsSkeleton,
 }: AllEventsProps) {
@@ -37,6 +40,9 @@ export function AllEvents({
       onSortChange={onSortChange}
       eventTypeFilter={eventTypeFilter}
       onEventTypeFilterChange={onEventTypeFilterChange}
+      searchQuery={searchQuery}
+      onSearchChange={onSearchChange}
+      queryString={queryString}
     >
       {hasNoEvents ? (
         <EmptyState

@@ -13,7 +13,13 @@ import { InfiniteScrollTrigger } from "@/components/shared";
 
 import type { RegistrationsProps } from "../types";
 
-export function Registrations({ viewModel, loadMoreRef }: RegistrationsProps) {
+export function Registrations({
+  viewModel,
+  loadMoreRef,
+  searchQuery,
+  onSearchChange,
+  queryString,
+}: RegistrationsProps) {
   const {
     upcomingRegistrations,
     completedRegistrations,
@@ -27,7 +33,11 @@ export function Registrations({ viewModel, loadMoreRef }: RegistrationsProps) {
   } = viewModel;
 
   return (
-    <EventsListLayout>
+    <EventsListLayout
+      searchQuery={searchQuery}
+      onSearchChange={onSearchChange}
+      queryString={queryString}
+    >
       {!hasAnyRegistrations ? (
         <div className="grid gap-8 lg:grid-cols-5">
           {/* Empty State */}
