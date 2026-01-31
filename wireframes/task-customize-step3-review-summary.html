@@ -1,0 +1,3583 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Customize Step 3: Review & Summary - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Step Indicator */
+      .step-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .step-indicator .step {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .step-indicator .step-circle {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        border: 2px solid #d4d4d4;
+        color: #999;
+      }
+
+      .step-indicator .step-circle.completed {
+        background: #4f6f52;
+        border-color: #4f6f52;
+        color: white;
+      }
+
+      .step-indicator .step-circle.active {
+        border-color: #4f6f52;
+        color: #4f6f52;
+      }
+
+      .step-indicator .step-label {
+        font-size: 12px;
+        color: #999;
+        display: none;
+      }
+
+      .step-indicator .step-line {
+        width: 32px;
+        height: 2px;
+        background: #e5e5e5;
+      }
+
+      .step-indicator .step-line.completed {
+        background: #4f6f52;
+      }
+
+      /* Summary Header */
+      .summary-header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .summary-header .checkmark-circle {
+        width: 56px;
+        height: 56px;
+        background: #e8ece8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+
+      .summary-header .checkmark-circle svg {
+        width: 28px;
+        height: 28px;
+        stroke: #4f6f52;
+        stroke-width: 2.5;
+        fill: none;
+      }
+
+      .summary-header h2 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+      }
+
+      .summary-header p {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      /* Preview Card */
+      .preview-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 16px;
+      }
+
+      .preview-image {
+        position: relative;
+        aspect-ratio: 1;
+        overflow: hidden;
+      }
+
+      .preview-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .preview-content {
+        padding: 16px;
+      }
+
+      .preview-category {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .preview-tagline {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      /* Summary Card */
+      .summary-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 16px;
+      }
+
+      .summary-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .summary-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .edit-link {
+        font-size: 13px;
+        color: #4f6f52;
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .edit-link:hover {
+        text-decoration: underline;
+      }
+
+      .edit-link svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .summary-card-content {
+        padding: 16px;
+      }
+
+      /* Selection Row */
+      .selection-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .selection-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .selection-row:first-child {
+        padding-top: 0;
+      }
+
+      .selection-label {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .selection-value {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .selection-value .color-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .selection-value .text-preview {
+        font-style: italic;
+        color: #4f6f52;
+      }
+
+      /* Price Breakdown */
+      .price-breakdown {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 16px;
+      }
+
+      .price-breakdown-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .price-breakdown-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .price-breakdown-content {
+        padding: 16px;
+      }
+
+      .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+      }
+
+      .price-row.base {
+        font-weight: 500;
+      }
+
+      .price-row-label {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .price-row-value {
+        font-size: 14px;
+        color: #1a1a1a;
+      }
+
+      .price-row-value.modifier {
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      .price-row.total {
+        border-top: 1px dashed #e5e5e5;
+        margin-top: 8px;
+        padding-top: 16px;
+      }
+
+      .price-row.total .price-row-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .price-row.total .price-row-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      /* Quantity Selector */
+      .quantity-section {
+        background: white;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .quantity-label {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: #f5f5f4;
+        border-radius: 100px;
+        padding: 4px;
+      }
+
+      .quantity-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .quantity-btn:hover {
+        background: #e8ece8;
+      }
+
+      .quantity-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .quantity-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: #1a1a1a;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .quantity-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      /* Action Buttons */
+      .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .btn-add-cart {
+        width: 100%;
+        height: 52px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .btn-add-cart:hover {
+        background: #3d5640;
+      }
+
+      .btn-add-cart svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .btn-wishlist {
+        width: 100%;
+        height: 48px;
+        background: white;
+        color: #4f6f52;
+        border: 1.5px solid #4f6f52;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-wishlist:hover {
+        background: #e8ece8;
+      }
+
+      .btn-wishlist svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Sticky Footer */
+      .sticky-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 16px;
+        border-top: 1px solid #f0f0f0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .sticky-footer .footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .sticky-footer .total-label {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .sticky-footer .total-amount {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .sticky-footer .btn-row {
+        display: flex;
+        gap: 10px;
+      }
+
+      .sticky-footer .btn-add-cart {
+        flex: 1;
+        height: 48px;
+      }
+
+      .sticky-footer .btn-wishlist-icon {
+        width: 48px;
+        height: 48px;
+        background: white;
+        border: 1.5px solid #e5e5e5;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .sticky-footer .btn-wishlist-icon:hover {
+        border-color: #4f6f52;
+        background: #e8ece8;
+      }
+
+      .sticky-footer .btn-wishlist-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: #4f6f52;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Option B: Receipt Style */
+      .receipt-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .receipt-header {
+        background: #4f6f52;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .receipt-header h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .receipt-header p {
+        font-size: 13px;
+        opacity: 0.9;
+      }
+
+      .receipt-body {
+        padding: 20px;
+      }
+
+      .receipt-line-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px dotted #e5e5e5;
+        font-size: 14px;
+      }
+
+      .receipt-line-item:last-of-type {
+        border-bottom: none;
+      }
+
+      .receipt-line-item .item-name {
+        color: #737373;
+      }
+
+      .receipt-line-item .item-value {
+        color: #1a1a1a;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .receipt-line-item .item-price {
+        color: #4f6f52;
+        font-size: 13px;
+      }
+
+      .receipt-divider {
+        border: none;
+        border-top: 2px dashed #e5e5e5;
+        margin: 16px 0;
+      }
+
+      .receipt-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 8px;
+      }
+
+      .receipt-total-row .label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .receipt-total-row .value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .receipt-footer {
+        padding: 20px;
+        background: #fafaf9;
+        text-align: center;
+      }
+
+      .receipt-footer .edit-links {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        font-size: 13px;
+      }
+
+      /* Option C: Two-Column */
+      .two-column-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      @media (min-width: 768px) {
+        .two-column-layout {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .preview-column .preview-image-large {
+        aspect-ratio: 1;
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .preview-column .category-badge {
+        position: absolute;
+        bottom: 16px;
+        left: 16px;
+        background: white;
+        padding: 10px 16px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .preview-column .category-badge h4 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+
+      .preview-column .category-badge p {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .details-column {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .selections-panel {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .selections-panel h4 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .selections-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .selection-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background: #fafaf9;
+        border-radius: 10px;
+      }
+
+      .selection-item .item-label {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .selection-item .item-value {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      /* Option D: Confirmation Card */
+      .confirmation-card {
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        max-width: 480px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .confirmation-header {
+        padding: 32px 24px 24px;
+        background: linear-gradient(135deg, #e8ece8 0%, #f8faf8 100%);
+      }
+
+      .confirmation-header .success-icon {
+        width: 72px;
+        height: 72px;
+        background: #4f6f52;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+
+      .confirmation-header .success-icon svg {
+        width: 36px;
+        height: 36px;
+        stroke: white;
+        stroke-width: 2.5;
+        fill: none;
+      }
+
+      .confirmation-header h2 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .confirmation-header p {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .confirmation-preview {
+        padding: 24px;
+      }
+
+      .confirmation-preview .preview-thumb {
+        width: 120px;
+        height: 120px;
+        border-radius: 16px;
+        margin: 0 auto 16px;
+        overflow: hidden;
+      }
+
+      .confirmation-preview .product-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .confirmation-summary {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .confirmation-summary .summary-chip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        background: #f5f5f4;
+        border-radius: 20px;
+        font-size: 13px;
+        color: #1a1a1a;
+      }
+
+      .confirmation-summary .summary-chip .chip-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+      }
+
+      .confirmation-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #4f6f52;
+        margin-bottom: 8px;
+      }
+
+      .confirmation-price-note {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 24px;
+      }
+
+      .confirmation-actions {
+        padding: 0 24px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .page-header {
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .page-header.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .page-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .page-content {
+        padding: 16px;
+        padding-bottom: 100px;
+      }
+
+      .page-content.desktop {
+        padding: 24px 32px;
+        padding-bottom: 32px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Customize Step 3: Review & Summary</h1>
+    <p class="subtitle">
+      Final step of the customize page - Review all selections and price
+      breakdown before adding to cart or wishlist.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="check-icon" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+      <symbol id="edit-icon" viewBox="0 0 24 24">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+      </symbol>
+      <symbol id="cart-icon" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path
+          d="m1 1 4 4 2.68 11.08a2 2 0 0 0 2 1.92h9.72a2 2 0 0 0 2-1.92L23 6H6"
+        />
+      </symbol>
+      <symbol id="heart-icon" viewBox="0 0 24 24">
+        <path
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+        />
+      </symbol>
+      <symbol id="minus-icon" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </symbol>
+      <symbol id="plus-icon" viewBox="0 0 24 24">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </symbol>
+      <symbol id="arrow-left" viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </symbol>
+      <symbol id="arrow-right" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>No dedicated review step</li>
+            <li>Selections scattered across page</li>
+            <li>No clear price breakdown</li>
+            <li>Single action button only</li>
+            <li>No easy way to edit previous steps</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Dedicated review summary step</li>
+            <li>Clear product preview with category</li>
+            <li>All selections at a glance</li>
+            <li>Itemized price breakdown</li>
+            <li>Edit links to previous steps</li>
+            <li>Quantity selector option</li>
+            <li>Dual CTAs: Cart + Wishlist</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Card Summary (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Card Summary <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Large preview image card with summary cards below for selections
+              and price breakdown. Dual CTA buttons with sticky footer on
+              mobile.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Review Your Creation</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                  <div class="step">
+                    <div class="step-circle completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 2.5;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check-icon" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="step-line completed"></div>
+                  <div class="step">
+                    <div class="step-circle completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 2.5;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check-icon" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="step-line completed"></div>
+                  <div class="step">
+                    <div class="step-circle active">3</div>
+                  </div>
+                </div>
+
+                <!-- Preview Card -->
+                <div class="preview-card">
+                  <div class="preview-image pottery-1">
+                    <span class="preview-badge">Custom</span>
+                  </div>
+                  <div class="preview-content">
+                    <div class="preview-category">Ceramic Mug</div>
+                    <div class="preview-tagline">
+                      Your personalized creation
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Selections Summary -->
+                <div class="summary-card">
+                  <div class="summary-card-header">
+                    <span class="summary-card-title">Your Selections</span>
+                    <a href="#" class="edit-link">
+                      <svg><use href="#edit-icon" /></svg>
+                      Edit
+                    </a>
+                  </div>
+                  <div class="summary-card-content">
+                    <div class="selection-row">
+                      <span class="selection-label">Size</span>
+                      <span class="selection-value">Large (350ml)</span>
+                    </div>
+                    <div class="selection-row">
+                      <span class="selection-label">Color</span>
+                      <span class="selection-value">
+                        <span
+                          class="color-dot"
+                          style="background: #d4a574"
+                        ></span>
+                        Terracotta
+                      </span>
+                    </div>
+                    <div class="selection-row">
+                      <span class="selection-label">Shape</span>
+                      <span class="selection-value">Classic Round</span>
+                    </div>
+                    <div class="selection-row">
+                      <span class="selection-label">Custom Text</span>
+                      <span class="selection-value text-preview"
+                        >"Morning Coffee"</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="price-breakdown">
+                  <div class="price-breakdown-header">
+                    <span class="price-breakdown-title">Price Breakdown</span>
+                  </div>
+                  <div class="price-breakdown-content">
+                    <div class="price-row base">
+                      <span class="price-row-label">Base price</span>
+                      <span class="price-row-value">&#8377;850</span>
+                    </div>
+                    <div class="price-row">
+                      <span class="price-row-label">Size: Large</span>
+                      <span class="price-row-value modifier">+&#8377;150</span>
+                    </div>
+                    <div class="price-row">
+                      <span class="price-row-label">Color: Terracotta</span>
+                      <span class="price-row-value modifier">+&#8377;100</span>
+                    </div>
+                    <div class="price-row">
+                      <span class="price-row-label">Shape: Classic Round</span>
+                      <span class="price-row-value modifier">+&#8377;0</span>
+                    </div>
+                    <div class="price-row">
+                      <span class="price-row-label">Custom Text</span>
+                      <span class="price-row-value modifier">+&#8377;200</span>
+                    </div>
+                    <div class="price-row total">
+                      <span class="price-row-label">Total</span>
+                      <span class="price-row-value">&#8377;1,300</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="quantity-section">
+                  <span class="quantity-label">Quantity</span>
+                  <div class="quantity-controls">
+                    <button class="quantity-btn" disabled>
+                      <svg><use href="#minus-icon" /></svg>
+                    </button>
+                    <span class="quantity-value">1</span>
+                    <button class="quantity-btn">
+                      <svg><use href="#plus-icon" /></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky Footer -->
+              <div class="sticky-footer">
+                <div class="footer-top">
+                  <span class="total-label">Total</span>
+                  <span class="total-amount">&#8377;1,300</span>
+                </div>
+                <div class="btn-row">
+                  <button class="btn-add-cart">
+                    <svg><use href="#cart-icon" /></svg>
+                    Add to Cart
+                  </button>
+                  <button class="btn-wishlist-icon">
+                    <svg><use href="#heart-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Review
+                </div>
+                <div class="page-title">Review Your Creation</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content" style="padding-bottom: 24px">
+                <!-- Step Indicator with Labels -->
+                <div class="step-indicator" style="margin-bottom: 32px">
+                  <div class="step">
+                    <div class="step-circle completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 2.5;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check-icon" />
+                      </svg>
+                    </div>
+                    <span class="step-label" style="display: inline"
+                      >Category</span
+                    >
+                  </div>
+                  <div class="step-line completed"></div>
+                  <div class="step">
+                    <div class="step-circle completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 2.5;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check-icon" />
+                      </svg>
+                    </div>
+                    <span class="step-label" style="display: inline"
+                      >Options</span
+                    >
+                  </div>
+                  <div class="step-line completed"></div>
+                  <div class="step">
+                    <div class="step-circle active">3</div>
+                    <span
+                      class="step-label"
+                      style="display: inline; color: #4f6f52"
+                      >Review</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 200px 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <!-- Preview -->
+                  <div>
+                    <div class="preview-card" style="margin-bottom: 0">
+                      <div
+                        class="preview-image pottery-1"
+                        style="aspect-ratio: 1"
+                      >
+                        <span class="preview-badge">Custom</span>
+                      </div>
+                      <div class="preview-content">
+                        <div class="preview-category" style="font-size: 16px">
+                          Ceramic Mug
+                        </div>
+                        <div class="preview-tagline">Personalized creation</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Summary -->
+                  <div>
+                    <div class="summary-card" style="margin-bottom: 16px">
+                      <div class="summary-card-header">
+                        <span class="summary-card-title">Your Selections</span>
+                        <a href="#" class="edit-link">
+                          <svg><use href="#edit-icon" /></svg>
+                          Edit Options
+                        </a>
+                      </div>
+                      <div class="summary-card-content">
+                        <div
+                          style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 8px;
+                          "
+                        >
+                          <div
+                            class="selection-row"
+                            style="
+                              padding: 10px 0;
+                              border-bottom: none;
+                              background: #fafaf9;
+                              border-radius: 8px;
+                              padding: 12px;
+                            "
+                          >
+                            <span class="selection-label">Size</span>
+                            <span class="selection-value">Large (350ml)</span>
+                          </div>
+                          <div
+                            class="selection-row"
+                            style="
+                              padding: 10px 0;
+                              border-bottom: none;
+                              background: #fafaf9;
+                              border-radius: 8px;
+                              padding: 12px;
+                            "
+                          >
+                            <span class="selection-label">Color</span>
+                            <span class="selection-value">
+                              <span
+                                class="color-dot"
+                                style="background: #d4a574"
+                              ></span>
+                              Terracotta
+                            </span>
+                          </div>
+                          <div
+                            class="selection-row"
+                            style="
+                              padding: 10px 0;
+                              border-bottom: none;
+                              background: #fafaf9;
+                              border-radius: 8px;
+                              padding: 12px;
+                            "
+                          >
+                            <span class="selection-label">Shape</span>
+                            <span class="selection-value">Classic Round</span>
+                          </div>
+                          <div
+                            class="selection-row"
+                            style="
+                              padding: 10px 0;
+                              border-bottom: none;
+                              background: #fafaf9;
+                              border-radius: 8px;
+                              padding: 12px;
+                            "
+                          >
+                            <span class="selection-label">Custom Text</span>
+                            <span class="selection-value text-preview"
+                              >"Morning Coffee"</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Price Breakdown Compact -->
+                    <div class="price-breakdown" style="margin-bottom: 16px">
+                      <div
+                        class="price-breakdown-content"
+                        style="padding: 16px"
+                      >
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            flex-wrap: wrap;
+                            gap: 8px;
+                            margin-bottom: 12px;
+                          "
+                        >
+                          <span style="font-size: 13px; color: #737373"
+                            >Base &#8377;850</span
+                          >
+                          <span style="font-size: 13px; color: #4f6f52"
+                            >+Size &#8377;150</span
+                          >
+                          <span style="font-size: 13px; color: #4f6f52"
+                            >+Color &#8377;100</span
+                          >
+                          <span style="font-size: 13px; color: #4f6f52"
+                            >+Text &#8377;200</span
+                          >
+                        </div>
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding-top: 12px;
+                            border-top: 1px dashed #e5e5e5;
+                          "
+                        >
+                          <span
+                            style="
+                              font-family:
+                                &quot;Plus Jakarta Sans&quot;, sans-serif;
+                              font-size: 15px;
+                              font-weight: 700;
+                            "
+                            >Total</span
+                          >
+                          <span
+                            style="
+                              font-family:
+                                &quot;Plus Jakarta Sans&quot;, sans-serif;
+                              font-size: 20px;
+                              font-weight: 700;
+                              color: #4f6f52;
+                            "
+                            >&#8377;1,300</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Actions Row -->
+                    <div style="display: flex; gap: 12px; align-items: center">
+                      <div class="quantity-controls">
+                        <button class="quantity-btn" disabled>
+                          <svg><use href="#minus-icon" /></svg>
+                        </button>
+                        <span class="quantity-value">1</span>
+                        <button class="quantity-btn">
+                          <svg><use href="#plus-icon" /></svg>
+                        </button>
+                      </div>
+                      <button
+                        class="btn-add-cart"
+                        style="flex: 1; height: 48px"
+                      >
+                        <svg><use href="#cart-icon" /></svg>
+                        Add to Cart
+                      </button>
+                      <button
+                        class="btn-wishlist"
+                        style="width: auto; padding: 0 20px; height: 48px"
+                      >
+                        <svg><use href="#heart-icon" /></svg>
+                        Wishlist
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Review
+                </div>
+                <div class="page-title">Review Your Creation</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <!-- Step Indicator -->
+                <div
+                  class="step-indicator"
+                  style="margin-bottom: 40px; gap: 12px"
+                >
+                  <div class="step">
+                    <div class="step-circle completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 2.5;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check-icon" />
+                      </svg>
+                    </div>
+                    <span class="step-label" style="display: inline"
+                      >Category</span
+                    >
+                  </div>
+                  <div class="step-line completed" style="width: 60px"></div>
+                  <div class="step">
+                    <div class="step-circle completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 2.5;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check-icon" />
+                      </svg>
+                    </div>
+                    <span class="step-label" style="display: inline"
+                      >Customize Options</span
+                    >
+                  </div>
+                  <div class="step-line completed" style="width: 60px"></div>
+                  <div class="step">
+                    <div class="step-circle active">3</div>
+                    <span
+                      class="step-label"
+                      style="display: inline; color: #4f6f52; font-weight: 600"
+                      >Review & Add to Cart</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 280px 1fr 280px;
+                    gap: 32px;
+                  "
+                >
+                  <!-- Left: Preview -->
+                  <div>
+                    <div
+                      class="preview-card"
+                      style="margin-bottom: 0; position: sticky; top: 24px"
+                    >
+                      <div
+                        class="preview-image pottery-1"
+                        style="aspect-ratio: 1"
+                      >
+                        <span class="preview-badge">Custom Creation</span>
+                      </div>
+                      <div class="preview-content">
+                        <div class="preview-category">Ceramic Mug</div>
+                        <div class="preview-tagline">
+                          Your personalized pottery
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Center: Selections -->
+                  <div>
+                    <div class="summary-card" style="margin-bottom: 0">
+                      <div class="summary-card-header">
+                        <span class="summary-card-title">Your Selections</span>
+                        <div style="display: flex; gap: 16px">
+                          <a href="#" class="edit-link">Edit Category</a>
+                          <a href="#" class="edit-link">Edit Options</a>
+                        </div>
+                      </div>
+                      <div class="summary-card-content">
+                        <div
+                          style="
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 12px;
+                          "
+                        >
+                          <div
+                            style="
+                              background: #fafaf9;
+                              border-radius: 12px;
+                              padding: 16px;
+                            "
+                          >
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #999;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                                margin-bottom: 6px;
+                              "
+                            >
+                              Size
+                            </div>
+                            <div
+                              style="
+                                font-size: 15px;
+                                font-weight: 600;
+                                color: #1a1a1a;
+                              "
+                            >
+                              Large (350ml)
+                            </div>
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #4f6f52;
+                                margin-top: 4px;
+                              "
+                            >
+                              +&#8377;150
+                            </div>
+                          </div>
+                          <div
+                            style="
+                              background: #fafaf9;
+                              border-radius: 12px;
+                              padding: 16px;
+                            "
+                          >
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #999;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                                margin-bottom: 6px;
+                              "
+                            >
+                              Color
+                            </div>
+                            <div
+                              style="
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                              "
+                            >
+                              <span
+                                class="color-dot"
+                                style="background: #d4a574"
+                              ></span>
+                              <span
+                                style="
+                                  font-size: 15px;
+                                  font-weight: 600;
+                                  color: #1a1a1a;
+                                "
+                                >Terracotta</span
+                              >
+                            </div>
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #4f6f52;
+                                margin-top: 4px;
+                              "
+                            >
+                              +&#8377;100
+                            </div>
+                          </div>
+                          <div
+                            style="
+                              background: #fafaf9;
+                              border-radius: 12px;
+                              padding: 16px;
+                            "
+                          >
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #999;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                                margin-bottom: 6px;
+                              "
+                            >
+                              Shape
+                            </div>
+                            <div
+                              style="
+                                font-size: 15px;
+                                font-weight: 600;
+                                color: #1a1a1a;
+                              "
+                            >
+                              Classic Round
+                            </div>
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #737373;
+                                margin-top: 4px;
+                              "
+                            >
+                              Included
+                            </div>
+                          </div>
+                          <div
+                            style="
+                              background: #fafaf9;
+                              border-radius: 12px;
+                              padding: 16px;
+                            "
+                          >
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #999;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                                margin-bottom: 6px;
+                              "
+                            >
+                              Custom Text
+                            </div>
+                            <div
+                              style="
+                                font-size: 15px;
+                                font-weight: 600;
+                                color: #4f6f52;
+                                font-style: italic;
+                              "
+                            >
+                              "Morning Coffee"
+                            </div>
+                            <div
+                              style="
+                                font-size: 12px;
+                                color: #4f6f52;
+                                margin-top: 4px;
+                              "
+                            >
+                              +&#8377;200
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Price & Actions -->
+                  <div>
+                    <div
+                      style="
+                        background: white;
+                        border-radius: 16px;
+                        padding: 20px;
+                        position: sticky;
+                        top: 24px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 16px;
+                          font-weight: 700;
+                          margin-bottom: 16px;
+                        "
+                      >
+                        Price Breakdown
+                      </div>
+
+                      <div class="price-row base" style="padding: 8px 0">
+                        <span class="price-row-label">Base price</span>
+                        <span class="price-row-value">&#8377;850</span>
+                      </div>
+                      <div class="price-row" style="padding: 6px 0">
+                        <span class="price-row-label" style="font-size: 13px"
+                          >Size: Large</span
+                        >
+                        <span
+                          class="price-row-value modifier"
+                          style="font-size: 13px"
+                          >+&#8377;150</span
+                        >
+                      </div>
+                      <div class="price-row" style="padding: 6px 0">
+                        <span class="price-row-label" style="font-size: 13px"
+                          >Color: Terracotta</span
+                        >
+                        <span
+                          class="price-row-value modifier"
+                          style="font-size: 13px"
+                          >+&#8377;100</span
+                        >
+                      </div>
+                      <div class="price-row" style="padding: 6px 0">
+                        <span class="price-row-label" style="font-size: 13px"
+                          >Custom Text</span
+                        >
+                        <span
+                          class="price-row-value modifier"
+                          style="font-size: 13px"
+                          >+&#8377;200</span
+                        >
+                      </div>
+
+                      <div
+                        style="
+                          border-top: 1px dashed #e5e5e5;
+                          margin: 16px 0;
+                          padding-top: 16px;
+                        "
+                      >
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 16px;
+                          "
+                        >
+                          <span style="font-size: 14px; color: #737373"
+                            >Quantity</span
+                          >
+                          <div class="quantity-controls">
+                            <button
+                              class="quantity-btn"
+                              disabled
+                              style="width: 32px; height: 32px"
+                            >
+                              <svg style="width: 14px; height: 14px">
+                                <use href="#minus-icon" />
+                              </svg>
+                            </button>
+                            <span
+                              class="quantity-value"
+                              style="font-size: 14px; min-width: 32px"
+                              >1</span
+                            >
+                            <button
+                              class="quantity-btn"
+                              style="width: 32px; height: 32px"
+                            >
+                              <svg style="width: 14px; height: 14px">
+                                <use href="#plus-icon" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                          "
+                        >
+                          <span
+                            style="
+                              font-family:
+                                &quot;Plus Jakarta Sans&quot;, sans-serif;
+                              font-size: 16px;
+                              font-weight: 700;
+                            "
+                            >Total</span
+                          >
+                          <span
+                            style="
+                              font-family:
+                                &quot;Plus Jakarta Sans&quot;, sans-serif;
+                              font-size: 24px;
+                              font-weight: 700;
+                              color: #4f6f52;
+                            "
+                            >&#8377;1,300</span
+                          >
+                        </div>
+                      </div>
+
+                      <button class="btn-add-cart" style="margin-top: 16px">
+                        <svg><use href="#cart-icon" /></svg>
+                        Add to Cart
+                      </button>
+                      <button class="btn-wishlist" style="margin-top: 10px">
+                        <svg><use href="#heart-icon" /></svg>
+                        Add to Wishlist
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Receipt Style -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Receipt Style</h3>
+            <p class="wf-option-desc">
+              Invoice/receipt style layout with line items for each selection.
+              Clean, printable design with running total. Single primary CTA.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Order Summary</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content" style="padding-bottom: 120px">
+                <div class="receipt-card">
+                  <div class="receipt-header">
+                    <h3>Custom Ceramic Mug</h3>
+                    <p>Your personalized pottery</p>
+                  </div>
+                  <div class="receipt-body">
+                    <div class="receipt-line-item">
+                      <span class="item-name">Base Product</span>
+                      <span class="item-value">&#8377;850</span>
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Size</span>
+                      <span class="item-value">
+                        Large (350ml)
+                        <span class="item-price">+&#8377;150</span>
+                      </span>
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Color</span>
+                      <span class="item-value">
+                        <span
+                          class="color-dot"
+                          style="background: #d4a574; width: 14px; height: 14px"
+                        ></span>
+                        Terracotta
+                        <span class="item-price">+&#8377;100</span>
+                      </span>
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Shape</span>
+                      <span class="item-value">Classic Round</span>
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Custom Text</span>
+                      <span class="item-value">
+                        "Morning Coffee"
+                        <span class="item-price">+&#8377;200</span>
+                      </span>
+                    </div>
+
+                    <hr class="receipt-divider" />
+
+                    <div class="receipt-total-row">
+                      <span class="label">Total</span>
+                      <span class="value">&#8377;1,300</span>
+                    </div>
+                  </div>
+                  <div class="receipt-footer">
+                    <div class="edit-links">
+                      <a href="#" class="edit-link">Edit Category</a>
+                      <a href="#" class="edit-link">Edit Options</a>
+                    </div>
+                    <button class="btn-add-cart" style="border-radius: 100px">
+                      <svg><use href="#cart-icon" /></svg>
+                      Add to Cart - &#8377;1,300
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Summary
+                </div>
+                <div class="page-title">Order Summary</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div
+                class="page-content"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  padding-top: 32px;
+                "
+              >
+                <div class="receipt-card" style="width: 400px">
+                  <div class="receipt-header">
+                    <h3>Custom Ceramic Mug</h3>
+                    <p>Your personalized pottery creation</p>
+                  </div>
+                  <div class="receipt-body">
+                    <div class="receipt-line-item">
+                      <span class="item-name">Base Product</span>
+                      <span class="item-value">&#8377;850</span>
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Size: Large (350ml)</span>
+                      <span class="item-value" style="color: #4f6f52"
+                        >+&#8377;150</span
+                      >
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">
+                        Color:
+                        <span
+                          class="color-dot"
+                          style="
+                            background: #d4a574;
+                            width: 12px;
+                            height: 12px;
+                            display: inline-block;
+                            vertical-align: middle;
+                            margin-left: 4px;
+                          "
+                        ></span>
+                        Terracotta
+                      </span>
+                      <span class="item-value" style="color: #4f6f52"
+                        >+&#8377;100</span
+                      >
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Shape: Classic Round</span>
+                      <span class="item-value" style="color: #999"
+                        >Included</span
+                      >
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Text: "Morning Coffee"</span>
+                      <span class="item-value" style="color: #4f6f52"
+                        >+&#8377;200</span
+                      >
+                    </div>
+
+                    <hr class="receipt-divider" />
+
+                    <div class="receipt-line-item" style="border-bottom: none">
+                      <span class="item-name">Quantity</span>
+                      <div class="quantity-controls" style="padding: 2px">
+                        <button
+                          class="quantity-btn"
+                          disabled
+                          style="width: 28px; height: 28px"
+                        >
+                          <svg style="width: 12px; height: 12px">
+                            <use href="#minus-icon" />
+                          </svg>
+                        </button>
+                        <span
+                          class="quantity-value"
+                          style="font-size: 14px; min-width: 28px"
+                          >1</span
+                        >
+                        <button
+                          class="quantity-btn"
+                          style="width: 28px; height: 28px"
+                        >
+                          <svg style="width: 12px; height: 12px">
+                            <use href="#plus-icon" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    <hr class="receipt-divider" />
+
+                    <div class="receipt-total-row">
+                      <span class="label">Total</span>
+                      <span class="value">&#8377;1,300</span>
+                    </div>
+                  </div>
+                  <div class="receipt-footer">
+                    <div class="edit-links">
+                      <a href="#" class="edit-link">
+                        <svg style="width: 14px; height: 14px">
+                          <use href="#edit-icon" />
+                        </svg>
+                        Edit Category
+                      </a>
+                      <a href="#" class="edit-link">
+                        <svg style="width: 14px; height: 14px">
+                          <use href="#edit-icon" />
+                        </svg>
+                        Edit Options
+                      </a>
+                    </div>
+                    <button
+                      class="btn-add-cart"
+                      style="border-radius: 100px; margin-bottom: 10px"
+                    >
+                      <svg><use href="#cart-icon" /></svg>
+                      Add to Cart
+                    </button>
+                    <button class="btn-wishlist" style="border-radius: 100px">
+                      <svg><use href="#heart-icon" /></svg>
+                      Save for Later
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Order
+                  Summary
+                </div>
+                <div class="page-title">Order Summary</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div
+                class="page-content desktop"
+                style="display: flex; gap: 40px; justify-content: center"
+              >
+                <!-- Preview Image -->
+                <div style="width: 300px">
+                  <div class="preview-card" style="margin-bottom: 0">
+                    <div
+                      class="preview-image pottery-1"
+                      style="aspect-ratio: 1"
+                    >
+                      <span class="preview-badge">Custom</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Receipt -->
+                <div class="receipt-card" style="width: 400px">
+                  <div class="receipt-header" style="text-align: left">
+                    <h3>Custom Ceramic Mug</h3>
+                    <p>Your personalized pottery creation</p>
+                  </div>
+                  <div class="receipt-body">
+                    <div class="receipt-line-item">
+                      <span class="item-name">Base Product</span>
+                      <span class="item-value">&#8377;850</span>
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Size: Large (350ml)</span>
+                      <span class="item-value" style="color: #4f6f52"
+                        >+&#8377;150</span
+                      >
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">
+                        Color:
+                        <span
+                          class="color-dot"
+                          style="
+                            background: #d4a574;
+                            width: 12px;
+                            height: 12px;
+                            display: inline-block;
+                            vertical-align: middle;
+                            margin-left: 4px;
+                          "
+                        ></span>
+                        Terracotta
+                      </span>
+                      <span class="item-value" style="color: #4f6f52"
+                        >+&#8377;100</span
+                      >
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Shape: Classic Round</span>
+                      <span class="item-value" style="color: #999"
+                        >Included</span
+                      >
+                    </div>
+                    <div class="receipt-line-item">
+                      <span class="item-name">Text: "Morning Coffee"</span>
+                      <span class="item-value" style="color: #4f6f52"
+                        >+&#8377;200</span
+                      >
+                    </div>
+
+                    <hr class="receipt-divider" />
+
+                    <div class="receipt-line-item" style="border-bottom: none">
+                      <span class="item-name">Quantity</span>
+                      <div class="quantity-controls" style="padding: 2px">
+                        <button
+                          class="quantity-btn"
+                          disabled
+                          style="width: 28px; height: 28px"
+                        >
+                          <svg style="width: 12px; height: 12px">
+                            <use href="#minus-icon" />
+                          </svg>
+                        </button>
+                        <span
+                          class="quantity-value"
+                          style="font-size: 14px; min-width: 28px"
+                          >1</span
+                        >
+                        <button
+                          class="quantity-btn"
+                          style="width: 28px; height: 28px"
+                        >
+                          <svg style="width: 12px; height: 12px">
+                            <use href="#plus-icon" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    <hr class="receipt-divider" />
+
+                    <div class="receipt-total-row">
+                      <span class="label">Total</span>
+                      <span class="value">&#8377;1,300</span>
+                    </div>
+                  </div>
+                  <div class="receipt-footer" style="display: flex; gap: 12px">
+                    <button
+                      class="btn-add-cart"
+                      style="flex: 1; border-radius: 100px"
+                    >
+                      <svg><use href="#cart-icon" /></svg>
+                      Add to Cart
+                    </button>
+                    <button
+                      class="btn-wishlist-icon"
+                      style="
+                        width: 52px;
+                        height: 52px;
+                        border-radius: 100px;
+                        flex-shrink: 0;
+                        background: white;
+                        border: 1.5px solid #e5e5e5;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                      "
+                    >
+                      <svg
+                        style="
+                          width: 20px;
+                          height: 20px;
+                          stroke: #4f6f52;
+                          stroke-width: 2;
+                          fill: none;
+                        "
+                      >
+                        <use href="#heart-icon" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Two-Column Review -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Two-Column Review</h3>
+            <p class="wf-option-desc">
+              Left side: Large preview image. Right side: Selections, price
+              breakdown, and CTAs. Desktop side-by-side, mobile stacked.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Review & Confirm</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content" style="padding-bottom: 100px">
+                <!-- Large Preview -->
+                <div
+                  style="
+                    position: relative;
+                    aspect-ratio: 1;
+                    border-radius: 16px;
+                    overflow: hidden;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <div
+                    class="pottery-1"
+                    style="width: 100%; height: 100%"
+                  ></div>
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: 16px;
+                      left: 16px;
+                      background: white;
+                      padding: 12px 16px;
+                      border-radius: 12px;
+                      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+                    "
+                  >
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 16px;
+                        font-weight: 700;
+                      "
+                    >
+                      Ceramic Mug
+                    </div>
+                    <div style="font-size: 12px; color: #737373">
+                      Custom Creation
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Selections Panel -->
+                <div class="selections-panel" style="margin-bottom: 16px">
+                  <h4>
+                    Your Selections
+                    <a href="#" class="edit-link" style="font-size: 13px"
+                      >Edit</a
+                    >
+                  </h4>
+                  <div class="selections-list">
+                    <div class="selection-item">
+                      <span class="item-label">Size</span>
+                      <span class="item-value"
+                        >Large (350ml)
+                        <span
+                          style="
+                            color: #4f6f52;
+                            font-size: 12px;
+                            margin-left: 4px;
+                          "
+                          >+&#8377;150</span
+                        ></span
+                      >
+                    </div>
+                    <div class="selection-item">
+                      <span class="item-label">Color</span>
+                      <span class="item-value">
+                        <span
+                          class="color-dot"
+                          style="background: #d4a574; width: 16px; height: 16px"
+                        ></span>
+                        Terracotta
+                        <span
+                          style="
+                            color: #4f6f52;
+                            font-size: 12px;
+                            margin-left: 4px;
+                          "
+                          >+&#8377;100</span
+                        >
+                      </span>
+                    </div>
+                    <div class="selection-item">
+                      <span class="item-label">Shape</span>
+                      <span class="item-value">Classic Round</span>
+                    </div>
+                    <div class="selection-item">
+                      <span class="item-label">Text</span>
+                      <span
+                        class="item-value"
+                        style="color: #4f6f52; font-style: italic"
+                        >"Morning Coffee"
+                        <span
+                          style="
+                            color: #4f6f52;
+                            font-size: 12px;
+                            margin-left: 4px;
+                          "
+                          >+&#8377;200</span
+                        ></span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Price Summary -->
+                <div
+                  style="
+                    background: white;
+                    border-radius: 16px;
+                    padding: 20px;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <div>
+                      <div style="font-size: 13px; color: #737373">
+                        Total Price
+                      </div>
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 24px;
+                          font-weight: 700;
+                          color: #4f6f52;
+                        "
+                      >
+                        &#8377;1,300
+                      </div>
+                    </div>
+                    <div class="quantity-controls">
+                      <button class="quantity-btn" disabled>
+                        <svg><use href="#minus-icon" /></svg>
+                      </button>
+                      <span class="quantity-value">1</span>
+                      <button class="quantity-btn">
+                        <svg><use href="#plus-icon" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky Footer -->
+              <div class="sticky-footer">
+                <div class="btn-row">
+                  <button class="btn-add-cart">
+                    <svg><use href="#cart-icon" /></svg>
+                    Add to Cart
+                  </button>
+                  <button class="btn-wishlist-icon">
+                    <svg><use href="#heart-icon" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Review
+                </div>
+                <div class="page-title">Review & Confirm</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <!-- Left: Preview -->
+                  <div
+                    style="
+                      position: relative;
+                      aspect-ratio: 1;
+                      border-radius: 16px;
+                      overflow: hidden;
+                    "
+                  >
+                    <div
+                      class="pottery-1"
+                      style="width: 100%; height: 100%"
+                    ></div>
+                    <div
+                      style="
+                        position: absolute;
+                        bottom: 16px;
+                        left: 16px;
+                        background: white;
+                        padding: 12px 16px;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+                      "
+                    >
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 16px;
+                          font-weight: 700;
+                        "
+                      >
+                        Ceramic Mug
+                      </div>
+                      <div style="font-size: 12px; color: #737373">
+                        Custom Creation
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Details -->
+                  <div>
+                    <div class="selections-panel" style="margin-bottom: 16px">
+                      <h4>
+                        Your Selections
+                        <a href="#" class="edit-link" style="font-size: 13px"
+                          >Edit</a
+                        >
+                      </h4>
+                      <div class="selections-list">
+                        <div class="selection-item">
+                          <span class="item-label">Size</span>
+                          <span class="item-value"
+                            >Large
+                            <span style="color: #4f6f52; font-size: 12px"
+                              >+&#8377;150</span
+                            ></span
+                          >
+                        </div>
+                        <div class="selection-item">
+                          <span class="item-label">Color</span>
+                          <span class="item-value">
+                            <span
+                              class="color-dot"
+                              style="
+                                background: #d4a574;
+                                width: 14px;
+                                height: 14px;
+                              "
+                            ></span>
+                            Terracotta
+                            <span style="color: #4f6f52; font-size: 12px"
+                              >+&#8377;100</span
+                            >
+                          </span>
+                        </div>
+                        <div class="selection-item">
+                          <span class="item-label">Shape</span>
+                          <span class="item-value">Classic Round</span>
+                        </div>
+                        <div class="selection-item">
+                          <span class="item-label">Text</span>
+                          <span
+                            class="item-value"
+                            style="color: #4f6f52; font-style: italic"
+                            >"Morning Coffee"
+                            <span style="font-size: 12px"
+                              >+&#8377;200</span
+                            ></span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      style="
+                        background: white;
+                        border-radius: 16px;
+                        padding: 20px;
+                        margin-bottom: 16px;
+                      "
+                    >
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          margin-bottom: 16px;
+                        "
+                      >
+                        <span style="font-size: 14px; color: #737373"
+                          >Quantity</span
+                        >
+                        <div class="quantity-controls">
+                          <button
+                            class="quantity-btn"
+                            disabled
+                            style="width: 32px; height: 32px"
+                          >
+                            <svg style="width: 14px; height: 14px">
+                              <use href="#minus-icon" />
+                            </svg>
+                          </button>
+                          <span
+                            class="quantity-value"
+                            style="font-size: 14px; min-width: 32px"
+                            >1</span
+                          >
+                          <button
+                            class="quantity-btn"
+                            style="width: 32px; height: 32px"
+                          >
+                            <svg style="width: 14px; height: 14px">
+                              <use href="#plus-icon" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          padding-top: 16px;
+                          border-top: 1px dashed #e5e5e5;
+                        "
+                      >
+                        <span
+                          style="
+                            font-family:
+                              &quot;Plus Jakarta Sans&quot;, sans-serif;
+                            font-weight: 700;
+                          "
+                          >Total</span
+                        >
+                        <span
+                          style="
+                            font-family:
+                              &quot;Plus Jakarta Sans&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 700;
+                            color: #4f6f52;
+                          "
+                          >&#8377;1,300</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="action-buttons" style="margin-top: 0">
+                      <button class="btn-add-cart">
+                        <svg><use href="#cart-icon" /></svg>
+                        Add to Cart
+                      </button>
+                      <button class="btn-wishlist">
+                        <svg><use href="#heart-icon" /></svg>
+                        Add to Wishlist
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Review &
+                  Confirm
+                </div>
+                <div class="page-title">Review & Confirm</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1.2fr 1fr;
+                    gap: 48px;
+                    align-items: start;
+                  "
+                >
+                  <!-- Left: Large Preview -->
+                  <div
+                    style="
+                      position: relative;
+                      aspect-ratio: 1;
+                      border-radius: 20px;
+                      overflow: hidden;
+                      position: sticky;
+                      top: 24px;
+                    "
+                  >
+                    <div
+                      class="pottery-1"
+                      style="width: 100%; height: 100%"
+                    ></div>
+                    <div
+                      style="
+                        position: absolute;
+                        bottom: 24px;
+                        left: 24px;
+                        background: white;
+                        padding: 16px 24px;
+                        border-radius: 16px;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                      "
+                    >
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 20px;
+                          font-weight: 700;
+                        "
+                      >
+                        Ceramic Mug
+                      </div>
+                      <div style="font-size: 14px; color: #737373">
+                        Your Custom Creation
+                      </div>
+                    </div>
+                    <div
+                      style="
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        background: #4f6f52;
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 100px;
+                        font-size: 12px;
+                        font-weight: 600;
+                      "
+                    >
+                      CUSTOM
+                    </div>
+                  </div>
+
+                  <!-- Right: Details -->
+                  <div>
+                    <div class="selections-panel" style="margin-bottom: 20px">
+                      <h4 style="font-size: 18px">
+                        Your Selections
+                        <div style="display: flex; gap: 12px">
+                          <a href="#" class="edit-link">Edit Category</a>
+                          <a href="#" class="edit-link">Edit Options</a>
+                        </div>
+                      </h4>
+                      <div class="selections-list" style="gap: 14px">
+                        <div class="selection-item" style="padding: 16px">
+                          <span class="item-label">Size</span>
+                          <span class="item-value"
+                            >Large (350ml)
+                            <span
+                              style="
+                                color: #4f6f52;
+                                font-size: 13px;
+                                margin-left: 6px;
+                              "
+                              >+&#8377;150</span
+                            ></span
+                          >
+                        </div>
+                        <div class="selection-item" style="padding: 16px">
+                          <span class="item-label">Color</span>
+                          <span class="item-value">
+                            <span
+                              class="color-dot"
+                              style="background: #d4a574"
+                            ></span>
+                            Terracotta
+                            <span
+                              style="
+                                color: #4f6f52;
+                                font-size: 13px;
+                                margin-left: 6px;
+                              "
+                              >+&#8377;100</span
+                            >
+                          </span>
+                        </div>
+                        <div class="selection-item" style="padding: 16px">
+                          <span class="item-label">Shape</span>
+                          <span class="item-value"
+                            >Classic Round
+                            <span
+                              style="
+                                color: #999;
+                                font-size: 13px;
+                                margin-left: 6px;
+                              "
+                              >Included</span
+                            ></span
+                          >
+                        </div>
+                        <div class="selection-item" style="padding: 16px">
+                          <span class="item-label">Custom Text</span>
+                          <span
+                            class="item-value"
+                            style="color: #4f6f52; font-style: italic"
+                            >"Morning Coffee"
+                            <span style="font-size: 13px; margin-left: 6px"
+                              >+&#8377;200</span
+                            ></span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      style="
+                        background: white;
+                        border-radius: 16px;
+                        padding: 24px;
+                        margin-bottom: 20px;
+                      "
+                    >
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          margin-bottom: 20px;
+                        "
+                      >
+                        <span style="font-size: 15px; color: #737373"
+                          >Quantity</span
+                        >
+                        <div class="quantity-controls">
+                          <button class="quantity-btn" disabled>
+                            <svg><use href="#minus-icon" /></svg>
+                          </button>
+                          <span class="quantity-value">1</span>
+                          <button class="quantity-btn">
+                            <svg><use href="#plus-icon" /></svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        style="
+                          padding-top: 20px;
+                          border-top: 1px dashed #e5e5e5;
+                        "
+                      >
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 8px;
+                          "
+                        >
+                          <span style="color: #999; font-size: 13px"
+                            >Base &#8377;850 + Size &#8377;150 + Color
+                            &#8377;100 + Text &#8377;200</span
+                          >
+                        </div>
+                        <div
+                          style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                          "
+                        >
+                          <span
+                            style="
+                              font-family:
+                                &quot;Plus Jakarta Sans&quot;, sans-serif;
+                              font-size: 18px;
+                              font-weight: 700;
+                            "
+                            >Total</span
+                          >
+                          <span
+                            style="
+                              font-family:
+                                &quot;Plus Jakarta Sans&quot;, sans-serif;
+                              font-size: 28px;
+                              font-weight: 700;
+                              color: #4f6f52;
+                            "
+                            >&#8377;1,300</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="action-buttons"
+                      style="margin-top: 0; flex-direction: row; gap: 16px"
+                    >
+                      <button class="btn-add-cart" style="flex: 1">
+                        <svg><use href="#cart-icon" /></svg>
+                        Add to Cart
+                      </button>
+                      <button
+                        class="btn-wishlist"
+                        style="flex: 0; width: auto; padding: 0 24px"
+                      >
+                        <svg><use href="#heart-icon" /></svg>
+                        Wishlist
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Confirmation Card -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Confirmation Card</h3>
+            <p class="wf-option-desc">
+              Single centered card with summary inside. Minimal, focused design
+              with celebration feel (success state preview). Best for simple
+              customizations.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div
+                class="page-content"
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  min-height: 600px;
+                  padding-bottom: 24px;
+                "
+              >
+                <div class="confirmation-card" style="width: 100%">
+                  <div class="confirmation-header">
+                    <div class="success-icon">
+                      <svg><use href="#check-icon" /></svg>
+                    </div>
+                    <h2>Almost There!</h2>
+                    <p>Review your custom creation</p>
+                  </div>
+                  <div class="confirmation-preview">
+                    <div class="preview-thumb pottery-1"></div>
+                    <div class="product-name">Ceramic Mug</div>
+                    <div class="confirmation-summary">
+                      <span class="summary-chip">Large</span>
+                      <span class="summary-chip">
+                        <span
+                          class="chip-dot"
+                          style="background: #d4a574"
+                        ></span>
+                        Terracotta
+                      </span>
+                      <span class="summary-chip">Classic</span>
+                    </div>
+                    <div
+                      style="
+                        background: #fafaf9;
+                        border-radius: 12px;
+                        padding: 12px;
+                        margin-bottom: 16px;
+                        font-size: 14px;
+                        color: #4f6f52;
+                        font-style: italic;
+                      "
+                    >
+                      "Morning Coffee"
+                    </div>
+                    <div class="confirmation-price">&#8377;1,300</div>
+                    <div class="confirmation-price-note">
+                      Base &#8377;850 + Customizations &#8377;450
+                    </div>
+                  </div>
+                  <div class="confirmation-actions">
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px">
+                      <a
+                        href="#"
+                        class="edit-link"
+                        style="
+                          flex: 1;
+                          text-align: center;
+                          padding: 10px;
+                          background: #fafaf9;
+                          border-radius: 8px;
+                        "
+                        >Edit Category</a
+                      >
+                      <a
+                        href="#"
+                        class="edit-link"
+                        style="
+                          flex: 1;
+                          text-align: center;
+                          padding: 10px;
+                          background: #fafaf9;
+                          border-radius: 8px;
+                        "
+                        >Edit Options</a
+                      >
+                    </div>
+                    <button class="btn-add-cart" style="border-radius: 100px">
+                      <svg><use href="#cart-icon" /></svg>
+                      Add to Cart
+                    </button>
+                    <button class="btn-wishlist" style="border-radius: 100px">
+                      <svg><use href="#heart-icon" /></svg>
+                      Save for Later
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div
+                class="page-content"
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  min-height: 500px;
+                "
+              >
+                <div class="confirmation-card" style="width: 420px">
+                  <div class="confirmation-header">
+                    <div class="success-icon">
+                      <svg><use href="#check-icon" /></svg>
+                    </div>
+                    <h2>Almost There!</h2>
+                    <p>Review your custom pottery creation</p>
+                  </div>
+                  <div class="confirmation-preview">
+                    <div
+                      class="preview-thumb pottery-1"
+                      style="width: 140px; height: 140px"
+                    ></div>
+                    <div class="product-name">Ceramic Mug</div>
+                    <div class="confirmation-summary">
+                      <span class="summary-chip">Large (350ml)</span>
+                      <span class="summary-chip">
+                        <span
+                          class="chip-dot"
+                          style="background: #d4a574"
+                        ></span>
+                        Terracotta
+                      </span>
+                      <span class="summary-chip">Classic Round</span>
+                    </div>
+                    <div
+                      style="
+                        background: #fafaf9;
+                        border-radius: 12px;
+                        padding: 14px 20px;
+                        margin-bottom: 20px;
+                        font-size: 15px;
+                        color: #4f6f52;
+                        font-style: italic;
+                      "
+                    >
+                      "Morning Coffee"
+                    </div>
+                    <div class="confirmation-price">&#8377;1,300</div>
+                    <div class="confirmation-price-note">
+                      Base &#8377;850 + Size &#8377;150 + Color &#8377;100 +
+                      Text &#8377;200
+                    </div>
+                  </div>
+                  <div class="confirmation-actions">
+                    <div style="display: flex; gap: 10px; margin-bottom: 16px">
+                      <a
+                        href="#"
+                        class="edit-link"
+                        style="
+                          flex: 1;
+                          text-align: center;
+                          padding: 12px;
+                          background: #fafaf9;
+                          border-radius: 10px;
+                        "
+                      >
+                        <svg
+                          style="width: 14px; height: 14px; margin-right: 4px"
+                        >
+                          <use href="#edit-icon" />
+                        </svg>
+                        Edit Category
+                      </a>
+                      <a
+                        href="#"
+                        class="edit-link"
+                        style="
+                          flex: 1;
+                          text-align: center;
+                          padding: 12px;
+                          background: #fafaf9;
+                          border-radius: 10px;
+                        "
+                      >
+                        <svg
+                          style="width: 14px; height: 14px; margin-right: 4px"
+                        >
+                          <use href="#edit-icon" />
+                        </svg>
+                        Edit Options
+                      </a>
+                    </div>
+                    <button class="btn-add-cart" style="border-radius: 100px">
+                      <svg><use href="#cart-icon" /></svg>
+                      Add to Cart - &#8377;1,300
+                    </button>
+                    <button class="btn-wishlist" style="border-radius: 100px">
+                      <svg><use href="#heart-icon" /></svg>
+                      Save for Later
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div
+                class="page-content desktop"
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  min-height: 500px;
+                "
+              >
+                <div class="confirmation-card" style="width: 480px">
+                  <div
+                    class="confirmation-header"
+                    style="padding: 40px 32px 32px"
+                  >
+                    <div class="success-icon" style="width: 80px; height: 80px">
+                      <svg style="width: 40px; height: 40px">
+                        <use href="#check-icon" />
+                      </svg>
+                    </div>
+                    <h2 style="font-size: 28px">Almost There!</h2>
+                    <p style="font-size: 15px">
+                      Review your custom pottery creation before adding to cart
+                    </p>
+                  </div>
+                  <div class="confirmation-preview" style="padding: 32px">
+                    <div
+                      class="preview-thumb pottery-1"
+                      style="width: 160px; height: 160px; margin-bottom: 20px"
+                    ></div>
+                    <div
+                      class="product-name"
+                      style="font-size: 22px; margin-bottom: 12px"
+                    >
+                      Ceramic Mug
+                    </div>
+                    <div
+                      class="confirmation-summary"
+                      style="gap: 10px; margin-bottom: 20px"
+                    >
+                      <span class="summary-chip">Large (350ml)</span>
+                      <span class="summary-chip">
+                        <span
+                          class="chip-dot"
+                          style="background: #d4a574"
+                        ></span>
+                        Terracotta
+                      </span>
+                      <span class="summary-chip">Classic Round</span>
+                    </div>
+                    <div
+                      style="
+                        background: #fafaf9;
+                        border-radius: 12px;
+                        padding: 16px 24px;
+                        margin-bottom: 24px;
+                        font-size: 16px;
+                        color: #4f6f52;
+                        font-style: italic;
+                      "
+                    >
+                      "Morning Coffee"
+                    </div>
+                    <div class="confirmation-price" style="font-size: 32px">
+                      &#8377;1,300
+                    </div>
+                    <div
+                      class="confirmation-price-note"
+                      style="margin-bottom: 0"
+                    >
+                      Base &#8377;850 + Size &#8377;150 + Color &#8377;100 +
+                      Text &#8377;200
+                    </div>
+                  </div>
+                  <div
+                    class="confirmation-actions"
+                    style="padding: 0 32px 32px"
+                  >
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px">
+                      <a
+                        href="#"
+                        class="edit-link"
+                        style="
+                          flex: 1;
+                          text-align: center;
+                          padding: 14px;
+                          background: #fafaf9;
+                          border-radius: 12px;
+                        "
+                      >
+                        <svg
+                          style="width: 14px; height: 14px; margin-right: 6px"
+                        >
+                          <use href="#edit-icon" />
+                        </svg>
+                        Edit Category
+                      </a>
+                      <a
+                        href="#"
+                        class="edit-link"
+                        style="
+                          flex: 1;
+                          text-align: center;
+                          padding: 14px;
+                          background: #fafaf9;
+                          border-radius: 12px;
+                        "
+                      >
+                        <svg
+                          style="width: 14px; height: 14px; margin-right: 6px"
+                        >
+                          <use href="#edit-icon" />
+                        </svg>
+                        Edit Options
+                      </a>
+                    </div>
+                    <div style="display: flex; gap: 12px">
+                      <button
+                        class="btn-add-cart"
+                        style="flex: 1; border-radius: 100px"
+                      >
+                        <svg><use href="#cart-icon" /></svg>
+                        Add to Cart
+                      </button>
+                      <button
+                        class="btn-wishlist-icon"
+                        style="
+                          width: 52px;
+                          height: 52px;
+                          border-radius: 100px;
+                          flex-shrink: 0;
+                          background: white;
+                          border: 1.5px solid #e5e5e5;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          cursor: pointer;
+                        "
+                      >
+                        <svg
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            stroke: #4f6f52;
+                            stroke-width: 2;
+                            fill: none;
+                          "
+                        >
+                          <use href="#heart-icon" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred review summary layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Card
+            Summary</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - Receipt
+            Style</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C -
+            Two-Column</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D -
+            Confirmation Card</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Card
+            Summary</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - Receipt
+            Style</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C -
+            Two-Column</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D -
+            Confirmation Card</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Card
+            Summary</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - Receipt
+            Style</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C -
+            Two-Column</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D -
+            Confirmation Card</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Design Priority</div>
+          <label
+            ><input type="radio" name="priority" value="clarity" checked />
+            Clarity & Information</label
+          >
+          <label
+            ><input type="radio" name="priority" value="visual" /> Visual
+            Impact</label
+          >
+          <label
+            ><input type="radio" name="priority" value="minimal" /> Minimal &
+            Focused</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong
+        >Implementation Specs (Customize Step 3 - Review & Summary):</strong
+      ><br /><br />
+      &bull; <strong>Context:</strong> User has completed Step 1 (Category) and
+      Step 2 (Options), now reviews before adding to cart<br />
+      &bull; <strong>Step Indicator:</strong> Shows 3 steps with completed
+      checkmarks for steps 1-2, active state for step 3<br />
+      &bull; <strong>Preview Card:</strong> Shows selected category image with
+      "Custom" badge overlay<br />
+      &bull; <strong>Selections Display:</strong> Shows all selections with
+      color swatches inline, custom text in italic<br />
+      &bull; <strong>Price Breakdown:</strong> Base price (normal), modifiers in
+      green (+&#8377;X), total bold<br />
+      &bull; <strong>Edit Links:</strong> Primary color, navigate back to Step 1
+      or Step 2 respectively<br />
+      &bull; <strong>Quantity Selector:</strong> Optional, pill-style +/-
+      controls with min 1<br />
+      &bull; <strong>CTAs:</strong> Primary "Add to Cart" button, secondary
+      "Wishlist" button or icon<br />
+      &bull; <strong>Mobile:</strong> Sticky footer with total + dual CTAs<br />
+      &bull; <strong>Animation:</strong> Heart icon animates on wishlist add<br />
+      &bull; <strong>Success:</strong> Redirect to cart or show success toast on
+      add to cart<br />
+      &bull;
+      <strong>Files:</strong>
+      src/features/customize/components/review-summary.tsx,
+      src/features/customize/containers/review-summary-container.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

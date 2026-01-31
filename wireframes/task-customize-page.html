@@ -1,0 +1,3068 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customize Page - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Progress Stepper */
+      .progress-stepper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .step {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .step-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        background: #e5e5e5;
+        color: #999;
+      }
+
+      .step-number.active {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .step-number.completed {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .step-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #999;
+      }
+
+      .step-label.active {
+        color: #1a1a1a;
+        font-weight: 600;
+      }
+
+      .step-connector {
+        width: 40px;
+        height: 2px;
+        background: #e5e5e5;
+      }
+
+      .step-connector.completed {
+        background: #4f6f52;
+      }
+
+      /* Category Cards */
+      .category-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .category-card {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        border: 2px solid transparent;
+      }
+
+      .category-card:hover {
+        border-color: #e8ece8;
+      }
+
+      .category-card.selected {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .category-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        margin: 0 auto 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .category-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .category-price {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      /* Option Groups */
+      .option-group {
+        margin-bottom: 24px;
+      }
+
+      .option-group-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .option-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .option-chip {
+        padding: 10px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        background: #f5f5f4;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 2px solid transparent;
+      }
+
+      .option-chip:hover {
+        background: #e8ece8;
+      }
+
+      .option-chip.selected {
+        background: #e8ece8;
+        border-color: #4f6f52;
+        color: #4f6f52;
+      }
+
+      .option-chip .price-modifier {
+        font-size: 11px;
+        color: #4f6f52;
+        margin-left: 4px;
+      }
+
+      /* Color Swatches */
+      .color-swatches {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .color-swatch {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: all 0.15s;
+      }
+
+      .color-swatch.selected {
+        border-color: #4f6f52;
+        box-shadow:
+          0 0 0 2px white,
+          0 0 0 4px #4f6f52;
+      }
+
+      .color-swatch.terracotta {
+        background: #c4785a;
+      }
+      .color-swatch.sage {
+        background: #8b9a7d;
+      }
+      .color-swatch.cream {
+        background: #f5f0e8;
+      }
+      .color-swatch.charcoal {
+        background: #4a4a4a;
+      }
+      .color-swatch.ocean {
+        background: #5d8a96;
+      }
+      .color-swatch.natural {
+        background: #d4c4b0;
+      }
+
+      /* Text Input */
+      .text-input-group {
+        margin-bottom: 24px;
+      }
+
+      .text-input-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .text-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+      }
+
+      .text-input:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      .char-count {
+        font-size: 11px;
+        color: #999;
+        text-align: right;
+        margin-top: 4px;
+      }
+
+      /* Price Summary */
+      .price-summary {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 24px;
+      }
+
+      .price-summary-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      .price-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .price-row .label {
+        color: #737373;
+      }
+
+      .price-row .value {
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      .price-row .modifier {
+        color: #4f6f52;
+      }
+
+      .price-total {
+        display: flex;
+        justify-content: space-between;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        padding-top: 12px;
+        border-top: 1px solid #f0f0f0;
+        margin-top: 12px;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-family: "Outfit", sans-serif;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease-out;
+        border-radius: 8px;
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .btn-sm {
+        height: 32px;
+        padding: 0 12px;
+        font-size: 12px;
+      }
+
+      .btn-md {
+        height: 40px;
+        padding: 0 20px;
+        font-size: 14px;
+      }
+
+      .btn-lg {
+        height: 48px;
+        padding: 0 28px;
+        font-size: 15px;
+      }
+
+      .btn-full {
+        width: 100%;
+      }
+
+      .btn-primary {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #3d5640;
+      }
+
+      .btn-secondary {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .btn-secondary:hover {
+        background: #e8ece8;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: #4f6f52;
+      }
+
+      .btn-ghost:hover {
+        background: #e8ece8;
+      }
+
+      .btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Preview Panel */
+      .preview-panel {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+      }
+
+      .preview-image {
+        width: 160px;
+        height: 160px;
+        border-radius: 12px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .preview-label {
+        font-size: 12px;
+        color: #737373;
+        margin-bottom: 8px;
+      }
+
+      .preview-text {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      /* Collapsible Sections */
+      .collapsible-section {
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+
+      .collapsible-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        cursor: pointer;
+      }
+
+      .collapsible-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .collapsible-value {
+        font-size: 13px;
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      .collapsible-content {
+        padding: 0 16px 16px;
+        border-top: 1px solid #f0f0f0;
+      }
+
+      /* Floating Panels */
+      .floating-panel {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        position: absolute;
+      }
+
+      /* Tabs */
+      .category-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 24px;
+        overflow-x: auto;
+      }
+
+      .category-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 12px 16px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .category-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      /* Sticky Summary */
+      .sticky-summary {
+        position: sticky;
+        top: 24px;
+      }
+
+      /* Shape Icons */
+      .shape-options {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .shape-option {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.15s;
+      }
+
+      .shape-option:hover {
+        border-color: #e8ece8;
+      }
+
+      .shape-option.selected {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .shape-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 8px;
+        border-radius: 8px;
+      }
+
+      .shape-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .shape-price {
+        font-size: 11px;
+        color: #4f6f52;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .page-header {
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .page-header.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .page-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .page-content {
+        padding: 16px;
+      }
+
+      .page-content.desktop {
+        padding: 24px 32px;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Desktop Layout */
+      .desktop-two-col {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 32px;
+      }
+
+      .desktop-three-col {
+        display: grid;
+        grid-template-columns: 200px 1fr 320px;
+        gap: 24px;
+      }
+
+      /* Visual Builder */
+      .visual-builder {
+        position: relative;
+        min-height: 400px;
+      }
+
+      .central-preview {
+        width: 200px;
+        height: 200px;
+        border-radius: 16px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Card-based Options */
+      .option-card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .option-card {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .option-card:hover {
+        border-color: #e8ece8;
+      }
+
+      .option-card.selected {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .option-card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .option-card-price {
+        font-size: 12px;
+        color: #4f6f52;
+      }
+
+      /* Mobile Sticky Footer */
+      .mobile-sticky-footer {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding: 16px;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+
+      .footer-price-label {
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .footer-price-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Customize Page</h1>
+    <p class="subtitle">
+      Customization page for pottery products. Users select a category and
+      customize options (Size, Color, Shape, Text) with real-time price updates.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="arrow-left" viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </symbol>
+      <symbol id="arrow-right" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </symbol>
+      <symbol id="check" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+      <symbol id="chevron-down" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" />
+      </symbol>
+      <symbol id="chevron-right" viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6" />
+      </symbol>
+      <symbol id="shopping-cart" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path
+          d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+        />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>No customization feature exists</li>
+            <li>Users cannot personalize products</li>
+            <li>No price modifier system</li>
+            <li>No visual feedback for selections</li>
+            <li>Limited product variety</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN</h3>
+          <ul>
+            <li>Category selection (Mugs, Vases, Bowls, etc.)</li>
+            <li>Options grouped by type (Size, Color, Shape, Text)</li>
+            <li>Real-time price calculation with modifiers</li>
+            <li>Visual feedback for selected options</li>
+            <li>Clear price breakdown in summary</li>
+            <li>Mobile-optimized step-by-step flow</li>
+            <li>Desktop sidebar with live preview</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Step-by-step Wizard (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Step-by-step Wizard
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Progressive disclosure with 3 steps: Category selection, Options
+              customization, Review & Add to Cart. Progress indicator at top
+              guides users through the process.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <!-- Progress Stepper -->
+                <div class="progress-stepper">
+                  <div class="step">
+                    <div class="step-number active">1</div>
+                    <span class="step-label active">Category</span>
+                  </div>
+                  <div class="step-connector"></div>
+                  <div class="step">
+                    <div class="step-number">2</div>
+                    <span class="step-label">Options</span>
+                  </div>
+                  <div class="step-connector"></div>
+                  <div class="step">
+                    <div class="step-number">3</div>
+                    <span class="step-label">Review</span>
+                  </div>
+                </div>
+
+                <!-- Step 1: Category Selection -->
+                <div style="margin-bottom: 20px">
+                  <div class="option-group-title">Choose a Category</div>
+                  <div class="category-cards">
+                    <div class="category-card selected">
+                      <div class="category-icon pottery-1"></div>
+                      <div class="category-name">Mugs</div>
+                      <div class="category-price">From &#8377;450</div>
+                    </div>
+                    <div class="category-card">
+                      <div class="category-icon pottery-2"></div>
+                      <div class="category-name">Vases</div>
+                      <div class="category-price">From &#8377;850</div>
+                    </div>
+                    <div class="category-card">
+                      <div class="category-icon pottery-3"></div>
+                      <div class="category-name">Bowls</div>
+                      <div class="category-price">From &#8377;350</div>
+                    </div>
+                    <div class="category-card">
+                      <div class="category-icon pottery-4"></div>
+                      <div class="category-name">Plates</div>
+                      <div class="category-price">From &#8377;550</div>
+                    </div>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg btn-full">
+                  Continue
+                  <svg><use href="#arrow-right" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet (Step 2) -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Mugs
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <!-- Progress Stepper -->
+                <div class="progress-stepper" style="margin-bottom: 32px">
+                  <div class="step">
+                    <div class="step-number completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 3;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check" />
+                      </svg>
+                    </div>
+                    <span class="step-label">Category</span>
+                  </div>
+                  <div class="step-connector completed"></div>
+                  <div class="step">
+                    <div class="step-number active">2</div>
+                    <span class="step-label active">Options</span>
+                  </div>
+                  <div class="step-connector"></div>
+                  <div class="step">
+                    <div class="step-number">3</div>
+                    <span class="step-label">Review</span>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 200px;
+                    gap: 24px;
+                  "
+                >
+                  <div>
+                    <!-- Size Options -->
+                    <div class="option-group">
+                      <div class="option-group-title">Size</div>
+                      <div class="option-chips">
+                        <div class="option-chip">Small (8oz)</div>
+                        <div class="option-chip selected">
+                          Medium (12oz)
+                          <span class="price-modifier">+&#8377;50</span>
+                        </div>
+                        <div class="option-chip">
+                          Large (16oz)
+                          <span class="price-modifier">+&#8377;100</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Color Options -->
+                    <div class="option-group">
+                      <div class="option-group-title">Color</div>
+                      <div class="color-swatches">
+                        <div class="color-swatch terracotta selected"></div>
+                        <div class="color-swatch sage"></div>
+                        <div class="color-swatch cream"></div>
+                        <div class="color-swatch charcoal"></div>
+                        <div class="color-swatch ocean"></div>
+                        <div class="color-swatch natural"></div>
+                      </div>
+                    </div>
+
+                    <!-- Shape Options -->
+                    <div class="option-group">
+                      <div class="option-group-title">Shape</div>
+                      <div class="option-chips">
+                        <div class="option-chip selected">Classic</div>
+                        <div class="option-chip">
+                          Tapered <span class="price-modifier">+&#8377;75</span>
+                        </div>
+                        <div class="option-chip">
+                          Wide <span class="price-modifier">+&#8377;75</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Custom Text -->
+                    <div class="text-input-group">
+                      <label class="text-input-label"
+                        >Custom Text (Optional)</label
+                      >
+                      <input
+                        type="text"
+                        class="text-input"
+                        placeholder="Enter your text here..."
+                        maxlength="20"
+                      />
+                      <div class="char-count">
+                        0/20 characters
+                        <span class="price-modifier">+&#8377;150</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Preview -->
+                  <div class="preview-panel">
+                    <div class="preview-image pottery-1"></div>
+                    <div class="preview-label">Your Custom Mug</div>
+                    <div class="preview-text">
+                      Medium • Terracotta • Classic
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 24px">
+                  <button class="btn btn-secondary btn-md">
+                    <svg><use href="#arrow-left" /></svg>
+                    Back
+                  </button>
+                  <button class="btn btn-primary btn-md" style="flex: 1">
+                    Continue to Review
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop (Step 3) -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Mugs /
+                  Review
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <!-- Progress Stepper -->
+                <div class="progress-stepper" style="margin-bottom: 40px">
+                  <div class="step">
+                    <div class="step-number completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 3;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check" />
+                      </svg>
+                    </div>
+                    <span class="step-label">Category</span>
+                  </div>
+                  <div class="step-connector completed"></div>
+                  <div class="step">
+                    <div class="step-number completed">
+                      <svg
+                        style="
+                          width: 14px;
+                          height: 14px;
+                          stroke: white;
+                          stroke-width: 3;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check" />
+                      </svg>
+                    </div>
+                    <span class="step-label">Options</span>
+                  </div>
+                  <div class="step-connector completed"></div>
+                  <div class="step">
+                    <div class="step-number active">3</div>
+                    <span class="step-label active">Review</span>
+                  </div>
+                </div>
+
+                <div class="desktop-two-col">
+                  <div>
+                    <!-- Review Summary -->
+                    <div
+                      style="
+                        background: white;
+                        border-radius: 16px;
+                        padding: 24px;
+                      "
+                    >
+                      <div
+                        style="
+                          font-family:
+                            &quot;Plus Jakarta Sans&quot;, sans-serif;
+                          font-size: 16px;
+                          font-weight: 700;
+                          margin-bottom: 20px;
+                        "
+                      >
+                        Review Your Customization
+                      </div>
+
+                      <div
+                        style="
+                          display: grid;
+                          grid-template-columns: 180px 1fr;
+                          gap: 24px;
+                        "
+                      >
+                        <div class="preview-panel" style="margin-top: 0">
+                          <div class="preview-image pottery-1"></div>
+                        </div>
+
+                        <div>
+                          <div
+                            style="
+                              font-family:
+                                &quot;Plus Jakarta Sans&quot;, sans-serif;
+                              font-size: 18px;
+                              font-weight: 700;
+                              margin-bottom: 16px;
+                            "
+                          >
+                            Custom Mug
+                          </div>
+
+                          <div style="display: grid; gap: 12px">
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 12px 16px;
+                                background: #f5f5f4;
+                                border-radius: 8px;
+                              "
+                            >
+                              <span style="font-size: 13px; color: #737373"
+                                >Category</span
+                              >
+                              <span style="font-size: 13px; font-weight: 600"
+                                >Mug</span
+                              >
+                            </div>
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 12px 16px;
+                                background: #f5f5f4;
+                                border-radius: 8px;
+                              "
+                            >
+                              <span style="font-size: 13px; color: #737373"
+                                >Size</span
+                              >
+                              <span style="font-size: 13px; font-weight: 600"
+                                >Medium (12oz)
+                                <span style="color: #4f6f52"
+                                  >+&#8377;50</span
+                                ></span
+                              >
+                            </div>
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 12px 16px;
+                                background: #f5f5f4;
+                                border-radius: 8px;
+                              "
+                            >
+                              <span style="font-size: 13px; color: #737373"
+                                >Color</span
+                              >
+                              <span
+                                style="
+                                  font-size: 13px;
+                                  font-weight: 600;
+                                  display: flex;
+                                  align-items: center;
+                                  gap: 8px;
+                                "
+                              >
+                                <span
+                                  style="
+                                    width: 16px;
+                                    height: 16px;
+                                    border-radius: 50%;
+                                    background: #c4785a;
+                                  "
+                                ></span>
+                                Terracotta
+                              </span>
+                            </div>
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 12px 16px;
+                                background: #f5f5f4;
+                                border-radius: 8px;
+                              "
+                            >
+                              <span style="font-size: 13px; color: #737373"
+                                >Shape</span
+                              >
+                              <span style="font-size: 13px; font-weight: 600"
+                                >Classic</span
+                              >
+                            </div>
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 12px 16px;
+                                background: #f5f5f4;
+                                border-radius: 8px;
+                              "
+                            >
+                              <span style="font-size: 13px; color: #737373"
+                                >Custom Text</span
+                              >
+                              <span style="font-size: 13px; font-weight: 600"
+                                >"Morning Bliss"
+                                <span style="color: #4f6f52"
+                                  >+&#8377;150</span
+                                ></span
+                              >
+                            </div>
+                          </div>
+
+                          <button
+                            class="btn btn-ghost btn-sm"
+                            style="margin-top: 16px"
+                          >
+                            <svg style="width: 14px; height: 14px">
+                              <use href="#arrow-left" />
+                            </svg>
+                            Edit Options
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Price Summary Sidebar -->
+                  <div class="sticky-summary">
+                    <div class="price-summary">
+                      <div class="price-summary-title">Price Summary</div>
+
+                      <div class="price-row">
+                        <span class="label">Base Price (Mug)</span>
+                        <span class="value">&#8377;450</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Size (Medium)</span>
+                        <span class="modifier">+&#8377;50</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Color (Terracotta)</span>
+                        <span class="value">&#8377;0</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Shape (Classic)</span>
+                        <span class="value">&#8377;0</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Custom Text</span>
+                        <span class="modifier">+&#8377;150</span>
+                      </div>
+
+                      <div class="price-total">
+                        <span>Total</span>
+                        <span>&#8377;650</span>
+                      </div>
+                    </div>
+
+                    <button
+                      class="btn btn-primary btn-lg btn-full"
+                      style="margin-top: 16px"
+                    >
+                      <svg><use href="#shopping-cart" /></svg>
+                      Add to Cart
+                    </button>
+
+                    <p
+                      style="
+                        font-size: 11px;
+                        color: #737373;
+                        text-align: center;
+                        margin-top: 12px;
+                      "
+                    >
+                      Handcrafted in 5-7 business days
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: All-in-one Form -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">All-in-one Form</h3>
+            <p class="wf-option-desc">
+              Category tabs at top with all options visible at once. Collapsible
+              sections by type. Sticky summary sidebar on desktop shows
+              real-time price calculation.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content" style="padding-bottom: 0">
+                <!-- Category Tabs -->
+                <div class="category-tabs">
+                  <div class="category-tab active">Mugs</div>
+                  <div class="category-tab">Vases</div>
+                  <div class="category-tab">Bowls</div>
+                  <div class="category-tab">Plates</div>
+                </div>
+
+                <!-- Collapsible Sections -->
+                <div class="collapsible-section">
+                  <div class="collapsible-header">
+                    <span class="collapsible-title">Size</span>
+                    <span class="collapsible-value">Medium +&#8377;50</span>
+                  </div>
+                </div>
+
+                <div class="collapsible-section">
+                  <div class="collapsible-header">
+                    <span class="collapsible-title">Color</span>
+                    <div style="display: flex; align-items: center; gap: 8px">
+                      <span
+                        style="
+                          width: 20px;
+                          height: 20px;
+                          border-radius: 50%;
+                          background: #c4785a;
+                        "
+                      ></span>
+                      <span class="collapsible-value">Terracotta</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="collapsible-section">
+                  <div class="collapsible-header">
+                    <span class="collapsible-title">Shape</span>
+                    <span class="collapsible-value">Classic</span>
+                  </div>
+                  <div class="collapsible-content" style="padding-top: 12px">
+                    <div class="option-chips">
+                      <div class="option-chip selected">Classic</div>
+                      <div class="option-chip">
+                        Tapered <span class="price-modifier">+&#8377;75</span>
+                      </div>
+                      <div class="option-chip">
+                        Wide <span class="price-modifier">+&#8377;75</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="collapsible-section">
+                  <div class="collapsible-header">
+                    <span class="collapsible-title">Custom Text</span>
+                    <span class="collapsible-value">Optional +&#8377;150</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky Footer -->
+              <div class="mobile-sticky-footer">
+                <div class="footer-price">
+                  <div class="footer-price-label">Total</div>
+                  <div class="footer-price-value">&#8377;500</div>
+                </div>
+                <button class="btn btn-primary btn-md">
+                  <svg><use href="#shopping-cart" /></svg>
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs"><a href="#">Home</a> / Customize</div>
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <!-- Category Tabs -->
+                <div class="category-tabs">
+                  <div class="category-tab active">Mugs</div>
+                  <div class="category-tab">Vases</div>
+                  <div class="category-tab">Bowls</div>
+                  <div class="category-tab">Plates</div>
+                  <div class="category-tab">Planters</div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 220px;
+                    gap: 24px;
+                  "
+                >
+                  <div>
+                    <!-- All Options Visible -->
+                    <div class="option-group">
+                      <div class="option-group-title">Size</div>
+                      <div class="option-chips">
+                        <div class="option-chip">Small (8oz)</div>
+                        <div class="option-chip selected">
+                          Medium (12oz)
+                          <span class="price-modifier">+&#8377;50</span>
+                        </div>
+                        <div class="option-chip">
+                          Large (16oz)
+                          <span class="price-modifier">+&#8377;100</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="option-group">
+                      <div class="option-group-title">Color</div>
+                      <div class="color-swatches">
+                        <div class="color-swatch terracotta selected"></div>
+                        <div class="color-swatch sage"></div>
+                        <div class="color-swatch cream"></div>
+                        <div class="color-swatch charcoal"></div>
+                        <div class="color-swatch ocean"></div>
+                      </div>
+                    </div>
+
+                    <div class="option-group">
+                      <div class="option-group-title">Shape</div>
+                      <div class="option-chips">
+                        <div class="option-chip selected">Classic</div>
+                        <div class="option-chip">
+                          Tapered <span class="price-modifier">+&#8377;75</span>
+                        </div>
+                        <div class="option-chip">
+                          Wide <span class="price-modifier">+&#8377;75</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-input-group">
+                      <label class="text-input-label"
+                        >Custom Text (Optional)
+                        <span style="color: #4f6f52; font-weight: 400"
+                          >+&#8377;150</span
+                        ></label
+                      >
+                      <input
+                        type="text"
+                        class="text-input"
+                        placeholder="Enter your text..."
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Sticky Summary -->
+                  <div>
+                    <div class="price-summary" style="margin-top: 0">
+                      <div class="price-summary-title">Summary</div>
+                      <div class="price-row">
+                        <span class="label">Base</span>
+                        <span class="value">&#8377;450</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Size</span>
+                        <span class="modifier">+&#8377;50</span>
+                      </div>
+                      <div class="price-total">
+                        <span>Total</span>
+                        <span>&#8377;500</span>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn-primary btn-lg btn-full"
+                      style="margin-top: 12px"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / Customize Your Pottery
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+                <p
+                  style="
+                    color: #737373;
+                    font-size: 14px;
+                    margin-top: 8px;
+                    max-width: 500px;
+                  "
+                >
+                  Design your perfect piece. Select a category and customize
+                  every detail.
+                </p>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="desktop-two-col">
+                  <div>
+                    <!-- Category Tabs -->
+                    <div class="category-tabs">
+                      <div class="category-tab active">Mugs</div>
+                      <div class="category-tab">Vases</div>
+                      <div class="category-tab">Bowls</div>
+                      <div class="category-tab">Plates</div>
+                      <div class="category-tab">Planters</div>
+                      <div class="category-tab">Cups</div>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 32px;
+                      "
+                    >
+                      <div>
+                        <div class="option-group">
+                          <div class="option-group-title">Size</div>
+                          <div class="option-chips">
+                            <div class="option-chip">Small (8oz)</div>
+                            <div class="option-chip selected">
+                              Medium (12oz)
+                              <span class="price-modifier">+&#8377;50</span>
+                            </div>
+                            <div class="option-chip">
+                              Large (16oz)
+                              <span class="price-modifier">+&#8377;100</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="option-group">
+                          <div class="option-group-title">Shape</div>
+                          <div class="option-chips">
+                            <div class="option-chip selected">Classic</div>
+                            <div class="option-chip">
+                              Tapered
+                              <span class="price-modifier">+&#8377;75</span>
+                            </div>
+                            <div class="option-chip">
+                              Wide
+                              <span class="price-modifier">+&#8377;75</span>
+                            </div>
+                            <div class="option-chip">
+                              Curved
+                              <span class="price-modifier">+&#8377;100</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="option-group">
+                          <div class="option-group-title">Color</div>
+                          <div class="color-swatches">
+                            <div class="color-swatch terracotta selected"></div>
+                            <div class="color-swatch sage"></div>
+                            <div class="color-swatch cream"></div>
+                            <div class="color-swatch charcoal"></div>
+                            <div class="color-swatch ocean"></div>
+                            <div class="color-swatch natural"></div>
+                          </div>
+                        </div>
+
+                        <div class="text-input-group">
+                          <label class="text-input-label"
+                            >Custom Text (Optional)
+                            <span style="color: #4f6f52; font-weight: 400"
+                              >+&#8377;150</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="text-input"
+                            placeholder="Enter your personalized text..."
+                          />
+                          <div class="char-count">0/20 characters</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sticky Summary Sidebar -->
+                  <div class="sticky-summary">
+                    <div class="preview-panel" style="margin-bottom: 16px">
+                      <div class="preview-image pottery-1"></div>
+                      <div class="preview-text">Medium Mug • Terracotta</div>
+                    </div>
+
+                    <div class="price-summary">
+                      <div class="price-summary-title">Price Summary</div>
+                      <div class="price-row">
+                        <span class="label">Base Price</span>
+                        <span class="value">&#8377;450</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Size (Medium)</span>
+                        <span class="modifier">+&#8377;50</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Color</span>
+                        <span class="value">&#8377;0</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Shape</span>
+                        <span class="value">&#8377;0</span>
+                      </div>
+                      <div class="price-total">
+                        <span>Total</span>
+                        <span>&#8377;500</span>
+                      </div>
+                    </div>
+
+                    <button
+                      class="btn btn-primary btn-lg btn-full"
+                      style="margin-top: 16px"
+                    >
+                      <svg><use href="#shopping-cart" /></svg>
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Visual Builder -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Visual Builder</h3>
+            <p class="wf-option-desc">
+              Large product preview in center with options as floating panels
+              around it. Real-time visual feedback for a more immersive,
+              interactive customization experience.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Build Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <!-- Central Preview -->
+                <div style="text-align: center; margin-bottom: 24px">
+                  <div
+                    class="preview-image pottery-1"
+                    style="width: 180px; height: 180px; margin: 0 auto 16px"
+                  ></div>
+                  <div
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 18px;
+                      font-weight: 700;
+                    "
+                  >
+                    &#8377;650
+                  </div>
+                  <div style="font-size: 12px; color: #737373">
+                    Mug • Medium • Terracotta
+                  </div>
+                </div>
+
+                <!-- Category Selector -->
+                <div
+                  style="
+                    display: flex;
+                    gap: 8px;
+                    overflow-x: auto;
+                    margin-bottom: 20px;
+                    padding-bottom: 4px;
+                  "
+                >
+                  <div
+                    style="
+                      min-width: 64px;
+                      padding: 8px;
+                      background: #e8ece8;
+                      border-radius: 8px;
+                      text-align: center;
+                      border: 2px solid #4f6f52;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        margin: 0 auto 4px;
+                        background: linear-gradient(135deg, #e8ddd4, #d4c4b0);
+                      "
+                    ></div>
+                    <div style="font-size: 10px; font-weight: 600">Mug</div>
+                  </div>
+                  <div
+                    style="
+                      min-width: 64px;
+                      padding: 8px;
+                      background: white;
+                      border-radius: 8px;
+                      text-align: center;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        margin: 0 auto 4px;
+                        background: linear-gradient(135deg, #d9e8d9, #b8d4b8);
+                      "
+                    ></div>
+                    <div style="font-size: 10px; font-weight: 600">Vase</div>
+                  </div>
+                  <div
+                    style="
+                      min-width: 64px;
+                      padding: 8px;
+                      background: white;
+                      border-radius: 8px;
+                      text-align: center;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        margin: 0 auto 4px;
+                        background: linear-gradient(135deg, #e8e0d4, #c4a882);
+                      "
+                    ></div>
+                    <div style="font-size: 10px; font-weight: 600">Bowl</div>
+                  </div>
+                  <div
+                    style="
+                      min-width: 64px;
+                      padding: 8px;
+                      background: white;
+                      border-radius: 8px;
+                      text-align: center;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        margin: 0 auto 4px;
+                        background: linear-gradient(135deg, #dde4e8, #b0c4d4);
+                      "
+                    ></div>
+                    <div style="font-size: 10px; font-weight: 600">Plate</div>
+                  </div>
+                </div>
+
+                <!-- Quick Options -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 8px;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <div
+                    style="
+                      text-align: center;
+                      padding: 12px 8px;
+                      background: white;
+                      border-radius: 8px;
+                      border: 2px solid #4f6f52;
+                    "
+                  >
+                    <div
+                      style="
+                        font-size: 11px;
+                        color: #737373;
+                        margin-bottom: 4px;
+                      "
+                    >
+                      Size
+                    </div>
+                    <div style="font-size: 12px; font-weight: 600">M</div>
+                  </div>
+                  <div
+                    style="
+                      text-align: center;
+                      padding: 12px 8px;
+                      background: white;
+                      border-radius: 8px;
+                    "
+                  >
+                    <div
+                      style="
+                        font-size: 11px;
+                        color: #737373;
+                        margin-bottom: 4px;
+                      "
+                    >
+                      Color
+                    </div>
+                    <div
+                      style="
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        background: #c4785a;
+                        margin: 0 auto;
+                      "
+                    ></div>
+                  </div>
+                  <div
+                    style="
+                      text-align: center;
+                      padding: 12px 8px;
+                      background: white;
+                      border-radius: 8px;
+                    "
+                  >
+                    <div
+                      style="
+                        font-size: 11px;
+                        color: #737373;
+                        margin-bottom: 4px;
+                      "
+                    >
+                      Shape
+                    </div>
+                    <div style="font-size: 12px; font-weight: 600">Classic</div>
+                  </div>
+                  <div
+                    style="
+                      text-align: center;
+                      padding: 12px 8px;
+                      background: white;
+                      border-radius: 8px;
+                    "
+                  >
+                    <div
+                      style="
+                        font-size: 11px;
+                        color: #737373;
+                        margin-bottom: 4px;
+                      "
+                    >
+                      Text
+                    </div>
+                    <div style="font-size: 12px; font-weight: 600">Abc</div>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg btn-full">
+                  <svg><use href="#shopping-cart" /></svg>
+                  Add to Cart - &#8377;650
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / Build Your Pottery
+                </div>
+                <div class="page-title">Build Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <!-- Left: Preview -->
+                  <div style="text-align: center">
+                    <div
+                      class="preview-image pottery-1"
+                      style="width: 200px; height: 200px; margin: 0 auto 16px"
+                    ></div>
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 24px;
+                        font-weight: 700;
+                        margin-bottom: 8px;
+                      "
+                    >
+                      &#8377;650
+                    </div>
+                    <div style="font-size: 13px; color: #737373">
+                      Mug • Medium • Terracotta • Classic
+                    </div>
+
+                    <button
+                      class="btn btn-primary btn-lg"
+                      style="margin-top: 24px; width: 200px"
+                    >
+                      <svg><use href="#shopping-cart" /></svg>
+                      Add to Cart
+                    </button>
+                  </div>
+
+                  <!-- Right: Options -->
+                  <div>
+                    <!-- Category Pills -->
+                    <div
+                      style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                        margin-bottom: 20px;
+                      "
+                    >
+                      <div class="option-chip selected">Mug</div>
+                      <div class="option-chip">Vase</div>
+                      <div class="option-chip">Bowl</div>
+                      <div class="option-chip">Plate</div>
+                    </div>
+
+                    <div class="option-group">
+                      <div class="option-group-title">Size</div>
+                      <div class="option-chips">
+                        <div class="option-chip">S</div>
+                        <div class="option-chip selected">
+                          M <span class="price-modifier">+&#8377;50</span>
+                        </div>
+                        <div class="option-chip">
+                          L <span class="price-modifier">+&#8377;100</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="option-group">
+                      <div class="option-group-title">Color</div>
+                      <div class="color-swatches">
+                        <div class="color-swatch terracotta selected"></div>
+                        <div class="color-swatch sage"></div>
+                        <div class="color-swatch cream"></div>
+                        <div class="color-swatch charcoal"></div>
+                      </div>
+                    </div>
+
+                    <div class="option-group">
+                      <div class="option-group-title">Shape</div>
+                      <div class="option-chips">
+                        <div class="option-chip selected">Classic</div>
+                        <div class="option-chip">Tapered</div>
+                        <div class="option-chip">Wide</div>
+                      </div>
+                    </div>
+
+                    <div class="text-input-group">
+                      <label class="text-input-label">Add Text</label>
+                      <input
+                        type="text"
+                        class="text-input"
+                        placeholder="Your text here..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / Build Your Pottery
+                </div>
+                <div class="page-title">Build Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="desktop-three-col">
+                  <!-- Left Panel: Categories -->
+                  <div>
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 12px;
+                        font-weight: 700;
+                        color: #999;
+                        letter-spacing: 1px;
+                        text-transform: uppercase;
+                        margin-bottom: 12px;
+                      "
+                    >
+                      Category
+                    </div>
+                    <div
+                      style="display: flex; flex-direction: column; gap: 8px"
+                    >
+                      <div
+                        style="
+                          padding: 12px 16px;
+                          background: #e8ece8;
+                          border-radius: 8px;
+                          display: flex;
+                          align-items: center;
+                          gap: 12px;
+                          border: 2px solid #4f6f52;
+                          cursor: pointer;
+                        "
+                      >
+                        <div
+                          style="
+                            width: 32px;
+                            height: 32px;
+                            border-radius: 50%;
+                            background: linear-gradient(
+                              135deg,
+                              #e8ddd4,
+                              #d4c4b0
+                            );
+                          "
+                        ></div>
+                        <div>
+                          <div style="font-size: 13px; font-weight: 600">
+                            Mugs
+                          </div>
+                          <div style="font-size: 11px; color: #737373">
+                            From &#8377;450
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style="
+                          padding: 12px 16px;
+                          background: white;
+                          border-radius: 8px;
+                          display: flex;
+                          align-items: center;
+                          gap: 12px;
+                          cursor: pointer;
+                        "
+                      >
+                        <div
+                          style="
+                            width: 32px;
+                            height: 32px;
+                            border-radius: 50%;
+                            background: linear-gradient(
+                              135deg,
+                              #d9e8d9,
+                              #b8d4b8
+                            );
+                          "
+                        ></div>
+                        <div>
+                          <div style="font-size: 13px; font-weight: 600">
+                            Vases
+                          </div>
+                          <div style="font-size: 11px; color: #737373">
+                            From &#8377;850
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        style="
+                          padding: 12px 16px;
+                          background: white;
+                          border-radius: 8px;
+                          display: flex;
+                          align-items: center;
+                          gap: 12px;
+                          cursor: pointer;
+                        "
+                      >
+                        <div
+                          style="
+                            width: 32px;
+                            height: 32px;
+                            border-radius: 50%;
+                            background: linear-gradient(
+                              135deg,
+                              #e8e0d4,
+                              #c4a882
+                            );
+                          "
+                        ></div>
+                        <div>
+                          <div style="font-size: 13px; font-weight: 600">
+                            Bowls
+                          </div>
+                          <div style="font-size: 11px; color: #737373">
+                            From &#8377;350
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Center: Preview + Options -->
+                  <div style="text-align: center">
+                    <div
+                      class="preview-image pottery-1"
+                      style="width: 240px; height: 240px; margin: 0 auto 24px"
+                    ></div>
+
+                    <!-- Options as pills below -->
+                    <div
+                      style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        gap: 12px;
+                        margin-bottom: 24px;
+                      "
+                    >
+                      <div
+                        style="
+                          background: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          font-size: 12px;
+                        "
+                      >
+                        <span style="color: #737373">Size:</span>
+                        <span style="font-weight: 600; margin-left: 4px"
+                          >Medium</span
+                        >
+                      </div>
+                      <div
+                        style="
+                          background: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          font-size: 12px;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                        "
+                      >
+                        <span style="color: #737373">Color:</span>
+                        <span
+                          style="
+                            width: 16px;
+                            height: 16px;
+                            border-radius: 50%;
+                            background: #c4785a;
+                          "
+                        ></span>
+                      </div>
+                      <div
+                        style="
+                          background: white;
+                          padding: 8px 16px;
+                          border-radius: 20px;
+                          font-size: 12px;
+                        "
+                      >
+                        <span style="color: #737373">Shape:</span>
+                        <span style="font-weight: 600; margin-left: 4px"
+                          >Classic</span
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 16px;
+                        text-align: left;
+                        max-width: 400px;
+                        margin: 0 auto;
+                      "
+                    >
+                      <div class="option-group">
+                        <div class="option-group-title">Size</div>
+                        <div class="option-chips">
+                          <div class="option-chip">S</div>
+                          <div class="option-chip selected">M</div>
+                          <div class="option-chip">L</div>
+                        </div>
+                      </div>
+                      <div class="option-group">
+                        <div class="option-group-title">Shape</div>
+                        <div class="option-chips">
+                          <div class="option-chip selected">Classic</div>
+                          <div class="option-chip">Tapered</div>
+                        </div>
+                      </div>
+                      <div class="option-group" style="grid-column: span 2">
+                        <div class="option-group-title">Color</div>
+                        <div class="color-swatches">
+                          <div class="color-swatch terracotta selected"></div>
+                          <div class="color-swatch sage"></div>
+                          <div class="color-swatch cream"></div>
+                          <div class="color-swatch charcoal"></div>
+                          <div class="color-swatch ocean"></div>
+                          <div class="color-swatch natural"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right Panel: Summary -->
+                  <div>
+                    <div class="price-summary" style="margin-top: 0">
+                      <div class="price-summary-title">Your Design</div>
+
+                      <div class="price-row">
+                        <span class="label">Base (Mug)</span>
+                        <span class="value">&#8377;450</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Size (Medium)</span>
+                        <span class="modifier">+&#8377;50</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Custom Text</span>
+                        <span class="modifier">+&#8377;150</span>
+                      </div>
+
+                      <div class="price-total">
+                        <span>Total</span>
+                        <span>&#8377;650</span>
+                      </div>
+                    </div>
+
+                    <div class="text-input-group" style="margin-top: 16px">
+                      <label class="text-input-label">Custom Text</label>
+                      <input
+                        type="text"
+                        class="text-input"
+                        value="Morning Bliss"
+                      />
+                    </div>
+
+                    <button
+                      class="btn btn-primary btn-lg btn-full"
+                      style="margin-top: 16px"
+                    >
+                      <svg><use href="#shopping-cart" /></svg>
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Compact Card-based -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Compact Card-based</h3>
+            <p class="wf-option-desc">
+              Category dropdown with option cards in a grid. Minimal, focused
+              design for quick selection. Best for users who want a streamlined,
+              efficient customization process.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Customize</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <!-- Category Dropdown -->
+                <div style="margin-bottom: 20px">
+                  <label
+                    style="
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: #737373;
+                      display: block;
+                      margin-bottom: 8px;
+                    "
+                    >Category</label
+                  >
+                  <div
+                    style="
+                      background: white;
+                      border: 1px solid #e5e5e5;
+                      border-radius: 8px;
+                      padding: 12px 16px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <span style="font-size: 14px; font-weight: 500">Mugs</span>
+                    <svg
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        stroke: #999;
+                        stroke-width: 2;
+                        fill: none;
+                      "
+                    >
+                      <use href="#chevron-down" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Option Cards -->
+                <div class="option-card-grid">
+                  <div class="option-card selected">
+                    <div class="option-card-title">Small</div>
+                    <div class="option-card-price">8oz</div>
+                  </div>
+                  <div class="option-card">
+                    <div class="option-card-title">Medium</div>
+                    <div class="option-card-price">12oz +&#8377;50</div>
+                  </div>
+                  <div class="option-card">
+                    <div class="option-card-title">Large</div>
+                    <div class="option-card-price">16oz +&#8377;100</div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 16px">
+                  <label
+                    style="
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: #737373;
+                      display: block;
+                      margin-bottom: 8px;
+                    "
+                    >Color</label
+                  >
+                  <div class="color-swatches">
+                    <div class="color-swatch terracotta selected"></div>
+                    <div class="color-swatch sage"></div>
+                    <div class="color-swatch cream"></div>
+                    <div class="color-swatch charcoal"></div>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 16px;
+                    margin-top: 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                  "
+                >
+                  <div>
+                    <div style="font-size: 12px; color: #737373">Total</div>
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 20px;
+                        font-weight: 700;
+                      "
+                    >
+                      &#8377;450
+                    </div>
+                  </div>
+                  <button class="btn btn-primary btn-md">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs"><a href="#">Home</a> / Customize</div>
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 200px 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <!-- Left: Category + Summary -->
+                  <div>
+                    <div style="margin-bottom: 20px">
+                      <label
+                        style="
+                          font-size: 12px;
+                          font-weight: 600;
+                          color: #737373;
+                          display: block;
+                          margin-bottom: 8px;
+                        "
+                        >Category</label
+                      >
+                      <div
+                        style="
+                          background: white;
+                          border: 1px solid #e5e5e5;
+                          border-radius: 8px;
+                          padding: 12px 16px;
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                        "
+                      >
+                        <span style="font-size: 14px; font-weight: 500"
+                          >Mugs</span
+                        >
+                        <svg
+                          style="
+                            width: 16px;
+                            height: 16px;
+                            stroke: #999;
+                            stroke-width: 2;
+                            fill: none;
+                          "
+                        >
+                          <use href="#chevron-down" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="price-summary" style="margin-top: 0">
+                      <div class="price-summary-title">Total</div>
+                      <div
+                        class="price-total"
+                        style="border-top: none; padding-top: 0; margin-top: 0"
+                      >
+                        <span></span>
+                        <span>&#8377;500</span>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn-primary btn-lg btn-full"
+                      style="margin-top: 12px"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+
+                  <!-- Right: Options -->
+                  <div>
+                    <div style="margin-bottom: 20px">
+                      <label
+                        style="
+                          font-size: 12px;
+                          font-weight: 600;
+                          color: #737373;
+                          display: block;
+                          margin-bottom: 12px;
+                        "
+                        >Size</label
+                      >
+                      <div
+                        style="
+                          display: grid;
+                          grid-template-columns: repeat(3, 1fr);
+                          gap: 12px;
+                        "
+                      >
+                        <div class="option-card">
+                          <div class="option-card-title">Small</div>
+                          <div class="option-card-price">8oz</div>
+                        </div>
+                        <div class="option-card selected">
+                          <div class="option-card-title">Medium</div>
+                          <div class="option-card-price">12oz +&#8377;50</div>
+                        </div>
+                        <div class="option-card">
+                          <div class="option-card-title">Large</div>
+                          <div class="option-card-price">16oz +&#8377;100</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px">
+                      <label
+                        style="
+                          font-size: 12px;
+                          font-weight: 600;
+                          color: #737373;
+                          display: block;
+                          margin-bottom: 12px;
+                        "
+                        >Color</label
+                      >
+                      <div class="color-swatches">
+                        <div class="color-swatch terracotta selected"></div>
+                        <div class="color-swatch sage"></div>
+                        <div class="color-swatch cream"></div>
+                        <div class="color-swatch charcoal"></div>
+                        <div class="color-swatch ocean"></div>
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px">
+                      <label
+                        style="
+                          font-size: 12px;
+                          font-weight: 600;
+                          color: #737373;
+                          display: block;
+                          margin-bottom: 12px;
+                        "
+                        >Shape</label
+                      >
+                      <div
+                        style="
+                          display: grid;
+                          grid-template-columns: repeat(3, 1fr);
+                          gap: 12px;
+                        "
+                      >
+                        <div class="option-card selected">
+                          <div class="option-card-title">Classic</div>
+                        </div>
+                        <div class="option-card">
+                          <div class="option-card-title">Tapered</div>
+                          <div class="option-card-price">+&#8377;75</div>
+                        </div>
+                        <div class="option-card">
+                          <div class="option-card-title">Wide</div>
+                          <div class="option-card-price">+&#8377;75</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / Customize Your Pottery
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+                <div class="page-title-underline"></div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="desktop-two-col">
+                  <div>
+                    <!-- Category Row -->
+                    <div style="display: flex; gap: 12px; margin-bottom: 32px">
+                      <div
+                        style="
+                          flex: 1;
+                          background: white;
+                          border: 1px solid #e5e5e5;
+                          border-radius: 8px;
+                          padding: 12px 16px;
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                        "
+                      >
+                        <span style="font-size: 14px; font-weight: 500"
+                          >Mugs</span
+                        >
+                        <svg
+                          style="
+                            width: 16px;
+                            height: 16px;
+                            stroke: #999;
+                            stroke-width: 2;
+                            fill: none;
+                          "
+                        >
+                          <use href="#chevron-down" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <!-- Options in Grid -->
+                    <div
+                      style="
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 32px;
+                      "
+                    >
+                      <div>
+                        <label
+                          style="
+                            font-size: 12px;
+                            font-weight: 700;
+                            color: #1a1a1a;
+                            display: block;
+                            margin-bottom: 12px;
+                          "
+                          >Size</label
+                        >
+                        <div
+                          style="
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 12px;
+                          "
+                        >
+                          <div class="option-card">
+                            <div class="option-card-title">Small</div>
+                            <div class="option-card-price">8oz</div>
+                          </div>
+                          <div class="option-card selected">
+                            <div class="option-card-title">Medium</div>
+                            <div class="option-card-price">12oz +&#8377;50</div>
+                          </div>
+                          <div class="option-card">
+                            <div class="option-card-title">Large</div>
+                            <div class="option-card-price">
+                              16oz +&#8377;100
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label
+                          style="
+                            font-size: 12px;
+                            font-weight: 700;
+                            color: #1a1a1a;
+                            display: block;
+                            margin-bottom: 12px;
+                          "
+                          >Shape</label
+                        >
+                        <div
+                          style="
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 12px;
+                          "
+                        >
+                          <div class="option-card selected">
+                            <div class="option-card-title">Classic</div>
+                          </div>
+                          <div class="option-card">
+                            <div class="option-card-title">Tapered</div>
+                            <div class="option-card-price">+&#8377;75</div>
+                          </div>
+                          <div class="option-card">
+                            <div class="option-card-title">Wide</div>
+                            <div class="option-card-price">+&#8377;75</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label
+                          style="
+                            font-size: 12px;
+                            font-weight: 700;
+                            color: #1a1a1a;
+                            display: block;
+                            margin-bottom: 12px;
+                          "
+                          >Color</label
+                        >
+                        <div class="color-swatches">
+                          <div class="color-swatch terracotta selected"></div>
+                          <div class="color-swatch sage"></div>
+                          <div class="color-swatch cream"></div>
+                          <div class="color-swatch charcoal"></div>
+                          <div class="color-swatch ocean"></div>
+                          <div class="color-swatch natural"></div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label
+                          style="
+                            font-size: 12px;
+                            font-weight: 700;
+                            color: #1a1a1a;
+                            display: block;
+                            margin-bottom: 12px;
+                          "
+                          >Custom Text (Optional)</label
+                        >
+                        <input
+                          type="text"
+                          class="text-input"
+                          placeholder="Enter text..."
+                        />
+                        <div
+                          style="
+                            font-size: 11px;
+                            color: #4f6f52;
+                            margin-top: 4px;
+                          "
+                        >
+                          +&#8377;150 if added
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Summary Sidebar -->
+                  <div class="sticky-summary">
+                    <div class="preview-panel" style="margin-bottom: 16px">
+                      <div class="preview-image pottery-1"></div>
+                      <div class="preview-text">Custom Mug</div>
+                    </div>
+
+                    <div class="price-summary">
+                      <div class="price-summary-title">Summary</div>
+                      <div class="price-row">
+                        <span class="label">Base Price</span>
+                        <span class="value">&#8377;450</span>
+                      </div>
+                      <div class="price-row">
+                        <span class="label">Size: Medium</span>
+                        <span class="modifier">+&#8377;50</span>
+                      </div>
+                      <div class="price-total">
+                        <span>Total</span>
+                        <span>&#8377;500</span>
+                      </div>
+                    </div>
+
+                    <button
+                      class="btn btn-primary btn-lg btn-full"
+                      style="margin-top: 16px"
+                    >
+                      <svg><use href="#shopping-cart" /></svg>
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred customize page layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A -
+            Step-by-step Wizard</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B -
+            All-in-one Form</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Visual
+            Builder</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D - Compact
+            Card-based</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A -
+            Step-by-step Wizard</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B -
+            All-in-one Form</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Visual
+            Builder</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D - Compact
+            Card-based</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A -
+            Step-by-step Wizard</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            All-in-one Form</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Visual
+            Builder</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D - Compact
+            Card-based</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Customize Page):</strong><br /><br />
+      &bull; <strong>Page Header:</strong> Consistent with other pages -
+      breadcrumbs, title, underline accent<br />
+      &bull; <strong>Category Selection:</strong> Card or tab-based selection
+      for Mugs, Vases, Bowls, Plates, etc.<br />
+      &bull; <strong>Option Types:</strong> SIZE (chips), COLOR (swatches),
+      SHAPE (chips/cards), TEXT (input)<br />
+      &bull; <strong>Price Modifiers:</strong> Displayed as "+&#8377;X" badges
+      next to options<br />
+      &bull; <strong>Price Summary:</strong> Real-time calculation showing base
+      + modifiers = total<br />
+      &bull; <strong>Mobile:</strong> Step wizard (A) or collapsible sections
+      (B) with sticky footer CTA<br />
+      &bull; <strong>Desktop:</strong> Two-column layout with sticky summary
+      sidebar<br />
+      &bull; <strong>Database:</strong> CustomizationOption table with category,
+      type, name, value, price_modifier fields<br />
+      &bull; <strong>Files:</strong> src/features/customize/,
+      src/app/customize/page.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

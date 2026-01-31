@@ -1,0 +1,2766 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Customize Step 1: Category Selector - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Category Selector Styles */
+      .category-search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 0 16px;
+        height: 48px;
+        margin-bottom: 20px;
+        transition: all 0.15s;
+      }
+
+      .category-search:focus-within {
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      .category-search input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        background: transparent;
+      }
+
+      .category-search input::placeholder {
+        color: #999;
+      }
+
+      .category-search svg {
+        width: 20px;
+        height: 20px;
+        stroke: #999;
+        stroke-width: 2;
+        fill: none;
+        flex-shrink: 0;
+      }
+
+      .category-search .clear-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .category-search .clear-btn:hover {
+        background: #d4d4d4;
+      }
+
+      .category-search .clear-btn svg {
+        width: 12px;
+        height: 12px;
+        stroke: #666;
+      }
+
+      /* Category Grid */
+      .category-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .category-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .category-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .category-grid.cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      /* Category Card */
+      .category-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+      }
+
+      .category-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .category-card.selected {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .category-card.selected .category-check {
+        display: flex;
+      }
+
+      .category-card-image {
+        position: relative;
+        aspect-ratio: 1;
+        overflow: hidden;
+      }
+
+      .category-card-image .placeholder {
+        width: 100%;
+        height: 100%;
+      }
+
+      .category-check {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 24px;
+        height: 24px;
+        background: #4f6f52;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .category-check svg {
+        width: 14px;
+        height: 14px;
+        stroke: white;
+        stroke-width: 2.5;
+        fill: none;
+      }
+
+      .category-card-content {
+        padding: 12px;
+      }
+
+      .category-card-content.compact {
+        padding: 10px;
+      }
+
+      .category-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .category-meta {
+        font-size: 12px;
+        color: #737373;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .category-options-count {
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      .category-price-range {
+        color: #999;
+      }
+
+      /* Category List Item (Option B) */
+      .category-list-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: white;
+        border-radius: 12px;
+        padding: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+      }
+
+      .category-list-item:hover {
+        background: #fafaf9;
+      }
+
+      .category-list-item.selected {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .category-list-item .category-thumb {
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+
+      .category-list-item .category-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .category-list-item .category-name {
+        font-size: 15px;
+        margin-bottom: 2px;
+      }
+
+      .category-list-item .category-meta {
+        flex-direction: row;
+        gap: 8px;
+      }
+
+      .category-list-item .radio-indicator {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid #d4d4d4;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+      }
+
+      .category-list-item.selected .radio-indicator {
+        border-color: #4f6f52;
+        background: #4f6f52;
+      }
+
+      .category-list-item.selected .radio-indicator::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+      }
+
+      /* Category Pills (Option C) */
+      .category-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .category-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: white;
+        border-radius: 100px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 2px solid transparent;
+      }
+
+      .category-pill:hover {
+        background: #f5f5f4;
+      }
+
+      .category-pill.selected {
+        background: #e8ece8;
+        border-color: #4f6f52;
+        color: #4f6f52;
+      }
+
+      .category-pill .pill-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .category-preview-panel {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .category-preview-image {
+        aspect-ratio: 1;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+
+      .category-preview-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .category-preview-desc {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.5;
+        margin-bottom: 16px;
+      }
+
+      .category-preview-stats {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+      }
+
+      .preview-stat {
+        text-align: center;
+      }
+
+      .preview-stat-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .preview-stat-label {
+        font-size: 11px;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Visual Catalog Card (Option D) */
+      .catalog-card {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .catalog-card:hover {
+        transform: scale(1.02);
+      }
+
+      .catalog-card.selected {
+        box-shadow: 0 0 0 3px #4f6f52;
+      }
+
+      .catalog-card-image {
+        aspect-ratio: 4/5;
+      }
+
+      .catalog-card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.7) 0%,
+          transparent 50%
+        );
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 16px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .catalog-card:hover .catalog-card-overlay,
+      .catalog-card.selected .catalog-card-overlay {
+        opacity: 1;
+      }
+
+      .catalog-card-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 4px;
+      }
+
+      .catalog-card-meta {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* Sticky Continue Button */
+      .sticky-cta {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 16px;
+        border-top: 1px solid #f0f0f0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .sticky-cta .btn-continue {
+        width: 100%;
+        height: 52px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .sticky-cta .btn-continue:hover {
+        background: #3d5640;
+      }
+
+      .sticky-cta .btn-continue:disabled {
+        background: #d4d4d4;
+        cursor: not-allowed;
+      }
+
+      .sticky-cta .btn-continue svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Desktop Continue */
+      .desktop-cta {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 24px;
+        border-top: 1px solid #f0f0f0;
+        margin-top: 24px;
+      }
+
+      .desktop-cta .btn-continue {
+        height: 48px;
+        padding: 0 32px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .desktop-cta .btn-continue:hover {
+        background: #3d5640;
+      }
+
+      .desktop-cta .btn-continue svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Loading Skeleton */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 8px;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      .skeleton-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .skeleton-card .skeleton-image {
+        aspect-ratio: 1;
+      }
+
+      .skeleton-card .skeleton-content {
+        padding: 12px;
+      }
+
+      .skeleton-card .skeleton-title {
+        height: 16px;
+        width: 70%;
+        margin-bottom: 8px;
+      }
+
+      .skeleton-card .skeleton-text {
+        height: 12px;
+        width: 50%;
+      }
+
+      /* Load More Indicator */
+      .load-more-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        color: #999;
+        font-size: 13px;
+        gap: 8px;
+      }
+
+      .load-more-indicator .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #e5e5e5;
+        border-top-color: #4f6f52;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Filter Chips */
+      .filter-chips {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+
+      .filter-chip {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        background: #f5f5f4;
+        color: #666;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .filter-chip.active {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .filter-chip:hover:not(.active) {
+        background: #e8ece8;
+      }
+
+      /* Step Header */
+      .step-header {
+        margin-bottom: 24px;
+      }
+
+      .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .step-number {
+        width: 24px;
+        height: 24px;
+        background: #4f6f52;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      .step-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .step-subtitle {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      /* Results Count */
+      .results-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .results-count {
+        font-weight: 500;
+      }
+
+      .results-count span {
+        color: #1a1a1a;
+        font-weight: 600;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .page-header {
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .page-header.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-content {
+        padding: 16px;
+        padding-bottom: 80px;
+      }
+
+      .page-content.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-content.no-sticky {
+        padding-bottom: 24px;
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Two Panel Layout */
+      .two-panel-layout {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 24px;
+      }
+
+      /* Masonry Grid for Option D */
+      .masonry-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .masonry-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .masonry-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .catalog-card:nth-child(3n + 1) .catalog-card-image {
+        aspect-ratio: 4/5;
+      }
+
+      .catalog-card:nth-child(3n + 2) .catalog-card-image {
+        aspect-ratio: 1;
+      }
+
+      .catalog-card:nth-child(3n) .catalog-card-image {
+        aspect-ratio: 3/4;
+      }
+
+      /* Search Overlay for Option D */
+      .search-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.95) 0%,
+          transparent 100%
+        );
+        z-index: 10;
+      }
+
+      .search-overlay .category-search {
+        margin-bottom: 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Customize Step 1: Category Selector</h1>
+    <p class="subtitle">
+      First step of the customize page - Category selection component with
+      search and infinite scroll pagination. Mobile-first design supporting
+      large numbers of categories.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="search-icon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </symbol>
+      <symbol id="check-icon" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+      <symbol id="x-icon" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </symbol>
+      <symbol id="arrow-right" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </symbol>
+      <symbol id="chevron-right" viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>REQUIREMENTS</h3>
+          <ul>
+            <li>Support for MANY categories (scalable)</li>
+            <li>Search functionality to filter categories</li>
+            <li>Infinite scroll pagination</li>
+            <li>Mobile-first responsive design</li>
+            <li>Clear selected state</li>
+            <li>Show options count and price range per category</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>DESIGN GOALS</h3>
+          <ul>
+            <li>Fast search with real-time filtering</li>
+            <li>Lazy loading with skeleton states</li>
+            <li>Prominent selected state (green border)</li>
+            <li>Category image, name, options count</li>
+            <li>Base price range display</li>
+            <li>Sticky "Continue" button on mobile</li>
+            <li>Responsive grid layout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Grid with Search (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Grid with Search
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Search bar at top, categories in responsive grid (2 cols mobile, 3
+              cols tablet, 4 cols desktop). Cards with image, name, options
+              count. Load more on scroll. Sticky "Continue" button.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">What would you like to customize?</p>
+                </div>
+              </div>
+
+              <div class="page-content">
+                <div class="category-search">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search categories..." />
+                </div>
+
+                <div class="results-info">
+                  <span class="results-count"
+                    >Showing <span>12</span> categories</span
+                  >
+                </div>
+
+                <div class="category-grid cols-2">
+                  <div class="category-card selected">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-1"></div>
+                      <div class="category-check">
+                        <svg><use href="#check-icon" /></svg>
+                      </div>
+                    </div>
+                    <div class="category-card-content compact">
+                      <div class="category-name">Mugs</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">24 options</span>
+                        <span class="category-price-range">From Rs. 450</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-2"></div>
+                    </div>
+                    <div class="category-card-content compact">
+                      <div class="category-name">Bowls</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">18 options</span>
+                        <span class="category-price-range">From Rs. 650</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-3"></div>
+                    </div>
+                    <div class="category-card-content compact">
+                      <div class="category-name">Vases</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">15 options</span>
+                        <span class="category-price-range">From Rs. 850</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-4"></div>
+                    </div>
+                    <div class="category-card-content compact">
+                      <div class="category-name">Plates</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">20 options</span>
+                        <span class="category-price-range">From Rs. 550</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Skeleton Loading -->
+                  <div class="skeleton-card">
+                    <div class="skeleton skeleton-image"></div>
+                    <div class="skeleton-content">
+                      <div class="skeleton skeleton-title"></div>
+                      <div class="skeleton skeleton-text"></div>
+                    </div>
+                  </div>
+
+                  <div class="skeleton-card">
+                    <div class="skeleton skeleton-image"></div>
+                    <div class="skeleton-content">
+                      <div class="skeleton skeleton-title"></div>
+                      <div class="skeleton skeleton-text"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="load-more-indicator">
+                  <div class="spinner"></div>
+                  Loading more...
+                </div>
+              </div>
+
+              <div class="sticky-cta">
+                <button class="btn-continue">
+                  Continue
+                  <svg><use href="#arrow-right" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Select the pottery type you want to customize
+                  </p>
+                </div>
+              </div>
+
+              <div class="page-content no-sticky">
+                <div class="category-search">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search categories..." />
+                </div>
+
+                <div class="results-info">
+                  <span class="results-count"
+                    >Showing <span>12</span> of 48 categories</span
+                  >
+                </div>
+
+                <div class="category-grid cols-3">
+                  <div class="category-card selected">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-1"></div>
+                      <div class="category-check">
+                        <svg><use href="#check-icon" /></svg>
+                      </div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Mugs</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">24 options</span>
+                        <span class="category-price-range">From Rs. 450</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-2"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Bowls</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">18 options</span>
+                        <span class="category-price-range">From Rs. 650</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-3"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Vases</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">15 options</span>
+                        <span class="category-price-range">From Rs. 850</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-4"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Plates</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">20 options</span>
+                        <span class="category-price-range">From Rs. 550</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-5"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Planters</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">12 options</span>
+                        <span class="category-price-range">From Rs. 750</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-1"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Teapots</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">8 options</span>
+                        <span class="category-price-range">From Rs. 1,250</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="load-more-indicator">
+                  <div class="spinner"></div>
+                  Loading more...
+                </div>
+
+                <div class="desktop-cta">
+                  <button class="btn-continue">
+                    Continue
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Select the pottery type you want to customize. Browse our
+                    wide range of handcrafted categories.
+                  </p>
+                </div>
+              </div>
+
+              <div class="page-content desktop no-sticky">
+                <div
+                  style="
+                    display: flex;
+                    gap: 16px;
+                    margin-bottom: 20px;
+                    align-items: center;
+                  "
+                >
+                  <div
+                    class="category-search"
+                    style="flex: 1; max-width: 400px"
+                  >
+                    <svg><use href="#search-icon" /></svg>
+                    <input type="text" placeholder="Search categories..." />
+                  </div>
+                  <div class="results-info" style="margin-bottom: 0">
+                    <span class="results-count"
+                      >Showing <span>16</span> of 48 categories</span
+                    >
+                  </div>
+                </div>
+
+                <div class="category-grid cols-4">
+                  <div class="category-card selected">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-1"></div>
+                      <div class="category-check">
+                        <svg><use href="#check-icon" /></svg>
+                      </div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Mugs</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >24 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 450</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-2"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Bowls</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >18 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 650</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-3"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Vases</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >15 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 850</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-4"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Plates</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >20 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 550</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-5"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Planters</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >12 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 750</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-1"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Teapots</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >8 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 1,250</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-2"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Cups & Saucers</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >16 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 380</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="category-card">
+                    <div class="category-card-image">
+                      <div class="placeholder pottery-3"></div>
+                    </div>
+                    <div class="category-card-content">
+                      <div class="category-name">Serving Dishes</div>
+                      <div class="category-meta">
+                        <span class="category-options-count"
+                          >10 customization options</span
+                        >
+                        <span class="category-price-range">From Rs. 950</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="desktop-cta">
+                  <button class="btn-continue">
+                    Continue to Customize
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: List View with Filters -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">List View with Filters</h3>
+            <p class="wf-option-desc">
+              Search + filter chips at top. Categories as horizontal list items
+              with image on left, details on right. More compact and info-dense
+              layout.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                </div>
+              </div>
+
+              <div class="page-content">
+                <div class="category-search">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search categories..." />
+                </div>
+
+                <div class="filter-chips">
+                  <button class="filter-chip active">All</button>
+                  <button class="filter-chip">Drinkware</button>
+                  <button class="filter-chip">Tableware</button>
+                  <button class="filter-chip">Decor</button>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px">
+                  <div class="category-list-item selected">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Mugs</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">24 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 450</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Bowls</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">18 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 650</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Vases</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">15 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 850</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Plates</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">20 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 550</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+                </div>
+
+                <div class="load-more-indicator">
+                  <div class="spinner"></div>
+                  Loading more...
+                </div>
+              </div>
+
+              <div class="sticky-cta">
+                <button class="btn-continue">
+                  Continue
+                  <svg><use href="#arrow-right" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Select the pottery type you want to customize
+                  </p>
+                </div>
+              </div>
+
+              <div class="page-content no-sticky">
+                <div style="display: flex; gap: 12px; margin-bottom: 16px">
+                  <div class="category-search" style="flex: 1">
+                    <svg><use href="#search-icon" /></svg>
+                    <input type="text" placeholder="Search categories..." />
+                  </div>
+                </div>
+
+                <div class="filter-chips">
+                  <button class="filter-chip active">All</button>
+                  <button class="filter-chip">Drinkware</button>
+                  <button class="filter-chip">Tableware</button>
+                  <button class="filter-chip">Decor</button>
+                  <button class="filter-chip">Kitchen</button>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                  "
+                >
+                  <div class="category-list-item selected">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Mugs</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">24 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">Rs. 450+</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Bowls</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">18 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">Rs. 650+</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Vases</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">15 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">Rs. 850+</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Plates</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">20 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">Rs. 550+</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+                </div>
+
+                <div class="desktop-cta">
+                  <button class="btn-continue">
+                    Continue
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Select the pottery type you want to customize
+                  </p>
+                </div>
+              </div>
+
+              <div class="page-content desktop no-sticky">
+                <div
+                  style="
+                    display: flex;
+                    gap: 16px;
+                    margin-bottom: 20px;
+                    align-items: center;
+                  "
+                >
+                  <div class="category-search" style="width: 320px">
+                    <svg><use href="#search-icon" /></svg>
+                    <input type="text" placeholder="Search categories..." />
+                  </div>
+                  <div class="filter-chips" style="margin-bottom: 0; flex: 1">
+                    <button class="filter-chip active">All Categories</button>
+                    <button class="filter-chip">Drinkware</button>
+                    <button class="filter-chip">Tableware</button>
+                    <button class="filter-chip">Decor</button>
+                    <button class="filter-chip">Kitchen</button>
+                    <button class="filter-chip">Garden</button>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 12px;
+                  "
+                >
+                  <div class="category-list-item selected">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Mugs</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">24 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 450</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Bowls</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">18 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 650</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Vases</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">15 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 850</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Plates</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">20 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 550</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-5"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Planters</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">12 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 750</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+
+                  <div class="category-list-item">
+                    <div class="category-thumb">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="category-info">
+                      <div class="category-name">Teapots</div>
+                      <div class="category-meta">
+                        <span class="category-options-count">8 options</span>
+                        <span>|</span>
+                        <span class="category-price-range">From Rs. 1,250</span>
+                      </div>
+                    </div>
+                    <div class="radio-indicator"></div>
+                  </div>
+                </div>
+
+                <div class="desktop-cta">
+                  <button class="btn-continue">
+                    Continue to Customize
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Category Pills with Preview -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Category Pills with Preview</h3>
+            <p class="wf-option-desc">
+              Search bar with categories as pill chips. Selected category shows
+              preview panel below. Two-panel layout on desktop for quick
+              switching.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                </div>
+              </div>
+
+              <div class="page-content">
+                <div class="category-search">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search categories..." />
+                </div>
+
+                <div class="category-pills">
+                  <div class="category-pill selected">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Mugs
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Bowls
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Vases
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Plates
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-5"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Planters
+                  </div>
+                </div>
+
+                <div class="category-preview-panel">
+                  <div class="category-preview-image">
+                    <div
+                      class="placeholder pottery-1"
+                      style="width: 100%; height: 100%"
+                    ></div>
+                  </div>
+                  <h3 class="category-preview-name">Mugs</h3>
+                  <p class="category-preview-desc">
+                    Handcrafted ceramic mugs perfect for your morning coffee or
+                    evening tea. Customize with colors, glazes, and personal
+                    engravings.
+                  </p>
+                  <div class="category-preview-stats">
+                    <div class="preview-stat">
+                      <div class="preview-stat-value">24</div>
+                      <div class="preview-stat-label">Options</div>
+                    </div>
+                    <div class="preview-stat">
+                      <div class="preview-stat-value">Rs. 450</div>
+                      <div class="preview-stat-label">Starting</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sticky-cta">
+                <button class="btn-continue">
+                  Continue with Mugs
+                  <svg><use href="#arrow-right" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Select a category to see customization options
+                  </p>
+                </div>
+              </div>
+
+              <div class="page-content no-sticky">
+                <div class="category-search">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search categories..." />
+                </div>
+
+                <div class="category-pills" style="margin-bottom: 24px">
+                  <div class="category-pill selected">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Mugs
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Bowls
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Vases
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Plates
+                  </div>
+                  <div class="category-pill">
+                    <div class="pill-icon">
+                      <div
+                        class="placeholder pottery-5"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    Planters
+                  </div>
+                  <div class="category-pill">Teapots</div>
+                  <div class="category-pill">Cups</div>
+                </div>
+
+                <div
+                  class="category-preview-panel"
+                  style="
+                    display: grid;
+                    grid-template-columns: 200px 1fr;
+                    gap: 24px;
+                    text-align: left;
+                  "
+                >
+                  <div class="category-preview-image" style="margin-bottom: 0">
+                    <div
+                      class="placeholder pottery-1"
+                      style="width: 100%; height: 100%"
+                    ></div>
+                  </div>
+                  <div>
+                    <h3
+                      class="category-preview-name"
+                      style="margin-bottom: 8px"
+                    >
+                      Mugs
+                    </h3>
+                    <p
+                      class="category-preview-desc"
+                      style="margin-bottom: 16px"
+                    >
+                      Handcrafted ceramic mugs perfect for your morning coffee
+                      or evening tea. Customize with colors, glazes, and
+                      personal engravings.
+                    </p>
+                    <div
+                      class="category-preview-stats"
+                      style="justify-content: flex-start; gap: 32px"
+                    >
+                      <div class="preview-stat" style="text-align: left">
+                        <div class="preview-stat-value">24</div>
+                        <div class="preview-stat-label">Options</div>
+                      </div>
+                      <div class="preview-stat" style="text-align: left">
+                        <div class="preview-stat-value">Rs. 450</div>
+                        <div class="preview-stat-label">Starting From</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="desktop-cta">
+                  <button class="btn-continue">
+                    Continue with Mugs
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Select a category to see details and customization options
+                  </p>
+                </div>
+              </div>
+
+              <div class="page-content desktop no-sticky">
+                <div class="two-panel-layout">
+                  <div>
+                    <div class="category-search" style="margin-bottom: 16px">
+                      <svg><use href="#search-icon" /></svg>
+                      <input type="text" placeholder="Search categories..." />
+                    </div>
+
+                    <div class="category-pills" style="margin-bottom: 0">
+                      <div class="category-pill selected">
+                        <div class="pill-icon">
+                          <div
+                            class="placeholder pottery-1"
+                            style="width: 100%; height: 100%"
+                          ></div>
+                        </div>
+                        Mugs
+                      </div>
+                      <div class="category-pill">
+                        <div class="pill-icon">
+                          <div
+                            class="placeholder pottery-2"
+                            style="width: 100%; height: 100%"
+                          ></div>
+                        </div>
+                        Bowls
+                      </div>
+                      <div class="category-pill">
+                        <div class="pill-icon">
+                          <div
+                            class="placeholder pottery-3"
+                            style="width: 100%; height: 100%"
+                          ></div>
+                        </div>
+                        Vases
+                      </div>
+                      <div class="category-pill">
+                        <div class="pill-icon">
+                          <div
+                            class="placeholder pottery-4"
+                            style="width: 100%; height: 100%"
+                          ></div>
+                        </div>
+                        Plates
+                      </div>
+                      <div class="category-pill">
+                        <div class="pill-icon">
+                          <div
+                            class="placeholder pottery-5"
+                            style="width: 100%; height: 100%"
+                          ></div>
+                        </div>
+                        Planters
+                      </div>
+                      <div class="category-pill">Teapots</div>
+                      <div class="category-pill">Cups & Saucers</div>
+                      <div class="category-pill">Serving Dishes</div>
+                    </div>
+                  </div>
+
+                  <div class="category-preview-panel">
+                    <div class="category-preview-image">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <h3 class="category-preview-name">Mugs</h3>
+                    <p class="category-preview-desc">
+                      Handcrafted ceramic mugs perfect for your morning coffee
+                      or evening tea. Customize with colors, glazes, and
+                      personal engravings.
+                    </p>
+                    <div class="category-preview-stats">
+                      <div class="preview-stat">
+                        <div class="preview-stat-value">24</div>
+                        <div class="preview-stat-label">Options</div>
+                      </div>
+                      <div class="preview-stat">
+                        <div class="preview-stat-value">Rs. 450</div>
+                        <div class="preview-stat-label">Starting</div>
+                      </div>
+                    </div>
+                    <button
+                      class="btn-continue"
+                      style="width: 100%; margin-top: 20px"
+                    >
+                      Continue with Mugs
+                      <svg
+                        style="
+                          width: 18px;
+                          height: 18px;
+                          stroke: currentColor;
+                          stroke-width: 2;
+                          fill: none;
+                        "
+                      >
+                        <use href="#arrow-right" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Visual Catalog -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Visual Catalog</h3>
+            <p class="wf-option-desc">
+              Large image cards in masonry grid. Hover reveals details. Search
+              as floating overlay. Premium gallery feel with immersive visuals.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                </div>
+              </div>
+
+              <div class="page-content" style="position: relative">
+                <div class="category-search">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search categories..." />
+                </div>
+
+                <div class="masonry-grid cols-2">
+                  <div class="catalog-card selected">
+                    <div class="catalog-card-image">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay" style="opacity: 1">
+                      <div class="catalog-card-name">Mugs</div>
+                      <div class="catalog-card-meta">
+                        24 options | From Rs. 450
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 1">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Bowls</div>
+                      <div class="catalog-card-meta">
+                        18 options | From Rs. 650
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 3/4">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Vases</div>
+                      <div class="catalog-card-meta">
+                        15 options | From Rs. 850
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Plates</div>
+                      <div class="catalog-card-meta">
+                        20 options | From Rs. 550
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sticky-cta">
+                <button class="btn-continue">
+                  Continue with Mugs
+                  <svg><use href="#arrow-right" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Browse our visual catalog of pottery categories
+                  </p>
+                </div>
+              </div>
+
+              <div class="page-content no-sticky" style="position: relative">
+                <div class="category-search" style="max-width: 400px">
+                  <svg><use href="#search-icon" /></svg>
+                  <input type="text" placeholder="Search categories..." />
+                </div>
+
+                <div class="masonry-grid cols-3">
+                  <div class="catalog-card selected">
+                    <div class="catalog-card-image">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay" style="opacity: 1">
+                      <div class="catalog-card-name">Mugs</div>
+                      <div class="catalog-card-meta">
+                        24 options | From Rs. 450
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 1">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Bowls</div>
+                      <div class="catalog-card-meta">
+                        18 options | From Rs. 650
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 3/4">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Vases</div>
+                      <div class="catalog-card-meta">
+                        15 options | From Rs. 850
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Plates</div>
+                      <div class="catalog-card-meta">
+                        20 options | From Rs. 550
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 1">
+                      <div
+                        class="placeholder pottery-5"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Planters</div>
+                      <div class="catalog-card-meta">
+                        12 options | From Rs. 750
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 3/4">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Teapots</div>
+                      <div class="catalog-card-meta">
+                        8 options | From Rs. 1,250
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="desktop-cta">
+                  <button class="btn-continue">
+                    Continue with Mugs
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="step-header">
+                  <div class="step-indicator">
+                    <span class="step-number">1</span>
+                    <span>Step 1 of 3</span>
+                  </div>
+                  <h2 class="step-title">Choose Category</h2>
+                  <p class="step-subtitle">
+                    Browse our visual catalog and select a category to customize
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="page-content desktop no-sticky"
+                style="position: relative"
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <div class="category-search" style="width: 360px">
+                    <svg><use href="#search-icon" /></svg>
+                    <input type="text" placeholder="Search categories..." />
+                  </div>
+                  <div class="results-info" style="margin-bottom: 0">
+                    <span class="results-count"
+                      >Showing <span>12</span> of 48 categories</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 16px;
+                  "
+                >
+                  <div class="catalog-card selected">
+                    <div class="catalog-card-image">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay" style="opacity: 1">
+                      <div class="catalog-card-name">Mugs</div>
+                      <div class="catalog-card-meta">
+                        24 options | From Rs. 450
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 1">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Bowls</div>
+                      <div class="catalog-card-meta">
+                        18 options | From Rs. 650
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 3/4">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Vases</div>
+                      <div class="catalog-card-meta">
+                        15 options | From Rs. 850
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image">
+                      <div
+                        class="placeholder pottery-4"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Plates</div>
+                      <div class="catalog-card-meta">
+                        20 options | From Rs. 550
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 1">
+                      <div
+                        class="placeholder pottery-5"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Planters</div>
+                      <div class="catalog-card-meta">
+                        12 options | From Rs. 750
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 3/4">
+                      <div
+                        class="placeholder pottery-1"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Teapots</div>
+                      <div class="catalog-card-meta">
+                        8 options | From Rs. 1,250
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image">
+                      <div
+                        class="placeholder pottery-2"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Cups & Saucers</div>
+                      <div class="catalog-card-meta">
+                        16 options | From Rs. 380
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="catalog-card">
+                    <div class="catalog-card-image" style="aspect-ratio: 1">
+                      <div
+                        class="placeholder pottery-3"
+                        style="width: 100%; height: 100%"
+                      ></div>
+                    </div>
+                    <div class="catalog-card-overlay">
+                      <div class="catalog-card-name">Serving Dishes</div>
+                      <div class="catalog-card-meta">
+                        10 options | From Rs. 950
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="desktop-cta">
+                  <button class="btn-continue">
+                    Continue with Mugs
+                    <svg><use href="#arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">Approval Section</h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred category selector design for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A - Grid with
+            Search</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B - List
+            View</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Pills
+            with Preview</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D - Visual
+            Catalog</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A - Grid with
+            Search</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B - List
+            View</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Pills
+            with Preview</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D - Visual
+            Catalog</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A - Grid
+            with Search</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B - List
+            View</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Pills
+            with Preview</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D - Visual
+            Catalog</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong
+        >Implementation Specs (Customize Step 1 - Category Selector):</strong
+      ><br /><br />
+      &bull; <strong>Search:</strong> Real-time filtering with debounce (300ms),
+      clear button when text present<br />
+      &bull; <strong>Infinite Scroll:</strong> Intersection Observer to load
+      more categories (12 per batch)<br />
+      &bull; <strong>Skeleton Loading:</strong> Show skeleton cards while
+      loading more categories<br />
+      &bull; <strong>Selected State:</strong> Green border (#4F6F52) + subtle
+      green background (#f8faf8), checkmark icon<br />
+      &bull; <strong>Category Card Data:</strong> Image, name, options count,
+      base price range<br />
+      &bull; <strong>Mobile:</strong> 2-column grid, sticky "Continue" button at
+      bottom<br />
+      &bull; <strong>Tablet:</strong> 3-column grid, inline continue button<br />
+      &bull; <strong>Desktop:</strong> 4-column grid, inline continue button<br />
+      &bull; <strong>Accessibility:</strong> Keyboard navigation, focus states,
+      ARIA labels<br />
+      &bull;
+      <strong>Files:</strong>
+      src/features/customize/components/category-selector.tsx, category-card.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>

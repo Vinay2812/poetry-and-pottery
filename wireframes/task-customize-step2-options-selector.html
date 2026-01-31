@@ -1,0 +1,3169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Customize Step 2: Options Selector - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="_shared-styles.css" />
+    <style>
+      /* Selected Category Header */
+      .selected-category-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: #f8faf8;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        border: 1px solid #e8ece8;
+      }
+
+      .selected-category-header .back-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        flex-shrink: 0;
+      }
+
+      .selected-category-header .back-btn:hover {
+        background: #f5f5f4;
+        border-color: #4f6f52;
+      }
+
+      .selected-category-header .back-btn svg {
+        width: 18px;
+        height: 18px;
+        stroke: #666;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .selected-category-header .category-thumb {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+
+      .selected-category-header .category-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .selected-category-header .category-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .selected-category-header .category-base-price {
+        font-size: 13px;
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      .selected-category-header .change-link {
+        font-size: 13px;
+        color: #4f6f52;
+        text-decoration: none;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .selected-category-header .change-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Accordion Styles */
+      .options-accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .accordion-item {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #f0f0f0;
+      }
+
+      .accordion-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .accordion-header:hover {
+        background: #fafaf9;
+      }
+
+      .accordion-header .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .accordion-header .type-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #e8ece8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .accordion-header .type-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: #4f6f52;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .accordion-header .type-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .accordion-header .type-selected {
+        font-size: 13px;
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      .accordion-header .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .accordion-header .required-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: #fef3c7;
+        color: #d97706;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .accordion-header .chevron {
+        width: 20px;
+        height: 20px;
+        stroke: #999;
+        stroke-width: 2;
+        fill: none;
+        transition: transform 0.2s;
+      }
+
+      .accordion-item.open .accordion-header .chevron {
+        transform: rotate(180deg);
+      }
+
+      .accordion-content {
+        padding: 0 16px 16px;
+        display: none;
+      }
+
+      .accordion-item.open .accordion-content {
+        display: block;
+      }
+
+      /* Size Chips */
+      .size-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .size-chip {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 20px;
+        background: #f5f5f4;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 2px solid transparent;
+        min-width: 70px;
+      }
+
+      .size-chip:hover {
+        background: #e8ece8;
+      }
+
+      .size-chip.selected {
+        background: #e8ece8;
+        border-color: #4f6f52;
+      }
+
+      .size-chip .size-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .size-chip .size-name {
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .size-chip .size-modifier {
+        font-size: 11px;
+        color: #4f6f52;
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      /* Color Swatches */
+      .color-swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .color-swatch {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+
+      .color-swatch .swatch-circle {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        transition: all 0.15s;
+        position: relative;
+      }
+
+      .color-swatch:hover .swatch-circle {
+        transform: scale(1.1);
+      }
+
+      .color-swatch.selected .swatch-circle {
+        border-color: #4f6f52;
+      }
+
+      .color-swatch.selected .swatch-circle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 16px;
+        height: 16px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E")
+          center/contain no-repeat;
+      }
+
+      .color-swatch .swatch-name {
+        font-size: 11px;
+        color: #737373;
+        text-align: center;
+        max-width: 60px;
+      }
+
+      .color-swatch .swatch-modifier {
+        font-size: 10px;
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      /* Shape Image Chips */
+      .shape-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .shape-chip {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px;
+        background: #f5f5f4;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 2px solid transparent;
+        width: 90px;
+      }
+
+      .shape-chip:hover {
+        background: #e8ece8;
+      }
+
+      .shape-chip.selected {
+        background: #e8ece8;
+        border-color: #4f6f52;
+      }
+
+      .shape-chip .shape-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        overflow: hidden;
+      }
+
+      .shape-chip .shape-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .shape-chip .shape-modifier {
+        font-size: 11px;
+        color: #4f6f52;
+        font-weight: 500;
+        margin-top: 2px;
+      }
+
+      /* Text Input */
+      .text-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .text-input-group label {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .text-input-group input {
+        height: 48px;
+        padding: 0 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        transition: all 0.15s;
+      }
+
+      .text-input-group input:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      .text-input-group .char-count {
+        font-size: 12px;
+        color: #999;
+        text-align: right;
+      }
+
+      .text-input-group .text-modifier {
+        font-size: 12px;
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      /* Running Total Footer */
+      .running-total-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 16px;
+        border-top: 1px solid #f0f0f0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .running-total-footer .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .running-total-footer .total-label {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .running-total-footer .total-amount {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .running-total-footer .breakdown {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      .running-total-footer .btn-continue {
+        width: 100%;
+        height: 52px;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-family: "Outfit", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .running-total-footer .btn-continue:hover {
+        background: #3d5640;
+      }
+
+      .running-total-footer .btn-continue:disabled {
+        background: #d4d4d4;
+        cursor: not-allowed;
+      }
+
+      .running-total-footer .btn-continue svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      /* Tabs Navigation (Option B) */
+      .options-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #e5e5e5;
+        overflow-x: auto;
+      }
+
+      .options-tabs .tab {
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #999;
+        cursor: pointer;
+        white-space: nowrap;
+        border-bottom: 2px solid transparent;
+        transition: all 0.15s;
+      }
+
+      .options-tabs .tab:hover {
+        color: #666;
+      }
+
+      .options-tabs .tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      .options-tabs .tab .tab-check {
+        display: inline-flex;
+        width: 16px;
+        height: 16px;
+        background: #4f6f52;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        margin-left: 6px;
+        vertical-align: middle;
+      }
+
+      .options-tabs .tab .tab-check svg {
+        width: 10px;
+        height: 10px;
+        stroke: white;
+        stroke-width: 2.5;
+        fill: none;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Summary Sidebar (Option B Desktop) */
+      .summary-sidebar {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        border: 1px solid #f0f0f0;
+      }
+
+      .summary-sidebar .summary-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      .summary-sidebar .summary-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #f5f5f4;
+        font-size: 14px;
+      }
+
+      .summary-sidebar .summary-item:last-child {
+        border-bottom: none;
+      }
+
+      .summary-sidebar .summary-item .label {
+        color: #737373;
+      }
+
+      .summary-sidebar .summary-item .value {
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .summary-sidebar .summary-item .modifier {
+        color: #4f6f52;
+        font-size: 12px;
+      }
+
+      .summary-sidebar .summary-total {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 16px;
+        margin-top: 8px;
+        border-top: 2px solid #e5e5e5;
+      }
+
+      .summary-sidebar .summary-total .label {
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .summary-sidebar .summary-total .value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      /* Single Column Form (Option C) */
+      .options-form {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .form-section {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+      }
+
+      .form-section .section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .form-section .section-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #e8ece8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .form-section .section-icon svg {
+        width: 16px;
+        height: 16px;
+        stroke: #4f6f52;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .form-section .section-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .form-section .section-required {
+        font-size: 11px;
+        color: #d97706;
+        margin-left: auto;
+      }
+
+      /* Split View (Option D) */
+      .split-view {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .preview-panel {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        position: sticky;
+        top: 24px;
+        height: fit-content;
+      }
+
+      .preview-panel .preview-image {
+        aspect-ratio: 1;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .preview-panel .preview-labels {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .preview-panel .preview-label {
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .preview-panel .preview-summary {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .preview-panel .preview-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+      }
+
+      .preview-panel .preview-row .label {
+        color: #737373;
+      }
+
+      .preview-panel .preview-row .value {
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      /* Demo Layout */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+        margin-top: 40px;
+      }
+
+      .option-section {
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 48px;
+      }
+
+      .option-section:last-child {
+        border-bottom: none;
+      }
+
+      .option-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .option-letter {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #4f6f52;
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .viewport-grid {
+        display: grid;
+        grid-template-columns: 375px 500px 1fr;
+        gap: 32px;
+        margin-top: 24px;
+      }
+
+      .viewport-box {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .viewport-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .viewport-label .size {
+        font-weight: 500;
+        color: #bbb;
+      }
+
+      /* Page Frame */
+      .page-frame {
+        background: #fafaf9;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .page-header {
+        padding: 16px;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .page-header.desktop {
+        padding: 24px 32px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .page-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-top: 8px;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      .page-content {
+        padding: 16px;
+        padding-bottom: 140px;
+      }
+
+      .page-content.desktop {
+        padding: 24px 32px;
+        padding-bottom: 32px;
+      }
+
+      /* Step Indicator */
+      .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .step-indicator .step {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #999;
+      }
+
+      .step-indicator .step.active {
+        color: #4f6f52;
+        font-weight: 600;
+      }
+
+      .step-indicator .step.completed {
+        color: #4f6f52;
+      }
+
+      .step-indicator .step-number {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .step-indicator .step.active .step-number {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .step-indicator .step.completed .step-number {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .step-indicator .step-divider {
+        width: 24px;
+        height: 2px;
+        background: #e5e5e5;
+      }
+
+      .step-indicator .step.completed + .step-divider {
+        background: #4f6f52;
+      }
+
+      /* Approval Section */
+      .approval-section {
+        background: #f5f5f4;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 64px;
+      }
+
+      .approval-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .approval-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .approval-item label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .approval-item input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #4f6f52;
+      }
+
+      .approval-viewport-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .notes-area {
+        margin-top: 24px;
+      }
+
+      .notes-area textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .notes-area textarea:focus {
+        outline: none;
+        border-color: #4f6f52;
+        box-shadow: 0 0 0 3px rgba(79, 111, 82, 0.1);
+      }
+
+      /* Status Badge */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      .status-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Customize Step 2: Options Selector</h1>
+    <p class="subtitle">
+      Second step of the customize page. After selecting a category, users
+      choose customization options grouped by type (Size, Color, Shape, Text)
+      with real-time price updates.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 40px">
+      <span class="status-badge">Awaiting Approval</span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol id="arrow-left" viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </symbol>
+      <symbol id="chevron-down" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" />
+      </symbol>
+      <symbol id="chevron-right" viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6" />
+      </symbol>
+      <symbol id="check" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+      <symbol id="ruler" viewBox="0 0 24 24">
+        <path
+          d="M21.21 12.71l-4.24-4.24a1 1 0 00-1.42 0l-9.19 9.19a1 1 0 000 1.42l4.24 4.24a1 1 0 001.42 0l9.19-9.19a1 1 0 000-1.42z"
+        />
+        <line x1="8" y1="12" x2="12" y2="12" />
+        <line x1="10" y1="16" x2="12" y2="16" />
+        <line x1="14" y1="8" x2="12" y2="8" />
+      </symbol>
+      <symbol id="palette" viewBox="0 0 24 24">
+        <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor" />
+        <circle cx="17.5" cy="10.5" r="0.5" fill="currentColor" />
+        <circle cx="8.5" cy="7.5" r="0.5" fill="currentColor" />
+        <circle cx="6.5" cy="12.5" r="0.5" fill="currentColor" />
+        <path
+          d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"
+        />
+      </symbol>
+      <symbol id="shapes" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M3 7h4v4H3z" />
+        <path d="M17 17h4v4h-4z" />
+        <path d="M17 3l3 4h-6z" />
+      </symbol>
+      <symbol id="type" viewBox="0 0 24 24">
+        <polyline points="4 7 4 4 20 4 20 7" />
+        <line x1="9" y1="20" x2="15" y2="20" />
+        <line x1="12" y1="4" x2="12" y2="20" />
+      </symbol>
+      <symbol id="shopping-cart" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+      </symbol>
+    </svg>
+
+    <!-- Before/After Comparison -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CONTEXT FROM STEP 1</h3>
+          <ul>
+            <li>User selected a category (e.g., "Custom Mugs")</li>
+            <li>Category has base price (e.g., Rs 850)</li>
+            <li>Category defines available option types</li>
+            <li>Ready to customize with options</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>STEP 2 REQUIREMENTS</h3>
+          <ul>
+            <li>Show selected category with back/change option</li>
+            <li>Group options by type (Size, Color, Shape, Text)</li>
+            <li>Each option shows price modifier (+Rs 100)</li>
+            <li>Running total updates in real-time</li>
+            <li>Required options must be selected to continue</li>
+            <li>Continue/Add to Cart when complete</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Design Options -->
+    <div class="options-container">
+      <!-- Option A: Accordion Sections (RECOMMENDED) -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">A</span>
+          <div>
+            <h3 class="wf-option-header">
+              Accordion Sections
+              <span class="recommended-badge">RECOMMENDED</span>
+            </h3>
+            <p class="wf-option-desc">
+              Collapsible accordion for each option type. One section open at a
+              time for focused selection. Clear visual hierarchy with icons.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-indicator">
+                  <div class="step completed">
+                    <span class="step-number">
+                      <svg
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          stroke: white;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check" />
+                      </svg>
+                    </span>
+                    Category
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step active">
+                    <span class="step-number">2</span>
+                    Options
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step">
+                    <span class="step-number">3</span>
+                    Review
+                  </div>
+                </div>
+                <div class="page-title">Customize Options</div>
+              </div>
+
+              <div class="page-content">
+                <!-- Selected Category Header -->
+                <div class="selected-category-header">
+                  <div class="back-btn">
+                    <svg><use href="#arrow-left" /></svg>
+                  </div>
+                  <div class="category-thumb pottery-1"></div>
+                  <div class="category-info">
+                    <div class="category-name">Custom Mugs</div>
+                    <div class="category-base-price">From Rs 850</div>
+                  </div>
+                </div>
+
+                <!-- Accordion Options -->
+                <div class="options-accordion">
+                  <!-- Size (Open) -->
+                  <div class="accordion-item open">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#ruler" /></svg>
+                        </div>
+                        <div>
+                          <div class="type-name">Size</div>
+                          <div class="type-selected">Medium selected</div>
+                        </div>
+                      </div>
+                      <div class="header-right">
+                        <span class="required-badge">Required</span>
+                        <svg class="chevron"><use href="#chevron-down" /></svg>
+                      </div>
+                    </div>
+                    <div class="accordion-content">
+                      <div class="size-chips">
+                        <div class="size-chip">
+                          <span class="size-value">S</span>
+                          <span class="size-name">150ml</span>
+                          <span class="size-modifier">+Rs 0</span>
+                        </div>
+                        <div class="size-chip selected">
+                          <span class="size-value">M</span>
+                          <span class="size-name">250ml</span>
+                          <span class="size-modifier">+Rs 100</span>
+                        </div>
+                        <div class="size-chip">
+                          <span class="size-value">L</span>
+                          <span class="size-name">350ml</span>
+                          <span class="size-modifier">+Rs 200</span>
+                        </div>
+                        <div class="size-chip">
+                          <span class="size-value">XL</span>
+                          <span class="size-name">450ml</span>
+                          <span class="size-modifier">+Rs 350</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Color (Closed) -->
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#palette" /></svg>
+                        </div>
+                        <div>
+                          <div class="type-name">Color</div>
+                          <div class="type-selected" style="color: #999">
+                            Not selected
+                          </div>
+                        </div>
+                      </div>
+                      <div class="header-right">
+                        <span class="required-badge">Required</span>
+                        <svg class="chevron"><use href="#chevron-down" /></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Shape (Closed) -->
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#shapes" /></svg>
+                        </div>
+                        <div>
+                          <div class="type-name">Shape</div>
+                          <div class="type-selected" style="color: #999">
+                            Optional
+                          </div>
+                        </div>
+                      </div>
+                      <div class="header-right">
+                        <svg class="chevron"><use href="#chevron-down" /></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Text (Closed) -->
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#type" /></svg>
+                        </div>
+                        <div>
+                          <div class="type-name">Custom Text</div>
+                          <div class="type-selected" style="color: #999">
+                            Optional
+                          </div>
+                        </div>
+                      </div>
+                      <div class="header-right">
+                        <svg class="chevron"><use href="#chevron-down" /></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sticky Footer -->
+                <div
+                  class="running-total-footer"
+                  style="position: relative; margin-top: 24px; box-shadow: none"
+                >
+                  <div class="total-row">
+                    <span class="total-label">Estimated Total</span>
+                    <span class="total-amount">Rs 950</span>
+                  </div>
+                  <div class="breakdown">Base Rs 850 + Size Rs 100</div>
+                  <button class="btn-continue" disabled>
+                    Select Color to Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Options
+                </div>
+                <div class="step-indicator">
+                  <div class="step completed">
+                    <span class="step-number">
+                      <svg
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          stroke: white;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check" />
+                      </svg>
+                    </span>
+                    Category
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step active">
+                    <span class="step-number">2</span>
+                    Options
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step">
+                    <span class="step-number">3</span>
+                    Review
+                  </div>
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content">
+                <!-- Selected Category Header -->
+                <div class="selected-category-header">
+                  <div class="back-btn">
+                    <svg><use href="#arrow-left" /></svg>
+                  </div>
+                  <div class="category-thumb pottery-1"></div>
+                  <div class="category-info">
+                    <div class="category-name">Custom Mugs</div>
+                    <div class="category-base-price">Base price: Rs 850</div>
+                  </div>
+                  <a href="#" class="change-link">Change Category</a>
+                </div>
+
+                <!-- Two Column Accordion -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                  "
+                >
+                  <!-- Size -->
+                  <div class="accordion-item open" style="height: fit-content">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#ruler" /></svg>
+                        </div>
+                        <div>
+                          <div class="type-name">Size</div>
+                          <div class="type-selected">Medium (250ml)</div>
+                        </div>
+                      </div>
+                      <span class="required-badge">Required</span>
+                    </div>
+                    <div class="accordion-content">
+                      <div class="size-chips">
+                        <div class="size-chip">
+                          <span class="size-value">S</span>
+                          <span class="size-name">150ml</span>
+                          <span class="size-modifier">+Rs 0</span>
+                        </div>
+                        <div class="size-chip selected">
+                          <span class="size-value">M</span>
+                          <span class="size-name">250ml</span>
+                          <span class="size-modifier">+Rs 100</span>
+                        </div>
+                        <div class="size-chip">
+                          <span class="size-value">L</span>
+                          <span class="size-name">350ml</span>
+                          <span class="size-modifier">+Rs 200</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Color -->
+                  <div class="accordion-item open" style="height: fit-content">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#palette" /></svg>
+                        </div>
+                        <div>
+                          <div class="type-name">Color</div>
+                          <div class="type-selected">Ocean Blue</div>
+                        </div>
+                      </div>
+                      <span class="required-badge">Required</span>
+                    </div>
+                    <div class="accordion-content">
+                      <div class="color-swatches">
+                        <div class="color-swatch">
+                          <div
+                            class="swatch-circle"
+                            style="background: #f5f5f4"
+                          ></div>
+                          <span class="swatch-name">Natural</span>
+                          <span class="swatch-modifier">+Rs 0</span>
+                        </div>
+                        <div class="color-swatch selected">
+                          <div
+                            class="swatch-circle"
+                            style="background: #4682b4"
+                          ></div>
+                          <span class="swatch-name">Ocean Blue</span>
+                          <span class="swatch-modifier">+Rs 150</span>
+                        </div>
+                        <div class="color-swatch">
+                          <div
+                            class="swatch-circle"
+                            style="background: #c4785a"
+                          ></div>
+                          <span class="swatch-name">Terracotta</span>
+                          <span class="swatch-modifier">+Rs 100</span>
+                        </div>
+                        <div class="color-swatch">
+                          <div
+                            class="swatch-circle"
+                            style="background: #4f6f52"
+                          ></div>
+                          <span class="swatch-name">Forest</span>
+                          <span class="swatch-modifier">+Rs 150</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Summary Footer -->
+                <div
+                  class="running-total-footer"
+                  style="
+                    position: relative;
+                    margin-top: 24px;
+                    box-shadow: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                  "
+                >
+                  <div>
+                    <div class="total-label">Estimated Total</div>
+                    <div class="total-amount">Rs 1,100</div>
+                    <div class="breakdown" style="margin-bottom: 0">
+                      Base Rs 850 + Size Rs 100 + Color Rs 150
+                    </div>
+                  </div>
+                  <button
+                    class="btn-continue"
+                    style="width: auto; padding: 0 32px"
+                  >
+                    Continue
+                    <svg><use href="#chevron-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Select
+                  Options
+                </div>
+                <div class="step-indicator">
+                  <div class="step completed">
+                    <span class="step-number">
+                      <svg
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          stroke: white;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check" />
+                      </svg>
+                    </span>
+                    Category
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step active">
+                    <span class="step-number">2</span>
+                    Options
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step">
+                    <span class="step-number">3</span>
+                    Review
+                  </div>
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content desktop">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 320px;
+                    gap: 32px;
+                  "
+                >
+                  <!-- Options Column -->
+                  <div>
+                    <!-- Selected Category Header -->
+                    <div class="selected-category-header">
+                      <div class="back-btn">
+                        <svg><use href="#arrow-left" /></svg>
+                      </div>
+                      <div class="category-thumb pottery-1"></div>
+                      <div class="category-info">
+                        <div class="category-name">Custom Mugs</div>
+                        <div class="category-base-price">
+                          Base price: Rs 850
+                        </div>
+                      </div>
+                      <a href="#" class="change-link">Change Category</a>
+                    </div>
+
+                    <!-- All Accordions Open -->
+                    <div class="options-accordion">
+                      <!-- Size -->
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#ruler" /></svg>
+                            </div>
+                            <div>
+                              <div class="type-name">Size</div>
+                              <div class="type-selected">Medium (250ml)</div>
+                            </div>
+                          </div>
+                          <div class="header-right">
+                            <span class="required-badge">Required</span>
+                            <svg class="chevron">
+                              <use href="#chevron-down" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="size-chips">
+                            <div class="size-chip">
+                              <span class="size-value">S</span>
+                              <span class="size-name">150ml</span>
+                              <span class="size-modifier">+Rs 0</span>
+                            </div>
+                            <div class="size-chip selected">
+                              <span class="size-value">M</span>
+                              <span class="size-name">250ml</span>
+                              <span class="size-modifier">+Rs 100</span>
+                            </div>
+                            <div class="size-chip">
+                              <span class="size-value">L</span>
+                              <span class="size-name">350ml</span>
+                              <span class="size-modifier">+Rs 200</span>
+                            </div>
+                            <div class="size-chip">
+                              <span class="size-value">XL</span>
+                              <span class="size-name">450ml</span>
+                              <span class="size-modifier">+Rs 350</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Color -->
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#palette" /></svg>
+                            </div>
+                            <div>
+                              <div class="type-name">Color</div>
+                              <div class="type-selected">Ocean Blue</div>
+                            </div>
+                          </div>
+                          <div class="header-right">
+                            <span class="required-badge">Required</span>
+                            <svg class="chevron">
+                              <use href="#chevron-down" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="color-swatches">
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #f5f5f4"
+                              ></div>
+                              <span class="swatch-name">Natural</span>
+                              <span class="swatch-modifier">+Rs 0</span>
+                            </div>
+                            <div class="color-swatch selected">
+                              <div
+                                class="swatch-circle"
+                                style="background: #4682b4"
+                              ></div>
+                              <span class="swatch-name">Ocean Blue</span>
+                              <span class="swatch-modifier">+Rs 150</span>
+                            </div>
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #c4785a"
+                              ></div>
+                              <span class="swatch-name">Terracotta</span>
+                              <span class="swatch-modifier">+Rs 100</span>
+                            </div>
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #4f6f52"
+                              ></div>
+                              <span class="swatch-name">Forest</span>
+                              <span class="swatch-modifier">+Rs 150</span>
+                            </div>
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #1a1a1a"
+                              ></div>
+                              <span class="swatch-name">Charcoal</span>
+                              <span class="swatch-modifier">+Rs 200</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Text -->
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#type" /></svg>
+                            </div>
+                            <div>
+                              <div class="type-name">Custom Text</div>
+                              <div class="type-selected">"Good Morning!"</div>
+                            </div>
+                          </div>
+                          <div class="header-right">
+                            <svg class="chevron">
+                              <use href="#chevron-down" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="text-input-group">
+                            <label
+                              >Add personalized text (max 20 characters)</label
+                            >
+                            <input
+                              type="text"
+                              value="Good Morning!"
+                              maxlength="20"
+                            />
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                              "
+                            >
+                              <span class="text-modifier">+Rs 200</span>
+                              <span class="char-count">13/20 characters</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Summary Sidebar -->
+                  <div class="summary-sidebar">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-item">
+                      <span class="label">Category</span>
+                      <span class="value">Custom Mugs</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Base Price</span>
+                      <span class="value">Rs 850</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Size</span>
+                      <div style="text-align: right">
+                        <span class="value">Medium (250ml)</span>
+                        <div class="modifier">+Rs 100</div>
+                      </div>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Color</span>
+                      <div style="text-align: right">
+                        <span class="value">Ocean Blue</span>
+                        <div class="modifier">+Rs 150</div>
+                      </div>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Custom Text</span>
+                      <div style="text-align: right">
+                        <span class="value">"Good Morning!"</span>
+                        <div class="modifier">+Rs 200</div>
+                      </div>
+                    </div>
+                    <div class="summary-total">
+                      <span class="label">Total</span>
+                      <span class="value">Rs 1,300</span>
+                    </div>
+                    <button
+                      class="btn-continue"
+                      style="width: 100%; margin-top: 20px"
+                    >
+                      <svg><use href="#shopping-cart" /></svg>
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B: Tabs per Type -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">B</span>
+          <div>
+            <h3 class="wf-option-header">Tabs per Type</h3>
+            <p class="wf-option-desc">
+              Horizontal tabs for each option type. Selected options persist
+              across tabs. Compact navigation with checkmarks for completed
+              selections.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="step-indicator">
+                  <div class="step completed">
+                    <span class="step-number">
+                      <svg
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          stroke: white;
+                          fill: none;
+                        "
+                      >
+                        <use href="#check" />
+                      </svg>
+                    </span>
+                    Category
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step active">
+                    <span class="step-number">2</span>
+                    Options
+                  </div>
+                </div>
+                <div class="page-title">Select Options</div>
+              </div>
+
+              <div class="page-content">
+                <!-- Selected Category (Compact) -->
+                <div
+                  class="selected-category-header"
+                  style="padding: 10px 12px"
+                >
+                  <div class="back-btn" style="width: 32px; height: 32px">
+                    <svg style="width: 16px; height: 16px">
+                      <use href="#arrow-left" />
+                    </svg>
+                  </div>
+                  <div
+                    class="category-thumb pottery-1"
+                    style="width: 36px; height: 36px"
+                  ></div>
+                  <div class="category-info">
+                    <div class="category-name" style="font-size: 14px">
+                      Custom Mugs
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="options-tabs">
+                  <div class="tab active">
+                    Size
+                    <span class="tab-check">
+                      <svg><use href="#check" /></svg>
+                    </span>
+                  </div>
+                  <div class="tab">Color</div>
+                  <div class="tab">Shape</div>
+                  <div class="tab">Text</div>
+                </div>
+
+                <!-- Tab Content: Size -->
+                <div class="tab-content active">
+                  <p
+                    style="font-size: 13px; color: #737373; margin-bottom: 16px"
+                  >
+                    Choose your preferred size
+                  </p>
+                  <div class="size-chips">
+                    <div class="size-chip">
+                      <span class="size-value">S</span>
+                      <span class="size-name">150ml</span>
+                      <span class="size-modifier">+Rs 0</span>
+                    </div>
+                    <div class="size-chip selected">
+                      <span class="size-value">M</span>
+                      <span class="size-name">250ml</span>
+                      <span class="size-modifier">+Rs 100</span>
+                    </div>
+                    <div class="size-chip">
+                      <span class="size-value">L</span>
+                      <span class="size-name">350ml</span>
+                      <span class="size-modifier">+Rs 200</span>
+                    </div>
+                    <div class="size-chip">
+                      <span class="size-value">XL</span>
+                      <span class="size-name">450ml</span>
+                      <span class="size-modifier">+Rs 350</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer -->
+                <div
+                  class="running-total-footer"
+                  style="position: relative; margin-top: 24px; box-shadow: none"
+                >
+                  <div class="total-row">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount">Rs 950</span>
+                  </div>
+                  <button class="btn-continue">
+                    Next: Color
+                    <svg><use href="#chevron-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Options
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content">
+                <div
+                  class="selected-category-header"
+                  style="margin-bottom: 20px"
+                >
+                  <div class="back-btn">
+                    <svg><use href="#arrow-left" /></svg>
+                  </div>
+                  <div class="category-thumb pottery-1"></div>
+                  <div class="category-info">
+                    <div class="category-name">Custom Mugs</div>
+                    <div class="category-base-price">Base: Rs 850</div>
+                  </div>
+                  <a href="#" class="change-link">Change</a>
+                </div>
+
+                <!-- Tabs -->
+                <div class="options-tabs">
+                  <div class="tab">
+                    Size
+                    <span class="tab-check">
+                      <svg><use href="#check" /></svg>
+                    </span>
+                  </div>
+                  <div class="tab active">Color</div>
+                  <div class="tab">Shape</div>
+                  <div class="tab">Text</div>
+                </div>
+
+                <!-- Tab Content: Color -->
+                <div class="tab-content active">
+                  <p
+                    style="font-size: 14px; color: #737373; margin-bottom: 20px"
+                  >
+                    Select a glaze color for your piece
+                  </p>
+                  <div class="color-swatches" style="gap: 16px">
+                    <div class="color-swatch">
+                      <div
+                        class="swatch-circle"
+                        style="background: #f5f5f4; width: 52px; height: 52px"
+                      ></div>
+                      <span class="swatch-name">Natural</span>
+                      <span class="swatch-modifier">+Rs 0</span>
+                    </div>
+                    <div class="color-swatch selected">
+                      <div
+                        class="swatch-circle"
+                        style="background: #4682b4; width: 52px; height: 52px"
+                      ></div>
+                      <span class="swatch-name">Ocean Blue</span>
+                      <span class="swatch-modifier">+Rs 150</span>
+                    </div>
+                    <div class="color-swatch">
+                      <div
+                        class="swatch-circle"
+                        style="background: #c4785a; width: 52px; height: 52px"
+                      ></div>
+                      <span class="swatch-name">Terracotta</span>
+                      <span class="swatch-modifier">+Rs 100</span>
+                    </div>
+                    <div class="color-swatch">
+                      <div
+                        class="swatch-circle"
+                        style="background: #4f6f52; width: 52px; height: 52px"
+                      ></div>
+                      <span class="swatch-name">Forest</span>
+                      <span class="swatch-modifier">+Rs 150</span>
+                    </div>
+                    <div class="color-swatch">
+                      <div
+                        class="swatch-circle"
+                        style="background: #1a1a1a; width: 52px; height: 52px"
+                      ></div>
+                      <span class="swatch-name">Charcoal</span>
+                      <span class="swatch-modifier">+Rs 200</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer -->
+                <div
+                  class="running-total-footer"
+                  style="
+                    position: relative;
+                    margin-top: 24px;
+                    box-shadow: none;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                  "
+                >
+                  <div>
+                    <div class="total-label">Total: Rs 1,100</div>
+                    <div class="breakdown" style="margin-bottom: 0">
+                      Size: M (+Rs 100) | Color: Ocean Blue (+Rs 150)
+                    </div>
+                  </div>
+                  <button
+                    class="btn-continue"
+                    style="width: auto; padding: 0 24px"
+                  >
+                    Continue
+                    <svg><use href="#chevron-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Select
+                  Options
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content desktop">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 280px;
+                    gap: 32px;
+                  "
+                >
+                  <div>
+                    <div class="selected-category-header">
+                      <div class="back-btn">
+                        <svg><use href="#arrow-left" /></svg>
+                      </div>
+                      <div class="category-thumb pottery-1"></div>
+                      <div class="category-info">
+                        <div class="category-name">Custom Mugs</div>
+                        <div class="category-base-price">Base: Rs 850</div>
+                      </div>
+                      <a href="#" class="change-link">Change Category</a>
+                    </div>
+
+                    <div class="options-tabs">
+                      <div class="tab">
+                        Size
+                        <span class="tab-check">
+                          <svg><use href="#check" /></svg>
+                        </span>
+                      </div>
+                      <div class="tab">
+                        Color
+                        <span class="tab-check">
+                          <svg><use href="#check" /></svg>
+                        </span>
+                      </div>
+                      <div class="tab active">Shape</div>
+                      <div class="tab">Text</div>
+                    </div>
+
+                    <!-- Tab Content: Shape -->
+                    <div class="tab-content active">
+                      <p
+                        style="
+                          font-size: 14px;
+                          color: #737373;
+                          margin-bottom: 20px;
+                        "
+                      >
+                        Choose a handle shape (optional)
+                      </p>
+                      <div class="shape-chips">
+                        <div class="shape-chip selected">
+                          <div class="shape-image pottery-2"></div>
+                          <span class="shape-name">Classic</span>
+                          <span class="shape-modifier">+Rs 0</span>
+                        </div>
+                        <div class="shape-chip">
+                          <div class="shape-image pottery-3"></div>
+                          <span class="shape-name">Modern</span>
+                          <span class="shape-modifier">+Rs 50</span>
+                        </div>
+                        <div class="shape-chip">
+                          <div class="shape-image pottery-4"></div>
+                          <span class="shape-name">Rustic</span>
+                          <span class="shape-modifier">+Rs 75</span>
+                        </div>
+                        <div class="shape-chip">
+                          <div class="shape-image pottery-5"></div>
+                          <span class="shape-name">No Handle</span>
+                          <span class="shape-modifier">-Rs 50</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Summary Sidebar -->
+                  <div class="summary-sidebar">
+                    <div class="summary-title">Your Selections</div>
+                    <div class="summary-item">
+                      <span class="label">Base</span>
+                      <span class="value">Rs 850</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Size: M</span>
+                      <span class="value modifier">+Rs 100</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Color: Ocean Blue</span>
+                      <span class="value modifier">+Rs 150</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Shape: Classic</span>
+                      <span class="value modifier">+Rs 0</span>
+                    </div>
+                    <div class="summary-total">
+                      <span class="label">Total</span>
+                      <span class="value">Rs 1,100</span>
+                    </div>
+                    <button
+                      class="btn-continue"
+                      style="width: 100%; margin-top: 20px"
+                    >
+                      Add to Cart
+                      <svg><use href="#shopping-cart" /></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option C: Single Column Form -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">C</span>
+          <div>
+            <h3 class="wf-option-header">Single Column Form</h3>
+            <p class="wf-option-desc">
+              All options visible vertically in a simple scrolling form. Each
+              type as a labeled section. Straightforward linear flow.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Customize</div>
+              </div>
+
+              <div class="page-content">
+                <!-- Category Banner -->
+                <div
+                  class="selected-category-header"
+                  style="margin-bottom: 24px"
+                >
+                  <div class="back-btn">
+                    <svg><use href="#arrow-left" /></svg>
+                  </div>
+                  <div class="category-thumb pottery-1"></div>
+                  <div class="category-info">
+                    <div class="category-name">Custom Mugs</div>
+                    <div class="category-base-price">Rs 850</div>
+                  </div>
+                </div>
+
+                <!-- Form Sections -->
+                <div class="options-form">
+                  <!-- Size Section -->
+                  <div class="form-section">
+                    <div class="section-header">
+                      <div class="section-icon">
+                        <svg><use href="#ruler" /></svg>
+                      </div>
+                      <div class="section-title">Size</div>
+                      <span class="section-required">Required</span>
+                    </div>
+                    <div class="size-chips">
+                      <div class="size-chip">
+                        <span class="size-value">S</span>
+                        <span class="size-modifier">+Rs 0</span>
+                      </div>
+                      <div class="size-chip selected">
+                        <span class="size-value">M</span>
+                        <span class="size-modifier">+Rs 100</span>
+                      </div>
+                      <div class="size-chip">
+                        <span class="size-value">L</span>
+                        <span class="size-modifier">+Rs 200</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Color Section -->
+                  <div class="form-section">
+                    <div class="section-header">
+                      <div class="section-icon">
+                        <svg><use href="#palette" /></svg>
+                      </div>
+                      <div class="section-title">Color</div>
+                      <span class="section-required">Required</span>
+                    </div>
+                    <div class="color-swatches">
+                      <div class="color-swatch">
+                        <div
+                          class="swatch-circle"
+                          style="background: #f5f5f4"
+                        ></div>
+                        <span class="swatch-name">Natural</span>
+                      </div>
+                      <div class="color-swatch selected">
+                        <div
+                          class="swatch-circle"
+                          style="background: #4682b4"
+                        ></div>
+                        <span class="swatch-name">Blue</span>
+                      </div>
+                      <div class="color-swatch">
+                        <div
+                          class="swatch-circle"
+                          style="background: #c4785a"
+                        ></div>
+                        <span class="swatch-name">Terra</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Text Section -->
+                  <div class="form-section">
+                    <div class="section-header">
+                      <div class="section-icon">
+                        <svg><use href="#type" /></svg>
+                      </div>
+                      <div class="section-title">Custom Text</div>
+                    </div>
+                    <div class="text-input-group">
+                      <input type="text" placeholder="Enter your text..." />
+                      <span class="text-modifier">+Rs 200 if added</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Summary -->
+                <div
+                  class="running-total-footer"
+                  style="
+                    position: relative;
+                    margin-top: 24px;
+                    box-shadow: none;
+                    background: #f8faf8;
+                    border-radius: 12px;
+                  "
+                >
+                  <div class="total-row">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount">Rs 1,100</span>
+                  </div>
+                  <button class="btn-continue">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a>
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content">
+                <div class="selected-category-header">
+                  <div class="back-btn">
+                    <svg><use href="#arrow-left" /></svg>
+                  </div>
+                  <div class="category-thumb pottery-1"></div>
+                  <div class="category-info">
+                    <div class="category-name">Custom Mugs</div>
+                    <div class="category-base-price">Base price: Rs 850</div>
+                  </div>
+                  <a href="#" class="change-link">Change</a>
+                </div>
+
+                <div
+                  class="options-form"
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                  "
+                >
+                  <div class="form-section">
+                    <div class="section-header">
+                      <div class="section-icon">
+                        <svg><use href="#ruler" /></svg>
+                      </div>
+                      <div class="section-title">Size</div>
+                    </div>
+                    <div class="size-chips">
+                      <div class="size-chip">
+                        <span class="size-value">S</span>
+                        <span class="size-modifier">+Rs 0</span>
+                      </div>
+                      <div class="size-chip selected">
+                        <span class="size-value">M</span>
+                        <span class="size-modifier">+Rs 100</span>
+                      </div>
+                      <div class="size-chip">
+                        <span class="size-value">L</span>
+                        <span class="size-modifier">+Rs 200</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
+                    <div class="section-header">
+                      <div class="section-icon">
+                        <svg><use href="#palette" /></svg>
+                      </div>
+                      <div class="section-title">Color</div>
+                    </div>
+                    <div class="color-swatches">
+                      <div class="color-swatch selected">
+                        <div
+                          class="swatch-circle"
+                          style="background: #4682b4"
+                        ></div>
+                        <span class="swatch-name">Blue</span>
+                      </div>
+                      <div class="color-swatch">
+                        <div
+                          class="swatch-circle"
+                          style="background: #c4785a"
+                        ></div>
+                        <span class="swatch-name">Terra</span>
+                      </div>
+                      <div class="color-swatch">
+                        <div
+                          class="swatch-circle"
+                          style="background: #4f6f52"
+                        ></div>
+                        <span class="swatch-name">Forest</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-section" style="grid-column: span 2">
+                    <div class="section-header">
+                      <div class="section-icon">
+                        <svg><use href="#type" /></svg>
+                      </div>
+                      <div class="section-title">Custom Text (Optional)</div>
+                    </div>
+                    <div class="text-input-group">
+                      <input
+                        type="text"
+                        placeholder="Add personalization..."
+                        value="Good Morning!"
+                      />
+                      <div
+                        style="display: flex; justify-content: space-between"
+                      >
+                        <span class="text-modifier">+Rs 200</span>
+                        <span class="char-count">13/20</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 24px;
+                    padding: 20px;
+                    background: white;
+                    border-radius: 12px;
+                  "
+                >
+                  <div>
+                    <div style="font-size: 14px; color: #737373">Total</div>
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 24px;
+                        font-weight: 700;
+                      "
+                    >
+                      Rs 1,300
+                    </div>
+                  </div>
+                  <button
+                    class="btn-continue"
+                    style="width: auto; padding: 0 32px"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Options
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content desktop">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 300px;
+                    gap: 32px;
+                  "
+                >
+                  <div>
+                    <div class="selected-category-header">
+                      <div class="back-btn">
+                        <svg><use href="#arrow-left" /></svg>
+                      </div>
+                      <div class="category-thumb pottery-1"></div>
+                      <div class="category-info">
+                        <div class="category-name">Custom Mugs</div>
+                        <div class="category-base-price">Base: Rs 850</div>
+                      </div>
+                      <a href="#" class="change-link">Change Category</a>
+                    </div>
+
+                    <div
+                      class="options-form"
+                      style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 20px;
+                      "
+                    >
+                      <div class="form-section">
+                        <div class="section-header">
+                          <div class="section-icon">
+                            <svg><use href="#ruler" /></svg>
+                          </div>
+                          <div class="section-title">Size</div>
+                        </div>
+                        <div class="size-chips">
+                          <div class="size-chip">
+                            <span class="size-value">S</span>
+                            <span class="size-name">150ml</span>
+                            <span class="size-modifier">+Rs 0</span>
+                          </div>
+                          <div class="size-chip selected">
+                            <span class="size-value">M</span>
+                            <span class="size-name">250ml</span>
+                            <span class="size-modifier">+Rs 100</span>
+                          </div>
+                          <div class="size-chip">
+                            <span class="size-value">L</span>
+                            <span class="size-name">350ml</span>
+                            <span class="size-modifier">+Rs 200</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-section">
+                        <div class="section-header">
+                          <div class="section-icon">
+                            <svg><use href="#palette" /></svg>
+                          </div>
+                          <div class="section-title">Color</div>
+                        </div>
+                        <div class="color-swatches">
+                          <div class="color-swatch selected">
+                            <div
+                              class="swatch-circle"
+                              style="background: #4682b4"
+                            ></div>
+                            <span class="swatch-name">Ocean Blue</span>
+                          </div>
+                          <div class="color-swatch">
+                            <div
+                              class="swatch-circle"
+                              style="background: #c4785a"
+                            ></div>
+                            <span class="swatch-name">Terracotta</span>
+                          </div>
+                          <div class="color-swatch">
+                            <div
+                              class="swatch-circle"
+                              style="background: #4f6f52"
+                            ></div>
+                            <span class="swatch-name">Forest</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-section" style="grid-column: span 2">
+                        <div class="section-header">
+                          <div class="section-icon">
+                            <svg><use href="#type" /></svg>
+                          </div>
+                          <div class="section-title">
+                            Custom Text (Optional)
+                          </div>
+                        </div>
+                        <div class="text-input-group">
+                          <input
+                            type="text"
+                            placeholder="Add personalized text..."
+                            value="Good Morning!"
+                            style="max-width: 400px"
+                          />
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                              max-width: 400px;
+                            "
+                          >
+                            <span class="text-modifier">+Rs 200</span>
+                            <span class="char-count">13/20 characters</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sidebar -->
+                  <div
+                    class="summary-sidebar"
+                    style="position: sticky; top: 24px"
+                  >
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-item">
+                      <span class="label">Category</span>
+                      <span class="value">Custom Mugs</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Base Price</span>
+                      <span class="value">Rs 850</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Size: M</span>
+                      <span class="value" style="color: #4f6f52">+Rs 100</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Color: Ocean Blue</span>
+                      <span class="value" style="color: #4f6f52">+Rs 150</span>
+                    </div>
+                    <div class="summary-item">
+                      <span class="label">Text</span>
+                      <span class="value" style="color: #4f6f52">+Rs 200</span>
+                    </div>
+                    <div class="summary-total">
+                      <span class="label">Total</span>
+                      <span class="value">Rs 1,300</span>
+                    </div>
+                    <button
+                      class="btn-continue"
+                      style="width: 100%; margin-top: 20px"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option D: Split View with Preview -->
+      <div class="option-section">
+        <div class="option-header">
+          <span class="option-letter">D</span>
+          <div>
+            <h3 class="wf-option-header">Split View with Preview</h3>
+            <p class="wf-option-desc">
+              Options on one side, live preview on other. Desktop: side-by-side.
+              Mobile: preview at top, options below. Visual feedback of
+              selections.
+            </p>
+          </div>
+        </div>
+
+        <div class="viewport-grid">
+          <!-- Mobile -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Mobile <span class="size">375px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="page-title">Customize</div>
+              </div>
+
+              <div class="page-content">
+                <!-- Preview at top -->
+                <div
+                  class="preview-panel"
+                  style="margin-bottom: 20px; padding: 16px"
+                >
+                  <div
+                    class="preview-image pottery-1"
+                    style="aspect-ratio: 4/3; margin-bottom: 12px"
+                  >
+                    <div class="preview-labels">
+                      <span class="preview-label">Medium</span>
+                      <span class="preview-label">Ocean Blue</span>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      font-size: 14px;
+                    "
+                  >
+                    <span style="color: #737373">Custom Mugs</span>
+                    <span
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-weight: 700;
+                      "
+                      >Rs 1,100</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Options Below -->
+                <div class="options-accordion">
+                  <div class="accordion-item open">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#ruler" /></svg>
+                        </div>
+                        <div class="type-name">Size</div>
+                      </div>
+                      <svg class="chevron"><use href="#chevron-down" /></svg>
+                    </div>
+                    <div class="accordion-content">
+                      <div class="size-chips">
+                        <div class="size-chip">
+                          <span class="size-value">S</span>
+                        </div>
+                        <div class="size-chip selected">
+                          <span class="size-value">M</span>
+                        </div>
+                        <div class="size-chip">
+                          <span class="size-value">L</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <div class="header-left">
+                        <div class="type-icon">
+                          <svg><use href="#palette" /></svg>
+                        </div>
+                        <div class="type-name">Color</div>
+                      </div>
+                      <svg class="chevron"><use href="#chevron-down" /></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="running-total-footer"
+                  style="position: relative; margin-top: 20px; box-shadow: none"
+                >
+                  <button class="btn-continue">Add to Cart - Rs 1,100</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Tablet <span class="size">768px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a>
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 200px 1fr;
+                    gap: 24px;
+                  "
+                >
+                  <!-- Preview -->
+                  <div
+                    class="preview-panel"
+                    style="position: sticky; top: 16px"
+                  >
+                    <div class="preview-image pottery-1">
+                      <div class="preview-labels">
+                        <span class="preview-label">M</span>
+                        <span class="preview-label">Blue</span>
+                      </div>
+                    </div>
+                    <div class="preview-summary">
+                      <div class="preview-row">
+                        <span class="label">Base</span>
+                        <span class="value">Rs 850</span>
+                      </div>
+                      <div class="preview-row">
+                        <span class="label">Size</span>
+                        <span class="value">+Rs 100</span>
+                      </div>
+                      <div class="preview-row">
+                        <span class="label">Color</span>
+                        <span class="value">+Rs 150</span>
+                      </div>
+                      <div
+                        class="preview-row"
+                        style="
+                          border-top: 1px solid #f0f0f0;
+                          padding-top: 8px;
+                          margin-top: 4px;
+                        "
+                      >
+                        <span class="label" style="font-weight: 600"
+                          >Total</span
+                        >
+                        <span
+                          class="value"
+                          style="font-size: 18px; color: #4f6f52"
+                          >Rs 1,100</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Options -->
+                  <div>
+                    <div
+                      class="selected-category-header"
+                      style="margin-bottom: 16px"
+                    >
+                      <div class="back-btn">
+                        <svg><use href="#arrow-left" /></svg>
+                      </div>
+                      <div class="category-info">
+                        <div class="category-name">Custom Mugs</div>
+                      </div>
+                    </div>
+
+                    <div class="options-accordion">
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#ruler" /></svg>
+                            </div>
+                            <div class="type-name">Size</div>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="size-chips">
+                            <div class="size-chip">
+                              <span class="size-value">S</span>
+                              <span class="size-modifier">+Rs 0</span>
+                            </div>
+                            <div class="size-chip selected">
+                              <span class="size-value">M</span>
+                              <span class="size-modifier">+Rs 100</span>
+                            </div>
+                            <div class="size-chip">
+                              <span class="size-value">L</span>
+                              <span class="size-modifier">+Rs 200</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#palette" /></svg>
+                            </div>
+                            <div class="type-name">Color</div>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="color-swatches">
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #f5f5f4"
+                              ></div>
+                              <span class="swatch-name">Natural</span>
+                            </div>
+                            <div class="color-swatch selected">
+                              <div
+                                class="swatch-circle"
+                                style="background: #4682b4"
+                              ></div>
+                              <span class="swatch-name">Blue</span>
+                            </div>
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #c4785a"
+                              ></div>
+                              <span class="swatch-name">Terra</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      class="btn-continue"
+                      style="width: 100%; margin-top: 20px"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop -->
+          <div class="viewport-box">
+            <div class="viewport-label">
+              Desktop <span class="size">1440px</span>
+            </div>
+
+            <div class="page-frame">
+              <div class="page-header desktop">
+                <div class="breadcrumbs">
+                  <a href="#">Home</a> / <a href="#">Customize</a> / Options
+                </div>
+                <div class="page-title">Customize Your Pottery</div>
+              </div>
+
+              <div class="page-content desktop">
+                <div class="split-view">
+                  <!-- Options -->
+                  <div>
+                    <div class="selected-category-header">
+                      <div class="back-btn">
+                        <svg><use href="#arrow-left" /></svg>
+                      </div>
+                      <div class="category-thumb pottery-1"></div>
+                      <div class="category-info">
+                        <div class="category-name">Custom Mugs</div>
+                        <div class="category-base-price">Base: Rs 850</div>
+                      </div>
+                      <a href="#" class="change-link">Change</a>
+                    </div>
+
+                    <div class="options-accordion">
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#ruler" /></svg>
+                            </div>
+                            <div>
+                              <div class="type-name">Size</div>
+                              <div class="type-selected">Medium (250ml)</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="size-chips">
+                            <div class="size-chip">
+                              <span class="size-value">S</span>
+                              <span class="size-name">150ml</span>
+                              <span class="size-modifier">+Rs 0</span>
+                            </div>
+                            <div class="size-chip selected">
+                              <span class="size-value">M</span>
+                              <span class="size-name">250ml</span>
+                              <span class="size-modifier">+Rs 100</span>
+                            </div>
+                            <div class="size-chip">
+                              <span class="size-value">L</span>
+                              <span class="size-name">350ml</span>
+                              <span class="size-modifier">+Rs 200</span>
+                            </div>
+                            <div class="size-chip">
+                              <span class="size-value">XL</span>
+                              <span class="size-name">450ml</span>
+                              <span class="size-modifier">+Rs 350</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#palette" /></svg>
+                            </div>
+                            <div>
+                              <div class="type-name">Color</div>
+                              <div class="type-selected">Ocean Blue</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="color-swatches">
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #f5f5f4"
+                              ></div>
+                              <span class="swatch-name">Natural</span>
+                              <span class="swatch-modifier">+Rs 0</span>
+                            </div>
+                            <div class="color-swatch selected">
+                              <div
+                                class="swatch-circle"
+                                style="background: #4682b4"
+                              ></div>
+                              <span class="swatch-name">Ocean Blue</span>
+                              <span class="swatch-modifier">+Rs 150</span>
+                            </div>
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #c4785a"
+                              ></div>
+                              <span class="swatch-name">Terracotta</span>
+                              <span class="swatch-modifier">+Rs 100</span>
+                            </div>
+                            <div class="color-swatch">
+                              <div
+                                class="swatch-circle"
+                                style="background: #4f6f52"
+                              ></div>
+                              <span class="swatch-name">Forest</span>
+                              <span class="swatch-modifier">+Rs 150</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item open">
+                        <div class="accordion-header">
+                          <div class="header-left">
+                            <div class="type-icon">
+                              <svg><use href="#type" /></svg>
+                            </div>
+                            <div>
+                              <div class="type-name">Custom Text</div>
+                              <div class="type-selected">"Good Morning!"</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="accordion-content">
+                          <div class="text-input-group">
+                            <input
+                              type="text"
+                              value="Good Morning!"
+                              maxlength="20"
+                            />
+                            <div
+                              style="
+                                display: flex;
+                                justify-content: space-between;
+                              "
+                            >
+                              <span class="text-modifier">+Rs 200</span>
+                              <span class="char-count">13/20</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Preview Panel -->
+                  <div class="preview-panel">
+                    <div class="preview-image pottery-1">
+                      <div class="preview-labels">
+                        <span class="preview-label">Medium 250ml</span>
+                        <span class="preview-label">Ocean Blue</span>
+                        <span class="preview-label">"Good Morning!"</span>
+                      </div>
+                    </div>
+                    <div class="preview-summary">
+                      <div class="preview-row">
+                        <span class="label">Base Price</span>
+                        <span class="value">Rs 850</span>
+                      </div>
+                      <div class="preview-row">
+                        <span class="label">Size: Medium</span>
+                        <span class="value" style="color: #4f6f52"
+                          >+Rs 100</span
+                        >
+                      </div>
+                      <div class="preview-row">
+                        <span class="label">Color: Ocean Blue</span>
+                        <span class="value" style="color: #4f6f52"
+                          >+Rs 150</span
+                        >
+                      </div>
+                      <div class="preview-row">
+                        <span class="label">Custom Text</span>
+                        <span class="value" style="color: #4f6f52"
+                          >+Rs 200</span
+                        >
+                      </div>
+                      <div
+                        class="preview-row"
+                        style="
+                          border-top: 2px solid #e5e5e5;
+                          padding-top: 12px;
+                          margin-top: 8px;
+                        "
+                      >
+                        <span class="label" style="font-weight: 600"
+                          >Total</span
+                        >
+                        <span
+                          class="value"
+                          style="
+                            font-family:
+                              &quot;Plus Jakarta Sans&quot;, sans-serif;
+                            font-size: 22px;
+                            font-weight: 700;
+                          "
+                          >Rs 1,300</span
+                        >
+                      </div>
+                    </div>
+                    <button
+                      class="btn-continue"
+                      style="width: 100%; margin-top: 20px"
+                    >
+                      <svg><use href="#shopping-cart" /></svg>
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Approval Section -->
+    <div class="approval-section">
+      <h3 class="approval-title">
+        <span style="font-size: 24px">&#128203;</span>
+        Approval Section
+      </h3>
+      <p style="color: #666; font-size: 14px; margin-bottom: 24px">
+        Select your preferred options selector layout for each viewport:
+      </p>
+
+      <div class="approval-grid">
+        <div class="approval-item">
+          <div class="approval-viewport-label">Mobile (375px)</div>
+          <label
+            ><input type="radio" name="mobile" value="a" /> Option A -
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="b" /> Option B -
+            Tabs</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="c" /> Option C - Single
+            Column</label
+          >
+          <label
+            ><input type="radio" name="mobile" value="d" /> Option D - Split
+            View</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Tablet (768px)</div>
+          <label
+            ><input type="radio" name="tablet" value="a" /> Option A -
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="b" /> Option B -
+            Tabs</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="c" /> Option C - Single
+            Column</label
+          >
+          <label
+            ><input type="radio" name="tablet" value="d" /> Option D - Split
+            View</label
+          >
+        </div>
+
+        <div class="approval-item">
+          <div class="approval-viewport-label">Desktop (1440px)</div>
+          <label
+            ><input type="radio" name="desktop" value="a" /> Option A -
+            Accordion</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="b" /> Option B -
+            Tabs</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="c" /> Option C - Single
+            Column</label
+          >
+          <label
+            ><input type="radio" name="desktop" value="d" /> Option D - Split
+            View</label
+          >
+        </div>
+      </div>
+
+      <div class="notes-area">
+        <div class="approval-viewport-label">Notes / Feedback</div>
+        <textarea
+          placeholder="Add any notes or modification requests here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 48px">
+      <strong>Implementation Specs (Customize Step 2):</strong><br /><br />
+      &bull; <strong>Selected Category Header:</strong> Shows category image,
+      name, base price with back/change option<br />
+      &bull; <strong>Option Types:</strong> SIZE (chip buttons), COLOR (circular
+      swatches), SHAPE (image chips), TEXT (input field)<br />
+      &bull; <strong>Price Modifiers:</strong> Each option shows +Rs X in muted
+      green text<br />
+      &bull; <strong>Running Total:</strong> Updates in real-time as selections
+      change<br />
+      &bull; <strong>Required Options:</strong> Amber "Required" badge, Continue
+      disabled until selected<br />
+      &bull; <strong>Mobile:</strong> Sticky footer with total and Continue/Add
+      to Cart button<br />
+      &bull; <strong>Desktop:</strong> Summary sidebar with all selections and
+      pricing breakdown<br />
+      &bull; <strong>Step Indicator:</strong> Shows progress through Category >
+      Options > Review flow<br />
+      &bull;
+      <strong>Files:</strong>
+      src/features/customize/components/options-selector.tsx,
+      option-type-accordion.tsx, size-chips.tsx, color-swatches.tsx
+    </div>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 32px;
+        border-top: 1px solid #e5e5e5;
+        color: #999;
+        font-size: 13px;
+      "
+    >
+      <a href="index.html" style="color: #4f6f52; text-decoration: none"
+        >Back to Wireframes Index</a
+      >
+    </footer>
+  </body>
+</html>
