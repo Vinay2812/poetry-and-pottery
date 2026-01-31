@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { OptimizedImage } from "@/components/shared";
@@ -72,23 +72,15 @@ const SIDEBAR_COLLAPSED_KEY = "dashboard-sidebar-collapsed";
 
 export function DashboardShell({ children }: DashboardShellProps) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(
+    localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true",
+  );
   const { user } = useUser();
   const { signOut } = useClerk();
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
-
-  // Load collapsed state from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
-    if (stored !== null) {
-      setIsCollapsed(stored === "true");
-    }
-    setIsHydrated(true);
-  }, []);
 
   const toggleCollapsed = useCallback(() => {
     setIsCollapsed((prev) => {
@@ -204,7 +196,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
       <div
         className={cn(
           "flex min-h-screen flex-col transition-all duration-300",
-          isHydrated ? (isCollapsed ? "lg:ml-[72px]" : "lg:ml-64") : "lg:ml-64",
+          isCollapsed ? "lg:ml-[72px]" : "lg:ml-64",
         )}
       >
         {/* Top Header - Glassmorphism style */}

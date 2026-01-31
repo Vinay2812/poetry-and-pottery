@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useMemo } from "react";
 
 import type { QuickActionsProps } from "../types";
 
@@ -17,6 +18,19 @@ export function QuickActions({
     productsOutOfStock > 0 ||
     productsLowStock > 0 ||
     eventsUpcomingIn7Days > 0;
+
+  const thisWeek = useMemo(() => {
+    const startDate = new Date();
+    const endDate = startDate.setDate(startDate.getDate() + 7);
+
+    const isoStartDate = new Date(startDate).toISOString().split("T")[0];
+    const isoEndDate = new Date(endDate).toISOString().split("T")[0];
+
+    return {
+      startDate: isoStartDate,
+      endDate: isoEndDate,
+    };
+  }, []);
 
   if (!hasAttention) {
     return null;
@@ -96,7 +110,7 @@ export function QuickActions({
       )}
       {eventsUpcomingIn7Days > 0 && (
         <Link
-          href={`/dashboard/events?startDate=${new Date().toISOString().split("T")[0]}&endDate=${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]}`}
+          href={`/dashboard/events?startDate=${thisWeek.startDate}&endDate=${thisWeek.endDate}`}
           className="group flex items-center gap-3 rounded-2xl bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
         >
           <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 group-hover:bg-emerald-200">

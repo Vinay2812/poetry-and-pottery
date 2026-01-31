@@ -127,7 +127,11 @@ export function BulkDeleteProductsDialog({
   useEffect(() => {
     if (!isOpen) return;
 
-    setIsLoading(true);
+    function startLoading() {
+      setIsLoading(true);
+    }
+
+    startLoading();
     getProducts({
       search: search || undefined,
       category: categoryFilter !== "ALL" ? categoryFilter : undefined,
@@ -175,7 +179,7 @@ export function BulkDeleteProductsDialog({
 
   // Reset state when dialog closes
   useEffect(() => {
-    if (!isOpen) {
+    function resetState() {
       setSearch("");
       setCategoryFilter("ALL");
       setCollectionFilter("ALL");
@@ -183,6 +187,9 @@ export function BulkDeleteProductsDialog({
       setPageSize(50);
       setPage(1);
       clearSelection();
+    }
+    if (!isOpen) {
+      resetState();
     }
   }, [isOpen, clearSelection]);
 

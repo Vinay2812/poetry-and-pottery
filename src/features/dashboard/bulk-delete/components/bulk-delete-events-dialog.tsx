@@ -132,7 +132,11 @@ export function BulkDeleteEventsDialog({
   useEffect(() => {
     if (!isOpen) return;
 
-    setIsLoading(true);
+    function startLoading() {
+      setIsLoading(true);
+    }
+
+    startLoading();
     getEvents({
       search: search || undefined,
       status:
@@ -166,13 +170,16 @@ export function BulkDeleteEventsDialog({
 
   // Reset state when dialog closes
   useEffect(() => {
-    if (!isOpen) {
+    function resetState() {
       setSearch("");
       setStatusFilter("ALL");
       setLevelFilter("ALL");
       setPageSize(50);
       setPage(1);
       clearSelection();
+    }
+    if (!isOpen) {
+      resetState();
     }
   }, [isOpen, clearSelection]);
 
