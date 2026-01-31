@@ -7,6 +7,8 @@ import {
   CheckCircle2,
   ChevronRight,
   MapPin,
+  Mic,
+  Palette,
   Share2,
   Star,
   User,
@@ -101,7 +103,7 @@ function ReviewsSection({
     <div>
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-xs font-bold tracking-widest text-neutral-400 uppercase">
+          <h2 className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
             Reviews
           </h2>
           <div className="flex items-center gap-1 text-sm">
@@ -189,7 +191,7 @@ interface DesktopSidebarProps {
 }
 
 function DesktopSidebar({ viewModel, upcomingEvents }: DesktopSidebarProps) {
-  const { quickInfo, reviews, averageRating } = viewModel;
+  const { quickInfo, reviews, averageRating, isOpenMic } = viewModel;
 
   return (
     <div className="hidden lg:block">
@@ -197,7 +199,9 @@ function DesktopSidebar({ viewModel, upcomingEvents }: DesktopSidebarProps) {
         {/* Completed Status */}
         <div className="mb-4 flex items-center gap-2 text-emerald-600">
           <CheckCircle2 className="h-5 w-5" />
-          <span className="text-sm font-semibold">Workshop Completed</span>
+          <span className="text-sm font-semibold">
+            {isOpenMic ? "Event Completed" : "Workshop Completed"}
+          </span>
         </div>
 
         {/* Summary */}
@@ -257,17 +261,21 @@ export function PastWorkshopDetail({
     level,
     imageUrl,
     includes,
+    performers,
+    lineupNotes,
     highlights,
     gallery,
     quickInfo,
     reviews,
     averageRating,
+    isWorkshop,
+    isOpenMic,
   } = viewModel;
 
   return (
     <>
       <MobileHeaderContainer
-        title="Past Workshop"
+        title={isOpenMic ? "Past Open Mic" : "Past Workshop"}
         showBack
         backHref="/events/past"
       />
@@ -315,7 +323,7 @@ export function PastWorkshopDetail({
                 <CheckCircle2 className="mr-1 h-3 w-3" />
                 Completed
               </Badge>
-              {level && (
+              {level && isWorkshop && (
                 <Badge className="border-none bg-white/90 px-3 py-1.5 text-xs font-semibold text-neutral-900">
                   {level}
                 </Badge>
@@ -328,6 +336,16 @@ export function PastWorkshopDetail({
             {/* Main Content */}
             <div>
               <div className="px-4 pt-6 lg:px-0 lg:pt-0">
+                {/* Event Type Badge */}
+                <div className="text-primary mb-2 flex items-center gap-1.5 text-xs font-semibold lg:text-sm">
+                  {isOpenMic ? (
+                    <Mic className="h-3.5 w-3.5" />
+                  ) : (
+                    <Palette className="h-3.5 w-3.5" />
+                  )}
+                  <span>{isOpenMic ? "Open Mic" : "Workshop"}</span>
+                </div>
+
                 {/* Title */}
                 <h1 className="font-display mb-2 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
                   {title}
@@ -343,7 +361,7 @@ export function PastWorkshopDetail({
 
                 {/* About */}
                 <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                  <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                  <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                     About
                   </h2>
                   <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
@@ -351,10 +369,10 @@ export function PastWorkshopDetail({
                   </p>
                 </div>
 
-                {/* Instructor */}
-                {quickInfo.instructor && (
+                {/* Instructor - Workshop Only */}
+                {quickInfo.instructor && isWorkshop && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Instructor
                     </h2>
                     <div className="flex items-center gap-3">
@@ -373,10 +391,36 @@ export function PastWorkshopDetail({
                   </div>
                 )}
 
+                {/* Performers - Open Mic Only */}
+                {isOpenMic && performers && performers.length > 0 && (
+                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                      Lineup
+                    </h2>
+                    <ul className="space-y-3">
+                      {performers.map((performer, index) => (
+                        <li key={index} className="flex items-center gap-3">
+                          <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                            <Mic className="text-primary h-4 w-4" />
+                          </div>
+                          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                            {performer}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {lineupNotes && (
+                      <p className="mt-3 text-sm text-neutral-500 italic">
+                        {lineupNotes}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 {/* Location */}
                 {quickInfo.location && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Location
                     </h2>
                     <div className="flex items-center gap-3">
@@ -400,7 +444,7 @@ export function PastWorkshopDetail({
                 {/* What was covered */}
                 {includes && includes.length > 0 && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       What was covered
                     </h2>
                     <ul className="grid gap-3 sm:grid-cols-2">
@@ -421,7 +465,7 @@ export function PastWorkshopDetail({
                 {/* Highlights */}
                 {highlights.length > 0 && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Highlights
                     </h2>
                     <ul className="space-y-3">
@@ -441,7 +485,7 @@ export function PastWorkshopDetail({
                 {gallery.length > 0 && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                     <div className="mb-3 flex items-center gap-2">
-                      <h2 className="text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                      <h2 className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                         Gallery
                       </h2>
                       <span className="text-xs text-neutral-400">

@@ -12,6 +12,8 @@ import {
   Clock,
   Loader2,
   MapPin,
+  Mic,
+  Palette,
   Share2,
   User,
   Users,
@@ -40,10 +42,14 @@ export function EventDetail({
     level,
     imageUrl,
     includes,
+    performers,
+    lineupNotes,
     quickInfo,
     soldOut,
     isLoading,
     registered,
+    isWorkshop,
+    isOpenMic,
   } = viewModel;
 
   const {
@@ -119,8 +125,8 @@ export function EventDetail({
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
-            {/* Level Badge on Image */}
-            {level && (
+            {/* Level Badge on Image - Workshop Only */}
+            {level && isWorkshop && (
               <div className="absolute top-4 left-4">
                 <Badge className="bg-primary rounded-lg px-3 py-1.5 text-xs font-semibold text-white">
                   {level}
@@ -146,6 +152,16 @@ export function EventDetail({
             {/* Main Content */}
             <div>
               <div className="px-4 pt-6 lg:px-0 lg:pt-0">
+                {/* Event Type Badge */}
+                <div className="text-primary mb-2 flex items-center gap-1.5 text-xs font-semibold lg:text-sm">
+                  {isOpenMic ? (
+                    <Mic className="h-3.5 w-3.5" />
+                  ) : (
+                    <Palette className="h-3.5 w-3.5" />
+                  )}
+                  <span>{isOpenMic ? "Open Mic" : "Workshop"}</span>
+                </div>
+
                 {/* Title */}
                 <h1 className="font-display mb-4 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
                   {title}
@@ -204,18 +220,18 @@ export function EventDetail({
                   </Button>
                 </div>
 
-                {/* About This Workshop */}
+                {/* About This Event */}
                 <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                   <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                    About This Workshop
+                    {isOpenMic ? "About This Event" : "About This Workshop"}
                   </h2>
                   <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
                     {description}
                   </p>
                 </div>
 
-                {/* Your Instructor */}
-                {instructor && (
+                {/* Your Instructor - Workshop Only */}
+                {instructor && isWorkshop && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                     <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
                       Your Instructor
@@ -233,6 +249,32 @@ export function EventDetail({
                         </p>
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {/* Tonight's Lineup - Open Mic Only */}
+                {isOpenMic && performers && performers.length > 0 && (
+                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                      Tonight&apos;s Lineup
+                    </h2>
+                    <ul className="space-y-3">
+                      {performers.map((performer, index) => (
+                        <li key={index} className="flex items-center gap-3">
+                          <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                            <Mic className="text-primary h-4 w-4" />
+                          </div>
+                          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                            {performer}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {lineupNotes && (
+                      <p className="mt-3 text-sm text-neutral-500 italic">
+                        {lineupNotes}
+                      </p>
+                    )}
                   </div>
                 )}
 
@@ -319,7 +361,9 @@ export function EventDetail({
                       ? "Sold Out"
                       : registered
                         ? "Registered!"
-                        : "Reserve Seat"}
+                        : isOpenMic
+                          ? "Reserve Spot"
+                          : "Reserve Seat"}
                     {!isLoading && !registered && !soldOut && (
                       <ArrowRight className="ml-2 h-4 w-4" />
                     )}
@@ -339,7 +383,7 @@ export function EventDetail({
           {otherEvents.length > 0 && (
             <div className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-16 lg:px-0 lg:pt-12 dark:border-neutral-800">
               <h2 className="font-display mb-6 text-xl font-bold tracking-tight text-neutral-900 lg:text-2xl dark:text-white">
-                Other workshops you might like
+                Other events you might like
               </h2>
               <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
                 {otherEvents.map((otherEvent) => {
@@ -410,7 +454,13 @@ export function EventDetail({
                 <CheckCircle className="h-5 w-5" />
               </motion.div>
             ) : null}
-            {soldOut ? "Sold Out" : registered ? "Registered!" : "Reserve Seat"}
+            {soldOut
+              ? "Sold Out"
+              : registered
+                ? "Registered!"
+                : isOpenMic
+                  ? "Reserve Spot"
+                  : "Reserve Seat"}
             {!isLoading && !registered && !soldOut && (
               <>
                 <span className="ml-1 text-sm font-normal opacity-90">

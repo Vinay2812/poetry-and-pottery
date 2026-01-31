@@ -16,6 +16,8 @@ import {
   Download,
   HourglassIcon,
   MapPin,
+  Mic,
+  Palette,
   Share2,
   ThumbsUp,
   User,
@@ -164,6 +166,8 @@ export function RegistrationDetailClient({
   });
   const duration = calculateDuration(event.starts_at, event.ends_at);
   const imageUrl = event.image || "/placeholder.jpg";
+  const isWorkshop = event.event_type === "POTTERY_WORKSHOP";
+  const isOpenMic = event.event_type === "OPEN_MIC";
 
   return (
     <>
@@ -224,7 +228,7 @@ export function RegistrationDetailClient({
                 <StatusIcon className="mr-1 h-3 w-3" />
                 {statusConfig.label}
               </Badge>
-              {event.level && (
+              {event.level && isWorkshop && (
                 <Badge className="border-none bg-white/90 px-3 py-1.5 text-xs font-semibold text-neutral-900">
                   {event.level}
                 </Badge>
@@ -237,9 +241,24 @@ export function RegistrationDetailClient({
             {/* Main Content */}
             <div>
               <div className="px-4 pt-6 lg:px-0 lg:pt-0">
+                {/* Event Type Badge */}
+                <div className="text-primary mb-2 flex items-center gap-1.5 text-xs font-semibold lg:text-sm">
+                  {isOpenMic ? (
+                    <Mic className="h-3.5 w-3.5" />
+                  ) : (
+                    <Palette className="h-3.5 w-3.5" />
+                  )}
+                  <span>{isOpenMic ? "Open Mic" : "Workshop"}</span>
+                </div>
+
                 {/* Registration ID */}
-                <p className="mb-2 flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase">
-                  <span>Registration #{registration.id.toUpperCase()}</span>
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
+                    Registration
+                  </span>
+                  <span className="font-mono text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                    #{registration.id.toUpperCase()}
+                  </span>
                   <button
                     onClick={handleCopyRegistrationId}
                     className="inline-flex items-center justify-center rounded p-1 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
@@ -248,10 +267,10 @@ export function RegistrationDetailClient({
                     {copied ? (
                       <Check className="text-primary h-3.5 w-3.5" />
                     ) : (
-                      <CopyIcon className="h-3.5 w-3.5" />
+                      <CopyIcon className="h-3.5 w-3.5 text-neutral-400" />
                     )}
                   </button>
-                </p>
+                </div>
 
                 {/* Title */}
                 <h1 className="font-display mb-2 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
@@ -279,7 +298,7 @@ export function RegistrationDetailClient({
 
                 {/* About */}
                 <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                  <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                  <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                     About
                   </h2>
                   <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
@@ -287,10 +306,10 @@ export function RegistrationDetailClient({
                   </p>
                 </div>
 
-                {/* Instructor */}
-                {event.instructor && (
+                {/* Instructor - Workshop Only */}
+                {event.instructor && isWorkshop && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Instructor
                     </h2>
                     <div className="flex items-center gap-3">
@@ -309,10 +328,38 @@ export function RegistrationDetailClient({
                   </div>
                 )}
 
+                {/* Performers - Open Mic Only */}
+                {isOpenMic &&
+                  event.performers &&
+                  event.performers.length > 0 && (
+                    <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                      <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                        Lineup
+                      </h2>
+                      <ul className="space-y-3">
+                        {event.performers.map((performer, index) => (
+                          <li key={index} className="flex items-center gap-3">
+                            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                              <Mic className="text-primary h-4 w-4" />
+                            </div>
+                            <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                              {performer}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                      {event.lineup_notes && (
+                        <p className="mt-3 text-sm text-neutral-500 italic">
+                          {event.lineup_notes}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                 {/* Location */}
                 {event.location && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Location
                     </h2>
                     <div className="flex items-center gap-3">
@@ -336,7 +383,7 @@ export function RegistrationDetailClient({
                 {/* What's Included */}
                 {event.includes && event.includes.length > 0 && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       What&apos;s included
                     </h2>
                     <ul className="grid gap-3 sm:grid-cols-2">

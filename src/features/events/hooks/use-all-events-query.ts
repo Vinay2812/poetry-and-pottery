@@ -6,7 +6,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
-import { useUpcomingEventsLazyQuery } from "@/graphql/generated/graphql";
+import {
+  type EventType,
+  useUpcomingEventsLazyQuery,
+} from "@/graphql/generated/graphql";
 
 interface PaginationData {
   total: number;
@@ -17,12 +20,14 @@ interface UseAllEventsQueryOptions {
   initialUpcomingEvents: EventBase[];
   initialUpcomingPagination: PaginationData;
   searchQuery?: string;
+  eventType?: EventType | null;
 }
 
 export function useAllEventsQuery({
   initialUpcomingEvents,
   initialUpcomingPagination,
   searchQuery,
+  eventType,
 }: UseAllEventsQueryOptions) {
   const [fetchUpcomingGraphQL] = useUpcomingEventsLazyQuery({
     fetchPolicy: "network-only",
@@ -35,7 +40,7 @@ export function useAllEventsQuery({
     hasNextPage: hasNextUpcoming,
     isFetchingNextPage: isFetchingNextUpcoming,
   } = useInfiniteQuery({
-    queryKey: ["all-events-upcoming", searchQuery],
+    queryKey: ["all-events-upcoming", searchQuery, eventType],
     queryFn: async ({ pageParam = 1 }) => {
       const limit = DEFAULT_EVENTS_LIMIT;
 
@@ -45,6 +50,7 @@ export function useAllEventsQuery({
             page: pageParam,
             limit,
             search: searchQuery,
+            event_type: eventType ?? undefined,
           },
         },
       });

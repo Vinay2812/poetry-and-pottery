@@ -14,6 +14,8 @@ export function AllEvents({
   loadMoreRef,
   sortBy,
   onSortChange,
+  eventTypeFilter,
+  onEventTypeFilterChange,
   pastEventsLoading,
   pastEventsSkeleton,
 }: AllEventsProps) {
@@ -33,6 +35,8 @@ export function AllEvents({
       totalEvents={totalEvents}
       sortBy={sortBy}
       onSortChange={onSortChange}
+      eventTypeFilter={eventTypeFilter}
+      onEventTypeFilterChange={onEventTypeFilterChange}
     >
       {hasNoEvents ? (
         <EmptyState
@@ -41,10 +45,13 @@ export function AllEvents({
           description="Check back soon for new workshops and events."
         />
       ) : (
-        <div className="space-y-8 lg:space-y-16">
+        <div className="space-y-8 lg:space-y-12">
           {/* Upcoming Events Section */}
           {hasUpcoming ? (
             <section>
+              <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900 lg:mb-6 lg:text-xl dark:text-neutral-100">
+                Upcoming Events
+              </h2>
               <StaggeredGrid className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
                 {upcomingEvents.map((event) => (
                   <EventCard key={event.id} event={event} />
@@ -64,6 +71,9 @@ export function AllEvents({
           {pastEventsLoading && pastEventsSkeleton}
           {!pastEventsLoading && hasPast && (
             <section>
+              <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl dark:text-neutral-400">
+                Past Events
+              </h2>
               <StaggeredGrid className="grid grid-cols-1 gap-4 opacity-75 xl:grid-cols-2 xl:gap-6">
                 {pastEvents.map((event) => (
                   <PastWorkshopCard key={event.id} event={event} />

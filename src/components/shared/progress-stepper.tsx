@@ -44,7 +44,7 @@ export function ProgressStepper({
 }: ProgressStepperProps) {
   return (
     <div className="rounded-2xl">
-      <h2 className="mb-6 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+      <h2 className="mb-5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
         {title}
       </h2>
 

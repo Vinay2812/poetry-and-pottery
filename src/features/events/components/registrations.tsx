@@ -58,10 +58,13 @@ export function Registrations({ viewModel, loadMoreRef }: RegistrationsProps) {
           )}
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-8 lg:space-y-12">
           {/* Upcoming Registrations Section */}
           {hasUpcomingRegistrations ? (
             <section>
+              <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900 lg:mb-6 lg:text-xl dark:text-neutral-100">
+                Upcoming Registrations
+              </h2>
               <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
                 {upcomingRegistrations.map((registration) => (
                   <RegisteredEventCard
@@ -86,6 +89,9 @@ export function Registrations({ viewModel, loadMoreRef }: RegistrationsProps) {
           {/* Completed Registrations Section */}
           {hasCompletedRegistrations && (
             <section>
+              <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl dark:text-neutral-400">
+                Completed Events
+              </h2>
               <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
                 {completedRegistrations.map((registration) => (
                   <CompletedEventCard

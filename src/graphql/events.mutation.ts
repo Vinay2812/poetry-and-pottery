@@ -7,6 +7,7 @@ const REGISTRATION_EVENT_FIELDS = gql`
     slug
     title
     description
+    event_type
     starts_at
     ends_at
     location
@@ -21,6 +22,8 @@ const REGISTRATION_EVENT_FIELDS = gql`
     gallery
     status
     level
+    performers
+    lineup_notes
     created_at
     updated_at
   }

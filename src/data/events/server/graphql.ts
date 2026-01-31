@@ -76,6 +76,7 @@ export async function getEvents(
       page: 1,
       total_pages: 0,
       levels: [],
+      event_types: [],
     }
   );
 }
@@ -139,6 +140,7 @@ export async function getUpcomingEvents(
       page: 1,
       total_pages: 0,
       levels: [],
+      event_types: [],
     }
   );
 }
@@ -164,6 +166,7 @@ export async function getPastEvents(
       page: 1,
       total_pages: 0,
       levels: [],
+      event_types: [],
     }
   );
 }

@@ -3,8 +3,9 @@
 import {
   type EventRegistration,
   EventRegistrationStatus,
+  type EventType,
 } from "@/data/events/types";
-import { Calendar, MapPin, Ticket } from "lucide-react";
+import { Calendar, MapPin, Mic, Palette, Ticket } from "lucide-react";
 import Link from "next/link";
 
 import { OptimizedImage } from "@/components/shared";
@@ -12,6 +13,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
+
+function getEventTypeIcon(type: EventType) {
+  switch (type) {
+    case "OPEN_MIC":
+      return <Mic className="h-3 w-3" />;
+    case "POTTERY_WORKSHOP":
+    default:
+      return <Palette className="h-3 w-3" />;
+  }
+}
+
+function getEventTypeLabel(type: EventType) {
+  switch (type) {
+    case "OPEN_MIC":
+      return "Open Mic";
+    case "POTTERY_WORKSHOP":
+    default:
+      return "Workshop";
+  }
+}
 
 interface RegisteredEventCardProps {
   registration: EventRegistration;
@@ -108,7 +129,7 @@ export function RegisteredEventCard({
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
-        {/* Level Badge */}
+        {/* Level Badge - Only for workshops */}
         {event.level && (
           <div className="absolute top-2 left-2">
             <Badge
@@ -134,14 +155,21 @@ export function RegisteredEventCard({
       <div className="flex min-w-0 flex-1 flex-col justify-between">
         {/* Top section */}
         <div>
-          {/* Header: Title + Status */}
+          {/* Header: Title + Type + Status */}
           <div className="mb-1.5 flex items-start justify-between gap-2">
-            <Link
-              href={`/events/${event.id}`}
-              className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
-            >
-              {event.title}
-            </Link>
+            <div className="min-w-0 flex-1">
+              <Link
+                href={`/events/${event.id}`}
+                className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
+              >
+                {event.title}
+              </Link>
+              {/* Event Type */}
+              <span className="text-primary mt-0.5 flex items-center gap-1 text-[10px] font-medium lg:text-xs">
+                {getEventTypeIcon(event.event_type)}
+                <span>{getEventTypeLabel(event.event_type)}</span>
+              </span>
+            </div>
             <Badge
               className={cn(
                 "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold",

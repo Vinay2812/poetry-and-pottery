@@ -1,5 +1,9 @@
 export { EventRegistrationProgress } from "./event-registration-progress";
-export { EventsListLayout, type EventSortOption } from "./events-list-layout";
+export {
+  EventsListLayout,
+  type EventSortOption,
+  type EventTypeFilter,
+} from "./events-list-layout";
 export { EventsTabs, TabType, EVENTS_TABS } from "./events-tabs";
 export { EventTicket } from "./event-ticket";
 export { PastWorkshopsClient } from "./past-workshops-client";

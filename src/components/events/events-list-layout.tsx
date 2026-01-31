@@ -17,12 +17,15 @@ import {
 import { EVENTS_TABS, EventsTabs, TabType } from "./events-tabs";
 
 export type EventSortOption = "soonest" | "price-low" | "price-high";
+export type EventTypeFilter = "all" | "workshop" | "open_mic";
 
 interface EventsListLayoutProps {
   children: React.ReactNode;
   totalEvents?: number;
   sortBy?: EventSortOption;
   onSortChange?: (sort: EventSortOption) => void;
+  eventTypeFilter?: EventTypeFilter;
+  onEventTypeFilterChange?: (filter: EventTypeFilter) => void;
   onFilterClick?: () => void;
   showFilters?: boolean;
 }
@@ -32,6 +35,8 @@ export function EventsListLayout({
   totalEvents,
   sortBy = "soonest",
   onSortChange,
+  eventTypeFilter = "all",
+  onEventTypeFilterChange,
   onFilterClick,
   showFilters = false,
 }: EventsListLayoutProps) {
@@ -72,7 +77,7 @@ export function EventsListLayout({
           />
 
           {/* Filter Row - Desktop/Tablet only */}
-          {(showFilters || onSortChange) && (
+          {(showFilters || onSortChange || onEventTypeFilterChange) && (
             <div className="mb-6 flex items-center justify-between gap-4">
               {/* Event count */}
               {totalEvents !== undefined && (
@@ -83,6 +88,25 @@ export function EventsListLayout({
 
               {/* Sort and filter controls */}
               <div className="flex items-center gap-2 sm:ml-auto">
+                {/* Event type filter dropdown */}
+                {onEventTypeFilterChange && (
+                  <Select
+                    value={eventTypeFilter}
+                    onValueChange={(value) =>
+                      onEventTypeFilterChange(value as EventTypeFilter)
+                    }
+                  >
+                    <SelectTrigger className="h-9 w-[130px] text-sm sm:w-[150px]">
+                      <SelectValue placeholder="Event Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Events</SelectItem>
+                      <SelectItem value="workshop">Workshops</SelectItem>
+                      <SelectItem value="open_mic">Open Mic</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+
                 {/* Sort dropdown */}
                 {onSortChange && (
                   <Select

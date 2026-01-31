@@ -186,11 +186,14 @@ export type AdminEvent = {
   created_at: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   ends_at: Scalars['DateTime']['output'];
+  event_type: EventType;
   id: Scalars['String']['output'];
   image: Scalars['String']['output'];
-  instructor: Scalars['String']['output'];
-  level: EventLevel;
+  instructor?: Maybe<Scalars['String']['output']>;
+  level?: Maybe<EventLevel>;
+  lineup_notes?: Maybe<Scalars['String']['output']>;
   location: Scalars['String']['output'];
+  performers: Array<Scalars['String']['output']>;
   price: Scalars['Float']['output'];
   slug: Scalars['String']['output'];
   starts_at: Scalars['DateTime']['output'];
@@ -210,15 +213,18 @@ export type AdminEventDetail = {
   created_at: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   ends_at: Scalars['DateTime']['output'];
+  event_type: EventType;
   full_location: Scalars['String']['output'];
   gallery: Array<Scalars['String']['output']>;
   highlights: Array<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   image: Scalars['String']['output'];
   includes: Array<Scalars['String']['output']>;
-  instructor: Scalars['String']['output'];
-  level: EventLevel;
+  instructor?: Maybe<Scalars['String']['output']>;
+  level?: Maybe<EventLevel>;
+  lineup_notes?: Maybe<Scalars['String']['output']>;
   location: Scalars['String']['output'];
+  performers: Array<Scalars['String']['output']>;
   price: Scalars['Float']['output'];
   slug: Scalars['String']['output'];
   starts_at: Scalars['DateTime']['output'];
@@ -277,8 +283,14 @@ export type AdminEventReviewsResponse = {
   total: Scalars['Int']['output'];
 };
 
+export type AdminEventTypeOption = {
+  label: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
 export type AdminEventsFilterInput = {
   endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  event_type?: InputMaybe<EventType>;
   level?: InputMaybe<EventLevel>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -742,14 +754,17 @@ export type CreateEventInput = {
   available_seats: Scalars['Int']['input'];
   description: Scalars['String']['input'];
   ends_at: Scalars['DateTime']['input'];
+  event_type?: InputMaybe<EventType>;
   full_location: Scalars['String']['input'];
   gallery?: InputMaybe<Array<Scalars['String']['input']>>;
   highlights?: InputMaybe<Array<Scalars['String']['input']>>;
   image: Scalars['String']['input'];
   includes?: InputMaybe<Array<Scalars['String']['input']>>;
-  instructor: Scalars['String']['input'];
+  instructor?: InputMaybe<Scalars['String']['input']>;
   level?: InputMaybe<EventLevel>;
+  lineup_notes?: InputMaybe<Scalars['String']['input']>;
   location: Scalars['String']['input'];
+  performers?: InputMaybe<Array<Scalars['String']['input']>>;
   price: Scalars['Float']['input'];
   slug: Scalars['String']['input'];
   starts_at: Scalars['DateTime']['input'];
@@ -822,15 +837,18 @@ export type EventBase = {
   created_at: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   ends_at: Scalars['DateTime']['output'];
+  event_type: EventType;
   full_location: Scalars['String']['output'];
   gallery: Array<Scalars['String']['output']>;
   highlights: Array<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   image: Scalars['String']['output'];
   includes: Array<Scalars['String']['output']>;
-  instructor: Scalars['String']['output'];
-  level: EventLevel;
+  instructor?: Maybe<Scalars['String']['output']>;
+  level?: Maybe<EventLevel>;
+  lineup_notes?: Maybe<Scalars['String']['output']>;
   location: Scalars['String']['output'];
+  performers: Array<Scalars['String']['output']>;
   price: Scalars['Int']['output'];
   registrations_count: Scalars['Int']['output'];
   reviews_count: Scalars['Int']['output'];
@@ -848,16 +866,19 @@ export type EventDetail = {
   created_at: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   ends_at: Scalars['DateTime']['output'];
+  event_type: EventType;
   full_location: Scalars['String']['output'];
   gallery: Array<Scalars['String']['output']>;
   highlights: Array<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   image: Scalars['String']['output'];
   includes: Array<Scalars['String']['output']>;
-  instructor: Scalars['String']['output'];
+  instructor?: Maybe<Scalars['String']['output']>;
   is_registered: Scalars['Boolean']['output'];
-  level: EventLevel;
+  level?: Maybe<EventLevel>;
+  lineup_notes?: Maybe<Scalars['String']['output']>;
   location: Scalars['String']['output'];
+  performers: Array<Scalars['String']['output']>;
   price: Scalars['Int']['output'];
   registrations_count: Scalars['Int']['output'];
   reviews: Array<EventReview>;
@@ -942,6 +963,12 @@ export enum EventStatus {
   Upcoming = 'UPCOMING'
 }
 
+/** The type of event */
+export enum EventType {
+  OpenMic = 'OPEN_MIC',
+  PotteryWorkshop = 'POTTERY_WORKSHOP'
+}
+
 export type EventWithUserContext = {
   current_user_id?: Maybe<Scalars['Int']['output']>;
   event: EventDetail;
@@ -950,6 +977,7 @@ export type EventWithUserContext = {
 };
 
 export type EventsFilterInput = {
+  event_type?: InputMaybe<EventType>;
   level?: InputMaybe<EventLevel>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -959,6 +987,7 @@ export type EventsFilterInput = {
 
 export type EventsResponse = {
   data: Array<EventBase>;
+  event_types: Array<EventType>;
   levels: Array<EventLevel>;
   page: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
@@ -1640,6 +1669,7 @@ export type Query = {
   adminEventRegistrations: AdminEventRegistrationsResponse;
   adminEventReviews: AdminEventReviewsResponse;
   adminEventStatusOptions: Array<AdminStatusOption>;
+  adminEventTypeOptions: Array<AdminEventTypeOption>;
   adminEvents: AdminEventsResponse;
   adminHeroImages: HeroImages;
   adminLowStockProducts: Array<LowStockProduct>;
@@ -1988,15 +2018,18 @@ export type RegistrationEvent = {
   created_at: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   ends_at: Scalars['DateTime']['output'];
+  event_type: EventType;
   full_location: Scalars['String']['output'];
   gallery: Array<Scalars['String']['output']>;
   highlights: Array<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   image: Scalars['String']['output'];
   includes: Array<Scalars['String']['output']>;
-  instructor: Scalars['String']['output'];
-  level: EventLevel;
+  instructor?: Maybe<Scalars['String']['output']>;
+  level?: Maybe<EventLevel>;
+  lineup_notes?: Maybe<Scalars['String']['output']>;
   location: Scalars['String']['output'];
+  performers: Array<Scalars['String']['output']>;
   price: Scalars['Int']['output'];
   slug: Scalars['String']['output'];
   starts_at: Scalars['DateTime']['output'];
@@ -2220,6 +2253,7 @@ export type UpdateEventInput = {
   available_seats?: InputMaybe<Scalars['Int']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   ends_at?: InputMaybe<Scalars['DateTime']['input']>;
+  event_type?: InputMaybe<EventType>;
   full_location?: InputMaybe<Scalars['String']['input']>;
   gallery?: InputMaybe<Array<Scalars['String']['input']>>;
   highlights?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -2227,7 +2261,9 @@ export type UpdateEventInput = {
   includes?: InputMaybe<Array<Scalars['String']['input']>>;
   instructor?: InputMaybe<Scalars['String']['input']>;
   level?: InputMaybe<EventLevel>;
+  lineup_notes?: InputMaybe<Scalars['String']['input']>;
   location?: InputMaybe<Scalars['String']['input']>;
+  performers?: InputMaybe<Array<Scalars['String']['input']>>;
   price?: InputMaybe<Scalars['Float']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   starts_at?: InputMaybe<Scalars['DateTime']['input']>;
@@ -2587,14 +2623,14 @@ export type AdminEventsQueryVariables = Exact<{
 }>;
 
 
-export type AdminEventsQuery = { adminEvents: { total: number, page: number, limit: number, totalPages: number, events: Array<{ id: string, title: string, slug: string, description: string, status: EventStatus, level: EventLevel, starts_at: Date | string, ends_at: Date | string, location: string, price: number, available_seats: number, total_seats: number, instructor: string, image: string, created_at: Date | string, _count: { event_registrations: number, reviews: number } }> } };
+export type AdminEventsQuery = { adminEvents: { total: number, page: number, limit: number, totalPages: number, events: Array<{ id: string, title: string, slug: string, description: string, event_type: EventType, status: EventStatus, level?: EventLevel | null, starts_at: Date | string, ends_at: Date | string, location: string, price: number, available_seats: number, total_seats: number, instructor?: string | null, image: string, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, _count: { event_registrations: number, reviews: number } }> } };
 
 export type AdminEventByIdQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type AdminEventByIdQuery = { adminEventById?: { id: string, title: string, slug: string, description: string, status: EventStatus, level: EventLevel, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, instructor: string, includes: Array<string>, price: number, available_seats: number, total_seats: number, image: string, highlights: Array<string>, gallery: Array<string>, created_at: Date | string, updated_at: Date | string, _count: { event_registrations: number, reviews: number } } | null };
+export type AdminEventByIdQuery = { adminEventById?: { id: string, title: string, slug: string, description: string, event_type: EventType, status: EventStatus, level?: EventLevel | null, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, instructor?: string | null, includes: Array<string>, price: number, available_seats: number, total_seats: number, image: string, highlights: Array<string>, gallery: Array<string>, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, _count: { event_registrations: number, reviews: number } } | null };
 
 export type AdminEventRegistrationsQueryVariables = Exact<{
   eventId: Scalars['String']['input'];
@@ -2619,6 +2655,11 @@ export type AdminEventLevelOptionsQueryVariables = Exact<{ [key: string]: never;
 
 
 export type AdminEventLevelOptionsQuery = { adminEventLevelOptions: Array<{ value: string, label: string }> };
+
+export type AdminEventTypeOptionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminEventTypeOptionsQuery = { adminEventTypeOptions: Array<{ value: string, label: string }> };
 
 export type AdminUpdateOrderStatusMutationVariables = Exact<{
   orderId: Scalars['String']['input'];
@@ -2934,16 +2975,16 @@ export type CartQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CartQuery = { cart: { total: number, subtotal: number, items: Array<{ id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } }> } };
 
-export type MutationRegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string };
+export type MutationRegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string };
 
-export type MutationEventRegistrationFieldsFragment = { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } };
+export type MutationEventRegistrationFieldsFragment = { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } };
 
 export type RegisterForEventMutationVariables = Exact<{
   input: RegisterForEventInput;
 }>;
 
 
-export type RegisterForEventMutation = { registerForEvent: { success: boolean, error?: string | null, registration?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null } };
+export type RegisterForEventMutation = { registerForEvent: { success: boolean, error?: string | null, registration?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null } };
 
 export type CancelRegistrationMutationVariables = Exact<{
   registrationId: Scalars['String']['input'];
@@ -2952,83 +2993,83 @@ export type CancelRegistrationMutationVariables = Exact<{
 
 export type CancelRegistrationMutation = { cancelRegistration: { success: boolean, error?: string | null } };
 
-export type EventBaseFieldsFragment = { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null };
+export type EventBaseFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null };
 
-export type EventDetailFieldsFragment = { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> };
+export type EventDetailFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> };
 
-export type RegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string };
+export type RegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string };
 
-export type EventRegistrationFieldsFragment = { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } };
+export type EventRegistrationFieldsFragment = { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } };
 
 export type EventsQueryVariables = Exact<{
   filter?: InputMaybe<EventsFilterInput>;
 }>;
 
 
-export type EventsQuery = { events: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, data: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
+export type EventsQuery = { events: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, event_types: Array<EventType>, data: Array<{ id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
 
 export type EventBySlugQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
 
-export type EventBySlugQuery = { eventBySlug?: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> } | null };
+export type EventBySlugQuery = { eventBySlug?: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> } | null };
 
 export type EventByIdQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type EventByIdQuery = { eventById?: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> } | null };
+export type EventByIdQuery = { eventById?: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> } | null };
 
 export type UpcomingEventsQueryVariables = Exact<{
   filter?: InputMaybe<EventsFilterInput>;
 }>;
 
 
-export type UpcomingEventsQuery = { upcomingEvents: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, data: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
+export type UpcomingEventsQuery = { upcomingEvents: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, event_types: Array<EventType>, data: Array<{ id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
 
 export type PastEventsQueryVariables = Exact<{
   filter?: InputMaybe<EventsFilterInput>;
 }>;
 
 
-export type PastEventsQuery = { pastEvents: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, data: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
+export type PastEventsQuery = { pastEvents: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, event_types: Array<EventType>, data: Array<{ id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
 
 export type EventWithUserContextQueryVariables = Exact<{
   eventId: Scalars['String']['input'];
 }>;
 
 
-export type EventWithUserContextQuery = { eventWithUserContext?: { is_past_event: boolean, current_user_id?: number | null, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> }, registration?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null } | null };
+export type EventWithUserContextQuery = { eventWithUserContext?: { is_past_event: boolean, current_user_id?: number | null, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> }, registration?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null } | null };
 
 export type UserRegistrationsQueryVariables = Exact<{
   filter?: InputMaybe<RegistrationsFilterInput>;
 }>;
 
 
-export type UserRegistrationsQuery = { userRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
+export type UserRegistrationsQuery = { userRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
 
 export type RegistrationByIdQueryVariables = Exact<{
   registrationId: Scalars['String']['input'];
 }>;
 
 
-export type RegistrationByIdQuery = { registrationById?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null };
+export type RegistrationByIdQuery = { registrationById?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null };
 
 export type UpcomingRegistrationsQueryVariables = Exact<{
   filter?: InputMaybe<RegistrationsFilterInput>;
 }>;
 
 
-export type UpcomingRegistrationsQuery = { upcomingRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
+export type UpcomingRegistrationsQuery = { upcomingRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
 
 export type CompletedRegistrationsQueryVariables = Exact<{
   filter?: InputMaybe<RegistrationsFilterInput>;
 }>;
 
 
-export type CompletedRegistrationsQuery = { completedRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
+export type CompletedRegistrationsQuery = { completedRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
 
 export type SubscribeToNewsletterMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -3189,7 +3230,7 @@ export type GlobalSearchQueryVariables = Exact<{
 }>;
 
 
-export type GlobalSearchQuery = { globalSearch: { products: Array<{ id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean }>, events: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor: string, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level: EventLevel, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }>, orders: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean } }> }>, counts: { products: number, events: number, orders: number } } };
+export type GlobalSearchQuery = { globalSearch: { products: Array<{ id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean }>, events: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, event_type: EventType, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }>, orders: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean } }> }>, counts: { products: number, events: number, orders: number } } };
 
 export type UserCountsQueryVariables = Exact<{ [key: string]: never; }>;
 

@@ -1,9 +1,36 @@
-import type { EventBase } from "@/data/events/types";
-import { Calendar, Image as ImageIcon, MapPin, Star } from "lucide-react";
+import type { EventBase, EventType } from "@/data/events/types";
+import {
+  Calendar,
+  Image as ImageIcon,
+  MapPin,
+  Mic,
+  Palette,
+  Star,
+} from "lucide-react";
 import Link from "next/link";
 
 import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
+
+function getEventTypeIcon(type: EventType) {
+  switch (type) {
+    case "OPEN_MIC":
+      return <Mic className="h-3 w-3" />;
+    case "POTTERY_WORKSHOP":
+    default:
+      return <Palette className="h-3 w-3" />;
+  }
+}
+
+function getEventTypeLabel(type: EventType) {
+  switch (type) {
+    case "OPEN_MIC":
+      return "Open Mic";
+    case "POTTERY_WORKSHOP":
+    default:
+      return "Workshop";
+  }
+}
 
 interface PastWorkshopCardProps {
   event: EventBase;
@@ -51,10 +78,19 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
 
       {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col justify-between">
-        {/* Title */}
-        <h3 className="font-display mb-1.5 line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
-          {event.title}
-        </h3>
+        {/* Header: Title + Type Badge */}
+        <div className="mb-1.5 flex items-start justify-between gap-2">
+          <h3 className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
+            {event.title}
+          </h3>
+          {/* Event Type Badge */}
+          <span className="text-primary flex shrink-0 items-center gap-1 text-[10px] font-medium lg:text-xs">
+            {getEventTypeIcon(event.event_type)}
+            <span className="hidden lg:inline">
+              {getEventTypeLabel(event.event_type)}
+            </span>
+          </span>
+        </div>
 
         {/* Date */}
         <div className="mb-1 flex items-center gap-1.5 text-xs text-neutral-500 lg:text-sm">

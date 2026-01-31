@@ -71,14 +71,20 @@ export function EventDetailContainer({
   ]);
 
   // Build the view model
+  const isWorkshop = event.event_type === "POTTERY_WORKSHOP";
+  const isOpenMic = event.event_type === "OPEN_MIC";
+
   const viewModel: EventDetailViewModel = {
     id: event.id,
     title: event.title,
     description: event.description,
     price: event.price,
-    level: event.level,
+    level: event.level ?? null,
+    eventType: event.event_type,
     imageUrl: event.image || "/placeholder.jpg",
     includes: event.includes || [],
+    performers: event.performers || [],
+    lineupNotes: event.lineup_notes ?? null,
     quickInfo: {
       formattedDate: formatEventDate(event.starts_at),
       formattedTime: formatEventTime(event.starts_at),
@@ -86,11 +92,13 @@ export function EventDetailContainer({
       availableSeats: event.available_seats,
       location: event.location,
       fullLocation: event.full_location,
-      instructor: event.instructor,
+      instructor: event.instructor ?? null,
     },
     soldOut,
     isLoading: loading,
     registered,
+    isWorkshop,
+    isOpenMic,
   };
 
   return (

@@ -103,7 +103,7 @@ export function EventRegistrationProgress({
   if (isCancelled) {
     return (
       <div className="rounded-2xl">
-        <h2 className="mb-6 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+        <h2 className="mb-5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
           Registration Status
         </h2>
         <div className="flex items-center gap-4 rounded-xl bg-red-50 p-4 dark:bg-red-950/20">
@@ -115,7 +115,7 @@ export function EventRegistrationProgress({
               Registration Cancelled
             </p>
             {cancelledAt && (
-              <time className="mt-0.5 block text-[10px] font-bold tracking-wider text-red-500 uppercase">
+              <time className="mt-0.5 block text-[10px] font-bold tracking-wider text-red-500">
                 {formatProgressDate(cancelledAt)}
               </time>
             )}
@@ -128,7 +128,7 @@ export function EventRegistrationProgress({
   if (isRejected) {
     return (
       <div className="rounded-2xl">
-        <h2 className="mb-6 text-xs font-bold tracking-widest text-neutral-400 uppercase">
+        <h2 className="mb-5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
           Registration Status
         </h2>
         <div className="flex items-center gap-4 rounded-xl bg-red-50 p-4 dark:bg-red-950/20">

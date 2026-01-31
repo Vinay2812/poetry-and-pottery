@@ -1,8 +1,8 @@
 "use client";
 
-import type { EventRegistration } from "@/data/events/types";
+import type { EventRegistration, EventType } from "@/data/events/types";
 import { useCreateEventReview } from "@/data/reviews/gateway/client";
-import { Calendar, MapPin, Pencil, Star } from "lucide-react";
+import { Calendar, MapPin, Mic, Palette, Pencil, Star } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -19,6 +19,26 @@ import {
 } from "@/components/ui/dialog";
 
 import { cn } from "@/lib/utils";
+
+function getEventTypeIcon(type: EventType) {
+  switch (type) {
+    case "OPEN_MIC":
+      return <Mic className="h-3 w-3" />;
+    case "POTTERY_WORKSHOP":
+    default:
+      return <Palette className="h-3 w-3" />;
+  }
+}
+
+function getEventTypeLabel(type: EventType) {
+  switch (type) {
+    case "OPEN_MIC":
+      return "Open Mic";
+    case "POTTERY_WORKSHOP":
+    default:
+      return "Workshop";
+  }
+}
 
 interface CompletedEventCardProps {
   registration: EventRegistration;
@@ -105,14 +125,21 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
       <div className="flex min-w-0 flex-1 flex-col justify-between">
         {/* Top section */}
         <div>
-          {/* Header: Title + Completed Badge */}
+          {/* Header: Title + Type + Completed Badge */}
           <div className="mb-1.5 flex items-start justify-between gap-2">
-            <Link
-              href={`/events/${event.id}`}
-              className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
-            >
-              {event.title}
-            </Link>
+            <div className="min-w-0 flex-1">
+              <Link
+                href={`/events/${event.id}`}
+                className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
+              >
+                {event.title}
+              </Link>
+              {/* Event Type */}
+              <span className="text-primary mt-0.5 flex items-center gap-1 text-[10px] font-medium lg:text-xs">
+                {getEventTypeIcon(event.event_type)}
+                <span>{getEventTypeLabel(event.event_type)}</span>
+              </span>
+            </div>
             <Badge className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold text-neutral-600">
               Completed
             </Badge>

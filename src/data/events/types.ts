@@ -26,5 +26,6 @@ export type {
 export {
   EventLevel,
   EventStatus,
+  EventType,
   EventRegistrationStatus,
 } from "@/graphql/generated/types";

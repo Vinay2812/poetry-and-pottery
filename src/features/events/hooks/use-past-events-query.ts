@@ -6,15 +6,20 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
-import { usePastEventsLazyQuery } from "@/graphql/generated/graphql";
+import {
+  type EventType,
+  usePastEventsLazyQuery,
+} from "@/graphql/generated/graphql";
 
 interface UsePastEventsQueryOptions {
   searchQuery?: string;
+  eventType?: EventType | null;
   enabled?: boolean;
 }
 
 export function usePastEventsQuery({
   searchQuery,
+  eventType,
   enabled = true,
 }: UsePastEventsQueryOptions = {}) {
   const [fetchGraphQL] = usePastEventsLazyQuery({
@@ -23,7 +28,7 @@ export function usePastEventsQuery({
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: ["past-events", searchQuery],
+      queryKey: ["past-events", searchQuery, eventType],
       queryFn: async ({ pageParam = 1 }) => {
         const limit = DEFAULT_EVENTS_LIMIT;
 
@@ -33,6 +38,7 @@ export function usePastEventsQuery({
               page: pageParam,
               limit,
               search: searchQuery,
+              event_type: eventType ?? undefined,
             },
           },
         });

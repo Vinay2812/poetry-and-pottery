@@ -38,6 +38,9 @@ export const GLOBAL_SEARCH_QUERY = gql`
         gallery
         status
         level
+        event_type
+        performers
+        lineup_notes
         created_at
         updated_at
         registrations_count

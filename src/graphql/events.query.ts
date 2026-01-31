@@ -7,6 +7,7 @@ const EVENT_BASE_FIELDS = gql`
     slug
     title
     description
+    event_type
     starts_at
     ends_at
     location
@@ -21,6 +22,8 @@ const EVENT_BASE_FIELDS = gql`
     gallery
     status
     level
+    performers
+    lineup_notes
     created_at
     updated_at
     registrations_count
@@ -36,6 +39,7 @@ const EVENT_DETAIL_FIELDS = gql`
     slug
     title
     description
+    event_type
     starts_at
     ends_at
     location
@@ -50,6 +54,8 @@ const EVENT_DETAIL_FIELDS = gql`
     gallery
     status
     level
+    performers
+    lineup_notes
     created_at
     updated_at
     registrations_count
@@ -87,6 +93,7 @@ const REGISTRATION_EVENT_FIELDS = gql`
     slug
     title
     description
+    event_type
     starts_at
     ends_at
     location
@@ -101,6 +108,8 @@ const REGISTRATION_EVENT_FIELDS = gql`
     gallery
     status
     level
+    performers
+    lineup_notes
     created_at
     updated_at
   }
@@ -147,6 +156,7 @@ export const EVENTS_QUERY = gql`
       page
       total_pages
       levels
+      event_types
     }
   }
   ${EVENT_BASE_FIELDS}
@@ -180,6 +190,7 @@ export const UPCOMING_EVENTS_QUERY = gql`
       page
       total_pages
       levels
+      event_types
     }
   }
   ${EVENT_BASE_FIELDS}
@@ -195,6 +206,7 @@ export const PAST_EVENTS_QUERY = gql`
       page
       total_pages
       levels
+      event_types
     }
   }
   ${EVENT_BASE_FIELDS}

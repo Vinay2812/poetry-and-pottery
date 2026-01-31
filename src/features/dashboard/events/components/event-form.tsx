@@ -22,12 +22,13 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { formatDateTimeLocal } from "@/lib/date";
 
-import { EventLevel, EventStatus } from "@/graphql/generated/types";
+import { EventLevel, EventStatus, EventType } from "@/graphql/generated/types";
 
 import type { EventFormProps } from "../types";
 import { generateSlug } from "../types";
 
 interface FormValues {
+  eventType: string;
   title: string;
   slug: string;
   description: string;
@@ -45,9 +46,12 @@ interface FormValues {
   gallery: string[];
   status: string;
   level: string;
+  performers: { value: string }[];
+  lineupNotes: string;
 }
 
 const eventFormSchema = z.object({
+  eventType: z.string(),
   title: z.string().min(1, "Title is required"),
   slug: z.string().min(1, "Slug is required"),
   description: z.string().min(1, "Description is required"),
@@ -57,14 +61,16 @@ const eventFormSchema = z.object({
   fullLocation: z.string().min(1, "Full location is required"),
   totalSeats: z.number().min(1, "Must have at least 1 seat"),
   availableSeats: z.number().min(0, "Cannot be negative"),
-  instructor: z.string().min(1, "Instructor is required"),
+  instructor: z.string().optional(),
   includes: z.array(z.object({ value: z.string() })),
   price: z.number().min(0, "Price must be positive"),
   image: z.string().min(1, "Main image is required"),
   highlights: z.array(z.object({ value: z.string() })),
   gallery: z.array(z.string()),
   status: z.string(),
-  level: z.string(),
+  level: z.string().optional(),
+  performers: z.array(z.object({ value: z.string() })),
+  lineupNotes: z.string().optional(),
 });
 
 export function EventForm({
@@ -85,6 +91,7 @@ export function EventForm({
   } = useForm<FormValues>({
     resolver: zodResolver(eventFormSchema) as never,
     defaultValues: {
+      eventType: viewModel.eventType,
       title: viewModel.title,
       slug: viewModel.slug,
       description: viewModel.description,
@@ -94,14 +101,16 @@ export function EventForm({
       fullLocation: viewModel.fullLocation,
       totalSeats: viewModel.totalSeats,
       availableSeats: viewModel.availableSeats,
-      instructor: viewModel.instructor,
+      instructor: viewModel.instructor ?? "",
       includes: viewModel.includes.map((i) => ({ value: i })),
       price: viewModel.price,
       image: viewModel.image,
       highlights: viewModel.highlights.map((h) => ({ value: h })),
       gallery: viewModel.gallery,
       status: viewModel.status,
-      level: viewModel.level,
+      level: viewModel.level ?? "",
+      performers: viewModel.performers.map((p) => ({ value: p })),
+      lineupNotes: viewModel.lineupNotes ?? "",
     },
   });
 
@@ -123,7 +132,19 @@ export function EventForm({
     name: "highlights",
   });
 
+  const {
+    fields: performersFields,
+    append: appendPerformer,
+    remove: removePerformer,
+  } = useFieldArray({
+    control,
+    name: "performers",
+  });
+
   const title = watch("title");
+  const eventType = watch("eventType");
+  const isWorkshop = eventType === EventType.PotteryWorkshop;
+  const isOpenMic = eventType === EventType.OpenMic;
   const image = watch("image");
   const gallery = watch("gallery");
 
@@ -137,6 +158,7 @@ export function EventForm({
   const handleFormSubmit = useCallback(
     (data: FormValues) => {
       onSubmit({
+        eventType: data.eventType as EventType,
         title: data.title,
         slug: data.slug,
         description: data.description,
@@ -146,14 +168,16 @@ export function EventForm({
         fullLocation: data.fullLocation,
         totalSeats: data.totalSeats,
         availableSeats: data.availableSeats,
-        instructor: data.instructor,
+        instructor: data.instructor || null,
         includes: data.includes.map((i) => i.value).filter(Boolean),
         price: data.price,
         image: data.image,
         highlights: data.highlights.map((h) => h.value).filter(Boolean),
         gallery: data.gallery,
         status: data.status as EventStatus,
-        level: data.level as EventLevel,
+        level: data.level ? (data.level as EventLevel) : null,
+        performers: data.performers.map((p) => p.value).filter(Boolean),
+        lineupNotes: data.lineupNotes || null,
       });
     },
     [onSubmit],
@@ -165,6 +189,30 @@ export function EventForm({
 
   return (
     <form action={handleFormAction} className="space-y-8">
+      {/* Event Type Selection */}
+      <div className="rounded-xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-4 text-lg font-semibold text-neutral-900">
+          Event Type
+        </h2>
+        <div className="space-y-2">
+          <Label>Select Event Type *</Label>
+          <Select
+            value={eventType}
+            onValueChange={(value) => setValue("eventType", value)}
+          >
+            <SelectTrigger className="w-full md:w-[300px]">
+              <SelectValue placeholder="Select event type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={EventType.PotteryWorkshop}>
+                Pottery Workshop
+              </SelectItem>
+              <SelectItem value={EventType.OpenMic}>Open Mic</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       {/* Basic Information */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-neutral-900">
@@ -210,21 +258,24 @@ export function EventForm({
             )}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="instructor">Instructor *</Label>
-            <Input
-              id="instructor"
-              {...register("instructor")}
-              placeholder="e.g., Jane Smith"
-            />
-            {errors.instructor && (
-              <p className="text-sm text-red-500">
-                {errors.instructor.message}
-              </p>
-            )}
-          </div>
+          {/* Instructor - Workshop Only */}
+          {isWorkshop && (
+            <div className="space-y-2">
+              <Label htmlFor="instructor">Instructor *</Label>
+              <Input
+                id="instructor"
+                {...register("instructor")}
+                placeholder="e.g., Jane Smith"
+              />
+              {errors.instructor && (
+                <p className="text-sm text-red-500">
+                  {errors.instructor.message}
+                </p>
+              )}
+            </div>
+          )}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className={`grid gap-4 ${isWorkshop ? "grid-cols-2" : ""}`}>
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
               <Select
@@ -244,27 +295,84 @@ export function EventForm({
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="level">Level</Label>
-              <Select
-                value={watch("level")}
-                onValueChange={(value) => setValue("level", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {levelOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {/* Level - Workshop Only */}
+            {isWorkshop && (
+              <div className="space-y-2">
+                <Label htmlFor="level">Level</Label>
+                <Select
+                  value={watch("level")}
+                  onValueChange={(value) => setValue("level", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {levelOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Performers & Lineup - Open Mic Only */}
+      {isOpenMic && (
+        <div className="rounded-xl border border-neutral-200 bg-white p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-neutral-900">
+              Performers & Lineup
+            </h2>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => appendPerformer({ value: "" })}
+            >
+              <PlusIcon className="mr-1 size-4" />
+              Add Performer
+            </Button>
+          </div>
+          <div className="space-y-4">
+            <div className="space-y-3">
+              {performersFields.map((field, index) => (
+                <div key={field.id} className="flex items-center gap-2">
+                  <Input
+                    {...register(`performers.${index}.value`)}
+                    placeholder="e.g., John Doe - Standup Comedy"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removePerformer(index)}
+                  >
+                    <TrashIcon className="size-4 text-neutral-500" />
+                  </Button>
+                </div>
+              ))}
+              {performersFields.length === 0 && (
+                <p className="text-sm text-neutral-500">
+                  No performers added yet.
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lineupNotes">Lineup Notes</Label>
+              <Textarea
+                id="lineupNotes"
+                {...register("lineupNotes")}
+                placeholder="Additional notes about the lineup (optional)"
+                rows={2}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Schedule & Location */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">

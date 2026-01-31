@@ -150,15 +150,21 @@ export function PastWorkshopDetailContainer({
   }, [formattedReviews]);
 
   // Build view model
+  const isWorkshop = workshop.event_type === "POTTERY_WORKSHOP";
+  const isOpenMic = workshop.event_type === "OPEN_MIC";
+
   const viewModel: PastWorkshopDetailViewModel = useMemo(
     () => ({
       id: workshop.id,
       title: workshop.title,
       description: workshop.description,
       price: workshop.price,
-      level: workshop.level,
+      level: workshop.level ?? null,
+      eventType: workshop.event_type,
       imageUrl: workshop.image || "/placeholder.jpg",
       includes: workshop.includes || [],
+      performers: workshop.performers || [],
+      lineupNotes: workshop.lineup_notes ?? null,
       highlights: workshop.highlights || [],
       gallery: workshop.gallery || [],
       quickInfo: {
@@ -168,12 +174,14 @@ export function PastWorkshopDetailContainer({
         attendees: workshop.registrations_count,
         location: workshop.location,
         fullLocation: workshop.full_location,
-        instructor: workshop.instructor,
+        instructor: workshop.instructor ?? null,
       },
       reviews: formattedReviews,
       averageRating,
+      isWorkshop,
+      isOpenMic,
     }),
-    [workshop, formattedReviews, averageRating],
+    [workshop, formattedReviews, averageRating, isWorkshop, isOpenMic],
   );
 
   const handleAuthenticatedReviewLike = useCallback(

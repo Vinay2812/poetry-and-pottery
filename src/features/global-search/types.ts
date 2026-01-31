@@ -20,7 +20,7 @@ export interface EventSearchItem {
   startsAt: string;
   startsAtTime: string;
   location: string;
-  level: string;
+  level: string | null;
   imageUrl: string;
   price: number;
   availableSeats: number;
@@ -89,7 +89,7 @@ export function buildEventSearchItem(event: EventBase): EventSearchItem {
     startsAt: formatOrderDate(event.starts_at),
     startsAtTime: formatEventTime(event.starts_at),
     location: event.location,
-    level: event.level,
+    level: event.level ?? null,
     imageUrl: event.image || "/placeholder-event.jpg",
     price: event.price,
     availableSeats: event.available_seats,

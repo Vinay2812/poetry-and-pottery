@@ -38,10 +38,20 @@ import {
 
 import { getEventLevelColor, getEventStatusColor } from "@/lib/status-utils";
 
-import { EventLevel, EventStatus } from "@/graphql/generated/types";
+import { EventLevel, EventStatus, EventType } from "@/graphql/generated/types";
 import type { AdminStatusOption } from "@/graphql/generated/types";
 
 import type { EventRowViewModel, EventsTableProps } from "../types";
+
+function getEventTypeLabel(type: EventType): string {
+  switch (type) {
+    case EventType.OpenMic:
+      return "Open Mic";
+    case EventType.PotteryWorkshop:
+    default:
+      return "Workshop";
+  }
+}
 
 interface EventCardProps {
   event: EventRowViewModel;
@@ -128,12 +138,17 @@ function EventCard({
         </div>
 
         <div className="mb-3 flex flex-wrap gap-2">
+          <Badge className="border-primary/30 bg-primary/10 text-primary border">
+            {getEventTypeLabel(event.eventType)}
+          </Badge>
           <Badge className={`border ${getEventStatusColor(event.status)}`}>
             {event.status.toLowerCase().replace("_", " ")}
           </Badge>
-          <Badge className={`border ${getEventLevelColor(event.level)}`}>
-            {event.level.toLowerCase()}
-          </Badge>
+          {event.level && (
+            <Badge className={`border ${getEventLevelColor(event.level)}`}>
+              {event.level.toLowerCase()}
+            </Badge>
+          )}
         </div>
 
         <div className="space-y-2 text-sm text-neutral-600">
@@ -218,6 +233,7 @@ export function EventsTable({
   onSearch,
   onStatusFilter,
   onLevelFilter,
+  onEventTypeFilter,
   onStartDateFilter,
   onEndDateFilter,
   onPageChange,
@@ -273,6 +289,22 @@ export function EventsTable({
                   {option.label}
                 </SelectItem>
               ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={viewModel.eventTypeFilter}
+            onValueChange={onEventTypeFilter}
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Event Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">All Types</SelectItem>
+              <SelectItem value={EventType.PotteryWorkshop}>
+                Workshop
+              </SelectItem>
+              <SelectItem value={EventType.OpenMic}>Open Mic</SelectItem>
             </SelectContent>
           </Select>
 

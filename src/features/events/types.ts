@@ -2,9 +2,10 @@ import type {
   EventBase,
   EventDetail,
   EventRegistration,
+  EventType,
 } from "@/data/events/types";
 
-import type { EventSortOption } from "@/components/events";
+import type { EventSortOption, EventTypeFilter } from "@/components/events";
 
 /**
  * View model for event quick info.
@@ -28,12 +29,17 @@ export interface EventDetailViewModel {
   description: string;
   price: number;
   level: string | null;
+  eventType: EventType;
   imageUrl: string;
   includes: string[];
+  performers: string[];
+  lineupNotes: string | null;
   quickInfo: EventQuickInfoViewModel;
   soldOut: boolean;
   isLoading: boolean;
   registered: boolean;
+  isWorkshop: boolean;
+  isOpenMic: boolean;
 }
 
 /**
@@ -86,8 +92,11 @@ export interface PastWorkshopDetailViewModel {
   description: string;
   price: number;
   level: string | null;
+  eventType: EventType;
   imageUrl: string;
   includes: string[];
+  performers: string[];
+  lineupNotes: string | null;
   highlights: string[];
   gallery: string[];
   quickInfo: {
@@ -101,6 +110,8 @@ export interface PastWorkshopDetailViewModel {
   };
   reviews: FormattedReview[];
   averageRating: number;
+  isWorkshop: boolean;
+  isOpenMic: boolean;
 }
 
 /**
@@ -156,6 +167,8 @@ export interface AllEventsProps {
   loadMoreRef: (node?: Element | null) => void;
   sortBy?: EventSortOption;
   onSortChange?: (sort: EventSortOption) => void;
+  eventTypeFilter?: EventTypeFilter;
+  onEventTypeFilterChange?: (filter: EventTypeFilter) => void;
   pastEventsLoading?: boolean;
   pastEventsSkeleton?: React.ReactNode;
 }

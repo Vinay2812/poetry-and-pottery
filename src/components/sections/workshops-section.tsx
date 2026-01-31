@@ -1,11 +1,11 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Mic, Palette } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-import type { EventBase } from "@/graphql/generated/graphql";
+import { type EventBase, EventType } from "@/graphql/generated/graphql";
 
 import { OptimizedImage } from "../shared";
 
@@ -14,12 +14,23 @@ function formatEventDate(dateStr: Date | string): string {
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function formatEventLevel(level: string): string {
+function formatEventLevel(level: string | null | undefined): string {
+  if (!level) return "";
   return level.charAt(0) + level.slice(1).toLowerCase();
 }
 
 function formatPrice(price: number): string {
   return `₹${price.toLocaleString("en-IN")}`;
+}
+
+function getEventTypeIcon(type: EventType) {
+  switch (type) {
+    case EventType.OpenMic:
+      return <Mic className="h-3 w-3" />;
+    case EventType.PotteryWorkshop:
+    default:
+      return <Palette className="h-3 w-3" />;
+  }
 }
 
 interface WorkshopsSectionProps {
@@ -35,7 +46,7 @@ export function WorkshopsSection({ events }: WorkshopsSectionProps) {
     <div>
       <div className="mb-5 flex items-center justify-between lg:mb-6">
         <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
-          <span className="hidden lg:inline">Upcoming </span>Workshops
+          <span className="hidden lg:inline">Upcoming </span>Events
         </h2>
         <Link
           href="/events/upcoming"
@@ -64,12 +75,17 @@ export function WorkshopsSection({ events }: WorkshopsSectionProps) {
             </span>
 
             <div className="min-w-0 flex-1">
-              <h3 className="font-display truncate text-sm font-semibold text-stone-900 lg:text-base">
-                {event.title}
-              </h3>
+              <div className="flex items-center gap-1.5">
+                <span className="text-primary">
+                  {getEventTypeIcon(event.event_type)}
+                </span>
+                <h3 className="font-display truncate text-sm font-semibold text-stone-900 lg:text-base">
+                  {event.title}
+                </h3>
+              </div>
               <p className="text-muted-foreground mt-0.5 text-xs lg:text-sm">
-                {formatEventDate(event.starts_at)} •{" "}
-                {formatEventLevel(event.level)}
+                {formatEventDate(event.starts_at)}
+                {event.level && <> • {formatEventLevel(event.level)}</>}
                 <span className="hidden lg:inline">
                   {" "}
                   • {formatPrice(event.price)}

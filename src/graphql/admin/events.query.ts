@@ -8,6 +8,7 @@ export const ADMIN_EVENTS_QUERY = gql`
         title
         slug
         description
+        event_type
         status
         level
         starts_at
@@ -18,6 +19,8 @@ export const ADMIN_EVENTS_QUERY = gql`
         total_seats
         instructor
         image
+        performers
+        lineup_notes
         created_at
         _count {
           event_registrations
@@ -39,6 +42,7 @@ export const ADMIN_EVENT_BY_ID_QUERY = gql`
       title
       slug
       description
+      event_type
       status
       level
       starts_at
@@ -53,6 +57,8 @@ export const ADMIN_EVENT_BY_ID_QUERY = gql`
       image
       highlights
       gallery
+      performers
+      lineup_notes
       created_at
       updated_at
       _count {
@@ -133,6 +139,15 @@ export const ADMIN_EVENT_STATUS_OPTIONS_QUERY = gql`
 export const ADMIN_EVENT_LEVEL_OPTIONS_QUERY = gql`
   query AdminEventLevelOptions {
     adminEventLevelOptions {
+      value
+      label
+    }
+  }
+`;
+
+export const ADMIN_EVENT_TYPE_OPTIONS_QUERY = gql`
+  query AdminEventTypeOptions {
+    adminEventTypeOptions {
       value
       label
     }

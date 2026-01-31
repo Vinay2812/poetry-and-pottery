@@ -3,8 +3,10 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useMemo, useState, useTransition } from "react";
 
-import type { EventSortOption } from "@/components/events";
+import type { EventSortOption, EventTypeFilter } from "@/components/events";
 import { PastEventsSkeleton } from "@/components/skeletons";
+
+import { EventType } from "@/graphql/generated/graphql";
 
 import { AllEvents } from "../components/all-events";
 import { useAllEventsQuery } from "../hooks/use-all-events-query";
@@ -20,6 +22,16 @@ export function AllEventsContainer({
   const [, startTransition] = useTransition();
   const searchQuery = searchParams.get("search") || "";
   const [sortBy, setSortBy] = useState<EventSortOption>("soonest");
+  const [eventTypeFilter, setEventTypeFilter] =
+    useState<EventTypeFilter>("all");
+
+  // Convert UI filter to GraphQL enum
+  const eventTypeForQuery =
+    eventTypeFilter === "all"
+      ? null
+      : eventTypeFilter === "workshop"
+        ? EventType.PotteryWorkshop
+        : EventType.OpenMic;
 
   // Upcoming events with initial data from server
   const {
@@ -32,6 +44,7 @@ export function AllEventsContainer({
     initialUpcomingEvents,
     initialUpcomingPagination,
     searchQuery: searchQuery || undefined,
+    eventType: eventTypeForQuery,
   });
 
   const {
@@ -43,6 +56,7 @@ export function AllEventsContainer({
     total: pastTotal,
   } = usePastEventsQuery({
     searchQuery: searchQuery || undefined,
+    eventType: eventTypeForQuery,
     enabled: !hasNextUpcoming && !isFetchingNextUpcoming,
   });
 
@@ -129,6 +143,8 @@ export function AllEventsContainer({
         loadMoreRef={loadMoreRef}
         sortBy={sortBy}
         onSortChange={setSortBy}
+        eventTypeFilter={eventTypeFilter}
+        onEventTypeFilterChange={setEventTypeFilter}
         pastEventsLoading={isPastEventsLoading}
         pastEventsSkeleton={<PastEventsSkeleton />}
       />
