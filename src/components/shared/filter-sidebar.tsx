@@ -52,7 +52,7 @@ export function FilterSidebar({
   ]);
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <div
         className={cn(
           "flex h-12 items-center justify-between py-2",

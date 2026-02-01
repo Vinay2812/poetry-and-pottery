@@ -149,7 +149,7 @@ export function ProductList({
             <FilterSidebar
               filters={filters}
               filterMetadata={filterMetadata}
-              filtersClassName="hidden"
+              // filtersClassName="hidden"
               onFilterClear={onFilterClear}
               onPriceRangeChange={onPriceRangeChange}
               onCategoryToggle={onCategoryToggle}
@@ -252,7 +252,7 @@ export function ProductList({
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
           <aside className="hidden w-64 shrink-0 lg:block">
-            <div className="lg:top-24 lg:pr-6">
+            <div className="lg:sticky lg:top-24 lg:h-full lg:pr-6">
               <FilterSidebar
                 filters={filters}
                 filterMetadata={filterMetadata}
