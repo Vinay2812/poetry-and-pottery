@@ -22,7 +22,7 @@ import {
 
 import { cn } from "@/lib/utils";
 
-import { ProductBase, ProductOrderBy } from "@/graphql/generated/types";
+import { ProductOrderBy } from "@/graphql/generated/types";
 
 import { Filters } from "../hooks/use-products-filter-v2";
 import { useProductsV2 } from "../hooks/use-products-v2";
@@ -31,7 +31,7 @@ import { SORT_OPTIONS } from "../types";
 export type UseProductsV2Props = ReturnType<typeof useProductsV2>;
 
 type ProductListProps = {
-  products: ProductBase[];
+  products: UseProductsV2Props["products"];
   filters: Filters;
   filterMetadata: UseProductsV2Props["filterMetadata"];
   isFetchingProducts: boolean;
@@ -303,7 +303,7 @@ export function ProductList({
                 <StaggeredGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   {products.map((product) => (
                     <ProductCard
-                      key={product.id}
+                      key={`${product.id}-${product.page}`}
                       product={product}
                       isArchiveView={isArchiveView}
                     />

@@ -130,15 +130,20 @@ export const useProductsV2 = (options: {
   ]);
 
   const products = useMemo(() => {
-    const visitedProducts = new Set<number>();
+    const visitedProducts = new Set<string>();
 
-    const allProducts = data.pages.flatMap((page) => page.products);
+    const allProducts = data.pages.flatMap((page) => [
+      ...page.products.map((product) => ({
+        ...product,
+        page: page.page,
+      })),
+    ]);
 
     const products = allProducts.filter((product) => {
-      if (visitedProducts.has(product.id)) {
+      if (visitedProducts.has(`${product.id}-${product.page}`)) {
         return false;
       }
-      visitedProducts.add(product.id);
+      visitedProducts.add(`${product.id}-${product.page}`);
       return true;
     });
 
