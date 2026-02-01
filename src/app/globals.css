@@ -303,6 +303,8 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
   html,
   body {

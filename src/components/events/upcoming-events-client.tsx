@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_ROOT_MARGIN } from "@/consts/performance";
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useEventFilters } from "@/features/events/hooks/use-event-filters";
@@ -88,7 +89,7 @@ export function UpcomingEventsClient({
 
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
-    rootMargin: "100px",
+    rootMargin: DEFAULT_ROOT_MARGIN,
   });
 
   useEffect(() => {

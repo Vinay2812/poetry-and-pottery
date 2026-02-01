@@ -1,6 +1,9 @@
 "use client";
 
-import { DEFAULT_EVENTS_LIMIT } from "@/consts/performance";
+import {
+  DEFAULT_EVENTS_LIMIT,
+  DEFAULT_ROOT_MARGIN,
+} from "@/consts/performance";
 import type { EventBase } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
@@ -67,7 +70,7 @@ export function usePastEventsQuery({
 
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
-    rootMargin: "100px",
+    rootMargin: DEFAULT_ROOT_MARGIN,
   });
 
   useEffect(() => {

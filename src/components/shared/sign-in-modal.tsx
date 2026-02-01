@@ -47,7 +47,6 @@ export function SignInModal() {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2"
-            data-lenis-prevent
           >
             <div className="relative rounded-2xl bg-white p-2 shadow-2xl">
               {/* Close button */}

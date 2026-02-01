@@ -1,6 +1,6 @@
 "use client";
 
-import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { DEFAULT_PAGE_SIZE, DEFAULT_ROOT_MARGIN } from "@/consts/performance";
 import type { ProductBase } from "@/data/products/types";
 import { useRecommendedProductsQuery } from "@/features/recommended-products";
 import { useWishlist } from "@/hooks";
@@ -96,7 +96,7 @@ export function WishlistContainer({
   // Intersection observer for auto-loading
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
-    rootMargin: "100px",
+    rootMargin: DEFAULT_ROOT_MARGIN,
   });
 
   // Auto-fetch next page when scrolling near bottom

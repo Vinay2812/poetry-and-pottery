@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { DEFAULT_PAGE_SIZE, DEFAULT_ROOT_MARGIN } from "@/consts/performance";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -114,7 +114,7 @@ export const useProductsV2 = (options: {
 
   const { ref: fetchNextProductsPageRef, inView } = useInView({
     threshold: 0,
-    rootMargin: "100px",
+    rootMargin: DEFAULT_ROOT_MARGIN,
   });
 
   useEffect(() => {

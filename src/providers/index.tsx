@@ -2,7 +2,6 @@
 
 import { AdminRouteGuardProvider } from "@/providers/admin-route-guard-provider";
 import { ApolloProvider } from "@/providers/apollo";
-import { LenisProvider } from "@/providers/lenis-provider";
 import { RouteGuardProvider } from "@/providers/route-guard-provider";
 import { StoreProvider } from "@/providers/store-provider";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -35,11 +34,9 @@ export default function Providers({ children }: Props) {
         <QueryClientProvider client={queryClient}>
           <StoreProvider>
             <TooltipProvider>
-              <LenisProvider>
-                <AdminRouteGuardProvider>
-                  <RouteGuardProvider>{children}</RouteGuardProvider>
-                </AdminRouteGuardProvider>
-              </LenisProvider>
+              <AdminRouteGuardProvider>
+                <RouteGuardProvider>{children}</RouteGuardProvider>
+              </AdminRouteGuardProvider>
               <SignInModal />
               <ToastContainer />
             </TooltipProvider>

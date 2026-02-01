@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_ROOT_MARGIN } from "@/consts/performance";
 import { getUserWishlistPaginated } from "@/data/admin/users/gateway/server";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { HeartIcon, Loader2, PackageIcon } from "lucide-react";
@@ -57,7 +58,7 @@ export function WishlistView({
   // Intersection observer for auto-loading
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
-    rootMargin: "100px",
+    rootMargin: DEFAULT_ROOT_MARGIN,
   });
 
   // Auto-fetch next page when scrolling near bottom

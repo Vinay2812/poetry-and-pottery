@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_ROOT_MARGIN } from "@/consts/performance";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -74,7 +75,7 @@ export function useOrdersQuery({
 
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
-    rootMargin: "100px",
+    rootMargin: DEFAULT_ROOT_MARGIN,
   });
 
   useEffect(() => {
