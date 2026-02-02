@@ -167,7 +167,7 @@ function SortableUploadItem({
             e.stopPropagation();
             onRemove(item.id);
           }}
-          className="absolute top-1 right-1 z-30 rounded-full bg-black/50 p-1 text-white opacity-100 transition-opacity hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100"
+          className="absolute top-1 right-1 z-30 rounded-full bg-black/50 p-1 text-white opacity-100 transition-opacity hover:bg-black/70"
         >
           <X className="size-4" />
         </button>
