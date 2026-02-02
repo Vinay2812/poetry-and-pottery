@@ -3,6 +3,7 @@
 import { updateRegistrationStatus } from "@/data/admin/registrations/gateway/server";
 import {
   useCallback,
+  useEffect,
   useMemo,
   useOptimistic,
   useState,
@@ -29,15 +30,46 @@ const REGISTRATION_COLUMNS: { id: EventRegistrationStatus; title: string }[] = [
   { id: EventRegistrationStatus.Cancelled, title: "Cancelled" },
 ];
 
+type RegistrationsOptimisticAction = {
+  type: "status";
+  registrationId: string;
+  status: EventRegistrationStatus;
+};
+
+function applyRegistrationsOptimisticAction(
+  state: AdminUserRegistration[],
+  action: RegistrationsOptimisticAction,
+) {
+  switch (action.type) {
+    case "status":
+      return state.map((registration) =>
+        registration.id === action.registrationId
+          ? { ...registration, status: action.status }
+          : registration,
+      );
+    default:
+      return state;
+  }
+}
+
 export function RegistrationsBoardContainer({
   registrations,
 }: RegistrationsBoardContainerProps) {
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
+  const [registrationsState, setRegistrationsState] = useState(registrations);
   const [optimisticRegistrations, setOptimisticRegistrations] =
-    useOptimistic(registrations);
+    useOptimistic(
+      registrationsState,
+      (state: AdminUserRegistration[], action: RegistrationsOptimisticAction) =>
+        applyRegistrationsOptimisticAction(state, action),
+    );
   const [selectedRegistration, setSelectedRegistration] =
     useState<AdminUserRegistration | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    setRegistrationsState(registrations);
+  }, [registrations]);
 
   const columns = useMemo((): KanbanColumn<AdminUserRegistration>[] => {
     return REGISTRATION_COLUMNS.map((col) => ({
@@ -63,33 +95,69 @@ export function RegistrationsBoardContainer({
   const handleMove = useCallback(
     async (registrationId: string, fromColumn: string, toColumn: string) => {
       const newStatus = toColumn as EventRegistrationStatus;
+      const optimisticAction: RegistrationsOptimisticAction = {
+        type: "status",
+        registrationId,
+        status: newStatus,
+      };
 
-      // Optimistic update
+      // Optimistic update (instant UI)
+      setOptimisticRegistrations(optimisticAction);
+
       startTransition(async () => {
-        setOptimisticRegistrations((prev) =>
-          prev.map((reg) =>
-            reg.id === registrationId ? { ...reg, status: newStatus } : reg,
-          ),
-        );
+        try {
+          const result = await updateRegistrationStatus(
+            registrationId,
+            newStatus,
+          );
 
-        const result = await updateRegistrationStatus(
-          registrationId,
-          newStatus,
-        );
+          if (!result.success) {
+            console.error(
+              "Failed to update registration status:",
+              result.error,
+            );
+            setOptimisticRegistrations({
+              type: "status",
+              registrationId,
+              status: fromColumn as EventRegistrationStatus,
+            });
+            setRegistrationsState((prev) =>
+              applyRegistrationsOptimisticAction(prev, {
+                type: "status",
+                registrationId,
+                status: fromColumn as EventRegistrationStatus,
+              }),
+            );
+            return;
+          }
 
-        if (!result.success) {
-          console.error("Failed to update registration status:", result.error);
-          // The page will revalidate and show the correct state
+          setRegistrationsState((prev) =>
+            applyRegistrationsOptimisticAction(prev, optimisticAction),
+          );
+        } catch (error) {
+          console.error("Failed to update registration status:", error);
+          setOptimisticRegistrations({
+            type: "status",
+            registrationId,
+            status: fromColumn as EventRegistrationStatus,
+          });
+          setRegistrationsState((prev) =>
+            applyRegistrationsOptimisticAction(prev, {
+              type: "status",
+              registrationId,
+              status: fromColumn as EventRegistrationStatus,
+            }),
+          );
         }
       });
     },
-    [setOptimisticRegistrations],
+    [setOptimisticRegistrations, startTransition],
   );
 
   return (
     <RegistrationsBoard
       columns={columns}
-      isLoading={isPending}
+      isLoading={false}
       selectedRegistration={selectedRegistration}
       dialogOpen={dialogOpen}
       onMove={handleMove}
