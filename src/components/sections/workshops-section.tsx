@@ -140,12 +140,12 @@ export function WorkshopsSection({
         <EventCategory
           title="Pottery Workshops"
           events={potteryEvents}
-          viewAllHref="/events/upcoming?type=pottery"
+          viewAllHref={`/events/upcoming?type=workshop`}
         />
         <EventCategory
           title="Poetry Open Mics"
           events={poetryEvents}
-          viewAllHref="/events/upcoming?type=openmic"
+          viewAllHref={`/events/upcoming?type=open_mic`}
         />
       </div>
     </div>
