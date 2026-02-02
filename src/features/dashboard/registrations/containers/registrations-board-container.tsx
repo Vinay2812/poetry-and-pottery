@@ -57,12 +57,11 @@ export function RegistrationsBoardContainer({
 }: RegistrationsBoardContainerProps) {
   const [, startTransition] = useTransition();
   const [registrationsState, setRegistrationsState] = useState(registrations);
-  const [optimisticRegistrations, setOptimisticRegistrations] =
-    useOptimistic(
-      registrationsState,
-      (state: AdminUserRegistration[], action: RegistrationsOptimisticAction) =>
-        applyRegistrationsOptimisticAction(state, action),
-    );
+  const [optimisticRegistrations, setOptimisticRegistrations] = useOptimistic(
+    registrationsState,
+    (state: AdminUserRegistration[], action: RegistrationsOptimisticAction) =>
+      applyRegistrationsOptimisticAction(state, action),
+  );
   const [selectedRegistration, setSelectedRegistration] =
     useState<AdminUserRegistration | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
