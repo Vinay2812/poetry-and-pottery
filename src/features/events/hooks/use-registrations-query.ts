@@ -1,6 +1,9 @@
 "use client";
 
-import { DEFAULT_PAGE_SIZE, DEFAULT_ROOT_MARGIN } from "@/consts/performance";
+import {
+  DEFAULT_EVENTS_LIMIT,
+  DEFAULT_ROOT_MARGIN,
+} from "@/consts/performance";
 import type { EventRegistration } from "@/data/events/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
@@ -45,7 +48,7 @@ export function useRegistrationsQuery({
         variables: {
           filter: {
             page: pageParam,
-            limit: DEFAULT_PAGE_SIZE,
+            limit: DEFAULT_EVENTS_LIMIT,
             search: searchQuery,
           },
         },
@@ -95,7 +98,7 @@ export function useRegistrationsQuery({
         variables: {
           filter: {
             page: pageParam,
-            limit: DEFAULT_PAGE_SIZE,
+            limit: DEFAULT_EVENTS_LIMIT,
             search: searchQuery,
           },
         },
