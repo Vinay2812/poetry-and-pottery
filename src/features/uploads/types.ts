@@ -1,11 +1,7 @@
-/**
- * Status of an individual file upload.
- */
+// Status of an individual file upload.
 export type UploadStatus = "idle" | "uploading" | "success" | "error";
 
-/**
- * Represents a single file being uploaded or already uploaded.
- */
+// Represents a single file being uploaded or already uploaded.
 export interface UploadFile {
   id: string;
   file: File | null;
@@ -16,9 +12,7 @@ export interface UploadFile {
   error: string | null;
 }
 
-/**
- * View model for a single upload item.
- */
+// View model for a single upload item.
 export interface UploadItemViewModel {
   id: string;
   previewUrl: string;
@@ -31,9 +25,7 @@ export interface UploadItemViewModel {
   isError: boolean;
 }
 
-/**
- * View model for the R2ImageUploader component.
- */
+// View model for the R2ImageUploader component.
 export interface R2ImageUploaderViewModel {
   items: UploadItemViewModel[];
   canAddMore: boolean;
@@ -43,9 +35,7 @@ export interface R2ImageUploaderViewModel {
   isAnyUploading: boolean;
 }
 
-/**
- * Props for the presentational R2ImageUploader component.
- */
+// Props for the presentational R2ImageUploader component.
 export interface R2ImageUploaderProps {
   viewModel: R2ImageUploaderViewModel;
   multiple: boolean;
@@ -58,9 +48,7 @@ export interface R2ImageUploaderProps {
   onReorder?: (oldIndex: number, newIndex: number) => void;
 }
 
-/**
- * Props for the R2ImageUploaderContainer.
- */
+// Props for the R2ImageUploaderContainer.
 export interface R2ImageUploaderContainerProps {
   folder?: string;
   multiple?: boolean;
@@ -70,18 +58,14 @@ export interface R2ImageUploaderContainerProps {
   disabled?: boolean;
 }
 
-/**
- * Response from the presign API.
- */
+// Response from the presign API.
 export interface PresignResponse {
   presignedUrl: string;
   publicUrl: string;
   key: string;
 }
 
-/**
- * Build upload item view model from upload file data.
- */
+// Build upload item view model from upload file data.
 export function buildUploadItemViewModel(
   file: UploadFile,
 ): UploadItemViewModel {
@@ -98,9 +82,7 @@ export function buildUploadItemViewModel(
   };
 }
 
-/**
- * Build R2ImageUploader view model from upload files.
- */
+// Build R2ImageUploader view model from upload files.
 export function buildR2ImageUploaderViewModel(
   files: UploadFile[],
   maxFiles: number,
@@ -120,16 +102,12 @@ export function buildR2ImageUploaderViewModel(
   };
 }
 
-/**
- * Generate a unique ID for upload files.
- */
+// Generate a unique ID for upload files.
 export function generateUploadId(): string {
   return `upload-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-/**
- * Create an UploadFile from a File object.
- */
+// Create an UploadFile from a File object.
 export function createUploadFile(file: File): UploadFile {
   return {
     id: generateUploadId(),
@@ -142,9 +120,7 @@ export function createUploadFile(file: File): UploadFile {
   };
 }
 
-/**
- * Create an UploadFile from an existing URL.
- */
+// Create an UploadFile from an existing URL.
 export function createUploadFileFromUrl(url: string): UploadFile {
   return {
     id: generateUploadId(),

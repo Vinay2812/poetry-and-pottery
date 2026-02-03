@@ -44,10 +44,8 @@ interface CompletedEventCardProps {
   registration: EventRegistration;
 }
 
-/**
- * Option B: Horizontal Card Layout for Completed Registrations
- * Horizontal card with square thumbnail, completed badge, review status, and CTA.
- */
+// Option B: Horizontal Card Layout for Completed Registrations
+// Horizontal card with square thumbnail, completed badge, review status, and CTA.
 export function CompletedEventCard({ registration }: CompletedEventCardProps) {
   const { event, has_reviewed: hasReviewed } = registration;
   const router = useRouter();

@@ -3,26 +3,20 @@ import type {
   AdminCategory,
 } from "@/graphql/generated/types";
 
-/**
- * View model for a single category row.
- */
+// View model for a single category row.
 export interface CategoryRowViewModel {
   name: string;
   icon: string;
   productCount: number;
 }
 
-/**
- * View model for CategoriesTable.
- */
+// View model for CategoriesTable.
 export interface CategoriesTableViewModel {
   categories: CategoryRowViewModel[];
   total: number;
 }
 
-/**
- * Props for the presentational CategoriesTable component.
- */
+// Props for the presentational CategoriesTable component.
 export interface CategoriesTableProps {
   viewModel: CategoriesTableViewModel;
   iconOptions: { value: string; label: string }[];
@@ -33,17 +27,13 @@ export interface CategoriesTableProps {
   onAdd: (name: string, icon: string) => void;
 }
 
-/**
- * Props for the CategoriesTableContainer.
- */
+// Props for the CategoriesTableContainer.
 export interface CategoriesTableContainerProps {
   data: AdminCategoriesResponse;
   iconOptions: { value: string; label: string }[];
 }
 
-/**
- * Build category row view model from raw data.
- */
+// Build category row view model from raw data.
 export function buildCategoryRowViewModel(
   category: AdminCategory,
 ): CategoryRowViewModel {
@@ -54,9 +44,7 @@ export function buildCategoryRowViewModel(
   };
 }
 
-/**
- * Build categories table view model.
- */
+// Build categories table view model.
 export function buildCategoriesTableViewModel(
   data: AdminCategoriesResponse,
 ): CategoriesTableViewModel {

@@ -2,17 +2,13 @@ import type { KanbanColumn } from "@/components/dashboard/kanban-board";
 
 import type { AdminUserOrder } from "@/graphql/generated/types";
 
-/**
- * Edited state for a single order item.
- */
+// Edited state for a single order item.
 export interface EditedItem {
   quantity: number;
   discount: number;
 }
 
-/**
- * View model for a single order item in the dialog.
- */
+// View model for a single order item in the dialog.
 export interface OrderItemViewModel {
   id: number;
   productName: string;
@@ -24,10 +20,8 @@ export interface OrderItemViewModel {
   itemFinal: number;
 }
 
-/**
- * View model for the order detail dialog.
- * Contains pre-computed display values for the UI.
- */
+// View model for the order detail dialog.
+// Contains pre-computed display values for the UI.
 export interface OrderViewModel {
   id: string;
   formattedCreatedAt: string;
@@ -39,10 +33,8 @@ export interface OrderViewModel {
   isPending: boolean;
 }
 
-/**
- * Props for the presentational OrderDetailDialog component.
- * Uses on* naming convention for all callbacks.
- */
+// Props for the presentational OrderDetailDialog component.
+// Uses on* naming convention for all callbacks.
 export interface OrderDetailDialogProps {
   open: boolean;
   viewModel: OrderViewModel | null;
@@ -54,24 +46,18 @@ export interface OrderDetailDialogProps {
   onCancel: () => void;
 }
 
-/**
- * Props for the container component.
- * Receives raw data from parent and manages state internally.
- */
+// Props for the container component.
+// Receives raw data from parent and manages state internally.
 export interface OrderDetailDialogContainerProps {
   order: OrderData | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-/**
- * Raw order data from the server.
- */
+// Raw order data from the server.
 export type OrderData = AdminUserOrder;
 
-/**
- * View model for a single order card in the board.
- */
+// View model for a single order card in the board.
 export interface OrderCardViewModel {
   id: string;
   totalItems: number;
@@ -86,18 +72,14 @@ export interface OrderCardViewModel {
   }[];
 }
 
-/**
- * Props for the OrderCard presentational component.
- */
+// Props for the OrderCard presentational component.
 export interface OrderCardProps {
   viewModel: OrderCardViewModel;
   isDragging?: boolean;
   onClick: () => void;
 }
 
-/**
- * Props for the OrdersBoard presentational component.
- */
+// Props for the OrdersBoard presentational component.
 export interface OrdersBoardProps {
   columns: KanbanColumn<AdminUserOrder>[];
   isLoading: boolean;
@@ -112,16 +94,12 @@ export interface OrdersBoardProps {
   onDialogOpenChange: (open: boolean) => void;
 }
 
-/**
- * Props for the OrdersBoardContainer.
- */
+// Props for the OrdersBoardContainer.
 export interface OrdersBoardContainerProps {
   orders: AdminUserOrder[];
 }
 
-/**
- * Build order card view model from raw order data.
- */
+// Build order card view model from raw order data.
 export function buildOrderCardViewModel(
   order: AdminUserOrder,
 ): OrderCardViewModel {

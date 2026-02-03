@@ -3,10 +3,8 @@
 import { DEFAULT_DEBOUNCE_MS } from "@/consts/performance";
 import { useCallback, useRef } from "react";
 
-/**
- * Debounce hook - delays API call until user stops triggering for delay period.
- * Use for wishlist/like actions where you want to batch rapid clicks.
- */
+// Debounce hook - delays API call until user stops triggering for delay period.
+// Use for wishlist/like actions where you want to batch rapid clicks.
 export function useDebounce(delay: number = DEFAULT_DEBOUNCE_MS) {
   const timeoutRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const pendingRef = useRef<Map<string, boolean>>(new Map());

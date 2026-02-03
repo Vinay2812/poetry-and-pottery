@@ -4,14 +4,10 @@ import type {
   AdminCollectionsResponse,
 } from "@/graphql/generated/types";
 
-/**
- * Collection status based on time window.
- */
+// Collection status based on time window.
 export type CollectionStatus = "active" | "scheduled" | "ended" | "always";
 
-/**
- * View model for a single collection row in the table.
- */
+// View model for a single collection row in the table.
 export interface CollectionRowViewModel {
   id: number;
   slug: string;
@@ -25,9 +21,7 @@ export interface CollectionRowViewModel {
   createdAt: Date | string;
 }
 
-/**
- * View model for pagination.
- */
+// View model for pagination.
 export interface PaginationViewModel {
   page: number;
   totalPages: number;
@@ -37,9 +31,7 @@ export interface PaginationViewModel {
   showingTo: number;
 }
 
-/**
- * View model for CollectionsTable.
- */
+// View model for CollectionsTable.
 export interface CollectionsTableViewModel {
   collections: CollectionRowViewModel[];
   pagination: PaginationViewModel;
@@ -47,9 +39,7 @@ export interface CollectionsTableViewModel {
   statusFilter: string;
 }
 
-/**
- * Props for the presentational CollectionsTable component.
- */
+// Props for the presentational CollectionsTable component.
 export interface CollectionsTableProps {
   viewModel: CollectionsTableViewModel;
   isPending: boolean;
@@ -59,16 +49,12 @@ export interface CollectionsTableProps {
   onDelete: (collectionId: number) => void;
 }
 
-/**
- * Props for the CollectionsTableContainer.
- */
+// Props for the CollectionsTableContainer.
 export interface CollectionsTableContainerProps {
   data: AdminCollectionsResponse;
 }
 
-/**
- * View model for collection form.
- */
+// View model for collection form.
 export interface CollectionFormViewModel {
   id?: number;
   name: string;
@@ -79,9 +65,7 @@ export interface CollectionFormViewModel {
   endsAt: string;
 }
 
-/**
- * Form data for creating/updating a collection.
- */
+// Form data for creating/updating a collection.
 export interface CollectionFormData {
   name: string;
   slug: string;
@@ -91,9 +75,7 @@ export interface CollectionFormData {
   endsAt: Date | null;
 }
 
-/**
- * Props for the CollectionForm component.
- */
+// Props for the CollectionForm component.
 export interface CollectionFormProps {
   viewModel: CollectionFormViewModel;
   isEditing: boolean;
@@ -102,16 +84,12 @@ export interface CollectionFormProps {
   onCancel: () => void;
 }
 
-/**
- * Props for the CollectionFormContainer.
- */
+// Props for the CollectionFormContainer.
 export interface CollectionFormContainerProps {
   collection?: AdminCollectionDetail;
 }
 
-/**
- * View model for a product in a collection.
- */
+// View model for a product in a collection.
 export interface CollectionProductViewModel {
   id: number;
   name: string;
@@ -122,9 +100,7 @@ export interface CollectionProductViewModel {
   isActive: boolean;
 }
 
-/**
- * Props for the CollectionProductsSection component.
- */
+// Props for the CollectionProductsSection component.
 export interface CollectionProductsSectionProps {
   products: CollectionProductViewModel[];
   isPending: boolean;
@@ -132,16 +108,12 @@ export interface CollectionProductsSectionProps {
   onManageProducts: () => void;
 }
 
-/**
- * Props for the CollectionProductsContainer.
- */
+// Props for the CollectionProductsContainer.
 export interface CollectionProductsContainerProps {
   collection: AdminCollectionDetail;
 }
 
-/**
- * Get collection status based on time window.
- */
+// Get collection status based on time window.
 export function getCollectionStatus(
   startsAt: Date | null,
   endsAt: Date | null,
@@ -154,9 +126,7 @@ export function getCollectionStatus(
   return "active";
 }
 
-/**
- * Build collection row view model from raw data.
- */
+// Build collection row view model from raw data.
 export function buildCollectionRowViewModel(
   collection: AdminCollection,
 ): CollectionRowViewModel {
@@ -177,9 +147,7 @@ export function buildCollectionRowViewModel(
   };
 }
 
-/**
- * Build pagination view model from result data.
- */
+// Build pagination view model from result data.
 export function buildPaginationViewModel(
   data: AdminCollectionsResponse,
 ): PaginationViewModel {
@@ -193,9 +161,7 @@ export function buildPaginationViewModel(
   };
 }
 
-/**
- * Build collections table view model.
- */
+// Build collections table view model.
 export function buildCollectionsTableViewModel(
   data: AdminCollectionsResponse,
   searchValue: string,
@@ -209,9 +175,7 @@ export function buildCollectionsTableViewModel(
   };
 }
 
-/**
- * Build collection form view model from collection detail.
- */
+// Build collection form view model from collection detail.
 export function buildCollectionFormViewModel(
   collection?: AdminCollectionDetail,
 ): CollectionFormViewModel {
@@ -241,9 +205,7 @@ export function buildCollectionFormViewModel(
   };
 }
 
-/**
- * Build collection product view model.
- */
+// Build collection product view model.
 export function buildCollectionProductViewModel(
   product: AdminCollectionDetail["products"][number],
 ): CollectionProductViewModel {
@@ -258,9 +220,7 @@ export function buildCollectionProductViewModel(
   };
 }
 
-/**
- * Format price in INR.
- */
+// Format price in INR.
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -269,9 +229,7 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
-/**
- * Generate slug from name.
- */
+// Generate slug from name.
 export function generateSlug(name: string): string {
   return name
     .toLowerCase()
@@ -281,9 +239,7 @@ export function generateSlug(name: string): string {
     .replace(/-+/g, "-");
 }
 
-/**
- * Format date for display.
- */
+// Format date for display.
 export function formatDate(date: Date | string | null): string {
   if (!date) return "—";
   const d = typeof date === "string" ? new Date(date) : date;
@@ -294,9 +250,7 @@ export function formatDate(date: Date | string | null): string {
   });
 }
 
-/**
- * Format datetime for display.
- */
+// Format datetime for display.
 export function formatDateTime(date: Date | string | null): string {
   if (!date) return "—";
   const d = typeof date === "string" ? new Date(date) : date;

@@ -31,11 +31,9 @@ interface EventCardProps {
   event: EventBase;
 }
 
-/**
- * Option B: Horizontal Compact Card
- * Horizontal layout with square image thumbnail. More compact, shows more events in less space.
- * Good for mobile lists and sidebars. Image and content side by side.
- */
+// Option B: Horizontal Compact Card
+// Horizontal layout with square image thumbnail. More compact, shows more events in less space.
+// Good for mobile lists and sidebars. Image and content side by side.
 export function EventCard({ event }: EventCardProps) {
   const eventDate = new Date(event.starts_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {

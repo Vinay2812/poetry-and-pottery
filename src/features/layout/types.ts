@@ -1,6 +1,4 @@
-/**
- * User info for display in account dropdown.
- */
+// User info for display in account dropdown.
 export interface UserInfo {
   firstName: string | null;
   lastName: string | null;
@@ -8,35 +6,27 @@ export interface UserInfo {
   imageUrl: string | null;
 }
 
-/**
- * View model for Navbar component.
- */
+// View model for Navbar component.
 export interface NavbarViewModel {
   cartCount: number;
   wishlistCount: number;
 }
 
-/**
- * Props for the presentational Navbar component.
- */
+// Props for the presentational Navbar component.
 export interface NavbarProps {
   viewModel: NavbarViewModel;
   currentPath: string;
   onSearchClick: () => void;
 }
 
-/**
- * View model for AccountDropdown component.
- */
+// View model for AccountDropdown component.
 export interface AccountDropdownViewModel {
   user: UserInfo | null;
   isAdmin: boolean;
   pendingOrdersCount: number;
 }
 
-/**
- * Props for the presentational AccountDropdown component.
- */
+// Props for the presentational AccountDropdown component.
 export interface AccountDropdownProps {
   viewModel: AccountDropdownViewModel;
   onProfileSettings: () => void;
@@ -44,17 +34,13 @@ export interface AccountDropdownProps {
   onNavigate: (path: string) => void;
 }
 
-/**
- * View model for MobileHeader component.
- */
+// View model for MobileHeader component.
 export interface MobileHeaderViewModel {
   wishlistCount: number;
   isWishlistActive: boolean;
 }
 
-/**
- * Props for the presentational MobileHeader component.
- */
+// Props for the presentational MobileHeader component.
 export interface MobileHeaderProps {
   title?: string;
   showBack?: boolean;
@@ -66,68 +52,52 @@ export interface MobileHeaderProps {
   onSearchClick: () => void;
 }
 
-/**
- * Props for the MobileHeaderContainer.
- */
+// Props for the MobileHeaderContainer.
 export interface MobileHeaderContainerProps {
   title?: string;
   showBack?: boolean;
   backHref?: string;
 }
 
-/**
- * View model for MobileNav component.
- */
+// View model for MobileNav component.
 export interface MobileNavViewModel {
   cartCount: number;
   eventRegistrationCount: number;
 }
 
-/**
- * Props for the presentational MobileNav component.
- */
+// Props for the presentational MobileNav component.
 export interface MobileNavProps {
   viewModel: MobileNavViewModel;
   currentPath: string;
 }
 
-/**
- * Link item for footer navigation.
- */
+// Link item for footer navigation.
 export interface FooterLinkItem {
   label: string;
   href: string;
 }
 
-/**
- * Link group for footer navigation.
- */
+// Link group for footer navigation.
 export interface FooterLinkGroup {
   title: string;
   links: FooterLinkItem[];
 }
 
-/**
- * Social link for footer.
- */
+// Social link for footer.
 export interface FooterSocialLink {
   platform: "instagram" | "facebook" | "pinterest" | "twitter" | "whatsapp";
   href: string;
   label: string;
 }
 
-/**
- * Contact info item for footer.
- */
+// Contact info item for footer.
 export interface FooterContactItem {
   type: "address" | "hours" | "email" | "phone";
   value: string;
   href?: string;
 }
 
-/**
- * View model for Footer component.
- */
+// View model for Footer component.
 export interface FooterViewModel {
   brandDescription: string;
   linkGroups: FooterLinkGroup[];
@@ -140,9 +110,7 @@ export interface FooterViewModel {
   subscriptionError: string | null;
 }
 
-/**
- * Props for the presentational Footer component.
- */
+// Props for the presentational Footer component.
 export interface FooterProps {
   viewModel: FooterViewModel;
   onNewsletterSubmit: () => Promise<void>;

@@ -79,10 +79,8 @@ function getStatusConfig(status: EventRegistrationStatus) {
   }
 }
 
-/**
- * Option B: Horizontal Card Layout for Upcoming Registrations
- * Horizontal card with square thumbnail, status badge, registration details, and action buttons.
- */
+// Option B: Horizontal Card Layout for Upcoming Registrations
+// Horizontal card with square thumbnail, status badge, registration details, and action buttons.
 export function RegisteredEventCard({
   registration,
   onCancel,

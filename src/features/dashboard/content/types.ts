@@ -18,9 +18,7 @@ export type ContentPageSlug =
   | "privacy"
   | "terms";
 
-/**
- * View model for the content pages list.
- */
+// View model for the content pages list.
 export interface ContentPagesListViewModel {
   pages: ContentPageRowViewModel[];
 }
@@ -32,25 +30,19 @@ export interface ContentPageRowViewModel {
   lastUpdated: string;
 }
 
-/**
- * Props for the presentational ContentPagesList component.
- */
+// Props for the presentational ContentPagesList component.
 export interface ContentPagesListProps {
   viewModel: ContentPagesListViewModel;
   isPending: boolean;
   onToggleActive: (slug: ContentPageSlug) => void;
 }
 
-/**
- * Props for the ContentPagesListContainer.
- */
+// Props for the ContentPagesListContainer.
 export interface ContentPagesListContainerProps {
   data: AdminContentPageListItem[];
 }
 
-/**
- * View model for a single content page editor.
- */
+// View model for a single content page editor.
 export interface ContentPageEditorViewModel {
   slug: ContentPageSlug;
   title: string;
@@ -63,9 +55,7 @@ export interface ContentPageEditorViewModel {
     | TermsPageContent;
 }
 
-/**
- * Props for the ContentPageEditor component.
- */
+// Props for the ContentPageEditor component.
 export interface ContentPageEditorProps {
   viewModel: ContentPageEditorViewModel;
   onSave: (
@@ -80,9 +70,7 @@ export interface ContentPageEditorProps {
   onCancel: () => void;
 }
 
-/**
- * Props for the ContentPageEditorContainer.
- */
+// Props for the ContentPageEditorContainer.
 export interface ContentPageEditorContainerProps {
   slug: ContentPageSlug;
   title: string;
@@ -95,9 +83,7 @@ export interface ContentPageEditorContainerProps {
     | TermsPageContent;
 }
 
-/**
- * Build content pages list view model.
- */
+// Build content pages list view model.
 export function buildContentPagesListViewModel(
   data: AdminContentPageListItem[],
 ): ContentPagesListViewModel {
@@ -111,9 +97,7 @@ export function buildContentPagesListViewModel(
   };
 }
 
-/**
- * Build content page editor view model.
- */
+// Build content page editor view model.
 export function buildContentPageEditorViewModel(
   slug: ContentPageSlug,
   title: string,
@@ -132,9 +116,7 @@ export function buildContentPageEditorViewModel(
   };
 }
 
-/**
- * Page descriptions for the list.
- */
+// Page descriptions for the list.
 export const PAGE_DESCRIPTIONS: Record<ContentPageSlug, string> = {
   about: "Team members, values, and process steps",
   faq: "Frequently asked questions and answers",
@@ -144,9 +126,7 @@ export const PAGE_DESCRIPTIONS: Record<ContentPageSlug, string> = {
   terms: "Terms of service and legal agreements",
 };
 
-/**
- * Available icon options for content editors.
- */
+// Available icon options for content editors.
 export const ICON_OPTIONS = [
   { value: "leaf", label: "Leaf" },
   { value: "heart", label: "Heart" },

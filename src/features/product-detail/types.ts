@@ -1,8 +1,6 @@
 import type { ProductDetail, ProductReview } from "@/data/products/types";
 
-/**
- * Formatted review for display (with optimistic update support).
- */
+// Formatted review for display (with optimistic update support).
 export interface FormattedReview {
   id: string;
   authorId: number;
@@ -16,9 +14,7 @@ export interface FormattedReview {
   images: string[];
 }
 
-/**
- * Product availability status computed from product data.
- */
+// Product availability status computed from product data.
 export interface ProductAvailabilityStatus {
   isOutOfStock: boolean;
   isLowStock: boolean;
@@ -27,9 +23,7 @@ export interface ProductAvailabilityStatus {
   isUnavailable: boolean;
 }
 
-/**
- * Props for the presentational ProductDetail component.
- */
+// Props for the presentational ProductDetail component.
 export interface ProductDetailProps {
   product: ProductDetail;
   formattedReviews: FormattedReview[];
@@ -50,9 +44,7 @@ export interface ProductDetailProps {
   onLikeUpdate: (reviewId: string, likes: number, isLiked: boolean) => void;
 }
 
-/**
- * Compute product availability status from product data.
- */
+// Compute product availability status from product data.
 export function computeAvailabilityStatus(
   product: ProductDetail,
 ): ProductAvailabilityStatus {
@@ -90,16 +82,12 @@ export function computeAvailabilityStatus(
   };
 }
 
-/**
- * Props for the ProductDetailContainer.
- */
+// Props for the ProductDetailContainer.
 export interface ProductDetailContainerProps {
   product: ProductDetail;
 }
 
-/**
- * Build formatted reviews from raw review data (with optimistic update support).
- */
+// Build formatted reviews from raw review data (with optimistic update support).
 export function buildFormattedReviews(
   reviews: ProductReview[],
   currentUserId: number | null | undefined,

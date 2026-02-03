@@ -8,9 +8,7 @@ import type {
   AdminCustomizeCategory,
 } from "@/graphql/generated/types";
 
-/**
- * View model for a single customization option row in the table.
- */
+// View model for a single customization option row in the table.
 export interface CustomizationOptionRowViewModel {
   id: number;
   category: string;
@@ -25,9 +23,7 @@ export interface CustomizationOptionRowViewModel {
   updatedAt: string;
 }
 
-/**
- * View model for pagination.
- */
+// View model for pagination.
 export interface PaginationViewModel {
   page: number;
   totalPages: number;
@@ -37,9 +33,7 @@ export interface PaginationViewModel {
   showingTo: number;
 }
 
-/**
- * View model for CustomizationOptionsTable.
- */
+// View model for CustomizationOptionsTable.
 export interface CustomizationOptionsTableViewModel {
   options: CustomizationOptionRowViewModel[];
   pagination: PaginationViewModel;
@@ -49,9 +43,7 @@ export interface CustomizationOptionsTableViewModel {
   activeFilter: string;
 }
 
-/**
- * Props for the presentational CustomizationOptionsTable component.
- */
+// Props for the presentational CustomizationOptionsTable component.
 export interface CustomizationOptionsTableProps {
   viewModel: CustomizationOptionsTableViewModel;
   categories: AdminCustomizationCategorySummary[];
@@ -66,18 +58,14 @@ export interface CustomizationOptionsTableProps {
   onDelete: (optionId: number) => void;
 }
 
-/**
- * Props for the CustomizationOptionsTableContainer.
- */
+// Props for the CustomizationOptionsTableContainer.
 export interface CustomizationOptionsTableContainerProps {
   data: AdminCustomizationOptionsResponse;
   categories: AdminCustomizationCategorySummary[];
   types: AdminCustomizationTypeSummary[];
 }
 
-/**
- * View model for customization option form.
- */
+// View model for customization option form.
 export interface CustomizationOptionFormViewModel {
   id?: number;
   category: string;
@@ -89,9 +77,7 @@ export interface CustomizationOptionFormViewModel {
   isActive: boolean;
 }
 
-/**
- * Props for the CustomizationOptionForm component.
- */
+// Props for the CustomizationOptionForm component.
 export interface CustomizationOptionFormProps {
   viewModel: CustomizationOptionFormViewModel;
   existingCategories: string[];
@@ -101,9 +87,7 @@ export interface CustomizationOptionFormProps {
   onCancel: () => void;
 }
 
-/**
- * Form data for creating/updating a customization option.
- */
+// Form data for creating/updating a customization option.
 export interface CustomizationOptionFormData {
   category: string;
   type: string;
@@ -114,18 +98,14 @@ export interface CustomizationOptionFormData {
   isActive: boolean;
 }
 
-/**
- * Props for the CustomizationOptionFormContainer.
- */
+// Props for the CustomizationOptionFormContainer.
 export interface CustomizationOptionFormContainerProps {
   option?: AdminCustomizationOption;
   categories: AdminCustomizationCategorySummary[];
   types: AdminCustomizationTypeSummary[];
 }
 
-/**
- * Build customization option row view model from raw data.
- */
+// Build customization option row view model from raw data.
 export function buildCustomizationOptionRowViewModel(
   option: AdminCustomizationOption,
 ): CustomizationOptionRowViewModel {
@@ -144,9 +124,7 @@ export function buildCustomizationOptionRowViewModel(
   };
 }
 
-/**
- * Build pagination view model from result data.
- */
+// Build pagination view model from result data.
 export function buildPaginationViewModel(
   data: AdminCustomizationOptionsResponse,
 ): PaginationViewModel {
@@ -160,9 +138,7 @@ export function buildPaginationViewModel(
   };
 }
 
-/**
- * Build customization options table view model.
- */
+// Build customization options table view model.
 export function buildCustomizationOptionsTableViewModel(
   data: AdminCustomizationOptionsResponse,
   searchValue: string,
@@ -180,9 +156,7 @@ export function buildCustomizationOptionsTableViewModel(
   };
 }
 
-/**
- * Build customization option form view model from option detail.
- */
+// Build customization option form view model from option detail.
 export function buildCustomizationOptionFormViewModel(
   option?: AdminCustomizationOption,
 ): CustomizationOptionFormViewModel {
@@ -210,9 +184,7 @@ export function buildCustomizationOptionFormViewModel(
   };
 }
 
-/**
- * Format price modifier in INR.
- */
+// Format price modifier in INR.
 export function formatPriceModifier(price: number): string {
   if (price === 0) return "No change";
   const prefix = price > 0 ? "+" : "";
@@ -223,9 +195,7 @@ export function formatPriceModifier(price: number): string {
   }).format(price)}`;
 }
 
-/**
- * Format date for display.
- */
+// Format date for display.
 export function formatDate(date: string | Date): string {
   return new Date(date).toLocaleDateString("en-IN", {
     year: "numeric",
@@ -238,17 +208,13 @@ export function formatDate(date: string | Date): string {
 // New Dashboard with Category Cards
 // ============================================
 
-/**
- * View model for options grouped by type within a category.
- */
+// View model for options grouped by type within a category.
 export interface OptionsByTypeViewModel {
   type: string;
   options: CustomizationOptionRowViewModel[];
 }
 
-/**
- * View model for a category card on the dashboard.
- */
+// View model for a category card on the dashboard.
 export interface CustomizeCategoryCardViewModel {
   id: number;
   category: string;
@@ -260,17 +226,13 @@ export interface CustomizeCategoryCardViewModel {
   optionsByType: OptionsByTypeViewModel[];
 }
 
-/**
- * View model for the customization dashboard.
- */
+// View model for the customization dashboard.
 export interface CustomizationDashboardViewModel {
   categories: CustomizeCategoryCardViewModel[];
   totalCategories: number;
 }
 
-/**
- * Props for CustomizationDashboard presentational component.
- */
+// Props for CustomizationDashboard presentational component.
 export interface CustomizationDashboardProps {
   viewModel: CustomizationDashboardViewModel;
   existingTypes: string[];
@@ -295,27 +257,21 @@ export interface CustomizationDashboardProps {
   onEditOption: (optionId: number) => void;
 }
 
-/**
- * Props for CustomizationDashboardContainer.
- */
+// Props for CustomizationDashboardContainer.
 export interface CustomizationDashboardContainerProps {
   data: AdminCustomizeCategoriesResponse;
   types: AdminCustomizationTypeSummary[];
   productCategories: AdminCategory[];
 }
 
-/**
- * Form data for creating a new category.
- */
+// Form data for creating a new category.
 export interface CreateCategoryFormData {
   category: string;
   basePrice: number;
   imageUrl?: string;
 }
 
-/**
- * Form data for creating an option within a category.
- */
+// Form data for creating an option within a category.
 export interface CreateOptionFormData {
   type: string;
   name: string;
@@ -324,17 +280,13 @@ export interface CreateOptionFormData {
   sortOrder: number;
 }
 
-/**
- * Available category option for dropdown.
- */
+// Available category option for dropdown.
 export interface AvailableCategoryOption {
   name: string;
   icon: string;
 }
 
-/**
- * Props for AddCategoryModal.
- */
+// Props for AddCategoryModal.
 export interface AddCategoryModalProps {
   isOpen: boolean;
   availableCategories: AvailableCategoryOption[];
@@ -342,9 +294,7 @@ export interface AddCategoryModalProps {
   onSubmit: (data: CreateCategoryFormData) => Promise<void>;
 }
 
-/**
- * Props for AddOptionModal.
- */
+// Props for AddOptionModal.
 export interface AddOptionModalProps {
   categoryId: number;
   categoryName: string;
@@ -354,9 +304,7 @@ export interface AddOptionModalProps {
   onSubmit: (data: CreateOptionFormData) => Promise<void>;
 }
 
-/**
- * Build category card view model from API data.
- */
+// Build category card view model from API data.
 export function buildCustomizeCategoryCardViewModel(
   category: AdminCustomizeCategory,
 ): CustomizeCategoryCardViewModel {
@@ -403,9 +351,7 @@ export function buildCustomizeCategoryCardViewModel(
   };
 }
 
-/**
- * Build dashboard view model from API response.
- */
+// Build dashboard view model from API response.
 export function buildCustomizationDashboardViewModel(
   data: AdminCustomizeCategoriesResponse,
 ): CustomizationDashboardViewModel {
@@ -415,9 +361,7 @@ export function buildCustomizationDashboardViewModel(
   };
 }
 
-/**
- * Format price in INR.
- */
+// Format price in INR.
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -430,9 +374,7 @@ export function formatPrice(price: number): string {
 // Edit Category Form
 // ============================================
 
-/**
- * View model for edit category form.
- */
+// View model for edit category form.
 export interface EditCategoryFormViewModel {
   id: number;
   category: string;
@@ -441,9 +383,7 @@ export interface EditCategoryFormViewModel {
   isActive: boolean;
 }
 
-/**
- * Form data for updating a category.
- */
+// Form data for updating a category.
 export interface UpdateCategoryFormData {
   category: string;
   basePrice: number;
@@ -451,9 +391,7 @@ export interface UpdateCategoryFormData {
   isActive: boolean;
 }
 
-/**
- * Props for EditCategoryForm component.
- */
+// Props for EditCategoryForm component.
 export interface EditCategoryFormProps {
   viewModel: EditCategoryFormViewModel;
   availableCategories: AvailableCategoryOption[];
@@ -461,18 +399,14 @@ export interface EditCategoryFormProps {
   onCancel: () => void;
 }
 
-/**
- * Props for EditCategoryFormContainer.
- */
+// Props for EditCategoryFormContainer.
 export interface EditCategoryFormContainerProps {
   category: AdminCustomizeCategory;
   productCategories: AdminCategory[];
   customizeCategories: AdminCustomizeCategory[];
 }
 
-/**
- * Build edit category form view model from API data.
- */
+// Build edit category form view model from API data.
 export function buildEditCategoryFormViewModel(
   category: AdminCustomizeCategory,
 ): EditCategoryFormViewModel {

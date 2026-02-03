@@ -4,9 +4,7 @@ import type {
   SocialLinks,
 } from "@/graphql/generated/types";
 
-/**
- * View model for the settings page.
- */
+// View model for the settings page.
 export interface SettingsViewModel {
   heroImages: HeroImagesViewModel;
   contactInfo: ContactInfoViewModel;
@@ -34,9 +32,7 @@ export interface SocialLinksViewModel {
   pinterest: string;
 }
 
-/**
- * Props for the presentational SettingsForm component.
- */
+// Props for the presentational SettingsForm component.
 export interface SettingsFormProps {
   viewModel: SettingsViewModel;
   activeTab: SettingsTab;
@@ -48,18 +44,14 @@ export interface SettingsFormProps {
 
 export type SettingsTab = "hero" | "contact" | "social";
 
-/**
- * Props for the SettingsFormContainer.
- */
+// Props for the SettingsFormContainer.
 export interface SettingsFormContainerProps {
   heroImages: HeroImages;
   contactInfo: ContactInfo;
   socialLinks: SocialLinks;
 }
 
-/**
- * Build settings view model from raw data.
- */
+// Build settings view model from raw data.
 export function buildSettingsViewModel(
   heroImages: HeroImages,
   contactInfo: ContactInfo,

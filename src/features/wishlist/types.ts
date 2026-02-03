@@ -2,17 +2,13 @@ import type { ProductBase } from "@/data/products/types";
 
 import type { WishlistItem } from "@/graphql/generated/types";
 
-/**
- * View model for a single wishlist item.
- */
+// View model for a single wishlist item.
 export interface WishlistItemViewModel {
   productId: number;
   product: ProductBase;
 }
 
-/**
- * View model for the Wishlist component.
- */
+// View model for the Wishlist component.
 export interface WishlistViewModel {
   items: WishlistItemViewModel[];
   totalItems: number;
@@ -21,9 +17,7 @@ export interface WishlistViewModel {
   showRecommendations: boolean;
 }
 
-/**
- * Props for the presentational Wishlist component.
- */
+// Props for the presentational Wishlist component.
 export interface WishlistProps {
   viewModel: WishlistViewModel;
   recommendations: ProductBase[];
@@ -33,9 +27,7 @@ export interface WishlistProps {
   onRemoveItem: (productId: number) => void;
 }
 
-/**
- * Props for the WishlistContainer.
- */
+// Props for the WishlistContainer.
 export interface WishlistContainerProps {
   initialWishlistItems: WishlistItem[];
   initialPagination: {

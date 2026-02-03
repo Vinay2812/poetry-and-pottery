@@ -1,6 +1,4 @@
-/**
- * Dashboard statistics from the server.
- */
+// Dashboard statistics from the server.
 export interface DashboardStats {
   orders: {
     total: number;
@@ -32,9 +30,7 @@ export interface DashboardStats {
   };
 }
 
-/**
- * Recent order data for display.
- */
+// Recent order data for display.
 export interface RecentOrder {
   id: string;
   status: string;
@@ -46,9 +42,7 @@ export interface RecentOrder {
   };
 }
 
-/**
- * Recent registration data for display.
- */
+// Recent registration data for display.
 export interface RecentRegistration {
   id: string;
   status: string;
@@ -62,9 +56,7 @@ export interface RecentRegistration {
   };
 }
 
-/**
- * Low stock product data for display.
- */
+// Low stock product data for display.
 export interface LowStockProduct {
   id: number;
   name: string;
@@ -72,9 +64,7 @@ export interface LowStockProduct {
   available_quantity: number;
 }
 
-/**
- * Upcoming event data for display.
- */
+// Upcoming event data for display.
 export interface UpcomingEvent {
   id: string;
   title: string;
@@ -86,9 +76,7 @@ export interface UpcomingEvent {
   };
 }
 
-/**
- * Props for HeroStats component.
- */
+// Props for HeroStats component.
 export interface HeroStatsProps {
   totalRevenue: number;
   totalTransactions: number;
@@ -100,9 +88,7 @@ export interface HeroStatsProps {
   usersNewThisMonth: number;
 }
 
-/**
- * Props for QuickActions component.
- */
+// Props for QuickActions component.
 export interface QuickActionsProps {
   ordersPending: number;
   ordersProcessing: number;
@@ -112,37 +98,27 @@ export interface QuickActionsProps {
   eventsUpcomingIn7Days: number;
 }
 
-/**
- * Props for RecentOrdersSection component.
- */
+// Props for RecentOrdersSection component.
 export interface RecentOrdersSectionProps {
   orders: RecentOrder[];
 }
 
-/**
- * Props for RecentRegistrationsSection component.
- */
+// Props for RecentRegistrationsSection component.
 export interface RecentRegistrationsSectionProps {
   registrations: RecentRegistration[];
 }
 
-/**
- * Props for InventoryAlertsSection component.
- */
+// Props for InventoryAlertsSection component.
 export interface InventoryAlertsSectionProps {
   products: LowStockProduct[];
 }
 
-/**
- * Props for UpcomingEventsSection component.
- */
+// Props for UpcomingEventsSection component.
 export interface UpcomingEventsSectionProps {
   events: UpcomingEvent[];
 }
 
-/**
- * Props for RevenueBreakdownSection component.
- */
+// Props for RevenueBreakdownSection component.
 export interface RevenueBreakdownSectionProps {
   ordersRevenue: number;
   registrationsRevenue: number;
@@ -152,9 +128,7 @@ export interface RevenueBreakdownSectionProps {
   totalTransactions: number;
 }
 
-/**
- * Newsletter subscriber data for display.
- */
+// Newsletter subscriber data for display.
 export interface NewsletterSubscriber {
   id: number;
   name?: string | null;
@@ -163,9 +137,7 @@ export interface NewsletterSubscriber {
   newsletter_subscribed_at?: Date | string | null;
 }
 
-/**
- * Props for NewsletterSection component.
- */
+// Props for NewsletterSection component.
 export interface NewsletterSectionProps {
   subscribers: NewsletterSubscriber[];
   totalSubscribers: number;

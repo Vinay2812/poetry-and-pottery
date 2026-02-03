@@ -9,9 +9,7 @@ import type {
   AdminStatusOption,
 } from "@/graphql/generated/types";
 
-/**
- * View model for a single event row in the table.
- */
+// View model for a single event row in the table.
 export interface EventRowViewModel {
   id: string;
   slug: string;
@@ -41,9 +39,7 @@ export interface EventRowViewModel {
   isFullyBooked: boolean;
 }
 
-/**
- * View model for pagination.
- */
+// View model for pagination.
 export interface PaginationViewModel {
   page: number;
   totalPages: number;
@@ -53,9 +49,7 @@ export interface PaginationViewModel {
   showingTo: number;
 }
 
-/**
- * View model for EventsTable.
- */
+// View model for EventsTable.
 export interface EventsTableViewModel {
   events: EventRowViewModel[];
   pagination: PaginationViewModel;
@@ -67,9 +61,7 @@ export interface EventsTableViewModel {
   endDate: string;
 }
 
-/**
- * Props for the presentational EventsTable component.
- */
+// Props for the presentational EventsTable component.
 export interface EventsTableProps {
   viewModel: EventsTableViewModel;
   statusOptions: AdminStatusOption[];
@@ -86,18 +78,14 @@ export interface EventsTableProps {
   onDelete: (eventId: string) => void;
 }
 
-/**
- * Props for the EventsTableContainer.
- */
+// Props for the EventsTableContainer.
 export interface EventsTableContainerProps {
   data: AdminEventsResponse;
   statusOptions: AdminStatusOption[];
   levelOptions: AdminLevelOption[];
 }
 
-/**
- * View model for event form.
- */
+// View model for event form.
 export interface EventFormViewModel {
   id?: string;
   eventType: EventType;
@@ -122,9 +110,7 @@ export interface EventFormViewModel {
   lineupNotes: string | null;
 }
 
-/**
- * Props for the EventForm component.
- */
+// Props for the EventForm component.
 export interface EventFormProps {
   viewModel: EventFormViewModel;
   statusOptions: AdminStatusOption[];
@@ -134,9 +120,7 @@ export interface EventFormProps {
   onCancel: () => void;
 }
 
-/**
- * Form data for creating/updating an event.
- */
+// Form data for creating/updating an event.
 export interface EventFormData {
   eventType: EventType;
   title: string;
@@ -160,18 +144,14 @@ export interface EventFormData {
   lineupNotes: string | null;
 }
 
-/**
- * Props for the EventFormContainer.
- */
+// Props for the EventFormContainer.
 export interface EventFormContainerProps {
   event?: AdminEventDetail;
   statusOptions: AdminStatusOption[];
   levelOptions: AdminLevelOption[];
 }
 
-/**
- * Build event row view model from raw data.
- */
+// Build event row view model from raw data.
 export function buildEventRowViewModel(event: AdminEvent): EventRowViewModel {
   const now = new Date();
   return {
@@ -204,9 +184,7 @@ export function buildEventRowViewModel(event: AdminEvent): EventRowViewModel {
   };
 }
 
-/**
- * Build pagination view model from result data.
- */
+// Build pagination view model from result data.
 export function buildPaginationViewModel(
   data: AdminEventsResponse,
 ): PaginationViewModel {
@@ -220,9 +198,7 @@ export function buildPaginationViewModel(
   };
 }
 
-/**
- * Build events table view model.
- */
+// Build events table view model.
 export function buildEventsTableViewModel(
   data: AdminEventsResponse,
   searchValue: string,
@@ -244,9 +220,7 @@ export function buildEventsTableViewModel(
   };
 }
 
-/**
- * Build event form view model from event detail.
- */
+// Build event form view model from event detail.
 export function buildEventFormViewModel(
   event?: AdminEventDetail,
   statusOptions?: AdminStatusOption[],
@@ -311,9 +285,7 @@ export function buildEventFormViewModel(
   };
 }
 
-/**
- * Format price in INR.
- */
+// Format price in INR.
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -325,9 +297,7 @@ export function formatPrice(price: number): string {
 // Re-export for backwards compatibility
 export { formatDateTime } from "@/lib/date";
 
-/**
- * Generate slug from title.
- */
+// Generate slug from title.
 export function generateSlug(title: string): string {
   return title
     .toLowerCase()

@@ -6,13 +6,11 @@ interface TrustBadgesProps {
   className?: string;
 }
 
-/**
- * Trust Badges Component (Option C - Minimal Inline Text)
- *
- * Compact, text-focused design with small inline icons.
- * No background or dividers - keeps focus on the product
- * while still showing trust signals.
- */
+// Trust Badges Component (Option C - Minimal Inline Text)
+//
+// Compact, text-focused design with small inline icons.
+// No background or dividers - keeps focus on the product
+// while still showing trust signals.
 export function TrustBadges({ className }: TrustBadgesProps) {
   return (
     <div

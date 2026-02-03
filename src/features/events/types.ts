@@ -7,9 +7,7 @@ import type {
 
 import type { EventSortOption, EventTypeFilter } from "@/components/events";
 
-/**
- * View model for event quick info.
- */
+// View model for event quick info.
 export interface EventQuickInfoViewModel {
   formattedDate: string;
   formattedTime: string;
@@ -20,9 +18,7 @@ export interface EventQuickInfoViewModel {
   instructor: string | null;
 }
 
-/**
- * View model for the EventDetail component.
- */
+// View model for the EventDetail component.
 export interface EventDetailViewModel {
   id: string;
   title: string;
@@ -42,9 +38,7 @@ export interface EventDetailViewModel {
   isOpenMic: boolean;
 }
 
-/**
- * Props for the presentational EventDetail component.
- */
+// Props for the presentational EventDetail component.
 export interface EventDetailProps {
   viewModel: EventDetailViewModel;
   otherEvents: EventBase[];
@@ -52,9 +46,7 @@ export interface EventDetailProps {
   onShare: () => void;
 }
 
-/**
- * Props for the EventDetailContainer.
- */
+// Props for the EventDetailContainer.
 export interface EventDetailContainerProps {
   event: EventDetail;
   otherEvents: EventBase[];
@@ -67,9 +59,7 @@ export {
   formatEventTime,
 } from "@/lib/date";
 
-/**
- * Formatted review for display.
- */
+// Formatted review for display.
 export interface FormattedReview {
   id: string;
   authorId: number;
@@ -83,9 +73,7 @@ export interface FormattedReview {
   images: string[];
 }
 
-/**
- * View model for the PastWorkshopDetail component.
- */
+// View model for the PastWorkshopDetail component.
 export interface PastWorkshopDetailViewModel {
   id: string;
   title: string;
@@ -114,9 +102,7 @@ export interface PastWorkshopDetailViewModel {
   isOpenMic: boolean;
 }
 
-/**
- * Props for the presentational PastWorkshopDetail component.
- */
+// Props for the presentational PastWorkshopDetail component.
 export interface PastWorkshopDetailProps {
   viewModel: PastWorkshopDetailViewModel;
   upcomingEvents: EventBase[];
@@ -127,26 +113,20 @@ export interface PastWorkshopDetailProps {
   onLikeUpdate: (reviewId: string, likes: number, isLiked: boolean) => void;
 }
 
-/**
- * Props for the PastWorkshopDetailContainer.
- */
+// Props for the PastWorkshopDetailContainer.
 export interface PastWorkshopDetailContainerProps {
   workshop: EventDetail;
   upcomingEvents: EventBase[];
   currentUserId?: number | null;
 }
 
-/**
- * Pagination data for lists.
- */
+// Pagination data for lists.
 export interface PaginationData {
   total: number;
   totalPages: number;
 }
 
-/**
- * View model for the AllEvents component.
- */
+// View model for the AllEvents component.
 export interface AllEventsViewModel {
   upcomingEvents: EventBase[];
   pastEvents: EventBase[];
@@ -159,9 +139,7 @@ export interface AllEventsViewModel {
   totalEvents: number;
 }
 
-/**
- * Props for the presentational AllEvents component.
- */
+// Props for the presentational AllEvents component.
 export interface AllEventsProps {
   viewModel: AllEventsViewModel;
   loadMoreRef: (node?: Element | null) => void;
@@ -176,17 +154,13 @@ export interface AllEventsProps {
   pastEventsSkeleton?: React.ReactNode;
 }
 
-/**
- * Props for the AllEventsContainer.
- */
+// Props for the AllEventsContainer.
 export interface AllEventsContainerProps {
   initialUpcomingEvents: EventBase[];
   initialUpcomingPagination: PaginationData;
 }
 
-/**
- * View model for the Registrations component.
- */
+// View model for the Registrations component.
 export interface RegistrationsViewModel {
   upcomingRegistrations: EventRegistration[];
   completedRegistrations: EventRegistration[];
@@ -199,9 +173,7 @@ export interface RegistrationsViewModel {
   isLoading: boolean;
 }
 
-/**
- * Props for the presentational Registrations component.
- */
+// Props for the presentational Registrations component.
 export interface RegistrationsProps {
   viewModel: RegistrationsViewModel;
   loadMoreRef: (node?: Element | null) => void;
@@ -210,9 +182,7 @@ export interface RegistrationsProps {
   queryString?: string;
 }
 
-/**
- * Props for the RegistrationsContainer.
- */
+// Props for the RegistrationsContainer.
 export interface RegistrationsContainerProps {
   initialUpcomingRegistrations: EventRegistration[];
   initialUpcomingPagination: PaginationData;

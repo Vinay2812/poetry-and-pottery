@@ -4,22 +4,16 @@ import type {
   CustomizationOptionsByType,
 } from "@/graphql/generated/types";
 
-/**
- * Steps in the customization wizard
- */
+// Steps in the customization wizard
 export type CustomizeStep = "category" | "options" | "review";
 
-/**
- * User's current customization selections
- */
+// User's current customization selections
 export interface CustomizationSelections {
   category: string | null;
   options: Record<string, number>; // type -> option_id
 }
 
-/**
- * View model for a category card
- */
+// View model for a category card
 export interface CategoryCardViewModel {
   id: number;
   category: string;
@@ -30,9 +24,7 @@ export interface CategoryCardViewModel {
   isSelected: boolean;
 }
 
-/**
- * View model for an option chip
- */
+// View model for an option chip
 export interface OptionChipViewModel {
   id: number;
   name: string;
@@ -42,18 +34,14 @@ export interface OptionChipViewModel {
   isSelected: boolean;
 }
 
-/**
- * View model for an option group (by type)
- */
+// View model for an option group (by type)
 export interface OptionGroupViewModel {
   type: string;
   typeLabel: string;
   options: OptionChipViewModel[];
 }
 
-/**
- * View model for the review summary
- */
+// View model for the review summary
 export interface ReviewSummaryViewModel {
   category: string;
   basePrice: number;
@@ -69,18 +57,14 @@ export interface ReviewSummaryViewModel {
   totalPriceFormatted: string;
 }
 
-/**
- * Props for CategorySelector
- */
+// Props for CategorySelector
 export interface CategorySelectorProps {
   categories: CategoryCardViewModel[];
   isLoading: boolean;
   onSelect: (categoryId: number) => void;
 }
 
-/**
- * Props for OptionsSelector
- */
+// Props for OptionsSelector
 export interface OptionsSelectorProps {
   category: string;
   optionGroups: OptionGroupViewModel[];
@@ -91,9 +75,7 @@ export interface OptionsSelectorProps {
   canContinue: boolean;
 }
 
-/**
- * Props for ReviewSummary
- */
+// Props for ReviewSummary
 export interface ReviewSummaryProps {
   viewModel: ReviewSummaryViewModel;
   onBack: () => void;
@@ -101,17 +83,13 @@ export interface ReviewSummaryProps {
   isAddingToCart: boolean;
 }
 
-/**
- * Props for StepIndicator
- */
+// Props for StepIndicator
 export interface StepIndicatorProps {
   currentStep: CustomizeStep;
   completedSteps: CustomizeStep[];
 }
 
-/**
- * Build category card view models
- */
+// Build category card view models
 export function buildCategoryCardViewModels(
   categories: CustomizationCategory[],
   selectedCategoryId: number | null,
@@ -127,9 +105,7 @@ export function buildCategoryCardViewModels(
   }));
 }
 
-/**
- * Build option group view models
- */
+// Build option group view models
 export function buildOptionGroupViewModels(
   optionsByType: CustomizationOptionsByType[],
   selections: Record<string, number>,
@@ -148,9 +124,7 @@ export function buildOptionGroupViewModels(
   }));
 }
 
-/**
- * Build review summary view model
- */
+// Build review summary view model
 export function buildReviewSummaryViewModel(
   category: string,
   basePrice: number,
@@ -189,9 +163,7 @@ export function buildReviewSummaryViewModel(
   };
 }
 
-/**
- * Format price in INR
- */
+// Format price in INR
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -200,18 +172,14 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
-/**
- * Format price modifier (shows +/- prefix)
- */
+// Format price modifier (shows +/- prefix)
 export function formatPriceModifier(price: number): string {
   if (price === 0) return "";
   const prefix = price > 0 ? "+" : "";
   return `${prefix}${formatPrice(price)}`;
 }
 
-/**
- * Format type label (e.g., SIZE -> Size, TEXT_ENGRAVING -> Text Engraving)
- */
+// Format type label (e.g., SIZE -> Size, TEXT_ENGRAVING -> Text Engraving)
 export function formatTypeLabel(type: string): string {
   return type
     .split("_")
@@ -219,9 +187,7 @@ export function formatTypeLabel(type: string): string {
     .join(" ");
 }
 
-/**
- * Get option by ID from options by type
- */
+// Get option by ID from options by type
 export function getOptionById(
   optionsByType: CustomizationOptionsByType[],
   optionId: number,

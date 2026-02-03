@@ -16,9 +16,9 @@ const MAX_CHARACTERS = 500;
 interface ReviewFormProps {
   title: string;
   hasReviewed?: boolean;
-  /** Variant for form styling */
+  // Variant for form styling
   variant?: "compact" | "full-width";
-  /** Start with form visible (skip trigger button) */
+  // Start with form visible (skip trigger button)
   defaultOpen?: boolean;
   onSubmit: (
     rating: number,

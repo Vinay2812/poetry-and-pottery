@@ -1,9 +1,7 @@
 import type { UserRole } from "@/graphql/generated/types";
 import type { AdminUser, AdminUsersResponse } from "@/graphql/generated/types";
 
-/**
- * Sort options for users table.
- */
+// Sort options for users table.
 export type UserSortOption =
   | "newest"
   | "oldest"
@@ -11,9 +9,7 @@ export type UserSortOption =
   | "name_desc"
   | "pending_orders";
 
-/**
- * View model for a single user row.
- */
+// View model for a single user row.
 export interface UserRowViewModel {
   id: number;
   name: string | null;
@@ -28,9 +24,7 @@ export interface UserRowViewModel {
   isCurrentUser: boolean;
 }
 
-/**
- * View model for pagination.
- */
+// View model for pagination.
 export interface PaginationViewModel {
   page: number;
   totalPages: number;
@@ -40,9 +34,7 @@ export interface PaginationViewModel {
   showingTo: number;
 }
 
-/**
- * View model for UsersTable.
- */
+// View model for UsersTable.
 export interface UsersTableViewModel {
   users: UserRowViewModel[];
   pagination: PaginationViewModel;
@@ -51,9 +43,7 @@ export interface UsersTableViewModel {
   sortValue: UserSortOption;
 }
 
-/**
- * Props for the presentational UsersTable component.
- */
+// Props for the presentational UsersTable component.
 export interface UsersTableProps {
   viewModel: UsersTableViewModel;
   isPending: boolean;
@@ -64,17 +54,13 @@ export interface UsersTableProps {
   onRoleChange: (userId: number, newRole: UserRole) => void;
 }
 
-/**
- * Props for the UsersTableContainer.
- */
+// Props for the UsersTableContainer.
 export interface UsersTableContainerProps {
   data: AdminUsersResponse;
   currentUserId: number;
 }
 
-/**
- * Build user row view model from raw data.
- */
+// Build user row view model from raw data.
 export function buildUserRowViewModel(
   user: AdminUser,
   currentUserId: number,
@@ -94,9 +80,7 @@ export function buildUserRowViewModel(
   };
 }
 
-/**
- * Build pagination view model from result data.
- */
+// Build pagination view model from result data.
 export function buildPaginationViewModel(
   data: AdminUsersResponse,
 ): PaginationViewModel {
@@ -110,9 +94,7 @@ export function buildPaginationViewModel(
   };
 }
 
-/**
- * Build users table view model.
- */
+// Build users table view model.
 export function buildUsersTableViewModel(
   data: AdminUsersResponse,
   currentUserId: number,

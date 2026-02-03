@@ -4,9 +4,7 @@ import type {
   AdminProductsResponse,
 } from "@/graphql/generated/types";
 
-/**
- * View model for a single product row in the table.
- */
+// View model for a single product row in the table.
 export interface ProductRowViewModel {
   id: number;
   slug: string;
@@ -29,9 +27,7 @@ export interface ProductRowViewModel {
   createdAt: Date | string;
 }
 
-/**
- * View model for pagination.
- */
+// View model for pagination.
 export interface PaginationViewModel {
   page: number;
   totalPages: number;
@@ -41,9 +37,7 @@ export interface PaginationViewModel {
   showingTo: number;
 }
 
-/**
- * View model for ProductsTable.
- */
+// View model for ProductsTable.
 export interface ProductsTableViewModel {
   products: ProductRowViewModel[];
   pagination: PaginationViewModel;
@@ -54,9 +48,7 @@ export interface ProductsTableViewModel {
   stockFilter: string;
 }
 
-/**
- * Props for the presentational ProductsTable component.
- */
+// Props for the presentational ProductsTable component.
 export interface ProductsTableProps {
   viewModel: ProductsTableViewModel;
   categories: string[];
@@ -72,18 +64,14 @@ export interface ProductsTableProps {
   onDelete: (productId: number) => void;
 }
 
-/**
- * Props for the ProductsTableContainer.
- */
+// Props for the ProductsTableContainer.
 export interface ProductsTableContainerProps {
   data: AdminProductsResponse;
   categories: string[];
   collections: CollectionOption[];
 }
 
-/**
- * View model for product form.
- */
+// View model for product form.
 export interface ProductFormViewModel {
   id?: number;
   name: string;
@@ -103,18 +91,14 @@ export interface ProductFormViewModel {
   collectionId: number | null;
 }
 
-/**
- * Collection option for the dropdown.
- */
+// Collection option for the dropdown.
 export interface CollectionOption {
   id: number;
   name: string;
   slug: string;
 }
 
-/**
- * Props for the ProductForm component.
- */
+// Props for the ProductForm component.
 export interface ProductFormProps {
   viewModel: ProductFormViewModel;
   availableCategories: string[];
@@ -124,9 +108,7 @@ export interface ProductFormProps {
   onCancel: () => void;
 }
 
-/**
- * Form data for creating/updating a product.
- */
+// Form data for creating/updating a product.
 export interface ProductFormData {
   name: string;
   slug: string;
@@ -144,18 +126,14 @@ export interface ProductFormData {
   collectionId: number | null;
 }
 
-/**
- * Props for the ProductFormContainer.
- */
+// Props for the ProductFormContainer.
 export interface ProductFormContainerProps {
   product?: AdminProductDetail;
   categories: string[];
   collections: CollectionOption[];
 }
 
-/**
- * Build product row view model from raw data.
- */
+// Build product row view model from raw data.
 export function buildProductRowViewModel(
   product: AdminProduct,
 ): ProductRowViewModel {
@@ -182,9 +160,7 @@ export function buildProductRowViewModel(
   };
 }
 
-/**
- * Build pagination view model from result data.
- */
+// Build pagination view model from result data.
 export function buildPaginationViewModel(
   data: AdminProductsResponse,
 ): PaginationViewModel {
@@ -198,9 +174,7 @@ export function buildPaginationViewModel(
   };
 }
 
-/**
- * Build products table view model.
- */
+// Build products table view model.
 export function buildProductsTableViewModel(
   data: AdminProductsResponse,
   searchValue: string,
@@ -220,9 +194,7 @@ export function buildProductsTableViewModel(
   };
 }
 
-/**
- * Build product form view model from product detail.
- */
+// Build product form view model from product detail.
 export function buildProductFormViewModel(
   product?: AdminProductDetail,
 ): ProductFormViewModel {
@@ -269,9 +241,7 @@ export function buildProductFormViewModel(
   };
 }
 
-/**
- * Format price in INR.
- */
+// Format price in INR.
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -280,9 +250,7 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
-/**
- * Generate slug from name.
- */
+// Generate slug from name.
 export function generateSlug(name: string): string {
   return name
     .toLowerCase()

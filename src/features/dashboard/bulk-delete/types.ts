@@ -1,15 +1,11 @@
 import type { EventStatus } from "@/graphql/generated/types";
 
-/**
- * Page size options for bulk delete dialogs.
- */
+// Page size options for bulk delete dialogs.
 export const PAGE_SIZE_OPTIONS = [25, 50, 100, 200, 500] as const;
 
 export type PageSizeOption = (typeof PAGE_SIZE_OPTIONS)[number];
 
-/**
- * View model for a selectable product item in bulk delete.
- */
+// View model for a selectable product item in bulk delete.
 export interface SelectableProductItem {
   id: number;
   name: string;
@@ -19,9 +15,7 @@ export interface SelectableProductItem {
   priceFormatted: string;
 }
 
-/**
- * View model for a selectable event item in bulk delete.
- */
+// View model for a selectable event item in bulk delete.
 export interface SelectableEventItem {
   id: string;
   title: string;
@@ -31,9 +25,7 @@ export interface SelectableEventItem {
   location: string;
 }
 
-/**
- * Pagination view model for bulk delete dialogs.
- */
+// Pagination view model for bulk delete dialogs.
 export interface BulkDeletePaginationViewModel {
   page: number;
   totalPages: number;
@@ -43,9 +35,7 @@ export interface BulkDeletePaginationViewModel {
   showingTo: number;
 }
 
-/**
- * Format price in INR.
- */
+// Format price in INR.
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",

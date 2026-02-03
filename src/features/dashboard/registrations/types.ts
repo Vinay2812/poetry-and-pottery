@@ -2,10 +2,8 @@ import type { KanbanColumn } from "@/components/dashboard/kanban-board";
 
 import type { AdminUserRegistration } from "@/graphql/generated/types";
 
-/**
- * View model for the registration detail dialog.
- * Contains pre-computed display values for the UI.
- */
+// View model for the registration detail dialog.
+// Contains pre-computed display values for the UI.
 export interface RegistrationViewModel {
   id: string;
   eventTitle: string;
@@ -22,10 +20,8 @@ export interface RegistrationViewModel {
   isPending: boolean;
 }
 
-/**
- * Props for the presentational RegistrationDetailDialog component.
- * Uses on* naming convention for all callbacks.
- */
+// Props for the presentational RegistrationDetailDialog component.
+// Uses on* naming convention for all callbacks.
 export interface RegistrationDetailDialogProps {
   open: boolean;
   viewModel: RegistrationViewModel | null;
@@ -37,25 +33,19 @@ export interface RegistrationDetailDialogProps {
   onCancel: () => void;
 }
 
-/**
- * Props for the container component.
- * Receives raw data from parent and manages state internally.
- */
+// Props for the container component.
+// Receives raw data from parent and manages state internally.
 export interface RegistrationDetailDialogContainerProps {
   registration: AdminUserRegistration | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-/**
- * Raw registration data from the server.
- * Type alias for AdminUserRegistration.
- */
+// Raw registration data from the server.
+// Type alias for AdminUserRegistration.
 export type RegistrationData = AdminUserRegistration;
 
-/**
- * View model for a single registration card in the board.
- */
+// View model for a single registration card in the board.
 export interface RegistrationCardViewModel {
   id: string;
   eventTitle: string;
@@ -68,18 +58,14 @@ export interface RegistrationCardViewModel {
   seatsReserved: number;
 }
 
-/**
- * Props for the RegistrationCard presentational component.
- */
+// Props for the RegistrationCard presentational component.
 export interface RegistrationCardProps {
   viewModel: RegistrationCardViewModel;
   isDragging?: boolean;
   onClick: () => void;
 }
 
-/**
- * Props for the RegistrationsBoard presentational component.
- */
+// Props for the RegistrationsBoard presentational component.
 export interface RegistrationsBoardProps {
   columns: KanbanColumn<AdminUserRegistration>[];
   isLoading: boolean;
@@ -94,16 +80,12 @@ export interface RegistrationsBoardProps {
   onDialogOpenChange: (open: boolean) => void;
 }
 
-/**
- * Props for the RegistrationsBoardContainer.
- */
+// Props for the RegistrationsBoardContainer.
 export interface RegistrationsBoardContainerProps {
   registrations: AdminUserRegistration[];
 }
 
-/**
- * Build registration card view model from raw registration data.
- */
+// Build registration card view model from raw registration data.
 export function buildRegistrationCardViewModel(
   registration: AdminUserRegistration,
 ): RegistrationCardViewModel {

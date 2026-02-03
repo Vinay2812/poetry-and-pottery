@@ -2,9 +2,7 @@ import { formatOrderDate } from "@/lib/date";
 
 import type { Order, OrderItem, OrderStatus } from "@/graphql/generated/types";
 
-/**
- * Type for shipping address JSON field.
- */
+// Type for shipping address JSON field.
 export interface ShippingAddress {
   name: string;
   address_line_1: string;
@@ -15,9 +13,7 @@ export interface ShippingAddress {
   contact_number?: string;
 }
 
-/**
- * View model for a single order item.
- */
+// View model for a single order item.
 export interface OrderItemViewModel {
   id: number;
   productId: number;
@@ -32,9 +28,7 @@ export interface OrderItemViewModel {
   hasReviewed: boolean;
 }
 
-/**
- * View model for payment summary.
- */
+// View model for payment summary.
 export interface PaymentSummaryViewModel {
   subtotal: number;
   totalDiscount: number;
@@ -42,9 +36,7 @@ export interface PaymentSummaryViewModel {
   total: number;
 }
 
-/**
- * View model for the OrderDetail component.
- */
+// View model for the OrderDetail component.
 export interface OrderDetailViewModel {
   orderId: string;
   status: OrderStatus;
@@ -63,9 +55,7 @@ export interface OrderDetailViewModel {
   showWhatsAppButton: boolean;
 }
 
-/**
- * Props for the presentational OrderDetail component.
- */
+// Props for the presentational OrderDetail component.
 export interface OrderDetailProps {
   viewModel: OrderDetailViewModel | null;
   onReviewSubmit: (
@@ -77,9 +67,7 @@ export interface OrderDetailProps {
   onWhatsAppContact: () => void;
 }
 
-/**
- * Props for the OrderDetailContainer.
- */
+// Props for the OrderDetailContainer.
 export interface OrderDetailContainerProps {
   order: Order | null;
 }
@@ -90,16 +78,12 @@ export { formatOrderDate } from "@/lib/date";
 // Re-export OrderStatus enum from generated types
 export { OrderStatus } from "@/graphql/generated/types";
 
-/**
- * Helper function to get status label.
- */
+// Helper function to get status label.
 export function getStatusLabel(status: OrderStatus | null): string {
   return status?.toString() || "Processing";
 }
 
-/**
- * Helper function to build order item view model.
- */
+// Helper function to build order item view model.
 export function buildOrderItemViewModel(item: OrderItem): OrderItemViewModel {
   const product = item.product;
   return {
@@ -117,17 +101,13 @@ export function buildOrderItemViewModel(item: OrderItem): OrderItemViewModel {
   };
 }
 
-/**
- * Pagination data for lists.
- */
+// Pagination data for lists.
 export interface OrdersListPaginationData {
   total: number;
   totalPages: number;
 }
 
-/**
- * View model for a single order card in the list.
- */
+// View model for a single order card in the list.
 export interface OrderCardViewModel {
   id: string;
   status: OrderStatus;
@@ -144,9 +124,7 @@ export interface OrderCardViewModel {
   }>;
 }
 
-/**
- * Filter option for order status.
- */
+// Filter option for order status.
 export type OrderStatusFilter =
   | "all"
   | "processing"
@@ -154,9 +132,7 @@ export type OrderStatusFilter =
   | "delivered"
   | "cancelled";
 
-/**
- * View model for the OrdersList component.
- */
+// View model for the OrdersList component.
 export interface OrdersListViewModel {
   orders: OrderCardViewModel[];
   hasOrders: boolean;
@@ -166,9 +142,7 @@ export interface OrdersListViewModel {
   statusFilter: OrderStatusFilter;
 }
 
-/**
- * Props for the presentational OrdersList component.
- */
+// Props for the presentational OrdersList component.
 export interface OrdersListProps {
   viewModel: OrdersListViewModel;
   loadMoreRef: (node?: Element | null) => void;
@@ -176,17 +150,13 @@ export interface OrdersListProps {
   onStatusFilterChange: (status: OrderStatusFilter) => void;
 }
 
-/**
- * Props for the OrdersListContainer.
- */
+// Props for the OrdersListContainer.
 export interface OrdersListContainerProps {
   initialOrders: Order[];
   initialPagination: OrdersListPaginationData;
 }
 
-/**
- * Helper function to build order card view model.
- */
+// Helper function to build order card view model.
 export function buildOrderCardViewModel(order: Order): OrderCardViewModel {
   const items = order.ordered_products;
   const firstProductName = items[0]?.product?.name || "Product";

@@ -1,9 +1,7 @@
 import type { Appearance } from "@clerk/types";
 
-/**
- * Shared Clerk appearance configuration for Poetry & Pottery.
- * Matches the forest theme with earthy greens, cream accents, and warm neutrals.
- */
+// Shared Clerk appearance configuration for Poetry & Pottery.
+// Matches the forest theme with earthy greens, cream accents, and warm neutrals.
 export const clerkAppearance: Appearance = {
   variables: {
     colorPrimary: "#4F6F52",

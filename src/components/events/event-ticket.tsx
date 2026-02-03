@@ -30,11 +30,9 @@ const colors = {
   gray50: "#f9fafb",
 };
 
-/**
- * Option A: Classic Ticket with Torn Edge
- * Traditional ticket design with decorative torn/perforated edges.
- * QR code at the bottom. Classic vertical layout that feels like a real event ticket.
- */
+// Option A: Classic Ticket with Torn Edge
+// Traditional ticket design with decorative torn/perforated edges.
+// QR code at the bottom. Classic vertical layout that feels like a real event ticket.
 export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
   function EventTicket({ registration, onPrint }, ref) {
     const { event, user } = registration;

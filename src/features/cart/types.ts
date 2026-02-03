@@ -2,9 +2,7 @@ import type { ProductBase } from "@/data/products/types";
 
 import type { CartItem, UserAddress } from "@/graphql/generated/types";
 
-/**
- * Product availability status for cart items.
- */
+// Product availability status for cart items.
 export type AvailabilityStatus =
   | "available"
   | "out_of_stock"
@@ -12,9 +10,7 @@ export type AvailabilityStatus =
   | "archived"
   | "collection_ended";
 
-/**
- * Availability info for a cart item.
- */
+// Availability info for a cart item.
 export interface AvailabilityInfo {
   status: AvailabilityStatus;
   isAvailable: boolean;
@@ -22,9 +18,7 @@ export interface AvailabilityInfo {
   maxQuantity: number;
 }
 
-/**
- * Determines the availability status of a product in the cart.
- */
+// Determines the availability status of a product in the cart.
 export function getProductAvailability(
   product: ProductBase,
   requestedQuantity: number,
@@ -83,9 +77,7 @@ export function getProductAvailability(
   };
 }
 
-/**
- * View model for a single cart item.
- */
+// View model for a single cart item.
 export interface CartItemViewModel {
   productId: number;
   product: ProductBase;
@@ -94,9 +86,7 @@ export interface CartItemViewModel {
   availability: AvailabilityInfo;
 }
 
-/**
- * Order summary calculated values.
- */
+// Order summary calculated values.
 export interface OrderSummaryViewModel {
   subtotal: number;
   shipping: number;
@@ -104,9 +94,7 @@ export interface OrderSummaryViewModel {
   total: number;
 }
 
-/**
- * View model for the Cart component.
- */
+// View model for the Cart component.
 export interface CartViewModel {
   cartItems: CartItemViewModel[];
   unavailableItems: CartItemViewModel[];
@@ -119,9 +107,7 @@ export interface CartViewModel {
   availableItemCount: number;
 }
 
-/**
- * Props for the presentational Cart component.
- */
+// Props for the presentational Cart component.
 export interface CartProps {
   viewModel: CartViewModel;
   onQuantityChange: (productId: number, quantity: number) => void;
@@ -131,9 +117,7 @@ export interface CartProps {
   onCheckout: () => void;
 }
 
-/**
- * Props for the CartContainer component.
- */
+// Props for the CartContainer component.
 export interface CartContainerProps {
   initialCartItems: CartItem[];
 }
