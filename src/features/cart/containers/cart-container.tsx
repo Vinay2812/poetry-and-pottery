@@ -30,6 +30,19 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
     quantity: item.quantity,
     created_at: new Date(item.created_at),
     updated_at: new Date(item.updated_at),
+    custom_data: item.custom_data
+      ? {
+          options: item.custom_data.options.map((opt) => ({
+            type: opt.type,
+            optionId: opt.optionId,
+            name: opt.name,
+            value: opt.value,
+            priceModifier: opt.priceModifier,
+          })),
+          totalModifier: item.custom_data.totalModifier,
+        }
+      : null,
+    custom_data_hash: item.custom_data_hash,
     product: {
       id: item.product.id,
       slug: item.product.slug,
@@ -137,6 +150,8 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
           quantity: item.quantity,
           isLoading: isLoading(item.product.id),
           availability,
+          customData: item.custom_data ?? null,
+          customDataHash: item.custom_data_hash,
         };
       }),
     [displayItems, isLoading],
@@ -153,13 +168,14 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
     [allCartItemViewModels],
   );
 
-  // Calculate order summary only from AVAILABLE items
+  // Calculate order summary only from AVAILABLE items (including customization modifiers)
   const availableSubtotal = useMemo(
     () =>
-      availableItems.reduce(
-        (sum, item) => sum + item.product.price * item.quantity,
-        0,
-      ),
+      availableItems.reduce((sum, item) => {
+        const customModifier = item.customData?.totalModifier ?? 0;
+        const effectivePrice = item.product.price + customModifier;
+        return sum + effectivePrice * item.quantity;
+      }, 0),
     [availableItems],
   );
   const availableShipping = 150;

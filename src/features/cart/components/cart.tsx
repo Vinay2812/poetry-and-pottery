@@ -84,7 +84,7 @@ export function Cart({
                         <AnimatePresence mode="popLayout">
                           {cartItems.map((item) => (
                             <CartItemCard
-                              key={item.productId}
+                              key={`${item.productId}-${item.customDataHash}`}
                               product={item.product}
                               quantity={item.quantity}
                               onQuantityChange={(quantity) =>
@@ -96,6 +96,7 @@ export function Cart({
                               }
                               isLoading={item.isLoading}
                               availability={item.availability}
+                              customData={item.customData}
                             />
                           ))}
                         </AnimatePresence>

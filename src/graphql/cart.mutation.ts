@@ -11,6 +11,17 @@ export const ADD_TO_CART_MUTATION = gql`
         quantity
         created_at
         updated_at
+        custom_data_hash
+        custom_data {
+          options {
+            type
+            optionId
+            name
+            value
+            priceModifier
+          }
+          totalModifier
+        }
         product {
           id
           slug
@@ -43,6 +54,17 @@ export const UPDATE_CART_QUANTITY_MUTATION = gql`
         quantity
         created_at
         updated_at
+        custom_data_hash
+        custom_data {
+          options {
+            type
+            optionId
+            name
+            value
+            priceModifier
+          }
+          totalModifier
+        }
         product {
           id
           slug

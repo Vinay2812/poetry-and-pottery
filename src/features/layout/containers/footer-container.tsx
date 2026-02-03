@@ -38,7 +38,7 @@ const LINK_GROUPS: FooterLinkGroup[] = [
 const SOCIAL_LINKS: FooterSocialLink[] = [
   {
     platform: "instagram",
-    href: "https://instagram.com/poetryandpottery_",
+    href: "https://instagram.com/poetryandpotterystudio_",
     label: "Follow us on Instagram",
   },
   {

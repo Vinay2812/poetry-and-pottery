@@ -9,6 +9,21 @@ export {
   OrderStatus,
 } from "@/graphql/generated/types";
 
+// Customization option snapshot for cart items
+export interface CustomizationOptionLocal {
+  type: string;
+  optionId: number;
+  name: string;
+  value: string;
+  priceModifier: number;
+}
+
+// Product customization data for cart items
+export interface ProductCustomizationDataLocal {
+  options: CustomizationOptionLocal[];
+  totalModifier: number;
+}
+
 // Product category type for local state
 export interface ProductCategoryLocal {
   product_id: number;
@@ -59,4 +74,6 @@ export interface CartWithProduct {
   created_at: Date;
   updated_at: Date;
   product: ProductWithCategories;
+  custom_data?: ProductCustomizationDataLocal | null;
+  custom_data_hash: string;
 }

@@ -52,6 +52,7 @@ export type AboutValue = {
 };
 
 export type AddToCartInput = {
+  custom_data?: InputMaybe<Scalars['JSON']['input']>;
   product_id: Scalars['Int']['input'];
   quantity?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -740,6 +741,8 @@ export type CareWarning = {
 
 export type CartItem = {
   created_at: Scalars['DateTime']['output'];
+  custom_data?: Maybe<ProductCustomizationData>;
+  custom_data_hash: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   product: ProductBase;
   product_id: Scalars['Int']['output'];
@@ -920,6 +923,14 @@ export type CustomizationOption = {
   sort_order: Scalars['Int']['output'];
   type: Scalars['String']['output'];
   updated_at: Scalars['DateTime']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type CustomizationOptionSnapshot = {
+  name: Scalars['String']['output'];
+  optionId: Scalars['Int']['output'];
+  priceModifier: Scalars['Float']['output'];
+  type: Scalars['String']['output'];
   value: Scalars['String']['output'];
 };
 
@@ -1517,6 +1528,7 @@ export type MutationRegisterForEventArgs = {
 
 
 export type MutationRemoveFromCartArgs = {
+  customDataHash?: InputMaybe<Scalars['String']['input']>;
   productId: Scalars['Int']['input'];
 };
 
@@ -1595,6 +1607,7 @@ export type Order = {
 
 export type OrderItem = {
   created_at: Scalars['DateTime']['output'];
+  custom_data?: Maybe<ProductCustomizationData>;
   discount: Scalars['Int']['output'];
   has_reviewed: Scalars['Boolean']['output'];
   id: Scalars['Int']['output'];
@@ -1696,6 +1709,11 @@ export type ProductBase = {
   reviews_count: Scalars['Int']['output'];
   slug: Scalars['String']['output'];
   total_quantity: Scalars['Int']['output'];
+};
+
+export type ProductCustomizationData = {
+  options: Array<CustomizationOptionSnapshot>;
+  totalModifier: Scalars['Float']['output'];
 };
 
 export type ProductDetail = {
@@ -2366,6 +2384,7 @@ export type UpdateAddressInput = {
 };
 
 export type UpdateCartQuantityInput = {
+  custom_data_hash?: InputMaybe<Scalars['String']['input']>;
   product_id: Scalars['Int']['input'];
   quantity: Scalars['Int']['input'];
 };
@@ -3154,14 +3173,14 @@ export type AddToCartMutationVariables = Exact<{
 }>;
 
 
-export type AddToCartMutation = { addToCart: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
+export type AddToCartMutation = { addToCart: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, custom_data_hash: string, custom_data?: { totalModifier: number, options: Array<{ type: string, optionId: number, name: string, value: string, priceModifier: number }> } | null, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
 
 export type UpdateCartQuantityMutationVariables = Exact<{
   input: UpdateCartQuantityInput;
 }>;
 
 
-export type UpdateCartQuantityMutation = { updateCartQuantity: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
+export type UpdateCartQuantityMutation = { updateCartQuantity: { success: boolean, item?: { id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, custom_data_hash: string, custom_data?: { totalModifier: number, options: Array<{ type: string, optionId: number, name: string, value: string, priceModifier: number }> } | null, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } } | null } };
 
 export type RemoveFromCartMutationVariables = Exact<{
   productId: Scalars['Int']['input'];
@@ -3178,7 +3197,7 @@ export type ClearCartMutation = { clearCart: boolean };
 export type CartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CartQuery = { cart: { total: number, subtotal: number, items: Array<{ id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } }> } };
+export type CartQuery = { cart: { total: number, subtotal: number, items: Array<{ id: number, user_id: number, product_id: number, quantity: number, created_at: Date | string, updated_at: Date | string, custom_data_hash: string, custom_data?: { totalModifier: number, options: Array<{ type: string, optionId: number, name: string, value: string, priceModifier: number }> } | null, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null } }> } };
 
 export type CustomizationCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<CustomizationCategoriesFilterInput>;
@@ -3303,14 +3322,14 @@ export type OrdersQueryVariables = Exact<{
 }>;
 
 
-export type OrdersQuery = { orders: { total: number, page: number, total_pages: number, data: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> }> } };
+export type OrdersQuery = { orders: { total: number, page: number, total_pages: number, data: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, custom_data?: { totalModifier: number, options: Array<{ type: string, optionId: number, name: string, value: string, priceModifier: number }> } | null, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> }> } };
 
 export type OrderQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type OrderQuery = { order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null };
+export type OrderQuery = { order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, custom_data?: { totalModifier: number, options: Array<{ type: string, optionId: number, name: string, value: string, priceModifier: number }> } | null, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null };
 
 export type CollectionFieldsFragment = { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number };
 
@@ -7616,6 +7635,17 @@ export const AddToCartDocument = gql`
       quantity
       created_at
       updated_at
+      custom_data_hash
+      custom_data {
+        options {
+          type
+          optionId
+          name
+          value
+          priceModifier
+        }
+        totalModifier
+      }
       product {
         id
         slug
@@ -7670,6 +7700,17 @@ export const UpdateCartQuantityDocument = gql`
       quantity
       created_at
       updated_at
+      custom_data_hash
+      custom_data {
+        options {
+          type
+          optionId
+          name
+          value
+          priceModifier
+        }
+        totalModifier
+      }
       product {
         id
         slug
@@ -7778,6 +7819,17 @@ export const CartDocument = gql`
       quantity
       created_at
       updated_at
+      custom_data_hash
+      custom_data {
+        options {
+          type
+          optionId
+          name
+          value
+          priceModifier
+        }
+        totalModifier
+      }
       product {
         id
         slug
@@ -8688,6 +8740,16 @@ export const OrdersDocument = gql`
         created_at
         updated_at
         has_reviewed
+        custom_data {
+          options {
+            type
+            optionId
+            name
+            value
+            priceModifier
+          }
+          totalModifier
+        }
         product {
           id
           slug
@@ -8783,6 +8845,16 @@ export const OrderDocument = gql`
       created_at
       updated_at
       has_reviewed
+      custom_data {
+        options {
+          type
+          optionId
+          name
+          value
+          priceModifier
+        }
+        totalModifier
+      }
       product {
         id
         slug

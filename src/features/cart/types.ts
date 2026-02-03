@@ -1,6 +1,10 @@
 import type { ProductBase } from "@/data/products/types";
 
-import type { CartItem, UserAddress } from "@/graphql/generated/types";
+import type {
+  CartItem,
+  ProductCustomizationData,
+  UserAddress,
+} from "@/graphql/generated/types";
 
 // Product availability status for cart items.
 export type AvailabilityStatus =
@@ -84,6 +88,8 @@ export interface CartItemViewModel {
   quantity: number;
   isLoading: boolean;
   availability: AvailabilityInfo;
+  customData?: ProductCustomizationData | null;
+  customDataHash: string;
 }
 
 // Order summary calculated values.

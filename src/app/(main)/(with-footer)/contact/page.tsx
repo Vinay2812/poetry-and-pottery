@@ -5,8 +5,11 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { ContactForm } from "@/components/forms";
+import { getWhatsAppBaseUrl } from "@/lib/contact-business";
 
 export default function ContactPage() {
+  const whatsappLink = getWhatsAppBaseUrl();
+
   return (
     <>
       <MobileHeaderContainer title="Contact" showBack backHref="/" />
@@ -68,15 +71,17 @@ export default function ContactPage() {
                   >
                     <InstagramIcon className="h-4 w-4" />
                   </Link>
-                  <Link
-                    href="https://wa.me/918329026762"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-                    aria-label="WhatsApp"
-                  >
-                    <WhatsAppIcon className="h-4 w-4" />
-                  </Link>
+                  {whatsappLink ? (
+                    <Link
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                      aria-label="WhatsApp"
+                    >
+                      <WhatsAppIcon className="h-4 w-4" />
+                    </Link>
+                  ) : null}
                 </div>
               </div>
             </div>

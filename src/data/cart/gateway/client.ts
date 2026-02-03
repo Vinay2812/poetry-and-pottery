@@ -2,7 +2,10 @@
 
 import { useCallback } from "react";
 
-import type { CartItem } from "@/graphql/generated/graphql";
+import type {
+  CartItem,
+  ProductCustomizationData,
+} from "@/graphql/generated/graphql";
 import {
   useAddToCartMutation as useAddToCartGraphQL,
   useRemoveFromCartMutation as useRemoveFromCartGraphQL,
@@ -22,15 +25,35 @@ export type RemoveCartResult =
   | { success: true }
   | { success: false; error: string };
 
+// Custom data input type for adding to cart
+export type CustomDataInput = {
+  options: Array<{
+    type: string;
+    optionId: number;
+    name: string;
+    value: string;
+    priceModifier: number;
+  }>;
+  totalModifier: number;
+};
+
 // Hook return types
 interface UseAddToCartReturn {
-  mutate: (productId: number, quantity?: number) => Promise<AddCartResult>;
+  mutate: (
+    productId: number,
+    quantity?: number,
+    customData?: CustomDataInput | null,
+  ) => Promise<AddCartResult>;
   loading: boolean;
   error: Error | undefined;
 }
 
 interface UseUpdateCartQuantityReturn {
-  mutate: (productId: number, quantity: number) => Promise<UpdateCartResult>;
+  mutate: (
+    productId: number,
+    quantity: number,
+    customDataHash?: string,
+  ) => Promise<UpdateCartResult>;
   loading: boolean;
   error: Error | undefined;
 }
@@ -45,10 +68,20 @@ export function useAddToCart(): UseAddToCartReturn {
   const [graphqlMutate, { loading, error }] = useAddToCartGraphQL();
 
   const mutate = useCallback(
-    async (productId: number, quantity: number = 1): Promise<AddCartResult> => {
+    async (
+      productId: number,
+      quantity: number = 1,
+      customData?: CustomDataInput | null,
+    ): Promise<AddCartResult> => {
       try {
         const { data } = await graphqlMutate({
-          variables: { input: { product_id: productId, quantity } },
+          variables: {
+            input: {
+              product_id: productId,
+              quantity,
+              custom_data: customData ?? null,
+            },
+          },
         });
         if (data?.addToCart.success && data.addToCart.item) {
           return { success: true, data: data.addToCart.item };
@@ -71,10 +104,20 @@ export function useUpdateCartQuantity(): UseUpdateCartQuantityReturn {
   const [graphqlMutate, { loading, error }] = useUpdateCartQuantityGraphQL();
 
   const mutate = useCallback(
-    async (productId: number, quantity: number): Promise<UpdateCartResult> => {
+    async (
+      productId: number,
+      quantity: number,
+      customDataHash?: string,
+    ): Promise<UpdateCartResult> => {
       try {
         const { data } = await graphqlMutate({
-          variables: { input: { product_id: productId, quantity } },
+          variables: {
+            input: {
+              product_id: productId,
+              quantity,
+              custom_data_hash: customDataHash ?? "",
+            },
+          },
         });
         if (data?.updateCartQuantity.success) {
           return {

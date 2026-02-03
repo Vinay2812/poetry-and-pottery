@@ -37,6 +37,16 @@ export const ORDERS_QUERY = gql`
           created_at
           updated_at
           has_reviewed
+          custom_data {
+            options {
+              type
+              optionId
+              name
+              value
+              priceModifier
+            }
+            totalModifier
+          }
           product {
             id
             slug
@@ -98,6 +108,16 @@ export const ORDER_QUERY = gql`
         created_at
         updated_at
         has_reviewed
+        custom_data {
+          options {
+            type
+            optionId
+            name
+            value
+            priceModifier
+          }
+          totalModifier
+        }
         product {
           id
           slug

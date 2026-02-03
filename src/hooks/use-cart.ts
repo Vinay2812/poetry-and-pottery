@@ -2,13 +2,18 @@
 
 import { MAX_CART_QUANTITY } from "@/consts/performance";
 import {
+  type CustomDataInput,
   useAddToCart,
   useRemoveFromCart,
   useUpdateCartQuantity,
 } from "@/data/cart/gateway/client";
 import { useLoadingTransition } from "@/hooks/use-loading-transition";
 import { useUIStore } from "@/store";
-import type { CartWithProduct, ProductWithCategories } from "@/types";
+import type {
+  CartWithProduct,
+  ProductCustomizationDataLocal,
+  ProductWithCategories,
+} from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useOptimistic, useState, useTransition } from "react";
 
@@ -23,6 +28,19 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
     quantity: item.quantity,
     created_at: new Date(item.created_at),
     updated_at: new Date(item.updated_at),
+    custom_data: item.custom_data
+      ? {
+          options: item.custom_data.options.map((opt) => ({
+            type: opt.type,
+            optionId: opt.optionId,
+            name: opt.name,
+            value: opt.value,
+            priceModifier: opt.priceModifier,
+          })),
+          totalModifier: item.custom_data.totalModifier,
+        }
+      : null,
+    custom_data_hash: item.custom_data_hash,
     product: {
       id: item.product.id,
       slug: item.product.slug,
@@ -51,10 +69,30 @@ type CartOptimisticAction =
       productId: number;
       quantity: number;
       product?: ProductWithCategories;
+      customData?: ProductCustomizationDataLocal | null;
+      customDataHash?: string;
     }
-  | { type: "remove"; productId: number }
-  | { type: "update"; productId: number; quantity: number }
+  | { type: "remove"; productId: number; customDataHash?: string }
+  | {
+      type: "update";
+      productId: number;
+      quantity: number;
+      customDataHash?: string;
+    }
   | { type: "replace"; item: CartWithProduct };
+
+// Helper to find cart item by product_id and custom_data_hash
+function findCartItem(
+  items: CartWithProduct[],
+  productId: number,
+  customDataHash?: string,
+): CartWithProduct | undefined {
+  return items.find(
+    (item) =>
+      item.product_id === productId &&
+      item.custom_data_hash === (customDataHash ?? ""),
+  );
+}
 
 function applyCartOptimisticAction(
   state: CartWithProduct[],
@@ -62,12 +100,11 @@ function applyCartOptimisticAction(
 ): CartWithProduct[] {
   switch (action.type) {
     case "add": {
-      const existingItem = state.find(
-        (item) => item.product_id === action.productId,
-      );
+      const hash = action.customDataHash ?? "";
+      const existingItem = findCartItem(state, action.productId, hash);
       if (existingItem) {
         return state.map((item) =>
-          item.product_id === action.productId
+          item.product_id === action.productId && item.custom_data_hash === hash
             ? {
                 ...item,
                 quantity: item.quantity + action.quantity,
@@ -79,12 +116,14 @@ function applyCartOptimisticAction(
         return state;
       }
       const optimisticItem: CartWithProduct = {
-        id: -action.productId,
+        id: -Date.now(),
         user_id: 0,
         product_id: action.productId,
         quantity: action.quantity,
         created_at: new Date(),
         updated_at: new Date(),
+        custom_data: action.customData ?? null,
+        custom_data_hash: hash,
         product: {
           ...action.product,
           collection: null,
@@ -93,21 +132,39 @@ function applyCartOptimisticAction(
       return [...state, optimisticItem];
     }
     case "remove": {
-      return state.filter((item) => item.product_id !== action.productId);
+      const hash = action.customDataHash ?? "";
+      return state.filter(
+        (item) =>
+          !(
+            item.product_id === action.productId &&
+            item.custom_data_hash === hash
+          ),
+      );
     }
     case "update": {
+      const hash = action.customDataHash ?? "";
       if (action.quantity <= 0) {
-        return state.filter((item) => item.product_id !== action.productId);
+        return state.filter(
+          (item) =>
+            !(
+              item.product_id === action.productId &&
+              item.custom_data_hash === hash
+            ),
+        );
       }
       return state.map((item) =>
-        item.product_id === action.productId
+        item.product_id === action.productId && item.custom_data_hash === hash
           ? { ...item, quantity: action.quantity }
           : item,
       );
     }
     case "replace": {
       const filtered = state.filter(
-        (item) => item.product_id !== action.item.product_id,
+        (item) =>
+          !(
+            item.product_id === action.item.product_id &&
+            item.custom_data_hash === action.item.custom_data_hash
+          ),
       );
       return [...filtered, action.item];
     }
@@ -170,6 +227,7 @@ export function useCart() {
       productId: number,
       quantity: number = 1,
       product?: ProductWithCategories,
+      customData?: CustomDataInput | null,
     ) => {
       if (!isSignedIn) {
         setSignInRedirectUrl(window.location.pathname);
@@ -177,10 +235,14 @@ export function useCart() {
         return Promise.resolve(false);
       }
 
-      const existingItem = items.find((i) => i.product_id === productId);
+      // For customized items, we always add as new (hash-based uniqueness handled by server)
+      // For regular items, check if already exists
+      const customDataHash = customData ? "pending" : "";
+      const existingItem = findCartItem(items, productId, customDataHash);
       const currentQuantity = existingItem?.quantity ?? 0;
 
-      if (currentQuantity >= MAX_CART_QUANTITY) {
+      // For customized items, don't check existing quantity since each customization is unique
+      if (!customData && currentQuantity >= MAX_CART_QUANTITY) {
         addToast({
           type: "error",
           message: `Maximum ${MAX_CART_QUANTITY} items per product allowed`,
@@ -188,11 +250,12 @@ export function useCart() {
         return Promise.resolve(false);
       }
 
-      const newQuantity = Math.min(
-        currentQuantity + quantity,
-        MAX_CART_QUANTITY,
-      );
-      const quantityToAdd = newQuantity - currentQuantity;
+      const newQuantity = customData
+        ? quantity
+        : Math.min(currentQuantity + quantity, MAX_CART_QUANTITY);
+      const quantityToAdd = customData
+        ? quantity
+        : newQuantity - currentQuantity;
 
       if (quantityToAdd <= 0) {
         return Promise.resolve(false);
@@ -203,6 +266,13 @@ export function useCart() {
         productId,
         quantity: quantityToAdd,
         product,
+        customData: customData
+          ? {
+              options: customData.options,
+              totalModifier: customData.totalModifier,
+            }
+          : null,
+        customDataHash,
       };
 
       // Update cart count optimistically using the global count
@@ -215,7 +285,7 @@ export function useCart() {
           updateOptimisticItems(optimisticAction);
 
           const actionResult = await runWithLoading(productId, () =>
-            addToCartMutate(productId, quantityToAdd),
+            addToCartMutate(productId, quantityToAdd, customData),
           );
 
           if (!actionResult.success) {

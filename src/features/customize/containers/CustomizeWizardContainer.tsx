@@ -1,9 +1,13 @@
 "use client";
 
+import type { CustomDataInput } from "@/data/cart/gateway/client";
 import {
   getCustomizationCategories,
   getCustomizationOptionsByCategory,
 } from "@/data/customization/gateway/server";
+import { useCart } from "@/hooks/use-cart";
+import { useUIStore } from "@/store";
+import { useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -26,6 +30,7 @@ import {
   buildCategoryCardViewModels,
   buildOptionGroupViewModels,
   buildReviewSummaryViewModel,
+  getOptionById,
 } from "../types";
 
 interface CustomizeWizardContainerProps {
@@ -36,6 +41,9 @@ export function CustomizeWizardContainer({
   initialCategories,
 }: CustomizeWizardContainerProps) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const { addToCart } = useCart();
+  const { addToast } = useUIStore();
 
   // State
   const [currentStep, setCurrentStep] = useState<CustomizeStep>("category");
@@ -144,21 +152,65 @@ export function CustomizeWizardContainer({
   }, []);
 
   const handleAddToCart = useCallback(async () => {
-    if (!reviewViewModel) return;
+    if (!reviewViewModel || !optionsData || !selectedCategoryData) return;
 
     setIsAddingToCart(true);
     try {
-      // TODO: Implement actual add to cart with customization
-      // For now, just simulate the action
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("Added to cart! (Feature coming soon)");
+      // Build custom data from selections
+      const customDataOptions: CustomDataInput["options"] = [];
+      let totalModifier = 0;
+
+      for (const [type, optionId] of Object.entries(selections)) {
+        const option = getOptionById(optionsData.options_by_type, optionId);
+        if (option) {
+          customDataOptions.push({
+            type,
+            optionId: option.id,
+            name: option.name,
+            value: option.value,
+            priceModifier: option.price_modifier,
+          });
+          totalModifier += option.price_modifier;
+        }
+      }
+
+      const customData: CustomDataInput = {
+        options: customDataOptions,
+        totalModifier,
+      };
+
+      // Use the customize category's product_id (stored in the category)
+      // For now, we'll use a placeholder product_id = 1 since customization creates a virtual product
+      // In a real implementation, there would be a base product associated with the category
+      const productId = selectedCategoryData.id; // Using category id as product id for customized items
+
+      const success = await addToCart(productId, 1, undefined, customData);
+
+      if (success) {
+        addToast({
+          type: "success",
+          message: "Customized item added to cart!",
+        });
+        router.push("/cart");
+      }
     } catch (error) {
       console.error("Failed to add to cart:", error);
-      alert("Failed to add to cart. Please try again.");
+      addToast({
+        type: "error",
+        message: "Failed to add to cart. Please try again.",
+      });
     } finally {
       setIsAddingToCart(false);
     }
-  }, [reviewViewModel]);
+  }, [
+    reviewViewModel,
+    optionsData,
+    selectedCategoryData,
+    selections,
+    addToCart,
+    addToast,
+    router,
+  ]);
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">

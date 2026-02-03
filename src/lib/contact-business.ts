@@ -88,9 +88,35 @@ export async function sendEmailNotification(
   }
 }
 
-export function openWhatsApp(data: NotificationData): void {
-  const phoneNumber = process.env.NEXT_PUBLIC_MOBILE_NUMBER || "";
+function getWhatsAppPhoneNumber(): string {
+  const raw = process.env.NEXT_PUBLIC_MOBILE_NUMBER || "";
+  const digitsOnly = raw.replace(/\D/g, "");
+  return digitsOnly;
+}
 
+export function getWhatsAppBaseUrl(): string | null {
+  const phoneNumber = getWhatsAppPhoneNumber();
+  if (!phoneNumber) {
+    return null;
+  }
+
+  return `https://wa.me/${phoneNumber}`;
+}
+
+function openWhatsAppUrl(message: string): void {
+  const baseUrl = getWhatsAppBaseUrl();
+  if (!baseUrl) {
+    console.error("Missing NEXT_PUBLIC_MOBILE_NUMBER for WhatsApp link.");
+    return;
+  }
+
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `${baseUrl}?text=${encodedMessage}`;
+
+  window.open(whatsappUrl, "_blank");
+}
+
+export function openWhatsApp(data: NotificationData): void {
   let message: string;
 
   if (data.type === "event") {
@@ -133,15 +159,10 @@ export function openWhatsApp(data: NotificationData): void {
       `\nPlease confirm my order.`;
   }
 
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-  window.open(whatsappUrl, "_blank");
+  openWhatsAppUrl(message);
 }
 
 export function openWhatsAppFollowUp(data: FollowUpData): void {
-  const phoneNumber = process.env.NEXT_PUBLIC_MOBILE_NUMBER || "";
-
   let message: string;
 
   if (data.type === "order-followup") {
@@ -168,15 +189,10 @@ export function openWhatsAppFollowUp(data: FollowUpData): void {
       `Please help me with an update on my registration.`;
   }
 
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-  window.open(whatsappUrl, "_blank");
+  openWhatsAppUrl(message);
 }
 
 export function openWhatsAppProductRequest(data: ProductRequestData): void {
-  const phoneNumber = process.env.NEXT_PUBLIC_MOBILE_NUMBER || "";
-
   const status = data.isSoldOut
     ? "sold out"
     : data.isArchived
@@ -190,10 +206,7 @@ export function openWhatsAppProductRequest(data: ProductRequestData): void {
     `*Link:* ${data.productUrl}\n\n` +
     `Could you please let me know if this item can be made available or if there are similar alternatives?`;
 
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-  window.open(whatsappUrl, "_blank");
+  openWhatsAppUrl(message);
 }
 
 export async function contactBusiness(

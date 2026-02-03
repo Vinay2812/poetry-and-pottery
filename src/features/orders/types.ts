@@ -1,6 +1,11 @@
 import { formatOrderDate } from "@/lib/date";
 
-import type { Order, OrderItem, OrderStatus } from "@/graphql/generated/types";
+import type {
+  Order,
+  OrderItem,
+  OrderStatus,
+  ProductCustomizationData,
+} from "@/graphql/generated/types";
 
 // Type for shipping address JSON field.
 export interface ShippingAddress {
@@ -26,6 +31,7 @@ export interface OrderItemViewModel {
   discount: number;
   finalPrice: number;
   hasReviewed: boolean;
+  customData?: ProductCustomizationData | null;
 }
 
 // View model for payment summary.
@@ -98,6 +104,7 @@ export function buildOrderItemViewModel(item: OrderItem): OrderItemViewModel {
     discount: item.discount,
     finalPrice: Math.max(0, item.price * item.quantity - item.discount),
     hasReviewed: item.has_reviewed,
+    customData: item.custom_data ?? null,
   };
 }
 
