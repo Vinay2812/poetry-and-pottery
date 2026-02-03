@@ -16,6 +16,7 @@ export { EditCategoryFormContainer } from "./containers/edit-category-form-conta
 export type {
   AddCategoryModalProps,
   AddOptionModalProps,
+  AvailableCategoryOption,
   CreateCategoryFormData,
   CreateOptionFormData,
   CustomizationDashboardContainerProps,

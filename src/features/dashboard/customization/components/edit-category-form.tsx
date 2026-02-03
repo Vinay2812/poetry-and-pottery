@@ -8,12 +8,20 @@ import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
 import type { EditCategoryFormProps, UpdateCategoryFormData } from "../types";
 
 export function EditCategoryForm({
   viewModel,
+  availableCategories,
   onSubmit,
   onCancel,
 }: EditCategoryFormProps) {
@@ -35,8 +43,8 @@ export function EditCategoryForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.category.trim()) {
-      alert("Category name is required");
+    if (!formData.category) {
+      alert("Please select a category");
       return;
     }
 
@@ -69,16 +77,24 @@ export function EditCategoryForm({
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         {/* Category Name */}
         <div className="space-y-2">
-          <Label htmlFor="category">Category Name *</Label>
-          <Input
-            id="category"
-            placeholder="e.g., Mugs, Vases, Plates"
+          <Label htmlFor="category">Product Category *</Label>
+          <Select
             value={formData.category}
-            onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
+            onValueChange={(value) =>
+              setFormData({ ...formData, category: value })
             }
-            required
-          />
+          >
+            <SelectTrigger id="category">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              {availableCategories.map((cat) => (
+                <SelectItem key={cat.name} value={cat.name}>
+                  {cat.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Base Price */}

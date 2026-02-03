@@ -13,6 +13,7 @@ import { useCallback, useMemo, useState, useTransition } from "react";
 
 import { CustomizationDashboard } from "../components/customization-dashboard";
 import type {
+  AvailableCategoryOption,
   CreateCategoryFormData,
   CreateOptionFormData,
   CustomizationDashboardContainerProps,
@@ -22,6 +23,7 @@ import { buildCustomizationDashboardViewModel } from "../types";
 export function CustomizationDashboardContainer({
   data,
   types,
+  productCategories,
 }: CustomizationDashboardContainerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -35,6 +37,16 @@ export function CustomizationDashboardContainer({
     () => buildCustomizationDashboardViewModel(data),
     [data],
   );
+
+  // Compute available categories (product categories not yet used as customize categories)
+  const availableCategories = useMemo<AvailableCategoryOption[]>(() => {
+    const usedCategoryNames = new Set(
+      data.categories.map((c) => c.category.toLowerCase()),
+    );
+    return productCategories
+      .filter((pc) => !usedCategoryNames.has(pc.name.toLowerCase()))
+      .map((pc) => ({ name: pc.name, icon: pc.icon }));
+  }, [data.categories, productCategories]);
 
   const handleAddCategory = useCallback(
     async (formData: CreateCategoryFormData) => {
@@ -141,6 +153,7 @@ export function CustomizationDashboardContainer({
     <CustomizationDashboard
       viewModel={viewModel}
       existingTypes={types.map((t) => t.type)}
+      availableCategories={availableCategories}
       isPending={isPending}
       addCategoryOpen={addCategoryOpen}
       addOptionForCategory={addOptionForCategory}

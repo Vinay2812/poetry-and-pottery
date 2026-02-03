@@ -6,6 +6,7 @@ import { useCallback, useMemo } from "react";
 
 import { EditCategoryForm } from "../components/edit-category-form";
 import type {
+  AvailableCategoryOption,
   EditCategoryFormContainerProps,
   UpdateCategoryFormData,
 } from "../types";
@@ -13,6 +14,8 @@ import { buildEditCategoryFormViewModel } from "../types";
 
 export function EditCategoryFormContainer({
   category,
+  productCategories,
+  customizeCategories,
 }: EditCategoryFormContainerProps) {
   const router = useRouter();
 
@@ -20,6 +23,18 @@ export function EditCategoryFormContainer({
     () => buildEditCategoryFormViewModel(category),
     [category],
   );
+
+  // Compute available categories: current category + categories not used by other CustomizeCategories
+  const availableCategories = useMemo<AvailableCategoryOption[]>(() => {
+    const usedCategoryNames = new Set(
+      customizeCategories
+        .filter((c) => c.id !== category.id) // Exclude current category
+        .map((c) => c.category.toLowerCase()),
+    );
+    return productCategories
+      .filter((pc) => !usedCategoryNames.has(pc.name.toLowerCase()))
+      .map((pc) => ({ name: pc.name, icon: pc.icon }));
+  }, [customizeCategories, productCategories, category.id]);
 
   const handleSubmit = useCallback(
     async (data: UpdateCategoryFormData) => {
@@ -49,6 +64,7 @@ export function EditCategoryFormContainer({
   return (
     <EditCategoryForm
       viewModel={viewModel}
+      availableCategories={availableCategories}
       onSubmit={handleSubmit}
       onCancel={handleCancel}
     />

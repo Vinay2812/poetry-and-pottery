@@ -14,11 +14,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import type { AddCategoryModalProps } from "../types";
 
 export function AddCategoryModal({
   isOpen,
+  availableCategories,
   onClose,
   onSubmit,
 }: AddCategoryModalProps) {
@@ -32,15 +40,15 @@ export function AddCategoryModal({
   }, []);
 
   const handleSubmit = async () => {
-    if (!category.trim()) {
-      alert("Category name is required");
+    if (!category) {
+      alert("Please select a category");
       return;
     }
 
     setIsSubmitting(true);
     try {
       await onSubmit({
-        category: category.trim(),
+        category,
         basePrice,
         imageUrl,
       });
@@ -64,21 +72,32 @@ export function AddCategoryModal({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add Category</DialogTitle>
+          <DialogTitle>Add Customization Category</DialogTitle>
           <DialogDescription>
-            Create a new customization category with a base price.
+            Select a product category to enable customization options.
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="category">Category Name *</Label>
-            <Input
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="e.g., Mugs, Vases, Plates"
-            />
+            <Label htmlFor="category">Product Category *</Label>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger id="category">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableCategories.map((cat) => (
+                  <SelectItem key={cat.name} value={cat.name}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {availableCategories.length === 0 && (
+              <p className="text-xs text-amber-600">
+                All product categories already have customization options.
+              </p>
+            )}
           </div>
 
           <div className="grid gap-2">

@@ -2,7 +2,6 @@
 
 import { MobileHeaderContainer } from "@/features/layout";
 import {
-  Hand,
   Heart,
   Leaf,
   type LucideIcon,
@@ -19,34 +18,55 @@ import {
   OptimizedImage,
 } from "@/components/shared";
 
-import type { AboutPageContent } from "@/graphql/generated/types";
+// Static content - Poetry & Pottery business information
+const STORY_TITLE = "Where Clay Meets Soul";
 
-interface AboutPageClientProps {
-  content: AboutPageContent;
-  heroImage: string;
-}
+const STORY_CONTENT = [
+  "It initially began as a weekend hobby to get away from college stress and stop missing home in a new city, which soon turned into curiosity for knowing all the details about handmade pottery. I didn't choose pottery, pottery chose me.",
+  "With a commerce and mass communication background and never having touched clay, it was difficult to find a center when I started my pottery journey. It began with a curious mind to explore just another art form, which turned into a passion for making handmade pieces, just like handwritten notes and poems.",
+  "Pottery for me is not just an art form or a way of expressing myself. This art form is my teacher - it has taught me the importance of trusting the process, patience, uncertainty of life and also the beauty of letting go. The learnings are endless.",
+  "I am not a potter, I am a student of pottery and will be forever.",
+];
 
-// Icon mapping for dynamic icon rendering
-const ICON_MAP: Record<string, LucideIcon> = {
-  leaf: Leaf,
-  heart: Heart,
-  hand: Hand,
-  sparkles: Sparkles,
-};
+const VALUES = [
+  {
+    icon: Leaf,
+    title: "Trust the Process",
+    description:
+      "Every piece of pottery teaches patience. From wedging clay to the final glaze, we embrace the journey and let the clay guide us.",
+  },
+  {
+    icon: Heart,
+    title: "Handmade with Heart",
+    description:
+      "Each piece is shaped by hand, carrying subtle variations that make it unique - just like handwritten notes and poems.",
+  },
+  {
+    icon: Sparkles,
+    title: "The Beauty of Letting Go",
+    description:
+      "Pottery teaches us to embrace uncertainty and find beauty in imperfection. Not every piece survives the kiln, and that's part of the art.",
+  },
+];
 
-function getIcon(iconName: string): LucideIcon {
-  return ICON_MAP[iconName.toLowerCase()] || Sparkles;
-}
+const TEAM = [
+  {
+    name: "Poetry & Pottery",
+    role: "Founder & Potter",
+    image:
+      "https://images.pexels.com/photos/3094208/pexels-photo-3094208.jpeg?auto=compress&cs=tinysrgb&w=400",
+  },
+];
 
 // Stats data
 const STATS = [
-  { value: 500, suffix: "+", label: "Happy Customers" },
-  { value: 1000, suffix: "+", label: "Pieces Crafted" },
-  { value: 50, suffix: "+", label: "Workshops Hosted" },
-  { value: 30, suffix: "+", label: "Open Mic Nights" },
+  { value: 100, suffix: "+", label: "Happy Customers" },
+  { value: 200, suffix: "+", label: "Pieces Crafted" },
+  { value: 10, suffix: "+", label: "Workshops Hosted" },
+  { value: 5, suffix: "+", label: "Open Mic Nights" },
 ];
 
-export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
+export function AboutPageClient() {
   return (
     <>
       <MobileHeaderContainer title="About Us" showBack backHref="/" />
@@ -100,10 +120,10 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
             {/* Content */}
             <div>
               <h2 className="font-display mb-4 text-2xl font-bold text-neutral-900 lg:text-3xl">
-                {content.storyTitle || "From a Small Workshop to Your Home"}
+                {STORY_TITLE}
               </h2>
               <div className="text-muted-foreground space-y-4 leading-relaxed">
-                {content.storyContent.map((paragraph, index) => (
+                {STORY_CONTENT.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
@@ -143,8 +163,8 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {content.values.slice(0, 3).map((value) => {
-              const Icon = getIcon(value.icon);
+            {VALUES.map((value) => {
+              const Icon = value.icon;
               return (
                 <div
                   key={value.title}
@@ -251,8 +271,8 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
               </h2>
             </div>
 
-            <div className="mx-auto grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-8">
-              {content.team.map((member) => (
+            <div className="mx-auto flex justify-center gap-6 lg:gap-8">
+              {TEAM.map((member) => (
                 <div key={member.name} className="text-center">
                   <div className="relative mx-auto mb-4 aspect-square w-32 overflow-hidden rounded-full lg:w-40">
                     <OptimizedImage

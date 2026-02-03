@@ -47,6 +47,7 @@ import { AddOptionModal } from "./add-option-modal";
 export function CustomizationDashboard({
   viewModel,
   existingTypes,
+  availableCategories,
   isPending,
   addCategoryOpen,
   addOptionForCategory,
@@ -75,7 +76,15 @@ export function CustomizationDashboard({
             Manage product customization categories and options
           </p>
         </div>
-        <Button onClick={onAddCategoryOpen}>
+        <Button
+          onClick={onAddCategoryOpen}
+          disabled={availableCategories.length === 0}
+          title={
+            availableCategories.length === 0
+              ? "All product categories already have customization options"
+              : undefined
+          }
+        >
           <Plus className="mr-2 h-4 w-4" />
           Add Category
         </Button>
@@ -115,6 +124,7 @@ export function CustomizationDashboard({
       {/* Modals */}
       <AddCategoryModal
         isOpen={addCategoryOpen}
+        availableCategories={availableCategories}
         onClose={onAddCategoryClose}
         onSubmit={onAddCategory}
       />

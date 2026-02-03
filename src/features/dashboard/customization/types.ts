@@ -1,4 +1,5 @@
 import type {
+  AdminCategory,
   AdminCustomizationCategorySummary,
   AdminCustomizationOption,
   AdminCustomizationOptionsResponse,
@@ -273,6 +274,7 @@ export interface CustomizationDashboardViewModel {
 export interface CustomizationDashboardProps {
   viewModel: CustomizationDashboardViewModel;
   existingTypes: string[];
+  availableCategories: AvailableCategoryOption[];
   isPending: boolean;
   addCategoryOpen: boolean;
   addOptionForCategory: { id: number; name: string } | null;
@@ -299,6 +301,7 @@ export interface CustomizationDashboardProps {
 export interface CustomizationDashboardContainerProps {
   data: AdminCustomizeCategoriesResponse;
   types: AdminCustomizationTypeSummary[];
+  productCategories: AdminCategory[];
 }
 
 /**
@@ -322,10 +325,19 @@ export interface CreateOptionFormData {
 }
 
 /**
+ * Available category option for dropdown.
+ */
+export interface AvailableCategoryOption {
+  name: string;
+  icon: string;
+}
+
+/**
  * Props for AddCategoryModal.
  */
 export interface AddCategoryModalProps {
   isOpen: boolean;
+  availableCategories: AvailableCategoryOption[];
   onClose: () => void;
   onSubmit: (data: CreateCategoryFormData) => Promise<void>;
 }
@@ -444,6 +456,7 @@ export interface UpdateCategoryFormData {
  */
 export interface EditCategoryFormProps {
   viewModel: EditCategoryFormViewModel;
+  availableCategories: AvailableCategoryOption[];
   onSubmit: (data: UpdateCategoryFormData) => Promise<void>;
   onCancel: () => void;
 }
@@ -453,6 +466,8 @@ export interface EditCategoryFormProps {
  */
 export interface EditCategoryFormContainerProps {
   category: AdminCustomizeCategory;
+  productCategories: AdminCategory[];
+  customizeCategories: AdminCustomizeCategory[];
 }
 
 /**
