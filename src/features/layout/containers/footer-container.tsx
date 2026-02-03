@@ -38,18 +38,13 @@ const LINK_GROUPS: FooterLinkGroup[] = [
 const SOCIAL_LINKS: FooterSocialLink[] = [
   {
     platform: "instagram",
-    href: "https://instagram.com/poetryandpottery",
+    href: "https://instagram.com/poetryandpottery_",
     label: "Follow us on Instagram",
   },
   {
-    platform: "facebook",
-    href: "https://facebook.com/poetryandpottery",
-    label: "Follow us on Facebook",
-  },
-  {
-    platform: "pinterest",
-    href: "https://pinterest.com/poetryandpottery",
-    label: "Follow us on Pinterest",
+    platform: "whatsapp",
+    href: "https://wa.me/918329026762",
+    label: "Chat on WhatsApp",
   },
 ];
 
@@ -59,23 +54,19 @@ const CONTACT_INFO: FooterContactItem[] = [
     value: "Sangli, Maharashtra, India",
   },
   {
-    type: "hours",
-    value: "Tue-Sat: 10am-6pm",
-  },
-  {
     type: "email",
-    value: "hello@poetryandpottery.com",
-    href: "mailto:hello@poetryandpottery.com",
+    value: "poetryandpottery.aj@gmail.com",
+    href: "mailto:poetryandpottery.aj@gmail.com",
   },
   {
     type: "phone",
-    value: "+91 98765 43210",
-    href: "tel:+919876543210",
+    value: "+91 83290 26762",
+    href: "tel:+918329026762",
   },
 ];
 
 const BRAND_DESCRIPTION =
-  "Hand-thrown porcelain designed to ground your daily moments in nature. Each piece is crafted with care in our studio.";
+  "Handcrafted pottery with a touch of poetry. Each piece tells a story, shaped with passion and the beauty of letting go. From Sangli, Maharashtra since 2024.";
 
 export function FooterContainer() {
   const { isSignedIn } = useAuth();

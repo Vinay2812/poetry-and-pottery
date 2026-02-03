@@ -57,7 +57,7 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
           <div className="hidden lg:block">
             <ListingPageHeader
               title="Our Story"
-              subtitle="Crafting beauty from clay since 2018. Discover the passion and craftsmanship behind every piece."
+              subtitle="Crafting beauty from clay since 2024. Discover the passion and craftsmanship behind every piece."
               breadcrumbs={[
                 { label: "Home", href: "/" },
                 { label: "About Us" },
@@ -72,7 +72,7 @@ export function AboutPageClient({ content, heroImage }: AboutPageClientProps) {
             </h1>
             <div className="bg-primary mt-3 h-[3px] w-12 rounded-full" />
             <p className="text-muted-foreground mt-3 text-sm">
-              Crafting beauty from clay since 2018
+              Crafting beauty from clay since 2024
             </p>
           </div>
         </div>

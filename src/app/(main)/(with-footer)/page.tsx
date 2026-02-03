@@ -15,13 +15,13 @@ import {
 } from "@/components/sections";
 
 export const metadata: Metadata = {
-  title: "Poetry & Pottery | Handcrafted Ceramics",
+  title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
   description:
-    "Discover beautifully handcrafted pottery and ceramics. From vases to mugs, each piece is uniquely crafted by artisan potters. Shop our collection today.",
+    "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Functional, decorative, and custom ceramics - each piece tells a story of patience, passion, and the beauty of letting go.",
   openGraph: {
-    title: "Poetry & Pottery | Handcrafted Ceramics",
+    title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
     description:
-      "Discover beautifully handcrafted pottery and ceramics. From vases to mugs, each piece is uniquely crafted by artisan potters.",
+      "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Each piece tells a story of patience, passion, and the beauty of letting go.",
     type: "website",
     url: "/",
     images: [
@@ -35,9 +35,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Poetry & Pottery | Handcrafted Ceramics",
+    title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
     description:
-      "Discover beautifully handcrafted pottery and ceramics. Shop our collection today.",
+      "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Shop our collection today.",
   },
 };
 

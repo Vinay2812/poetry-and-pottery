@@ -22,7 +22,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Poetry & Pottery",
   description:
-    "Poetry & Pottery is a platform for buying and selling pottery and poetry.",
+    "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Each piece tells a story - functional, decorative, and custom ceramics crafted with passion. Shop unique pottery and join our workshops.",
 };
 
 export default function RootLayout({

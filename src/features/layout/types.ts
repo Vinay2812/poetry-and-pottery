@@ -111,7 +111,7 @@ export interface FooterLinkGroup {
  * Social link for footer.
  */
 export interface FooterSocialLink {
-  platform: "instagram" | "facebook" | "pinterest" | "twitter";
+  platform: "instagram" | "facebook" | "pinterest" | "twitter" | "whatsapp";
   href: string;
   label: string;
 }
