@@ -1,5 +1,5 @@
-import { getAllConfiguredCategories } from "@/data/admin/categories/gateway/server";
 import {
+  getCustomizationCategories,
   getCustomizationOptionById,
   getCustomizationTypes,
 } from "@/data/admin/customization/gateway/server";
@@ -24,7 +24,7 @@ export default async function EditCustomizationOptionPage({
 
   const [option, categories, types] = await Promise.all([
     getCustomizationOptionById(optionId),
-    getAllConfiguredCategories(),
+    getCustomizationCategories(),
     getCustomizationTypes(),
   ]);
 

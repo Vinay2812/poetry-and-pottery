@@ -21,6 +21,7 @@ export interface CustomizationSelections {
  * View model for a category card
  */
 export interface CategoryCardViewModel {
+  id: number;
   category: string;
   optionsCount: number;
   basePrice: number;
@@ -74,7 +75,7 @@ export interface ReviewSummaryViewModel {
 export interface CategorySelectorProps {
   categories: CategoryCardViewModel[];
   isLoading: boolean;
-  onSelect: (category: string) => void;
+  onSelect: (categoryId: number) => void;
 }
 
 /**
@@ -113,15 +114,16 @@ export interface StepIndicatorProps {
  */
 export function buildCategoryCardViewModels(
   categories: CustomizationCategory[],
-  selectedCategory: string | null,
+  selectedCategoryId: number | null,
 ): CategoryCardViewModel[] {
   return categories.map((cat) => ({
+    id: cat.id,
     category: cat.category,
     optionsCount: cat.options_count,
     basePrice: cat.base_price,
     basePriceFormatted: formatPrice(cat.base_price),
     imageUrl: cat.image_url ?? null,
-    isSelected: cat.category === selectedCategory,
+    isSelected: cat.id === selectedCategoryId,
   }));
 }
 

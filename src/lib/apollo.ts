@@ -141,7 +141,7 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
   });
 
   return new ApolloClient({
-    cache: new InMemoryCache({ typePolicies }),
+    cache: new InMemoryCache(),
     link: authLink.concat(httpLink),
     defaultOptions: {
       watchQuery: {

@@ -63,3 +63,23 @@ export const EVENT_REVIEWS_QUERY = gql`
     }
   }
 `;
+
+export const FEATURED_REVIEWS_QUERY = gql`
+  query FeaturedReviews($limit: Int) {
+    featuredReviews(limit: $limit) {
+      id
+      user_id
+      rating
+      review
+      image_urls
+      product_id
+      event_id
+      created_at
+      user {
+        id
+        name
+        image
+      }
+    }
+  }
+`;

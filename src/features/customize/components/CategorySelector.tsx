@@ -48,8 +48,8 @@ export function CategorySelector({
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
         {categories.map((category) => (
           <button
-            key={category.category}
-            onClick={() => onSelect(category.category)}
+            key={category.id}
+            onClick={() => onSelect(category.id)}
             className={cn(
               "group hover:border-primary-light relative flex flex-col items-center rounded-xl border-2 bg-white p-4 text-center transition-all",
               category.isSelected

@@ -1,12 +1,9 @@
-import {
-  ArrowRight,
-  ChevronRight,
-  LayoutGrid,
-  Package,
-  Paintbrush,
-} from "lucide-react";
+"use client";
+import { ArrowRight, LayoutGrid, Package, Paintbrush } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 const CUSTOMIZE_STEPS = [
   {
@@ -33,8 +30,15 @@ interface StepCardProps {
 }
 
 function StepCard({ icon: Icon, title, description }: StepCardProps) {
+  const router = useRouter();
+  const onClick = useCallback(() => {
+    router.push("/customize");
+  }, [router]);
   return (
-    <div className="shadow-soft flex items-center gap-3 rounded-xl bg-white p-3 md:gap-4 md:rounded-2xl md:p-4 lg:p-5">
+    <div
+      className="shadow-soft flex gap-3 rounded-xl bg-white p-3 md:gap-4 md:rounded-2xl md:p-4 lg:p-5"
+      onClick={onClick}
+    >
       <div className="bg-primary-light flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] md:h-12 md:w-12 md:rounded-xl lg:h-14 lg:w-14">
         <Icon
           className="text-primary h-[22px] w-[22px] md:h-6 md:w-6 lg:h-7 lg:w-7"
@@ -49,7 +53,6 @@ function StepCard({ icon: Icon, title, description }: StepCardProps) {
           {description}
         </div>
       </div>
-      <ChevronRight className="h-4 w-4 shrink-0 text-neutral-300 md:h-5 md:w-5" />
     </div>
   );
 }

@@ -28,7 +28,7 @@ export function CustomizationOptionFormContainer({
   );
 
   const existingCategories = useMemo(
-    () => categories.map((c) => c.name),
+    () => categories.map((c) => c.category),
     [categories],
   );
 
@@ -36,8 +36,15 @@ export function CustomizationOptionFormContainer({
 
   const handleSubmit = useCallback(
     async (data: CustomizationOptionFormData) => {
+      // Look up the category ID from the category name
+      const categoryData = categories.find((c) => c.category === data.category);
+      if (!categoryData) {
+        alert("Invalid category selected");
+        return;
+      }
+
       const input = {
-        category: data.category,
+        customize_category_id: categoryData.id,
         type: data.type,
         name: data.name,
         value: data.value,
@@ -63,7 +70,7 @@ export function CustomizationOptionFormContainer({
       router.push("/dashboard/customization");
       router.refresh();
     },
-    [isEditing, option, router],
+    [isEditing, option, router, categories],
   );
 
   const handleCancel = useCallback(() => {

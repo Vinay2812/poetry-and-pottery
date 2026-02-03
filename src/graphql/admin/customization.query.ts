@@ -7,7 +7,8 @@ export const ADMIN_CUSTOMIZATION_OPTIONS_QUERY = gql`
     adminCustomizationOptions(filter: $filter) {
       options {
         id
-        category
+        customize_category_id
+        category_name
         type
         name
         value
@@ -29,7 +30,8 @@ export const ADMIN_CUSTOMIZATION_OPTION_BY_ID_QUERY = gql`
   query AdminCustomizationOptionById($id: Int!) {
     adminCustomizationOptionById(id: $id) {
       id
-      category
+      customize_category_id
+      category_name
       type
       name
       value
@@ -45,6 +47,7 @@ export const ADMIN_CUSTOMIZATION_OPTION_BY_ID_QUERY = gql`
 export const ADMIN_CUSTOMIZATION_CATEGORIES_QUERY = gql`
   query AdminCustomizationCategories {
     adminCustomizationCategories {
+      id
       category
       count
     }

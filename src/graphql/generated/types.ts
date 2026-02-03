@@ -55,11 +55,6 @@ export type AddressMutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type AddressesResponse = {
-  addresses: Array<UserAddress>;
-  total: Scalars['Int']['output'];
-};
-
 export type AdminBulkDeleteEventsResponse = {
   cancelledCount: Scalars['Int']['output'];
   deletedCount: Scalars['Int']['output'];
@@ -183,6 +178,7 @@ export type AdminContentPageListItem = {
 export type AdminCustomizationCategorySummary = {
   category: Scalars['String']['output'];
   count: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
 };
 
 export type AdminCustomizationMutationResponse = {
@@ -192,8 +188,9 @@ export type AdminCustomizationMutationResponse = {
 };
 
 export type AdminCustomizationOption = {
-  category: Scalars['String']['output'];
+  category_name: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
+  customize_category_id: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   is_active: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -205,7 +202,7 @@ export type AdminCustomizationOption = {
 };
 
 export type AdminCustomizationOptionsFilterInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  customize_category_id?: InputMaybe<Scalars['Int']['input']>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -224,6 +221,29 @@ export type AdminCustomizationOptionsResponse = {
 export type AdminCustomizationTypeSummary = {
   count: Scalars['Int']['output'];
   type: Scalars['String']['output'];
+};
+
+export type AdminCustomizeCategoriesResponse = {
+  categories: Array<AdminCustomizeCategory>;
+  total: Scalars['Int']['output'];
+};
+
+export type AdminCustomizeCategory = {
+  base_price: Scalars['Int']['output'];
+  category: Scalars['String']['output'];
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  is_active: Scalars['Boolean']['output'];
+  options: Array<AdminCustomizationOption>;
+  options_count: Scalars['Int']['output'];
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminCustomizeCategoryMutationResponse = {
+  categoryId?: Maybe<Scalars['Int']['output']>;
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type AdminEvent = {
@@ -507,13 +527,6 @@ export type AdminSettingsMutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type AdminSiteSetting = {
-  id: Scalars['Int']['output'];
-  key: Scalars['String']['output'];
-  updated_at: Scalars['DateTime']['output'];
-  value: Scalars['JSON']['output'];
-};
-
 export type AdminStatusOption = {
   label: Scalars['String']['output'];
   value: Scalars['String']['output'];
@@ -683,13 +696,6 @@ export type AssignProductsToCollectionInput = {
   productIds: Array<Scalars['Int']['input']>;
 };
 
-export type BestSellersResponse = {
-  page: Scalars['Int']['output'];
-  products: Array<ProductBase>;
-  total: Scalars['Int']['output'];
-  total_pages: Scalars['Int']['output'];
-};
-
 export type BulkDeleteEventResult = {
   action: Scalars['String']['output'];
   error?: Maybe<Scalars['String']['output']>;
@@ -710,11 +716,6 @@ export type BulkDeleteProductResult = {
 
 export type BulkDeleteProductsInput = {
   ids: Array<Scalars['Int']['input']>;
-};
-
-export type CancelRegistrationResponse = {
-  error?: Maybe<Scalars['String']['output']>;
-  success: Scalars['Boolean']['output'];
 };
 
 export type CarePageContent = {
@@ -797,13 +798,20 @@ export type CreateCollectionInput = {
 };
 
 export type CreateCustomizationOptionInput = {
-  category: Scalars['String']['input'];
+  customize_category_id: Scalars['Int']['input'];
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
   price_modifier?: InputMaybe<Scalars['Int']['input']>;
   sort_order?: InputMaybe<Scalars['Int']['input']>;
   type: Scalars['String']['input'];
   value: Scalars['String']['input'];
+};
+
+export type CreateCustomizeCategoryInput = {
+  base_price?: InputMaybe<Scalars['Int']['input']>;
+  category: Scalars['String']['input'];
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type CreateEventInput = {
@@ -889,13 +897,15 @@ export type CustomizationCategoriesResponse = {
 export type CustomizationCategory = {
   base_price: Scalars['Int']['output'];
   category: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
   image_url?: Maybe<Scalars['String']['output']>;
   options_count: Scalars['Int']['output'];
 };
 
 export type CustomizationOption = {
-  category: Scalars['String']['output'];
+  category_name: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
+  customize_category_id: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   is_active: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -912,12 +922,13 @@ export type CustomizationOptionsByType = {
 };
 
 export type CustomizationOptionsFilterInput = {
-  category: Scalars['String']['input'];
+  customize_category_id: Scalars['Int']['input'];
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CustomizationOptionsResponse = {
-  category: Scalars['String']['output'];
+  category_name: Scalars['String']['output'];
+  customize_category_id: Scalars['Int']['output'];
   options_by_type: Array<CustomizationOptionsByType>;
   total_options: Scalars['Int']['output'];
 };
@@ -930,11 +941,6 @@ export type DashboardStats = {
   registrations: RegistrationsStats;
   revenue: RevenueStats;
   users: UsersStats;
-};
-
-export type DeleteReviewResponse = {
-  error?: Maybe<Scalars['String']['output']>;
-  success: Scalars['Boolean']['output'];
 };
 
 export type EventBase = {
@@ -1120,6 +1126,18 @@ export type FaqPageContent = {
   categories: Array<FaqCategory>;
 };
 
+export type FeaturedReview = {
+  created_at: Scalars['DateTime']['output'];
+  event_id?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  image_urls: Array<Scalars['String']['output']>;
+  product_id?: Maybe<Scalars['Int']['output']>;
+  rating: Scalars['Int']['output'];
+  review?: Maybe<Scalars['String']['output']>;
+  user: ReviewUser;
+  user_id: Scalars['Int']['output'];
+};
+
 export type GetPresignedUploadUrlInput = {
   contentType: Scalars['String']['input'];
   fileSize: Scalars['Int']['input'];
@@ -1171,49 +1189,47 @@ export type Mutation = {
   adminBulkDeleteProducts: AdminBulkDeleteProductsResponse;
   adminCreateCollection: AdminCollectionMutationResponse;
   adminCreateCustomizationOption: AdminCustomizationMutationResponse;
+  adminCreateCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
   adminDeleteCategory: AdminCategoryMutationResponse;
   adminDeleteCollection: AdminCollectionMutationResponse;
   adminDeleteCustomizationOption: AdminCustomizationMutationResponse;
+  adminDeleteCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
-  adminDeleteEventReview: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
-  adminDeleteProductReview: AdminMutationResponse;
   adminGetPresignedUploadUrl: PresignedUploadUrlResponse;
   adminRemoveProductFromCollection: AdminCollectionMutationResponse;
   adminRenameCategory: AdminCategoryMutationResponse;
   adminToggleContentPageActive: AdminContentMutationResponse;
   adminToggleCustomizationOptionActive: AdminCustomizationMutationResponse;
+  adminToggleCustomizeCategoryActive: AdminCustomizeCategoryMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
   adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
   adminUpdateContentPage: AdminContentMutationResponse;
   adminUpdateCustomizationOption: AdminCustomizationMutationResponse;
+  adminUpdateCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
   adminUpdateHeroImages: AdminSettingsMutationResponse;
   adminUpdateOrderDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemQuantity: AdminOrderMutationResponse;
-  adminUpdateOrderPrice: AdminOrderMutationResponse;
   adminUpdateOrderStatus: AdminOrderMutationResponse;
   adminUpdateProduct: AdminMutationResponse;
   adminUpdateRegistrationDetails: AdminRegistrationMutationResponse;
-  adminUpdateRegistrationPrice: AdminRegistrationMutationResponse;
   adminUpdateRegistrationStatus: AdminRegistrationMutationResponse;
   adminUpdateSocialLinks: AdminSettingsMutationResponse;
   adminUpdateUserRole: AdminUserMutationResponse;
   cancelOrder: OrderMutationResponse;
-  cancelRegistration: CancelRegistrationResponse;
   clearCart: Scalars['Boolean']['output'];
   createAddress: AddressMutationResponse;
   createEventReview: CreateReviewResponse;
   createOrder: OrderMutationResponse;
   createProductReview: CreateReviewResponse;
   deleteAddress: AddressMutationResponse;
-  deleteReview: DeleteReviewResponse;
   moveToCart: Scalars['Boolean']['output'];
   registerForEvent: RegisterForEventResponse;
   removeFromCart: Scalars['Boolean']['output'];
@@ -1221,7 +1237,6 @@ export type Mutation = {
   subscribeToNewsletter: NewsletterMutationResponse;
   toggleReviewLike: ToggleReviewLikeResponse;
   toggleWishlist: ToggleWishlistResponse;
-  unsubscribeFromNewsletter: NewsletterMutationResponse;
   updateAddress: AddressMutationResponse;
   updateCartQuantity: CartMutationResponse;
 };
@@ -1268,6 +1283,11 @@ export type MutationAdminCreateCustomizationOptionArgs = {
 };
 
 
+export type MutationAdminCreateCustomizeCategoryArgs = {
+  input: CreateCustomizeCategoryInput;
+};
+
+
 export type MutationAdminCreateEventArgs = {
   input: CreateEventInput;
 };
@@ -1293,23 +1313,18 @@ export type MutationAdminDeleteCustomizationOptionArgs = {
 };
 
 
+export type MutationAdminDeleteCustomizeCategoryArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationAdminDeleteEventArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type MutationAdminDeleteEventReviewArgs = {
-  reviewId: Scalars['Int']['input'];
-};
-
-
 export type MutationAdminDeleteProductArgs = {
   id: Scalars['Int']['input'];
-};
-
-
-export type MutationAdminDeleteProductReviewArgs = {
-  reviewId: Scalars['Int']['input'];
 };
 
 
@@ -1335,6 +1350,11 @@ export type MutationAdminToggleContentPageActiveArgs = {
 
 
 export type MutationAdminToggleCustomizationOptionActiveArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationAdminToggleCustomizeCategoryActiveArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -1373,6 +1393,12 @@ export type MutationAdminUpdateCustomizationOptionArgs = {
 };
 
 
+export type MutationAdminUpdateCustomizeCategoryArgs = {
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizeCategoryInput;
+};
+
+
 export type MutationAdminUpdateEventArgs = {
   id: Scalars['String']['input'];
   input: UpdateEventInput;
@@ -1408,12 +1434,6 @@ export type MutationAdminUpdateOrderItemQuantityArgs = {
 };
 
 
-export type MutationAdminUpdateOrderPriceArgs = {
-  orderId: Scalars['String']['input'];
-  total: Scalars['Float']['input'];
-};
-
-
 export type MutationAdminUpdateOrderStatusArgs = {
   orderId: Scalars['String']['input'];
   status: Scalars['String']['input'];
@@ -1428,12 +1448,6 @@ export type MutationAdminUpdateProductArgs = {
 
 export type MutationAdminUpdateRegistrationDetailsArgs = {
   input: UpdateRegistrationDetailsInput;
-  registrationId: Scalars['String']['input'];
-};
-
-
-export type MutationAdminUpdateRegistrationPriceArgs = {
-  price: Scalars['Float']['input'];
   registrationId: Scalars['String']['input'];
 };
 
@@ -1460,11 +1474,6 @@ export type MutationCancelOrderArgs = {
 };
 
 
-export type MutationCancelRegistrationArgs = {
-  registrationId: Scalars['String']['input'];
-};
-
-
 export type MutationCreateAddressArgs = {
   input: CreateAddressInput;
 };
@@ -1487,11 +1496,6 @@ export type MutationCreateProductReviewArgs = {
 
 export type MutationDeleteAddressArgs = {
   id: Scalars['Int']['input'];
-};
-
-
-export type MutationDeleteReviewArgs = {
-  reviewId: Scalars['Int']['input'];
 };
 
 
@@ -1782,11 +1786,9 @@ export type ProductsStats = {
 };
 
 export type Query = {
-  addressById?: Maybe<UserAddress>;
   adminAllCategories: Array<Scalars['String']['output']>;
   adminAllCollections: Array<AdminProductCollection>;
   adminAllConfiguredCategories: Array<AdminCategoryConfig>;
-  adminAllSettings: Array<AdminSiteSetting>;
   adminAvailableIcons: Array<AdminIconOption>;
   adminCategories: AdminCategoriesResponse;
   adminCollectionById?: Maybe<AdminCollectionDetail>;
@@ -1798,6 +1800,8 @@ export type Query = {
   adminCustomizationOptionById?: Maybe<AdminCustomizationOption>;
   adminCustomizationOptions: AdminCustomizationOptionsResponse;
   adminCustomizationTypes: Array<AdminCustomizationTypeSummary>;
+  adminCustomizeCategories: AdminCustomizeCategoriesResponse;
+  adminCustomizeCategoryById?: Maybe<AdminCustomizeCategory>;
   adminDashboardStats: DashboardStats;
   adminEventById?: Maybe<AdminEventDetail>;
   adminEventLevelOptions: Array<AdminLevelOption>;
@@ -1822,7 +1826,6 @@ export type Query = {
   adminUserRegistrations: Array<AdminUserRegistration>;
   adminUserWishlist: AdminUserWishlistResponse;
   adminUsers: AdminUsersResponse;
-  bestSellers: BestSellersResponse;
   cart: CartResponse;
   categories: Array<Scalars['String']['output']>;
   categoriesWithImages: Array<CategoryWithImage>;
@@ -1832,45 +1835,34 @@ export type Query = {
   customizationOptionsByCategory: CustomizationOptionsResponse;
   customizationTypes: Array<Scalars['String']['output']>;
   eventById?: Maybe<EventDetail>;
-  eventBySlug?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
   eventWithUserContext?: Maybe<EventWithUserContext>;
   events: EventsResponse;
-  featuredReviews: Array<Review>;
+  featuredReviews: Array<FeaturedReview>;
   globalSearch: GlobalSearchResponse;
-  materials: Array<Scalars['String']['output']>;
   newsletterStatus: NewsletterStatus;
   order?: Maybe<Order>;
   orders: OrdersResponse;
   pastEvents: EventsResponse;
   productById?: Maybe<ProductDetail>;
-  productBySlug?: Maybe<ProductDetail>;
   productReviews: ReviewsResponse;
   products: ProductsResponse;
   publicAboutContent?: Maybe<AboutPageContent>;
   publicCareContent?: Maybe<CarePageContent>;
-  publicContactInfo: ContactInfo;
   publicFAQContent?: Maybe<FaqPageContent>;
   publicHeroImages: HeroImages;
   publicPrivacyContent?: Maybe<PrivacyPageContent>;
   publicShippingContent?: Maybe<ShippingPageContent>;
-  publicSocialLinks: SocialLinks;
   publicTermsContent?: Maybe<TermsPageContent>;
   recommendedProducts: RecommendedProductsResponse;
-  registrationById?: Maybe<EventRegistration>;
   upcomingEvents: EventsResponse;
   upcomingRegistrations: RegistrationsResponse;
   user: UserResponse;
-  userAddresses: AddressesResponse;
+  userAddresses: UserAddressesResponse;
   userCounts: UserCounts;
   userRegistrations: RegistrationsResponse;
   wishlist: WishlistResponse;
   wishlistIds: Array<Scalars['Int']['output']>;
-};
-
-
-export type QueryAddressByIdArgs = {
-  id: Scalars['Int']['input'];
 };
 
 
@@ -1896,6 +1888,11 @@ export type QueryAdminCustomizationOptionByIdArgs = {
 
 export type QueryAdminCustomizationOptionsArgs = {
   filter?: InputMaybe<AdminCustomizationOptionsFilterInput>;
+};
+
+
+export type QueryAdminCustomizeCategoryByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1991,12 +1988,6 @@ export type QueryAdminUsersArgs = {
 };
 
 
-export type QueryBestSellersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
 export type QueryCollectionsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -2020,11 +2011,6 @@ export type QueryCustomizationOptionsByCategoryArgs = {
 
 export type QueryEventByIdArgs = {
   id: Scalars['String']['input'];
-};
-
-
-export type QueryEventBySlugArgs = {
-  slug: Scalars['String']['input'];
 };
 
 
@@ -2074,11 +2060,6 @@ export type QueryProductByIdArgs = {
 };
 
 
-export type QueryProductBySlugArgs = {
-  slug: Scalars['String']['input'];
-};
-
-
 export type QueryProductReviewsArgs = {
   filter?: InputMaybe<ReviewsFilterInput>;
   productId: Scalars['Int']['input'];
@@ -2094,11 +2075,6 @@ export type QueryRecommendedProductsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   productId?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryRegistrationByIdArgs = {
-  registrationId: Scalars['String']['input'];
 };
 
 
@@ -2408,13 +2384,20 @@ export type UpdateContentPageInput = {
 };
 
 export type UpdateCustomizationOptionInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  customize_category_id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   price_modifier?: InputMaybe<Scalars['Int']['input']>;
   sort_order?: InputMaybe<Scalars['Int']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
   value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateCustomizeCategoryInput = {
+  base_price?: InputMaybe<Scalars['Int']['input']>;
+  category?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type UpdateEventInput = {
@@ -2488,6 +2471,11 @@ export type UserAddress = {
   state: Scalars['String']['output'];
   user_id: Scalars['Int']['output'];
   zip: Scalars['String']['output'];
+};
+
+export type UserAddressesResponse = {
+  addresses: Array<UserAddress>;
+  total: Scalars['Int']['output'];
 };
 
 export type UserCounts = {
@@ -2571,13 +2559,6 @@ export type UserAddressesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UserAddressesQuery = { userAddresses: { total: number, addresses: Array<{ id: number, user_id: number, name: string, address_line_1: string, address_line_2?: string | null, landmark?: string | null, city: string, state: string, zip: string, contact_number?: string | null }> } };
-
-export type AddressByIdQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
-}>;
-
-
-export type AddressByIdQuery = { addressById?: { id: number, user_id: number, name: string, address_line_1: string, address_line_2?: string | null, landmark?: string | null, city: string, state: string, zip: string, contact_number?: string | null } | null };
 
 export type AdminDashboardStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2776,24 +2757,65 @@ export type AdminCustomizationOptionsQueryVariables = Exact<{
 }>;
 
 
-export type AdminCustomizationOptionsQuery = { adminCustomizationOptions: { total: number, page: number, limit: number, totalPages: number, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } };
+export type AdminCustomizationOptionsQuery = { adminCustomizationOptions: { total: number, page: number, limit: number, totalPages: number, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } };
 
 export type AdminCustomizationOptionByIdQueryVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
 
 
-export type AdminCustomizationOptionByIdQuery = { adminCustomizationOptionById?: { id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
+export type AdminCustomizationOptionByIdQuery = { adminCustomizationOptionById?: { id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
 
 export type AdminCustomizationCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminCustomizationCategoriesQuery = { adminCustomizationCategories: Array<{ category: string, count: number }> };
+export type AdminCustomizationCategoriesQuery = { adminCustomizationCategories: Array<{ id: number, category: string, count: number }> };
 
 export type AdminCustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AdminCustomizationTypesQuery = { adminCustomizationTypes: Array<{ type: string, count: number }> };
+
+export type AdminCreateCustomizeCategoryMutationVariables = Exact<{
+  input: CreateCustomizeCategoryInput;
+}>;
+
+
+export type AdminCreateCustomizeCategoryMutation = { adminCreateCustomizeCategory: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminUpdateCustomizeCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizeCategoryInput;
+}>;
+
+
+export type AdminUpdateCustomizeCategoryMutation = { adminUpdateCustomizeCategory: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminDeleteCustomizeCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteCustomizeCategoryMutation = { adminDeleteCustomizeCategory: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminToggleCustomizeCategoryActiveMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminToggleCustomizeCategoryActiveMutation = { adminToggleCustomizeCategoryActive: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminCustomizeCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCustomizeCategoriesQuery = { adminCustomizeCategories: { total: number, categories: Array<{ id: number, category: string, base_price: number, image_url?: string | null, is_active: boolean, options_count: number, created_at: Date | string, updated_at: Date | string, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
+
+export type AdminCustomizeCategoryByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminCustomizeCategoryByIdQuery = { adminCustomizeCategoryById?: { id: number, category: string, base_price: number, image_url?: string | null, is_active: boolean, options_count: number, created_at: Date | string, updated_at: Date | string, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } | null };
 
 export type AdminCreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -2824,13 +2846,6 @@ export type AdminUpdateEventStatusMutationVariables = Exact<{
 
 
 export type AdminUpdateEventStatusMutation = { adminUpdateEventStatus: { success: boolean, eventId?: string | null, error?: string | null } };
-
-export type AdminDeleteEventReviewMutationVariables = Exact<{
-  reviewId: Scalars['Int']['input'];
-}>;
-
-
-export type AdminDeleteEventReviewMutation = { adminDeleteEventReview: { success: boolean, eventId?: string | null, error?: string | null } };
 
 export type AdminBulkDeleteEventsMutationVariables = Exact<{
   input: BulkDeleteEventsInput;
@@ -2890,14 +2905,6 @@ export type AdminUpdateOrderStatusMutationVariables = Exact<{
 
 export type AdminUpdateOrderStatusMutation = { adminUpdateOrderStatus: { success: boolean, error?: string | null } };
 
-export type AdminUpdateOrderPriceMutationVariables = Exact<{
-  orderId: Scalars['String']['input'];
-  total: Scalars['Float']['input'];
-}>;
-
-
-export type AdminUpdateOrderPriceMutation = { adminUpdateOrderPrice: { success: boolean, error?: string | null } };
-
 export type AdminUpdateOrderDiscountMutationVariables = Exact<{
   orderId: Scalars['String']['input'];
   discount: Scalars['Float']['input'];
@@ -2950,13 +2957,6 @@ export type AdminToggleProductActiveMutationVariables = Exact<{
 
 
 export type AdminToggleProductActiveMutation = { adminToggleProductActive: { success: boolean, error?: string | null } };
-
-export type AdminDeleteProductReviewMutationVariables = Exact<{
-  reviewId: Scalars['Int']['input'];
-}>;
-
-
-export type AdminDeleteProductReviewMutation = { adminDeleteProductReview: { success: boolean, error?: string | null } };
 
 export type AdminBulkDeleteProductsMutationVariables = Exact<{
   input: BulkDeleteProductsInput;
@@ -3031,16 +3031,6 @@ export type PublicHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type PublicHeroImagesQuery = { publicHeroImages: { home: string, ourStory: string, products: string, events: string } };
 
-export type PublicContactInfoQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PublicContactInfoQuery = { publicContactInfo: { address: string, email: string, phone: string, hours: string } };
-
-export type PublicSocialLinksQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PublicSocialLinksQuery = { publicSocialLinks: { instagram: string, facebook: string, twitter: string, pinterest: string } };
-
 export type AdminUpdateRegistrationStatusMutationVariables = Exact<{
   registrationId: Scalars['String']['input'];
   status: Scalars['String']['input'];
@@ -3048,14 +3038,6 @@ export type AdminUpdateRegistrationStatusMutationVariables = Exact<{
 
 
 export type AdminUpdateRegistrationStatusMutation = { adminUpdateRegistrationStatus: { success: boolean, error?: string | null } };
-
-export type AdminUpdateRegistrationPriceMutationVariables = Exact<{
-  registrationId: Scalars['String']['input'];
-  price: Scalars['Float']['input'];
-}>;
-
-
-export type AdminUpdateRegistrationPriceMutation = { adminUpdateRegistrationPrice: { success: boolean, error?: string | null } };
 
 export type AdminUpdateRegistrationDetailsMutationVariables = Exact<{
   registrationId: Scalars['String']['input'];
@@ -3085,11 +3067,6 @@ export type AdminUpdateSocialLinksMutationVariables = Exact<{
 
 
 export type AdminUpdateSocialLinksMutation = { adminUpdateSocialLinks: { success: boolean, error?: string | null } };
-
-export type AdminAllSettingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AdminAllSettingsQuery = { adminAllSettings: Array<{ id: number, key: string, value: any, updated_at: Date | string }> };
 
 export type AdminHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3201,14 +3178,14 @@ export type CustomizationCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type CustomizationCategoriesQuery = { customizationCategories: { total: number, page: number, limit: number, has_more: boolean, categories: Array<{ category: string, options_count: number, base_price: number, image_url?: string | null }> } };
+export type CustomizationCategoriesQuery = { customizationCategories: { total: number, page: number, limit: number, has_more: boolean, categories: Array<{ id: number, category: string, options_count: number, base_price: number, image_url?: string | null }> } };
 
 export type CustomizationOptionsByCategoryQueryVariables = Exact<{
   filter: CustomizationOptionsFilterInput;
 }>;
 
 
-export type CustomizationOptionsByCategoryQuery = { customizationOptionsByCategory: { category: string, total_options: number, options_by_type: Array<{ type: string, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
+export type CustomizationOptionsByCategoryQuery = { customizationOptionsByCategory: { customize_category_id: number, category_name: string, total_options: number, options_by_type: Array<{ type: string, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
 
 export type CustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3226,13 +3203,6 @@ export type RegisterForEventMutationVariables = Exact<{
 
 export type RegisterForEventMutation = { registerForEvent: { success: boolean, error?: string | null, registration?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null } };
 
-export type CancelRegistrationMutationVariables = Exact<{
-  registrationId: Scalars['String']['input'];
-}>;
-
-
-export type CancelRegistrationMutation = { cancelRegistration: { success: boolean, error?: string | null } };
-
 export type EventBaseFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null };
 
 export type EventDetailFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> };
@@ -3247,13 +3217,6 @@ export type EventsQueryVariables = Exact<{
 
 
 export type EventsQuery = { events: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, event_types: Array<EventType>, data: Array<{ id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
-
-export type EventBySlugQueryVariables = Exact<{
-  slug: Scalars['String']['input'];
-}>;
-
-
-export type EventBySlugQuery = { eventBySlug?: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> } | null };
 
 export type EventByIdQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -3290,13 +3253,6 @@ export type UserRegistrationsQueryVariables = Exact<{
 
 export type UserRegistrationsQuery = { userRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
 
-export type RegistrationByIdQueryVariables = Exact<{
-  registrationId: Scalars['String']['input'];
-}>;
-
-
-export type RegistrationByIdQuery = { registrationById?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null };
-
 export type UpcomingRegistrationsQueryVariables = Exact<{
   filter?: InputMaybe<RegistrationsFilterInput>;
 }>;
@@ -3315,11 +3271,6 @@ export type SubscribeToNewsletterMutationVariables = Exact<{ [key: string]: neve
 
 
 export type SubscribeToNewsletterMutation = { subscribeToNewsletter: { success: boolean, error?: string | null, status?: { subscribed: boolean, subscribed_at?: Date | string | null } | null } };
-
-export type UnsubscribeFromNewsletterMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UnsubscribeFromNewsletterMutation = { unsubscribeFromNewsletter: { success: boolean, error?: string | null, status?: { subscribed: boolean, subscribed_at?: Date | string | null } | null } };
 
 export type NewsletterStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3363,13 +3314,6 @@ export type ProductsQueryVariables = Exact<{
 
 export type ProductsQuery = { products: { total_products: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }>, filter: { limit?: number | null, page?: number | null, search?: string | null, categories?: Array<string> | null, materials?: Array<string> | null, min_price?: number | null, max_price?: number | null, order_by?: ProductOrderBy | null, collection_ids?: Array<number> | null, archive?: boolean | null }, meta: { categories: Array<string>, materials: Array<string>, price_range: { min: number, max: number }, price_histogram: Array<{ min: number, max: number, count: number }>, collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> } } };
 
-export type ProductBySlugQueryVariables = Exact<{
-  slug: Scalars['String']['input'];
-}>;
-
-
-export type ProductBySlugQuery = { productBySlug?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
-
 export type ProductByIdQueryVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
@@ -3377,13 +3321,20 @@ export type ProductByIdQueryVariables = Exact<{
 
 export type ProductByIdQuery = { productById?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
 
-export type BestSellersQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-}>;
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BestSellersQuery = { bestSellers: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }> } };
+export type CategoriesQuery = { categories: Array<string> };
+
+export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CollectionsQuery = { collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> };
+
+export type CategoriesWithImagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesWithImagesQuery = { categoriesWithImages: Array<{ name: string, image_url?: string | null }> };
 
 export type RecommendedProductsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3393,26 +3344,6 @@ export type RecommendedProductsQueryVariables = Exact<{
 
 
 export type RecommendedProductsQuery = { recommendedProducts: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }> } };
-
-export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CategoriesQuery = { categories: Array<string> };
-
-export type CategoriesWithImagesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CategoriesWithImagesQuery = { categoriesWithImages: Array<{ name: string, image_url?: string | null }> };
-
-export type MaterialsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MaterialsQuery = { materials: Array<string> };
-
-export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CollectionsQuery = { collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> };
 
 export type CreateProductReviewMutationVariables = Exact<{
   input: CreateProductReviewInput;
@@ -3427,13 +3358,6 @@ export type CreateEventReviewMutationVariables = Exact<{
 
 
 export type CreateEventReviewMutation = { createEventReview: { success: boolean, error?: string | null, review?: { id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> } | null } };
-
-export type DeleteReviewMutationVariables = Exact<{
-  reviewId: Scalars['Int']['input'];
-}>;
-
-
-export type DeleteReviewMutation = { deleteReview: { success: boolean, error?: string | null } };
 
 export type ToggleReviewLikeMutationVariables = Exact<{
   reviewId: Scalars['Int']['input'];
@@ -3450,13 +3374,6 @@ export type ProductReviewsQueryVariables = Exact<{
 
 export type ProductReviewsQuery = { productReviews: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> }> } };
 
-export type FeaturedReviewsQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-}>;
-
-
-export type FeaturedReviewsQuery = { featuredReviews: Array<{ id: number, rating: number, review?: string | null, user: { id: number, name?: string | null, image?: string | null } }> };
-
 export type EventReviewsQueryVariables = Exact<{
   eventId: Scalars['String']['input'];
   filter?: InputMaybe<ReviewsFilterInput>;
@@ -3464,6 +3381,13 @@ export type EventReviewsQueryVariables = Exact<{
 
 
 export type EventReviewsQuery = { eventReviews: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> }> } };
+
+export type FeaturedReviewsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type FeaturedReviewsQuery = { featuredReviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, user: { id: number, name?: string | null, image?: string | null } }> };
 
 export type GlobalSearchQueryVariables = Exact<{
   input: GlobalSearchInput;

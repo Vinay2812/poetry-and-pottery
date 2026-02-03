@@ -40,7 +40,9 @@ export function CustomizeWizardContainer({
   // State
   const [currentStep, setCurrentStep] = useState<CustomizeStep>("category");
   const [completedSteps, setCompletedSteps] = useState<CustomizeStep[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null,
+  );
   const [selections, setSelections] = useState<Record<string, number>>({});
   const [optionsData, setOptionsData] =
     useState<CustomizationOptionsResponse | null>(null);
@@ -49,20 +51,23 @@ export function CustomizeWizardContainer({
 
   // Get base price for selected category
   const selectedCategoryData = useMemo(() => {
-    if (!selectedCategory) return null;
+    if (!selectedCategoryId) return null;
     return initialCategories.categories.find(
-      (c) => c.category === selectedCategory,
+      (c) => c.id === selectedCategoryId,
     );
-  }, [initialCategories.categories, selectedCategory]);
+  }, [initialCategories.categories, selectedCategoryId]);
+
+  // Derive selected category name from data
+  const selectedCategoryName = selectedCategoryData?.category ?? null;
 
   // Build view models
   const categoryViewModels = useMemo(
     () =>
       buildCategoryCardViewModels(
         initialCategories.categories,
-        selectedCategory,
+        selectedCategoryId,
       ),
-    [initialCategories.categories, selectedCategory],
+    [initialCategories.categories, selectedCategoryId],
   );
 
   const optionGroupViewModels = useMemo(() => {
@@ -71,14 +76,15 @@ export function CustomizeWizardContainer({
   }, [optionsData, selections]);
 
   const reviewViewModel = useMemo(() => {
-    if (!selectedCategory || !optionsData || !selectedCategoryData) return null;
+    if (!selectedCategoryName || !optionsData || !selectedCategoryData)
+      return null;
     return buildReviewSummaryViewModel(
-      selectedCategory,
+      selectedCategoryName,
       selectedCategoryData.base_price,
       optionsData.options_by_type,
       selections,
     );
-  }, [selectedCategory, optionsData, selectedCategoryData, selections]);
+  }, [selectedCategoryName, optionsData, selectedCategoryData, selections]);
 
   // Check if user can continue from options step
   const canContinueFromOptions = useMemo(() => {
@@ -89,12 +95,12 @@ export function CustomizeWizardContainer({
 
   // Load options when category is selected
   useEffect(() => {
-    if (selectedCategory && currentStep === "options" && !optionsData) {
+    if (selectedCategoryId && currentStep === "options" && !optionsData) {
       setIsLoadingOptions(true);
       startTransition(async () => {
         try {
           const data = await getCustomizationOptionsByCategory({
-            category: selectedCategory,
+            customize_category_id: selectedCategoryId,
           });
           setOptionsData(data);
         } catch (error) {
@@ -104,11 +110,11 @@ export function CustomizeWizardContainer({
         }
       });
     }
-  }, [selectedCategory, currentStep, optionsData]);
+  }, [selectedCategoryId, currentStep, optionsData]);
 
   // Handlers
-  const handleSelectCategory = useCallback((category: string) => {
-    setSelectedCategory(category);
+  const handleSelectCategory = useCallback((categoryId: number) => {
+    setSelectedCategoryId(categoryId);
     setSelections({});
     setOptionsData(null);
     setCompletedSteps(["category"]);
@@ -172,9 +178,9 @@ export function CustomizeWizardContainer({
           />
         )}
 
-        {currentStep === "options" && selectedCategory && (
+        {currentStep === "options" && selectedCategoryName && (
           <OptionsSelector
-            category={selectedCategory}
+            category={selectedCategoryName}
             optionGroups={optionGroupViewModels}
             isLoading={isLoadingOptions}
             onSelectOption={handleSelectOption}

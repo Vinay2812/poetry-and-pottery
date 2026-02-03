@@ -62,11 +62,6 @@ export type AddressMutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type AddressesResponse = {
-  addresses: Array<UserAddress>;
-  total: Scalars['Int']['output'];
-};
-
 export type AdminBulkDeleteEventsResponse = {
   cancelledCount: Scalars['Int']['output'];
   deletedCount: Scalars['Int']['output'];
@@ -190,6 +185,7 @@ export type AdminContentPageListItem = {
 export type AdminCustomizationCategorySummary = {
   category: Scalars['String']['output'];
   count: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
 };
 
 export type AdminCustomizationMutationResponse = {
@@ -199,8 +195,9 @@ export type AdminCustomizationMutationResponse = {
 };
 
 export type AdminCustomizationOption = {
-  category: Scalars['String']['output'];
+  category_name: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
+  customize_category_id: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   is_active: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -212,7 +209,7 @@ export type AdminCustomizationOption = {
 };
 
 export type AdminCustomizationOptionsFilterInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  customize_category_id?: InputMaybe<Scalars['Int']['input']>;
   isActive?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -231,6 +228,29 @@ export type AdminCustomizationOptionsResponse = {
 export type AdminCustomizationTypeSummary = {
   count: Scalars['Int']['output'];
   type: Scalars['String']['output'];
+};
+
+export type AdminCustomizeCategoriesResponse = {
+  categories: Array<AdminCustomizeCategory>;
+  total: Scalars['Int']['output'];
+};
+
+export type AdminCustomizeCategory = {
+  base_price: Scalars['Int']['output'];
+  category: Scalars['String']['output'];
+  created_at: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  is_active: Scalars['Boolean']['output'];
+  options: Array<AdminCustomizationOption>;
+  options_count: Scalars['Int']['output'];
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminCustomizeCategoryMutationResponse = {
+  categoryId?: Maybe<Scalars['Int']['output']>;
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type AdminEvent = {
@@ -514,13 +534,6 @@ export type AdminSettingsMutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type AdminSiteSetting = {
-  id: Scalars['Int']['output'];
-  key: Scalars['String']['output'];
-  updated_at: Scalars['DateTime']['output'];
-  value: Scalars['JSON']['output'];
-};
-
 export type AdminStatusOption = {
   label: Scalars['String']['output'];
   value: Scalars['String']['output'];
@@ -690,13 +703,6 @@ export type AssignProductsToCollectionInput = {
   productIds: Array<Scalars['Int']['input']>;
 };
 
-export type BestSellersResponse = {
-  page: Scalars['Int']['output'];
-  products: Array<ProductBase>;
-  total: Scalars['Int']['output'];
-  total_pages: Scalars['Int']['output'];
-};
-
 export type BulkDeleteEventResult = {
   action: Scalars['String']['output'];
   error?: Maybe<Scalars['String']['output']>;
@@ -717,11 +723,6 @@ export type BulkDeleteProductResult = {
 
 export type BulkDeleteProductsInput = {
   ids: Array<Scalars['Int']['input']>;
-};
-
-export type CancelRegistrationResponse = {
-  error?: Maybe<Scalars['String']['output']>;
-  success: Scalars['Boolean']['output'];
 };
 
 export type CarePageContent = {
@@ -804,13 +805,20 @@ export type CreateCollectionInput = {
 };
 
 export type CreateCustomizationOptionInput = {
-  category: Scalars['String']['input'];
+  customize_category_id: Scalars['Int']['input'];
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
   price_modifier?: InputMaybe<Scalars['Int']['input']>;
   sort_order?: InputMaybe<Scalars['Int']['input']>;
   type: Scalars['String']['input'];
   value: Scalars['String']['input'];
+};
+
+export type CreateCustomizeCategoryInput = {
+  base_price?: InputMaybe<Scalars['Int']['input']>;
+  category: Scalars['String']['input'];
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type CreateEventInput = {
@@ -896,13 +904,15 @@ export type CustomizationCategoriesResponse = {
 export type CustomizationCategory = {
   base_price: Scalars['Int']['output'];
   category: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
   image_url?: Maybe<Scalars['String']['output']>;
   options_count: Scalars['Int']['output'];
 };
 
 export type CustomizationOption = {
-  category: Scalars['String']['output'];
+  category_name: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
+  customize_category_id: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   is_active: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
@@ -919,12 +929,13 @@ export type CustomizationOptionsByType = {
 };
 
 export type CustomizationOptionsFilterInput = {
-  category: Scalars['String']['input'];
+  customize_category_id: Scalars['Int']['input'];
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CustomizationOptionsResponse = {
-  category: Scalars['String']['output'];
+  category_name: Scalars['String']['output'];
+  customize_category_id: Scalars['Int']['output'];
   options_by_type: Array<CustomizationOptionsByType>;
   total_options: Scalars['Int']['output'];
 };
@@ -937,11 +948,6 @@ export type DashboardStats = {
   registrations: RegistrationsStats;
   revenue: RevenueStats;
   users: UsersStats;
-};
-
-export type DeleteReviewResponse = {
-  error?: Maybe<Scalars['String']['output']>;
-  success: Scalars['Boolean']['output'];
 };
 
 export type EventBase = {
@@ -1127,6 +1133,18 @@ export type FaqPageContent = {
   categories: Array<FaqCategory>;
 };
 
+export type FeaturedReview = {
+  created_at: Scalars['DateTime']['output'];
+  event_id?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  image_urls: Array<Scalars['String']['output']>;
+  product_id?: Maybe<Scalars['Int']['output']>;
+  rating: Scalars['Int']['output'];
+  review?: Maybe<Scalars['String']['output']>;
+  user: ReviewUser;
+  user_id: Scalars['Int']['output'];
+};
+
 export type GetPresignedUploadUrlInput = {
   contentType: Scalars['String']['input'];
   fileSize: Scalars['Int']['input'];
@@ -1178,49 +1196,47 @@ export type Mutation = {
   adminBulkDeleteProducts: AdminBulkDeleteProductsResponse;
   adminCreateCollection: AdminCollectionMutationResponse;
   adminCreateCustomizationOption: AdminCustomizationMutationResponse;
+  adminCreateCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
   adminDeleteCategory: AdminCategoryMutationResponse;
   adminDeleteCollection: AdminCollectionMutationResponse;
   adminDeleteCustomizationOption: AdminCustomizationMutationResponse;
+  adminDeleteCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
-  adminDeleteEventReview: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
-  adminDeleteProductReview: AdminMutationResponse;
   adminGetPresignedUploadUrl: PresignedUploadUrlResponse;
   adminRemoveProductFromCollection: AdminCollectionMutationResponse;
   adminRenameCategory: AdminCategoryMutationResponse;
   adminToggleContentPageActive: AdminContentMutationResponse;
   adminToggleCustomizationOptionActive: AdminCustomizationMutationResponse;
+  adminToggleCustomizeCategoryActive: AdminCustomizeCategoryMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
   adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
   adminUpdateContentPage: AdminContentMutationResponse;
   adminUpdateCustomizationOption: AdminCustomizationMutationResponse;
+  adminUpdateCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
   adminUpdateHeroImages: AdminSettingsMutationResponse;
   adminUpdateOrderDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemQuantity: AdminOrderMutationResponse;
-  adminUpdateOrderPrice: AdminOrderMutationResponse;
   adminUpdateOrderStatus: AdminOrderMutationResponse;
   adminUpdateProduct: AdminMutationResponse;
   adminUpdateRegistrationDetails: AdminRegistrationMutationResponse;
-  adminUpdateRegistrationPrice: AdminRegistrationMutationResponse;
   adminUpdateRegistrationStatus: AdminRegistrationMutationResponse;
   adminUpdateSocialLinks: AdminSettingsMutationResponse;
   adminUpdateUserRole: AdminUserMutationResponse;
   cancelOrder: OrderMutationResponse;
-  cancelRegistration: CancelRegistrationResponse;
   clearCart: Scalars['Boolean']['output'];
   createAddress: AddressMutationResponse;
   createEventReview: CreateReviewResponse;
   createOrder: OrderMutationResponse;
   createProductReview: CreateReviewResponse;
   deleteAddress: AddressMutationResponse;
-  deleteReview: DeleteReviewResponse;
   moveToCart: Scalars['Boolean']['output'];
   registerForEvent: RegisterForEventResponse;
   removeFromCart: Scalars['Boolean']['output'];
@@ -1228,7 +1244,6 @@ export type Mutation = {
   subscribeToNewsletter: NewsletterMutationResponse;
   toggleReviewLike: ToggleReviewLikeResponse;
   toggleWishlist: ToggleWishlistResponse;
-  unsubscribeFromNewsletter: NewsletterMutationResponse;
   updateAddress: AddressMutationResponse;
   updateCartQuantity: CartMutationResponse;
 };
@@ -1275,6 +1290,11 @@ export type MutationAdminCreateCustomizationOptionArgs = {
 };
 
 
+export type MutationAdminCreateCustomizeCategoryArgs = {
+  input: CreateCustomizeCategoryInput;
+};
+
+
 export type MutationAdminCreateEventArgs = {
   input: CreateEventInput;
 };
@@ -1300,23 +1320,18 @@ export type MutationAdminDeleteCustomizationOptionArgs = {
 };
 
 
+export type MutationAdminDeleteCustomizeCategoryArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationAdminDeleteEventArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type MutationAdminDeleteEventReviewArgs = {
-  reviewId: Scalars['Int']['input'];
-};
-
-
 export type MutationAdminDeleteProductArgs = {
   id: Scalars['Int']['input'];
-};
-
-
-export type MutationAdminDeleteProductReviewArgs = {
-  reviewId: Scalars['Int']['input'];
 };
 
 
@@ -1342,6 +1357,11 @@ export type MutationAdminToggleContentPageActiveArgs = {
 
 
 export type MutationAdminToggleCustomizationOptionActiveArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationAdminToggleCustomizeCategoryActiveArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -1380,6 +1400,12 @@ export type MutationAdminUpdateCustomizationOptionArgs = {
 };
 
 
+export type MutationAdminUpdateCustomizeCategoryArgs = {
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizeCategoryInput;
+};
+
+
 export type MutationAdminUpdateEventArgs = {
   id: Scalars['String']['input'];
   input: UpdateEventInput;
@@ -1415,12 +1441,6 @@ export type MutationAdminUpdateOrderItemQuantityArgs = {
 };
 
 
-export type MutationAdminUpdateOrderPriceArgs = {
-  orderId: Scalars['String']['input'];
-  total: Scalars['Float']['input'];
-};
-
-
 export type MutationAdminUpdateOrderStatusArgs = {
   orderId: Scalars['String']['input'];
   status: Scalars['String']['input'];
@@ -1435,12 +1455,6 @@ export type MutationAdminUpdateProductArgs = {
 
 export type MutationAdminUpdateRegistrationDetailsArgs = {
   input: UpdateRegistrationDetailsInput;
-  registrationId: Scalars['String']['input'];
-};
-
-
-export type MutationAdminUpdateRegistrationPriceArgs = {
-  price: Scalars['Float']['input'];
   registrationId: Scalars['String']['input'];
 };
 
@@ -1467,11 +1481,6 @@ export type MutationCancelOrderArgs = {
 };
 
 
-export type MutationCancelRegistrationArgs = {
-  registrationId: Scalars['String']['input'];
-};
-
-
 export type MutationCreateAddressArgs = {
   input: CreateAddressInput;
 };
@@ -1494,11 +1503,6 @@ export type MutationCreateProductReviewArgs = {
 
 export type MutationDeleteAddressArgs = {
   id: Scalars['Int']['input'];
-};
-
-
-export type MutationDeleteReviewArgs = {
-  reviewId: Scalars['Int']['input'];
 };
 
 
@@ -1789,11 +1793,9 @@ export type ProductsStats = {
 };
 
 export type Query = {
-  addressById?: Maybe<UserAddress>;
   adminAllCategories: Array<Scalars['String']['output']>;
   adminAllCollections: Array<AdminProductCollection>;
   adminAllConfiguredCategories: Array<AdminCategoryConfig>;
-  adminAllSettings: Array<AdminSiteSetting>;
   adminAvailableIcons: Array<AdminIconOption>;
   adminCategories: AdminCategoriesResponse;
   adminCollectionById?: Maybe<AdminCollectionDetail>;
@@ -1805,6 +1807,8 @@ export type Query = {
   adminCustomizationOptionById?: Maybe<AdminCustomizationOption>;
   adminCustomizationOptions: AdminCustomizationOptionsResponse;
   adminCustomizationTypes: Array<AdminCustomizationTypeSummary>;
+  adminCustomizeCategories: AdminCustomizeCategoriesResponse;
+  adminCustomizeCategoryById?: Maybe<AdminCustomizeCategory>;
   adminDashboardStats: DashboardStats;
   adminEventById?: Maybe<AdminEventDetail>;
   adminEventLevelOptions: Array<AdminLevelOption>;
@@ -1829,7 +1833,6 @@ export type Query = {
   adminUserRegistrations: Array<AdminUserRegistration>;
   adminUserWishlist: AdminUserWishlistResponse;
   adminUsers: AdminUsersResponse;
-  bestSellers: BestSellersResponse;
   cart: CartResponse;
   categories: Array<Scalars['String']['output']>;
   categoriesWithImages: Array<CategoryWithImage>;
@@ -1839,45 +1842,34 @@ export type Query = {
   customizationOptionsByCategory: CustomizationOptionsResponse;
   customizationTypes: Array<Scalars['String']['output']>;
   eventById?: Maybe<EventDetail>;
-  eventBySlug?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
   eventWithUserContext?: Maybe<EventWithUserContext>;
   events: EventsResponse;
-  featuredReviews: Array<Review>;
+  featuredReviews: Array<FeaturedReview>;
   globalSearch: GlobalSearchResponse;
-  materials: Array<Scalars['String']['output']>;
   newsletterStatus: NewsletterStatus;
   order?: Maybe<Order>;
   orders: OrdersResponse;
   pastEvents: EventsResponse;
   productById?: Maybe<ProductDetail>;
-  productBySlug?: Maybe<ProductDetail>;
   productReviews: ReviewsResponse;
   products: ProductsResponse;
   publicAboutContent?: Maybe<AboutPageContent>;
   publicCareContent?: Maybe<CarePageContent>;
-  publicContactInfo: ContactInfo;
   publicFAQContent?: Maybe<FaqPageContent>;
   publicHeroImages: HeroImages;
   publicPrivacyContent?: Maybe<PrivacyPageContent>;
   publicShippingContent?: Maybe<ShippingPageContent>;
-  publicSocialLinks: SocialLinks;
   publicTermsContent?: Maybe<TermsPageContent>;
   recommendedProducts: RecommendedProductsResponse;
-  registrationById?: Maybe<EventRegistration>;
   upcomingEvents: EventsResponse;
   upcomingRegistrations: RegistrationsResponse;
   user: UserResponse;
-  userAddresses: AddressesResponse;
+  userAddresses: UserAddressesResponse;
   userCounts: UserCounts;
   userRegistrations: RegistrationsResponse;
   wishlist: WishlistResponse;
   wishlistIds: Array<Scalars['Int']['output']>;
-};
-
-
-export type QueryAddressByIdArgs = {
-  id: Scalars['Int']['input'];
 };
 
 
@@ -1903,6 +1895,11 @@ export type QueryAdminCustomizationOptionByIdArgs = {
 
 export type QueryAdminCustomizationOptionsArgs = {
   filter?: InputMaybe<AdminCustomizationOptionsFilterInput>;
+};
+
+
+export type QueryAdminCustomizeCategoryByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1998,12 +1995,6 @@ export type QueryAdminUsersArgs = {
 };
 
 
-export type QueryBestSellersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
 export type QueryCollectionsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -2027,11 +2018,6 @@ export type QueryCustomizationOptionsByCategoryArgs = {
 
 export type QueryEventByIdArgs = {
   id: Scalars['String']['input'];
-};
-
-
-export type QueryEventBySlugArgs = {
-  slug: Scalars['String']['input'];
 };
 
 
@@ -2081,11 +2067,6 @@ export type QueryProductByIdArgs = {
 };
 
 
-export type QueryProductBySlugArgs = {
-  slug: Scalars['String']['input'];
-};
-
-
 export type QueryProductReviewsArgs = {
   filter?: InputMaybe<ReviewsFilterInput>;
   productId: Scalars['Int']['input'];
@@ -2101,11 +2082,6 @@ export type QueryRecommendedProductsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   productId?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryRegistrationByIdArgs = {
-  registrationId: Scalars['String']['input'];
 };
 
 
@@ -2415,13 +2391,20 @@ export type UpdateContentPageInput = {
 };
 
 export type UpdateCustomizationOptionInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  customize_category_id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   price_modifier?: InputMaybe<Scalars['Int']['input']>;
   sort_order?: InputMaybe<Scalars['Int']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
   value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateCustomizeCategoryInput = {
+  base_price?: InputMaybe<Scalars['Int']['input']>;
+  category?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type UpdateEventInput = {
@@ -2495,6 +2478,11 @@ export type UserAddress = {
   state: Scalars['String']['output'];
   user_id: Scalars['Int']['output'];
   zip: Scalars['String']['output'];
+};
+
+export type UserAddressesResponse = {
+  addresses: Array<UserAddress>;
+  total: Scalars['Int']['output'];
 };
 
 export type UserCounts = {
@@ -2578,13 +2566,6 @@ export type UserAddressesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UserAddressesQuery = { userAddresses: { total: number, addresses: Array<{ id: number, user_id: number, name: string, address_line_1: string, address_line_2?: string | null, landmark?: string | null, city: string, state: string, zip: string, contact_number?: string | null }> } };
-
-export type AddressByIdQueryVariables = Exact<{
-  id: Scalars['Int']['input'];
-}>;
-
-
-export type AddressByIdQuery = { addressById?: { id: number, user_id: number, name: string, address_line_1: string, address_line_2?: string | null, landmark?: string | null, city: string, state: string, zip: string, contact_number?: string | null } | null };
 
 export type AdminDashboardStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2783,24 +2764,65 @@ export type AdminCustomizationOptionsQueryVariables = Exact<{
 }>;
 
 
-export type AdminCustomizationOptionsQuery = { adminCustomizationOptions: { total: number, page: number, limit: number, totalPages: number, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } };
+export type AdminCustomizationOptionsQuery = { adminCustomizationOptions: { total: number, page: number, limit: number, totalPages: number, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } };
 
 export type AdminCustomizationOptionByIdQueryVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
 
 
-export type AdminCustomizationOptionByIdQuery = { adminCustomizationOptionById?: { id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
+export type AdminCustomizationOptionByIdQuery = { adminCustomizationOptionById?: { id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null };
 
 export type AdminCustomizationCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminCustomizationCategoriesQuery = { adminCustomizationCategories: Array<{ category: string, count: number }> };
+export type AdminCustomizationCategoriesQuery = { adminCustomizationCategories: Array<{ id: number, category: string, count: number }> };
 
 export type AdminCustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AdminCustomizationTypesQuery = { adminCustomizationTypes: Array<{ type: string, count: number }> };
+
+export type AdminCreateCustomizeCategoryMutationVariables = Exact<{
+  input: CreateCustomizeCategoryInput;
+}>;
+
+
+export type AdminCreateCustomizeCategoryMutation = { adminCreateCustomizeCategory: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminUpdateCustomizeCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  input: UpdateCustomizeCategoryInput;
+}>;
+
+
+export type AdminUpdateCustomizeCategoryMutation = { adminUpdateCustomizeCategory: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminDeleteCustomizeCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteCustomizeCategoryMutation = { adminDeleteCustomizeCategory: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminToggleCustomizeCategoryActiveMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminToggleCustomizeCategoryActiveMutation = { adminToggleCustomizeCategoryActive: { success: boolean, categoryId?: number | null, error?: string | null } };
+
+export type AdminCustomizeCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCustomizeCategoriesQuery = { adminCustomizeCategories: { total: number, categories: Array<{ id: number, category: string, base_price: number, image_url?: string | null, is_active: boolean, options_count: number, created_at: Date | string, updated_at: Date | string, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
+
+export type AdminCustomizeCategoryByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminCustomizeCategoryByIdQuery = { adminCustomizeCategoryById?: { id: number, category: string, base_price: number, image_url?: string | null, is_active: boolean, options_count: number, created_at: Date | string, updated_at: Date | string, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } | null };
 
 export type AdminCreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -2831,13 +2853,6 @@ export type AdminUpdateEventStatusMutationVariables = Exact<{
 
 
 export type AdminUpdateEventStatusMutation = { adminUpdateEventStatus: { success: boolean, eventId?: string | null, error?: string | null } };
-
-export type AdminDeleteEventReviewMutationVariables = Exact<{
-  reviewId: Scalars['Int']['input'];
-}>;
-
-
-export type AdminDeleteEventReviewMutation = { adminDeleteEventReview: { success: boolean, eventId?: string | null, error?: string | null } };
 
 export type AdminBulkDeleteEventsMutationVariables = Exact<{
   input: BulkDeleteEventsInput;
@@ -2897,14 +2912,6 @@ export type AdminUpdateOrderStatusMutationVariables = Exact<{
 
 export type AdminUpdateOrderStatusMutation = { adminUpdateOrderStatus: { success: boolean, error?: string | null } };
 
-export type AdminUpdateOrderPriceMutationVariables = Exact<{
-  orderId: Scalars['String']['input'];
-  total: Scalars['Float']['input'];
-}>;
-
-
-export type AdminUpdateOrderPriceMutation = { adminUpdateOrderPrice: { success: boolean, error?: string | null } };
-
 export type AdminUpdateOrderDiscountMutationVariables = Exact<{
   orderId: Scalars['String']['input'];
   discount: Scalars['Float']['input'];
@@ -2957,13 +2964,6 @@ export type AdminToggleProductActiveMutationVariables = Exact<{
 
 
 export type AdminToggleProductActiveMutation = { adminToggleProductActive: { success: boolean, error?: string | null } };
-
-export type AdminDeleteProductReviewMutationVariables = Exact<{
-  reviewId: Scalars['Int']['input'];
-}>;
-
-
-export type AdminDeleteProductReviewMutation = { adminDeleteProductReview: { success: boolean, error?: string | null } };
 
 export type AdminBulkDeleteProductsMutationVariables = Exact<{
   input: BulkDeleteProductsInput;
@@ -3038,16 +3038,6 @@ export type PublicHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type PublicHeroImagesQuery = { publicHeroImages: { home: string, ourStory: string, products: string, events: string } };
 
-export type PublicContactInfoQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PublicContactInfoQuery = { publicContactInfo: { address: string, email: string, phone: string, hours: string } };
-
-export type PublicSocialLinksQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PublicSocialLinksQuery = { publicSocialLinks: { instagram: string, facebook: string, twitter: string, pinterest: string } };
-
 export type AdminUpdateRegistrationStatusMutationVariables = Exact<{
   registrationId: Scalars['String']['input'];
   status: Scalars['String']['input'];
@@ -3055,14 +3045,6 @@ export type AdminUpdateRegistrationStatusMutationVariables = Exact<{
 
 
 export type AdminUpdateRegistrationStatusMutation = { adminUpdateRegistrationStatus: { success: boolean, error?: string | null } };
-
-export type AdminUpdateRegistrationPriceMutationVariables = Exact<{
-  registrationId: Scalars['String']['input'];
-  price: Scalars['Float']['input'];
-}>;
-
-
-export type AdminUpdateRegistrationPriceMutation = { adminUpdateRegistrationPrice: { success: boolean, error?: string | null } };
 
 export type AdminUpdateRegistrationDetailsMutationVariables = Exact<{
   registrationId: Scalars['String']['input'];
@@ -3092,11 +3074,6 @@ export type AdminUpdateSocialLinksMutationVariables = Exact<{
 
 
 export type AdminUpdateSocialLinksMutation = { adminUpdateSocialLinks: { success: boolean, error?: string | null } };
-
-export type AdminAllSettingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AdminAllSettingsQuery = { adminAllSettings: Array<{ id: number, key: string, value: any, updated_at: Date | string }> };
 
 export type AdminHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3208,14 +3185,14 @@ export type CustomizationCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type CustomizationCategoriesQuery = { customizationCategories: { total: number, page: number, limit: number, has_more: boolean, categories: Array<{ category: string, options_count: number, base_price: number, image_url?: string | null }> } };
+export type CustomizationCategoriesQuery = { customizationCategories: { total: number, page: number, limit: number, has_more: boolean, categories: Array<{ id: number, category: string, options_count: number, base_price: number, image_url?: string | null }> } };
 
 export type CustomizationOptionsByCategoryQueryVariables = Exact<{
   filter: CustomizationOptionsFilterInput;
 }>;
 
 
-export type CustomizationOptionsByCategoryQuery = { customizationOptionsByCategory: { category: string, total_options: number, options_by_type: Array<{ type: string, options: Array<{ id: number, category: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
+export type CustomizationOptionsByCategoryQuery = { customizationOptionsByCategory: { customize_category_id: number, category_name: string, total_options: number, options_by_type: Array<{ type: string, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> }> } };
 
 export type CustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3233,13 +3210,6 @@ export type RegisterForEventMutationVariables = Exact<{
 
 export type RegisterForEventMutation = { registerForEvent: { success: boolean, error?: string | null, registration?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null } };
 
-export type CancelRegistrationMutationVariables = Exact<{
-  registrationId: Scalars['String']['input'];
-}>;
-
-
-export type CancelRegistrationMutation = { cancelRegistration: { success: boolean, error?: string | null } };
-
 export type EventBaseFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null };
 
 export type EventDetailFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> };
@@ -3254,13 +3224,6 @@ export type EventsQueryVariables = Exact<{
 
 
 export type EventsQuery = { events: { total: number, page: number, total_pages: number, levels: Array<EventLevel>, event_types: Array<EventType>, data: Array<{ id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }> } };
-
-export type EventBySlugQueryVariables = Exact<{
-  slug: Scalars['String']['input'];
-}>;
-
-
-export type EventBySlugQuery = { eventBySlug?: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null, is_registered: boolean, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null, image?: string | null }, likes: Array<{ id: number, review_id: number, user_id: number }> }> } | null };
 
 export type EventByIdQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -3297,13 +3260,6 @@ export type UserRegistrationsQueryVariables = Exact<{
 
 export type UserRegistrationsQuery = { userRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
 
-export type RegistrationByIdQueryVariables = Exact<{
-  registrationId: Scalars['String']['input'];
-}>;
-
-
-export type RegistrationByIdQuery = { registrationById?: { id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } } | null };
-
 export type UpcomingRegistrationsQueryVariables = Exact<{
   filter?: InputMaybe<RegistrationsFilterInput>;
 }>;
@@ -3322,11 +3278,6 @@ export type SubscribeToNewsletterMutationVariables = Exact<{ [key: string]: neve
 
 
 export type SubscribeToNewsletterMutation = { subscribeToNewsletter: { success: boolean, error?: string | null, status?: { subscribed: boolean, subscribed_at?: Date | string | null } | null } };
-
-export type UnsubscribeFromNewsletterMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UnsubscribeFromNewsletterMutation = { unsubscribeFromNewsletter: { success: boolean, error?: string | null, status?: { subscribed: boolean, subscribed_at?: Date | string | null } | null } };
 
 export type NewsletterStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3370,13 +3321,6 @@ export type ProductsQueryVariables = Exact<{
 
 export type ProductsQuery = { products: { total_products: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }>, filter: { limit?: number | null, page?: number | null, search?: string | null, categories?: Array<string> | null, materials?: Array<string> | null, min_price?: number | null, max_price?: number | null, order_by?: ProductOrderBy | null, collection_ids?: Array<number> | null, archive?: boolean | null }, meta: { categories: Array<string>, materials: Array<string>, price_range: { min: number, max: number }, price_histogram: Array<{ min: number, max: number, count: number }>, collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> } } };
 
-export type ProductBySlugQueryVariables = Exact<{
-  slug: Scalars['String']['input'];
-}>;
-
-
-export type ProductBySlugQuery = { productBySlug?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
-
 export type ProductByIdQueryVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
@@ -3384,13 +3328,20 @@ export type ProductByIdQueryVariables = Exact<{
 
 export type ProductByIdQuery = { productById?: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, description?: string | null, instructions: Array<string>, is_active: boolean, created_at: Date | string, updated_at: Date | string, categories: Array<string>, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null, reviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, created_at: Date | string, user?: { id: number, name?: string | null, image?: string | null } | null, likes: Array<{ id: number, user_id: number }> }> } | null };
 
-export type BestSellersQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-}>;
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BestSellersQuery = { bestSellers: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }> } };
+export type CategoriesQuery = { categories: Array<string> };
+
+export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CollectionsQuery = { collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> };
+
+export type CategoriesWithImagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesWithImagesQuery = { categoriesWithImages: Array<{ name: string, image_url?: string | null }> };
 
 export type RecommendedProductsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3400,26 +3351,6 @@ export type RecommendedProductsQueryVariables = Exact<{
 
 
 export type RecommendedProductsQuery = { recommendedProducts: { total: number, page: number, total_pages: number, products: Array<{ id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string, collection?: { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number } | null }> } };
-
-export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CategoriesQuery = { categories: Array<string> };
-
-export type CategoriesWithImagesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CategoriesWithImagesQuery = { categoriesWithImages: Array<{ name: string, image_url?: string | null }> };
-
-export type MaterialsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MaterialsQuery = { materials: Array<string> };
-
-export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CollectionsQuery = { collections: Array<{ id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number }> };
 
 export type CreateProductReviewMutationVariables = Exact<{
   input: CreateProductReviewInput;
@@ -3434,13 +3365,6 @@ export type CreateEventReviewMutationVariables = Exact<{
 
 
 export type CreateEventReviewMutation = { createEventReview: { success: boolean, error?: string | null, review?: { id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> } | null } };
-
-export type DeleteReviewMutationVariables = Exact<{
-  reviewId: Scalars['Int']['input'];
-}>;
-
-
-export type DeleteReviewMutation = { deleteReview: { success: boolean, error?: string | null } };
 
 export type ToggleReviewLikeMutationVariables = Exact<{
   reviewId: Scalars['Int']['input'];
@@ -3457,13 +3381,6 @@ export type ProductReviewsQueryVariables = Exact<{
 
 export type ProductReviewsQuery = { productReviews: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> }> } };
 
-export type FeaturedReviewsQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-}>;
-
-
-export type FeaturedReviewsQuery = { featuredReviews: Array<{ id: number, rating: number, review?: string | null, user: { id: number, name?: string | null, image?: string | null } }> };
-
 export type EventReviewsQueryVariables = Exact<{
   eventId: Scalars['String']['input'];
   filter?: InputMaybe<ReviewsFilterInput>;
@@ -3471,6 +3388,13 @@ export type EventReviewsQueryVariables = Exact<{
 
 
 export type EventReviewsQuery = { eventReviews: { total: number, page: number, total_pages: number, data: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, updated_at: Date | string, likes_count: number, is_liked_by_current_user: boolean, user: { id: number, name?: string | null, image?: string | null }, likes: Array<{ id: number, user_id: number }> }> } };
+
+export type FeaturedReviewsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type FeaturedReviewsQuery = { featuredReviews: Array<{ id: number, user_id: number, rating: number, review?: string | null, image_urls: Array<string>, product_id?: number | null, event_id?: string | null, created_at: Date | string, user: { id: number, name?: string | null, image?: string | null } }> };
 
 export type GlobalSearchQueryVariables = Exact<{
   input: GlobalSearchInput;
@@ -3901,57 +3825,6 @@ export function useUserAddressesSuspenseQuery(baseOptions?: ApolloReactHooks.Ski
 export type UserAddressesQueryHookResult = ReturnType<typeof useUserAddressesQuery>;
 export type UserAddressesLazyQueryHookResult = ReturnType<typeof useUserAddressesLazyQuery>;
 export type UserAddressesSuspenseQueryHookResult = ReturnType<typeof useUserAddressesSuspenseQuery>;
-export const AddressByIdDocument = gql`
-    query AddressById($id: Int!) {
-  addressById(id: $id) {
-    id
-    user_id
-    name
-    address_line_1
-    address_line_2
-    landmark
-    city
-    state
-    zip
-    contact_number
-  }
-}
-    `;
-
-/**
- * __useAddressByIdQuery__
- *
- * To run a query within a React component, call `useAddressByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useAddressByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAddressByIdQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useAddressByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<AddressByIdQuery, AddressByIdQueryVariables> & ({ variables: AddressByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<AddressByIdQuery, AddressByIdQueryVariables>(AddressByIdDocument, options);
-      }
-export function useAddressByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AddressByIdQuery, AddressByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<AddressByIdQuery, AddressByIdQueryVariables>(AddressByIdDocument, options);
-        }
-// @ts-ignore
-export function useAddressByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AddressByIdQuery, AddressByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AddressByIdQuery, AddressByIdQueryVariables>;
-export function useAddressByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AddressByIdQuery, AddressByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AddressByIdQuery | undefined, AddressByIdQueryVariables>;
-export function useAddressByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AddressByIdQuery, AddressByIdQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<AddressByIdQuery, AddressByIdQueryVariables>(AddressByIdDocument, options);
-        }
-export type AddressByIdQueryHookResult = ReturnType<typeof useAddressByIdQuery>;
-export type AddressByIdLazyQueryHookResult = ReturnType<typeof useAddressByIdLazyQuery>;
-export type AddressByIdSuspenseQueryHookResult = ReturnType<typeof useAddressByIdSuspenseQuery>;
 export const AdminDashboardStatsDocument = gql`
     query AdminDashboardStats {
   adminDashboardStats {
@@ -5090,7 +4963,8 @@ export const AdminCustomizationOptionsDocument = gql`
   adminCustomizationOptions(filter: $filter) {
     options {
       id
-      category
+      customize_category_id
+      category_name
       type
       name
       value
@@ -5146,7 +5020,8 @@ export const AdminCustomizationOptionByIdDocument = gql`
     query AdminCustomizationOptionById($id: Int!) {
   adminCustomizationOptionById(id: $id) {
     id
-    category
+    customize_category_id
+    category_name
     type
     name
     value
@@ -5196,6 +5071,7 @@ export type AdminCustomizationOptionByIdSuspenseQueryHookResult = ReturnType<typ
 export const AdminCustomizationCategoriesDocument = gql`
     query AdminCustomizationCategories {
   adminCustomizationCategories {
+    id
     category
     count
   }
@@ -5277,6 +5153,261 @@ export function useAdminCustomizationTypesSuspenseQuery(baseOptions?: ApolloReac
 export type AdminCustomizationTypesQueryHookResult = ReturnType<typeof useAdminCustomizationTypesQuery>;
 export type AdminCustomizationTypesLazyQueryHookResult = ReturnType<typeof useAdminCustomizationTypesLazyQuery>;
 export type AdminCustomizationTypesSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizationTypesSuspenseQuery>;
+export const AdminCreateCustomizeCategoryDocument = gql`
+    mutation AdminCreateCustomizeCategory($input: CreateCustomizeCategoryInput!) {
+  adminCreateCustomizeCategory(input: $input) {
+    success
+    categoryId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminCreateCustomizeCategoryMutation__
+ *
+ * To run a mutation, you first call `useAdminCreateCustomizeCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminCreateCustomizeCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminCreateCustomizeCategoryMutation, { data, loading, error }] = useAdminCreateCustomizeCategoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminCreateCustomizeCategoryMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminCreateCustomizeCategoryMutation, AdminCreateCustomizeCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminCreateCustomizeCategoryMutation, AdminCreateCustomizeCategoryMutationVariables>(AdminCreateCustomizeCategoryDocument, options);
+      }
+export type AdminCreateCustomizeCategoryMutationHookResult = ReturnType<typeof useAdminCreateCustomizeCategoryMutation>;
+export const AdminUpdateCustomizeCategoryDocument = gql`
+    mutation AdminUpdateCustomizeCategory($id: Int!, $input: UpdateCustomizeCategoryInput!) {
+  adminUpdateCustomizeCategory(id: $id, input: $input) {
+    success
+    categoryId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateCustomizeCategoryMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateCustomizeCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateCustomizeCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateCustomizeCategoryMutation, { data, loading, error }] = useAdminUpdateCustomizeCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateCustomizeCategoryMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateCustomizeCategoryMutation, AdminUpdateCustomizeCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateCustomizeCategoryMutation, AdminUpdateCustomizeCategoryMutationVariables>(AdminUpdateCustomizeCategoryDocument, options);
+      }
+export type AdminUpdateCustomizeCategoryMutationHookResult = ReturnType<typeof useAdminUpdateCustomizeCategoryMutation>;
+export const AdminDeleteCustomizeCategoryDocument = gql`
+    mutation AdminDeleteCustomizeCategory($id: Int!) {
+  adminDeleteCustomizeCategory(id: $id) {
+    success
+    categoryId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminDeleteCustomizeCategoryMutation__
+ *
+ * To run a mutation, you first call `useAdminDeleteCustomizeCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminDeleteCustomizeCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminDeleteCustomizeCategoryMutation, { data, loading, error }] = useAdminDeleteCustomizeCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminDeleteCustomizeCategoryMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminDeleteCustomizeCategoryMutation, AdminDeleteCustomizeCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminDeleteCustomizeCategoryMutation, AdminDeleteCustomizeCategoryMutationVariables>(AdminDeleteCustomizeCategoryDocument, options);
+      }
+export type AdminDeleteCustomizeCategoryMutationHookResult = ReturnType<typeof useAdminDeleteCustomizeCategoryMutation>;
+export const AdminToggleCustomizeCategoryActiveDocument = gql`
+    mutation AdminToggleCustomizeCategoryActive($id: Int!) {
+  adminToggleCustomizeCategoryActive(id: $id) {
+    success
+    categoryId
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminToggleCustomizeCategoryActiveMutation__
+ *
+ * To run a mutation, you first call `useAdminToggleCustomizeCategoryActiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminToggleCustomizeCategoryActiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminToggleCustomizeCategoryActiveMutation, { data, loading, error }] = useAdminToggleCustomizeCategoryActiveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminToggleCustomizeCategoryActiveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminToggleCustomizeCategoryActiveMutation, AdminToggleCustomizeCategoryActiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminToggleCustomizeCategoryActiveMutation, AdminToggleCustomizeCategoryActiveMutationVariables>(AdminToggleCustomizeCategoryActiveDocument, options);
+      }
+export type AdminToggleCustomizeCategoryActiveMutationHookResult = ReturnType<typeof useAdminToggleCustomizeCategoryActiveMutation>;
+export const AdminCustomizeCategoriesDocument = gql`
+    query AdminCustomizeCategories {
+  adminCustomizeCategories {
+    categories {
+      id
+      category
+      base_price
+      image_url
+      is_active
+      options_count
+      options {
+        id
+        customize_category_id
+        category_name
+        type
+        name
+        value
+        price_modifier
+        sort_order
+        is_active
+        created_at
+        updated_at
+      }
+      created_at
+      updated_at
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useAdminCustomizeCategoriesQuery__
+ *
+ * To run a query within a React component, call `useAdminCustomizeCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCustomizeCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCustomizeCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminCustomizeCategoriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>(AdminCustomizeCategoriesDocument, options);
+      }
+export function useAdminCustomizeCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>(AdminCustomizeCategoriesDocument, options);
+        }
+// @ts-ignore
+export function useAdminCustomizeCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>;
+export function useAdminCustomizeCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizeCategoriesQuery | undefined, AdminCustomizeCategoriesQueryVariables>;
+export function useAdminCustomizeCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCustomizeCategoriesQuery, AdminCustomizeCategoriesQueryVariables>(AdminCustomizeCategoriesDocument, options);
+        }
+export type AdminCustomizeCategoriesQueryHookResult = ReturnType<typeof useAdminCustomizeCategoriesQuery>;
+export type AdminCustomizeCategoriesLazyQueryHookResult = ReturnType<typeof useAdminCustomizeCategoriesLazyQuery>;
+export type AdminCustomizeCategoriesSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizeCategoriesSuspenseQuery>;
+export const AdminCustomizeCategoryByIdDocument = gql`
+    query AdminCustomizeCategoryById($id: Int!) {
+  adminCustomizeCategoryById(id: $id) {
+    id
+    category
+    base_price
+    image_url
+    is_active
+    options_count
+    options {
+      id
+      customize_category_id
+      category_name
+      type
+      name
+      value
+      price_modifier
+      sort_order
+      is_active
+      created_at
+      updated_at
+    }
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useAdminCustomizeCategoryByIdQuery__
+ *
+ * To run a query within a React component, call `useAdminCustomizeCategoryByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminCustomizeCategoryByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminCustomizeCategoryByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminCustomizeCategoryByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables> & ({ variables: AdminCustomizeCategoryByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>(AdminCustomizeCategoryByIdDocument, options);
+      }
+export function useAdminCustomizeCategoryByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>(AdminCustomizeCategoryByIdDocument, options);
+        }
+// @ts-ignore
+export function useAdminCustomizeCategoryByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>;
+export function useAdminCustomizeCategoryByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminCustomizeCategoryByIdQuery | undefined, AdminCustomizeCategoryByIdQueryVariables>;
+export function useAdminCustomizeCategoryByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminCustomizeCategoryByIdQuery, AdminCustomizeCategoryByIdQueryVariables>(AdminCustomizeCategoryByIdDocument, options);
+        }
+export type AdminCustomizeCategoryByIdQueryHookResult = ReturnType<typeof useAdminCustomizeCategoryByIdQuery>;
+export type AdminCustomizeCategoryByIdLazyQueryHookResult = ReturnType<typeof useAdminCustomizeCategoryByIdLazyQuery>;
+export type AdminCustomizeCategoryByIdSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizeCategoryByIdSuspenseQuery>;
 export const AdminCreateEventDocument = gql`
     mutation AdminCreateEvent($input: CreateEventInput!) {
   adminCreateEvent(input: $input) {
@@ -5407,38 +5538,6 @@ export function useAdminUpdateEventStatusMutation(baseOptions?: ApolloReactHooks
         return ApolloReactHooks.useMutation<AdminUpdateEventStatusMutation, AdminUpdateEventStatusMutationVariables>(AdminUpdateEventStatusDocument, options);
       }
 export type AdminUpdateEventStatusMutationHookResult = ReturnType<typeof useAdminUpdateEventStatusMutation>;
-export const AdminDeleteEventReviewDocument = gql`
-    mutation AdminDeleteEventReview($reviewId: Int!) {
-  adminDeleteEventReview(reviewId: $reviewId) {
-    success
-    eventId
-    error
-  }
-}
-    `;
-
-/**
- * __useAdminDeleteEventReviewMutation__
- *
- * To run a mutation, you first call `useAdminDeleteEventReviewMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAdminDeleteEventReviewMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [adminDeleteEventReviewMutation, { data, loading, error }] = useAdminDeleteEventReviewMutation({
- *   variables: {
- *      reviewId: // value for 'reviewId'
- *   },
- * });
- */
-export function useAdminDeleteEventReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminDeleteEventReviewMutation, AdminDeleteEventReviewMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<AdminDeleteEventReviewMutation, AdminDeleteEventReviewMutationVariables>(AdminDeleteEventReviewDocument, options);
-      }
-export type AdminDeleteEventReviewMutationHookResult = ReturnType<typeof useAdminDeleteEventReviewMutation>;
 export const AdminBulkDeleteEventsDocument = gql`
     mutation AdminBulkDeleteEvents($input: BulkDeleteEventsInput!) {
   adminBulkDeleteEvents(input: $input) {
@@ -5901,38 +6000,6 @@ export function useAdminUpdateOrderStatusMutation(baseOptions?: ApolloReactHooks
         return ApolloReactHooks.useMutation<AdminUpdateOrderStatusMutation, AdminUpdateOrderStatusMutationVariables>(AdminUpdateOrderStatusDocument, options);
       }
 export type AdminUpdateOrderStatusMutationHookResult = ReturnType<typeof useAdminUpdateOrderStatusMutation>;
-export const AdminUpdateOrderPriceDocument = gql`
-    mutation AdminUpdateOrderPrice($orderId: String!, $total: Float!) {
-  adminUpdateOrderPrice(orderId: $orderId, total: $total) {
-    success
-    error
-  }
-}
-    `;
-
-/**
- * __useAdminUpdateOrderPriceMutation__
- *
- * To run a mutation, you first call `useAdminUpdateOrderPriceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAdminUpdateOrderPriceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [adminUpdateOrderPriceMutation, { data, loading, error }] = useAdminUpdateOrderPriceMutation({
- *   variables: {
- *      orderId: // value for 'orderId'
- *      total: // value for 'total'
- *   },
- * });
- */
-export function useAdminUpdateOrderPriceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateOrderPriceMutation, AdminUpdateOrderPriceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<AdminUpdateOrderPriceMutation, AdminUpdateOrderPriceMutationVariables>(AdminUpdateOrderPriceDocument, options);
-      }
-export type AdminUpdateOrderPriceMutationHookResult = ReturnType<typeof useAdminUpdateOrderPriceMutation>;
 export const AdminUpdateOrderDiscountDocument = gql`
     mutation AdminUpdateOrderDiscount($orderId: String!, $discount: Float!) {
   adminUpdateOrderDiscount(orderId: $orderId, discount: $discount) {
@@ -6155,37 +6222,6 @@ export function useAdminToggleProductActiveMutation(baseOptions?: ApolloReactHoo
         return ApolloReactHooks.useMutation<AdminToggleProductActiveMutation, AdminToggleProductActiveMutationVariables>(AdminToggleProductActiveDocument, options);
       }
 export type AdminToggleProductActiveMutationHookResult = ReturnType<typeof useAdminToggleProductActiveMutation>;
-export const AdminDeleteProductReviewDocument = gql`
-    mutation AdminDeleteProductReview($reviewId: Int!) {
-  adminDeleteProductReview(reviewId: $reviewId) {
-    success
-    error
-  }
-}
-    `;
-
-/**
- * __useAdminDeleteProductReviewMutation__
- *
- * To run a mutation, you first call `useAdminDeleteProductReviewMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAdminDeleteProductReviewMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [adminDeleteProductReviewMutation, { data, loading, error }] = useAdminDeleteProductReviewMutation({
- *   variables: {
- *      reviewId: // value for 'reviewId'
- *   },
- * });
- */
-export function useAdminDeleteProductReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminDeleteProductReviewMutation, AdminDeleteProductReviewMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<AdminDeleteProductReviewMutation, AdminDeleteProductReviewMutationVariables>(AdminDeleteProductReviewDocument, options);
-      }
-export type AdminDeleteProductReviewMutationHookResult = ReturnType<typeof useAdminDeleteProductReviewMutation>;
 export const AdminBulkDeleteProductsDocument = gql`
     mutation AdminBulkDeleteProducts($input: BulkDeleteProductsInput!) {
   adminBulkDeleteProducts(input: $input) {
@@ -6856,94 +6892,6 @@ export function usePublicHeroImagesSuspenseQuery(baseOptions?: ApolloReactHooks.
 export type PublicHeroImagesQueryHookResult = ReturnType<typeof usePublicHeroImagesQuery>;
 export type PublicHeroImagesLazyQueryHookResult = ReturnType<typeof usePublicHeroImagesLazyQuery>;
 export type PublicHeroImagesSuspenseQueryHookResult = ReturnType<typeof usePublicHeroImagesSuspenseQuery>;
-export const PublicContactInfoDocument = gql`
-    query PublicContactInfo {
-  publicContactInfo {
-    address
-    email
-    phone
-    hours
-  }
-}
-    `;
-
-/**
- * __usePublicContactInfoQuery__
- *
- * To run a query within a React component, call `usePublicContactInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicContactInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePublicContactInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePublicContactInfoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PublicContactInfoQuery, PublicContactInfoQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<PublicContactInfoQuery, PublicContactInfoQueryVariables>(PublicContactInfoDocument, options);
-      }
-export function usePublicContactInfoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PublicContactInfoQuery, PublicContactInfoQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<PublicContactInfoQuery, PublicContactInfoQueryVariables>(PublicContactInfoDocument, options);
-        }
-// @ts-ignore
-export function usePublicContactInfoSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<PublicContactInfoQuery, PublicContactInfoQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<PublicContactInfoQuery, PublicContactInfoQueryVariables>;
-export function usePublicContactInfoSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<PublicContactInfoQuery, PublicContactInfoQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<PublicContactInfoQuery | undefined, PublicContactInfoQueryVariables>;
-export function usePublicContactInfoSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<PublicContactInfoQuery, PublicContactInfoQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<PublicContactInfoQuery, PublicContactInfoQueryVariables>(PublicContactInfoDocument, options);
-        }
-export type PublicContactInfoQueryHookResult = ReturnType<typeof usePublicContactInfoQuery>;
-export type PublicContactInfoLazyQueryHookResult = ReturnType<typeof usePublicContactInfoLazyQuery>;
-export type PublicContactInfoSuspenseQueryHookResult = ReturnType<typeof usePublicContactInfoSuspenseQuery>;
-export const PublicSocialLinksDocument = gql`
-    query PublicSocialLinks {
-  publicSocialLinks {
-    instagram
-    facebook
-    twitter
-    pinterest
-  }
-}
-    `;
-
-/**
- * __usePublicSocialLinksQuery__
- *
- * To run a query within a React component, call `usePublicSocialLinksQuery` and pass it any options that fit your needs.
- * When your component renders, `usePublicSocialLinksQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePublicSocialLinksQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePublicSocialLinksQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>(PublicSocialLinksDocument, options);
-      }
-export function usePublicSocialLinksLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>(PublicSocialLinksDocument, options);
-        }
-// @ts-ignore
-export function usePublicSocialLinksSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>;
-export function usePublicSocialLinksSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<PublicSocialLinksQuery | undefined, PublicSocialLinksQueryVariables>;
-export function usePublicSocialLinksSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<PublicSocialLinksQuery, PublicSocialLinksQueryVariables>(PublicSocialLinksDocument, options);
-        }
-export type PublicSocialLinksQueryHookResult = ReturnType<typeof usePublicSocialLinksQuery>;
-export type PublicSocialLinksLazyQueryHookResult = ReturnType<typeof usePublicSocialLinksLazyQuery>;
-export type PublicSocialLinksSuspenseQueryHookResult = ReturnType<typeof usePublicSocialLinksSuspenseQuery>;
 export const AdminUpdateRegistrationStatusDocument = gql`
     mutation AdminUpdateRegistrationStatus($registrationId: String!, $status: String!) {
   adminUpdateRegistrationStatus(registrationId: $registrationId, status: $status) {
@@ -6976,38 +6924,6 @@ export function useAdminUpdateRegistrationStatusMutation(baseOptions?: ApolloRea
         return ApolloReactHooks.useMutation<AdminUpdateRegistrationStatusMutation, AdminUpdateRegistrationStatusMutationVariables>(AdminUpdateRegistrationStatusDocument, options);
       }
 export type AdminUpdateRegistrationStatusMutationHookResult = ReturnType<typeof useAdminUpdateRegistrationStatusMutation>;
-export const AdminUpdateRegistrationPriceDocument = gql`
-    mutation AdminUpdateRegistrationPrice($registrationId: String!, $price: Float!) {
-  adminUpdateRegistrationPrice(registrationId: $registrationId, price: $price) {
-    success
-    error
-  }
-}
-    `;
-
-/**
- * __useAdminUpdateRegistrationPriceMutation__
- *
- * To run a mutation, you first call `useAdminUpdateRegistrationPriceMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAdminUpdateRegistrationPriceMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [adminUpdateRegistrationPriceMutation, { data, loading, error }] = useAdminUpdateRegistrationPriceMutation({
- *   variables: {
- *      registrationId: // value for 'registrationId'
- *      price: // value for 'price'
- *   },
- * });
- */
-export function useAdminUpdateRegistrationPriceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateRegistrationPriceMutation, AdminUpdateRegistrationPriceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<AdminUpdateRegistrationPriceMutation, AdminUpdateRegistrationPriceMutationVariables>(AdminUpdateRegistrationPriceDocument, options);
-      }
-export type AdminUpdateRegistrationPriceMutationHookResult = ReturnType<typeof useAdminUpdateRegistrationPriceMutation>;
 export const AdminUpdateRegistrationDetailsDocument = gql`
     mutation AdminUpdateRegistrationDetails($registrationId: String!, $input: UpdateRegistrationDetailsInput!) {
   adminUpdateRegistrationDetails(registrationId: $registrationId, input: $input) {
@@ -7133,50 +7049,6 @@ export function useAdminUpdateSocialLinksMutation(baseOptions?: ApolloReactHooks
         return ApolloReactHooks.useMutation<AdminUpdateSocialLinksMutation, AdminUpdateSocialLinksMutationVariables>(AdminUpdateSocialLinksDocument, options);
       }
 export type AdminUpdateSocialLinksMutationHookResult = ReturnType<typeof useAdminUpdateSocialLinksMutation>;
-export const AdminAllSettingsDocument = gql`
-    query AdminAllSettings {
-  adminAllSettings {
-    id
-    key
-    value
-    updated_at
-  }
-}
-    `;
-
-/**
- * __useAdminAllSettingsQuery__
- *
- * To run a query within a React component, call `useAdminAllSettingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminAllSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAdminAllSettingsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAdminAllSettingsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>(AdminAllSettingsDocument, options);
-      }
-export function useAdminAllSettingsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>(AdminAllSettingsDocument, options);
-        }
-// @ts-ignore
-export function useAdminAllSettingsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>;
-export function useAdminAllSettingsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminAllSettingsQuery | undefined, AdminAllSettingsQueryVariables>;
-export function useAdminAllSettingsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<AdminAllSettingsQuery, AdminAllSettingsQueryVariables>(AdminAllSettingsDocument, options);
-        }
-export type AdminAllSettingsQueryHookResult = ReturnType<typeof useAdminAllSettingsQuery>;
-export type AdminAllSettingsLazyQueryHookResult = ReturnType<typeof useAdminAllSettingsLazyQuery>;
-export type AdminAllSettingsSuspenseQueryHookResult = ReturnType<typeof useAdminAllSettingsSuspenseQuery>;
 export const AdminHeroImagesDocument = gql`
     query AdminHeroImages {
   adminHeroImages {
@@ -7976,6 +7848,7 @@ export const CustomizationCategoriesDocument = gql`
     query CustomizationCategories($filter: CustomizationCategoriesFilterInput) {
   customizationCategories(filter: $filter) {
     categories {
+      id
       category
       options_count
       base_price
@@ -8026,12 +7899,14 @@ export type CustomizationCategoriesSuspenseQueryHookResult = ReturnType<typeof u
 export const CustomizationOptionsByCategoryDocument = gql`
     query CustomizationOptionsByCategory($filter: CustomizationOptionsFilterInput!) {
   customizationOptionsByCategory(filter: $filter) {
-    category
+    customize_category_id
+    category_name
     options_by_type {
       type
       options {
         id
-        category
+        customize_category_id
+        category_name
         type
         name
         value
@@ -8154,37 +8029,6 @@ export function useRegisterForEventMutation(baseOptions?: ApolloReactHooks.Mutat
         return ApolloReactHooks.useMutation<RegisterForEventMutation, RegisterForEventMutationVariables>(RegisterForEventDocument, options);
       }
 export type RegisterForEventMutationHookResult = ReturnType<typeof useRegisterForEventMutation>;
-export const CancelRegistrationDocument = gql`
-    mutation CancelRegistration($registrationId: String!) {
-  cancelRegistration(registrationId: $registrationId) {
-    success
-    error
-  }
-}
-    `;
-
-/**
- * __useCancelRegistrationMutation__
- *
- * To run a mutation, you first call `useCancelRegistrationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCancelRegistrationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [cancelRegistrationMutation, { data, loading, error }] = useCancelRegistrationMutation({
- *   variables: {
- *      registrationId: // value for 'registrationId'
- *   },
- * });
- */
-export function useCancelRegistrationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CancelRegistrationMutation, CancelRegistrationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<CancelRegistrationMutation, CancelRegistrationMutationVariables>(CancelRegistrationDocument, options);
-      }
-export type CancelRegistrationMutationHookResult = ReturnType<typeof useCancelRegistrationMutation>;
 export const EventsDocument = gql`
     query Events($filter: EventsFilterInput) {
   events(filter: $filter) {
@@ -8234,48 +8078,6 @@ export function useEventsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken 
 export type EventsQueryHookResult = ReturnType<typeof useEventsQuery>;
 export type EventsLazyQueryHookResult = ReturnType<typeof useEventsLazyQuery>;
 export type EventsSuspenseQueryHookResult = ReturnType<typeof useEventsSuspenseQuery>;
-export const EventBySlugDocument = gql`
-    query EventBySlug($slug: String!) {
-  eventBySlug(slug: $slug) {
-    ...EventDetailFields
-  }
-}
-    ${EventDetailFieldsFragmentDoc}`;
-
-/**
- * __useEventBySlugQuery__
- *
- * To run a query within a React component, call `useEventBySlugQuery` and pass it any options that fit your needs.
- * When your component renders, `useEventBySlugQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useEventBySlugQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useEventBySlugQuery(baseOptions: ApolloReactHooks.QueryHookOptions<EventBySlugQuery, EventBySlugQueryVariables> & ({ variables: EventBySlugQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<EventBySlugQuery, EventBySlugQueryVariables>(EventBySlugDocument, options);
-      }
-export function useEventBySlugLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<EventBySlugQuery, EventBySlugQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<EventBySlugQuery, EventBySlugQueryVariables>(EventBySlugDocument, options);
-        }
-// @ts-ignore
-export function useEventBySlugSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<EventBySlugQuery, EventBySlugQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<EventBySlugQuery, EventBySlugQueryVariables>;
-export function useEventBySlugSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<EventBySlugQuery, EventBySlugQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<EventBySlugQuery | undefined, EventBySlugQueryVariables>;
-export function useEventBySlugSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<EventBySlugQuery, EventBySlugQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<EventBySlugQuery, EventBySlugQueryVariables>(EventBySlugDocument, options);
-        }
-export type EventBySlugQueryHookResult = ReturnType<typeof useEventBySlugQuery>;
-export type EventBySlugLazyQueryHookResult = ReturnType<typeof useEventBySlugLazyQuery>;
-export type EventBySlugSuspenseQueryHookResult = ReturnType<typeof useEventBySlugSuspenseQuery>;
 export const EventByIdDocument = gql`
     query EventById($id: String!) {
   eventById(id: $id) {
@@ -8513,48 +8315,6 @@ export function useUserRegistrationsSuspenseQuery(baseOptions?: ApolloReactHooks
 export type UserRegistrationsQueryHookResult = ReturnType<typeof useUserRegistrationsQuery>;
 export type UserRegistrationsLazyQueryHookResult = ReturnType<typeof useUserRegistrationsLazyQuery>;
 export type UserRegistrationsSuspenseQueryHookResult = ReturnType<typeof useUserRegistrationsSuspenseQuery>;
-export const RegistrationByIdDocument = gql`
-    query RegistrationById($registrationId: String!) {
-  registrationById(registrationId: $registrationId) {
-    ...EventRegistrationFields
-  }
-}
-    ${EventRegistrationFieldsFragmentDoc}`;
-
-/**
- * __useRegistrationByIdQuery__
- *
- * To run a query within a React component, call `useRegistrationByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useRegistrationByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useRegistrationByIdQuery({
- *   variables: {
- *      registrationId: // value for 'registrationId'
- *   },
- * });
- */
-export function useRegistrationByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<RegistrationByIdQuery, RegistrationByIdQueryVariables> & ({ variables: RegistrationByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<RegistrationByIdQuery, RegistrationByIdQueryVariables>(RegistrationByIdDocument, options);
-      }
-export function useRegistrationByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RegistrationByIdQuery, RegistrationByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<RegistrationByIdQuery, RegistrationByIdQueryVariables>(RegistrationByIdDocument, options);
-        }
-// @ts-ignore
-export function useRegistrationByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<RegistrationByIdQuery, RegistrationByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<RegistrationByIdQuery, RegistrationByIdQueryVariables>;
-export function useRegistrationByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<RegistrationByIdQuery, RegistrationByIdQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<RegistrationByIdQuery | undefined, RegistrationByIdQueryVariables>;
-export function useRegistrationByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<RegistrationByIdQuery, RegistrationByIdQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<RegistrationByIdQuery, RegistrationByIdQueryVariables>(RegistrationByIdDocument, options);
-        }
-export type RegistrationByIdQueryHookResult = ReturnType<typeof useRegistrationByIdQuery>;
-export type RegistrationByIdLazyQueryHookResult = ReturnType<typeof useRegistrationByIdLazyQuery>;
-export type RegistrationByIdSuspenseQueryHookResult = ReturnType<typeof useRegistrationByIdSuspenseQuery>;
 export const UpcomingRegistrationsDocument = gql`
     query UpcomingRegistrations($filter: RegistrationsFilterInput) {
   upcomingRegistrations(filter: $filter) {
@@ -8683,40 +8443,6 @@ export function useSubscribeToNewsletterMutation(baseOptions?: ApolloReactHooks.
         return ApolloReactHooks.useMutation<SubscribeToNewsletterMutation, SubscribeToNewsletterMutationVariables>(SubscribeToNewsletterDocument, options);
       }
 export type SubscribeToNewsletterMutationHookResult = ReturnType<typeof useSubscribeToNewsletterMutation>;
-export const UnsubscribeFromNewsletterDocument = gql`
-    mutation UnsubscribeFromNewsletter {
-  unsubscribeFromNewsletter {
-    success
-    error
-    status {
-      subscribed
-      subscribed_at
-    }
-  }
-}
-    `;
-
-/**
- * __useUnsubscribeFromNewsletterMutation__
- *
- * To run a mutation, you first call `useUnsubscribeFromNewsletterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnsubscribeFromNewsletterMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [unsubscribeFromNewsletterMutation, { data, loading, error }] = useUnsubscribeFromNewsletterMutation({
- *   variables: {
- *   },
- * });
- */
-export function useUnsubscribeFromNewsletterMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UnsubscribeFromNewsletterMutation, UnsubscribeFromNewsletterMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<UnsubscribeFromNewsletterMutation, UnsubscribeFromNewsletterMutationVariables>(UnsubscribeFromNewsletterDocument, options);
-      }
-export type UnsubscribeFromNewsletterMutationHookResult = ReturnType<typeof useUnsubscribeFromNewsletterMutation>;
 export const NewsletterStatusDocument = gql`
     query NewsletterStatus {
   newsletterStatus {
@@ -9202,86 +8928,6 @@ export function useProductsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToke
 export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>;
 export type ProductsLazyQueryHookResult = ReturnType<typeof useProductsLazyQuery>;
 export type ProductsSuspenseQueryHookResult = ReturnType<typeof useProductsSuspenseQuery>;
-export const ProductBySlugDocument = gql`
-    query ProductBySlug($slug: String!) {
-  productBySlug(slug: $slug) {
-    id
-    slug
-    name
-    price
-    image_urls
-    reviews_count
-    avg_rating
-    material
-    in_wishlist
-    available_quantity
-    total_quantity
-    color_code
-    color_name
-    description
-    instructions
-    is_active
-    created_at
-    updated_at
-    categories
-    collection {
-      ...CollectionFields
-    }
-    reviews {
-      id
-      user_id
-      rating
-      review
-      image_urls
-      created_at
-      user {
-        id
-        name
-        image
-      }
-      likes {
-        id
-        user_id
-      }
-    }
-  }
-}
-    ${CollectionFieldsFragmentDoc}`;
-
-/**
- * __useProductBySlugQuery__
- *
- * To run a query within a React component, call `useProductBySlugQuery` and pass it any options that fit your needs.
- * When your component renders, `useProductBySlugQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProductBySlugQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useProductBySlugQuery(baseOptions: ApolloReactHooks.QueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables> & ({ variables: ProductBySlugQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<ProductBySlugQuery, ProductBySlugQueryVariables>(ProductBySlugDocument, options);
-      }
-export function useProductBySlugLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<ProductBySlugQuery, ProductBySlugQueryVariables>(ProductBySlugDocument, options);
-        }
-// @ts-ignore
-export function useProductBySlugSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<ProductBySlugQuery, ProductBySlugQueryVariables>;
-export function useProductBySlugSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<ProductBySlugQuery | undefined, ProductBySlugQueryVariables>;
-export function useProductBySlugSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<ProductBySlugQuery, ProductBySlugQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<ProductBySlugQuery, ProductBySlugQueryVariables>(ProductBySlugDocument, options);
-        }
-export type ProductBySlugQueryHookResult = ReturnType<typeof useProductBySlugQuery>;
-export type ProductBySlugLazyQueryHookResult = ReturnType<typeof useProductBySlugLazyQuery>;
-export type ProductBySlugSuspenseQueryHookResult = ReturnType<typeof useProductBySlugSuspenseQuery>;
 export const ProductByIdDocument = gql`
     query ProductById($id: Int!) {
   productById(id: $id) {
@@ -9362,70 +9008,128 @@ export function useProductByIdSuspenseQuery(baseOptions?: ApolloReactHooks.SkipT
 export type ProductByIdQueryHookResult = ReturnType<typeof useProductByIdQuery>;
 export type ProductByIdLazyQueryHookResult = ReturnType<typeof useProductByIdLazyQuery>;
 export type ProductByIdSuspenseQueryHookResult = ReturnType<typeof useProductByIdSuspenseQuery>;
-export const BestSellersDocument = gql`
-    query BestSellers($limit: Int, $page: Int) {
-  bestSellers(limit: $limit, page: $page) {
-    products {
-      id
-      slug
-      name
-      price
-      image_urls
-      reviews_count
-      avg_rating
-      material
-      in_wishlist
-      is_active
-      available_quantity
-      total_quantity
-      color_code
-      color_name
-      collection {
-        ...CollectionFields
-      }
-    }
-    total
-    page
-    total_pages
-  }
+export const CategoriesDocument = gql`
+    query Categories {
+  categories
 }
-    ${CollectionFieldsFragmentDoc}`;
+    `;
 
 /**
- * __useBestSellersQuery__
+ * __useCategoriesQuery__
  *
- * To run a query within a React component, call `useBestSellersQuery` and pass it any options that fit your needs.
- * When your component renders, `useBestSellersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useBestSellersQuery({
+ * const { data, loading, error } = useCategoriesQuery({
  *   variables: {
- *      limit: // value for 'limit'
- *      page: // value for 'page'
  *   },
  * });
  */
-export function useBestSellersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<BestSellersQuery, BestSellersQueryVariables>) {
+export function useCategoriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<BestSellersQuery, BestSellersQueryVariables>(BestSellersDocument, options);
+        return ApolloReactHooks.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
       }
-export function useBestSellersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BestSellersQuery, BestSellersQueryVariables>) {
+export function useCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<BestSellersQuery, BestSellersQueryVariables>(BestSellersDocument, options);
+          return ApolloReactHooks.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
         }
 // @ts-ignore
-export function useBestSellersSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<BestSellersQuery, BestSellersQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<BestSellersQuery, BestSellersQueryVariables>;
-export function useBestSellersSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<BestSellersQuery, BestSellersQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<BestSellersQuery | undefined, BestSellersQueryVariables>;
-export function useBestSellersSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<BestSellersQuery, BestSellersQueryVariables>) {
+export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesQuery | undefined, CategoriesQueryVariables>;
+export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
           const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<BestSellersQuery, BestSellersQueryVariables>(BestSellersDocument, options);
+          return ApolloReactHooks.useSuspenseQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
         }
-export type BestSellersQueryHookResult = ReturnType<typeof useBestSellersQuery>;
-export type BestSellersLazyQueryHookResult = ReturnType<typeof useBestSellersLazyQuery>;
-export type BestSellersSuspenseQueryHookResult = ReturnType<typeof useBestSellersSuspenseQuery>;
+export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
+export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
+export type CategoriesSuspenseQueryHookResult = ReturnType<typeof useCategoriesSuspenseQuery>;
+export const CollectionsDocument = gql`
+    query Collections {
+  collections {
+    ...CollectionFields
+  }
+}
+    ${CollectionFieldsFragmentDoc}`;
+
+/**
+ * __useCollectionsQuery__
+ *
+ * To run a query within a React component, call `useCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCollectionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCollectionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CollectionsQuery, CollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CollectionsQuery, CollectionsQueryVariables>(CollectionsDocument, options);
+      }
+export function useCollectionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CollectionsQuery, CollectionsQueryVariables>(CollectionsDocument, options);
+        }
+// @ts-ignore
+export function useCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CollectionsQuery, CollectionsQueryVariables>;
+export function useCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CollectionsQuery | undefined, CollectionsQueryVariables>;
+export function useCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<CollectionsQuery, CollectionsQueryVariables>(CollectionsDocument, options);
+        }
+export type CollectionsQueryHookResult = ReturnType<typeof useCollectionsQuery>;
+export type CollectionsLazyQueryHookResult = ReturnType<typeof useCollectionsLazyQuery>;
+export type CollectionsSuspenseQueryHookResult = ReturnType<typeof useCollectionsSuspenseQuery>;
+export const CategoriesWithImagesDocument = gql`
+    query CategoriesWithImages {
+  categoriesWithImages {
+    name
+    image_url
+  }
+}
+    `;
+
+/**
+ * __useCategoriesWithImagesQuery__
+ *
+ * To run a query within a React component, call `useCategoriesWithImagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesWithImagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoriesWithImagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCategoriesWithImagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
+      }
+export function useCategoriesWithImagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
+        }
+// @ts-ignore
+export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>;
+export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesWithImagesQuery | undefined, CategoriesWithImagesQueryVariables>;
+export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
+        }
+export type CategoriesWithImagesQueryHookResult = ReturnType<typeof useCategoriesWithImagesQuery>;
+export type CategoriesWithImagesLazyQueryHookResult = ReturnType<typeof useCategoriesWithImagesLazyQuery>;
+export type CategoriesWithImagesSuspenseQueryHookResult = ReturnType<typeof useCategoriesWithImagesSuspenseQuery>;
 export const RecommendedProductsDocument = gql`
     query RecommendedProducts($limit: Int, $page: Int, $productId: Int) {
   recommendedProducts(limit: $limit, page: $page, productId: $productId) {
@@ -9491,167 +9195,6 @@ export function useRecommendedProductsSuspenseQuery(baseOptions?: ApolloReactHoo
 export type RecommendedProductsQueryHookResult = ReturnType<typeof useRecommendedProductsQuery>;
 export type RecommendedProductsLazyQueryHookResult = ReturnType<typeof useRecommendedProductsLazyQuery>;
 export type RecommendedProductsSuspenseQueryHookResult = ReturnType<typeof useRecommendedProductsSuspenseQuery>;
-export const CategoriesDocument = gql`
-    query Categories {
-  categories
-}
-    `;
-
-/**
- * __useCategoriesQuery__
- *
- * To run a query within a React component, call `useCategoriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCategoriesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useCategoriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
-      }
-export function useCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
-        }
-// @ts-ignore
-export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesQuery, CategoriesQueryVariables>;
-export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesQuery | undefined, CategoriesQueryVariables>;
-export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
-        }
-export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
-export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
-export type CategoriesSuspenseQueryHookResult = ReturnType<typeof useCategoriesSuspenseQuery>;
-export const CategoriesWithImagesDocument = gql`
-    query CategoriesWithImages {
-  categoriesWithImages {
-    name
-    image_url
-  }
-}
-    `;
-
-/**
- * __useCategoriesWithImagesQuery__
- *
- * To run a query within a React component, call `useCategoriesWithImagesQuery` and pass it any options that fit your needs.
- * When your component renders, `useCategoriesWithImagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCategoriesWithImagesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useCategoriesWithImagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
-      }
-export function useCategoriesWithImagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
-        }
-// @ts-ignore
-export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>;
-export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CategoriesWithImagesQuery | undefined, CategoriesWithImagesQueryVariables>;
-export function useCategoriesWithImagesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<CategoriesWithImagesQuery, CategoriesWithImagesQueryVariables>(CategoriesWithImagesDocument, options);
-        }
-export type CategoriesWithImagesQueryHookResult = ReturnType<typeof useCategoriesWithImagesQuery>;
-export type CategoriesWithImagesLazyQueryHookResult = ReturnType<typeof useCategoriesWithImagesLazyQuery>;
-export type CategoriesWithImagesSuspenseQueryHookResult = ReturnType<typeof useCategoriesWithImagesSuspenseQuery>;
-export const MaterialsDocument = gql`
-    query Materials {
-  materials
-}
-    `;
-
-/**
- * __useMaterialsQuery__
- *
- * To run a query within a React component, call `useMaterialsQuery` and pass it any options that fit your needs.
- * When your component renders, `useMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMaterialsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMaterialsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MaterialsQuery, MaterialsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<MaterialsQuery, MaterialsQueryVariables>(MaterialsDocument, options);
-      }
-export function useMaterialsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MaterialsQuery, MaterialsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<MaterialsQuery, MaterialsQueryVariables>(MaterialsDocument, options);
-        }
-// @ts-ignore
-export function useMaterialsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<MaterialsQuery, MaterialsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<MaterialsQuery, MaterialsQueryVariables>;
-export function useMaterialsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<MaterialsQuery, MaterialsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<MaterialsQuery | undefined, MaterialsQueryVariables>;
-export function useMaterialsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<MaterialsQuery, MaterialsQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<MaterialsQuery, MaterialsQueryVariables>(MaterialsDocument, options);
-        }
-export type MaterialsQueryHookResult = ReturnType<typeof useMaterialsQuery>;
-export type MaterialsLazyQueryHookResult = ReturnType<typeof useMaterialsLazyQuery>;
-export type MaterialsSuspenseQueryHookResult = ReturnType<typeof useMaterialsSuspenseQuery>;
-export const CollectionsDocument = gql`
-    query Collections {
-  collections {
-    ...CollectionFields
-  }
-}
-    ${CollectionFieldsFragmentDoc}`;
-
-/**
- * __useCollectionsQuery__
- *
- * To run a query within a React component, call `useCollectionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCollectionsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useCollectionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CollectionsQuery, CollectionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<CollectionsQuery, CollectionsQueryVariables>(CollectionsDocument, options);
-      }
-export function useCollectionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<CollectionsQuery, CollectionsQueryVariables>(CollectionsDocument, options);
-        }
-// @ts-ignore
-export function useCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CollectionsQuery, CollectionsQueryVariables>;
-export function useCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<CollectionsQuery | undefined, CollectionsQueryVariables>;
-export function useCollectionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CollectionsQuery, CollectionsQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<CollectionsQuery, CollectionsQueryVariables>(CollectionsDocument, options);
-        }
-export type CollectionsQueryHookResult = ReturnType<typeof useCollectionsQuery>;
-export type CollectionsLazyQueryHookResult = ReturnType<typeof useCollectionsLazyQuery>;
-export type CollectionsSuspenseQueryHookResult = ReturnType<typeof useCollectionsSuspenseQuery>;
 export const CreateProductReviewDocument = gql`
     mutation CreateProductReview($input: CreateProductReviewInput!) {
   createProductReview(input: $input) {
@@ -9756,37 +9299,6 @@ export function useCreateEventReviewMutation(baseOptions?: ApolloReactHooks.Muta
         return ApolloReactHooks.useMutation<CreateEventReviewMutation, CreateEventReviewMutationVariables>(CreateEventReviewDocument, options);
       }
 export type CreateEventReviewMutationHookResult = ReturnType<typeof useCreateEventReviewMutation>;
-export const DeleteReviewDocument = gql`
-    mutation DeleteReview($reviewId: Int!) {
-  deleteReview(reviewId: $reviewId) {
-    success
-    error
-  }
-}
-    `;
-
-/**
- * __useDeleteReviewMutation__
- *
- * To run a mutation, you first call `useDeleteReviewMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteReviewMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteReviewMutation, { data, loading, error }] = useDeleteReviewMutation({
- *   variables: {
- *      reviewId: // value for 'reviewId'
- *   },
- * });
- */
-export function useDeleteReviewMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteReviewMutation, DeleteReviewMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<DeleteReviewMutation, DeleteReviewMutationVariables>(DeleteReviewDocument, options);
-      }
-export type DeleteReviewMutationHookResult = ReturnType<typeof useDeleteReviewMutation>;
 export const ToggleReviewLikeDocument = gql`
     mutation ToggleReviewLike($reviewId: Int!) {
   toggleReviewLike(reviewId: $reviewId) {
@@ -9887,55 +9399,6 @@ export function useProductReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.Sk
 export type ProductReviewsQueryHookResult = ReturnType<typeof useProductReviewsQuery>;
 export type ProductReviewsLazyQueryHookResult = ReturnType<typeof useProductReviewsLazyQuery>;
 export type ProductReviewsSuspenseQueryHookResult = ReturnType<typeof useProductReviewsSuspenseQuery>;
-export const FeaturedReviewsDocument = gql`
-    query FeaturedReviews($limit: Int) {
-  featuredReviews(limit: $limit) {
-    id
-    rating
-    review
-    user {
-      id
-      name
-      image
-    }
-  }
-}
-    `;
-
-/**
- * __useFeaturedReviewsQuery__
- *
- * To run a query within a React component, call `useFeaturedReviewsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFeaturedReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFeaturedReviewsQuery({
- *   variables: {
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useFeaturedReviewsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
-      }
-export function useFeaturedReviewsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
-        }
-// @ts-ignore
-export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>;
-export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FeaturedReviewsQuery | undefined, FeaturedReviewsQueryVariables>;
-export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
-        }
-export type FeaturedReviewsQueryHookResult = ReturnType<typeof useFeaturedReviewsQuery>;
-export type FeaturedReviewsLazyQueryHookResult = ReturnType<typeof useFeaturedReviewsLazyQuery>;
-export type FeaturedReviewsSuspenseQueryHookResult = ReturnType<typeof useFeaturedReviewsSuspenseQuery>;
 export const EventReviewsDocument = gql`
     query EventReviews($eventId: String!, $filter: ReviewsFilterInput) {
   eventReviews(eventId: $eventId, filter: $filter) {
@@ -10003,6 +9466,60 @@ export function useEventReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.Skip
 export type EventReviewsQueryHookResult = ReturnType<typeof useEventReviewsQuery>;
 export type EventReviewsLazyQueryHookResult = ReturnType<typeof useEventReviewsLazyQuery>;
 export type EventReviewsSuspenseQueryHookResult = ReturnType<typeof useEventReviewsSuspenseQuery>;
+export const FeaturedReviewsDocument = gql`
+    query FeaturedReviews($limit: Int) {
+  featuredReviews(limit: $limit) {
+    id
+    user_id
+    rating
+    review
+    image_urls
+    product_id
+    event_id
+    created_at
+    user {
+      id
+      name
+      image
+    }
+  }
+}
+    `;
+
+/**
+ * __useFeaturedReviewsQuery__
+ *
+ * To run a query within a React component, call `useFeaturedReviewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeaturedReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFeaturedReviewsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useFeaturedReviewsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
+      }
+export function useFeaturedReviewsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
+        }
+// @ts-ignore
+export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>;
+export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FeaturedReviewsQuery | undefined, FeaturedReviewsQueryVariables>;
+export function useFeaturedReviewsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<FeaturedReviewsQuery, FeaturedReviewsQueryVariables>(FeaturedReviewsDocument, options);
+        }
+export type FeaturedReviewsQueryHookResult = ReturnType<typeof useFeaturedReviewsQuery>;
+export type FeaturedReviewsLazyQueryHookResult = ReturnType<typeof useFeaturedReviewsLazyQuery>;
+export type FeaturedReviewsSuspenseQueryHookResult = ReturnType<typeof useFeaturedReviewsSuspenseQuery>;
 export const GlobalSearchDocument = gql`
     query GlobalSearch($input: GlobalSearchInput!) {
   globalSearch(input: $input) {

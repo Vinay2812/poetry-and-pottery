@@ -4,6 +4,7 @@ export const CUSTOMIZATION_CATEGORIES_QUERY = gql`
   query CustomizationCategories($filter: CustomizationCategoriesFilterInput) {
     customizationCategories(filter: $filter) {
       categories {
+        id
         category
         options_count
         base_price
@@ -22,12 +23,14 @@ export const CUSTOMIZATION_OPTIONS_BY_CATEGORY_QUERY = gql`
     $filter: CustomizationOptionsFilterInput!
   ) {
     customizationOptionsByCategory(filter: $filter) {
-      category
+      customize_category_id
+      category_name
       options_by_type {
         type
         options {
           id
-          category
+          customize_category_id
+          category_name
           type
           name
           value

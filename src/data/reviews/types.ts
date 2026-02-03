@@ -8,7 +8,6 @@ export type {
   CreateProductReviewInput,
   CreateEventReviewInput,
   CreateReviewResponse,
-  DeleteReviewResponse,
   ToggleReviewLikeResponse,
   ToggleLikeAction,
 } from "@/graphql/generated/types";

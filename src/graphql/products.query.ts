@@ -133,3 +133,42 @@ export const COLLECTIONS_QUERY = gql`
     }
   }
 `;
+
+export const CATEGORIES_WITH_IMAGES_QUERY = gql`
+  query CategoriesWithImages {
+    categoriesWithImages {
+      name
+      image_url
+    }
+  }
+`;
+
+export const RECOMMENDED_PRODUCTS_QUERY = gql`
+  ${COLLECTION_FRAGMENT}
+  query RecommendedProducts($limit: Int, $page: Int, $productId: Int) {
+    recommendedProducts(limit: $limit, page: $page, productId: $productId) {
+      products {
+        id
+        slug
+        name
+        price
+        image_urls
+        reviews_count
+        avg_rating
+        material
+        in_wishlist
+        is_active
+        available_quantity
+        total_quantity
+        color_code
+        color_name
+        collection {
+          ...CollectionFields
+        }
+      }
+      total
+      page
+      total_pages
+    }
+  }
+`;

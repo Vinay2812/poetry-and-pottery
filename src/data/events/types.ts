@@ -19,7 +19,6 @@ export type {
   // Mutation types
   RegisterForEventInput,
   RegisterForEventResponse,
-  CancelRegistrationResponse,
 } from "@/graphql/generated/types";
 
 // Re-export enums as values (not types) so they can be used at runtime
