@@ -5,6 +5,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { ContactForm } from "@/components/forms";
+
 import { getWhatsAppBaseUrl } from "@/lib/contact-business";
 
 export default function ContactPage() {
