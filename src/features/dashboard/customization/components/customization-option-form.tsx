@@ -7,6 +7,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
 import type {
@@ -32,7 +39,6 @@ export function CustomizationOptionForm({
     isActive: viewModel.isActive,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,10 +50,6 @@ export function CustomizationOptionForm({
       setIsSubmitting(false);
     }
   };
-
-  const filteredCategories = existingCategories.filter((cat) =>
-    cat.toLowerCase().includes(formData.category.toLowerCase()),
-  );
 
   const filteredTypes = existingTypes.filter((t) =>
     t.toLowerCase().includes(formData.type.toLowerCase()),
@@ -80,39 +82,26 @@ export function CustomizationOptionForm({
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         <div className="grid gap-6 sm:grid-cols-2">
           {/* Category */}
-          <div className="relative space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="category">Category *</Label>
-            <Input
-              id="category"
-              placeholder="e.g., Mug, Bowl, Vase"
+            <Select
               value={formData.category}
-              onChange={(e) => {
-                setFormData({ ...formData, category: e.target.value });
-                setShowCategoryDropdown(true);
-              }}
-              onFocus={() => setShowCategoryDropdown(true)}
-              onBlur={() =>
-                setTimeout(() => setShowCategoryDropdown(false), 200)
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
               }
               required
-            />
-            {showCategoryDropdown && filteredCategories.length > 0 && (
-              <div className="absolute top-full z-10 mt-1 w-full rounded-md border bg-white shadow-lg">
-                {filteredCategories.slice(0, 5).map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-neutral-100"
-                    onClick={() => {
-                      setFormData({ ...formData, category: cat });
-                      setShowCategoryDropdown(false);
-                    }}
-                  >
+            >
+              <SelectTrigger id="category" className="w-full">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {existingCategories.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
                     {cat}
-                  </button>
+                  </SelectItem>
                 ))}
-              </div>
-            )}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Type */}

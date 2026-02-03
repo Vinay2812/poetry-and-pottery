@@ -37,15 +37,6 @@ export const ADMIN_TOGGLE_PRODUCT_ACTIVE_MUTATION = gql`
   }
 `;
 
-export const ADMIN_DELETE_PRODUCT_REVIEW_MUTATION = gql`
-  mutation AdminDeleteProductReview($reviewId: Int!) {
-    adminDeleteProductReview(reviewId: $reviewId) {
-      success
-      error
-    }
-  }
-`;
-
 export const ADMIN_BULK_DELETE_PRODUCTS_MUTATION = gql`
   mutation AdminBulkDeleteProducts($input: BulkDeleteProductsInput!) {
     adminBulkDeleteProducts(input: $input) {

@@ -125,25 +125,3 @@ export const PUBLIC_HERO_IMAGES_QUERY = gql`
     }
   }
 `;
-
-export const PUBLIC_CONTACT_INFO_QUERY = gql`
-  query PublicContactInfo {
-    publicContactInfo {
-      address
-      email
-      phone
-      hours
-    }
-  }
-`;
-
-export const PUBLIC_SOCIAL_LINKS_QUERY = gql`
-  query PublicSocialLinks {
-    publicSocialLinks {
-      instagram
-      facebook
-      twitter
-      pinterest
-    }
-  }
-`;

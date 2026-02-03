@@ -2,8 +2,6 @@
 
 import type {
   EventDetail,
-  EventRegistration,
-  EventWithUserContext,
   EventsFilterInput,
   EventsResponse,
   RegistrationsFilterInput,
@@ -21,16 +19,8 @@ export type GetEventResult =
   | { success: true; data: EventDetail }
   | { success: false; error: string };
 
-export type GetEventWithContextResult =
-  | { success: true; data: EventWithUserContext }
-  | { success: false; error: string };
-
 export type GetRegistrationsResult =
   | { success: true; data: RegistrationsResponse }
-  | { success: false; error: string };
-
-export type GetRegistrationResult =
-  | { success: true; data: EventRegistration }
   | { success: false; error: string };
 
 // ============ EVENT QUERIES ============
@@ -45,21 +35,6 @@ export async function getEvents(
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to get events",
-    };
-  }
-}
-
-export async function getEventBySlug(slug: string): Promise<GetEventResult> {
-  try {
-    const result = await graphqlImpl.getEventBySlug(slug);
-    if (!result) {
-      return { success: false, error: "Event not found" };
-    }
-    return { success: true, data: result };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to get event",
     };
   }
 }
@@ -111,49 +86,6 @@ export async function getPastEvents(
   }
 }
 
-export async function getEventWithUserContext(
-  eventId: string,
-): Promise<GetEventWithContextResult> {
-  try {
-    const result = await graphqlImpl.getEventWithUserContext(eventId);
-    if (!result) {
-      return { success: false, error: "Event not found" };
-    }
-    return { success: true, data: result };
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : "Failed to get event",
-    };
-  }
-}
-
-// ============ USER CONTEXT QUERIES ============
-
-export type { UserEventContext } from "../server/graphql";
-
-export type GetUserEventContextResult =
-  | { success: true; data: graphqlImpl.UserEventContext }
-  | { success: false; error: string };
-
-export async function getUserEventContext(
-  eventId: string,
-): Promise<GetUserEventContextResult> {
-  try {
-    const result = await graphqlImpl.getUserEventContext(eventId);
-    if (!result) {
-      return { success: false, error: "Event not found" };
-    }
-    return { success: true, data: result };
-  } catch (error) {
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to get user context",
-    };
-  }
-}
-
 // ============ REGISTRATION QUERIES ============
 
 export async function getUserRegistrations(
@@ -167,24 +99,6 @@ export async function getUserRegistrations(
       success: false,
       error:
         error instanceof Error ? error.message : "Failed to get registrations",
-    };
-  }
-}
-
-export async function getRegistrationById(
-  registrationId: string,
-): Promise<GetRegistrationResult> {
-  try {
-    const result = await graphqlImpl.getRegistrationById(registrationId);
-    if (!result) {
-      return { success: false, error: "Registration not found" };
-    }
-    return { success: true, data: result };
-  } catch (error) {
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to get registration",
     };
   }
 }

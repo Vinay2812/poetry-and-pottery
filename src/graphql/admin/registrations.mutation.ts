@@ -15,21 +15,6 @@ export const ADMIN_UPDATE_REGISTRATION_STATUS_MUTATION = gql`
   }
 `;
 
-export const ADMIN_UPDATE_REGISTRATION_PRICE_MUTATION = gql`
-  mutation AdminUpdateRegistrationPrice(
-    $registrationId: String!
-    $price: Float!
-  ) {
-    adminUpdateRegistrationPrice(
-      registrationId: $registrationId
-      price: $price
-    ) {
-      success
-      error
-    }
-  }
-`;
-
 export const ADMIN_UPDATE_REGISTRATION_DETAILS_MUTATION = gql`
   mutation AdminUpdateRegistrationDetails(
     $registrationId: String!

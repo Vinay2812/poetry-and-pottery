@@ -60,15 +60,6 @@ export const CREATE_EVENT_REVIEW_MUTATION = gql`
   }
 `;
 
-export const DELETE_REVIEW_MUTATION = gql`
-  mutation DeleteReview($reviewId: Int!) {
-    deleteReview(reviewId: $reviewId) {
-      success
-      error
-    }
-  }
-`;
-
 export const TOGGLE_REVIEW_LIKE_MUTATION = gql`
   mutation ToggleReviewLike($reviewId: Int!) {
     toggleReviewLike(reviewId: $reviewId) {

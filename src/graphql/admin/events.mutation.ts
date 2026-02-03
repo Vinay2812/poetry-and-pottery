@@ -40,16 +40,6 @@ export const ADMIN_UPDATE_EVENT_STATUS_MUTATION = gql`
   }
 `;
 
-export const ADMIN_DELETE_EVENT_REVIEW_MUTATION = gql`
-  mutation AdminDeleteEventReview($reviewId: Int!) {
-    adminDeleteEventReview(reviewId: $reviewId) {
-      success
-      eventId
-      error
-    }
-  }
-`;
-
 export const ADMIN_BULK_DELETE_EVENTS_MUTATION = gql`
   mutation AdminBulkDeleteEvents($input: BulkDeleteEventsInput!) {
     adminBulkDeleteEvents(input: $input) {

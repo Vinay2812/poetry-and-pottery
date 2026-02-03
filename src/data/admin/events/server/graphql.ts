@@ -6,7 +6,6 @@ import {
   ADMIN_BULK_DELETE_EVENTS_MUTATION,
   ADMIN_CREATE_EVENT_MUTATION,
   ADMIN_DELETE_EVENT_MUTATION,
-  ADMIN_DELETE_EVENT_REVIEW_MUTATION,
   ADMIN_UPDATE_EVENT_MUTATION,
   ADMIN_UPDATE_EVENT_STATUS_MUTATION,
 } from "@/graphql/admin/events.mutation";
@@ -23,8 +22,6 @@ import type {
   AdminCreateEventMutationVariables,
   AdminDeleteEventMutation,
   AdminDeleteEventMutationVariables,
-  AdminDeleteEventReviewMutation,
-  AdminDeleteEventReviewMutationVariables,
   AdminEventByIdQuery,
   AdminEventByIdQueryVariables,
   AdminEventDetail,
@@ -239,26 +236,6 @@ export async function updateEventStatus(
   }
 
   return result.data!.adminUpdateEventStatus;
-}
-
-export async function deleteEventReview(
-  reviewId: number,
-): Promise<AdminEventMutationResponse> {
-  const client = getClient();
-
-  const result = await client.mutate<
-    AdminDeleteEventReviewMutation,
-    AdminDeleteEventReviewMutationVariables
-  >({
-    mutation: ADMIN_DELETE_EVENT_REVIEW_MUTATION,
-    variables: { reviewId },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data!.adminDeleteEventReview;
 }
 
 export interface BulkDeleteEventResult {

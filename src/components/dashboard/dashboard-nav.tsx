@@ -7,6 +7,7 @@ import {
   FolderIcon,
   HomeIcon,
   LayersIcon,
+  PaletteIcon,
   SettingsIcon,
   Trash2Icon,
   UsersIcon,
@@ -58,6 +59,11 @@ const navItems: NavItem[] = [
     title: "Events",
     href: "/dashboard/events",
     icon: CalendarIcon,
+  },
+  {
+    title: "Customization",
+    href: "/dashboard/customization",
+    icon: PaletteIcon,
   },
   {
     title: "Content",

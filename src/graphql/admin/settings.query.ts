@@ -1,16 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const ADMIN_ALL_SETTINGS_QUERY = gql`
-  query AdminAllSettings {
-    adminAllSettings {
-      id
-      key
-      value
-      updated_at
-    }
-  }
-`;
-
 export const ADMIN_HERO_IMAGES_QUERY = gql`
   query AdminHeroImages {
     adminHeroImages {

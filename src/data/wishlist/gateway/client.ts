@@ -5,7 +5,6 @@ import { useCallback } from "react";
 import type { WishlistItem } from "@/graphql/generated/graphql";
 import {
   useAddToWishlistMutation as useAddToWishlistGraphQL,
-  useMoveToCartMutation as useMoveToCartGraphQL,
   useRemoveFromWishlistMutation as useRemoveFromWishlistGraphQL,
   useToggleWishlistMutation as useToggleWishlistGraphQL,
 } from "@/graphql/generated/graphql";
@@ -23,10 +22,6 @@ export type ToggleWishlistResult =
   | { success: true; action: "added" | "removed" }
   | { success: false; error: string };
 
-export type MoveToCartResult =
-  | { success: true }
-  | { success: false; error: string };
-
 // Hook return types
 interface UseAddToWishlistReturn {
   mutate: (productId: number) => Promise<AddWishlistResult>;
@@ -42,12 +37,6 @@ interface UseRemoveFromWishlistReturn {
 
 interface UseToggleWishlistReturn {
   mutate: (productId: number) => Promise<ToggleWishlistResult>;
-  loading: boolean;
-  error: Error | undefined;
-}
-
-interface UseMoveToCartReturn {
-  mutate: (productId: number) => Promise<MoveToCartResult>;
   loading: boolean;
   error: Error | undefined;
 }
@@ -120,31 +109,6 @@ export function useToggleWishlist(): UseToggleWishlistReturn {
           };
         }
         return { success: false, error: "Failed to toggle wishlist" };
-      } catch (e) {
-        return {
-          success: false,
-          error: e instanceof Error ? e.message : "Unknown error",
-        };
-      }
-    },
-    [graphqlMutate],
-  );
-
-  return { mutate, loading, error };
-}
-
-export function useMoveToCart(): UseMoveToCartReturn {
-  const [graphqlMutate, { loading, error }] = useMoveToCartGraphQL();
-
-  const mutate = useCallback(
-    async (productId: number): Promise<MoveToCartResult> => {
-      try {
-        const { data } = await graphqlMutate({
-          variables: { productId },
-        });
-        return data?.moveToCart
-          ? { success: true }
-          : { success: false, error: "Failed to move to cart" };
       } catch (e) {
         return {
           success: false,

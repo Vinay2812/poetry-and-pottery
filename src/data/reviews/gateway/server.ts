@@ -1,17 +1,8 @@
 "use server";
 
-import type {
-  FeaturedReviewsQuery,
-  ReviewsResponse,
-} from "@/graphql/generated/types";
+import type { ReviewsResponse } from "@/graphql/generated/types";
 
 import * as graphqlImpl from "../server/graphql";
-
-export async function getFeaturedReviews(
-  limit: number = 10,
-): Promise<FeaturedReviewsQuery["featuredReviews"]> {
-  return graphqlImpl.getFeaturedReviews(limit);
-}
 
 export async function getProductReviews(
   productId: number,

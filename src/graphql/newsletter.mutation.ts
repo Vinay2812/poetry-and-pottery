@@ -12,16 +12,3 @@ export const SUBSCRIBE_TO_NEWSLETTER_MUTATION = gql`
     }
   }
 `;
-
-export const UNSUBSCRIBE_FROM_NEWSLETTER_MUTATION = gql`
-  mutation UnsubscribeFromNewsletter {
-    unsubscribeFromNewsletter {
-      success
-      error
-      status {
-        subscribed
-        subscribed_at
-      }
-    }
-  }
-`;

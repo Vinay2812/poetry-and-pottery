@@ -5,7 +5,6 @@ import { useCallback } from "react";
 import type { CartItem } from "@/graphql/generated/graphql";
 import {
   useAddToCartMutation as useAddToCartGraphQL,
-  useClearCartMutation as useClearCartGraphQL,
   useRemoveFromCartMutation as useRemoveFromCartGraphQL,
   useUpdateCartQuantityMutation as useUpdateCartQuantityGraphQL,
 } from "@/graphql/generated/graphql";
@@ -20,10 +19,6 @@ export type UpdateCartResult =
   | { success: false; error: string };
 
 export type RemoveCartResult =
-  | { success: true }
-  | { success: false; error: string };
-
-export type ClearCartResult =
   | { success: true }
   | { success: false; error: string };
 
@@ -42,12 +37,6 @@ interface UseUpdateCartQuantityReturn {
 
 interface UseRemoveFromCartReturn {
   mutate: (productId: number) => Promise<RemoveCartResult>;
-  loading: boolean;
-  error: Error | undefined;
-}
-
-interface UseClearCartReturn {
-  mutate: () => Promise<ClearCartResult>;
   loading: boolean;
   error: Error | undefined;
 }
@@ -128,26 +117,6 @@ export function useRemoveFromCart(): UseRemoveFromCartReturn {
     },
     [graphqlMutate],
   );
-
-  return { mutate, loading, error };
-}
-
-export function useClearCart(): UseClearCartReturn {
-  const [graphqlMutate, { loading, error }] = useClearCartGraphQL();
-
-  const mutate = useCallback(async (): Promise<ClearCartResult> => {
-    try {
-      const { data } = await graphqlMutate();
-      return data?.clearCart
-        ? { success: true }
-        : { success: false, error: "Failed to clear cart" };
-    } catch (e) {
-      return {
-        success: false,
-        error: e instanceof Error ? e.message : "Unknown error",
-      };
-    }
-  }, [graphqlMutate]);
 
   return { mutate, loading, error };
 }

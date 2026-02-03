@@ -150,7 +150,7 @@ export async function getUserCart(
   return result.data!.adminUserCart;
 }
 
-export async function getUserWishlist(
+export async function getUserWishlistPaginated(
   userId: number,
   page: number = 1,
   limit: number = 12,

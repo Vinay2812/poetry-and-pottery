@@ -14,13 +14,6 @@ export async function updateRegistrationStatus(
   return graphqlImpl.updateRegistrationStatus(registrationId, status);
 }
 
-export async function updateRegistrationPrice(
-  registrationId: string,
-  price: number,
-): Promise<AdminRegistrationMutationResponse> {
-  return graphqlImpl.updateRegistrationPrice(registrationId, price);
-}
-
 export async function updateRegistrationDetails(
   registrationId: string,
   input: UpdateRegistrationDetailsInput,

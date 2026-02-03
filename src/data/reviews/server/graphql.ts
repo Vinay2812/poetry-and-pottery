@@ -7,12 +7,8 @@ import type {
   CreateEventReviewMutationVariables,
   CreateProductReviewMutation,
   CreateProductReviewMutationVariables,
-  DeleteReviewMutation,
-  DeleteReviewMutationVariables,
   EventReviewsQuery,
   EventReviewsQueryVariables,
-  FeaturedReviewsQuery,
-  FeaturedReviewsQueryVariables,
   ProductReviewsQuery,
   ProductReviewsQueryVariables,
   ReviewsResponse,
@@ -22,34 +18,12 @@ import type {
 import {
   CREATE_EVENT_REVIEW_MUTATION,
   CREATE_PRODUCT_REVIEW_MUTATION,
-  DELETE_REVIEW_MUTATION,
   TOGGLE_REVIEW_LIKE_MUTATION,
 } from "@/graphql/reviews.mutation";
 import {
   EVENT_REVIEWS_QUERY,
-  FEATURED_REVIEWS_QUERY,
   PRODUCT_REVIEWS_QUERY,
 } from "@/graphql/reviews.query";
-
-export async function getFeaturedReviews(
-  limit: number = 10,
-): Promise<FeaturedReviewsQuery["featuredReviews"]> {
-  const client = getClient();
-
-  const result = await client.query<
-    FeaturedReviewsQuery,
-    FeaturedReviewsQueryVariables
-  >({
-    query: FEATURED_REVIEWS_QUERY,
-    variables: { limit },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.featuredReviews ?? [];
-}
 
 export async function getProductReviews(
   productId: number,
@@ -180,33 +154,6 @@ export async function createEventReview(data: {
   return {
     success: result.data.createEventReview.success,
     error: result.data.createEventReview.error ?? undefined,
-  };
-}
-
-export async function deleteReview(
-  reviewId: number,
-): Promise<{ success: boolean; error?: string }> {
-  const client = getClient();
-
-  const result = await client.mutate<
-    DeleteReviewMutation,
-    DeleteReviewMutationVariables
-  >({
-    mutation: DELETE_REVIEW_MUTATION,
-    variables: { reviewId },
-  });
-
-  if (result.error) {
-    return { success: false, error: result.error.message };
-  }
-
-  if (!result.data?.deleteReview) {
-    return { success: false, error: "No response from server" };
-  }
-
-  return {
-    success: result.data.deleteReview.success,
-    error: result.data.deleteReview.error ?? undefined,
   };
 }
 

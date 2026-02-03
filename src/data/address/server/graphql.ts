@@ -7,13 +7,7 @@ import {
   DELETE_ADDRESS_MUTATION,
   UPDATE_ADDRESS_MUTATION,
 } from "@/graphql/address.mutation";
-import {
-  ADDRESS_BY_ID_QUERY,
-  USER_ADDRESSES_QUERY,
-} from "@/graphql/address.query";
 import type {
-  AddressByIdQuery,
-  AddressByIdQueryVariables,
   AddressMutationResponse,
   CreateAddressMutation,
   CreateAddressMutationVariables,
@@ -21,41 +15,7 @@ import type {
   DeleteAddressMutationVariables,
   UpdateAddressMutation,
   UpdateAddressMutationVariables,
-  UserAddress,
-  UserAddressesQuery,
 } from "@/graphql/generated/types";
-
-export async function getUserAddresses(): Promise<UserAddress[]> {
-  const client = getClient();
-
-  const result = await client.query<UserAddressesQuery>({
-    query: USER_ADDRESSES_QUERY,
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.userAddresses?.addresses ?? [];
-}
-
-export async function getAddressById(id: number): Promise<UserAddress | null> {
-  const client = getClient();
-
-  const result = await client.query<
-    AddressByIdQuery,
-    AddressByIdQueryVariables
-  >({
-    query: ADDRESS_BY_ID_QUERY,
-    variables: { id },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.addressById ?? null;
-}
 
 export async function createAddress(input: {
   name: string;

@@ -28,7 +28,7 @@ export function CustomizationOptionFormContainer({
   );
 
   const existingCategories = useMemo(
-    () => categories.map((c) => c.category),
+    () => categories.map((c) => c.name),
     [categories],
   );
 

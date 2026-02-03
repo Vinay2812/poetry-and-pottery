@@ -5,16 +5,11 @@ import { useCallback } from "react";
 import {
   useCreateEventReviewMutation as useCreateEventReviewGraphQL,
   useCreateProductReviewMutation as useCreateProductReviewGraphQL,
-  useDeleteReviewMutation as useDeleteReviewGraphQL,
   useToggleReviewLikeMutation as useToggleReviewLikeGraphQL,
 } from "@/graphql/generated/graphql";
 
 // Result types
 export type CreateReviewResult =
-  | { success: true }
-  | { success: false; error: string };
-
-export type DeleteReviewResult =
   | { success: true }
   | { success: false; error: string };
 
@@ -41,12 +36,6 @@ interface UseCreateEventReviewReturn {
     review?: string;
     imageUrls?: string[];
   }) => Promise<CreateReviewResult>;
-  loading: boolean;
-  error: Error | undefined;
-}
-
-interface UseDeleteReviewReturn {
-  mutate: (reviewId: number) => Promise<DeleteReviewResult>;
   loading: boolean;
   error: Error | undefined;
 }
@@ -125,35 +114,6 @@ export function useCreateEventReview(): UseCreateEventReviewReturn {
         return {
           success: false,
           error: result?.createEventReview.error ?? "Failed to create review",
-        };
-      } catch (e) {
-        return {
-          success: false,
-          error: e instanceof Error ? e.message : "Unknown error",
-        };
-      }
-    },
-    [graphqlMutate],
-  );
-
-  return { mutate, loading, error };
-}
-
-export function useDeleteReview(): UseDeleteReviewReturn {
-  const [graphqlMutate, { loading, error }] = useDeleteReviewGraphQL();
-
-  const mutate = useCallback(
-    async (reviewId: number): Promise<DeleteReviewResult> => {
-      try {
-        const { data } = await graphqlMutate({
-          variables: { reviewId },
-        });
-        if (data?.deleteReview.success) {
-          return { success: true };
-        }
-        return {
-          success: false,
-          error: data?.deleteReview.error ?? "Failed to delete review",
         };
       } catch (e) {
         return {

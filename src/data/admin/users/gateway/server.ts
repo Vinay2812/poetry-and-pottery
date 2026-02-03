@@ -48,13 +48,10 @@ export async function getUserCart(
   return graphqlImpl.getUserCart(userId);
 }
 
-export async function getUserWishlist(
+export async function getUserWishlistPaginated(
   userId: number,
   page: number = 1,
   limit: number = 12,
 ): Promise<AdminUserWishlistResponse> {
-  return graphqlImpl.getUserWishlist(userId, page, limit);
+  return graphqlImpl.getUserWishlistPaginated(userId, page, limit);
 }
-
-// Alias for backwards compatibility
-export { getUserWishlist as getUserWishlistPaginated };

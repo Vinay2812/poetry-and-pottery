@@ -162,15 +162,6 @@ export const EVENTS_QUERY = gql`
   ${EVENT_BASE_FIELDS}
 `;
 
-export const EVENT_BY_SLUG_QUERY = gql`
-  query EventBySlug($slug: String!) {
-    eventBySlug(slug: $slug) {
-      ...EventDetailFields
-    }
-  }
-  ${EVENT_DETAIL_FIELDS}
-`;
-
 export const EVENT_BY_ID_QUERY = gql`
   query EventById($id: String!) {
     eventById(id: $id) {
@@ -238,15 +229,6 @@ export const USER_REGISTRATIONS_QUERY = gql`
       total
       page
       total_pages
-    }
-  }
-  ${EVENT_REGISTRATION_FIELDS}
-`;
-
-export const REGISTRATION_BY_ID_QUERY = gql`
-  query RegistrationById($registrationId: String!) {
-    registrationById(registrationId: $registrationId) {
-      ...EventRegistrationFields
     }
   }
   ${EVENT_REGISTRATION_FIELDS}

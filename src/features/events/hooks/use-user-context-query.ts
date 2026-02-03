@@ -1,9 +1,15 @@
 "use client";
 
-import { type UserEventContext } from "@/data/events/gateway/server";
 import { useQuery } from "@tanstack/react-query";
 
+import type { EventRegistration } from "@/graphql/generated/graphql";
 import { useEventWithUserContextLazyQuery } from "@/graphql/generated/graphql";
+
+interface UserEventContext {
+  registration: EventRegistration | null;
+  currentUserId: number | null;
+  isPastEvent: boolean;
+}
 
 interface UseUserContextQueryOptions {
   eventId: string;

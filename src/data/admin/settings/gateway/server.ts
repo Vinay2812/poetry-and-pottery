@@ -2,17 +2,12 @@
 
 import type {
   AdminSettingsMutationResponse,
-  AdminSiteSetting,
   ContactInfo,
   HeroImages,
   SocialLinks,
 } from "@/graphql/generated/types";
 
 import * as graphqlImpl from "../server/graphql";
-
-export async function getAllSettings(): Promise<AdminSiteSetting[]> {
-  return graphqlImpl.getAllSettings();
-}
 
 export async function getHeroImages(): Promise<HeroImages> {
   return graphqlImpl.getHeroImages();
@@ -47,12 +42,4 @@ export async function updateSocialLinks(
 // Public settings functions
 export async function getPublicHeroImages(): Promise<HeroImages> {
   return graphqlImpl.getPublicHeroImages();
-}
-
-export async function getPublicContactInfo(): Promise<ContactInfo> {
-  return graphqlImpl.getPublicContactInfo();
-}
-
-export async function getPublicSocialLinks(): Promise<SocialLinks> {
-  return graphqlImpl.getPublicSocialLinks();
 }

@@ -6,7 +6,6 @@ import {
   ADMIN_BULK_DELETE_PRODUCTS_MUTATION,
   ADMIN_CREATE_PRODUCT_MUTATION,
   ADMIN_DELETE_PRODUCT_MUTATION,
-  ADMIN_DELETE_PRODUCT_REVIEW_MUTATION,
   ADMIN_TOGGLE_PRODUCT_ACTIVE_MUTATION,
   ADMIN_UPDATE_PRODUCT_MUTATION,
 } from "@/graphql/admin/products.mutation";
@@ -24,8 +23,6 @@ import type {
   AdminCreateProductMutationVariables,
   AdminDeleteProductMutation,
   AdminDeleteProductMutationVariables,
-  AdminDeleteProductReviewMutation,
-  AdminDeleteProductReviewMutationVariables,
   AdminProductByIdQuery,
   AdminProductByIdQueryVariables,
   AdminProductCollection,
@@ -213,26 +210,6 @@ export async function toggleProductActive(
   }
 
   return result.data!.adminToggleProductActive;
-}
-
-export async function deleteProductReview(
-  reviewId: number,
-): Promise<AdminProductMutationResponse> {
-  const client = getClient();
-
-  const result = await client.mutate<
-    AdminDeleteProductReviewMutation,
-    AdminDeleteProductReviewMutationVariables
-  >({
-    mutation: ADMIN_DELETE_PRODUCT_REVIEW_MUTATION,
-    variables: { reviewId },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data!.adminDeleteProductReview;
 }
 
 export interface BulkDeleteProductResult {

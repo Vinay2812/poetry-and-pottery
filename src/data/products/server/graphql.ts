@@ -3,35 +3,19 @@
 import { getClient } from "@/lib/apollo";
 
 import type {
-  BestSellersQuery,
-  BestSellersQueryVariables,
-  BestSellersResponse,
   CategoriesQuery,
-  CategoriesWithImagesQuery,
-  CategoryWithImage,
-  MaterialsQuery,
   ProductByIdQuery,
   ProductByIdQueryVariables,
-  ProductBySlugQuery,
-  ProductBySlugQueryVariables,
   ProductDetail,
   ProductOrderBy,
   ProductsQuery,
   ProductsQueryVariables,
   ProductsResponse,
-  RecommendedProductsQuery,
-  RecommendedProductsQueryVariables,
-  RecommendedProductsResponse,
 } from "@/graphql/generated/types";
 import {
-  BEST_SELLERS_QUERY,
   CATEGORIES_QUERY,
-  CATEGORIES_WITH_IMAGES_QUERY,
-  MATERIALS_QUERY,
   PRODUCTS_QUERY,
   PRODUCT_BY_ID_QUERY,
-  PRODUCT_BY_SLUG_QUERY,
-  RECOMMENDED_PRODUCTS_QUERY,
 } from "@/graphql/products.query";
 
 export async function getProducts(params: {
@@ -68,26 +52,6 @@ export async function getProducts(params: {
   return result.data.products;
 }
 
-export async function getProductBySlug(
-  slug: string,
-): Promise<ProductDetail | null> {
-  const client = getClient();
-
-  const result = await client.query<
-    ProductBySlugQuery,
-    ProductBySlugQueryVariables
-  >({
-    query: PRODUCT_BY_SLUG_QUERY,
-    variables: { slug },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.productBySlug ?? null;
-}
-
 export async function getProductById(
   id: number,
 ): Promise<ProductDetail | null> {
@@ -108,67 +72,6 @@ export async function getProductById(
   return result.data?.productById ?? null;
 }
 
-export async function getBestSellers(params: {
-  limit?: number;
-  page?: number;
-}): Promise<BestSellersResponse> {
-  const client = getClient();
-
-  const result = await client.query<
-    BestSellersQuery,
-    BestSellersQueryVariables
-  >({
-    query: BEST_SELLERS_QUERY,
-    variables: { limit: params.limit ?? 8, page: params.page ?? 1 },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return (
-    result.data?.bestSellers ?? {
-      products: [],
-      total: 0,
-      page: 1,
-      total_pages: 0,
-    }
-  );
-}
-
-export async function getRecommendedProducts(params: {
-  limit?: number;
-  page?: number;
-  productId?: number;
-}): Promise<RecommendedProductsResponse> {
-  const client = getClient();
-
-  const result = await client.query<
-    RecommendedProductsQuery,
-    RecommendedProductsQueryVariables
-  >({
-    query: RECOMMENDED_PRODUCTS_QUERY,
-    variables: {
-      limit: params.limit ?? 10,
-      page: params.page ?? 1,
-      productId: params.productId,
-    },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return (
-    result.data?.recommendedProducts ?? {
-      products: [],
-      total: 0,
-      page: 1,
-      total_pages: 0,
-    }
-  );
-}
-
 export async function getCategories(): Promise<string[]> {
   const client = getClient();
 
@@ -181,34 +84,6 @@ export async function getCategories(): Promise<string[]> {
   }
 
   return result.data?.categories ?? [];
-}
-
-export async function getCategoriesWithImages(): Promise<CategoryWithImage[]> {
-  const client = getClient();
-
-  const result = await client.query<CategoriesWithImagesQuery>({
-    query: CATEGORIES_WITH_IMAGES_QUERY,
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.categoriesWithImages ?? [];
-}
-
-export async function getMaterials(): Promise<string[]> {
-  const client = getClient();
-
-  const result = await client.query<MaterialsQuery>({
-    query: MATERIALS_QUERY,
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data?.materials ?? [];
 }
 
 export interface FilterMetadata {

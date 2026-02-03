@@ -6,7 +6,6 @@ import {
   ADMIN_UPDATE_ORDER_DISCOUNT_MUTATION,
   ADMIN_UPDATE_ORDER_ITEM_DISCOUNT_MUTATION,
   ADMIN_UPDATE_ORDER_ITEM_QUANTITY_MUTATION,
-  ADMIN_UPDATE_ORDER_PRICE_MUTATION,
   ADMIN_UPDATE_ORDER_STATUS_MUTATION,
 } from "@/graphql/admin/orders.mutation";
 import type {
@@ -17,8 +16,6 @@ import type {
   AdminUpdateOrderItemDiscountMutationVariables,
   AdminUpdateOrderItemQuantityMutation,
   AdminUpdateOrderItemQuantityMutationVariables,
-  AdminUpdateOrderPriceMutation,
-  AdminUpdateOrderPriceMutationVariables,
   AdminUpdateOrderStatusMutation,
   AdminUpdateOrderStatusMutationVariables,
 } from "@/graphql/generated/types";
@@ -42,27 +39,6 @@ export async function updateOrderStatus(
   }
 
   return result.data!.adminUpdateOrderStatus;
-}
-
-export async function updateOrderPrice(
-  orderId: string,
-  total: number,
-): Promise<AdminOrderMutationResponse> {
-  const client = getClient();
-
-  const result = await client.mutate<
-    AdminUpdateOrderPriceMutation,
-    AdminUpdateOrderPriceMutationVariables
-  >({
-    mutation: ADMIN_UPDATE_ORDER_PRICE_MUTATION,
-    variables: { orderId, total },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data!.adminUpdateOrderPrice;
 }
 
 export async function updateOrderDiscount(

@@ -73,12 +73,6 @@ export async function updateEventStatus(
   return graphqlImpl.updateEventStatus(id, status);
 }
 
-export async function deleteEventReview(
-  reviewId: number,
-): Promise<AdminEventMutationResponse> {
-  return graphqlImpl.deleteEventReview(reviewId);
-}
-
 export type {
   AdminBulkDeleteEventsResponse,
   BulkDeleteEventResult,

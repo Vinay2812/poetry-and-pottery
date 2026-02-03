@@ -7,12 +7,8 @@ import type {
   NewsletterStatus,
   NewsletterStatusQuery,
   SubscribeToNewsletterMutation,
-  UnsubscribeFromNewsletterMutation,
 } from "@/graphql/generated/types";
-import {
-  SUBSCRIBE_TO_NEWSLETTER_MUTATION,
-  UNSUBSCRIBE_FROM_NEWSLETTER_MUTATION,
-} from "@/graphql/newsletter.mutation";
+import { SUBSCRIBE_TO_NEWSLETTER_MUTATION } from "@/graphql/newsletter.mutation";
 import { NEWSLETTER_STATUS_QUERY } from "@/graphql/newsletter.query";
 
 export async function getNewsletterStatus(): Promise<NewsletterStatus> {
@@ -44,25 +40,6 @@ export async function subscribeToNewsletter(): Promise<NewsletterMutationRespons
 
   return (
     result.data?.subscribeToNewsletter ?? {
-      success: false,
-      error: "Unknown error",
-    }
-  );
-}
-
-export async function unsubscribeFromNewsletter(): Promise<NewsletterMutationResponse> {
-  const client = getClient();
-
-  const result = await client.mutate<UnsubscribeFromNewsletterMutation>({
-    mutation: UNSUBSCRIBE_FROM_NEWSLETTER_MUTATION,
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return (
-    result.data?.unsubscribeFromNewsletter ?? {
       success: false,
       error: "Unknown error",
     }

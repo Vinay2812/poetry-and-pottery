@@ -64,12 +64,6 @@ export async function toggleProductActive(
   return graphqlImpl.toggleProductActive(id);
 }
 
-export async function deleteProductReview(
-  reviewId: number,
-): Promise<AdminProductMutationResponse> {
-  return graphqlImpl.deleteProductReview(reviewId);
-}
-
 export type {
   AdminBulkDeleteProductsResponse,
   BulkDeleteProductResult,

@@ -32,21 +32,6 @@ export const PRODUCT_REVIEWS_QUERY = gql`
   }
 `;
 
-export const FEATURED_REVIEWS_QUERY = gql`
-  query FeaturedReviews($limit: Int) {
-    featuredReviews(limit: $limit) {
-      id
-      rating
-      review
-      user {
-        id
-        name
-        image
-      }
-    }
-  }
-`;
-
 export const EVENT_REVIEWS_QUERY = gql`
   query EventReviews($eventId: String!, $filter: ReviewsFilterInput) {
     eventReviews(eventId: $eventId, filter: $filter) {

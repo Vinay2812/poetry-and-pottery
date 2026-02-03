@@ -72,12 +72,3 @@ export const REGISTER_FOR_EVENT_MUTATION = gql`
   }
   ${EVENT_REGISTRATION_FIELDS}
 `;
-
-export const CANCEL_REGISTRATION_MUTATION = gql`
-  mutation CancelRegistration($registrationId: String!) {
-    cancelRegistration(registrationId: $registrationId) {
-      success
-      error
-    }
-  }
-`;

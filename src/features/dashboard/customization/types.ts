@@ -1,4 +1,5 @@
 import type {
+  AdminCategoryConfig,
   AdminCustomizationCategorySummary,
   AdminCustomizationOption,
   AdminCustomizationOptionsResponse,
@@ -116,7 +117,7 @@ export interface CustomizationOptionFormData {
  */
 export interface CustomizationOptionFormContainerProps {
   option?: AdminCustomizationOption;
-  categories: AdminCustomizationCategorySummary[];
+  categories: AdminCategoryConfig[];
   types: AdminCustomizationTypeSummary[];
 }
 

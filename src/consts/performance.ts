@@ -1,5 +1,3 @@
-export const DEFAULT_THROTTLE_MS = 500;
-
 export const DEFAULT_DEBOUNCE_MS = 1000;
 
 export const MAX_CART_QUANTITY = 5;

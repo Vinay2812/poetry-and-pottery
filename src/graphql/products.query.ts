@@ -72,53 +72,6 @@ export const PRODUCTS_QUERY = gql`
   }
 `;
 
-export const PRODUCT_BY_SLUG_QUERY = gql`
-  ${COLLECTION_FRAGMENT}
-  query ProductBySlug($slug: String!) {
-    productBySlug(slug: $slug) {
-      id
-      slug
-      name
-      price
-      image_urls
-      reviews_count
-      avg_rating
-      material
-      in_wishlist
-      available_quantity
-      total_quantity
-      color_code
-      color_name
-      description
-      instructions
-      is_active
-      created_at
-      updated_at
-      categories
-      collection {
-        ...CollectionFields
-      }
-      reviews {
-        id
-        user_id
-        rating
-        review
-        image_urls
-        created_at
-        user {
-          id
-          name
-          image
-        }
-        likes {
-          id
-          user_id
-        }
-      }
-    }
-  }
-`;
-
 export const PRODUCT_BY_ID_QUERY = gql`
   ${COLLECTION_FRAGMENT}
   query ProductById($id: Int!) {
@@ -166,84 +119,9 @@ export const PRODUCT_BY_ID_QUERY = gql`
   }
 `;
 
-export const BEST_SELLERS_QUERY = gql`
-  ${COLLECTION_FRAGMENT}
-  query BestSellers($limit: Int, $page: Int) {
-    bestSellers(limit: $limit, page: $page) {
-      products {
-        id
-        slug
-        name
-        price
-        image_urls
-        reviews_count
-        avg_rating
-        material
-        in_wishlist
-        is_active
-        available_quantity
-        total_quantity
-        color_code
-        color_name
-        collection {
-          ...CollectionFields
-        }
-      }
-      total
-      page
-      total_pages
-    }
-  }
-`;
-
-export const RECOMMENDED_PRODUCTS_QUERY = gql`
-  ${COLLECTION_FRAGMENT}
-  query RecommendedProducts($limit: Int, $page: Int, $productId: Int) {
-    recommendedProducts(limit: $limit, page: $page, productId: $productId) {
-      products {
-        id
-        slug
-        name
-        price
-        image_urls
-        reviews_count
-        avg_rating
-        material
-        in_wishlist
-        is_active
-        available_quantity
-        total_quantity
-        color_code
-        color_name
-        collection {
-          ...CollectionFields
-        }
-      }
-      total
-      page
-      total_pages
-    }
-  }
-`;
-
 export const CATEGORIES_QUERY = gql`
   query Categories {
     categories
-  }
-`;
-
-export const CATEGORIES_WITH_IMAGES_QUERY = gql`
-  query CategoriesWithImages {
-    categoriesWithImages {
-      name
-      image_url
-    }
-  }
-`;
-
-export const MATERIALS_QUERY = gql`
-  query Materials {
-    materials
   }
 `;
 

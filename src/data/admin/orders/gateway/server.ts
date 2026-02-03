@@ -11,13 +11,6 @@ export async function updateOrderStatus(
   return graphqlImpl.updateOrderStatus(orderId, status);
 }
 
-export async function updateOrderPrice(
-  orderId: string,
-  total: number,
-): Promise<AdminOrderMutationResponse> {
-  return graphqlImpl.updateOrderPrice(orderId, total);
-}
-
 export async function updateOrderDiscount(
   orderId: string,
   discount: number,

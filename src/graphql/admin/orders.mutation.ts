@@ -9,15 +9,6 @@ export const ADMIN_UPDATE_ORDER_STATUS_MUTATION = gql`
   }
 `;
 
-export const ADMIN_UPDATE_ORDER_PRICE_MUTATION = gql`
-  mutation AdminUpdateOrderPrice($orderId: String!, $total: Float!) {
-    adminUpdateOrderPrice(orderId: $orderId, total: $total) {
-      success
-      error
-    }
-  }
-`;
-
 export const ADMIN_UPDATE_ORDER_DISCOUNT_MUTATION = gql`
   mutation AdminUpdateOrderDiscount($orderId: String!, $discount: Float!) {
     adminUpdateOrderDiscount(orderId: $orderId, discount: $discount) {
