@@ -1,12 +1,12 @@
 "use client";
 
-import { CircleAlertIcon, Loader2 } from "lucide-react";
+import { CircleAlertIcon } from "lucide-react";
 import NextImage, { ImageProps } from "next/image";
 import { useCallback, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
-import { Skeleton } from "../ui/skeleton";
+import { ImageSkeleton } from "@/components/skeletons";
 
 export interface OptimizedImageProps extends Omit<ImageProps, "onError"> {
   fallbackSrc?: string;
@@ -16,27 +16,6 @@ export interface OptimizedImageProps extends Omit<ImageProps, "onError"> {
 
 const DEFAULT_FALLBACK = "/placeholder.jpg";
 
-function ImageSkeleton({
-  width,
-  height,
-}: {
-  width?: number | `${number}`;
-  height?: number | `${number}`;
-}) {
-  return (
-    <div
-      className={cn(
-        "bg-primary-light absolute inset-0 flex items-center justify-center overflow-hidden dark:bg-neutral-800",
-        width && height && `w-[${width}px] h-[${height}px]`,
-      )}
-    >
-      <div className="relative z-10">
-        <Loader2 className="text-primary size-6 animate-spin" />
-      </div>
-    </div>
-  );
-}
-
 function FallbackImage({
   width,
   height,
@@ -44,12 +23,17 @@ function FallbackImage({
   width?: number | `${number}`;
   height?: number | `${number}`;
 }) {
+  const style =
+    width && height
+      ? { width: Number(width), height: Number(height) }
+      : undefined;
+
   return (
     <div
       className={cn(
         "bg-primary-light absolute inset-0 z-10 flex items-center justify-center overflow-hidden dark:bg-neutral-800",
-        width && height && `w-[${width}px] h-[${height}px]`,
       )}
+      style={style}
     >
       <CircleAlertIcon className="text-primary size-6" />
     </div>

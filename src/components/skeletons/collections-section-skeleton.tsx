@@ -6,17 +6,36 @@ import { cn } from "@/lib/utils";
 
 interface CollectionsSectionSkeletonProps {
   className?: string;
+  title?: string;
+  subtitle?: string;
+  viewAllLabel?: string;
+  viewAllHref?: string;
 }
 
 export function CollectionsSectionSkeleton({
   className,
+  title = "Shop by Collection",
+  subtitle = "Explore our curated seasonal collections",
+  viewAllLabel = "View All",
+  viewAllHref,
 }: CollectionsSectionSkeletonProps) {
   return (
     <section className={cn("relative", className)}>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <Skeleton className="h-8 w-48 lg:h-9 lg:w-64" />
-        <Skeleton className="h-5 w-20" />
+        <div>
+          <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
+            {title}
+          </h2>
+          <p className="text-muted-foreground mt-2 text-sm lg:text-base">
+            {subtitle}
+          </p>
+        </div>
+        {viewAllHref ? (
+          <span className="text-primary text-sm font-medium">
+            {viewAllLabel}
+          </span>
+        ) : null}
       </div>
 
       {/* Grid Layout */}

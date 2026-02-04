@@ -4,9 +4,10 @@ import { DEFAULT_ROOT_MARGIN } from "@/consts/performance";
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useEventFilters } from "@/features/events/hooks/use-event-filters";
+import { useQuickReserve } from "@/features/events/hooks/use-quick-reserve";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { EventCard } from "@/components/cards";
@@ -22,12 +23,20 @@ interface UpcomingEventsClientProps {
     total: number;
     totalPages: number;
   };
+  registeredEventIds?: string[];
+  excludeRegistered?: boolean;
 }
 
 export function UpcomingEventsClient({
   initialEvents,
   initialPagination,
+  registeredEventIds = [],
+  excludeRegistered = false,
 }: UpcomingEventsClientProps) {
+  const [registeredIds, setRegisteredIds] = useState(
+    () => new Set(registeredEventIds),
+  );
+  const { reserveSeat, isLoading } = useQuickReserve();
   const { filters, setSearch, setEventType, setSort, getQueryString } =
     useEventFilters();
 
@@ -45,7 +54,7 @@ export function UpcomingEventsClient({
         ? EventType.PotteryWorkshop
         : EventType.OpenMic;
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["upcoming-events", eventTypeForQuery, searchQuery],
       queryFn: async ({ pageParam = 1 }) => {
@@ -110,7 +119,7 @@ export function UpcomingEventsClient({
     });
 
     // Sort events based on sortBy
-    return [...uniqueEvents].sort((a, b) => {
+    const sorted = [...uniqueEvents].sort((a, b) => {
       switch (sortBy) {
         case "price-low":
           return a.price - b.price;
@@ -123,9 +132,27 @@ export function UpcomingEventsClient({
           );
       }
     });
-  }, [data, sortBy]);
+
+    if (!excludeRegistered) {
+      return sorted;
+    }
+
+    return sorted.filter((event) => !registeredIds.has(event.id));
+  }, [data, sortBy, excludeRegistered, registeredIds]);
 
   const totalEvents = data?.pages[0]?.total ?? initialPagination.total;
+  const hasVisibleEvents = events.length > 0;
+  const shouldAutoFetchMore =
+    excludeRegistered &&
+    !hasVisibleEvents &&
+    hasNextPage &&
+    !isFetchingNextPage;
+
+  useEffect(() => {
+    if (shouldAutoFetchMore) {
+      fetchNextPage();
+    }
+  }, [shouldAutoFetchMore, fetchNextPage]);
 
   return (
     <EventsListLayout
@@ -138,7 +165,7 @@ export function UpcomingEventsClient({
       onSearchChange={setSearch}
       queryString={getQueryString()}
     >
-      {events.length > 0 ? (
+      {hasVisibleEvents ? (
         <>
           <StaggeredGrid className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
             {events.map((event) => (
@@ -156,6 +183,11 @@ export function UpcomingEventsClient({
             </div>
           )}
         </>
+      ) : shouldAutoFetchMore || isFetchingNextPage ? (
+        <div className="flex items-center justify-center gap-2 py-12 text-sm text-neutral-500">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          Finding more events...
+        </div>
       ) : (
         <EmptyState
           icon={Sparkles}

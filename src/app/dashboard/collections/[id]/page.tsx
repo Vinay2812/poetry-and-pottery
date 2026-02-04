@@ -9,17 +9,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { DashboardSectionSkeleton } from "@/components/skeletons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-function SectionFallback() {
-  return (
-    <div className="text-muted-foreground rounded-2xl border border-neutral-200 bg-white p-6 text-sm">
-      Loading section...
-    </div>
-  );
-}
 
 const STATUS_BADGE_CONFIG: Record<
   ReturnType<typeof getCollectionStatus>,
@@ -96,13 +89,13 @@ export default async function CollectionDetailPage({
         </TabsList>
 
         <TabsContent value="details">
-          <Suspense fallback={<SectionFallback />}>
+          <Suspense fallback={<DashboardSectionSkeleton />}>
             <CollectionFormContainer collection={collection} />
           </Suspense>
         </TabsContent>
 
         <TabsContent value="products">
-          <Suspense fallback={<SectionFallback />}>
+          <Suspense fallback={<DashboardSectionSkeleton />}>
             <CollectionProductsContainer collection={collection} />
           </Suspense>
         </TabsContent>

@@ -59,8 +59,8 @@ export function AdminRouteGuardProvider({
     }
   }, [isLoaded, isSignedIn, router, sessionClaims]);
 
-  // Show loading while checking auth status
-  if (!isLoaded) {
+  // Show loading only for admin routes
+  if (!isLoaded && isAdminRoute) {
     return <DashboardSkeleton />;
   }
 

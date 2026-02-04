@@ -2,6 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+import { CustomizeOptionsSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
@@ -18,23 +19,7 @@ export function OptionsSelector({
   canContinue,
 }: OptionsSelectorProps) {
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="space-y-3">
-            <div className="h-5 w-24 animate-pulse rounded bg-neutral-200" />
-            <div className="flex flex-wrap gap-2">
-              {Array.from({ length: 4 }).map((_, j) => (
-                <div
-                  key={j}
-                  className="h-10 w-24 animate-pulse rounded-full bg-neutral-200"
-                />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <CustomizeOptionsSkeleton />;
   }
 
   return (

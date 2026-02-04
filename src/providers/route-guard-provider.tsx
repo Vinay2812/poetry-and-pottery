@@ -46,8 +46,8 @@ export function RouteGuardProvider({ children }: RouteGuardProviderProps) {
     }
   }, [isLoaded, isSignedIn, router, sessionClaims]);
 
-  // Show loading while checking auth status
-  if (!isLoaded) {
+  // Show loading only for auth-required routes
+  if (!isLoaded && isAuthRequiredRoute) {
     return <PageSkeleton />;
   }
 

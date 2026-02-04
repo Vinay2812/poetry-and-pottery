@@ -30,7 +30,14 @@ export function RecommendedProductsContainer({
   });
 
   if (isLoading) {
-    return <ProductCarouselSkeleton className={className} />;
+    return (
+      <ProductCarouselSkeleton
+        className={className}
+        title={title}
+        subtitle={subtitle}
+        viewAllHref={viewAllHref}
+      />
+    );
   }
 
   if (products.length === 0) {

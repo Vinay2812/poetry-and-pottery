@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { CustomizeCategorySkeleton } from "@/components/skeletons";
+
 import { cn } from "@/lib/utils";
 
 import type { CategorySelectorProps } from "../types";
@@ -12,16 +14,7 @@ export function CategorySelector({
   onSelect,
 }: CategorySelectorProps) {
   if (isLoading) {
-    return (
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-40 animate-pulse rounded-xl bg-neutral-200"
-          />
-        ))}
-      </div>
-    );
+    return <CustomizeCategorySkeleton />;
   }
 
   if (categories.length === 0) {

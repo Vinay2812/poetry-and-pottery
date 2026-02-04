@@ -15,19 +15,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { DashboardSectionSkeleton } from "@/components/skeletons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { getEventStatusColor } from "@/lib/status-utils";
-
-function SectionFallback() {
-  return (
-    <div className="text-muted-foreground rounded-2xl border border-neutral-200 bg-white p-6 text-sm">
-      Loading section...
-    </div>
-  );
-}
 
 interface EventDetailPageProps {
   params: Promise<{ id: string }>;
@@ -83,7 +76,7 @@ export default async function EventDetailPage({
         </TabsList>
 
         <TabsContent value="details">
-          <Suspense fallback={<SectionFallback />}>
+          <Suspense fallback={<DashboardSectionSkeleton />}>
             <EventFormContainer
               event={event}
               statusOptions={statusOptions}
@@ -93,7 +86,7 @@ export default async function EventDetailPage({
         </TabsContent>
 
         <TabsContent value="registrations">
-          <Suspense fallback={<SectionFallback />}>
+          <Suspense fallback={<DashboardSectionSkeleton />}>
             <EventRegistrationsSection
               eventId={id}
               registrations={registrationsData.registrations}
@@ -104,7 +97,7 @@ export default async function EventDetailPage({
         </TabsContent>
 
         <TabsContent value="reviews">
-          <Suspense fallback={<SectionFallback />}>
+          <Suspense fallback={<DashboardSectionSkeleton />}>
             <EventReviewsSection
               eventId={id}
               reviews={reviewsData.reviews}

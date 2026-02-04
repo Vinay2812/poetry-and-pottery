@@ -33,6 +33,8 @@ export function useOrdersQuery({
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["orders", searchQuery],
+      staleTime: 0,
+      refetchOnMount: "always",
       queryFn: async ({ pageParam = 1 }) => {
         // GraphQL mode: use Apollo lazy query
         const { data: gqlData } = await fetchGraphQL({

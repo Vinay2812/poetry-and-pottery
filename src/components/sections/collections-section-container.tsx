@@ -22,7 +22,14 @@ export function CollectionsSectionContainer({
   const { data, loading, error } = useCollectionsQuery();
 
   if (loading) {
-    return <CollectionsSectionSkeleton className={className} />;
+    return (
+      <CollectionsSectionSkeleton
+        className={className}
+        title={title}
+        subtitle={subtitle}
+        viewAllHref={viewAllHref}
+      />
+    );
   }
 
   if (error || !data?.collections) {

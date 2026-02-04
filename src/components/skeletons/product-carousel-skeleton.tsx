@@ -5,18 +5,39 @@ import { cn } from "@/lib/utils";
 interface ProductCarouselSkeletonProps {
   className?: string;
   showTitle?: boolean;
+  title?: string;
+  subtitle?: string;
+  viewAllLabel?: string;
+  viewAllHref?: string;
 }
 
 export function ProductCarouselSkeleton({
   className,
   showTitle = true,
+  title = "Curated Favorites",
+  subtitle = "Handpicked pieces for your home.",
+  viewAllLabel = "View All →",
+  viewAllHref,
 }: ProductCarouselSkeletonProps) {
   return (
     <section className={cn("relative", className)}>
       {showTitle && (
         <div className="mb-4 lg:mb-6">
-          <Skeleton className="h-7 w-48" />
-          <Skeleton className="mt-2 h-4 w-64" />
+          <div className="flex items-center justify-between">
+            <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
+              {title}
+            </h2>
+            {viewAllHref ? (
+              <span className="text-primary text-sm font-medium">
+                {viewAllLabel}
+              </span>
+            ) : null}
+          </div>
+          {subtitle && (
+            <p className="text-muted-foreground mt-3 max-w-lg text-base lg:mt-4">
+              {subtitle}
+            </p>
+          )}
         </div>
       )}
 

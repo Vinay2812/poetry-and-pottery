@@ -18,13 +18,7 @@ import {
 } from "@/features/dashboard/home";
 import { Suspense } from "react";
 
-function SectionFallback() {
-  return (
-    <div className="text-muted-foreground rounded-2xl border border-neutral-200 bg-white p-6 text-sm">
-      Loading section...
-    </div>
-  );
-}
+import { DashboardSectionSkeleton } from "@/components/skeletons";
 
 export default async function DashboardPage() {
   const [
@@ -49,7 +43,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-12">
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<DashboardSectionSkeleton />}>
         <HeroStats
           totalRevenue={totalRevenue}
           totalTransactions={totalTransactions}
@@ -62,7 +56,7 @@ export default async function DashboardPage() {
         />
       </Suspense>
 
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<DashboardSectionSkeleton />}>
         <QuickActions
           ordersPending={stats.orders.pending}
           ordersProcessing={stats.orders.processing}
@@ -74,7 +68,7 @@ export default async function DashboardPage() {
       </Suspense>
 
       {/* Recent Activity */}
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<DashboardSectionSkeleton />}>
         <div className="grid gap-12 lg:grid-cols-2">
           <RecentOrdersSection orders={recentOrders} />
           <RecentRegistrationsSection registrations={recentRegistrations} />
@@ -82,14 +76,14 @@ export default async function DashboardPage() {
       </Suspense>
 
       {/* Inventory & Events */}
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<DashboardSectionSkeleton />}>
         <div className="grid gap-12 lg:grid-cols-2">
           <InventoryAlertsSection products={lowStockProducts} />
           <UpcomingEventsSection events={upcomingEvents} />
         </div>
       </Suspense>
 
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<DashboardSectionSkeleton />}>
         <RevenueBreakdownSection
           ordersRevenue={stats.revenue.totalOrders}
           registrationsRevenue={stats.revenue.totalRegistrations}
@@ -101,7 +95,7 @@ export default async function DashboardPage() {
       </Suspense>
 
       {/* Newsletter Subscribers */}
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<DashboardSectionSkeleton />}>
         <NewsletterSection
           subscribers={newsletterSubscribers}
           totalSubscribers={stats.newsletter.totalSubscribers}

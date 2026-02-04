@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { ListingPageHeader } from "@/components/shared";
-import { PageSkeleton } from "@/components/skeletons";
+import { CustomizeWizardSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
   title: "Customize Your Pottery | Poetry & Pottery",
@@ -31,6 +31,12 @@ async function CustomizeContent() {
   const categories = await getCustomizationCategories();
 
   return (
+    <CustomizeWizardContainer initialCategories={categories} />
+  );
+}
+
+export default function CustomizePage() {
+  return (
     <>
       <MobileHeaderContainer title="Customize Pottery" showBack backHref="/" />
 
@@ -42,17 +48,11 @@ async function CustomizeContent() {
             breadcrumbs={[{ label: "Home", href: "/" }, { label: "Customize" }]}
           />
 
-          <CustomizeWizardContainer initialCategories={categories} />
+          <Suspense fallback={<CustomizeWizardSkeleton />}>
+            <CustomizeContent />
+          </Suspense>
         </div>
       </main>
     </>
-  );
-}
-
-export default function CustomizePage() {
-  return (
-    <Suspense fallback={<PageSkeleton />}>
-      <CustomizeContent />
-    </Suspense>
   );
 }

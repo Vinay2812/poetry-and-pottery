@@ -13,17 +13,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { DashboardSectionSkeleton } from "@/components/skeletons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-function SectionFallback() {
-  return (
-    <div className="text-muted-foreground rounded-2xl border border-neutral-200 bg-white p-6 text-sm">
-      Loading section...
-    </div>
-  );
-}
 
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
@@ -91,7 +84,7 @@ export default async function ProductDetailPage({
         </TabsList>
 
         <TabsContent value="details">
-          <Suspense fallback={<SectionFallback />}>
+          <Suspense fallback={<DashboardSectionSkeleton />}>
             <ProductFormContainer
               product={product}
               categories={categories}
@@ -101,7 +94,7 @@ export default async function ProductDetailPage({
         </TabsContent>
 
         <TabsContent value="reviews">
-          <Suspense fallback={<SectionFallback />}>
+          <Suspense fallback={<DashboardSectionSkeleton />}>
             <ProductReviewsSection
               productId={productId}
               reviews={reviewsData.reviews}

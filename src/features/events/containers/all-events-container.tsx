@@ -1,21 +1,28 @@
 "use client";
 
-import { Suspense, useCallback, useMemo } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 
 import { PastEventsSkeleton } from "@/components/skeletons";
 
 import { EventType } from "@/graphql/generated/graphql";
+import type { EventBase } from "@/data/events/types";
 
 import { AllEvents } from "../components/all-events";
 import { useAllEventsQuery } from "../hooks/use-all-events-query";
 import { useEventFilters } from "../hooks/use-event-filters";
 import { usePastEventsQuery } from "../hooks/use-past-events-query";
+import { useQuickReserve } from "../hooks/use-quick-reserve";
 import type { AllEventsContainerProps, AllEventsViewModel } from "../types";
 
 export function AllEventsContainer({
   initialUpcomingEvents,
   initialUpcomingPagination,
+  registeredEventIds = [],
 }: AllEventsContainerProps) {
+  const [registeredIds, setRegisteredIds] = useState(
+    () => new Set(registeredEventIds),
+  );
+  const { reserveSeat, isLoading } = useQuickReserve();
   const { filters, setSearch, setEventType, setSort, getQueryString } =
     useEventFilters();
 
@@ -136,6 +143,20 @@ export function AllEventsContainer({
     [hasNextUpcoming, upcomingLoadMoreRef, pastLoadMoreRef],
   );
 
+  const handleQuickReserve = useCallback(
+    async (event: EventBase) => {
+      const success = await reserveSeat(event);
+      if (success) {
+        setRegisteredIds((prev) => {
+          const next = new Set(prev);
+          next.add(event.id);
+          return next;
+        });
+      }
+    },
+    [reserveSeat],
+  );
+
   return (
     <Suspense fallback={<PastEventsSkeleton />}>
       <AllEvents
@@ -150,6 +171,10 @@ export function AllEventsContainer({
         queryString={getQueryString()}
         pastEventsLoading={isPastEventsLoading}
         pastEventsSkeleton={<PastEventsSkeleton />}
+        registeredEventIds={registeredIds}
+        showQuickReserve
+        onQuickReserve={handleQuickReserve}
+        isQuickReserveLoading={isLoading}
       />
     </Suspense>
   );

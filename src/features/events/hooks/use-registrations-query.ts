@@ -31,8 +31,12 @@ export function useRegistrationsQuery({
   initialCompletedPagination,
   searchQuery,
 }: UseRegistrationsQueryOptions) {
-  const [fetchUpcomingGraphQL] = useUpcomingRegistrationsLazyQuery();
-  const [fetchCompletedGraphQL] = useCompletedRegistrationsLazyQuery();
+  const [fetchUpcomingGraphQL] = useUpcomingRegistrationsLazyQuery({
+    fetchPolicy: "network-only",
+  });
+  const [fetchCompletedGraphQL] = useCompletedRegistrationsLazyQuery({
+    fetchPolicy: "network-only",
+  });
 
   // Upcoming registrations infinite query
   const {
@@ -42,6 +46,8 @@ export function useRegistrationsQuery({
     isFetchingNextPage: isFetchingNextUpcoming,
   } = useInfiniteQuery({
     queryKey: ["registrations-upcoming", searchQuery],
+    staleTime: 0,
+    refetchOnMount: "always",
     queryFn: async ({ pageParam = 1 }) => {
       // GraphQL mode: use Apollo lazy query
       const { data: gqlData } = await fetchUpcomingGraphQL({
@@ -92,6 +98,8 @@ export function useRegistrationsQuery({
     isFetchingNextPage: isFetchingNextCompleted,
   } = useInfiniteQuery({
     queryKey: ["registrations-completed", searchQuery],
+    staleTime: 0,
+    refetchOnMount: "always",
     queryFn: async ({ pageParam = 1 }) => {
       // GraphQL mode: use Apollo lazy query
       const { data: gqlData } = await fetchCompletedGraphQL({

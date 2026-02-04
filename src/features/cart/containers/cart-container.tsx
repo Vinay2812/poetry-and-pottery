@@ -12,6 +12,7 @@ import { useRouteAnimation } from "@/components/providers/route-animation-provid
 
 import { contactBusiness } from "@/lib/contact-business";
 
+import { useCartLazyQuery } from "@/graphql/generated/graphql";
 import type { CartItem, UserAddress } from "@/graphql/generated/types";
 
 import { Cart } from "../components/cart";
@@ -73,7 +74,7 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
 
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
-  const { addToast } = useUIStore();
+  const { addToast, cartCount } = useUIStore();
   const { requireAuth } = useAuthAction();
   const { mutate: createOrderMutate } = useCreateOrder();
   const [isOrdering, setIsOrdering] = useState(false);
@@ -92,6 +93,9 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
   } = useCart();
 
   const { addToWishlist } = useWishlist();
+  const [fetchCart, { data: cartData }] = useCartLazyQuery({
+    fetchPolicy: "network-only",
+  });
 
   // Use cart items from hook after hydration; otherwise fallback to initial data.
   const displayItems = hasHydrated ? cartItems : mappedInitialItems;
@@ -102,6 +106,28 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
       setHasHydrated(true);
     }
   }, [mappedInitialItems, hydrate, hasHydrated]);
+
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
+
+  useEffect(() => {
+    const items = cartData?.cart?.items;
+    if (!items) return;
+    hydrate(items.map(mapToCartWithProduct));
+  }, [cartData, hydrate]);
+
+  const localItemCount = useMemo(
+    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    [cartItems],
+  );
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+    if (cartCount !== localItemCount) {
+      fetchCart();
+    }
+  }, [cartCount, localItemCount, hasHydrated, fetchCart]);
 
   // Build cart item view models with availability status
   const allCartItemViewModels: CartItemViewModel[] = useMemo(

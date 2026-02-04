@@ -152,12 +152,17 @@ export interface AllEventsProps {
   queryString?: string;
   pastEventsLoading?: boolean;
   pastEventsSkeleton?: React.ReactNode;
+  registeredEventIds?: Set<string>;
+  showQuickReserve?: boolean;
+  onQuickReserve?: (event: EventBase) => void;
+  isQuickReserveLoading?: (eventId: string) => boolean;
 }
 
 // Props for the AllEventsContainer.
 export interface AllEventsContainerProps {
   initialUpcomingEvents: EventBase[];
   initialUpcomingPagination: PaginationData;
+  registeredEventIds?: string[];
 }
 
 // View model for the Registrations component.

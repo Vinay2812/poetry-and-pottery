@@ -25,6 +25,8 @@ import { useCallback, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
+import { KanbanBoardSkeleton } from "@/components/skeletons";
+
 export interface KanbanColumn<T> {
   id: string;
   title: string;
@@ -220,23 +222,7 @@ export function KanbanBoard<T extends { id: string }>({
   );
 
   if (isLoading) {
-    return (
-      <div className="grid auto-cols-fr grid-flow-col gap-4 overflow-x-auto pb-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="min-w-[280px]">
-            <div className="mb-3 h-8 w-24 animate-pulse rounded-lg bg-neutral-100" />
-            <div className="space-y-3">
-              {[1, 2].map((j) => (
-                <div
-                  key={j}
-                  className="h-24 animate-pulse rounded-xl bg-neutral-100"
-                />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <KanbanBoardSkeleton />;
   }
 
   return (

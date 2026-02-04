@@ -471,7 +471,14 @@ export function ProductDetail({
 
           {/* Recommended Products */}
           <Suspense
-            fallback={<ProductCarouselSkeleton className="mt-12 lg:mt-20" />}
+            fallback={
+              <ProductCarouselSkeleton
+                className="mt-12 lg:mt-20"
+                title="You might also like"
+                subtitle="Handpicked pieces for your home."
+                viewAllHref="/products"
+              />
+            }
           >
             <RecommendedProductsContainer
               productId={product.id}
