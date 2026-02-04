@@ -11,10 +11,6 @@ import type { ReactNode } from "react";
 
 import { NavigationProgress } from "@/components/shared";
 
-type ViewTransitionDocument = Document & {
-  startViewTransition?: (callback: () => void) => void;
-};
-
 interface RouteAnimationContextValue {
   isPending: boolean;
   startNavigation: (action: () => void) => void;
@@ -31,26 +27,13 @@ interface RouteAnimationProviderProps {
 export function RouteAnimationProvider({
   children,
 }: RouteAnimationProviderProps) {
-  const [isPending, startTransition] = useTransition();
-
-  const startNavigation = useCallback(
-    (action: () => void) => {
-      const viewTransitionDocument =
-        typeof document === "undefined"
-          ? null
-          : (document as ViewTransitionDocument);
-
-      if (viewTransitionDocument?.startViewTransition) {
-        viewTransitionDocument.startViewTransition(() => {
-          startTransition(action);
-        });
-        return;
-      }
-
-      startTransition(action);
-    },
-    [startTransition],
-  );
+  const [isPending] = useTransition();
+  const startNavigation = useCallback((action: () => void) => {
+    // startTransition(() => {
+    //   action();
+    // });
+    action();
+  }, []);
 
   const value = useMemo(
     () => ({
