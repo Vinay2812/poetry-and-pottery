@@ -1,5 +1,7 @@
 "use server";
 
+import { cacheLife, cacheTag } from "next/cache";
+
 import type {
   AboutPageContent,
   AdminContentMutationResponse,
@@ -11,7 +13,6 @@ import type {
   ShippingPageContent,
   TermsPageContent,
 } from "@/graphql/generated/types";
-import { cacheLife, cacheTag } from "next/cache";
 
 import * as graphqlImpl from "../server/graphql";
 

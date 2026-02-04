@@ -1,12 +1,13 @@
 "use server";
 
+import { cacheLife, cacheTag } from "next/cache";
+
 import type {
   CustomizationCategoriesFilterInput,
   CustomizationCategoriesResponse,
   CustomizationOptionsFilterInput,
   CustomizationOptionsResponse,
 } from "@/graphql/generated/types";
-import { cacheLife, cacheTag } from "next/cache";
 
 import * as graphqlImpl from "../server/graphql";
 
@@ -23,7 +24,10 @@ export async function getCustomizationOptionsByCategory(
   filter: CustomizationOptionsFilterInput,
 ): Promise<CustomizationOptionsResponse> {
   "use cache";
-  cacheTag("customization", `customization:category:${filter.customize_category_id}`);
+  cacheTag(
+    "customization",
+    `customization:category:${filter.customize_category_id}`,
+  );
   cacheLife("customization");
   return graphqlImpl.getCustomizationOptionsByCategory(filter);
 }

@@ -67,9 +67,7 @@ async function EventDetailContent({ params }: EventDetailPageProps) {
   return <UnifiedEventDetailContainer event={eventResult.data} />;
 }
 
-export default function EventDetailPage({
-  params,
-}: EventDetailPageProps) {
+export default function EventDetailPage({ params }: EventDetailPageProps) {
   return (
     <Suspense fallback={<EventDetailSkeleton />}>
       <EventDetailContent params={params} />

@@ -1,11 +1,12 @@
 "use server";
 
+import { cacheLife, cacheTag } from "next/cache";
+
 import type {
   ProductDetail,
   ProductOrderBy,
   ProductsResponse,
 } from "@/graphql/generated/types";
-import { cacheLife, cacheTag } from "next/cache";
 
 import * as graphqlImpl from "../server/graphql";
 

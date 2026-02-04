@@ -1,5 +1,7 @@
 "use server";
 
+import { cacheLife, cacheTag } from "next/cache";
+
 import type {
   EventDetail,
   EventsFilterInput,
@@ -7,7 +9,6 @@ import type {
   RegistrationsFilterInput,
   RegistrationsResponse,
 } from "@/graphql/generated/types";
-import { cacheLife, cacheTag } from "next/cache";
 
 import * as graphqlImpl from "../server/graphql";
 
