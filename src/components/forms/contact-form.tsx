@@ -5,12 +5,26 @@ import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 
+import { submitContactForm } from "@/lib/contact-business";
+
 import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
 
 export function ContactForm() {
-  const handleSubmit = async () => {
-    // Form submission logic would go here
+  const handleSubmit = async (formData: FormData) => {
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const subject = formData.get("subject") as string;
+    const message = formData.get("message") as string;
+
+    await submitContactForm({
+      name,
+      email,
+      phone: phone || undefined,
+      subject,
+      message,
+    });
   };
 
   return (
@@ -42,8 +56,10 @@ export function ContactForm() {
         <FormInput
           label="Phone (optional)"
           name="phone"
-          type="tel"
+          type="number"
           placeholder="+91 98765 43210"
+          className="appearance-none"
+          inputMode="numeric"
         />
 
         {/* Subject */}
@@ -61,9 +77,9 @@ export function ContactForm() {
         as="textarea"
         label="Message"
         name="message"
-        rows={5}
+        rows={2}
         placeholder="Tell us how we can help..."
-        className="min-h-[140px] resize-none"
+        className="min-h-[40px] resize-none"
         required
       />
 

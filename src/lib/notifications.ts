@@ -43,7 +43,20 @@ export interface OrderNotificationData {
   }>;
 }
 
-export type NotificationData = EventNotificationData | OrderNotificationData;
+// Contact form notification
+export interface ContactNotificationData {
+  type: "contact";
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+}
+
+export type NotificationData =
+  | EventNotificationData
+  | OrderNotificationData
+  | ContactNotificationData;
 
 function generateEventEmailHtml(data: EventNotificationData): string {
   const formattedDate = formatEventDateFull(data.eventDate);
@@ -68,6 +81,32 @@ function generateEventEmailHtml(data: EventNotificationData): string {
       </div>
 
       <p style="color: #666; font-size: 14px;">Please confirm this registration with the customer.</p>
+    </div>
+  `;
+}
+
+function generateContactEmailHtml(data: ContactNotificationData): string {
+  return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #1a1a1a;">New Contact Form Submission</h2>
+
+      <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 8px 0;"><strong>Subject:</strong> ${data.subject}</p>
+      </div>
+
+      <h3 style="color: #1a1a1a;">Message</h3>
+      <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 0; white-space: pre-wrap;">${data.message}</p>
+      </div>
+
+      <h3 style="color: #1a1a1a;">Contact Details</h3>
+      <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 8px 0;"><strong>Name:</strong> ${data.name}</p>
+        <p style="margin: 8px 0;"><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+        ${data.phone ? `<p style="margin: 8px 0;"><strong>Phone:</strong> ${data.phone}</p>` : ""}
+      </div>
+
+      <p style="color: #666; font-size: 14px;">Please respond to this inquiry.</p>
     </div>
   `;
 }
@@ -148,14 +187,19 @@ export async function sendRegistrationNotification(
   }
 
   try {
-    const isEvent = data.type === "event";
-    const subject = isEvent
-      ? `New Workshop Registration - ${data.eventTitle}`
-      : `New Order - #${data.orderId}`;
+    let subject: string;
+    let html: string;
 
-    const html = isEvent
-      ? generateEventEmailHtml(data)
-      : generateOrderEmailHtml(data);
+    if (data.type === "event") {
+      subject = `New Workshop Registration - ${data.eventTitle}`;
+      html = generateEventEmailHtml(data);
+    } else if (data.type === "order") {
+      subject = `New Order - #${data.orderId}`;
+      html = generateOrderEmailHtml(data);
+    } else {
+      subject = `Contact Form: ${data.subject}`;
+      html = generateContactEmailHtml(data);
+    }
 
     await transporter.sendMail({
       from: `"Poetry & Pottery" <${gmailUser}>`,

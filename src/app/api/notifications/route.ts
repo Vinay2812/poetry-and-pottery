@@ -35,6 +35,13 @@ export async function POST(request: Request) {
           { status: 400 },
         );
       }
+    } else if (body.type === "contact") {
+      if (!body.name || !body.email || !body.subject || !body.message) {
+        return NextResponse.json(
+          { error: "Missing required fields for contact notification" },
+          { status: 400 },
+        );
+      }
     } else {
       return NextResponse.json(
         { error: "Invalid notification type" },

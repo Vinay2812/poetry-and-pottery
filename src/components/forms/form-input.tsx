@@ -20,7 +20,7 @@ interface FormTextareaProps
 type FormFieldProps = FormInputProps | FormTextareaProps;
 
 const inputStyles =
-  "h-10 w-full rounded-lg border border-neutral-200 bg-white px-3.5 text-sm transition-colors duration-150 placeholder:text-muted-foreground hover:border-neutral-300 focus:border-primary focus:ring-3 focus:ring-primary/10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50";
+  "h-10 w-full rounded-lg border border-neutral-200 bg-white px-3.5 text-sm transition-colors duration-150 placeholder:text-muted-foreground hover:border-neutral-300 focus:border-primary focus:ring-3 focus:ring-primary/10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 appearance-none";
 
 export const FormInput = forwardRef<
   HTMLInputElement | HTMLTextAreaElement,

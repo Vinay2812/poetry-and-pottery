@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowRight, Mic, Palette } from "lucide-react";
+import { Mic, Palette } from "lucide-react";
 import Link from "next/link";
 
+import { ContactForm } from "@/components/forms";
 import { Button } from "@/components/ui/button";
 
 import { type EventBase, EventType } from "@/graphql/generated/graphql";
@@ -115,6 +116,24 @@ function EventCategory({ title, events, viewAllHref }: EventCategoryProps) {
   );
 }
 
+function ContactUsCTA() {
+  return (
+    <div>
+      <h2 className="font-display mb-5 text-xl font-bold tracking-tight lg:mb-6 lg:text-2xl">
+        Contact Us
+      </h2>
+
+      <div className="shadow-soft rounded-2xl bg-white p-6 lg:p-8">
+        <p className="text-muted-foreground mb-6 text-sm lg:text-base">
+          Have questions about our pottery or want to schedule a visit? We would
+          love to hear from you.
+        </p>
+        <ContactForm />
+      </div>
+    </div>
+  );
+}
+
 interface WorkshopsSectionProps {
   potteryEvents: EventBase[];
   poetryEvents: EventBase[];
@@ -125,7 +144,7 @@ export function WorkshopsSection({
   poetryEvents,
 }: WorkshopsSectionProps) {
   if (potteryEvents.length === 0 && poetryEvents.length === 0) {
-    return null;
+    return <ContactUsCTA />;
   }
 
   return (

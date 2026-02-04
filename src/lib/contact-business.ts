@@ -225,3 +225,65 @@ export async function contactBusiness(
 
   return { success: true };
 }
+
+export interface ContactFormData {
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+}
+
+export async function sendContactEmail(
+  data: ContactFormData,
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const response = await fetch("/api/notifications", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "contact",
+        ...data,
+      }),
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Failed to send contact email:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to send email",
+    };
+  }
+}
+
+export function openWhatsAppContact(data: ContactFormData): void {
+  const message =
+    `Hi! I would like to get in touch regarding: *${data.subject}*\n\n` +
+    `*Message:*\n${data.message}\n\n` +
+    `*My Details:*\n` +
+    `Name: ${data.name}\n` +
+    `Email: ${data.email}\n` +
+    `${data.phone ? `Phone: ${data.phone}\n` : ""}` +
+    `\nLooking forward to hearing from you!`;
+
+  openWhatsAppUrl(message);
+}
+
+export async function submitContactForm(
+  data: ContactFormData,
+): Promise<{ success: boolean; error?: string }> {
+  // Send email notification first
+  const emailResult = await sendContactEmail(data);
+
+  if (!emailResult.success) {
+    console.warn("Contact email failed:", emailResult.error);
+    // Continue to WhatsApp even if email fails
+  }
+
+  // Open WhatsApp
+  openWhatsAppContact(data);
+
+  return { success: true };
+}
