@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/lib/apollo";
+import { getClient, getPublicClient } from "@/lib/apollo";
 
 import { REGISTER_FOR_EVENT_MUTATION } from "@/graphql/events.mutation";
 import {
@@ -41,7 +41,7 @@ import type {
 export async function getEvents(
   filter?: EventsFilterInput,
 ): Promise<EventsResponse> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<EventsQuery, EventsQueryVariables>({
     query: EVENTS_QUERY,
@@ -65,7 +65,7 @@ export async function getEvents(
 }
 
 export async function getEventById(id: string): Promise<EventDetail | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<EventByIdQuery, EventByIdQueryVariables>({
     query: EVENT_BY_ID_QUERY,
@@ -82,7 +82,7 @@ export async function getEventById(id: string): Promise<EventDetail | null> {
 export async function getUpcomingEvents(
   filter?: EventsFilterInput,
 ): Promise<EventsResponse> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<
     UpcomingEventsQuery,
@@ -111,7 +111,7 @@ export async function getUpcomingEvents(
 export async function getPastEvents(
   filter?: EventsFilterInput,
 ): Promise<EventsResponse> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<PastEventsQuery, PastEventsQueryVariables>({
     query: PAST_EVENTS_QUERY,

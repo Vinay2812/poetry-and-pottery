@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/lib/apollo";
+import { getPublicClient } from "@/lib/apollo";
 
 import {
   CUSTOMIZATION_CATEGORIES_QUERY,
@@ -22,7 +22,7 @@ import type {
 export async function getCustomizationCategories(
   filter?: CustomizationCategoriesFilterInput,
 ): Promise<CustomizationCategoriesResponse> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<
     CustomizationCategoriesQuery,
@@ -42,7 +42,7 @@ export async function getCustomizationCategories(
 export async function getCustomizationOptionsByCategory(
   filter: CustomizationOptionsFilterInput,
 ): Promise<CustomizationOptionsResponse> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<
     CustomizationOptionsByCategoryQuery,
@@ -60,7 +60,7 @@ export async function getCustomizationOptionsByCategory(
 }
 
 export async function getCustomizationTypes(): Promise<string[]> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<CustomizationTypesQuery>({
     query: CUSTOMIZATION_TYPES_QUERY,

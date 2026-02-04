@@ -169,29 +169,29 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
   });
 });
 
-// export const { getClient: getClient, query: publicApolloClient } =
-//   registerApolloClient(() => {
-//     const httpLink = new HttpLink({
-//       uri: SERVER_GRAPHQL_ENDPOINT,
-//       credentials: "include",
-//       headers: {
-//         "content-type": "application/json",
-//         origin: DOMAIN,
-//       },
-//     });
+export const { getClient: getPublicClient, query: publicApolloClient } =
+  registerApolloClient(() => {
+    const httpLink = new HttpLink({
+      uri: SERVER_GRAPHQL_ENDPOINT,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+        origin: DOMAIN,
+      },
+    });
 
-//     return new ApolloClient({
-//       cache: new InMemoryCache(),
-//       link: httpLink,
-//       defaultOptions: {
-//         watchQuery: {
-//           fetchPolicy: "cache-and-network",
-//           errorPolicy: "ignore",
-//         },
-//         query: {
-//           fetchPolicy: "network-only",
-//           errorPolicy: "all",
-//         },
-//       },
-//     });
-//   });
+    return new ApolloClient({
+      cache: new InMemoryCache(),
+      link: httpLink,
+      defaultOptions: {
+        watchQuery: {
+          fetchPolicy: "cache-and-network",
+          errorPolicy: "ignore",
+        },
+        query: {
+          fetchPolicy: "network-only",
+          errorPolicy: "all",
+        },
+      },
+    });
+  });

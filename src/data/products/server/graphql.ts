@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/lib/apollo";
+import { getPublicClient } from "@/lib/apollo";
 
 import type {
   CategoriesQuery,
@@ -30,7 +30,7 @@ export async function getProducts(params: {
   order_by?: ProductOrderBy;
   archive?: boolean;
 }): Promise<ProductsResponse> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const variables: ProductsQueryVariables = {
     filter: params,
@@ -55,7 +55,7 @@ export async function getProducts(params: {
 export async function getProductById(
   id: number,
 ): Promise<ProductDetail | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<
     ProductByIdQuery,
@@ -73,7 +73,7 @@ export async function getProductById(
 }
 
 export async function getCategories(): Promise<string[]> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<CategoriesQuery>({
     query: CATEGORIES_QUERY,

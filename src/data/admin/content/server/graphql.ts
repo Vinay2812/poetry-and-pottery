@@ -1,6 +1,6 @@
 "use server";
 
-import { getClient } from "@/lib/apollo";
+import { getClient, getPublicClient } from "@/lib/apollo";
 
 import {
   ADMIN_TOGGLE_CONTENT_PAGE_ACTIVE_MUTATION,
@@ -120,7 +120,7 @@ export async function toggleContentPageActive(
 
 // Public content functions
 export async function getPublicAboutContent(): Promise<AboutPageContent | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<PublicAboutContentQuery>({
     query: PUBLIC_ABOUT_CONTENT_QUERY,
@@ -134,7 +134,7 @@ export async function getPublicAboutContent(): Promise<AboutPageContent | null> 
 }
 
 export async function getPublicFAQContent(): Promise<FaqPageContent | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<PublicFaqContentQuery>({
     query: PUBLIC_FAQ_CONTENT_QUERY,
@@ -148,7 +148,7 @@ export async function getPublicFAQContent(): Promise<FaqPageContent | null> {
 }
 
 export async function getPublicShippingContent(): Promise<ShippingPageContent | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<PublicShippingContentQuery>({
     query: PUBLIC_SHIPPING_CONTENT_QUERY,
@@ -162,7 +162,7 @@ export async function getPublicShippingContent(): Promise<ShippingPageContent | 
 }
 
 export async function getPublicCareContent(): Promise<CarePageContent | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<PublicCareContentQuery>({
     query: PUBLIC_CARE_CONTENT_QUERY,
@@ -176,7 +176,7 @@ export async function getPublicCareContent(): Promise<CarePageContent | null> {
 }
 
 export async function getPublicPrivacyContent(): Promise<PrivacyPageContent | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<PublicPrivacyContentQuery>({
     query: PUBLIC_PRIVACY_CONTENT_QUERY,
@@ -190,7 +190,7 @@ export async function getPublicPrivacyContent(): Promise<PrivacyPageContent | nu
 }
 
 export async function getPublicTermsContent(): Promise<TermsPageContent | null> {
-  const client = getClient();
+  const client = getPublicClient();
 
   const result = await client.query<PublicTermsContentQuery>({
     query: PUBLIC_TERMS_CONTENT_QUERY,
