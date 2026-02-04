@@ -8,7 +8,7 @@ import { useRouteAnimation } from "@/components/providers/route-animation-provid
 import { GlobalSearch } from "../components/global-search";
 import { useGlobalSearch } from "../hooks/use-global-search";
 
-export function GlobalSearchContainer() {
+export function useGlobalSearchContainer() {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
   const {

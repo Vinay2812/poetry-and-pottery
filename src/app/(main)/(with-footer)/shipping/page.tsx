@@ -1,8 +1,10 @@
 import { getPublicShippingContent } from "@/data/admin/content/gateway/server";
+import { Suspense } from "react";
 
 import { ShippingPageClient } from "@/components/pages";
+import { PageSkeleton } from "@/components/skeletons";
 
-export default async function ShippingPage() {
+async function ShippingContent() {
   const content = await getPublicShippingContent();
 
   if (!content) {
@@ -14,4 +16,12 @@ export default async function ShippingPage() {
   }
 
   return <ShippingPageClient content={content} />;
+}
+
+export default function ShippingPage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <ShippingContent />
+    </Suspense>
+  );
 }

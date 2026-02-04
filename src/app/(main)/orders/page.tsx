@@ -2,8 +2,10 @@ import { getOrders } from "@/data/orders/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { OrdersListContainer } from "@/features/orders";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { ListingPageHeader } from "@/components/shared";
+import { OrdersSkeleton } from "@/components/skeletons";
 
 import { requireAuth } from "@/lib/auth";
 
@@ -24,7 +26,7 @@ interface OrdersPageProps {
   }>;
 }
 
-export default async function OrdersPage({ searchParams }: OrdersPageProps) {
+async function OrdersContent({ searchParams }: OrdersPageProps) {
   await requireAuth();
   const params = await searchParams;
   const search = params.search || undefined;
@@ -60,5 +62,13 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
         </div>
       </main>
     </>
+  );
+}
+
+export default function OrdersPage({ searchParams }: OrdersPageProps) {
+  return (
+    <Suspense fallback={<OrdersSkeleton />}>
+      <OrdersContent searchParams={searchParams} />
+    </Suspense>
   );
 }

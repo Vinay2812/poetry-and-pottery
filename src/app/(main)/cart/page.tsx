@@ -1,10 +1,11 @@
 import { getCart } from "@/data/cart/gateway/server";
 import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { CartSkeleton } from "@/components/skeletons";
 
 import { requireAuth } from "@/lib/auth";
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Shopping Cart | Poetry & Pottery",
@@ -16,10 +17,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CartPage() {
+async function CartContent() {
   await requireAuth();
 
   const cartResult = await getCart();
 
   return <CartContainer initialCartItems={cartResult.items} />;
+}
+
+export default function CartPage() {
+  return (
+    <Suspense fallback={<CartSkeleton />}>
+      <CartContent />
+    </Suspense>
+  );
 }

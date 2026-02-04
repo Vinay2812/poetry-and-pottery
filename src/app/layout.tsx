@@ -2,6 +2,7 @@ import Providers from "@/providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import { Suspense } from "react";
 
 import { RouteAnimationProvider } from "@/components/providers/route-animation-provider";
 
@@ -41,7 +42,9 @@ export default function RootLayout({
         className={`${outfit.variable} ${plusJakartaSans.variable} font-sans antialiased`}
       >
         <RouteAnimationProvider>
-          <Providers>{children}</Providers>
+          <Suspense fallback={null}>
+            <Providers>{children}</Providers>
+          </Suspense>
         </RouteAnimationProvider>
         <SpeedInsights />
       </body>

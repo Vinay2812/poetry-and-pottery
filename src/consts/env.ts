@@ -30,3 +30,25 @@ export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN!;
 
 export const CLIENT_GRAPHQL_ENDPOINT = `${CLIENT_API_ENDPOINT}/graphql`;
 export const SERVER_GRAPHQL_ENDPOINT = `${SERVER_API_ENDPOINT}/graphql`;
+
+export const LOCAL_ADMIN_BYPASS_SECRET =
+  process.env.NEXT_PUBLIC_LOCAL_ADMIN_BYPASS_SECRET || "";
+
+export const allowLocalAdminBypass = (): boolean => {
+  return false;
+  const LOCAL_HOSTNAMES = new Set(["localhost", "127.0.0.1", "::1"]);
+  function isLocalApiEndpoint(endpoint: string): boolean {
+    try {
+      const url = new URL(endpoint);
+      return LOCAL_HOSTNAMES.has(url.hostname);
+    } catch {
+      return false;
+    }
+  }
+  return (
+    LOCAL_ADMIN_BYPASS_SECRET.length > 0 &&
+    process.env.NODE_ENV !== "production" &&
+    (isLocalApiEndpoint(CLIENT_GRAPHQL_ENDPOINT) ||
+      isLocalApiEndpoint(SERVER_GRAPHQL_ENDPOINT))
+  );
+};

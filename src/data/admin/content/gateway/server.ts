@@ -11,6 +11,7 @@ import type {
   ShippingPageContent,
   TermsPageContent,
 } from "@/graphql/generated/types";
+import { cacheLife, cacheTag } from "next/cache";
 
 import * as graphqlImpl from "../server/graphql";
 
@@ -39,25 +40,43 @@ export async function toggleContentPageActive(
 
 // Public content functions
 export async function getPublicAboutContent(): Promise<AboutPageContent | null> {
+  "use cache";
+  cacheTag("content", "content:about");
+  cacheLife("content");
   return graphqlImpl.getPublicAboutContent();
 }
 
 export async function getPublicFAQContent(): Promise<FaqPageContent | null> {
+  "use cache";
+  cacheTag("content", "content:faq");
+  cacheLife("content");
   return graphqlImpl.getPublicFAQContent();
 }
 
 export async function getPublicShippingContent(): Promise<ShippingPageContent | null> {
+  "use cache";
+  cacheTag("content", "content:shipping");
+  cacheLife("content");
   return graphqlImpl.getPublicShippingContent();
 }
 
 export async function getPublicCareContent(): Promise<CarePageContent | null> {
+  "use cache";
+  cacheTag("content", "content:care");
+  cacheLife("content");
   return graphqlImpl.getPublicCareContent();
 }
 
 export async function getPublicPrivacyContent(): Promise<PrivacyPageContent | null> {
+  "use cache";
+  cacheTag("content", "content:privacy");
+  cacheLife("content");
   return graphqlImpl.getPublicPrivacyContent();
 }
 
 export async function getPublicTermsContent(): Promise<TermsPageContent | null> {
+  "use cache";
+  cacheTag("content", "content:terms");
+  cacheLife("content");
   return graphqlImpl.getPublicTermsContent();
 }

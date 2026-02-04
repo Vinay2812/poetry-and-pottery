@@ -1,10 +1,11 @@
 import { getWishlist } from "@/data/wishlist/gateway/server";
 import { WishlistContainer } from "@/features/wishlist";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { WishlistSkeleton } from "@/components/skeletons";
 
 import { requireAuth } from "@/lib/auth";
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "My Wishlist | Poetry & Pottery",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function WishlistPage() {
+async function WishlistContent() {
   await requireAuth();
   // Only fetch wishlist items server-side
   // Recommendations will be fetched client-side for faster initial load
@@ -31,5 +32,13 @@ export default async function WishlistPage() {
         total: wishlistResult.total,
       }}
     />
+  );
+}
+
+export default function WishlistPage() {
+  return (
+    <Suspense fallback={<WishlistSkeleton />}>
+      <WishlistContent />
+    </Suspense>
   );
 }

@@ -1,8 +1,10 @@
 import { getPublicFAQContent } from "@/data/admin/content/gateway/server";
+import { Suspense } from "react";
 
 import { FAQPageClient } from "@/components/pages";
+import { PageSkeleton } from "@/components/skeletons";
 
-export default async function FAQPage() {
+async function FAQContent() {
   const content = await getPublicFAQContent();
 
   if (!content) {
@@ -14,4 +16,12 @@ export default async function FAQPage() {
   }
 
   return <FAQPageClient content={content} />;
+}
+
+export default function FAQPage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <FAQContent />
+    </Suspense>
+  );
 }

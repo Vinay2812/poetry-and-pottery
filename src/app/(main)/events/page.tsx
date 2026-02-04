@@ -2,6 +2,9 @@ import { DEFAULT_EVENTS_LIMIT } from "@/consts/performance";
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import { AllEventsContainer } from "@/features/events";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { EventsSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
   title: "Pottery Workshops | Poetry & Pottery",
@@ -36,7 +39,7 @@ interface EventsPageProps {
   }>;
 }
 
-export default async function EventsPage({ searchParams }: EventsPageProps) {
+async function EventsContent({ searchParams }: EventsPageProps) {
   const params = await searchParams;
   const search = params.search || undefined;
 
@@ -61,5 +64,13 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       initialUpcomingEvents={upcomingEvents}
       initialUpcomingPagination={upcomingPagination}
     />
+  );
+}
+
+export default function EventsPage({ searchParams }: EventsPageProps) {
+  return (
+    <Suspense fallback={<EventsSkeleton />}>
+      <EventsContent searchParams={searchParams} />
+    </Suspense>
   );
 }

@@ -7,6 +7,7 @@ import type {
   RegistrationsFilterInput,
   RegistrationsResponse,
 } from "@/graphql/generated/types";
+import { cacheLife, cacheTag } from "next/cache";
 
 import * as graphqlImpl from "../server/graphql";
 
@@ -28,6 +29,9 @@ export type GetRegistrationsResult =
 export async function getEvents(
   filter?: EventsFilterInput,
 ): Promise<GetEventsResult> {
+  "use cache";
+  cacheTag("events", "events:list");
+  cacheLife("events");
   try {
     const result = await graphqlImpl.getEvents(filter);
     return { success: true, data: result };
@@ -40,6 +44,9 @@ export async function getEvents(
 }
 
 export async function getEventById(id: string): Promise<GetEventResult> {
+  "use cache";
+  cacheTag("events", `event:${id}`);
+  cacheLife("events");
   try {
     const result = await graphqlImpl.getEventById(id);
     if (!result) {
@@ -57,6 +64,9 @@ export async function getEventById(id: string): Promise<GetEventResult> {
 export async function getUpcomingEvents(
   filter?: EventsFilterInput,
 ): Promise<GetEventsResult> {
+  "use cache";
+  cacheTag("events", "events:upcoming");
+  cacheLife("events");
   try {
     const result = await graphqlImpl.getUpcomingEvents(filter);
     return { success: true, data: result };
@@ -74,6 +84,9 @@ export async function getUpcomingEvents(
 export async function getPastEvents(
   filter?: EventsFilterInput,
 ): Promise<GetEventsResult> {
+  "use cache";
+  cacheTag("events", "events:past");
+  cacheLife("events");
   try {
     const result = await graphqlImpl.getPastEvents(filter);
     return { success: true, data: result };

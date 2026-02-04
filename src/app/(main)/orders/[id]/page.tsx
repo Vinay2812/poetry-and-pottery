@@ -2,6 +2,9 @@ import { getOrderById } from "@/data/orders/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { OrderDetailContainer } from "@/features/orders";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { OrderDetailSkeleton } from "@/components/skeletons";
 
 interface OrderDetailPageProps {
   params: Promise<{ id: string }>;
@@ -23,9 +26,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function OrderDetailPage({
-  params,
-}: OrderDetailPageProps) {
+async function OrderDetailContent({ params }: OrderDetailPageProps) {
   const { id } = await params;
 
   const result = await getOrderById(id);
@@ -49,5 +50,13 @@ export default async function OrderDetailPage({
         </div>
       </main>
     </>
+  );
+}
+
+export default function OrderDetailPage({ params }: OrderDetailPageProps) {
+  return (
+    <Suspense fallback={<OrderDetailSkeleton />}>
+      <OrderDetailContent params={params} />
+    </Suspense>
   );
 }

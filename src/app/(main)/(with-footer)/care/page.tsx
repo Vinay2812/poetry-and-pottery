@@ -1,8 +1,10 @@
 import { getPublicCareContent } from "@/data/admin/content/gateway/server";
+import { Suspense } from "react";
 
 import { CarePageClient } from "@/components/pages";
+import { PageSkeleton } from "@/components/skeletons";
 
-export default async function CarePage() {
+async function CareContent() {
   const content = await getPublicCareContent();
 
   if (!content) {
@@ -14,4 +16,12 @@ export default async function CarePage() {
   }
 
   return <CarePageClient content={content} />;
+}
+
+export default function CarePage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <CareContent />
+    </Suspense>
+  );
 }

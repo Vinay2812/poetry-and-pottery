@@ -2,8 +2,10 @@ import { getCustomizationCategories } from "@/data/customization/gateway/server"
 import { CustomizeWizardContainer } from "@/features/customize";
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { ListingPageHeader } from "@/components/shared";
+import { PageSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
   title: "Customize Your Pottery | Poetry & Pottery",
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CustomizePage() {
+async function CustomizeContent() {
   const categories = await getCustomizationCategories();
 
   return (
@@ -44,5 +46,13 @@ export default async function CustomizePage() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function CustomizePage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <CustomizeContent />
+    </Suspense>
   );
 }

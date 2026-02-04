@@ -1,4 +1,9 @@
-import { DOMAIN, SERVER_GRAPHQL_ENDPOINT } from "@/consts/env";
+import {
+  DOMAIN,
+  LOCAL_ADMIN_BYPASS_SECRET,
+  SERVER_GRAPHQL_ENDPOINT,
+  allowLocalAdminBypass,
+} from "@/consts/env";
 import { HttpLink } from "@apollo/client";
 import {
   ApolloClient,
@@ -124,8 +129,12 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
         headers: {
           ...headers,
           "content-type": "application/json",
+          "accept-encoding": "gzip",
           "apollo-require-preflight": "true",
           authorization: token ? `Bearer ${token}` : "",
+          ...(allowLocalAdminBypass()
+            ? { "x-local-admin-secret": LOCAL_ADMIN_BYPASS_SECRET }
+            : {}),
         },
       };
     } catch {
@@ -134,7 +143,11 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
         headers: {
           ...headers,
           "content-type": "application/json",
+          "accept-encoding": "gzip",
           "apollo-require-preflight": "true",
+          ...(allowLocalAdminBypass()
+            ? { "x-local-admin-secret": LOCAL_ADMIN_BYPASS_SECRET }
+            : {}),
         },
       };
     }
@@ -155,3 +168,30 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
     },
   });
 });
+
+// export const { getClient: getClient, query: publicApolloClient } =
+//   registerApolloClient(() => {
+//     const httpLink = new HttpLink({
+//       uri: SERVER_GRAPHQL_ENDPOINT,
+//       credentials: "include",
+//       headers: {
+//         "content-type": "application/json",
+//         origin: DOMAIN,
+//       },
+//     });
+
+//     return new ApolloClient({
+//       cache: new InMemoryCache(),
+//       link: httpLink,
+//       defaultOptions: {
+//         watchQuery: {
+//           fetchPolicy: "cache-and-network",
+//           errorPolicy: "ignore",
+//         },
+//         query: {
+//           fetchPolicy: "network-only",
+//           errorPolicy: "all",
+//         },
+//       },
+//     });
+//   });

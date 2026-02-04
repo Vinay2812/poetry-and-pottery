@@ -6,6 +6,9 @@ import {
 } from "@/data/events/gateway/server";
 import { RegistrationsContainer } from "@/features/events";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { RegistrationsSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
   title: "My Registrations | Poetry & Pottery",
@@ -17,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RegistrationsPage() {
+async function RegistrationsContent() {
   const [
     upcomingRegistrationsResult,
     completedRegistrationsResult,
@@ -60,5 +63,13 @@ export default async function RegistrationsPage() {
       initialCompletedPagination={completedPagination}
       upcomingEvents={upcomingEvents}
     />
+  );
+}
+
+export default function RegistrationsPage() {
+  return (
+    <Suspense fallback={<RegistrationsSkeleton />}>
+      <RegistrationsContent />
+    </Suspense>
   );
 }

@@ -1,12 +1,15 @@
 "use server";
 
-import { ENVIRONMENT } from "@/consts/env";
+import { ENVIRONMENT, allowLocalAdminBypass } from "@/consts/env";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { UserRole } from "@/graphql/generated/types";
 
 export async function isAdmin(): Promise<boolean> {
+  if (allowLocalAdminBypass()) {
+    return true;
+  }
   const { sessionClaims, isAuthenticated } = await auth();
 
   if (!isAuthenticated) {

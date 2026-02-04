@@ -1,8 +1,10 @@
 import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { UpcomingEventsClient } from "@/components/events";
+import { EventsSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
   title: "Upcoming Pottery Workshops | Poetry & Pottery",
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function UpcomingEventsPage() {
+async function UpcomingEventsContent() {
   const result = await getUpcomingEvents({ page: 1, limit: DEFAULT_PAGE_SIZE });
 
   const events = result.success ? result.data.data : [];
@@ -44,5 +46,13 @@ export default async function UpcomingEventsPage() {
       initialEvents={events}
       initialPagination={pagination}
     />
+  );
+}
+
+export default function UpcomingEventsPage() {
+  return (
+    <Suspense fallback={<EventsSkeleton />}>
+      <UpcomingEventsContent />
+    </Suspense>
   );
 }

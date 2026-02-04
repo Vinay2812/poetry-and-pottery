@@ -1,7 +1,9 @@
 import { getPastEvents } from "@/data/events/gateway/server";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { PastWorkshopsClient } from "@/components/events";
+import { EventsSkeleton } from "@/components/skeletons";
 
 export const metadata: Metadata = {
   title: "Past Workshops Gallery | Poetry & Pottery",
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function PastWorkshopsPage() {
+async function PastWorkshopsContent() {
   const result = await getPastEvents();
 
   const events = result.success ? result.data.data : [];
@@ -43,5 +45,13 @@ export default async function PastWorkshopsPage() {
       initialEvents={events}
       initialPagination={pagination}
     />
+  );
+}
+
+export default function PastWorkshopsPage() {
+  return (
+    <Suspense fallback={<EventsSkeleton />}>
+      <PastWorkshopsContent />
+    </Suspense>
   );
 }

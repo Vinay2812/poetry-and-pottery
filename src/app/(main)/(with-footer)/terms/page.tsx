@@ -1,8 +1,10 @@
 import { getPublicTermsContent } from "@/data/admin/content/gateway/server";
+import { Suspense } from "react";
 
 import { TermsPageClient } from "@/components/pages";
+import { PageSkeleton } from "@/components/skeletons";
 
-export default async function TermsPage() {
+async function TermsContent() {
   const content = await getPublicTermsContent();
 
   if (!content) {
@@ -14,4 +16,12 @@ export default async function TermsPage() {
   }
 
   return <TermsPageClient content={content} />;
+}
+
+export default function TermsPage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <TermsContent />
+    </Suspense>
+  );
 }

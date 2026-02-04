@@ -2,6 +2,9 @@ import { getEventById } from "@/data/events/gateway/server";
 import { UnifiedEventDetailContainer } from "@/features/events/containers/unified-event-detail-container";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
+import { EventDetailSkeleton } from "@/components/skeletons";
 
 interface EventDetailPageProps {
   params: Promise<{ id: string }>;
@@ -52,13 +55,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function EventDetailPage({
-  params,
-}: EventDetailPageProps) {
+async function EventDetailContent({ params }: EventDetailPageProps) {
   const { id } = await params;
 
-  // Fetch event data server-side for SEO
-  // User context and upcoming events will be fetched client-side
   const eventResult = await getEventById(id);
 
   if (!eventResult.success) {
@@ -66,4 +65,14 @@ export default async function EventDetailPage({
   }
 
   return <UnifiedEventDetailContainer event={eventResult.data} />;
+}
+
+export default function EventDetailPage({
+  params,
+}: EventDetailPageProps) {
+  return (
+    <Suspense fallback={<EventDetailSkeleton />}>
+      <EventDetailContent params={params} />
+    </Suspense>
+  );
 }

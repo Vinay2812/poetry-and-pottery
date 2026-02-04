@@ -1,6 +1,6 @@
 "use client";
 
-import { GlobalSearchContainer } from "@/features/global-search";
+import { useGlobalSearchContainer } from "@/features/global-search";
 import { useUIStore } from "@/store";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
@@ -14,7 +14,7 @@ export function NavbarContainer() {
   const wishlistCount = useUIStore((state) => state.wishlistCount);
 
   const { handleOpen: handleSearchOpen, GlobalSearchComponent } =
-    GlobalSearchContainer();
+    useGlobalSearchContainer();
 
   const viewModel: NavbarViewModel = useMemo(
     () => ({

@@ -3,6 +3,9 @@ import { MobileHeaderContainer } from "@/features/layout";
 import { ProductDetailContainer } from "@/features/product-detail";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
+import { ProductDetailSkeleton } from "@/components/skeletons";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -60,6 +63,14 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  return (
+    <Suspense fallback={<ProductDetailSkeleton />}>
+      <ProductDetailContent params={params} />
+    </Suspense>
+  );
+}
+
+async function ProductDetailContent({ params }: ProductPageProps) {
   const { id } = await params;
   const numericId = parseInt(id, 10);
 

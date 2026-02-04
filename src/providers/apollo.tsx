@@ -1,6 +1,11 @@
 "use client";
 
-import { CLIENT_GRAPHQL_ENDPOINT, DOMAIN } from "@/consts/env";
+import {
+  CLIENT_GRAPHQL_ENDPOINT,
+  DOMAIN,
+  LOCAL_ADMIN_BYPASS_SECRET,
+  allowLocalAdminBypass,
+} from "@/consts/env";
 import { HttpLink } from "@apollo/client";
 import {
   ApolloClient,
@@ -16,6 +21,7 @@ function makeApolloClient(getToken: () => Promise<string | null>) {
     credentials: "include",
     headers: {
       "content-type": "application/json",
+      "accept-encoding": "gzip",
       origin: DOMAIN,
     },
   });
@@ -26,8 +32,12 @@ function makeApolloClient(getToken: () => Promise<string | null>) {
       headers: {
         ...headers,
         "content-type": "application/json",
+        "accept-encoding": "gzip",
         "apollo-require-preflight": "true",
         authorization: token ? `Bearer ${token}` : "",
+        ...(allowLocalAdminBypass()
+          ? { "x-local-admin-secret": LOCAL_ADMIN_BYPASS_SECRET }
+          : {}),
       },
     };
   });

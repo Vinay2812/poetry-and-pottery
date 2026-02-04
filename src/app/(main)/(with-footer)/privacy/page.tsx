@@ -1,8 +1,10 @@
 import { getPublicPrivacyContent } from "@/data/admin/content/gateway/server";
+import { Suspense } from "react";
 
 import { PrivacyPageClient } from "@/components/pages";
+import { PageSkeleton } from "@/components/skeletons";
 
-export default async function PrivacyPage() {
+async function PrivacyContent() {
   const content = await getPublicPrivacyContent();
 
   if (!content) {
@@ -14,4 +16,12 @@ export default async function PrivacyPage() {
   }
 
   return <PrivacyPageClient content={content} />;
+}
+
+export default function PrivacyPage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <PrivacyContent />
+    </Suspense>
+  );
 }

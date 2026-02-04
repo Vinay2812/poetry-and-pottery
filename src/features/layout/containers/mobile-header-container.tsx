@@ -1,6 +1,6 @@
 "use client";
 
-import { GlobalSearchContainer } from "@/features/global-search";
+import { useGlobalSearchContainer } from "@/features/global-search";
 import { useUIStore } from "@/store";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ export function MobileHeaderContainer({
   const wishlistCount = useUIStore((state) => state.wishlistCount);
 
   const { handleOpen: handleSearchOpen, GlobalSearchComponent } =
-    GlobalSearchContainer();
+    useGlobalSearchContainer();
 
   // Scroll handling for hide/show effect
   const { scrollY } = useScroll();
