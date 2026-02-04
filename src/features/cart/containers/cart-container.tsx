@@ -80,7 +80,7 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
   const [selectedAddress, setSelectedAddress] = useState<UserAddress | null>(
     null,
   );
-  const [isCleared, setIsCleared] = useState(false);
+  const [hasHydrated, setHasHydrated] = useState(false);
 
   const {
     items: cartItems,
@@ -93,15 +93,15 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
 
   const { addToWishlist } = useWishlist();
 
-  // Use cart items from hook, fallback to initial if not hydrated yet
-  const displayItems = cartItems.length > 0 ? cartItems : mappedInitialItems;
+  // Use cart items from hook after hydration; otherwise fallback to initial data.
+  const displayItems = hasHydrated ? cartItems : mappedInitialItems;
 
   useEffect(() => {
-    // Don't re-hydrate if cart was intentionally cleared (e.g., after placing order)
-    if (mappedInitialItems.length > 0 && cartItems.length === 0 && !isCleared) {
+    if (!hasHydrated) {
       hydrate(mappedInitialItems);
+      setHasHydrated(true);
     }
-  }, [mappedInitialItems, cartItems.length, hydrate, isCleared]);
+  }, [mappedInitialItems, hydrate, hasHydrated]);
 
   // Build cart item view models with availability status
   const allCartItemViewModels: CartItemViewModel[] = useMemo(
@@ -262,8 +262,6 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
           return;
         }
 
-        // Mark as cleared before calling clear to prevent re-hydration from initial data
-        setIsCleared(true);
         clear();
 
         addToast({
