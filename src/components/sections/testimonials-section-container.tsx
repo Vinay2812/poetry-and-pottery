@@ -1,8 +1,8 @@
 "use client";
 
-import { useFeaturedReviewsQuery } from "@/graphql/generated/graphql";
-
 import { TestimonialsSectionSkeleton } from "@/components/skeletons";
+
+import { useFeaturedReviewsQuery } from "@/graphql/generated/graphql";
 
 import { TestimonialsSection } from "./testimonials-section";
 

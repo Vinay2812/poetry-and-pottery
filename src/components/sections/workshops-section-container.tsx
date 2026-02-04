@@ -1,8 +1,8 @@
 "use client";
 
-import { EventType, useUpcomingEventsQuery } from "@/graphql/generated/graphql";
-
 import { WorkshopsSectionSkeleton } from "@/components/skeletons";
+
+import { EventType, useUpcomingEventsQuery } from "@/graphql/generated/graphql";
 
 import { WorkshopsSection } from "./workshops-section";
 

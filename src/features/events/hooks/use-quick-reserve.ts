@@ -43,12 +43,7 @@ export function useQuickReserve() {
 
       return Boolean(result);
     },
-    [
-      requireAuth,
-      registerForEvent,
-      router,
-      startNavigation,
-    ],
+    [requireAuth, registerForEvent, router, startNavigation],
   );
 
   return { reserveSeat, isLoading };

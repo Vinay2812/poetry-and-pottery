@@ -3,9 +3,9 @@
 import { useUserAddresses } from "@/data/address/gateway/client";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
-import type { UserAddress } from "@/graphql/generated/types";
-
 import { AddressSelectorSkeleton } from "@/components/skeletons";
+
+import type { UserAddress } from "@/graphql/generated/types";
 
 import { AddressSelector } from "./address-selector";
 

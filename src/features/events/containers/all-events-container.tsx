@@ -1,11 +1,11 @@
 "use client";
 
+import type { EventBase } from "@/data/events/types";
 import { Suspense, useCallback, useMemo, useState } from "react";
 
 import { PastEventsSkeleton } from "@/components/skeletons";
 
 import { EventType } from "@/graphql/generated/graphql";
-import type { EventBase } from "@/data/events/types";
 
 import { AllEvents } from "../components/all-events";
 import { useAllEventsQuery } from "../hooks/use-all-events-query";

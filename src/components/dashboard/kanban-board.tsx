@@ -23,9 +23,9 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVerticalIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 
-import { cn } from "@/lib/utils";
-
 import { KanbanBoardSkeleton } from "@/components/skeletons";
+
+import { cn } from "@/lib/utils";
 
 export interface KanbanColumn<T> {
   id: string;

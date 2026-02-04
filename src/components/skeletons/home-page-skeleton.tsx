@@ -1,9 +1,10 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
 import { CollectionsSectionSkeleton } from "./collections-section-skeleton";
 import { ExploreSectionSkeleton } from "./explore-section-skeleton";
 import { ProductCarouselSkeleton } from "./product-carousel-skeleton";
 import { TestimonialsSectionSkeleton } from "./testimonials-section-skeleton";
 import { WorkshopsSectionSkeleton } from "./workshops-section-skeleton";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export function HomePageSkeleton() {
   return (

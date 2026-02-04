@@ -30,9 +30,7 @@ export const metadata: Metadata = {
 async function CustomizeContent() {
   const categories = await getCustomizationCategories();
 
-  return (
-    <CustomizeWizardContainer initialCategories={categories} />
-  );
+  return <CustomizeWizardContainer initialCategories={categories} />;
 }
 
 export default function CustomizePage() {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useCategoriesWithImagesQuery } from "@/graphql/generated/graphql";
-
 import { ExploreSectionSkeleton } from "@/components/skeletons";
+
+import { useCategoriesWithImagesQuery } from "@/graphql/generated/graphql";
 
 import { ExploreSection } from "./explore-section";
 

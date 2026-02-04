@@ -4,9 +4,9 @@ import { CircleAlertIcon } from "lucide-react";
 import NextImage, { ImageProps } from "next/image";
 import { useCallback, useState } from "react";
 
-import { cn } from "@/lib/utils";
-
 import { ImageSkeleton } from "@/components/skeletons";
+
+import { cn } from "@/lib/utils";
 
 export interface OptimizedImageProps extends Omit<ImageProps, "onError"> {
   fallbackSrc?: string;
