@@ -64,14 +64,7 @@ export function AllEvents({
               </h2>
               <StaggeredGrid className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
                 {upcomingEvents.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    isRegistered={registeredEventIds?.has(event.id)}
-                    showQuickReserve={showQuickReserve}
-                    onQuickReserve={onQuickReserve}
-                    isQuickReserveLoading={isQuickReserveLoading?.(event.id)}
-                  />
+                  <EventCard key={event.id} event={event} />
                 ))}
               </StaggeredGrid>
             </section>
