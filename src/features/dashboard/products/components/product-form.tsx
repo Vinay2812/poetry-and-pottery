@@ -302,10 +302,15 @@ export function ProductForm({
               <div className="flex items-center gap-2">
                 <input
                   type="color"
-                  {...register("colorCode")}
+                  value={watch("colorCode")}
+                  onChange={(e) => setValue("colorCode", e.target.value)}
                   className="h-10 w-16 cursor-pointer rounded border border-neutral-200"
                 />
-                <Input {...register("colorCode")} className="flex-1" />
+                <Input
+                  value={watch("colorCode")}
+                  onChange={(e) => setValue("colorCode", e.target.value)}
+                  className="flex-1"
+                />
               </div>
               {errors.colorCode && (
                 <p className="text-sm text-red-500">

@@ -1,7 +1,5 @@
-import {
-  getAllCategories,
-  getAllCollections,
-} from "@/data/admin/products/gateway/server";
+import { getAllConfiguredCategories } from "@/data/admin/categories/gateway/server";
+import { getAllCollections } from "@/data/admin/products/gateway/server";
 import { ProductFormContainer } from "@/features/dashboard/products";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
@@ -9,10 +7,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default async function NewProductPage() {
-  const [categories, collections] = await Promise.all([
-    getAllCategories(),
+  const [configuredCategories, collections] = await Promise.all([
+    getAllConfiguredCategories(),
     getAllCollections(),
   ]);
+  const categories = configuredCategories.map((c) => c.name);
 
   return (
     <div className="space-y-6">

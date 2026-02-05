@@ -1,5 +1,5 @@
+import { getAllConfiguredCategories } from "@/data/admin/categories/gateway/server";
 import {
-  getAllCategories,
   getAllCollections,
   getProductById,
   getProductReviews,
@@ -32,12 +32,14 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const [product, categories, collections, reviewsData] = await Promise.all([
-    getProductById(productId),
-    getAllCategories(),
-    getAllCollections(),
-    getProductReviews(productId),
-  ]);
+  const [product, configuredCategories, collections, reviewsData] =
+    await Promise.all([
+      getProductById(productId),
+      getAllConfiguredCategories(),
+      getAllCollections(),
+      getProductReviews(productId),
+    ]);
+  const categories = configuredCategories.map((c) => c.name);
 
   if (!product) {
     notFound();
