@@ -1,0 +1,1792 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Homepage Workshops Pricing Block - Option 3: Interactive Slider /
+      Calculator
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../_shared-styles.css" />
+    <style>
+      /* ============================================
+         OPTION 3: INTERACTIVE SLIDER / CALCULATOR
+         ============================================ */
+
+      .viewports-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .viewport-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      .viewport-row .viewport-box {
+        flex-shrink: 0;
+      }
+
+      .viewport-row .viewport-description {
+        flex: 1;
+        min-width: 280px;
+        max-width: 400px;
+        padding-top: 48px;
+      }
+
+      .viewport-description h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description p {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.8;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description ul {
+        list-style: none;
+        font-size: 12px;
+        line-height: 2.2;
+        color: #555;
+        padding: 0;
+      }
+
+      .viewport-description ul li::before {
+        content: "\2713 ";
+        color: #4f6f52;
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      /* Viewport Box */
+      .viewport-box {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .viewport-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .viewport-size {
+        font-size: 11px;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        padding: 16px;
+      }
+
+      .viewport-content.tablet {
+        padding: 24px 32px;
+      }
+
+      .viewport-content.desktop {
+        padding: 48px 60px;
+      }
+
+      /* ============================================
+         SECTION HEADER
+         ============================================ */
+
+      .workshop-section-header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .workshop-section-label {
+        display: inline-block;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 5px 14px;
+        border-radius: 9999px;
+        background: #e8ece8;
+        color: #4f6f52;
+        margin-bottom: 14px;
+      }
+
+      .workshop-section-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        line-height: 1.2;
+      }
+
+      .workshop-section-title.sm {
+        font-size: 22px;
+      }
+
+      .workshop-section-title.md {
+        font-size: 26px;
+      }
+
+      .workshop-section-subtitle {
+        font-size: 15px;
+        color: #737373;
+        line-height: 1.6;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .workshop-section-subtitle.sm {
+        font-size: 13px;
+      }
+
+      /* ============================================
+         SLIDER / CALCULATOR
+         ============================================ */
+
+      .slider-container {
+        background: #fafaf9;
+        border-radius: 20px;
+        padding: 28px 24px;
+        margin-bottom: 32px;
+      }
+
+      .slider-container.sm {
+        padding: 20px 16px;
+        border-radius: 16px;
+      }
+
+      .slider-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+        text-align: center;
+      }
+
+      .slider-label.sm {
+        font-size: 13px;
+      }
+
+      .slider-sublabel {
+        font-size: 12px;
+        color: #999;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .slider-sublabel.sm {
+        font-size: 11px;
+        margin-bottom: 16px;
+      }
+
+      /* Slider Track */
+      .slider-track {
+        position: relative;
+        height: 8px;
+        background: #e5e5e5;
+        border-radius: 4px;
+        margin: 0 8px 12px;
+      }
+
+      .slider-track-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        background: linear-gradient(90deg, #4f6f52, #6b9b6f);
+        border-radius: 4px;
+        width: 45%;
+      }
+
+      .slider-thumb {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 24px;
+        height: 24px;
+        background: #4f6f52;
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(79, 111, 82, 0.35);
+        left: 45%;
+      }
+
+      .slider-thumb.sm {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+      }
+
+      /* Slider Markers */
+      .slider-markers {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 4px;
+        margin-top: 8px;
+      }
+
+      .slider-marker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        min-width: 36px;
+      }
+
+      .slider-marker-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #d4d4d4;
+        border: 2px solid transparent;
+        transition: all 0.2s;
+      }
+
+      .slider-marker-dot.sm {
+        width: 8px;
+        height: 8px;
+      }
+
+      .slider-marker.active .slider-marker-dot {
+        background: #4f6f52;
+        border-color: #e8ece8;
+        transform: scale(1.2);
+      }
+
+      .slider-marker.passed .slider-marker-dot {
+        background: #4f6f52;
+      }
+
+      .slider-marker-label {
+        font-size: 11px;
+        color: #999;
+        font-weight: 500;
+      }
+
+      .slider-marker-label.sm {
+        font-size: 10px;
+      }
+
+      .slider-marker.active .slider-marker-label {
+        color: #4f6f52;
+        font-weight: 700;
+      }
+
+      /* ============================================
+         DYNAMIC PRICING DISPLAY
+         ============================================ */
+
+      .pricing-display {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+
+      .pricing-display.side {
+        text-align: left;
+      }
+
+      .pricing-selected-hours {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 48px;
+        font-weight: 800;
+        color: #4f6f52;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+
+      .pricing-selected-hours.sm {
+        font-size: 36px;
+      }
+
+      .pricing-selected-hours.md {
+        font-size: 42px;
+      }
+
+      .pricing-selected-hours span {
+        font-size: 0.5em;
+        font-weight: 600;
+        color: #737373;
+        vertical-align: baseline;
+      }
+
+      .pricing-display-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 32px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .pricing-display-price.sm {
+        font-size: 24px;
+      }
+
+      .pricing-display-price.md {
+        font-size: 28px;
+      }
+
+      .pricing-display-pp {
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 16px;
+      }
+
+      .pricing-display-pp.sm {
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      .pricing-display-details {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .pricing-display-details.side {
+        justify-content: flex-start;
+      }
+
+      .pricing-detail-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #e8ece8;
+        color: #4f6f52;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 9999px;
+      }
+
+      .pricing-detail-chip.sm {
+        font-size: 11px;
+        padding: 6px 12px;
+        gap: 4px;
+      }
+
+      .pricing-detail-chip.terracotta {
+        background: #fdf0eb;
+        color: #c4785a;
+      }
+
+      /* Pottery Pieces Visual */
+      .pottery-pieces-visual {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin: 16px 0;
+        flex-wrap: wrap;
+      }
+
+      .pottery-pieces-visual.side {
+        justify-content: flex-start;
+      }
+
+      .pottery-piece-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #e8ddd4, #d4c4b0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        opacity: 0.9;
+        transition: transform 0.2s;
+      }
+
+      .pottery-piece-icon.sm {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        font-size: 14px;
+      }
+
+      .pottery-piece-icon:hover {
+        transform: scale(1.1);
+      }
+
+      .savings-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #4f6f52;
+        color: white;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        margin-top: 8px;
+      }
+
+      .savings-indicator.sm {
+        font-size: 10px;
+        padding: 4px 10px;
+      }
+
+      /* ============================================
+         POPULAR COMBINATIONS
+         ============================================ */
+
+      .combos-section {
+        margin-bottom: 28px;
+      }
+
+      .combos-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+        text-align: center;
+      }
+
+      .combos-title.sm {
+        font-size: 15px;
+      }
+
+      .combos-subtitle {
+        font-size: 13px;
+        color: #737373;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .combos-subtitle.sm {
+        font-size: 12px;
+        margin-bottom: 16px;
+      }
+
+      .combos-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .combos-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .combos-grid.cols-1 {
+        grid-template-columns: 1fr;
+      }
+
+      .combo-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px 20px;
+        text-align: center;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        position: relative;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+      }
+
+      .combo-card.sm {
+        padding: 18px 16px;
+        border-radius: 14px;
+      }
+
+      .combo-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .combo-card.popular {
+        border-color: #4f6f52;
+      }
+
+      .combo-card.best-value {
+        border-color: #c4785a;
+      }
+
+      .combo-badge {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        white-space: nowrap;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      .combo-badge.popular {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .combo-badge.best-value {
+        background: #c4785a;
+        color: white;
+      }
+
+      .combo-card-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .combo-card-name.sm {
+        font-size: 14px;
+      }
+
+      .combo-card-hours {
+        font-size: 13px;
+        color: #737373;
+        margin-bottom: 12px;
+      }
+
+      .combo-card-hours.sm {
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      .combo-card-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #4f6f52;
+        margin-bottom: 2px;
+      }
+
+      .combo-card-price.sm {
+        font-size: 20px;
+      }
+
+      .combo-card-pp {
+        font-size: 11px;
+        color: #999;
+        margin-bottom: 12px;
+      }
+
+      .combo-card-desc {
+        font-size: 12px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      .combo-card-desc.sm {
+        font-size: 11px;
+      }
+
+      .combo-card-pieces {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 9999px;
+        background: #e8ece8;
+        color: #4f6f52;
+        margin-bottom: 10px;
+      }
+
+      .combo-card-pieces.sm {
+        font-size: 11px;
+        padding: 4px 10px;
+      }
+
+      .combo-card-rate {
+        font-size: 11px;
+        color: #999;
+        margin-top: 6px;
+      }
+
+      /* Mobile horizontal combo layout */
+      .combo-card-horizontal {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        text-align: left;
+        padding: 16px;
+      }
+
+      .combo-card-horizontal .combo-card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #e8ddd4, #d4c4b0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+
+      .combo-card-horizontal .combo-card-content {
+        flex: 1;
+      }
+
+      .combo-card-horizontal .combo-card-right {
+        text-align: right;
+        flex-shrink: 0;
+      }
+
+      /* ============================================
+         WORKSHOP DETAILS STRIP
+         ============================================ */
+
+      .details-strip {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+
+      .details-strip.compact {
+        gap: 16px;
+      }
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #555;
+      }
+
+      .detail-item.sm {
+        font-size: 12px;
+        gap: 6px;
+      }
+
+      .detail-icon {
+        width: 36px;
+        height: 36px;
+        background: #e8ece8;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .detail-icon.sm {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .detail-label {
+        font-size: 11px;
+        color: #999;
+        font-weight: 500;
+      }
+
+      .detail-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 700;
+        color: #1a1a1a;
+        font-size: 13px;
+      }
+
+      .detail-value.sm {
+        font-size: 12px;
+      }
+
+      /* ============================================
+         CTA BUTTON
+         ============================================ */
+
+      .cta-container {
+        text-align: center;
+        margin-top: 8px;
+      }
+
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #4f6f52;
+        color: white;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 14px 36px;
+        border-radius: 9999px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 16px rgba(79, 111, 82, 0.3);
+        text-decoration: none;
+      }
+
+      .cta-btn:hover {
+        background: #3d5640;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(79, 111, 82, 0.35);
+      }
+
+      .cta-btn.sm {
+        font-size: 14px;
+        padding: 12px 28px;
+      }
+
+      .cta-hint {
+        font-size: 12px;
+        color: #999;
+        margin-top: 10px;
+      }
+
+      .cta-hint.sm {
+        font-size: 11px;
+      }
+
+      /* ============================================
+         DESKTOP TWO-COLUMN LAYOUT
+         ============================================ */
+
+      .desktop-two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: start;
+        margin-bottom: 40px;
+      }
+
+      /* ============================================
+         TABLET SIDE-BY-SIDE
+         ============================================ */
+
+      .tablet-side-by-side {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+        margin-bottom: 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Homepage Workshops Pricing Block</h1>
+    <p class="subtitle">
+      Option 3: Interactive Slider / Calculator. An interactive pricing
+      calculator where the user picks hours using a slider, and pricing updates
+      dynamically. "Popular Combinations" cards below offer quick selection.
+      Three viewports stacked vertically: Mobile (375px), Tablet (768px),
+      Desktop (1200px).
+    </p>
+
+    <div class="option-details">
+      <strong>Option 3 -- Interactive Slider / Calculator</strong><br />
+      <strong>Concept:</strong> An interactive pricing calculator where users
+      select hours using a visual slider/stepper. The dynamic pricing display
+      updates based on selection showing price, pieces, per-hour rate, and
+      savings. "Popular Combinations" section shows 3 curated options: Quick
+      Session (1hr), Half Day (3hr, most popular), and Full Experience (5hr,
+      best value per hour).<br />
+      <strong>Mobile:</strong> Slider full-width, stacked pricing display,
+      stacked combo cards.<br />
+      <strong>Tablet:</strong> Slider + pricing side by side, 3 combo cards in a
+      row.<br />
+      <strong>Desktop:</strong> Elegant two-column layout (slider left, dynamic
+      pricing right) + combo cards below.
+    </div>
+
+    <div class="viewports-stack">
+      <!-- ============================================
+           MOBILE VIEWPORT (375px)
+           ============================================ -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 375px">
+          <div class="viewport-header">
+            <span class="viewport-label">Mobile</span>
+            <span class="viewport-size">375 x auto</span>
+          </div>
+          <div class="viewport-content">
+            <!-- Section Header -->
+            <div class="workshop-section-header">
+              <div class="workshop-section-label">Workshops</div>
+              <div class="workshop-section-title sm">Daily Workshops</div>
+              <div class="workshop-section-subtitle sm">
+                Choose your hours, create your masterpiece
+              </div>
+            </div>
+
+            <!-- Slider Section -->
+            <div class="slider-container sm">
+              <div class="slider-label sm">Select your session length</div>
+              <div class="slider-sublabel sm">
+                Drag the slider or tap a duration
+              </div>
+
+              <!-- Slider Track -->
+              <div class="slider-track">
+                <div class="slider-track-fill" style="width: 45%"></div>
+                <div class="slider-thumb sm" style="left: 45%"></div>
+              </div>
+
+              <!-- Slider Markers -->
+              <div class="slider-markers">
+                <div class="slider-marker passed">
+                  <div class="slider-marker-dot sm"></div>
+                  <div class="slider-marker-label sm">1hr</div>
+                </div>
+                <div class="slider-marker passed">
+                  <div class="slider-marker-dot sm"></div>
+                  <div class="slider-marker-label sm">2hr</div>
+                </div>
+                <div class="slider-marker active">
+                  <div class="slider-marker-dot sm"></div>
+                  <div class="slider-marker-label sm">3hr</div>
+                </div>
+                <div class="slider-marker">
+                  <div class="slider-marker-dot sm"></div>
+                  <div class="slider-marker-label sm">5hr</div>
+                </div>
+                <div class="slider-marker">
+                  <div class="slider-marker-dot sm"></div>
+                  <div class="slider-marker-label sm">10hr</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Pricing Display -->
+            <div class="pricing-display">
+              <div class="pricing-selected-hours sm">3 <span>hours</span></div>
+              <div class="pricing-display-price sm">&#8377;2,200</div>
+              <div class="pricing-display-pp sm">per person</div>
+
+              <!-- Pottery Pieces Visual -->
+              <div class="pottery-pieces-visual">
+                <div class="pottery-piece-icon sm">&#127843;</div>
+                <div class="pottery-piece-icon sm">&#127843;</div>
+                <div class="pottery-piece-icon sm">&#127843;</div>
+              </div>
+
+              <div class="pricing-display-details" style="gap: 8px">
+                <div class="pricing-detail-chip sm">&#127843; 3 pieces</div>
+                <div class="pricing-detail-chip sm">&#8377;733/hour</div>
+              </div>
+
+              <div class="savings-indicator sm">
+                &#9660; Save &#8377;650 vs 3 individual hours
+              </div>
+            </div>
+
+            <!-- Popular Combinations -->
+            <div class="combos-section">
+              <div class="combos-title sm">Popular Combinations</div>
+              <div class="combos-subtitle sm">
+                Quick picks from our most booked sessions
+              </div>
+
+              <div class="combos-grid cols-1" style="gap: 12px">
+                <!-- Quick Session -->
+                <div class="combo-card sm combo-card-horizontal">
+                  <div class="combo-card-icon">&#127843;</div>
+                  <div class="combo-card-content">
+                    <div class="combo-card-name sm">Quick Session</div>
+                    <div class="combo-card-hours sm">
+                      1 hour -- Perfect for beginners
+                    </div>
+                  </div>
+                  <div class="combo-card-right">
+                    <div class="combo-card-price sm" style="font-size: 18px">
+                      &#8377;950
+                    </div>
+                    <div class="combo-card-rate">1 piece</div>
+                  </div>
+                </div>
+
+                <!-- Half Day -->
+                <div
+                  class="combo-card sm combo-card-horizontal popular"
+                  style="padding-top: 20px"
+                >
+                  <div class="combo-badge popular">Most Popular</div>
+                  <div class="combo-card-icon">&#127843;</div>
+                  <div class="combo-card-content">
+                    <div class="combo-card-name sm">Half Day</div>
+                    <div class="combo-card-hours sm">
+                      3 hours -- Our most popular
+                    </div>
+                  </div>
+                  <div class="combo-card-right">
+                    <div class="combo-card-price sm" style="font-size: 18px">
+                      &#8377;2,200
+                    </div>
+                    <div class="combo-card-rate">3 pieces</div>
+                  </div>
+                </div>
+
+                <!-- Full Experience -->
+                <div class="combo-card sm combo-card-horizontal best-value">
+                  <div class="combo-badge best-value">Best Value</div>
+                  <div class="combo-card-icon">&#127843;</div>
+                  <div class="combo-card-content">
+                    <div class="combo-card-name sm">Full Experience</div>
+                    <div class="combo-card-hours sm">
+                      5 hours -- Best value per hour
+                    </div>
+                  </div>
+                  <div class="combo-card-right">
+                    <div class="combo-card-price sm" style="font-size: 18px">
+                      &#8377;3,400
+                    </div>
+                    <div class="combo-card-rate">5 pieces</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workshop Details Strip (Stacked for mobile) -->
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 24px;
+              "
+            >
+              <div class="detail-item sm">
+                <div class="detail-icon sm">&#9200;</div>
+                <div>
+                  <div class="detail-label">Timings</div>
+                  <div class="detail-value sm">1 PM - 7 PM IST</div>
+                </div>
+              </div>
+              <div class="detail-item sm">
+                <div class="detail-icon sm">&#127912;</div>
+                <div>
+                  <div class="detail-label">Skill Level</div>
+                  <div class="detail-value sm">All skill levels</div>
+                </div>
+              </div>
+              <div class="detail-item sm">
+                <div class="detail-icon sm">&#128101;</div>
+                <div>
+                  <div class="detail-label">Capacity</div>
+                  <div class="detail-value sm">Max 6 per slot</div>
+                </div>
+              </div>
+              <div class="detail-item sm">
+                <div class="detail-icon sm">&#128197;</div>
+                <div>
+                  <div class="detail-label">Availability</div>
+                  <div class="detail-value sm">Open 7 days</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-container">
+              <a
+                href="/events"
+                class="cta-btn sm"
+                style="width: 100%; justify-content: center"
+              >
+                Book Your Workshop &#8594;
+              </a>
+              <div class="cta-hint sm">No experience needed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="viewport-description">
+          <h3>Mobile (375px)</h3>
+          <p>
+            On mobile, the slider occupies full width with clear hour markers
+            below the track. The dynamic pricing display stacks vertically
+            showing hours selected, price, pottery piece icons, and a savings
+            indicator. Popular Combinations use a horizontal card layout for
+            compact mobile viewing.
+          </p>
+          <ul>
+            <li>Full-width slider with draggable thumb and hour markers</li>
+            <li>
+              Dynamic pricing updates: hours, price, pieces, per-hour rate
+            </li>
+            <li>Pottery piece icons scale with selected hours (3 shown)</li>
+            <li>Green savings indicator chip shows money saved</li>
+            <li>Horizontal combo cards with icon, name, price on right</li>
+            <li>"Most Popular" badge on 3hr, "Best Value" on 5hr</li>
+            <li>Workshop details stacked vertically</li>
+            <li>Full-width CTA button at bottom</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================================
+           TABLET VIEWPORT (768px)
+           ============================================ -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 768px">
+          <div class="viewport-header">
+            <span class="viewport-label">Tablet</span>
+            <span class="viewport-size">768 x auto</span>
+          </div>
+          <div class="viewport-content tablet">
+            <!-- Section Header -->
+            <div class="workshop-section-header">
+              <div class="workshop-section-label">Workshops</div>
+              <div class="workshop-section-title md">Daily Workshops</div>
+              <div class="workshop-section-subtitle">
+                Choose your hours, create your masterpiece
+              </div>
+            </div>
+
+            <!-- Slider + Pricing Side by Side -->
+            <div class="tablet-side-by-side">
+              <!-- Left: Slider -->
+              <div class="slider-container">
+                <div class="slider-label">Select your session length</div>
+                <div class="slider-sublabel">
+                  Drag the slider or tap a duration
+                </div>
+
+                <div class="slider-track">
+                  <div class="slider-track-fill" style="width: 45%"></div>
+                  <div class="slider-thumb" style="left: 45%"></div>
+                </div>
+
+                <div class="slider-markers">
+                  <div class="slider-marker passed">
+                    <div class="slider-marker-dot"></div>
+                    <div class="slider-marker-label">1hr</div>
+                  </div>
+                  <div class="slider-marker passed">
+                    <div class="slider-marker-dot"></div>
+                    <div class="slider-marker-label">2hr</div>
+                  </div>
+                  <div class="slider-marker active">
+                    <div class="slider-marker-dot"></div>
+                    <div class="slider-marker-label">3hr</div>
+                  </div>
+                  <div class="slider-marker">
+                    <div class="slider-marker-dot"></div>
+                    <div class="slider-marker-label">5hr</div>
+                  </div>
+                  <div class="slider-marker">
+                    <div class="slider-marker-dot"></div>
+                    <div class="slider-marker-label">10hr</div>
+                  </div>
+                </div>
+
+                <!-- Pottery Pieces Visual in slider area -->
+                <div
+                  class="pottery-pieces-visual"
+                  style="margin-top: 20px; justify-content: center"
+                >
+                  <div class="pottery-piece-icon">&#127843;</div>
+                  <div class="pottery-piece-icon">&#127843;</div>
+                  <div class="pottery-piece-icon">&#127843;</div>
+                </div>
+                <div
+                  style="
+                    text-align: center;
+                    font-size: 12px;
+                    color: #737373;
+                    margin-top: 4px;
+                  "
+                >
+                  3 pottery pieces
+                </div>
+              </div>
+
+              <!-- Right: Pricing Display -->
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 20px;
+                  background: white;
+                  border-radius: 20px;
+                  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+                "
+              >
+                <div class="pricing-selected-hours md">
+                  3 <span>hours</span>
+                </div>
+                <div class="pricing-display-price md">&#8377;2,200</div>
+                <div class="pricing-display-pp">per person</div>
+
+                <div class="pricing-display-details" style="margin-top: 12px">
+                  <div class="pricing-detail-chip">&#127843; 3 pieces</div>
+                  <div class="pricing-detail-chip">&#8377;733/hour</div>
+                </div>
+
+                <div class="savings-indicator" style="margin-top: 14px">
+                  &#9660; Save &#8377;650 vs 3 individual hours
+                </div>
+
+                <!-- Inline CTA for tablet -->
+                <a
+                  href="/events"
+                  class="cta-btn"
+                  style="margin-top: 20px; width: 100%; justify-content: center"
+                >
+                  Book 3 Hours &#8594;
+                </a>
+              </div>
+            </div>
+
+            <!-- Popular Combinations -->
+            <div class="combos-section">
+              <div class="combos-title">Popular Combinations</div>
+              <div class="combos-subtitle">
+                Quick picks from our most booked sessions
+              </div>
+
+              <div class="combos-grid cols-3">
+                <!-- Quick Session -->
+                <div class="combo-card">
+                  <div class="combo-card-name">Quick Session</div>
+                  <div class="combo-card-hours">1 hour</div>
+                  <div class="combo-card-pieces">&#127843; 1 piece</div>
+                  <div class="combo-card-price">&#8377;950</div>
+                  <div class="combo-card-pp">per person</div>
+                  <div class="combo-card-desc">
+                    Perfect for beginners and first-timers
+                  </div>
+                  <div class="combo-card-rate">&#8377;950/hr</div>
+                </div>
+
+                <!-- Half Day -->
+                <div class="combo-card popular" style="padding-top: 28px">
+                  <div class="combo-badge popular">Most Popular</div>
+                  <div class="combo-card-name">Half Day</div>
+                  <div class="combo-card-hours">3 hours</div>
+                  <div class="combo-card-pieces">&#127843; 3 pieces</div>
+                  <div class="combo-card-price">&#8377;2,200</div>
+                  <div class="combo-card-pp">per person</div>
+                  <div class="combo-card-desc">
+                    Our most popular choice -- enough time to truly create
+                  </div>
+                  <div class="combo-card-rate">&#8377;733/hr</div>
+                </div>
+
+                <!-- Full Experience -->
+                <div class="combo-card best-value" style="padding-top: 28px">
+                  <div class="combo-badge best-value">Best Value</div>
+                  <div class="combo-card-name">Full Experience</div>
+                  <div class="combo-card-hours">5 hours</div>
+                  <div class="combo-card-pieces">&#127843; 5 pieces</div>
+                  <div class="combo-card-price">&#8377;3,400</div>
+                  <div class="combo-card-pp">per person</div>
+                  <div class="combo-card-desc">
+                    Best value per hour -- immerse yourself fully
+                  </div>
+                  <div class="combo-card-rate">&#8377;680/hr</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workshop Details Strip -->
+            <div class="details-strip">
+              <div class="detail-item">
+                <div class="detail-icon">&#9200;</div>
+                <div>
+                  <div class="detail-label">Timings</div>
+                  <div class="detail-value">1 PM - 7 PM IST</div>
+                </div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-icon">&#127912;</div>
+                <div>
+                  <div class="detail-label">Skill Level</div>
+                  <div class="detail-value">All skill levels</div>
+                </div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-icon">&#128101;</div>
+                <div>
+                  <div class="detail-label">Capacity</div>
+                  <div class="detail-value">Max 6 per slot</div>
+                </div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-icon">&#128197;</div>
+                <div>
+                  <div class="detail-label">Availability</div>
+                  <div class="detail-value">Open 7 days</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-container" style="margin-top: 8px">
+              <div class="cta-hint">
+                No experience needed -- all materials provided
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="viewport-description">
+          <h3>Tablet (768px)</h3>
+          <p>
+            On tablet, the slider and pricing display sit side by side in a
+            two-column grid. The slider sits on the left with pottery piece
+            icons below, while the dynamic pricing card on the right shows
+            price, details, savings, and an inline CTA button that updates with
+            the selected hours. Popular Combinations cards display in a clean
+            3-column grid below.
+          </p>
+          <ul>
+            <li>Two-column layout: slider left, pricing card right</li>
+            <li>Pottery piece icons below the slider track</li>
+            <li>Pricing card with inline "Book 3 Hours" CTA</li>
+            <li>Savings indicator shows value vs individual hours</li>
+            <li>3-column Popular Combinations grid</li>
+            <li>"Most Popular" (3hr) and "Best Value" (5hr) badges</li>
+            <li>Workshop details in centered horizontal strip</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================================
+           DESKTOP VIEWPORT (1200px)
+           ============================================ -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 1200px">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1200 x auto</span>
+          </div>
+          <div class="viewport-content desktop">
+            <!-- Section Header -->
+            <div class="workshop-section-header" style="margin-bottom: 40px">
+              <div class="workshop-section-label">Workshops</div>
+              <div class="workshop-section-title">Daily Workshops</div>
+              <div class="workshop-section-subtitle">
+                Choose your hours, create your masterpiece
+              </div>
+            </div>
+
+            <!-- Desktop Two-Column: Slider Left, Dynamic Pricing Right -->
+            <div class="desktop-two-col">
+              <!-- Left Column: Slider + Context -->
+              <div>
+                <div class="slider-container" style="padding: 32px 28px">
+                  <div
+                    class="slider-label"
+                    style="font-size: 16px; text-align: left"
+                  >
+                    How long would you like to create?
+                  </div>
+                  <div
+                    class="slider-sublabel"
+                    style="text-align: left; margin-bottom: 24px"
+                  >
+                    Drag the slider or click a duration below
+                  </div>
+
+                  <div
+                    class="slider-track"
+                    style="height: 10px; margin-bottom: 16px"
+                  >
+                    <div class="slider-track-fill" style="width: 45%"></div>
+                    <div
+                      class="slider-thumb"
+                      style="left: 45%; width: 28px; height: 28px"
+                    ></div>
+                  </div>
+
+                  <div class="slider-markers" style="margin-top: 12px">
+                    <div class="slider-marker passed">
+                      <div class="slider-marker-dot"></div>
+                      <div class="slider-marker-label" style="font-size: 13px">
+                        1 hr
+                      </div>
+                    </div>
+                    <div class="slider-marker passed">
+                      <div class="slider-marker-dot"></div>
+                      <div class="slider-marker-label" style="font-size: 13px">
+                        2 hrs
+                      </div>
+                    </div>
+                    <div class="slider-marker active">
+                      <div class="slider-marker-dot"></div>
+                      <div class="slider-marker-label" style="font-size: 13px">
+                        3 hrs
+                      </div>
+                    </div>
+                    <div class="slider-marker">
+                      <div class="slider-marker-dot"></div>
+                      <div class="slider-marker-label" style="font-size: 13px">
+                        5 hrs
+                      </div>
+                    </div>
+                    <div class="slider-marker">
+                      <div class="slider-marker-dot"></div>
+                      <div class="slider-marker-label" style="font-size: 13px">
+                        10 hrs
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pottery Pieces Visual below slider -->
+                <div style="margin-top: 24px; padding: 0 4px">
+                  <div
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 14px;
+                      font-weight: 700;
+                      color: #1a1a1a;
+                      margin-bottom: 12px;
+                    "
+                  >
+                    You'll create 3 pottery pieces
+                  </div>
+                  <div class="pottery-pieces-visual side">
+                    <div
+                      class="pottery-piece-icon"
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 14px;
+                        font-size: 22px;
+                      "
+                    >
+                      &#127843;
+                    </div>
+                    <div
+                      class="pottery-piece-icon"
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 14px;
+                        font-size: 22px;
+                      "
+                    >
+                      &#127843;
+                    </div>
+                    <div
+                      class="pottery-piece-icon"
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 14px;
+                        font-size: 22px;
+                      "
+                    >
+                      &#127843;
+                    </div>
+                  </div>
+                  <div style="font-size: 12px; color: #999; margin-top: 8px">
+                    Bowls, cups, vases -- choose what to create in your session
+                  </div>
+                </div>
+
+                <!-- Workshop Info -->
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                    margin-top: 24px;
+                  "
+                >
+                  <div class="detail-item">
+                    <div class="detail-icon">&#9200;</div>
+                    <div>
+                      <div class="detail-label">Timings</div>
+                      <div class="detail-value">1 PM - 7 PM IST</div>
+                    </div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-icon">&#127912;</div>
+                    <div>
+                      <div class="detail-label">Skill Level</div>
+                      <div class="detail-value">All skill levels</div>
+                    </div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-icon">&#128101;</div>
+                    <div>
+                      <div class="detail-label">Group Size</div>
+                      <div class="detail-value">Max 6 per slot</div>
+                    </div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-icon">&#128197;</div>
+                    <div>
+                      <div class="detail-label">Availability</div>
+                      <div class="detail-value">Open 7 days a week</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Dynamic Pricing Card -->
+              <div>
+                <div
+                  style="
+                    background: white;
+                    border-radius: 24px;
+                    padding: 40px 36px;
+                    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+                    text-align: center;
+                    position: sticky;
+                    top: 24px;
+                  "
+                >
+                  <div
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 13px;
+                      font-weight: 600;
+                      color: #737373;
+                      text-transform: uppercase;
+                      letter-spacing: 1px;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    Your Session
+                  </div>
+
+                  <div class="pricing-selected-hours">3 <span>hours</span></div>
+                  <div
+                    class="pricing-display-price"
+                    style="font-size: 36px; margin-top: 4px"
+                  >
+                    &#8377;2,200
+                  </div>
+                  <div class="pricing-display-pp" style="margin-bottom: 20px">
+                    per person
+                  </div>
+
+                  <!-- Detail chips -->
+                  <div
+                    class="pricing-display-details"
+                    style="margin-bottom: 16px"
+                  >
+                    <div class="pricing-detail-chip">&#127843; 3 pieces</div>
+                    <div class="pricing-detail-chip">&#8377;733/hour</div>
+                  </div>
+
+                  <div class="savings-indicator" style="margin-bottom: 24px">
+                    &#9660; Save &#8377;650 vs 3 individual hours
+                  </div>
+
+                  <!-- Breakdown -->
+                  <div
+                    style="
+                      background: #fafaf9;
+                      border-radius: 14px;
+                      padding: 16px 20px;
+                      margin-bottom: 24px;
+                      text-align: left;
+                    "
+                  >
+                    <div
+                      style="
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 12px;
+                        font-weight: 700;
+                        color: #737373;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        margin-bottom: 10px;
+                      "
+                    >
+                      Breakdown
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 13px;
+                        color: #555;
+                        margin-bottom: 6px;
+                      "
+                    >
+                      <span>3 hours of pottery</span>
+                      <span style="color: #999; text-decoration: line-through"
+                        >&#8377;2,850</span
+                      >
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 13px;
+                        color: #4f6f52;
+                        font-weight: 600;
+                        margin-bottom: 6px;
+                      "
+                    >
+                      <span>Package discount</span>
+                      <span>-&#8377;650</span>
+                    </div>
+                    <div
+                      style="
+                        border-top: 1px dashed #e5e5e5;
+                        padding-top: 8px;
+                        display: flex;
+                        justify-content: space-between;
+                        font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #1a1a1a;
+                      "
+                    >
+                      <span>Total</span>
+                      <span>&#8377;2,200</span>
+                    </div>
+                  </div>
+
+                  <a
+                    href="/events"
+                    class="cta-btn"
+                    style="
+                      width: 100%;
+                      justify-content: center;
+                      font-size: 15px;
+                    "
+                  >
+                    Book 3-Hour Workshop &#8594;
+                  </a>
+                  <div class="cta-hint" style="margin-top: 8px">
+                    No experience needed -- all materials included
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Popular Combinations -->
+            <div class="combos-section" style="margin-top: 8px">
+              <div class="combos-title" style="font-size: 20px">
+                Popular Combinations
+              </div>
+              <div class="combos-subtitle">
+                Quick picks from our most booked sessions
+              </div>
+
+              <div class="combos-grid cols-3">
+                <!-- Quick Session -->
+                <div class="combo-card">
+                  <div style="font-size: 32px; margin-bottom: 8px">
+                    &#127843;
+                  </div>
+                  <div class="combo-card-name">Quick Session</div>
+                  <div class="combo-card-hours">1 hour</div>
+                  <div class="combo-card-pieces">&#127843; 1 piece</div>
+                  <div class="combo-card-price">&#8377;950</div>
+                  <div class="combo-card-pp">per person</div>
+                  <div class="combo-card-desc">
+                    Perfect for beginners and first-timers. Try your hand at the
+                    wheel and take home one creation.
+                  </div>
+                  <div class="combo-card-rate">&#8377;950/hr</div>
+                </div>
+
+                <!-- Half Day -->
+                <div class="combo-card popular" style="padding-top: 28px">
+                  <div class="combo-badge popular">Most Popular</div>
+                  <div style="font-size: 32px; margin-bottom: 8px">
+                    &#127843;&#127843;&#127843;
+                  </div>
+                  <div class="combo-card-name">Half Day</div>
+                  <div class="combo-card-hours">3 hours</div>
+                  <div class="combo-card-pieces">&#127843; 3 pieces</div>
+                  <div class="combo-card-price">&#8377;2,200</div>
+                  <div class="combo-card-pp">per person</div>
+                  <div class="combo-card-desc">
+                    Our most popular choice. Enough time to truly learn, create,
+                    and experiment with different forms.
+                  </div>
+                  <div class="combo-card-rate">&#8377;733/hr</div>
+                </div>
+
+                <!-- Full Experience -->
+                <div class="combo-card best-value" style="padding-top: 28px">
+                  <div class="combo-badge best-value">Best Value</div>
+                  <div style="font-size: 32px; margin-bottom: 8px">
+                    &#127843;&#127843;&#127843;&#127843;&#127843;
+                  </div>
+                  <div class="combo-card-name">Full Experience</div>
+                  <div class="combo-card-hours">5 hours</div>
+                  <div class="combo-card-pieces">&#127843; 5 pieces</div>
+                  <div class="combo-card-price">&#8377;3,400</div>
+                  <div class="combo-card-pp">per person</div>
+                  <div class="combo-card-desc">
+                    The best value per hour. Immerse yourself fully in the craft
+                    and build an entire collection.
+                  </div>
+                  <div class="combo-card-rate">&#8377;680/hr -- lowest!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop description below the wide frame -->
+      <div style="max-width: 700px; margin: -48px auto 0; padding: 0 24px">
+        <h3
+          style="
+            font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+          "
+        >
+          Desktop (1200px)
+        </h3>
+        <p
+          style="
+            font-size: 13px;
+            color: #737373;
+            line-height: 1.8;
+            margin-bottom: 12px;
+          "
+        >
+          Elegant two-column desktop layout with the interactive slider, pottery
+          piece icons, and workshop details on the left, and a sticky dynamic
+          pricing card on the right that updates with the selected hours. The
+          pricing card includes a price breakdown showing the package discount.
+          Popular Combinations span the full width in a 3-column grid below.
+        </p>
+        <ul
+          style="
+            list-style: none;
+            font-size: 12px;
+            line-height: 2.2;
+            color: #555;
+            padding: 0;
+          "
+        >
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Two-column layout: slider + context left, pricing card right
+          </li>
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Larger slider track with bigger thumb for desktop interaction
+          </li>
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Pottery piece icons scale with selected hours (visual feedback)
+          </li>
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Sticky pricing card with price breakdown (original price, discount,
+            total)
+          </li>
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Dynamic CTA button text: "Book 3-Hour Workshop" updates with
+            selection
+          </li>
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Workshop details in 2x2 grid on the left side
+          </li>
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            3-column Popular Combinations with pottery icons, badges, and
+            per-hour rates
+          </li>
+          <li>
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Green savings indicator chip with discount amount
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================
+         IMPLEMENTATION NOTES
+         ============================================ -->
+    <div class="notes" style="margin-top: 80px">
+      <strong>Implementation Notes (Option 3):</strong><br />
+      <strong>Location:</strong> Homepage section, replaces/enhances existing
+      workshops area.<br />
+      <strong>Approach:</strong> Interactive pricing calculator with slider
+      control. Dynamic pricing updates as user moves the slider between hour
+      values.<br />
+      <strong>Slider:</strong> Horizontal track with markers at 1, 2, 3, 5, and
+      10 hours. Active/passed markers highlighted in green. Draggable thumb with
+      shadow.<br />
+      <strong>Dynamic Display:</strong> Selected hours (large), price (bold),
+      per-person text, pottery piece icons (scale with hours), detail chips
+      (pieces count + per-hour rate), savings indicator.<br />
+      <strong>Savings Calculation:</strong> Shows difference vs buying
+      individual 1-hour sessions. E.g., 3hrs: &#8377;2,850 (3x&#8377;950) -
+      &#8377;2,200 = &#8377;650 saved.<br />
+      <strong>Desktop Breakdown:</strong> Desktop pricing card includes a
+      line-item breakdown: original price (strikethrough), package discount,
+      total.<br />
+      <strong>Popular Combinations (3 cards):</strong><br />
+      &nbsp;&nbsp;"Quick Session" -- 1hr, &#8377;950, 1 piece, perfect for
+      beginners.<br />
+      &nbsp;&nbsp;"Half Day" -- 3hr, &#8377;2,200, 3 pieces, most popular (green
+      badge).<br />
+      &nbsp;&nbsp;"Full Experience" -- 5hr, &#8377;3,400, 5 pieces, best value
+      per hour (terracotta badge).<br />
+      <strong>Workshop Details:</strong> Timings (1-7 PM IST), Skill Level (All
+      levels), Capacity (Max 6), Availability (7 days).<br />
+      <strong>CTA:</strong> Dynamic text: "Book [X]-Hour Workshop" linking to
+      /events. Updates with slider selection.<br />
+      <strong>Mobile:</strong> Full-width slider, stacked pricing, horizontal
+      combo cards.<br />
+      <strong>Tablet:</strong> Slider + pricing side by side, 3-column combo
+      cards.<br />
+      <strong>Desktop:</strong> Two-column (slider left, sticky pricing card
+      right), full-width combo cards below.<br />
+    </div>
+  </body>
+</html>

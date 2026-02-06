@@ -1,0 +1,1852 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Merged Events View - Events & Workshops - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../_shared-styles.css" />
+    <style>
+      /* ============================================
+         MERGED EVENTS VIEW WIREFRAME
+         ============================================ */
+
+      /* Layout: Viewports stacked vertically */
+      .viewports-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .viewport-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      .viewport-row .viewport-box {
+        flex-shrink: 0;
+      }
+
+      .viewport-row .viewport-description {
+        flex: 1;
+        min-width: 280px;
+        max-width: 400px;
+        padding-top: 48px;
+      }
+
+      .viewport-description h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description p {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.8;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description ul {
+        list-style: none;
+        font-size: 12px;
+        line-height: 2.2;
+        color: #555;
+        padding: 0;
+      }
+
+      .viewport-description ul li::before {
+        content: "\2713 ";
+        color: #4f6f52;
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      /* Viewport Box */
+      .viewport-box {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .viewport-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .viewport-size {
+        font-size: 11px;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        padding: 16px;
+      }
+
+      .viewport-content.tablet {
+        padding: 24px 32px;
+      }
+
+      .viewport-content.desktop {
+        padding: 32px 48px;
+      }
+
+      /* ============================================
+         PAGE TABS
+         ============================================ */
+      .page-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 24px;
+      }
+
+      .page-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 16px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .page-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      .page-tabs.compact .page-tab {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      /* ============================================
+         PAGE HEADER
+         ============================================ */
+      .events-page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .events-page-subtitle {
+        font-size: 13px;
+        color: #737373;
+        margin-bottom: 20px;
+      }
+
+      /* ============================================
+         SEARCH & FILTERS
+         ============================================ */
+      .search-filters {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 200px;
+        padding: 10px 14px 10px 36px;
+        border-radius: 12px;
+        border: 1px solid #e5e5e5;
+        font-size: 13px;
+        font-family: "Outfit", sans-serif;
+        background: white;
+        color: #1a1a1a;
+        position: relative;
+      }
+
+      .search-input::placeholder {
+        color: #999;
+      }
+
+      .search-wrapper {
+        flex: 1;
+        min-width: 200px;
+        position: relative;
+      }
+
+      .search-wrapper .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #999;
+      }
+
+      .search-wrapper input {
+        width: 100%;
+        padding: 10px 14px 10px 36px;
+        border-radius: 12px;
+        border: 1px solid #e5e5e5;
+        font-size: 13px;
+        font-family: "Outfit", sans-serif;
+        background: white;
+        color: #1a1a1a;
+        outline: none;
+      }
+
+      .filter-select {
+        padding: 10px 32px 10px 14px;
+        border-radius: 12px;
+        border: 1px solid #e5e5e5;
+        font-size: 13px;
+        font-family: "Outfit", sans-serif;
+        background: white;
+        color: #1a1a1a;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+      }
+
+      .search-filters.stacked {
+        flex-direction: column;
+      }
+
+      .search-filters.stacked .filter-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .search-filters.stacked .filter-select {
+        flex: 1;
+      }
+
+      /* ============================================
+         SECTION HEADING
+         ============================================ */
+      .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .section-heading h2 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .count-badge {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        background: #e8ece8;
+        color: #4f6f52;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+
+      .count-badge.muted {
+        background: #f5f5f4;
+        color: #737373;
+      }
+
+      /* ============================================
+         EVENT CARDS (Horizontal Compact)
+         ============================================ */
+      .event-cards-grid {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .event-cards-grid.cols-1 {
+        grid-template-columns: 1fr;
+      }
+
+      .event-cards-grid.cols-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .event-card-h {
+        display: flex;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        transition: all 0.2s ease;
+      }
+
+      .event-card-h:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .event-card-h .card-thumb {
+        width: 80px;
+        min-width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .event-card-h .card-thumb-img {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .event-card-h .card-body {
+        flex: 1;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+      }
+
+      .event-card-h .card-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .event-card-h .card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+        font-size: 11px;
+        color: #737373;
+        margin-bottom: 4px;
+      }
+
+      .event-card-h .card-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        white-space: nowrap;
+      }
+
+      .event-card-h .card-meta-icon {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .event-card-h .card-bottom {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 2px;
+      }
+
+      .event-card-h .card-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .event-card-h .card-seats {
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .event-card-h .card-seats.low {
+        color: #c4785a;
+        font-weight: 600;
+      }
+
+      /* Type badge */
+      .type-badge {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+      }
+
+      .type-badge.workshop {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .type-badge.open-mic {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .type-badge.masterclass {
+        background: #ede9fe;
+        color: #6d28d9;
+      }
+
+      .type-badge.exhibition {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      /* Completed badge overlay */
+      .type-badge.completed {
+        background: #f5f5f4;
+        color: #737373;
+      }
+
+      /* Past event card muted styling */
+      .event-card-h.past {
+        opacity: 0.75;
+      }
+
+      .event-card-h.past .card-thumb-img {
+        filter: grayscale(30%);
+      }
+
+      .event-card-h.past .card-price {
+        color: #737373;
+      }
+
+      /* Review indicator */
+      .review-indicator {
+        font-size: 11px;
+        color: #737373;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .review-indicator .stars {
+        color: #f59e0b;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+
+      .review-indicator .review-link {
+        color: #4f6f52;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .review-indicator .review-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Show More Button */
+      .show-more-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid #e5e5e5;
+        background: white;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4f6f52;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .show-more-btn:hover {
+        background: #f5f5f4;
+        border-color: #d4d4d4;
+      }
+
+      .show-more-btn .arrow {
+        font-size: 12px;
+        transition: transform 0.2s;
+      }
+
+      /* Section Divider */
+      .section-divider {
+        height: 1px;
+        background: #e5e5e5;
+        margin: 28px 0;
+      }
+
+      /* Placeholder backgrounds */
+      .bg-clay-1 {
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+      }
+      .bg-clay-2 {
+        background: linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%);
+      }
+      .bg-clay-3 {
+        background: linear-gradient(135deg, #e8e0d4 0%, #c4a882 100%);
+      }
+      .bg-clay-4 {
+        background: linear-gradient(135deg, #dde4e8 0%, #b0c4d4 100%);
+      }
+      .bg-clay-5 {
+        background: linear-gradient(135deg, #f0e8e0 0%, #d4b89c 100%);
+      }
+      .bg-clay-6 {
+        background: linear-gradient(135deg, #e0dde8 0%, #b8b0d4 100%);
+      }
+      .bg-clay-7 {
+        background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
+      }
+      .bg-clay-8 {
+        background: linear-gradient(135deg, #c4a070 0%, #d4b080 100%);
+      }
+
+      /* Expanded card for desktop */
+      .event-card-h.expanded .card-thumb {
+        width: 100px;
+        min-width: 100px;
+        height: 100px;
+      }
+
+      .event-card-h.expanded .card-title {
+        font-size: 14px;
+      }
+
+      .event-card-h.expanded .card-body {
+        padding: 12px 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Page Title -->
+    <h1>Merged Events View</h1>
+    <p class="subtitle">
+      Combined "Upcoming" and "Past" events under the single "Events" tab.
+      Replaces the previous tabbed upcoming/past separation with a continuous
+      scrollable view. Users see everything at a glance with clear section
+      headings and count badges.
+    </p>
+
+    <!-- Route Info -->
+    <div class="option-details" style="max-width: 900px; margin: 0 auto 48px">
+      <strong>Route:</strong> /events/events (Events tab active)<br />
+      <strong>Components:</strong> EventsMergedContainer &rarr;
+      EventsMergedView<br />
+      <strong>Data:</strong> upcomingEvents + pastEvents queries merged into one
+      page<br />
+      <strong>Behavior:</strong> Single scroll view, "Show More" loads next
+      batch per section<br />
+      <strong>Filters:</strong> Event Type (All / Workshop / Open Mic /
+      Masterclass), Sort (Soonest First / Latest First / Price Low-High)
+    </div>
+
+    <!-- Viewports Stacked -->
+    <div class="viewports-stack">
+      <!-- =============================================
+           MOBILE (375px)
+           ============================================= -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 375px">
+          <div class="viewport-header">
+            <span class="viewport-label">Mobile</span>
+            <span class="viewport-size">375px</span>
+          </div>
+          <div class="viewport-content">
+            <!-- Page Tabs -->
+            <div class="page-tabs compact">
+              <div class="page-tab">Daily Workshops</div>
+              <div class="page-tab active">Events</div>
+              <div class="page-tab">My Registrations</div>
+            </div>
+
+            <!-- Title -->
+            <div style="margin-bottom: 16px">
+              <div class="events-page-title" style="font-size: 18px">
+                Events & Workshops
+              </div>
+              <div class="events-page-subtitle" style="font-size: 12px">
+                Discover pottery workshops, open mic nights, and more
+              </div>
+            </div>
+
+            <!-- Search & Filters (stacked on mobile) -->
+            <div class="search-filters stacked">
+              <div class="search-wrapper">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" placeholder="Search events..." />
+              </div>
+              <div class="filter-row">
+                <select class="filter-select">
+                  <option>All Types</option>
+                  <option>Workshop</option>
+                  <option>Open Mic</option>
+                  <option>Masterclass</option>
+                </select>
+                <select class="filter-select">
+                  <option>Soonest First</option>
+                  <option>Latest First</option>
+                  <option>Price: Low-High</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Upcoming Events Section -->
+            <div class="section-heading">
+              <h2 style="font-size: 15px">Upcoming Events</h2>
+              <span class="count-badge">12</span>
+            </div>
+
+            <div class="event-cards-grid cols-1">
+              <!-- Card 1 -->
+              <div class="event-card-h">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-2">&#127843;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Studio Practice #25</span
+                    >
+                    <span class="type-badge workshop">Workshop</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Feb 15,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128336;</span> 2:00-5:00
+                      PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                    <span class="card-seats">8 seats left</span>
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,200</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="event-card-h">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-3">&#127926;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Poetry & Clay Night</span
+                    >
+                    <span class="type-badge open-mic">Open Mic</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Feb 20,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128336;</span> 6:00-9:00
+                      PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Courtyard</span
+                    >
+                    <span class="card-seats low">3 seats left</span>
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;800</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="event-card-h">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-4">&#127912;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Glazing Masterclass</span
+                    >
+                    <span class="type-badge masterclass">Masterclass</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Mar 1,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128336;</span> 10:00
+                      AM-1:00 PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Kiln
+                      Room</span
+                    >
+                    <span class="card-seats">12 seats left</span>
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;2,500</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4 -->
+              <div class="event-card-h">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-1">&#129521;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Hand Building Basics</span
+                    >
+                    <span class="type-badge workshop">Workshop</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Mar 8,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128336;</span> 3:00-6:00
+                      PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                    <span class="card-seats">15 seats left</span>
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,500</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="show-more-btn" style="margin-bottom: 8px">
+              Show More <span class="arrow">&#8595;</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="section-divider"></div>
+
+            <!-- Past Events Section -->
+            <div class="section-heading">
+              <h2 style="font-size: 15px">Past Events</h2>
+              <span class="count-badge muted">24</span>
+            </div>
+
+            <div class="event-cards-grid cols-1">
+              <!-- Past Card 1 -->
+              <div class="event-card-h past">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-7">&#127843;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Studio Practice #24</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Jan 25,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,200</span>
+                    <span class="review-indicator">
+                      <span class="stars"
+                        >&#9733;&#9733;&#9733;&#9733;&#9734;</span
+                      >
+                      <span>4.2</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Past Card 2 -->
+              <div class="event-card-h past">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-8">&#127912;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Raku Firing Weekend</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Jan 12,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Kiln
+                      Room</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;3,500</span>
+                    <span class="review-indicator">
+                      <span class="review-link">Write a Review</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Past Card 3 -->
+              <div class="event-card-h past">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-5">&#127926;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Poetry & Clay Night #8</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Dec 20,
+                      2025</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Courtyard</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;800</span>
+                    <span class="review-indicator">
+                      <span class="stars"
+                        >&#9733;&#9733;&#9733;&#9733;&#9733;</span
+                      >
+                      <span>4.8</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="show-more-btn">
+              Show More <span class="arrow">&#8595;</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="viewport-description">
+          <h3>Mobile (375px)</h3>
+          <p>
+            Single-column layout with stacked filters. Event cards are compact
+            horizontal rows with 80px square thumbnails. Filters stack
+            vertically to save space. Both sections scroll within a single page.
+          </p>
+          <ul>
+            <li>Compact tabs with smaller font size</li>
+            <li>Stacked search + filter selects</li>
+            <li>Single column event card grid</li>
+            <li>80px square thumbnail images</li>
+            <li>"Show More" buttons per section</li>
+            <li>Past events have muted opacity</li>
+            <li>Review ratings/links shown inline</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- =============================================
+           TABLET (768px)
+           ============================================= -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 768px">
+          <div class="viewport-header">
+            <span class="viewport-label">Tablet</span>
+            <span class="viewport-size">768px</span>
+          </div>
+          <div class="viewport-content tablet">
+            <!-- Page Tabs -->
+            <div class="page-tabs">
+              <div class="page-tab">Daily Workshops</div>
+              <div class="page-tab active">Events</div>
+              <div class="page-tab">My Registrations</div>
+            </div>
+
+            <!-- Title -->
+            <div style="margin-bottom: 20px">
+              <div class="events-page-title" style="font-size: 20px">
+                Events & Workshops
+              </div>
+              <div class="events-page-subtitle">
+                Discover pottery workshops, open mic nights, and creative
+                gatherings
+              </div>
+            </div>
+
+            <!-- Search & Filters (inline) -->
+            <div class="search-filters">
+              <div class="search-wrapper">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" placeholder="Search events..." />
+              </div>
+              <select class="filter-select">
+                <option>All Types</option>
+                <option>Workshop</option>
+                <option>Open Mic</option>
+              </select>
+              <select class="filter-select">
+                <option>Soonest First</option>
+                <option>Latest First</option>
+              </select>
+            </div>
+
+            <!-- Upcoming Events Section -->
+            <div class="section-heading">
+              <h2>Upcoming Events</h2>
+              <span class="count-badge">12</span>
+            </div>
+
+            <div class="event-cards-grid cols-1">
+              <!-- Card 1 -->
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-2">&#127843;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Studio Practice #25</span
+                    >
+                    <span class="type-badge workshop">Workshop</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Feb 15,
+                      2026 &bull; 2:00-5:00 PM</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Studio, 2nd
+                      Floor</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,200</span>
+                    <span class="card-seats">8 seats left</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-3">&#127926;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Poetry & Clay Night</span
+                    >
+                    <span class="type-badge open-mic">Open Mic</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Feb 20,
+                      2026 &bull; 6:00-9:00 PM</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Courtyard</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;800</span>
+                    <span class="card-seats low">3 seats left</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-4">&#127912;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Glazing Masterclass</span
+                    >
+                    <span class="type-badge masterclass">Masterclass</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Mar 1, 2026
+                      &bull; 10:00 AM-1:00 PM</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Kiln
+                      Room</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;2,500</span>
+                    <span class="card-seats">12 seats left</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4 -->
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-1">&#129521;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Hand Building Basics</span
+                    >
+                    <span class="type-badge workshop">Workshop</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Mar 8, 2026
+                      &bull; 3:00-6:00 PM</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,500</span>
+                    <span class="card-seats">15 seats left</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="show-more-btn" style="margin-bottom: 8px">
+              Show More (8 more) <span class="arrow">&#8595;</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="section-divider"></div>
+
+            <!-- Past Events Section -->
+            <div class="section-heading">
+              <h2>Past Events</h2>
+              <span class="count-badge muted">24</span>
+            </div>
+
+            <div class="event-cards-grid cols-1">
+              <!-- Past Card 1 -->
+              <div class="event-card-h past expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-7">&#127843;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Studio Practice #24</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Jan 25,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,200</span>
+                    <span class="review-indicator">
+                      <span class="stars"
+                        >&#9733;&#9733;&#9733;&#9733;&#9734;</span
+                      >
+                      <span>4.2 (18 reviews)</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Past Card 2 -->
+              <div class="event-card-h past expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-8">&#127912;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Raku Firing Weekend</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Jan 12,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Kiln
+                      Room</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;3,500</span>
+                    <span class="review-indicator">
+                      <span class="review-link">Write a Review</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Past Card 3 -->
+              <div class="event-card-h past expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-5">&#127926;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Poetry & Clay Night #8</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Dec 20,
+                      2025</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Courtyard</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;800</span>
+                    <span class="review-indicator">
+                      <span class="stars"
+                        >&#9733;&#9733;&#9733;&#9733;&#9733;</span
+                      >
+                      <span>4.8 (32 reviews)</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="show-more-btn">
+              Show More (21 more) <span class="arrow">&#8595;</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="viewport-description">
+          <h3>Tablet (768px)</h3>
+          <p>
+            Single-column event cards with expanded thumbnails (100px). Filters
+            display inline in a single row. More metadata visible per card
+            including full location and combined date/time.
+          </p>
+          <ul>
+            <li>Inline search bar + filter dropdowns</li>
+            <li>Single column cards with expanded info</li>
+            <li>100px square thumbnails</li>
+            <li>Combined date &amp; time on one line</li>
+            <li>Count badges show remaining items</li>
+            <li>Review count shown in past events</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- =============================================
+           DESKTOP (1200px)
+           ============================================= -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 1200px">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1200px</span>
+          </div>
+          <div class="viewport-content desktop">
+            <!-- Page Tabs -->
+            <div class="page-tabs">
+              <div class="page-tab">Daily Workshops</div>
+              <div class="page-tab active">Events</div>
+              <div class="page-tab">My Registrations</div>
+            </div>
+
+            <!-- Title + Filters Row -->
+            <div
+              style="
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                margin-bottom: 24px;
+              "
+            >
+              <div>
+                <div class="events-page-title">Events & Workshops</div>
+                <div class="events-page-subtitle" style="margin-bottom: 0">
+                  Discover pottery workshops, open mic nights, and creative
+                  gatherings at our studio
+                </div>
+              </div>
+            </div>
+
+            <!-- Search & Filters (inline) -->
+            <div class="search-filters">
+              <div class="search-wrapper" style="max-width: 360px">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" placeholder="Search events..." />
+              </div>
+              <select class="filter-select">
+                <option>All Types</option>
+                <option>Workshop</option>
+                <option>Open Mic</option>
+                <option>Masterclass</option>
+              </select>
+              <select class="filter-select">
+                <option>Soonest First</option>
+                <option>Latest First</option>
+                <option>Price: Low to High</option>
+              </select>
+            </div>
+
+            <!-- Upcoming Events Section -->
+            <div class="section-heading">
+              <h2>Upcoming Events</h2>
+              <span class="count-badge">12</span>
+            </div>
+
+            <div class="event-cards-grid cols-2">
+              <!-- Row 1 -->
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-2">&#127843;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Studio Practice #25</span
+                    >
+                    <span class="type-badge workshop">Workshop</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Feb 15,
+                      2026 &bull; 2:00-5:00 PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Studio, 2nd
+                      Floor</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,200</span>
+                    <span class="card-seats">8 seats left</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-3">&#127926;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Poetry & Clay Night</span
+                    >
+                    <span class="type-badge open-mic">Open Mic</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Feb 20,
+                      2026 &bull; 6:00-9:00 PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Courtyard</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;800</span>
+                    <span class="card-seats low">3 seats left</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 2 -->
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-4">&#127912;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Glazing Masterclass</span
+                    >
+                    <span class="type-badge masterclass">Masterclass</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Mar 1, 2026
+                      &bull; 10:00 AM-1:00 PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Kiln
+                      Room</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;2,500</span>
+                    <span class="card-seats">12 seats left</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="event-card-h expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-1">&#129521;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Hand Building Basics</span
+                    >
+                    <span class="type-badge workshop">Workshop</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Mar 8, 2026
+                      &bull; 3:00-6:00 PM</span
+                    >
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,500</span>
+                    <span class="card-seats">15 seats left</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="show-more-btn" style="margin-bottom: 8px">
+              Show More (8 more) <span class="arrow">&#8595;</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="section-divider"></div>
+
+            <!-- Past Events Section -->
+            <div class="section-heading">
+              <h2>Past Events</h2>
+              <span class="count-badge muted">24</span>
+            </div>
+
+            <div class="event-cards-grid cols-2">
+              <!-- Past Row 1 -->
+              <div class="event-card-h past expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-7">&#127843;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Studio Practice #24</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Jan 25,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,200</span>
+                    <span class="review-indicator">
+                      <span class="stars"
+                        >&#9733;&#9733;&#9733;&#9733;&#9734;</span
+                      >
+                      <span>4.2 (18 reviews)</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="event-card-h past expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-8">&#127912;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Raku Firing Weekend</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Jan 12,
+                      2026</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span> Kiln
+                      Room</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;3,500</span>
+                    <span class="review-indicator">
+                      <span class="review-link">Write a Review</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Past Row 2 -->
+              <div class="event-card-h past expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-5">&#127926;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Poetry & Clay Night #8</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Dec 20,
+                      2025</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Courtyard</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;800</span>
+                    <span class="review-indicator">
+                      <span class="stars"
+                        >&#9733;&#9733;&#9733;&#9733;&#9733;</span
+                      >
+                      <span>4.8 (32 reviews)</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="event-card-h past expanded">
+                <div class="card-thumb">
+                  <div class="card-thumb-img bg-clay-6">&#129521;</div>
+                </div>
+                <div class="card-body">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 8px;
+                      margin-bottom: 3px;
+                    "
+                  >
+                    <span class="card-title" style="margin-bottom: 0"
+                      >Beginner's Wheel Class</span
+                    >
+                    <span class="type-badge completed">Completed</span>
+                  </div>
+                  <div class="card-meta">
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128197;</span> Dec 10,
+                      2025</span
+                    >
+                    <span class="card-meta-item"
+                      ><span class="card-meta-icon">&#128205;</span>
+                      Studio</span
+                    >
+                  </div>
+                  <div class="card-bottom">
+                    <span class="card-price">&#8377;1,800</span>
+                    <span class="review-indicator">
+                      <span class="stars"
+                        >&#9733;&#9733;&#9733;&#9733;&#9734;</span
+                      >
+                      <span>4.0 (8 reviews)</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="show-more-btn">
+              Show More (20 more) <span class="arrow">&#8595;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Description (below) -->
+      <div
+        style="
+          max-width: 1200px;
+          margin: -48px auto 0;
+          padding: 0 0 48px;
+          display: flex;
+          gap: 32px;
+        "
+      >
+        <div style="flex: 1">
+          <div
+            style="
+              font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+              font-size: 16px;
+              font-weight: 700;
+              color: #1a1a1a;
+              margin-bottom: 12px;
+            "
+          >
+            Desktop (1200px)
+          </div>
+          <p
+            style="
+              font-size: 13px;
+              color: #737373;
+              line-height: 1.8;
+              margin-bottom: 12px;
+            "
+          >
+            Two-column event card grid for both sections. Filters are inline
+            with the search bar in a single row. The page title and description
+            sit alongside the filter area. Each card has a 100px thumbnail with
+            expanded metadata.
+          </p>
+          <ul
+            style="
+              list-style: none;
+              font-size: 12px;
+              line-height: 2.2;
+              color: #555;
+              padding: 0;
+            "
+          >
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              2-column grid for event cards
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              Inline search + filter dropdowns
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              4 upcoming + 4 past events visible initially
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              "Show More" displays remaining count
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              Past events have muted opacity + grayscale thumbnails
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              Review ratings and "Write a Review" links inline
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 64px">
+      <strong>Implementation Notes:</strong><br />
+      <strong>Route:</strong> /events/events (under the "Events" tab)<br />
+      <strong>Replaces:</strong> Previous upcoming/past tab separation within
+      the Events tab<br />
+      <strong>Data queries:</strong> upcomingEvents(filter) + pastEvents(filter)
+      loaded together<br />
+      <strong>Pagination:</strong> "Show More" loads next 6 items per section
+      via fetchMore<br />
+      <strong>Filters:</strong> Event Type and Sort apply to both sections
+      simultaneously<br />
+      <strong>Search:</strong> Debounced search (300ms) filters across both
+      sections<br />
+      <strong>Past events:</strong> Reduced opacity (0.75), grayscale(30%) on
+      thumbnails<br />
+      <strong>Reviews:</strong> Completed events show avg rating + count, or
+      "Write a Review" link<br />
+      <strong>Type badges:</strong> Workshop (green), Open Mic (amber),
+      Masterclass (purple), Exhibition (blue), Completed (gray)
+    </div>
+  </body>
+</html>

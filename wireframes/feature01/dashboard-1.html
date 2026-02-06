@@ -1,0 +1,2986 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Daily Workshops Dashboard - Poetry & Pottery Wireframes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../_shared-styles.css" />
+    <style>
+      /* ============================================
+         ADMIN DAILY WORKSHOPS DASHBOARD
+         ============================================ */
+
+      .viewports-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .viewport-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      .viewport-row .viewport-box {
+        flex-shrink: 0;
+      }
+
+      .viewport-row .viewport-description {
+        flex: 1;
+        min-width: 280px;
+        max-width: 400px;
+        padding-top: 48px;
+      }
+
+      .viewport-description h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description p {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.8;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description ul {
+        list-style: none;
+        font-size: 12px;
+        line-height: 2.2;
+        color: #555;
+        padding: 0;
+      }
+
+      .viewport-description ul li::before {
+        content: "\2713 ";
+        color: #4f6f52;
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      /* Viewport Box */
+      .viewport-box {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .viewport-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .viewport-size {
+        font-size: 11px;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        padding: 16px;
+      }
+
+      .viewport-content.tablet {
+        padding: 24px 32px;
+      }
+
+      .viewport-content.desktop {
+        padding: 0;
+      }
+
+      /* ============================================
+         DASHBOARD LAYOUT
+         ============================================ */
+
+      .dashboard-layout {
+        display: flex;
+        min-height: 700px;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 240px;
+        background: #fafaf9;
+        border-right: 1px solid #e5e5e5;
+        padding: 20px 0;
+        flex-shrink: 0;
+      }
+
+      .sidebar-brand {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+        color: #4f6f52;
+        padding: 0 20px 20px;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 16px;
+      }
+
+      .sidebar-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: #bbb;
+        padding: 8px 20px 4px;
+      }
+
+      .sidebar-nav {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar-nav li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #737373;
+        cursor: pointer;
+        transition: all 0.15s;
+        border-left: 3px solid transparent;
+      }
+
+      .sidebar-nav li:hover {
+        background: #f0f0ef;
+        color: #1a1a1a;
+      }
+
+      .sidebar-nav li.active {
+        background: #e8ece8;
+        color: #4f6f52;
+        font-weight: 600;
+        border-left-color: #4f6f52;
+      }
+
+      .sidebar-nav li .nav-icon {
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        opacity: 0.7;
+      }
+
+      .sidebar-nav li.active .nav-icon {
+        opacity: 1;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        padding: 28px 36px;
+        overflow-x: auto;
+      }
+
+      .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+        color: #737373;
+        margin-top: 2px;
+      }
+
+      /* ============================================
+         ADMIN TABS
+         ============================================ */
+
+      .admin-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 28px;
+        overflow-x: auto;
+      }
+
+      .admin-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 18px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.15s;
+      }
+
+      .admin-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      .admin-tab:hover:not(.active) {
+        color: #555;
+      }
+
+      .admin-tabs.compact .admin-tab {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      .admin-tab .tab-count {
+        display: inline-block;
+        background: #e8ece8;
+        color: #4f6f52;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 8px;
+        margin-left: 6px;
+      }
+
+      /* ============================================
+         PRIMARY BUTTON
+         ============================================ */
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #4f6f52;
+        color: white;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 9px 18px;
+        border-radius: 9999px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.15s;
+        box-shadow: 0 2px 8px rgba(79, 111, 82, 0.2);
+        white-space: nowrap;
+      }
+
+      .btn-primary:hover {
+        background: #3d5640;
+      }
+
+      .btn-primary.sm {
+        font-size: 12px;
+        padding: 6px 14px;
+      }
+
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: white;
+        color: #4f6f52;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 9px 18px;
+        border-radius: 9999px;
+        border: 1px solid #4f6f52;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+
+      .btn-secondary:hover {
+        background: #f4f7f4;
+      }
+
+      .btn-secondary.sm {
+        font-size: 12px;
+        padding: 6px 14px;
+      }
+
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: transparent;
+        color: #737373;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-ghost:hover {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .btn-danger {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: transparent;
+        color: #ef4444;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-danger:hover {
+        background: #fef2f2;
+      }
+
+      /* ============================================
+         DATA TABLE
+         ============================================ */
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      .data-table thead th {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #999;
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid #e5e5e5;
+        white-space: nowrap;
+      }
+
+      .data-table tbody td {
+        padding: 12px;
+        border-bottom: 1px solid #f5f5f4;
+        color: #1a1a1a;
+        vertical-align: middle;
+      }
+
+      .data-table tbody tr:hover {
+        background: #fafaf9;
+      }
+
+      .data-table .text-muted {
+        color: #999;
+        font-size: 12px;
+      }
+
+      .data-table .text-sm {
+        font-size: 12px;
+      }
+
+      .data-table .font-medium {
+        font-weight: 600;
+      }
+
+      /* ============================================
+         STATUS BADGES
+         ============================================ */
+
+      .badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 9999px;
+        white-space: nowrap;
+      }
+
+      .badge-active {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .badge-inactive {
+        background: #f5f5f4;
+        color: #737373;
+      }
+
+      .badge-pending {
+        background: #fef9c3;
+        color: #854d0e;
+      }
+
+      .badge-approved {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .badge-paid {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .badge-confirmed {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .badge-cancelled {
+        background: #fef2f2;
+        color: #dc2626;
+      }
+
+      .badge-one-time {
+        background: #f3e8ff;
+        color: #7c3aed;
+      }
+
+      .badge-weekly {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+
+      .badge-monthly {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      /* ============================================
+         TOGGLE SWITCH
+         ============================================ */
+
+      .toggle-switch {
+        width: 36px;
+        height: 20px;
+        border-radius: 10px;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .toggle-switch.on {
+        background: #4f6f52;
+      }
+
+      .toggle-switch.off {
+        background: #d4d4d4;
+      }
+
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: white;
+        transition: left 0.2s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      }
+
+      .toggle-switch.on::after {
+        left: 18px;
+      }
+
+      .toggle-switch.off::after {
+        left: 2px;
+      }
+
+      /* ============================================
+         FILTER BAR
+         ============================================ */
+
+      .filter-bar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-select {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        padding: 8px 32px 8px 12px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background: white;
+        color: #1a1a1a;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+      }
+
+      .filter-search {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        padding: 8px 12px 8px 34px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background: white;
+        color: #1a1a1a;
+        min-width: 200px;
+        background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8' stroke='%23999' stroke-width='2'/%3E%3Cline x1='16.65' y1='16.65' x2='21' y2='21' stroke='%23999' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: 12px center;
+      }
+
+      .filter-date {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        padding: 8px 12px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background: white;
+        color: #1a1a1a;
+      }
+
+      /* ============================================
+         CONFIG SELECTOR DROPDOWN
+         ============================================ */
+
+      .config-selector {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding: 12px 16px;
+        background: #f5f5f4;
+        border-radius: 12px;
+      }
+
+      .config-selector-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #737373;
+        white-space: nowrap;
+      }
+
+      .config-selector select {
+        font-family: "Outfit", sans-serif;
+        font-size: 13px;
+        padding: 8px 32px 8px 12px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background: white;
+        color: #1a1a1a;
+        flex: 1;
+        max-width: 300px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+      }
+
+      /* ============================================
+         ACTIONS DROPDOWN
+         ============================================ */
+
+      .actions-dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .actions-trigger {
+        font-size: 16px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #999;
+        transition: all 0.15s;
+        background: transparent;
+        border: none;
+      }
+
+      .actions-trigger:hover {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .actions-menu {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        padding: 6px;
+        min-width: 160px;
+        z-index: 10;
+      }
+
+      .actions-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        font-size: 13px;
+        color: #1a1a1a;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .actions-menu-item:hover {
+        background: #f5f5f4;
+      }
+
+      .actions-menu-item.danger {
+        color: #ef4444;
+      }
+
+      /* ============================================
+         MOBILE CARD LIST (replaces tables)
+         ============================================ */
+
+      .card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .card-item {
+        background: #fafaf9;
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .card-item-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .card-item-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .card-item-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        font-size: 12px;
+        color: #737373;
+        line-height: 1.8;
+      }
+
+      .card-item-meta strong {
+        color: #1a1a1a;
+        font-weight: 600;
+      }
+
+      .card-item-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      /* ============================================
+         MOBILE BOTTOM NAV
+         ============================================ */
+
+      .mobile-nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        background: white;
+        border-top: 1px solid #e5e5e5;
+        margin: 16px -16px -16px;
+      }
+
+      .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font-size: 10px;
+        color: #999;
+      }
+
+      .mobile-nav-item.active {
+        color: #4f6f52;
+      }
+
+      .mobile-nav-item .nav-icon {
+        font-size: 16px;
+      }
+
+      /* ============================================
+         MOBILE HAMBURGER MENU
+         ============================================ */
+
+      .mobile-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .mobile-topbar-brand {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 800;
+        color: #4f6f52;
+      }
+
+      .mobile-topbar-menu {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+
+      .mobile-topbar-menu span {
+        width: 18px;
+        height: 2px;
+        background: #1a1a1a;
+        border-radius: 2px;
+      }
+
+      /* ============================================
+         PREVIEW IMPACT MODAL
+         ============================================ */
+
+      .preview-modal {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e5e5e5;
+        margin-top: 16px;
+      }
+
+      .preview-modal-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #1a1a1a;
+      }
+
+      .preview-modal-stat {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 0;
+        font-size: 13px;
+        color: #555;
+        border-bottom: 1px solid #f5f5f4;
+      }
+
+      .preview-modal-stat strong {
+        color: #ef4444;
+        font-weight: 700;
+      }
+
+      /* ============================================
+         EMPTY STATE
+         ============================================ */
+
+      .empty-state {
+        text-align: center;
+        padding: 48px 24px;
+        color: #999;
+      }
+
+      .empty-state-icon {
+        font-size: 40px;
+        margin-bottom: 12px;
+        opacity: 0.4;
+      }
+
+      .empty-state-text {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        color: #737373;
+      }
+
+      .empty-state-hint {
+        font-size: 12px;
+        color: #bbb;
+      }
+
+      /* ============================================
+         USER DETAIL - KANBAN BOARD
+         ============================================ */
+
+      .section-divider {
+        margin: 80px 0 48px;
+        padding: 32px 0 0;
+        border-top: 3px solid #4f6f52;
+      }
+
+      .section-divider-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+      }
+
+      .section-divider-subtitle {
+        font-size: 14px;
+        color: #737373;
+        line-height: 1.6;
+      }
+
+      .section-divider-route {
+        display: inline-block;
+        margin-top: 8px;
+        font-family: monospace;
+        font-size: 13px;
+        background: #f5f5f4;
+        padding: 4px 12px;
+        border-radius: 6px;
+        color: #4f6f52;
+        font-weight: 600;
+      }
+
+      /* User Detail Tabs Grid */
+      .user-detail-tabs-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .user-detail-tab-card {
+        background: white;
+        border-radius: 14px;
+        padding: 18px 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 2px solid transparent;
+        text-align: center;
+      }
+
+      .user-detail-tab-card:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+      }
+
+      .user-detail-tab-card.active {
+        border-color: #4f6f52;
+        background: #f4f7f4;
+      }
+
+      .user-detail-tab-icon {
+        font-size: 24px;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .user-detail-tab-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .user-detail-tab-count {
+        font-size: 22px;
+        font-weight: 800;
+        color: #4f6f52;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+
+      /* Kanban Board */
+      .kanban-board {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 14px;
+        min-height: 500px;
+      }
+
+      .kanban-column {
+        background: #fafaf9;
+        border-radius: 14px;
+        padding: 14px 10px;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .kanban-column-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 4px 12px;
+        border-bottom: 2px solid;
+        margin-bottom: 12px;
+      }
+
+      .kanban-column-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .kanban-column-count {
+        font-size: 11px;
+        font-weight: 700;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      /* Column color variants */
+      .kanban-column.pending .kanban-column-header {
+        border-bottom-color: #f59e0b;
+      }
+      .kanban-column.pending .kanban-column-title {
+        color: #b45309;
+      }
+      .kanban-column.pending .kanban-column-count {
+        background: #f59e0b;
+      }
+
+      .kanban-column.approved .kanban-column-header {
+        border-bottom-color: #22c55e;
+      }
+      .kanban-column.approved .kanban-column-title {
+        color: #16a34a;
+      }
+      .kanban-column.approved .kanban-column-count {
+        background: #22c55e;
+      }
+
+      .kanban-column.paid .kanban-column-header {
+        border-bottom-color: #3b82f6;
+      }
+      .kanban-column.paid .kanban-column-title {
+        color: #2563eb;
+      }
+      .kanban-column.paid .kanban-column-count {
+        background: #3b82f6;
+      }
+
+      .kanban-column.confirmed .kanban-column-header {
+        border-bottom-color: #15803d;
+      }
+      .kanban-column.confirmed .kanban-column-title {
+        color: #15803d;
+      }
+      .kanban-column.confirmed .kanban-column-count {
+        background: #15803d;
+      }
+
+      .kanban-column.rejected .kanban-column-header {
+        border-bottom-color: #ef4444;
+      }
+      .kanban-column.rejected .kanban-column-title {
+        color: #dc2626;
+      }
+      .kanban-column.rejected .kanban-column-count {
+        background: #ef4444;
+      }
+
+      .kanban-column.cancelled .kanban-column-header {
+        border-bottom-color: #a3a3a3;
+      }
+      .kanban-column.cancelled .kanban-column-title {
+        color: #737373;
+      }
+      .kanban-column.cancelled .kanban-column-count {
+        background: #a3a3a3;
+      }
+
+      /* Kanban Card */
+      .kanban-card {
+        background: white;
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        cursor: grab;
+        transition: all 0.2s;
+        position: relative;
+      }
+
+      .kanban-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .kanban-card-drag-handle {
+        position: absolute;
+        top: 14px;
+        right: 10px;
+        color: #d4d4d4;
+        font-size: 14px;
+        cursor: grab;
+        line-height: 1;
+      }
+
+      .kanban-card-drag-handle:hover {
+        color: #999;
+      }
+
+      .kanban-card-id {
+        font-family: monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: #4f6f52;
+        margin-bottom: 6px;
+        padding-right: 20px;
+      }
+
+      .kanban-card-workshop {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .kanban-card-slots {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 10px;
+      }
+
+      .kanban-card-slot-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 500;
+        background: #f0f4f0;
+        color: #4f6f52;
+        padding: 3px 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+
+      .kanban-card-slot-chip .chip-icon {
+        font-size: 10px;
+        opacity: 0.7;
+      }
+
+      .kanban-card-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 8px;
+        font-size: 11px;
+        color: #737373;
+        margin-bottom: 8px;
+      }
+
+      .kanban-card-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+
+      .kanban-card-meta-icon {
+        font-size: 11px;
+        opacity: 0.6;
+      }
+
+      .kanban-card-meta-value {
+        font-weight: 600;
+        color: #555;
+      }
+
+      .kanban-card-amount {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-top: 8px;
+        border-top: 1px solid #f0f0ef;
+      }
+
+      .kanban-card-amount-value {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .kanban-card-discount-badge {
+        font-size: 9px;
+        font-weight: 700;
+        background: #fef3c7;
+        color: #d97706;
+        padding: 2px 6px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      /* Mobile/tablet note */
+      .responsive-note {
+        margin-top: 24px;
+        padding: 16px 20px;
+        background: #fffbeb;
+        border-radius: 12px;
+        border-left: 4px solid #f59e0b;
+      }
+
+      .responsive-note-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #92400e;
+        margin-bottom: 4px;
+      }
+
+      .responsive-note-text {
+        font-size: 12px;
+        color: #a16207;
+        line-height: 1.6;
+      }
+
+      /* User detail header */
+      .user-detail-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+
+      .user-detail-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4f6f52 0%, #7da07f 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+
+      .user-detail-info-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .user-detail-info-email {
+        font-size: 13px;
+        color: #737373;
+        margin-top: 2px;
+      }
+
+      .user-detail-info-meta {
+        display: flex;
+        gap: 16px;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #999;
+      }
+
+      /* Kanban cards container */
+      .kanban-cards {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .kanban-empty {
+        text-align: center;
+        padding: 24px 8px;
+        color: #ccc;
+        font-size: 12px;
+      }
+
+      .kanban-empty-icon {
+        font-size: 24px;
+        margin-bottom: 6px;
+        opacity: 0.4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Admin Daily Workshops Dashboard</h1>
+    <p class="subtitle">
+      Wireframe for <code>/dashboard/daily-workshops</code> -- Admin management
+      page with 4 tabs: Config, Pricing Tiers, Blackout Rules, and
+      Registrations. Three viewports stacked vertically: Mobile (375px), Tablet
+      (768px), Desktop (1200px).
+    </p>
+
+    <div class="viewports-stack">
+      <!-- ============================================
+           MOBILE VIEWPORT (375px)
+           ============================================ -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 375px">
+          <div class="viewport-header">
+            <span class="viewport-label">Mobile</span>
+            <span class="viewport-size">375 x auto</span>
+          </div>
+          <div class="viewport-content">
+            <!-- Mobile Top Bar -->
+            <div class="mobile-topbar">
+              <div class="mobile-topbar-brand">P&P Dashboard</div>
+              <div class="mobile-topbar-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <!-- Page Title -->
+            <div style="margin-bottom: 16px">
+              <div
+                style="
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 18px;
+                  font-weight: 700;
+                  color: #1a1a1a;
+                "
+              >
+                Daily Workshops
+              </div>
+              <div style="font-size: 12px; color: #737373; margin-top: 2px">
+                Manage workshop configurations
+              </div>
+            </div>
+
+            <!-- Tabs: Horizontal scroll on mobile -->
+            <div
+              style="overflow-x: auto; margin: 0 -16px 20px; padding: 0 16px"
+            >
+              <div class="admin-tabs compact" style="min-width: max-content">
+                <div class="admin-tab active">Config</div>
+                <div class="admin-tab">
+                  Pricing <span class="tab-count">5</span>
+                </div>
+                <div class="admin-tab">Blackout</div>
+                <div class="admin-tab">
+                  Registrations <span class="tab-count">12</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 1: Config (Mobile - Card List) -->
+            <div style="margin-bottom: 12px">
+              <button class="btn-primary sm" style="width: 100%">
+                + Add Config
+              </button>
+            </div>
+
+            <div class="card-list">
+              <!-- Config 1 -->
+              <div class="card-item">
+                <div class="card-item-header">
+                  <span class="card-item-title">Standard Workshop</span>
+                  <span class="badge badge-active">Active</span>
+                </div>
+                <div class="card-item-meta">
+                  <span>Timezone: <strong>Asia/Kolkata</strong></span>
+                  <span>Hours: <strong>13:00 - 19:00</strong></span>
+                  <span>Slot: <strong>60 min</strong></span>
+                  <span>Capacity: <strong>6</strong></span>
+                  <span>Booking Window: <strong>90 days</strong></span>
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: #737373;
+                    margin-top: 6px;
+                    line-height: 1.5;
+                  "
+                >
+                  Hands-on pottery experience for all skill levels with guided
+                  instruction.
+                </div>
+                <div class="card-item-actions">
+                  <button class="btn-ghost">Edit</button>
+                  <button class="btn-danger">Delete</button>
+                </div>
+              </div>
+
+              <!-- Config 2 -->
+              <div class="card-item">
+                <div class="card-item-header">
+                  <span class="card-item-title">Premium Workshop</span>
+                  <span class="badge badge-active">Active</span>
+                </div>
+                <div class="card-item-meta">
+                  <span>Timezone: <strong>Asia/Kolkata</strong></span>
+                  <span>Hours: <strong>13:00 - 19:00</strong></span>
+                  <span>Slot: <strong>60 min</strong></span>
+                  <span>Capacity: <strong>4</strong></span>
+                  <span>Booking Window: <strong>90 days</strong></span>
+                </div>
+                <div
+                  style="
+                    font-size: 12px;
+                    color: #737373;
+                    margin-top: 6px;
+                    line-height: 1.5;
+                  "
+                >
+                  Exclusive small-group pottery with premium materials and
+                  personalized guidance.
+                </div>
+                <div class="card-item-actions">
+                  <button class="btn-ghost">Edit</button>
+                  <button class="btn-danger">Delete</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile Bottom Nav -->
+            <div class="mobile-nav">
+              <div class="mobile-nav-item">
+                <span class="nav-icon">&#9634;</span>
+                <span>Overview</span>
+              </div>
+              <div class="mobile-nav-item">
+                <span class="nav-icon">&#9733;</span>
+                <span>Products</span>
+              </div>
+              <div class="mobile-nav-item active">
+                <span class="nav-icon">&#128197;</span>
+                <span>Workshops</span>
+              </div>
+              <div class="mobile-nav-item">
+                <span class="nav-icon">&#8942;</span>
+                <span>More</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="viewport-description">
+          <h3>Mobile (375px)</h3>
+          <p>
+            On mobile, the sidebar navigation collapses into a hamburger menu.
+            Tables are replaced by stacked card lists for better readability on
+            small screens.
+          </p>
+          <ul>
+            <li>Hamburger menu replaces sidebar navigation</li>
+            <li>Tabs scroll horizontally for accessibility</li>
+            <li>Config data shown as card lists, not tables</li>
+            <li>Full-width "Add Config" button</li>
+            <li>Bottom navigation for quick dashboard switching</li>
+            <li>Card-based layout for each config item</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================================
+           TABLET VIEWPORT (768px)
+           ============================================ -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 768px">
+          <div class="viewport-header">
+            <span class="viewport-label">Tablet</span>
+            <span class="viewport-size">768 x auto</span>
+          </div>
+          <div class="viewport-content tablet">
+            <!-- Tablet Header -->
+            <div style="margin-bottom: 20px">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <div>
+                  <div
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 20px;
+                      font-weight: 700;
+                      color: #1a1a1a;
+                    "
+                  >
+                    Daily Workshops
+                  </div>
+                  <div style="font-size: 12px; color: #737373; margin-top: 2px">
+                    Manage workshop configurations and registrations
+                  </div>
+                </div>
+                <button class="btn-primary sm">+ Add Config</button>
+              </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="admin-tabs">
+              <div class="admin-tab active">Config</div>
+              <div class="admin-tab">
+                Pricing Tiers <span class="tab-count">5</span>
+              </div>
+              <div class="admin-tab">Blackout Rules</div>
+              <div class="admin-tab">
+                Registrations <span class="tab-count">12</span>
+              </div>
+            </div>
+
+            <!-- TAB 1: Config Table (Tablet - some columns hidden) -->
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Hours</th>
+                  <th>Capacity</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-muted">1</td>
+                  <td>
+                    <div class="font-medium">Standard Workshop</div>
+                    <div class="text-muted">
+                      Hands-on pottery for all levels
+                    </div>
+                  </td>
+                  <td>
+                    <div class="toggle-switch on"></div>
+                  </td>
+                  <td>13:00-19:00</td>
+                  <td>6 / slot</td>
+                  <td>
+                    <div style="display: flex; gap: 4px">
+                      <button class="btn-ghost">Edit</button>
+                      <button class="btn-danger">Del</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-muted">2</td>
+                  <td>
+                    <div class="font-medium">Premium Workshop</div>
+                    <div class="text-muted">
+                      Small-group with premium materials
+                    </div>
+                  </td>
+                  <td>
+                    <div class="toggle-switch on"></div>
+                  </td>
+                  <td>13:00-19:00</td>
+                  <td>4 / slot</td>
+                  <td>
+                    <div style="display: flex; gap: 4px">
+                      <button class="btn-ghost">Edit</button>
+                      <button class="btn-danger">Del</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Divider -->
+            <div style="height: 1px; background: #e5e5e5; margin: 28px 0"></div>
+
+            <!-- TAB 2: Pricing Tiers (shown below for reference) -->
+            <div
+              style="
+                font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                font-size: 14px;
+                font-weight: 700;
+                color: #999;
+                margin-bottom: 16px;
+              "
+            >
+              Preview: Pricing Tiers Tab
+            </div>
+
+            <!-- Config Selector -->
+            <div class="config-selector">
+              <span class="config-selector-label">Config:</span>
+              <select>
+                <option>Standard Workshop</option>
+                <option>Premium Workshop</option>
+              </select>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Hours</th>
+                  <th>Price/Person</th>
+                  <th>Pieces</th>
+                  <th>Active</th>
+                  <th>Sort</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-medium">1 hr</td>
+                  <td>&#8377;950</td>
+                  <td>1 pc</td>
+                  <td><div class="toggle-switch on"></div></td>
+                  <td class="text-muted">1</td>
+                  <td>
+                    <div style="display: flex; gap: 4px">
+                      <button class="btn-ghost">Edit</button>
+                      <button class="btn-danger">Del</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-medium">2 hr</td>
+                  <td>&#8377;1,600</td>
+                  <td>2 pc</td>
+                  <td><div class="toggle-switch on"></div></td>
+                  <td class="text-muted">2</td>
+                  <td>
+                    <div style="display: flex; gap: 4px">
+                      <button class="btn-ghost">Edit</button>
+                      <button class="btn-danger">Del</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-medium">3 hr</td>
+                  <td>&#8377;2,200</td>
+                  <td>3 pc</td>
+                  <td><div class="toggle-switch on"></div></td>
+                  <td class="text-muted">3</td>
+                  <td>
+                    <div style="display: flex; gap: 4px">
+                      <button class="btn-ghost">Edit</button>
+                      <button class="btn-danger">Del</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="margin-top: 12px">
+              <button class="btn-primary sm">+ Add Tier</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="viewport-description">
+          <h3>Tablet (768px)</h3>
+          <p>
+            Tablet uses a standard table layout with some less-critical columns
+            hidden (Timezone, Slot Duration, Booking Window). Both Config and
+            Pricing Tiers previewed.
+          </p>
+          <ul>
+            <li>No sidebar; top-aligned page header with action button</li>
+            <li>Standard table view with condensed columns</li>
+            <li>Toggle switches inline for Active/Inactive</li>
+            <li>Config selector dropdown for pricing tiers</li>
+            <li>Edit/Delete actions visible per row</li>
+            <li>Both Config and Pricing Tiers tabs previewed</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================================
+           DESKTOP VIEWPORT (1200px)
+           ============================================ -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 1200px">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1200 x auto</span>
+          </div>
+          <div class="viewport-content desktop">
+            <div class="dashboard-layout">
+              <!-- Sidebar Navigation -->
+              <div class="sidebar">
+                <div class="sidebar-brand">Poetry & Pottery</div>
+
+                <div class="sidebar-section-label">Main</div>
+                <ul class="sidebar-nav">
+                  <li>
+                    <span class="nav-icon">&#9634;</span>
+                    Overview
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128230;</span>
+                    Products
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128193;</span>
+                    Categories
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#127915;</span>
+                    Events
+                  </li>
+                  <li class="active">
+                    <span class="nav-icon">&#128197;</span>
+                    Daily Workshops
+                  </li>
+                </ul>
+
+                <div class="sidebar-section-label" style="margin-top: 12px">
+                  Commerce
+                </div>
+                <ul class="sidebar-nav">
+                  <li>
+                    <span class="nav-icon">&#128722;</span>
+                    Orders
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128101;</span>
+                    Users
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128196;</span>
+                    Content
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#9881;</span>
+                    Settings
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Main Content Area -->
+              <div class="main-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                  <div>
+                    <div class="page-title">Daily Workshops</div>
+                    <div class="page-subtitle">
+                      Manage workshop configurations, pricing, blackout rules,
+                      and registrations
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Desktop Tabs -->
+                <div class="admin-tabs">
+                  <div class="admin-tab active">Config</div>
+                  <div class="admin-tab">
+                    Pricing Tiers <span class="tab-count">5</span>
+                  </div>
+                  <div class="admin-tab">Blackout Rules</div>
+                  <div class="admin-tab">
+                    Registrations <span class="tab-count">12</span>
+                  </div>
+                </div>
+
+                <!-- ========== TAB 1: CONFIG ========== -->
+                <div
+                  style="
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <button class="btn-primary">+ Add Config</button>
+                </div>
+
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th>Timezone</th>
+                      <th>Hours</th>
+                      <th>Slot</th>
+                      <th>Capacity</th>
+                      <th>Booking Window</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-muted">1</td>
+                      <td class="font-medium">Standard Workshop</td>
+                      <td class="text-sm" style="max-width: 180px">
+                        Hands-on pottery experience for all skill levels with
+                        guided instruction
+                      </td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td class="text-sm">Asia/Kolkata</td>
+                      <td class="text-sm">13:00 - 19:00</td>
+                      <td class="text-sm">60 min</td>
+                      <td class="text-sm">6</td>
+                      <td class="text-sm">90 days</td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">2</td>
+                      <td class="font-medium">Premium Workshop</td>
+                      <td class="text-sm" style="max-width: 180px">
+                        Exclusive small-group pottery with premium materials and
+                        personalized guidance
+                      </td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td class="text-sm">Asia/Kolkata</td>
+                      <td class="text-sm">13:00 - 19:00</td>
+                      <td class="text-sm">60 min</td>
+                      <td class="text-sm">4</td>
+                      <td class="text-sm">90 days</td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Divider + Tab 2 Preview -->
+                <div
+                  style="height: 1px; background: #e5e5e5; margin: 32px 0"
+                ></div>
+
+                <!-- ========== TAB 2: PRICING TIERS ========== -->
+                <div
+                  style="
+                    font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                    font-size: 15px;
+                    font-weight: 700;
+                    color: #999;
+                    margin-bottom: 16px;
+                    letter-spacing: 0.5px;
+                  "
+                >
+                  TAB 2 PREVIEW: PRICING TIERS
+                </div>
+
+                <!-- Config Selector -->
+                <div class="config-selector">
+                  <span class="config-selector-label">Workshop Config:</span>
+                  <select>
+                    <option>Standard Workshop</option>
+                    <option>Premium Workshop</option>
+                  </select>
+                </div>
+
+                <div
+                  style="
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <button class="btn-primary">+ Add Tier</button>
+                </div>
+
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Hours</th>
+                      <th>Price / Person (&#8377;)</th>
+                      <th>Pieces / Person</th>
+                      <th>Active</th>
+                      <th>Sort Order</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="font-medium">1 hr</td>
+                      <td>&#8377;950</td>
+                      <td>1 piece</td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td class="text-muted">1</td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="font-medium">2 hr</td>
+                      <td>&#8377;1,600</td>
+                      <td>2 pieces</td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td class="text-muted">2</td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="font-medium">3 hr</td>
+                      <td>&#8377;2,200</td>
+                      <td>3 pieces</td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td class="text-muted">3</td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="font-medium">5 hr</td>
+                      <td>&#8377;3,400</td>
+                      <td>5 pieces</td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td class="text-muted">4</td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="font-medium">10 hr</td>
+                      <td>&#8377;7,500</td>
+                      <td>10 pieces</td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td class="text-muted">5</td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Divider + Tab 3 Preview -->
+                <div
+                  style="height: 1px; background: #e5e5e5; margin: 32px 0"
+                ></div>
+
+                <!-- ========== TAB 3: BLACKOUT RULES ========== -->
+                <div
+                  style="
+                    font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                    font-size: 15px;
+                    font-weight: 700;
+                    color: #999;
+                    margin-bottom: 16px;
+                    letter-spacing: 0.5px;
+                  "
+                >
+                  TAB 3 PREVIEW: BLACKOUT RULES
+                </div>
+
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 16px;
+                  "
+                >
+                  <button class="btn-secondary">Preview Impact</button>
+                  <button class="btn-primary">+ Add Rule</button>
+                </div>
+
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Schedule</th>
+                      <th>Time Range</th>
+                      <th>Active</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="font-medium">Holi Holiday</td>
+                      <td>
+                        <span class="badge badge-one-time">ONE_TIME</span>
+                      </td>
+                      <td class="text-sm">Mar 14 - 15, 2026</td>
+                      <td class="text-sm">1:00 PM - 7:00 PM</td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="font-medium">Weekly Maintenance</td>
+                      <td><span class="badge badge-weekly">WEEKLY</span></td>
+                      <td class="text-sm">Every Monday</td>
+                      <td class="text-sm">1:00 PM - 3:00 PM</td>
+                      <td>
+                        <div class="toggle-switch on"></div>
+                      </td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="font-medium">Monthly Deep Clean</td>
+                      <td>
+                        <span class="badge badge-monthly">MONTHLY</span>
+                      </td>
+                      <td class="text-sm">1st of every month</td>
+                      <td class="text-sm">All day</td>
+                      <td>
+                        <div class="toggle-switch off"></div>
+                      </td>
+                      <td>
+                        <div style="display: flex; gap: 4px">
+                          <button class="btn-ghost">Edit</button>
+                          <button class="btn-danger">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Preview Impact Modal (inline preview) -->
+                <div class="preview-modal" style="max-width: 420px">
+                  <div class="preview-modal-title">Blackout Impact Preview</div>
+                  <div class="preview-modal-stat">
+                    Affected Registrations:
+                    <strong>3 registrations</strong>
+                  </div>
+                  <div class="preview-modal-stat">
+                    Next blackout: <strong>Mar 14, 2026 (Holi Holiday)</strong>
+                  </div>
+                  <div class="preview-modal-stat">
+                    Recurring conflicts:
+                    <strong>2 slots/week (Monday maintenance)</strong>
+                  </div>
+                  <div style="margin-top: 12px; text-align: right">
+                    <button class="btn-ghost">Dismiss</button>
+                  </div>
+                </div>
+
+                <!-- Divider + Tab 4 Preview -->
+                <div
+                  style="height: 1px; background: #e5e5e5; margin: 32px 0"
+                ></div>
+
+                <!-- ========== TAB 4: REGISTRATIONS ========== -->
+                <div
+                  style="
+                    font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                    font-size: 15px;
+                    font-weight: 700;
+                    color: #999;
+                    margin-bottom: 16px;
+                    letter-spacing: 0.5px;
+                  "
+                >
+                  TAB 4 PREVIEW: REGISTRATIONS
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-bar">
+                  <select class="filter-select">
+                    <option>All Statuses</option>
+                    <option>Pending</option>
+                    <option>Approved</option>
+                    <option>Paid</option>
+                    <option>Confirmed</option>
+                    <option>Cancelled</option>
+                  </select>
+                  <input type="date" class="filter-date" value="2026-02-01" />
+                  <span style="font-size: 12px; color: #999">to</span>
+                  <input type="date" class="filter-date" value="2026-03-01" />
+                  <input
+                    type="text"
+                    class="filter-search"
+                    placeholder="Search by name or ID..."
+                  />
+                </div>
+
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Reg ID</th>
+                      <th>User</th>
+                      <th>Config</th>
+                      <th>Dates</th>
+                      <th>Hours</th>
+                      <th>Participants</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        class="text-sm font-medium"
+                        style="font-family: monospace"
+                      >
+                        DW-A1B2C3D4E5F6
+                      </td>
+                      <td>
+                        <div class="font-medium">Priya Sharma</div>
+                        <div class="text-muted">priya@example.com</div>
+                      </td>
+                      <td class="text-sm">Standard</td>
+                      <td class="text-sm">Feb 10, 2026</td>
+                      <td class="text-sm">3 hrs</td>
+                      <td class="text-sm">2</td>
+                      <td class="font-medium">&#8377;4,400</td>
+                      <td>
+                        <span class="badge badge-pending">Pending</span>
+                      </td>
+                      <td>
+                        <div class="actions-dropdown">
+                          <button class="actions-trigger">&#8942;</button>
+                          <div class="actions-menu" style="display: none"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="text-sm font-medium"
+                        style="font-family: monospace"
+                      >
+                        DW-G7H8I9J0K1L2
+                      </td>
+                      <td>
+                        <div class="font-medium">Arjun Patel</div>
+                        <div class="text-muted">arjun@example.com</div>
+                      </td>
+                      <td class="text-sm">Premium</td>
+                      <td class="text-sm">Feb 12-14, 2026</td>
+                      <td class="text-sm">5 hrs</td>
+                      <td class="text-sm">1</td>
+                      <td class="font-medium">&#8377;3,400</td>
+                      <td>
+                        <span class="badge badge-approved">Approved</span>
+                      </td>
+                      <td>
+                        <div class="actions-dropdown">
+                          <button class="actions-trigger">&#8942;</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="text-sm font-medium"
+                        style="font-family: monospace"
+                      >
+                        DW-M3N4O5P6Q7R8
+                      </td>
+                      <td>
+                        <div class="font-medium">Meera Reddy</div>
+                        <div class="text-muted">meera@example.com</div>
+                      </td>
+                      <td class="text-sm">Standard</td>
+                      <td class="text-sm">Feb 15, 2026</td>
+                      <td class="text-sm">2 hrs</td>
+                      <td class="text-sm">4</td>
+                      <td class="font-medium">&#8377;6,400</td>
+                      <td>
+                        <span class="badge badge-paid">Paid</span>
+                      </td>
+                      <td>
+                        <div class="actions-dropdown">
+                          <button class="actions-trigger">&#8942;</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="text-sm font-medium"
+                        style="font-family: monospace"
+                      >
+                        DW-S9T0U1V2W3X4
+                      </td>
+                      <td>
+                        <div class="font-medium">Vikram Singh</div>
+                        <div class="text-muted">vikram@example.com</div>
+                      </td>
+                      <td class="text-sm">Standard</td>
+                      <td class="text-sm">Feb 18, 2026</td>
+                      <td class="text-sm">1 hr</td>
+                      <td class="text-sm">2</td>
+                      <td class="font-medium">&#8377;1,900</td>
+                      <td>
+                        <span class="badge badge-confirmed">Confirmed</span>
+                      </td>
+                      <td>
+                        <div class="actions-dropdown">
+                          <button class="actions-trigger">&#8942;</button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="text-sm font-medium"
+                        style="font-family: monospace"
+                      >
+                        DW-Y5Z6A7B8C9D0
+                      </td>
+                      <td>
+                        <div class="font-medium">Ananya Gupta</div>
+                        <div class="text-muted">ananya@example.com</div>
+                      </td>
+                      <td class="text-sm">Premium</td>
+                      <td class="text-sm">Feb 8, 2026</td>
+                      <td class="text-sm">10 hrs</td>
+                      <td class="text-sm">1</td>
+                      <td class="font-medium">&#8377;7,500</td>
+                      <td>
+                        <span class="badge badge-cancelled">Cancelled</span>
+                      </td>
+                      <td>
+                        <div class="actions-dropdown">
+                          <button class="actions-trigger">&#8942;</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Actions dropdown preview (shown expanded) -->
+                <div
+                  style="
+                    margin-top: 16px;
+                    display: flex;
+                    gap: 16px;
+                    align-items: flex-start;
+                  "
+                >
+                  <div style="font-size: 12px; color: #999; padding-top: 8px">
+                    Actions dropdown (expanded):
+                  </div>
+                  <div
+                    class="actions-menu"
+                    style="
+                      position: static;
+                      display: block;
+                      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                    "
+                  >
+                    <div class="actions-menu-item">&#10003; Approve</div>
+                    <div class="actions-menu-item">&#10007; Reject</div>
+                    <div class="actions-menu-item">&#8377; Mark Paid</div>
+                    <div class="actions-menu-item danger">
+                      &#9888; Cancel (with reason)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop description (below the wide frame) -->
+      <div style="max-width: 700px; margin: -48px auto 0; padding: 0 24px">
+        <h3
+          style="
+            font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+          "
+        >
+          Desktop (1200px)
+        </h3>
+        <p
+          style="
+            font-size: 13px;
+            color: #737373;
+            line-height: 1.8;
+            margin-bottom: 12px;
+          "
+        >
+          Full desktop layout with persistent sidebar navigation and wide main
+          content area. All 4 tabs are previewed vertically in sequence to show
+          the complete admin interface. The "Daily Workshops" nav item is
+          highlighted as active, positioned after "Events" in the sidebar.
+        </p>
+        <ul
+          style="
+            list-style: none;
+            font-size: 12px;
+            line-height: 2.2;
+            color: #555;
+            padding: 0;
+          "
+        >
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Persistent sidebar with "Daily Workshops" active (calendar+clock
+            icon)
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Tab 1 - Config: Full table with all columns (ID, Name, Description,
+            Status, Timezone, Hours, Slot, Capacity, Booking Window)
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Tab 2 - Pricing Tiers: Config selector dropdown, tier table with
+            hours/price/pieces/active/sort
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Tab 3 - Blackout Rules: Type badges (ONE_TIME, WEEKLY, MONTHLY),
+            "Preview Impact" modal
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Tab 4 - Registrations: Filter bar (status, date range, search),
+            status badges, actions dropdown
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Toggle switches for Active/Inactive states on configs, tiers, and
+            rules
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================
+         IMPLEMENTATION NOTES
+         ============================================ -->
+    <div class="notes" style="margin-top: 80px">
+      <strong>Implementation Notes:</strong><br />
+      <strong>Route:</strong> <code>/dashboard/daily-workshops</code><br />
+      <strong>Sidebar Nav:</strong> "Daily Workshops" item with calendar+clock
+      icon, positioned after "Events" in the navigation order.<br />
+      <strong>Tab 1 - Config:</strong> CRUD for workshop configurations. Toggle
+      switch for Active/Inactive status. Fields: name, description, status,
+      timezone, operating hours, slot duration, max capacity, booking window.<br />
+      <strong>Tab 2 - Pricing Tiers:</strong> Config-scoped pricing management.
+      Config selector dropdown at top. Fields: hours, price_per_person,
+      pieces_per_person, is_active, sort_order.<br />
+      <strong>Tab 3 - Blackout Rules:</strong> Availability disabling rules.
+      Types: ONE_TIME (specific dates), WEEKLY (recurring day), MONTHLY
+      (recurring date). "Preview Impact" modal shows affected registrations
+      count.<br />
+      <strong>Tab 4 - Registrations:</strong> All daily workshop bookings with
+      filter bar. Actions: Approve, Reject, Mark Paid, Cancel (with reason
+      input). Status flow: Pending -> Approved -> Paid -> Confirmed |
+      Cancelled.<br />
+      <strong>Responsive:</strong> Mobile uses card lists + horizontal tab
+      scroll. Tablet uses condensed tables. Desktop uses sidebar + full
+      tables.<br />
+    </div>
+
+    <!-- ============================================
+         USER DETAIL VIEW - DW REGISTRATIONS TAB
+         ============================================ -->
+    <div class="section-divider">
+      <div class="section-divider-title">
+        User Detail View &mdash; Daily Workshop Registrations Tab
+      </div>
+      <div class="section-divider-subtitle">
+        This section shows how daily workshop registrations appear when an admin
+        views a specific user&rsquo;s detail page. The Kanban board allows
+        drag-and-drop status management, matching the existing pattern used for
+        Orders and Event Registrations.
+      </div>
+      <div class="section-divider-route">/dashboard/users/[id]</div>
+    </div>
+
+    <div class="viewports-stack">
+      <!-- ============================================
+           DESKTOP VIEWPORT - USER DETAIL DW REGISTRATIONS
+           ============================================ -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 1200px">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1200 x auto</span>
+          </div>
+          <div class="viewport-content desktop">
+            <div class="dashboard-layout">
+              <!-- Sidebar Navigation -->
+              <div class="sidebar">
+                <div class="sidebar-brand">Poetry & Pottery</div>
+
+                <div class="sidebar-section-label">Main</div>
+                <ul class="sidebar-nav">
+                  <li>
+                    <span class="nav-icon">&#9634;</span>
+                    Overview
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128230;</span>
+                    Products
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128193;</span>
+                    Categories
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#127915;</span>
+                    Events
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128197;</span>
+                    Daily Workshops
+                  </li>
+                </ul>
+
+                <div class="sidebar-section-label" style="margin-top: 12px">
+                  Commerce
+                </div>
+                <ul class="sidebar-nav">
+                  <li>
+                    <span class="nav-icon">&#128722;</span>
+                    Orders
+                  </li>
+                  <li class="active">
+                    <span class="nav-icon">&#128101;</span>
+                    Users
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#128196;</span>
+                    Content
+                  </li>
+                  <li>
+                    <span class="nav-icon">&#9881;</span>
+                    Settings
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Main Content Area -->
+              <div class="main-content">
+                <!-- Breadcrumb -->
+                <div
+                  style="
+                    font-size: 12px;
+                    color: #999;
+                    margin-bottom: 16px;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                  "
+                >
+                  <span
+                    style="cursor: pointer; color: #4f6f52; font-weight: 500"
+                    >Users</span
+                  >
+                  <span>&#8250;</span>
+                  <span>Priya Sharma</span>
+                </div>
+
+                <!-- User Detail Header -->
+                <div class="user-detail-header">
+                  <div class="user-detail-avatar">PS</div>
+                  <div>
+                    <div class="user-detail-info-name">Priya Sharma</div>
+                    <div class="user-detail-info-email">priya@example.com</div>
+                    <div class="user-detail-info-meta">
+                      <span>Joined: Jan 15, 2025</span>
+                      <span>&#183;</span>
+                      <span>Role: Customer</span>
+                      <span>&#183;</span>
+                      <span>Last active: 2h ago</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- User Detail Tab Cards (5 tabs) -->
+                <div class="user-detail-tabs-grid">
+                  <!-- Orders -->
+                  <div class="user-detail-tab-card">
+                    <span class="user-detail-tab-icon">&#128230;</span>
+                    <div class="user-detail-tab-name">Orders</div>
+                    <div class="user-detail-tab-count">12</div>
+                  </div>
+                  <!-- Event Registrations -->
+                  <div class="user-detail-tab-card">
+                    <span class="user-detail-tab-icon">&#127915;</span>
+                    <div class="user-detail-tab-name">Event Registrations</div>
+                    <div class="user-detail-tab-count">3</div>
+                  </div>
+                  <!-- Daily Workshop Registrations (NEW - Active) -->
+                  <div class="user-detail-tab-card active">
+                    <span class="user-detail-tab-icon">&#128197;&#128339;</span>
+                    <div class="user-detail-tab-name">DW Registrations</div>
+                    <div class="user-detail-tab-count">5</div>
+                  </div>
+                  <!-- Cart Items -->
+                  <div class="user-detail-tab-card">
+                    <span class="user-detail-tab-icon">&#128722;</span>
+                    <div class="user-detail-tab-name">Cart Items</div>
+                    <div class="user-detail-tab-count">2</div>
+                  </div>
+                  <!-- Wishlist -->
+                  <div class="user-detail-tab-card">
+                    <span class="user-detail-tab-icon">&#10084;</span>
+                    <div class="user-detail-tab-name">Wishlist</div>
+                    <div class="user-detail-tab-count">8</div>
+                  </div>
+                </div>
+
+                <!-- Active Tab Title -->
+                <div
+                  style="
+                    font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                    font-size: 17px;
+                    font-weight: 700;
+                    color: #1a1a1a;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Daily Workshop Registrations
+                </div>
+                <div
+                  style="font-size: 13px; color: #737373; margin-bottom: 20px"
+                >
+                  Drag cards between columns to update registration status. 5
+                  total registrations for this user.
+                </div>
+
+                <!-- Kanban Board: 6 columns -->
+                <div class="kanban-board">
+                  <!-- Column 1: Pending -->
+                  <div class="kanban-column pending">
+                    <div class="kanban-column-header">
+                      <span class="kanban-column-title">Pending</span>
+                      <span class="kanban-column-count">2</span>
+                    </div>
+                    <div class="kanban-cards">
+                      <!-- Card 1 -->
+                      <div class="kanban-card">
+                        <div class="kanban-card-drag-handle">
+                          &#8942;&#8942;
+                        </div>
+                        <div class="kanban-card-id">DW-A1B2C3</div>
+                        <div class="kanban-card-workshop">Wheel Throwing</div>
+                        <div class="kanban-card-slots">
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Feb 10 &bull; 1-3 PM
+                          </span>
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Feb 12 &bull; 4-5 PM
+                          </span>
+                        </div>
+                        <div class="kanban-card-meta">
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#9200;</span>
+                            <span class="kanban-card-meta-value">3h</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#128101;</span>
+                            <span class="kanban-card-meta-value">2</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#127861;</span>
+                            <span class="kanban-card-meta-value">6 pcs</span>
+                          </div>
+                        </div>
+                        <div class="kanban-card-amount">
+                          <span class="kanban-card-amount-value"
+                            >&#8377;5,100</span
+                          >
+                          <span class="kanban-card-discount-badge"
+                            >10% off</span
+                          >
+                        </div>
+                      </div>
+
+                      <!-- Card 2 -->
+                      <div class="kanban-card">
+                        <div class="kanban-card-drag-handle">
+                          &#8942;&#8942;
+                        </div>
+                        <div class="kanban-card-id">DW-K9L8M7</div>
+                        <div class="kanban-card-workshop">Hand Building</div>
+                        <div class="kanban-card-slots">
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Feb 20 &bull; 1-2 PM
+                          </span>
+                        </div>
+                        <div class="kanban-card-meta">
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#9200;</span>
+                            <span class="kanban-card-meta-value">1h</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#128101;</span>
+                            <span class="kanban-card-meta-value">1</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#127861;</span>
+                            <span class="kanban-card-meta-value">1 pc</span>
+                          </div>
+                        </div>
+                        <div class="kanban-card-amount">
+                          <span class="kanban-card-amount-value"
+                            >&#8377;950</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Column 2: Approved -->
+                  <div class="kanban-column approved">
+                    <div class="kanban-column-header">
+                      <span class="kanban-column-title">Approved</span>
+                      <span class="kanban-column-count">1</span>
+                    </div>
+                    <div class="kanban-cards">
+                      <!-- Card 3 -->
+                      <div class="kanban-card">
+                        <div class="kanban-card-drag-handle">
+                          &#8942;&#8942;
+                        </div>
+                        <div class="kanban-card-id">DW-N6O5P4</div>
+                        <div class="kanban-card-workshop">Wheel Throwing</div>
+                        <div class="kanban-card-slots">
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Feb 14 &bull; 2-4 PM
+                          </span>
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Feb 15 &bull; 1-4 PM
+                          </span>
+                        </div>
+                        <div class="kanban-card-meta">
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#9200;</span>
+                            <span class="kanban-card-meta-value">5h</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#128101;</span>
+                            <span class="kanban-card-meta-value">3</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#127861;</span>
+                            <span class="kanban-card-meta-value">15 pcs</span>
+                          </div>
+                        </div>
+                        <div class="kanban-card-amount">
+                          <span class="kanban-card-amount-value"
+                            >&#8377;10,200</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Column 3: Paid -->
+                  <div class="kanban-column paid">
+                    <div class="kanban-column-header">
+                      <span class="kanban-column-title">Paid</span>
+                      <span class="kanban-column-count">1</span>
+                    </div>
+                    <div class="kanban-cards">
+                      <!-- Card 4 -->
+                      <div class="kanban-card">
+                        <div class="kanban-card-drag-handle">
+                          &#8942;&#8942;
+                        </div>
+                        <div class="kanban-card-id">DW-Q3R2S1</div>
+                        <div class="kanban-card-workshop">Premium Workshop</div>
+                        <div class="kanban-card-slots">
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Feb 18 &bull; 3-5 PM
+                          </span>
+                        </div>
+                        <div class="kanban-card-meta">
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#9200;</span>
+                            <span class="kanban-card-meta-value">2h</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#128101;</span>
+                            <span class="kanban-card-meta-value">2</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#127861;</span>
+                            <span class="kanban-card-meta-value">4 pcs</span>
+                          </div>
+                        </div>
+                        <div class="kanban-card-amount">
+                          <span class="kanban-card-amount-value"
+                            >&#8377;3,200</span
+                          >
+                          <span class="kanban-card-discount-badge">5% off</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Column 4: Confirmed -->
+                  <div class="kanban-column confirmed">
+                    <div class="kanban-column-header">
+                      <span class="kanban-column-title">Confirmed</span>
+                      <span class="kanban-column-count">3</span>
+                    </div>
+                    <div class="kanban-cards">
+                      <!-- Card 5 -->
+                      <div class="kanban-card">
+                        <div class="kanban-card-drag-handle">
+                          &#8942;&#8942;
+                        </div>
+                        <div class="kanban-card-id">DW-T9U8V7</div>
+                        <div class="kanban-card-workshop">Hand Building</div>
+                        <div class="kanban-card-slots">
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Jan 28 &bull; 1-3 PM
+                          </span>
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Jan 30 &bull; 1-2 PM
+                          </span>
+                        </div>
+                        <div class="kanban-card-meta">
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#9200;</span>
+                            <span class="kanban-card-meta-value">3h</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#128101;</span>
+                            <span class="kanban-card-meta-value">1</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#127861;</span>
+                            <span class="kanban-card-meta-value">3 pcs</span>
+                          </div>
+                        </div>
+                        <div class="kanban-card-amount">
+                          <span class="kanban-card-amount-value"
+                            >&#8377;2,200</span
+                          >
+                        </div>
+                      </div>
+
+                      <!-- Card 6 -->
+                      <div class="kanban-card">
+                        <div class="kanban-card-drag-handle">
+                          &#8942;&#8942;
+                        </div>
+                        <div class="kanban-card-id">DW-W6X5Y4</div>
+                        <div class="kanban-card-workshop">Wheel Throwing</div>
+                        <div class="kanban-card-slots">
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Jan 20 &bull; 4-7 PM
+                          </span>
+                        </div>
+                        <div class="kanban-card-meta">
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#9200;</span>
+                            <span class="kanban-card-meta-value">3h</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#128101;</span>
+                            <span class="kanban-card-meta-value">2</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#127861;</span>
+                            <span class="kanban-card-meta-value">6 pcs</span>
+                          </div>
+                        </div>
+                        <div class="kanban-card-amount">
+                          <span class="kanban-card-amount-value"
+                            >&#8377;4,400</span
+                          >
+                        </div>
+                      </div>
+
+                      <!-- Card 7 -->
+                      <div class="kanban-card">
+                        <div class="kanban-card-drag-handle">
+                          &#8942;&#8942;
+                        </div>
+                        <div class="kanban-card-id">DW-Z3A2B1</div>
+                        <div class="kanban-card-workshop">Premium Workshop</div>
+                        <div class="kanban-card-slots">
+                          <span class="kanban-card-slot-chip">
+                            <span class="chip-icon">&#128197;</span>
+                            Jan 10 &bull; 1-6 PM
+                          </span>
+                        </div>
+                        <div class="kanban-card-meta">
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#9200;</span>
+                            <span class="kanban-card-meta-value">5h</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#128101;</span>
+                            <span class="kanban-card-meta-value">1</span>
+                          </div>
+                          <div class="kanban-card-meta-item">
+                            <span class="kanban-card-meta-icon">&#127861;</span>
+                            <span class="kanban-card-meta-value">5 pcs</span>
+                          </div>
+                        </div>
+                        <div class="kanban-card-amount">
+                          <span class="kanban-card-amount-value"
+                            >&#8377;3,400</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Column 5: Rejected -->
+                  <div class="kanban-column rejected">
+                    <div class="kanban-column-header">
+                      <span class="kanban-column-title">Rejected</span>
+                      <span class="kanban-column-count">0</span>
+                    </div>
+                    <div class="kanban-cards">
+                      <div class="kanban-empty">
+                        <div class="kanban-empty-icon">&#128683;</div>
+                        No rejected registrations
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Column 6: Cancelled -->
+                  <div class="kanban-column cancelled">
+                    <div class="kanban-column-header">
+                      <span class="kanban-column-title">Cancelled</span>
+                      <span class="kanban-column-count">0</span>
+                    </div>
+                    <div class="kanban-cards">
+                      <div class="kanban-empty">
+                        <div class="kanban-empty-icon">&#128683;</div>
+                        No cancelled registrations
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Responsive Note -->
+                <div class="responsive-note">
+                  <div class="responsive-note-title">
+                    Mobile / Tablet Behavior
+                  </div>
+                  <div class="responsive-note-text">
+                    On mobile and tablet viewports, the Kanban board collapses
+                    into a filterable list view. Users can filter by status
+                    using a dropdown selector, and registration cards are
+                    displayed as stacked cards with status badges. Drag-and-drop
+                    is not available on smaller screens; status changes use an
+                    actions dropdown instead.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop description (below the wide frame) -->
+      <div style="max-width: 700px; margin: -48px auto 0; padding: 0 24px">
+        <h3
+          style="
+            font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+          "
+        >
+          User Detail &mdash; DW Registrations Kanban (Desktop)
+        </h3>
+        <p
+          style="
+            font-size: 13px;
+            color: #737373;
+            line-height: 1.8;
+            margin-bottom: 12px;
+          "
+        >
+          The user detail view at <code>/dashboard/users/[id]</code> now
+          includes a fifth tab for Daily Workshop Registrations. When selected,
+          it displays a Kanban board with 6 status columns matching the
+          <code>DailyWorkshopRegistrationStatus</code> enum. Admins can drag
+          cards between columns to update registration status. This follows the
+          same pattern already used for Orders and Event Registrations tabs.
+        </p>
+        <ul
+          style="
+            list-style: none;
+            font-size: 12px;
+            line-height: 2.2;
+            color: #555;
+            padding: 0;
+          "
+        >
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            5 tab cards in grid: Orders, Event Registrations, DW Registrations
+            (new), Cart Items, Wishlist
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            6-column Kanban: Pending (amber), Approved (green), Paid (blue),
+            Confirmed (dark green), Rejected (red), Cancelled (gray)
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Each card shows: Registration ID (monospace), workshop config name,
+            date/time slot chips, hours, participants, pieces, and amount
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Discount badges appear on cards where applicable (e.g., "10% off")
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Drag handle on each card for status column reordering
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Hover shadow effect on cards for visual drag affordance
+          </li>
+          <li style="color: #555">
+            <span style="color: #4f6f52; font-weight: 700; margin-right: 4px"
+              >&#10003;</span
+            >
+            Desktop only: Mobile/tablet collapses to filterable list with status
+            dropdown and action buttons
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================
+         IMPLEMENTATION NOTES - USER DETAIL DW TAB
+         ============================================ -->
+    <div class="notes" style="margin-top: 80px">
+      <strong
+        >Implementation Notes (User Detail &mdash; DW Registrations
+        Tab):</strong
+      ><br />
+      <strong>Route:</strong>
+      <code>/dashboard/users/[id]</code> (new tab within existing user detail
+      page)<br />
+      <strong>New Tab:</strong> "Daily Workshop Registrations" with
+      calendar+clock icon, added as the 3rd tab between Event Registrations and
+      Cart Items.<br />
+      <strong>Kanban Board:</strong> 6 columns matching
+      <code>DailyWorkshopRegistrationStatus</code> enum: Pending, Approved,
+      Paid, Confirmed, Rejected, Cancelled. Each column has a color-coded header
+      with count badge.<br />
+      <strong>Card Data:</strong> Registration ID (NanoID prefixed "DW-"),
+      workshop config name, date/time slot chips, total hours, participant
+      count, total pieces, amount with optional discount badge.<br />
+      <strong>Drag &amp; Drop:</strong> Cards can be dragged between columns to
+      update status. Drag handle icon (6-dot grip) visible on each card. Backend
+      validates status transitions.<br />
+      <strong>Responsive:</strong> Kanban board is desktop-only (1024px+). On
+      mobile/tablet, collapses to a filterable card list with status dropdown
+      filter and action buttons for status changes.<br />
+      <strong>Status Colors:</strong> Pending (#f59e0b amber), Approved (#22c55e
+      green), Paid (#3b82f6 blue), Confirmed (#15803d dark green), Rejected
+      (#ef4444 red), Cancelled (#a3a3a3 gray).<br />
+    </div>
+  </body>
+</html>

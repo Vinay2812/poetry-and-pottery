@@ -1,0 +1,2497 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Booking Option 4: Calendar-First with Inline Selection - Poetry & Pottery
+      Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../_shared-styles.css" />
+    <style>
+      /* ============================================
+         OPTION 4: CALENDAR-FIRST WITH INLINE SELECTION
+         Large monthly calendar as dominant element,
+         inline slot panel, floating booking bar
+         ============================================ */
+
+      /* --- Page Tabs (Daily Workshops / Events / My Registrations) --- */
+      .page-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .page-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 16px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+
+      .page-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      .page-tab:hover:not(.active) {
+        color: #666;
+      }
+
+      /* --- Config Dropdown (floating) --- */
+      .config-dropdown {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        margin-bottom: 20px;
+        border: 1.5px solid #e5e5e5;
+        transition: all 0.15s;
+      }
+
+      .config-dropdown:hover {
+        border-color: #4f6f52;
+      }
+
+      .config-dropdown-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #e8ddd4, #d4c4b0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .config-dropdown-text {
+        flex: 1;
+      }
+
+      .config-dropdown-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .config-dropdown-sub {
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .config-dropdown-arrow {
+        color: #999;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      /* --- Config Dropdown Panel (expanded) --- */
+      .config-panel {
+        background: white;
+        border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #e5e5e5;
+      }
+
+      .config-panel-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.12s;
+      }
+
+      .config-panel-item:hover {
+        background: #f5f5f4;
+      }
+
+      .config-panel-item.selected {
+        background: #f0f7f0;
+      }
+
+      .config-panel-item-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .config-panel-item-icon.wheel {
+        background: linear-gradient(135deg, #e8ddd4, #d4c4b0);
+      }
+
+      .config-panel-item-icon.sculpt {
+        background: linear-gradient(135deg, #d9e8d9, #b8d4b8);
+      }
+
+      .config-panel-item-icon.glaze {
+        background: linear-gradient(135deg, #dde4e8, #b0c4d4);
+      }
+
+      .config-panel-item-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .config-panel-item-price {
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .config-panel-item-check {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #4f6f52;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        margin-left: auto;
+        flex-shrink: 0;
+        opacity: 0;
+      }
+
+      .config-panel-item.selected .config-panel-item-check {
+        opacity: 1;
+      }
+
+      /* --- Large Monthly Calendar --- */
+      .large-calendar {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+      }
+
+      .large-calendar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .large-calendar-month {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .large-calendar-nav {
+        display: flex;
+        gap: 8px;
+      }
+
+      .large-calendar-nav-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: #f5f5f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #737373;
+        font-size: 16px;
+        transition: all 0.15s;
+      }
+
+      .large-calendar-nav-btn:hover {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .large-calendar-body {
+        padding: 16px;
+      }
+
+      .large-calendar-body.padded {
+        padding: 20px 24px;
+      }
+
+      .cal-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 8px;
+      }
+
+      .cal-weekday {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: #999;
+        text-align: center;
+        padding: 6px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+
+      .cal-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+      }
+
+      .cal-day {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+        gap: 3px;
+      }
+
+      .cal-day-number {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      .cal-day.large .cal-day-number {
+        font-size: 15px;
+      }
+
+      .cal-day.empty {
+        cursor: default;
+      }
+
+      .cal-day.past {
+        cursor: default;
+      }
+
+      .cal-day.past .cal-day-number {
+        color: #d4d4d4;
+      }
+
+      .cal-day.today .cal-day-number {
+        font-weight: 700;
+        color: #4f6f52;
+      }
+
+      .cal-day.selected {
+        background: #4f6f52;
+      }
+
+      .cal-day.selected .cal-day-number {
+        color: white;
+        font-weight: 700;
+      }
+
+      .cal-day:not(.empty):not(.past):not(.selected):hover {
+        background: #f0f7f0;
+      }
+
+      /* Availability Dots */
+      .cal-day-dots {
+        display: flex;
+        gap: 3px;
+        height: 6px;
+        align-items: center;
+      }
+
+      .cal-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+      }
+
+      .cal-dot.available {
+        background: #4f6f52;
+      }
+
+      .cal-dot.full {
+        background: #d4d4d4;
+      }
+
+      .cal-dot.blocked {
+        background: #ef4444;
+      }
+
+      .cal-day.selected .cal-dot.available {
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .cal-day.selected .cal-dot.full {
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      .cal-day.selected .cal-dot.blocked {
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Desktop: Hover Preview Tooltip */
+      .cal-day-tooltip {
+        display: none;
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1a1a1a;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        white-space: nowrap;
+        z-index: 10;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .cal-day-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: #1a1a1a;
+      }
+
+      .cal-day.show-tooltip .cal-day-tooltip {
+        display: block;
+      }
+
+      /* --- Inline Slot Panel (below calendar) --- */
+      .slot-panel {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+        margin-top: 16px;
+        overflow: hidden;
+      }
+
+      .slot-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .slot-panel-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .slot-panel-date {
+        font-size: 13px;
+        color: #737373;
+      }
+
+      .slot-panel-close {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: #f5f5f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 14px;
+        color: #737373;
+      }
+
+      .slot-panel-body {
+        padding: 16px 20px;
+      }
+
+      .slot-panel-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .slot-panel-grid.grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .slot-panel-grid.grid-6 {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      /* Time Slot Cells */
+      .ts-cell {
+        padding: 12px 8px;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 1.5px solid transparent;
+      }
+
+      .ts-cell-time {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+
+      .ts-cell-status {
+        font-size: 10px;
+        font-weight: 500;
+      }
+
+      /* Slot States */
+      .ts-cell.available {
+        background: white;
+        border-color: #e5e5e5;
+      }
+
+      .ts-cell.available .ts-cell-time {
+        color: #1a1a1a;
+      }
+
+      .ts-cell.available .ts-cell-status {
+        color: #4f6f52;
+      }
+
+      .ts-cell.available:hover {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .ts-cell.selected {
+        background: #4f6f52;
+        border-color: #4f6f52;
+      }
+
+      .ts-cell.selected .ts-cell-time {
+        color: white;
+      }
+
+      .ts-cell.selected .ts-cell-status {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .ts-cell.full {
+        background: #f5f5f4;
+        border-color: #f5f5f4;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .ts-cell.full .ts-cell-time {
+        color: #999;
+      }
+
+      .ts-cell.full .ts-cell-status {
+        color: #bbb;
+      }
+
+      .ts-cell.blocked {
+        background: repeating-linear-gradient(
+          -45deg,
+          #fff5f5,
+          #fff5f5 4px,
+          #fee2e2 4px,
+          #fee2e2 8px
+        );
+        border-color: #fecaca;
+        cursor: not-allowed;
+      }
+
+      .ts-cell.blocked .ts-cell-time {
+        color: #dc2626;
+        text-decoration: line-through;
+      }
+
+      .ts-cell.blocked .ts-cell-status {
+        color: #ef4444;
+      }
+
+      /* Slot Legend */
+      .slot-legend {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+
+      .slot-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .slot-legend-swatch {
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        flex-shrink: 0;
+      }
+
+      .slot-legend-swatch.available {
+        background: white;
+        border: 1.5px solid #e5e5e5;
+      }
+
+      .slot-legend-swatch.selected {
+        background: #4f6f52;
+      }
+
+      .slot-legend-swatch.full {
+        background: #e5e5e5;
+      }
+
+      .slot-legend-swatch.blocked {
+        background: repeating-linear-gradient(
+          -45deg,
+          #fff5f5,
+          #fff5f5 2px,
+          #fecaca 2px,
+          #fecaca 4px
+        );
+      }
+
+      /* --- Floating Booking Bar (bottom) --- */
+      .booking-bar {
+        background: white;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-top: 1px solid #f0f0f0;
+      }
+
+      .booking-bar-chips {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .bb-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: #e8ece8;
+        font-size: 11px;
+        font-weight: 600;
+        color: #4f6f52;
+        white-space: nowrap;
+      }
+
+      .bb-chip-remove {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: rgba(79, 111, 82, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        cursor: pointer;
+        color: #4f6f52;
+      }
+
+      .booking-bar-summary {
+        text-align: right;
+        flex-shrink: 0;
+      }
+
+      .bb-hours {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .bb-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+        color: #4f6f52;
+      }
+
+      .bb-btn {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        background: #4f6f52;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(79, 111, 82, 0.2);
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: all 0.15s;
+      }
+
+      .bb-btn:hover {
+        background: #3d5640;
+      }
+
+      /* Booking bar mobile - stacked layout */
+      .booking-bar.stacked {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .booking-bar.stacked .booking-bar-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      /* --- Desktop Side Panel (for tablet) --- */
+      .calendar-with-side {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 20px;
+        align-items: start;
+      }
+
+      .side-panel {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        position: sticky;
+        top: 20px;
+      }
+
+      .side-panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .side-panel-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .side-panel-date {
+        font-size: 12px;
+        color: #737373;
+      }
+
+      .side-panel-body {
+        padding: 16px 20px;
+      }
+
+      .side-panel-slots {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .side-slot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1.5px solid transparent;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .side-slot-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .side-slot-time {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .side-slot-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+
+      /* Side slot states */
+      .side-slot.available {
+        background: white;
+        border-color: #e5e5e5;
+      }
+
+      .side-slot.available .side-slot-time {
+        color: #1a1a1a;
+      }
+
+      .side-slot.available .side-slot-badge {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .side-slot.available:hover {
+        border-color: #4f6f52;
+        background: #f8faf8;
+      }
+
+      .side-slot.selected {
+        background: #4f6f52;
+        border-color: #4f6f52;
+      }
+
+      .side-slot.selected .side-slot-time {
+        color: white;
+      }
+
+      .side-slot.selected .side-slot-badge {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+
+      .side-slot.full {
+        background: #f5f5f4;
+        border-color: #f5f5f4;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .side-slot.full .side-slot-time {
+        color: #999;
+      }
+
+      .side-slot.full .side-slot-badge {
+        background: #e5e5e5;
+        color: #999;
+      }
+
+      .side-slot.blocked {
+        background: repeating-linear-gradient(
+          -45deg,
+          #fff5f5,
+          #fff5f5 4px,
+          #fee2e2 4px,
+          #fee2e2 8px
+        );
+        border-color: #fecaca;
+        cursor: not-allowed;
+      }
+
+      .side-slot.blocked .side-slot-time {
+        color: #dc2626;
+        text-decoration: line-through;
+      }
+
+      .side-slot.blocked .side-slot-badge {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      /* --- Viewport Annotations --- */
+      .viewport-annotation {
+        background: #fffbeb;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 16px;
+        font-size: 12px;
+        line-height: 1.7;
+        color: #92400e;
+        border-left: 3px solid #f59e0b;
+      }
+
+      .viewport-annotation strong {
+        font-weight: 700;
+      }
+
+      /* --- Mobile Bottom Sheet --- */
+      .bottom-sheet {
+        background: white;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .bottom-sheet-handle {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0 6px;
+      }
+
+      .bottom-sheet-handle-bar {
+        width: 36px;
+        height: 4px;
+        border-radius: 2px;
+        background: #d4d4d4;
+      }
+
+      .bottom-sheet-content {
+        padding: 0 20px 20px;
+      }
+
+      /* --- Calendar Dot Legend --- */
+      .cal-legend {
+        display: flex;
+        gap: 14px;
+        padding: 12px 20px;
+        border-top: 1px solid #f0f0f0;
+        flex-wrap: wrap;
+      }
+
+      .cal-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 10px;
+        color: #999;
+      }
+
+      .cal-legend-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      .cal-legend-dot.green {
+        background: #4f6f52;
+      }
+
+      .cal-legend-dot.gray {
+        background: #d4d4d4;
+      }
+
+      .cal-legend-dot.red {
+        background: #ef4444;
+      }
+
+      /* --- Desktop expanded slot panel below calendar --- */
+      .expanded-slot-panel {
+        background: white;
+        border-radius: 0 0 16px 16px;
+        padding: 20px 24px;
+        border-top: 2px solid #e8ece8;
+      }
+
+      .expanded-slot-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .expanded-slot-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .expanded-slot-date {
+        font-size: 13px;
+        color: #737373;
+        font-weight: 400;
+        margin-left: 8px;
+      }
+
+      .expanded-slot-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 12px;
+      }
+
+      /* Desktop floating bar */
+      .desktop-booking-bar {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 20px;
+        border: 1.5px solid #e8ece8;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Option 4: Calendar-First with Inline Selection</h1>
+    <p class="subtitle">
+      A large monthly calendar is the dominant element. Each day cell shows
+      small colored dots indicating slot availability. Clicking a day expands an
+      inline panel with 6 hourly slots (1PM-7PM). Workshop config is selected
+      via a floating dropdown. Selected slots appear as chips in a floating
+      booking bar at the bottom.
+    </p>
+
+    <div class="option-details">
+      <strong>Pattern:</strong> Calendar-dominant layout with inline slot
+      expansion and floating booking bar<br />
+      <strong>Day Dots:</strong> Green = available, Gray = full, Red = blocked
+      (visible on each day cell)<br />
+      <strong>Pricing:</strong> 1 hr = &#8377;950, 2 hr = &#8377;1,600, 10 hr =
+      &#8377;7,500 (bulk pack)<br />
+      <strong>Time Slots:</strong> 1 PM &ndash; 7 PM IST (6 hourly slots)<br />
+      <strong>Slot States:</strong> Available (white/green border), Selected
+      (green fill), Full (gray), Blocked (striped red)<br />
+      <strong>Booking Bar:</strong> Shows selected slot chips, total hours,
+      price preview, and "Continue to Book" button
+    </div>
+
+    <!-- ==========================================
+         MOBILE VIEWPORT (375px)
+         ========================================== -->
+    <div class="wf-section">
+      <div class="wf-task-label">Mobile &mdash; 375px</div>
+      <div class="wf-section-title">
+        Full-Width Calendar + Bottom Sheet for Slots
+      </div>
+      <div class="wf-section-desc">
+        The monthly calendar fills the full width. Each day cell shows tiny
+        availability dots. Tapping a date brings up a bottom sheet with the 6
+        hourly slots. The floating booking bar sits at the very bottom showing
+        selected slot chips, price, and "Continue" button. The config dropdown
+        sits above the calendar.
+      </div>
+
+      <!-- MOBILE: Calendar View -->
+      <div class="viewport-annotation">
+        <strong>Mobile &mdash; Calendar with Config Dropdown:</strong>
+        Workshop type selector is a compact dropdown above the calendar showing
+        current selection (Wheel Throwing) with a chevron. The full- width
+        calendar shows February 2026 with availability dots on each day. Day 8
+        is selected (green fill). The bottom of the frame shows the booking bar
+        with selected chips.
+      </div>
+
+      <div class="wf-mobile-frame">
+        <div class="wf-browser-bar">
+          <div class="wf-browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="wf-url-bar">poetryandpottery.com/workshops</div>
+        </div>
+        <div class="wf-page-content">
+          <!-- Tabs -->
+          <div class="page-tabs">
+            <div class="page-tab active">Daily Workshops</div>
+            <div class="page-tab">Events</div>
+            <div class="page-tab">My Registrations</div>
+          </div>
+
+          <!-- Config Dropdown -->
+          <div class="config-dropdown" style="width: 100%">
+            <div class="config-dropdown-icon">
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="#8b7355"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </div>
+            <div class="config-dropdown-text">
+              <div class="config-dropdown-label">Wheel Throwing</div>
+              <div class="config-dropdown-sub">From &#8377;950/hr</div>
+            </div>
+            <div class="config-dropdown-arrow">
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Large Calendar -->
+          <div class="large-calendar">
+            <div class="large-calendar-header">
+              <div class="large-calendar-nav-btn">&lsaquo;</div>
+              <div class="large-calendar-month">February 2026</div>
+              <div class="large-calendar-nav-btn">&rsaquo;</div>
+            </div>
+            <div class="large-calendar-body">
+              <div class="cal-weekdays">
+                <div class="cal-weekday">Su</div>
+                <div class="cal-weekday">Mo</div>
+                <div class="cal-weekday">Tu</div>
+                <div class="cal-weekday">We</div>
+                <div class="cal-weekday">Th</div>
+                <div class="cal-weekday">Fr</div>
+                <div class="cal-weekday">Sa</div>
+              </div>
+              <div class="cal-days">
+                <!-- Row 1 -->
+                <div class="cal-day past">
+                  <span class="cal-day-number">1</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">2</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">3</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">4</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">5</span>
+                </div>
+                <div class="cal-day today">
+                  <span class="cal-day-number">6</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">7</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <!-- Row 2 -->
+                <div class="cal-day selected">
+                  <span class="cal-day-number">8</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">9</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">10</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot blocked"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">11</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">12</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">13</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">14</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <!-- Row 3 -->
+                <div class="cal-day">
+                  <span class="cal-day-number">15</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">16</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot blocked"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">17</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">18</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">19</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">20</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">21</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <!-- Row 4 -->
+                <div class="cal-day">
+                  <span class="cal-day-number">22</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">23</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">24</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">25</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot blocked"></span>
+                    <span class="cal-dot blocked"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">26</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">27</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">28</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Calendar Dot Legend -->
+            <div class="cal-legend">
+              <div class="cal-legend-item">
+                <div class="cal-legend-dot green"></div>
+                Available
+              </div>
+              <div class="cal-legend-item">
+                <div class="cal-legend-dot gray"></div>
+                Full
+              </div>
+              <div class="cal-legend-item">
+                <div class="cal-legend-dot red"></div>
+                Blocked
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Sheet (Slot Details) -->
+          <div class="bottom-sheet" style="margin-top: 12px">
+            <div class="bottom-sheet-handle">
+              <div class="bottom-sheet-handle-bar"></div>
+            </div>
+            <div class="bottom-sheet-content">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 14px;
+                "
+              >
+                <div>
+                  <div
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-size: 15px;
+                      font-weight: 700;
+                      color: #1a1a1a;
+                    "
+                  >
+                    Sun, 8 Feb
+                  </div>
+                  <div style="font-size: 12px; color: #737373">
+                    6 slots &middot; 4 available
+                  </div>
+                </div>
+                <div
+                  style="
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 8px;
+                    background: #f5f5f4;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                    color: #737373;
+                    cursor: pointer;
+                  "
+                >
+                  &times;
+                </div>
+              </div>
+              <div class="slot-panel-grid grid-2">
+                <div class="ts-cell selected">
+                  <div class="ts-cell-time">1:00 PM</div>
+                  <div class="ts-cell-status">Selected</div>
+                </div>
+                <div class="ts-cell selected">
+                  <div class="ts-cell-time">2:00 PM</div>
+                  <div class="ts-cell-status">Selected</div>
+                </div>
+                <div class="ts-cell full">
+                  <div class="ts-cell-time">3:00 PM</div>
+                  <div class="ts-cell-status">Full</div>
+                </div>
+                <div class="ts-cell available">
+                  <div class="ts-cell-time">4:00 PM</div>
+                  <div class="ts-cell-status">Available</div>
+                </div>
+                <div class="ts-cell blocked">
+                  <div class="ts-cell-time">5:00 PM</div>
+                  <div class="ts-cell-status">Blocked</div>
+                </div>
+                <div class="ts-cell available">
+                  <div class="ts-cell-time">6:00 PM</div>
+                  <div class="ts-cell-status">Available</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating Booking Bar (Mobile: stacked) -->
+          <div class="booking-bar stacked" style="margin-top: 12px">
+            <div class="booking-bar-chips">
+              <div class="bb-chip">
+                Feb 8, 1 PM
+                <div class="bb-chip-remove">&times;</div>
+              </div>
+              <div class="bb-chip">
+                Feb 8, 2 PM
+                <div class="bb-chip-remove">&times;</div>
+              </div>
+            </div>
+            <div class="booking-bar-bottom">
+              <div class="booking-bar-summary">
+                <div class="bb-hours">2 hours</div>
+                <div class="bb-price">&#8377;1,600</div>
+              </div>
+              <div class="bb-btn">Continue to Book</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE: Dropdown Expanded State -->
+      <div class="viewport-annotation" style="margin-top: 32px">
+        <strong>Mobile &mdash; Config Dropdown Expanded:</strong> When the
+        workshop type dropdown is tapped, a floating panel appears showing all
+        three workshop options as a list. The current selection (Wheel Throwing)
+        has a green checkmark. Each option shows an icon, name, and starting
+        price. Tapping an option closes the dropdown and updates the calendar
+        availability.
+      </div>
+
+      <div class="wf-mobile-frame">
+        <div class="wf-browser-bar">
+          <div class="wf-browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="wf-url-bar">poetryandpottery.com/workshops</div>
+        </div>
+        <div class="wf-page-content">
+          <!-- Tabs -->
+          <div class="page-tabs">
+            <div class="page-tab active">Daily Workshops</div>
+            <div class="page-tab">Events</div>
+            <div class="page-tab">My Registrations</div>
+          </div>
+
+          <!-- Config Dropdown (active state) -->
+          <div
+            class="config-dropdown"
+            style="width: 100%; border-color: #4f6f52"
+          >
+            <div class="config-dropdown-icon">
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="#8b7355"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </div>
+            <div class="config-dropdown-text">
+              <div class="config-dropdown-label">Wheel Throwing</div>
+              <div class="config-dropdown-sub">From &#8377;950/hr</div>
+            </div>
+            <div class="config-dropdown-arrow" style="color: #4f6f52">
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M6 15l6-6 6 6" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Expanded Panel -->
+          <div class="config-panel">
+            <div class="config-panel-item selected">
+              <div class="config-panel-item-icon wheel">
+                <svg
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="#8b7355"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="4" />
+                </svg>
+              </div>
+              <div>
+                <div class="config-panel-item-name">Wheel Throwing</div>
+                <div class="config-panel-item-price">From &#8377;950/hr</div>
+              </div>
+              <div class="config-panel-item-check">&#10003;</div>
+            </div>
+            <div class="config-panel-item">
+              <div class="config-panel-item-icon sculpt">
+                <svg
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="#5a7a5e"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C8 7 4 12 4 16a8 8 0 0016 0c0-4-4-9-8-14z" />
+                </svg>
+              </div>
+              <div>
+                <div class="config-panel-item-name">Hand Sculpting</div>
+                <div class="config-panel-item-price">From &#8377;950/hr</div>
+              </div>
+              <div class="config-panel-item-check">&#10003;</div>
+            </div>
+            <div class="config-panel-item">
+              <div class="config-panel-item-icon glaze">
+                <svg
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="#5a7a9e"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <rect x="3" y="8" width="18" height="12" rx="2" />
+                  <path d="M7 8V6a5 5 0 0110 0v2" />
+                </svg>
+              </div>
+              <div>
+                <div class="config-panel-item-name">Glazing &amp; Painting</div>
+                <div class="config-panel-item-price">From &#8377;950/hr</div>
+              </div>
+              <div class="config-panel-item-check">&#10003;</div>
+            </div>
+          </div>
+
+          <!-- Calendar (greyed overlay feel) -->
+          <div class="large-calendar" style="opacity: 0.4">
+            <div class="large-calendar-header">
+              <div class="large-calendar-nav-btn">&lsaquo;</div>
+              <div class="large-calendar-month">February 2026</div>
+              <div class="large-calendar-nav-btn">&rsaquo;</div>
+            </div>
+            <div
+              class="large-calendar-body"
+              style="height: 120px; overflow: hidden"
+            >
+              <div class="cal-weekdays">
+                <div class="cal-weekday">Su</div>
+                <div class="cal-weekday">Mo</div>
+                <div class="cal-weekday">Tu</div>
+                <div class="cal-weekday">We</div>
+                <div class="cal-weekday">Th</div>
+                <div class="cal-weekday">Fr</div>
+                <div class="cal-weekday">Sa</div>
+              </div>
+              <div class="cal-days">
+                <div class="cal-day past">
+                  <span class="cal-day-number">1</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">2</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">3</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">4</span>
+                </div>
+                <div class="cal-day past">
+                  <span class="cal-day-number">5</span>
+                </div>
+                <div class="cal-day today">
+                  <span class="cal-day-number">6</span>
+                </div>
+                <div class="cal-day">
+                  <span class="cal-day-number">7</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==========================================
+         TABLET VIEWPORT (768px)
+         ========================================== -->
+    <div class="wf-section">
+      <div class="wf-task-label">Tablet &mdash; 768px</div>
+      <div class="wf-section-title">Calendar with Side Panel for Slots</div>
+      <div class="wf-section-desc">
+        On tablet, the calendar takes the left portion of the layout. When a day
+        is selected, a side panel appears on the right showing the 6 hourly
+        slots as a stacked list with clear availability states. The config
+        dropdown remains above the calendar. The booking bar sits at the bottom
+        as a horizontal strip.
+      </div>
+
+      <div class="viewport-annotation">
+        <strong>Tablet &mdash; Calendar + Side Panel:</strong> The layout splits
+        into a 2-column grid: calendar on left (primary), slot details panel on
+        right (320px). The side panel shows slot times as list items with
+        availability badges. Selected slots show green fill. The config dropdown
+        at top shows the current workshop type. Bottom booking bar spans full
+        width with chips, summary, and CTA.
+      </div>
+
+      <div class="wf-tablet-frame">
+        <div class="wf-browser-bar">
+          <div class="wf-browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="wf-url-bar">poetryandpottery.com/workshops</div>
+        </div>
+        <div class="wf-page-content tablet">
+          <!-- Tabs -->
+          <div class="page-tabs">
+            <div class="page-tab active">Daily Workshops</div>
+            <div class="page-tab">Events</div>
+            <div class="page-tab">My Registrations</div>
+          </div>
+
+          <!-- Config Dropdown -->
+          <div class="config-dropdown">
+            <div class="config-dropdown-icon">
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="#8b7355"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </div>
+            <div class="config-dropdown-text">
+              <div class="config-dropdown-label">Wheel Throwing</div>
+              <div class="config-dropdown-sub">
+                1hr &#8377;950 &middot; 2hr &#8377;1,600 &middot; 10hr
+                &#8377;7,500
+              </div>
+            </div>
+            <div class="config-dropdown-arrow">
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Calendar + Side Panel Layout -->
+          <div class="calendar-with-side">
+            <!-- Calendar -->
+            <div class="large-calendar">
+              <div class="large-calendar-header">
+                <div class="large-calendar-nav-btn">&lsaquo;</div>
+                <div class="large-calendar-month">February 2026</div>
+                <div class="large-calendar-nav-btn">&rsaquo;</div>
+              </div>
+              <div class="large-calendar-body padded">
+                <div class="cal-weekdays">
+                  <div class="cal-weekday">Sun</div>
+                  <div class="cal-weekday">Mon</div>
+                  <div class="cal-weekday">Tue</div>
+                  <div class="cal-weekday">Wed</div>
+                  <div class="cal-weekday">Thu</div>
+                  <div class="cal-weekday">Fri</div>
+                  <div class="cal-weekday">Sat</div>
+                </div>
+                <div class="cal-days">
+                  <div class="cal-day past">
+                    <span class="cal-day-number">1</span>
+                  </div>
+                  <div class="cal-day past">
+                    <span class="cal-day-number">2</span>
+                  </div>
+                  <div class="cal-day past">
+                    <span class="cal-day-number">3</span>
+                  </div>
+                  <div class="cal-day past">
+                    <span class="cal-day-number">4</span>
+                  </div>
+                  <div class="cal-day past">
+                    <span class="cal-day-number">5</span>
+                  </div>
+                  <div class="cal-day today">
+                    <span class="cal-day-number">6</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot full"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">7</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day selected">
+                    <span class="cal-day-number">8</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot full"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">9</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">10</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot full"></span>
+                      <span class="cal-dot blocked"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">11</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">12</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">13</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">14</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot full"></span>
+                      <span class="cal-dot full"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">15</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">16</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot full"></span>
+                      <span class="cal-dot full"></span>
+                      <span class="cal-dot blocked"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">17</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">18</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">19</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">20</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot full"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">21</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">22</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">23</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot full"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">24</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">25</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot blocked"></span>
+                      <span class="cal-dot blocked"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">26</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">27</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot available"></span>
+                    </div>
+                  </div>
+                  <div class="cal-day">
+                    <span class="cal-day-number">28</span>
+                    <div class="cal-day-dots">
+                      <span class="cal-dot available"></span>
+                      <span class="cal-dot full"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="cal-legend">
+                <div class="cal-legend-item">
+                  <div class="cal-legend-dot green"></div>
+                  Available
+                </div>
+                <div class="cal-legend-item">
+                  <div class="cal-legend-dot gray"></div>
+                  Full
+                </div>
+                <div class="cal-legend-item">
+                  <div class="cal-legend-dot red"></div>
+                  Blocked
+                </div>
+              </div>
+            </div>
+
+            <!-- Side Panel -->
+            <div class="side-panel">
+              <div class="side-panel-header">
+                <div class="side-panel-title">Sunday, 8 Feb</div>
+                <div class="side-panel-date">6 slots &middot; 4 available</div>
+              </div>
+              <div class="side-panel-body">
+                <div class="side-panel-slots">
+                  <div class="side-slot selected">
+                    <div class="side-slot-left">
+                      <div class="side-slot-time">1:00 PM</div>
+                    </div>
+                    <div class="side-slot-badge">Selected</div>
+                  </div>
+                  <div class="side-slot selected">
+                    <div class="side-slot-left">
+                      <div class="side-slot-time">2:00 PM</div>
+                    </div>
+                    <div class="side-slot-badge">Selected</div>
+                  </div>
+                  <div class="side-slot full">
+                    <div class="side-slot-left">
+                      <div class="side-slot-time">3:00 PM</div>
+                    </div>
+                    <div class="side-slot-badge">Full</div>
+                  </div>
+                  <div class="side-slot available">
+                    <div class="side-slot-left">
+                      <div class="side-slot-time">4:00 PM</div>
+                    </div>
+                    <div class="side-slot-badge">3 left</div>
+                  </div>
+                  <div class="side-slot blocked">
+                    <div class="side-slot-left">
+                      <div class="side-slot-time">5:00 PM</div>
+                    </div>
+                    <div class="side-slot-badge">Blocked</div>
+                  </div>
+                  <div class="side-slot available">
+                    <div class="side-slot-left">
+                      <div class="side-slot-time">6:00 PM</div>
+                    </div>
+                    <div class="side-slot-badge">Available</div>
+                  </div>
+                </div>
+
+                <!-- Slot Legend -->
+                <div class="slot-legend" style="margin-top: 20px">
+                  <div class="slot-legend-item">
+                    <div class="slot-legend-swatch available"></div>
+                    Available
+                  </div>
+                  <div class="slot-legend-item">
+                    <div class="slot-legend-swatch selected"></div>
+                    Selected
+                  </div>
+                  <div class="slot-legend-item">
+                    <div class="slot-legend-swatch full"></div>
+                    Full
+                  </div>
+                  <div class="slot-legend-item">
+                    <div class="slot-legend-swatch blocked"></div>
+                    Blocked
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking Bar -->
+          <div
+            class="booking-bar"
+            style="margin-top: 20px; border-radius: 16px"
+          >
+            <div class="booking-bar-chips">
+              <div class="bb-chip">
+                Feb 8, 1:00 PM
+                <div class="bb-chip-remove">&times;</div>
+              </div>
+              <div class="bb-chip">
+                Feb 8, 2:00 PM
+                <div class="bb-chip-remove">&times;</div>
+              </div>
+            </div>
+            <div class="booking-bar-summary">
+              <div class="bb-hours">2 hours total</div>
+              <div class="bb-price">&#8377;1,600</div>
+            </div>
+            <div class="bb-btn">Continue to Book</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==========================================
+         DESKTOP VIEWPORT (1200px)
+         ========================================== -->
+    <div class="wf-section">
+      <div class="wf-task-label">Desktop &mdash; 1200px</div>
+      <div class="wf-section-title">
+        Large Calendar with Hover Previews &amp; Expandable Panel
+      </div>
+      <div class="wf-section-desc">
+        On desktop, the calendar is large with spacious day cells. Hovering over
+        a day shows a tooltip preview of slot availability. Clicking a day
+        expands an inline panel below the calendar showing all 6 hourly slots in
+        a horizontal 6-column grid. The config dropdown sits at the top-left.
+        The floating booking bar is a horizontal strip below the slot panel with
+        selected chips, total, and CTA.
+      </div>
+
+      <div class="viewport-annotation">
+        <strong>Desktop &mdash; Full Calendar with Expanded Slot Panel:</strong>
+        The calendar spans the full content width. Day cells are larger with
+        clearly visible availability dots. Day 8 is selected (green fill), and
+        the expandable slot panel shows below as a connected section of the
+        calendar card. Time slots are in a 6-column grid (one per hour). A hover
+        tooltip on day 10 shows "3 available, 2 full, 1 blocked". The floating
+        booking bar at the bottom shows selected slot chips, price calculations,
+        and the "Continue to Book" button.
+      </div>
+
+      <div class="wf-desktop-frame">
+        <div class="wf-browser-bar">
+          <div class="wf-browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="wf-url-bar">poetryandpottery.com/workshops</div>
+        </div>
+        <div class="wf-page-content desktop">
+          <!-- Tabs -->
+          <div class="page-tabs">
+            <div class="page-tab active">Daily Workshops</div>
+            <div class="page-tab">Events</div>
+            <div class="page-tab">My Registrations</div>
+          </div>
+
+          <!-- Top Bar: Config Dropdown + Pricing Chips -->
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 24px;
+            "
+          >
+            <div class="config-dropdown">
+              <div class="config-dropdown-icon">
+                <svg
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="#8b7355"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="4" />
+                </svg>
+              </div>
+              <div class="config-dropdown-text">
+                <div class="config-dropdown-label">Wheel Throwing</div>
+                <div class="config-dropdown-sub">
+                  1hr &#8377;950 &middot; 2hr &#8377;1,600 &middot; 10hr
+                  &#8377;7,500
+                </div>
+              </div>
+              <div class="config-dropdown-arrow">
+                <svg
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Dot Legend (desktop inline) -->
+            <div style="display: flex; gap: 16px; align-items: center">
+              <div class="cal-legend-item">
+                <div class="cal-legend-dot green"></div>
+                Available
+              </div>
+              <div class="cal-legend-item">
+                <div class="cal-legend-dot gray"></div>
+                Full
+              </div>
+              <div class="cal-legend-item">
+                <div class="cal-legend-dot red"></div>
+                Blocked
+              </div>
+            </div>
+          </div>
+
+          <!-- Large Calendar -->
+          <div class="large-calendar" style="border-radius: 16px 16px 0 0">
+            <div class="large-calendar-header" style="padding: 20px 32px">
+              <div class="large-calendar-nav-btn">&lsaquo;</div>
+              <div class="large-calendar-month" style="font-size: 20px">
+                February 2026
+              </div>
+              <div class="large-calendar-nav-btn">&rsaquo;</div>
+            </div>
+            <div class="large-calendar-body" style="padding: 16px 32px 24px">
+              <div class="cal-weekdays">
+                <div class="cal-weekday">Sunday</div>
+                <div class="cal-weekday">Monday</div>
+                <div class="cal-weekday">Tuesday</div>
+                <div class="cal-weekday">Wednesday</div>
+                <div class="cal-weekday">Thursday</div>
+                <div class="cal-weekday">Friday</div>
+                <div class="cal-weekday">Saturday</div>
+              </div>
+              <div class="cal-days" style="gap: 6px">
+                <!-- Row 1 -->
+                <div class="cal-day large past">
+                  <span class="cal-day-number">1</span>
+                </div>
+                <div class="cal-day large past">
+                  <span class="cal-day-number">2</span>
+                </div>
+                <div class="cal-day large past">
+                  <span class="cal-day-number">3</span>
+                </div>
+                <div class="cal-day large past">
+                  <span class="cal-day-number">4</span>
+                </div>
+                <div class="cal-day large past">
+                  <span class="cal-day-number">5</span>
+                </div>
+                <div class="cal-day large today">
+                  <span class="cal-day-number">6</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">7</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <!-- Row 2 -->
+                <div class="cal-day large selected">
+                  <span class="cal-day-number">8</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">9</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large show-tooltip">
+                  <span class="cal-day-number">10</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot blocked"></span>
+                  </div>
+                  <div class="cal-day-tooltip">
+                    3 available &middot; 2 full &middot; 1 blocked
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">11</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">12</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">13</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">14</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <!-- Row 3 -->
+                <div class="cal-day large">
+                  <span class="cal-day-number">15</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">16</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot blocked"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">17</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">18</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">19</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">20</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">21</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <!-- Row 4 -->
+                <div class="cal-day large">
+                  <span class="cal-day-number">22</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">23</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">24</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">25</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot blocked"></span>
+                    <span class="cal-dot blocked"></span>
+                    <span class="cal-dot blocked"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">26</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">27</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+                <div class="cal-day large">
+                  <span class="cal-day-number">28</span>
+                  <div class="cal-day-dots">
+                    <span class="cal-dot available"></span>
+                    <span class="cal-dot full"></span>
+                    <span class="cal-dot available"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Expanded Slot Panel (below calendar, connected) -->
+            <div class="expanded-slot-panel">
+              <div class="expanded-slot-header">
+                <div>
+                  <span class="expanded-slot-title">Sunday, 8 February</span>
+                  <span class="expanded-slot-date"
+                    >6 slots &middot; 4 available</span
+                  >
+                </div>
+                <div
+                  style="
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 8px;
+                    background: #f5f5f4;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                    color: #737373;
+                    cursor: pointer;
+                  "
+                >
+                  &times;
+                </div>
+              </div>
+              <div class="expanded-slot-grid">
+                <div class="ts-cell selected">
+                  <div class="ts-cell-time">1:00 PM</div>
+                  <div class="ts-cell-status">Selected</div>
+                </div>
+                <div class="ts-cell selected">
+                  <div class="ts-cell-time">2:00 PM</div>
+                  <div class="ts-cell-status">Selected</div>
+                </div>
+                <div class="ts-cell full">
+                  <div class="ts-cell-time">3:00 PM</div>
+                  <div class="ts-cell-status">Full</div>
+                </div>
+                <div class="ts-cell available">
+                  <div class="ts-cell-time">4:00 PM</div>
+                  <div class="ts-cell-status">3 seats left</div>
+                </div>
+                <div class="ts-cell blocked">
+                  <div class="ts-cell-time">5:00 PM</div>
+                  <div class="ts-cell-status">Blocked</div>
+                </div>
+                <div class="ts-cell available">
+                  <div class="ts-cell-time">6:00 PM</div>
+                  <div class="ts-cell-status">Available</div>
+                </div>
+              </div>
+              <div class="slot-legend" style="margin-top: 16px">
+                <div class="slot-legend-item">
+                  <div class="slot-legend-swatch available"></div>
+                  Available
+                </div>
+                <div class="slot-legend-item">
+                  <div class="slot-legend-swatch selected"></div>
+                  Selected
+                </div>
+                <div class="slot-legend-item">
+                  <div class="slot-legend-swatch full"></div>
+                  Full
+                </div>
+                <div class="slot-legend-item">
+                  <div class="slot-legend-swatch blocked"></div>
+                  Blocked
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop Floating Booking Bar -->
+          <div class="desktop-booking-bar">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-shrink: 0;
+              "
+            >
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                stroke="#4f6f52"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" />
+              </svg>
+              <span
+                style="
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 13px;
+                  font-weight: 700;
+                  color: #4f6f52;
+                "
+                >Your Selections</span
+              >
+            </div>
+
+            <div
+              style="
+                width: 1px;
+                height: 28px;
+                background: #e5e5e5;
+                flex-shrink: 0;
+              "
+            ></div>
+
+            <div class="booking-bar-chips" style="flex: 1">
+              <div class="bb-chip">
+                <svg
+                  width="12"
+                  height="12"
+                  fill="none"
+                  stroke="#4f6f52"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 6v6l4 2" />
+                </svg>
+                Feb 8, 1:00 PM
+                <div class="bb-chip-remove">&times;</div>
+              </div>
+              <div class="bb-chip">
+                <svg
+                  width="12"
+                  height="12"
+                  fill="none"
+                  stroke="#4f6f52"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 6v6l4 2" />
+                </svg>
+                Feb 8, 2:00 PM
+                <div class="bb-chip-remove">&times;</div>
+              </div>
+            </div>
+
+            <div
+              style="
+                width: 1px;
+                height: 28px;
+                background: #e5e5e5;
+                flex-shrink: 0;
+              "
+            ></div>
+
+            <div class="booking-bar-summary" style="text-align: center">
+              <div class="bb-hours">2 hours total</div>
+              <div class="bb-price">&#8377;1,600</div>
+            </div>
+
+            <div class="bb-btn" style="padding: 14px 28px; font-size: 14px">
+              Continue to Book
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+                style="margin-left: 4px"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="notes">
+      <strong>Calendar-First Design &mdash; Design Notes:</strong><br />
+      <strong>Calendar Dominance:</strong> The monthly calendar is the primary
+      UI element; all other elements (config, slots, booking bar) are secondary
+      and contextual<br />
+      <strong>Day Cell Dots:</strong> Small colored dots (green = available,
+      gray = full, red = blocked) give at-a-glance availability for each day<br />
+      <strong>Desktop Hover:</strong> Hovering over a day cell shows a tooltip
+      with slot count breakdown (e.g., "3 available, 2 full, 1 blocked")<br />
+      <strong>Slot Expansion:</strong> Mobile = bottom sheet; Tablet = side
+      panel (320px); Desktop = inline panel below calendar (connected
+      section)<br />
+      <strong>Config Selector:</strong> Floating dropdown above calendar;
+      compact on mobile, shows pricing tiers on tablet/desktop<br />
+      <strong>Booking Bar:</strong> Shows selected slot chips (like a cart),
+      total hours, price preview, and "Continue to Book" CTA. Mobile: stacked
+      layout. Desktop: horizontal strip<br />
+      <strong>Pricing:</strong> &#8377;950/hr (shown as &#8377;1,600 for 2
+      selected hours); bulk pack &#8377;7,500/10hr<br />
+      <strong>Slot States:</strong> Available (white + green border), Selected
+      (green fill), Full (gray, disabled), Blocked (red stripe, disabled)
+    </div>
+  </body>
+</html>

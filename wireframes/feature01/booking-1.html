@@ -1,0 +1,3047 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Booking Option 1: Vertical Scroll Flow - Daily Workshop Booking - Poetry &
+      Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../_shared-styles.css" />
+    <style>
+      /* ============================================
+         BOOKING FLOW - VERTICAL SCROLL OPTION
+         ============================================ */
+
+      /* Layout: Viewports stacked vertically (one per row) */
+      .viewports-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .viewport-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      .viewport-row .viewport-box {
+        flex-shrink: 0;
+      }
+
+      .viewport-row .viewport-description {
+        flex: 1;
+        min-width: 280px;
+        max-width: 400px;
+        padding-top: 48px;
+      }
+
+      .viewport-description h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description p {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.8;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description ul {
+        list-style: none;
+        font-size: 12px;
+        line-height: 2.2;
+        color: #555;
+        padding: 0;
+      }
+
+      .viewport-description ul li::before {
+        content: "\2713 ";
+        color: #4f6f52;
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      /* Viewport Box */
+      .viewport-box {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .viewport-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .viewport-size {
+        font-size: 11px;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        padding: 16px;
+      }
+
+      .viewport-content.tablet {
+        padding: 24px 32px;
+      }
+
+      .viewport-content.desktop {
+        padding: 32px 48px;
+      }
+
+      /* ============================================
+         PAGE TABS (Daily Workshops / Events / My Registrations)
+         ============================================ */
+      .page-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 24px;
+      }
+
+      .page-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 16px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .page-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      .page-tabs.compact .page-tab {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      /* ============================================
+         CONFIG CARDS (Standard / Premium Workshop)
+         ============================================ */
+      .config-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .config-cards.horizontal {
+        flex-direction: row;
+      }
+
+      .config-card {
+        background: #fafaf9;
+        border-radius: 16px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        border: 2px solid #e5e5e5;
+        flex: 1;
+        position: relative;
+      }
+
+      .config-card:hover {
+        border-color: #c8d6c9;
+      }
+
+      .config-card.selected {
+        border-color: #4f6f52;
+        background: #f4f7f4;
+      }
+
+      .config-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .config-card-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .config-card-badge {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 12px;
+        background: #e8ece8;
+        color: #4f6f52;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .config-card-desc {
+        font-size: 12px;
+        color: #737373;
+        line-height: 1.5;
+        margin-bottom: 10px;
+      }
+
+      .config-card-tiers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .config-tier {
+        font-size: 11px;
+        padding: 4px 10px;
+        background: white;
+        border-radius: 8px;
+        color: #555;
+        border: 1px solid #e5e5e5;
+        line-height: 1.3;
+      }
+
+      .config-tier strong {
+        color: #1a1a1a;
+        font-weight: 700;
+      }
+
+      .config-radio {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .config-radio.checked {
+        border-color: #4f6f52;
+      }
+
+      .config-radio.checked::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #4f6f52;
+      }
+
+      /* ============================================
+         SECTION LABEL (step labels)
+         ============================================ */
+      .step-label {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .step-label .step-num {
+        width: 24px;
+        height: 24px;
+        background: #4f6f52;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      .step-hint {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 16px;
+      }
+
+      /* ============================================
+         CALENDAR - WEEK VIEW
+         ============================================ */
+      .calendar-section {
+        margin-bottom: 24px;
+      }
+
+      .calendar-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .calendar-month {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .calendar-nav-btns {
+        display: flex;
+        gap: 8px;
+      }
+
+      .calendar-nav-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid #e5e5e5;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .calendar-nav-btn:hover {
+        background: #f5f5f4;
+      }
+
+      /* Week strip */
+      .week-strip {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 8px;
+      }
+
+      .week-day-header {
+        text-align: center;
+        font-size: 10px;
+        font-weight: 600;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding-bottom: 6px;
+      }
+
+      .week-day {
+        text-align: center;
+        padding: 8px 4px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        position: relative;
+      }
+
+      .week-day:hover {
+        background: #f5f5f4;
+      }
+
+      .week-day .day-num {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .week-day .day-label {
+        font-size: 9px;
+        color: #999;
+      }
+
+      .week-day.today .day-num {
+        color: #4f6f52;
+      }
+
+      .week-day.today::after {
+        content: "";
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #4f6f52;
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .week-day.selected {
+        background: #4f6f52;
+      }
+
+      .week-day.selected .day-num {
+        color: white;
+      }
+
+      .week-day.selected .day-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .week-day.selected::after {
+        background: white;
+      }
+
+      .week-day.disabled {
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .week-day.has-slots .day-num::after {
+        content: "";
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #4f6f52;
+        margin: 2px auto 0;
+      }
+
+      /* Full month calendar grid */
+      .month-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+      }
+
+      .month-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        color: #1a1a1a;
+        transition: all 0.15s ease;
+        position: relative;
+      }
+
+      .month-day:hover {
+        background: #f5f5f4;
+      }
+
+      .month-day.other-month {
+        color: #ccc;
+      }
+
+      .month-day.today {
+        color: #4f6f52;
+        font-weight: 700;
+      }
+
+      .month-day.selected {
+        background: #4f6f52;
+        color: white;
+        font-weight: 700;
+      }
+
+      .month-day.has-slots::after {
+        content: "";
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #4f6f52;
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .month-day.selected.has-slots::after {
+        background: white;
+      }
+
+      .month-day.disabled {
+        color: #ddd;
+        pointer-events: none;
+      }
+
+      /* View toggle */
+      .calendar-view-toggle {
+        display: inline-flex;
+        background: #f5f5f4;
+        padding: 3px;
+        border-radius: 8px;
+        gap: 2px;
+        margin-bottom: 16px;
+      }
+
+      .calendar-view-btn {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 6px;
+        color: #999;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .calendar-view-btn.active {
+        background: white;
+        color: #4f6f52;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+
+      /* ============================================
+         TIME SLOTS GRID (1 PM - 7 PM IST)
+         ============================================ */
+      .slots-section {
+        margin-bottom: 24px;
+      }
+
+      .slots-date-header {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .slots-date-header .date-badge {
+        font-size: 10px;
+        padding: 2px 8px;
+        background: #e8ece8;
+        color: #4f6f52;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+
+      .slots-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .slots-grid.six-col {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .slots-grid.two-col {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .time-slot {
+        padding: 12px 8px;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        border: 2px solid #e5e5e5;
+        background: white;
+        position: relative;
+      }
+
+      .time-slot:hover:not(.disabled):not(.blocked) {
+        border-color: #c8d6c9;
+        background: #fafcfa;
+      }
+
+      .time-slot .slot-time {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 2px;
+      }
+
+      .time-slot .slot-status {
+        font-size: 10px;
+        color: #999;
+      }
+
+      .time-slot .slot-spots {
+        font-size: 10px;
+        color: #4f6f52;
+        font-weight: 500;
+      }
+
+      /* Slot: Selected */
+      .time-slot.selected {
+        background: #4f6f52;
+        border-color: #4f6f52;
+      }
+
+      .time-slot.selected .slot-time {
+        color: white;
+      }
+
+      .time-slot.selected .slot-status {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .time-slot.selected .slot-spots {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* Slot: Booked / Full */
+      .time-slot.full {
+        background: #f5f5f4;
+        border-color: #e5e5e5;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .time-slot.full .slot-time {
+        color: #999;
+      }
+
+      .time-slot.full .slot-status {
+        color: #bbb;
+        font-weight: 600;
+      }
+
+      /* Slot: Blocked */
+      .time-slot.blocked {
+        background: repeating-linear-gradient(
+          -45deg,
+          #f5f5f4,
+          #f5f5f4 4px,
+          #ebebeb 4px,
+          #ebebeb 8px
+        );
+        border-color: #e0e0e0;
+        cursor: not-allowed;
+        opacity: 0.65;
+      }
+
+      .time-slot.blocked .slot-time {
+        color: #aaa;
+        text-decoration: line-through;
+      }
+
+      .time-slot.blocked .slot-status {
+        color: #bbb;
+        font-weight: 600;
+      }
+
+      /* ============================================
+         PARTICIPANTS SELECTOR
+         ============================================ */
+      .participants-section {
+        margin-bottom: 24px;
+      }
+
+      .participants-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: #fafaf9;
+        border-radius: 12px;
+        padding: 14px 16px;
+        border: 1px solid #e5e5e5;
+      }
+
+      .participants-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a1a1a;
+        flex: 1;
+      }
+
+      .participants-counter {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .counter-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid #e5e5e5;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        color: #4f6f52;
+        transition: all 0.15s;
+      }
+
+      .counter-btn:hover {
+        background: #e8ece8;
+        border-color: #4f6f52;
+      }
+
+      .counter-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        min-width: 24px;
+        text-align: center;
+      }
+
+      /* ============================================
+         PRICING BREAKDOWN PANEL
+         ============================================ */
+      .pricing-panel {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        margin-bottom: 24px;
+      }
+
+      .pricing-panel.sticky {
+        position: sticky;
+        top: 24px;
+      }
+
+      .pricing-header {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .pricing-header svg {
+        width: 18px;
+        height: 18px;
+        color: #4f6f52;
+      }
+
+      .pricing-line {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #555;
+        padding: 6px 0;
+        gap: 12px;
+      }
+
+      .pricing-line .label {
+        flex: 1;
+        line-height: 1.4;
+      }
+
+      .pricing-line .value {
+        font-weight: 600;
+        color: #1a1a1a;
+        white-space: nowrap;
+      }
+
+      .pricing-line.detail {
+        font-size: 12px;
+        color: #999;
+        padding: 3px 0 3px 16px;
+      }
+
+      .pricing-line.detail .value {
+        color: #737373;
+        font-weight: 500;
+      }
+
+      .pricing-separator {
+        height: 1px;
+        background: #e5e5e5;
+        margin: 10px 0;
+      }
+
+      .pricing-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        padding-top: 8px;
+      }
+
+      .pricing-total .total-amount {
+        color: #4f6f52;
+        font-size: 20px;
+      }
+
+      .pricing-savings {
+        background: #f0f7f0;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 11px;
+        color: #4f6f52;
+        font-weight: 600;
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      .pricing-pieces-note {
+        font-size: 11px;
+        color: #999;
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+
+      /* Submit button */
+      .submit-btn {
+        width: 100%;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        background: #4f6f52;
+        color: white;
+        border: none;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+        box-shadow: 0 4px 12px rgba(79, 111, 82, 0.2);
+        margin-top: 16px;
+      }
+
+      .submit-btn:hover {
+        background: #3d5640;
+      }
+
+      .submit-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* ============================================
+         SELECTION SUMMARY (chips)
+         ============================================ */
+      .selection-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+
+      .selection-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 10px;
+        background: #e8ece8;
+        color: #4f6f52;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .selection-chip .chip-remove {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #4f6f52;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        cursor: pointer;
+      }
+
+      /* ============================================
+         DESKTOP SIDEBAR LAYOUT
+         ============================================ */
+      .desktop-layout {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 32px;
+        align-items: start;
+      }
+
+      .desktop-main {
+        min-width: 0;
+      }
+
+      .desktop-sidebar {
+        position: sticky;
+        top: 24px;
+      }
+
+      /* ============================================
+         TABLET TWO-COL FOR CONFIGS
+         ============================================ */
+      .tablet-config-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      /* ============================================
+         SLOT LEGEND
+         ============================================ */
+      .slot-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+        padding: 10px 12px;
+        background: #fafaf9;
+        border-radius: 10px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        color: #737373;
+      }
+
+      .legend-swatch {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        border: 1.5px solid #e5e5e5;
+      }
+
+      .legend-swatch.available {
+        background: white;
+        border-color: #c8d6c9;
+      }
+
+      .legend-swatch.selected-swatch {
+        background: #4f6f52;
+        border-color: #4f6f52;
+      }
+
+      .legend-swatch.full-swatch {
+        background: #f5f5f4;
+        opacity: 0.6;
+      }
+
+      .legend-swatch.blocked-swatch {
+        background: repeating-linear-gradient(
+          -45deg,
+          #f5f5f4,
+          #f5f5f4 2px,
+          #ebebeb 2px,
+          #ebebeb 4px
+        );
+        opacity: 0.65;
+      }
+
+      /* ============================================
+         PAGE HEADER
+         ============================================ */
+      .page-header {
+        margin-bottom: 20px;
+      }
+
+      .page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .page-title-underline {
+        width: 48px;
+        height: 3px;
+        background: #4f6f52;
+        border-radius: 2px;
+        margin-bottom: 6px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.5;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs a {
+        color: #4f6f52;
+        text-decoration: none;
+      }
+
+      /* ============================================
+         SELECTED DATES PANEL (multi-date view)
+         ============================================ */
+      .selected-dates-panel {
+        background: #f8faf8;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 16px;
+        border: 1px solid #e8ece8;
+      }
+
+      .selected-dates-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: #4f6f52;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+
+      .selected-dates-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .date-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        background: white;
+        border: 1px solid #c8d6c9;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #4f6f52;
+        cursor: pointer;
+      }
+
+      .date-chip.active {
+        background: #4f6f52;
+        color: white;
+        border-color: #4f6f52;
+      }
+
+      /* ============================================
+         INFO CALLOUT
+         ============================================ */
+      .info-callout {
+        display: flex;
+        gap: 10px;
+        padding: 12px 14px;
+        background: #fefce8;
+        border-radius: 10px;
+        margin-bottom: 16px;
+        font-size: 12px;
+        color: #854d0e;
+        line-height: 1.5;
+      }
+
+      .info-callout svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p style="text-align: center; margin-bottom: 24px">
+      <a
+        href="../index.html"
+        style="color: #4f6f52; text-decoration: none; font-size: 13px"
+        >&larr; Back to Index</a
+      >
+    </p>
+
+    <h1>Daily Workshop Booking Flow</h1>
+    <p class="subtitle">
+      Option 1: Vertical Scroll Flow. Everything stacks vertically: config
+      selection, calendar date picker, hourly time slots (1 PM - 7 PM IST),
+      participants counter, then pricing breakdown with submit. This is the
+      simplest, most linear flow.
+    </p>
+
+    <div style="text-align: center; margin-bottom: 16px">
+      <span
+        style="
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+          background: #fef3c7;
+          color: #d97706;
+        "
+      >
+        <span
+          style="
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+          "
+        ></span>
+        AWAITING APPROVAL
+      </span>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg style="display: none">
+      <symbol
+        id="calendar-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </symbol>
+      <symbol
+        id="clock-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </symbol>
+      <symbol
+        id="check-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
+      <symbol
+        id="chevron-left"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="15 18 9 12 15 6" />
+      </symbol>
+      <symbol
+        id="chevron-right"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="9 18 15 12 9 6" />
+      </symbol>
+      <symbol
+        id="tag-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"
+        />
+        <line x1="7" y1="7" x2="7.01" y2="7" />
+      </symbol>
+      <symbol
+        id="info-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </symbol>
+      <symbol
+        id="users-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 00-3-3.87" />
+        <path d="M16 3.13a4 4 0 010 7.75" />
+      </symbol>
+      <symbol
+        id="x-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </symbol>
+      <symbol
+        id="arrow-right-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </symbol>
+    </svg>
+
+    <!-- ============================================
+         COMPARISON: Before / After
+         ============================================ -->
+    <div class="section">
+      <div class="comparison">
+        <div class="comparison-box before">
+          <h3>CURRENT BEHAVIOR</h3>
+          <ul>
+            <li>Events page only shows special events</li>
+            <li>No daily workshop booking capability</li>
+            <li>Users must call or message to book sessions</li>
+            <li>No visibility into slot availability</li>
+            <li>No tier-based pricing optimization</li>
+          </ul>
+        </div>
+        <div class="comparison-box after">
+          <h3>NEW DESIGN: VERTICAL SCROLL</h3>
+          <ul>
+            <li>3-tab layout: Daily Workshops, Events, My Registrations</li>
+            <li>Config cards for workshop types with tier info</li>
+            <li>Calendar date picker (week/month toggle)</li>
+            <li>6 hourly slots per day (1 PM - 7 PM IST)</li>
+            <li>Real-time slot states: available, selected, full, blocked</li>
+            <li>Smart pricing: optimal tier combos with savings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Option Details -->
+    <div class="option-details">
+      <strong>Option 1: Vertical Scroll Flow</strong> - A single-column linear
+      flow where each step stacks below the previous. Simplest to scan and
+      understand. On desktop, the pricing panel moves to a sticky sidebar.<br />
+      <strong>Flow:</strong> Config Selection &rarr; Calendar &rarr; Time Slots
+      &rarr; Participants &rarr; Pricing &rarr; Submit<br />
+      <strong>Pros:</strong> Easiest cognitive load, natural top-to-bottom
+      reading, great on mobile.<br />
+      <strong>Cons:</strong> Long page on desktop if many dates selected;
+      pricing is far from slots.
+    </div>
+
+    <!-- ============================================
+         VIEWPORTS STACKED VERTICALLY
+         ============================================ -->
+    <div class="viewports-stack">
+      <!-- ==========================================
+           ROW 1: MOBILE (375px)
+           ========================================== -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 375px">
+          <div class="viewport-header">
+            <span class="viewport-label">Mobile</span>
+            <span class="viewport-size">375 x 812</span>
+          </div>
+          <div class="viewport-content">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs">
+              <a href="#">Home</a> / <a href="#">Events</a> / Daily Workshops
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+              <h1 class="page-title" style="font-size: 20px">
+                Events & Workshops
+              </h1>
+              <div class="page-title-underline"></div>
+              <p class="page-subtitle">
+                Book hands-on pottery sessions & explore upcoming events
+              </p>
+            </div>
+
+            <!-- 3-Tab Navigation -->
+            <div class="page-tabs compact">
+              <div class="page-tab active">Daily Workshops</div>
+              <div class="page-tab">Events</div>
+              <div class="page-tab">My Registrations</div>
+            </div>
+
+            <!-- Step 1: Workshop Config -->
+            <div class="step-label">
+              <span class="step-num">1</span> Choose Workshop Type
+            </div>
+            <div class="step-hint">
+              Select a workshop to see available slots
+            </div>
+
+            <div class="config-cards">
+              <!-- Standard Workshop - Selected -->
+              <div class="config-card selected">
+                <div class="config-card-header">
+                  <div style="display: flex; align-items: center; gap: 10px">
+                    <div class="config-radio checked"></div>
+                    <span class="config-card-name">Standard Workshop</span>
+                  </div>
+                  <span class="config-card-badge">Popular</span>
+                </div>
+                <div class="config-card-desc">
+                  Hands-on wheel throwing. Great for beginners & regulars.
+                </div>
+                <div class="config-card-tiers">
+                  <span class="config-tier"
+                    ><strong>1 hr:</strong> &#8377;950/pp, 1 piece</span
+                  >
+                  <span class="config-tier"
+                    ><strong>2 hr:</strong> &#8377;1,700/pp, 2 pcs</span
+                  >
+                  <span class="config-tier"
+                    ><strong>3 hr:</strong> &#8377;2,400/pp, 3 pcs</span
+                  >
+                </div>
+              </div>
+
+              <!-- Premium Workshop -->
+              <div class="config-card">
+                <div class="config-card-header">
+                  <div style="display: flex; align-items: center; gap: 10px">
+                    <div class="config-radio"></div>
+                    <span class="config-card-name">Premium Workshop</span>
+                  </div>
+                </div>
+                <div class="config-card-desc">
+                  Extended session with glazing, firing & premium clay. Take
+                  home finished art.
+                </div>
+                <div class="config-card-tiers">
+                  <span class="config-tier"
+                    ><strong>2 hr:</strong> &#8377;2,500/pp, 2 pcs</span
+                  >
+                  <span class="config-tier"
+                    ><strong>3 hr:</strong> &#8377;3,500/pp, 3 pcs</span
+                  >
+                  <span class="config-tier"
+                    ><strong>4 hr:</strong> &#8377;4,200/pp, 4 pcs</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Select Date -->
+            <div class="step-label">
+              <span class="step-num">2</span> Pick Date(s)
+            </div>
+
+            <div class="calendar-section">
+              <!-- Week view toggle -->
+              <div class="calendar-view-toggle">
+                <span class="calendar-view-btn active">Week</span>
+                <span class="calendar-view-btn">Month</span>
+              </div>
+
+              <div class="calendar-nav">
+                <span class="calendar-month">Feb 2026</span>
+                <div class="calendar-nav-btns">
+                  <span class="calendar-nav-btn"
+                    ><svg style="width: 14px; height: 14px">
+                      <use href="#chevron-left" /></svg
+                  ></span>
+                  <span class="calendar-nav-btn"
+                    ><svg style="width: 14px; height: 14px">
+                      <use href="#chevron-right" /></svg
+                  ></span>
+                </div>
+              </div>
+
+              <!-- Week Strip -->
+              <div class="week-strip">
+                <div class="week-day-header">Mon</div>
+                <div class="week-day-header">Tue</div>
+                <div class="week-day-header">Wed</div>
+                <div class="week-day-header">Thu</div>
+                <div class="week-day-header">Fri</div>
+                <div class="week-day-header">Sat</div>
+                <div class="week-day-header">Sun</div>
+              </div>
+              <div class="week-strip">
+                <div class="week-day disabled">
+                  <div class="day-num">2</div>
+                </div>
+                <div class="week-day disabled">
+                  <div class="day-num">3</div>
+                </div>
+                <div class="week-day disabled">
+                  <div class="day-num">4</div>
+                </div>
+                <div class="week-day disabled">
+                  <div class="day-num">5</div>
+                </div>
+                <div class="week-day today selected">
+                  <div class="day-num">6</div>
+                  <div class="day-label">Today</div>
+                </div>
+                <div class="week-day has-slots selected">
+                  <div class="day-num">7</div>
+                </div>
+                <div class="week-day has-slots">
+                  <div class="day-num">8</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selected dates chips -->
+            <div class="selected-dates-panel">
+              <div class="selected-dates-title">Selected Dates</div>
+              <div class="selected-dates-list">
+                <span class="date-chip active">Fri, Feb 6</span>
+                <span class="date-chip">Sat, Feb 7</span>
+              </div>
+            </div>
+
+            <!-- Step 3: Time Slots -->
+            <div class="step-label">
+              <span class="step-num">3</span> Select Time Slots
+            </div>
+            <div class="step-hint">
+              Tap slots to select (1 hr each). Select consecutive slots for
+              multi-hour tiers.
+            </div>
+
+            <!-- Slot Legend -->
+            <div class="slot-legend">
+              <div class="legend-item">
+                <span class="legend-swatch available"></span> Available
+              </div>
+              <div class="legend-item">
+                <span class="legend-swatch selected-swatch"></span> Selected
+              </div>
+              <div class="legend-item">
+                <span class="legend-swatch full-swatch"></span> Full
+              </div>
+              <div class="legend-item">
+                <span class="legend-swatch blocked-swatch"></span> Blocked
+              </div>
+            </div>
+
+            <!-- Slots for Feb 6 -->
+            <div class="slots-section">
+              <div class="slots-date-header">
+                Friday, Feb 6
+                <span class="date-badge">Today</span>
+              </div>
+              <div class="slots-grid two-col">
+                <div class="time-slot selected">
+                  <div class="slot-time">1:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot selected">
+                  <div class="slot-time">2:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">3:00 PM</div>
+                  <div class="slot-spots">4 spots left</div>
+                </div>
+                <div class="time-slot full">
+                  <div class="slot-time">4:00 PM</div>
+                  <div class="slot-status">Full</div>
+                </div>
+                <div class="time-slot blocked">
+                  <div class="slot-time">5:00 PM</div>
+                  <div class="slot-status">Blocked</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">6:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slots for Feb 7 -->
+            <div class="slots-section">
+              <div class="slots-date-header">Saturday, Feb 7</div>
+              <div class="slots-grid two-col">
+                <div class="time-slot">
+                  <div class="slot-time">1:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+                <div class="time-slot selected">
+                  <div class="slot-time">2:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">3:00 PM</div>
+                  <div class="slot-spots">3 spots left</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">4:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+                <div class="time-slot full">
+                  <div class="slot-time">5:00 PM</div>
+                  <div class="slot-status">Full</div>
+                </div>
+                <div class="time-slot blocked">
+                  <div class="slot-time">6:00 PM</div>
+                  <div class="slot-status">Blocked</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selected slots summary -->
+            <div style="margin-bottom: 16px">
+              <div
+                style="
+                  font-size: 12px;
+                  font-weight: 600;
+                  color: #1a1a1a;
+                  margin-bottom: 8px;
+                "
+              >
+                Your Selections (3 slots)
+              </div>
+              <div class="selection-chips">
+                <span class="selection-chip">
+                  Feb 6, 1 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+                <span class="selection-chip">
+                  Feb 6, 2 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+                <span class="selection-chip">
+                  Feb 7, 2 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Step 4: Participants -->
+            <div class="step-label">
+              <span class="step-num">4</span> Participants
+            </div>
+
+            <div class="participants-section">
+              <div class="participants-row">
+                <span class="participants-label">Number of People</span>
+                <div class="participants-counter">
+                  <span class="counter-btn">&minus;</span>
+                  <span class="counter-value">2</span>
+                  <span class="counter-btn">+</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Info callout -->
+            <div class="info-callout">
+              <svg><use href="#info-icon" /></svg>
+              <div>
+                <strong>Smart Pricing:</strong> Your 3 slots are optimized as
+                1&times;2hr tier + 1&times;1hr tier for the best rate.
+              </div>
+            </div>
+
+            <!-- Pricing Panel -->
+            <div class="pricing-panel">
+              <div class="pricing-header">
+                <svg><use href="#tag-icon" /></svg>
+                Pricing Breakdown
+              </div>
+
+              <div class="pricing-line">
+                <span class="label"
+                  >Standard Workshop &mdash; 2 hr tier<br /><span
+                    style="font-size: 11px; color: #999"
+                    >Feb 6: 1 PM &ndash; 3 PM (consecutive)</span
+                  ></span
+                >
+                <span class="value">&#8377;1,700/pp</span>
+              </div>
+              <div class="pricing-line detail">
+                <span class="label">Includes 2 pieces per person</span>
+                <span class="value"></span>
+              </div>
+
+              <div class="pricing-line">
+                <span class="label"
+                  >Standard Workshop &mdash; 1 hr tier<br /><span
+                    style="font-size: 11px; color: #999"
+                    >Feb 7: 2 PM &ndash; 3 PM</span
+                  ></span
+                >
+                <span class="value">&#8377;950/pp</span>
+              </div>
+              <div class="pricing-line detail">
+                <span class="label">Includes 1 piece per person</span>
+                <span class="value"></span>
+              </div>
+
+              <div class="pricing-separator"></div>
+
+              <div class="pricing-line">
+                <span class="label">Subtotal per person</span>
+                <span class="value">&#8377;2,650</span>
+              </div>
+
+              <div class="pricing-line">
+                <span class="label"
+                  >&times; 2 participants<br /><span
+                    style="font-size: 11px; color: #999"
+                    >3 pieces each (6 total)</span
+                  ></span
+                >
+                <span class="value">&times;2</span>
+              </div>
+
+              <div class="pricing-separator"></div>
+
+              <div class="pricing-total">
+                <span>Total</span>
+                <span class="total-amount">&#8377;5,300</span>
+              </div>
+
+              <div class="pricing-savings">
+                You save &#8377;550 vs. booking 3 individual 1-hr slots!
+              </div>
+
+              <div class="pricing-pieces-note">
+                Total pottery pieces: 6 (3 per person). Firing & glazing
+                included.
+              </div>
+
+              <button class="submit-btn">
+                Proceed to Payment
+                <svg style="width: 18px; height: 18px">
+                  <use href="#arrow-right-icon" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Description -->
+        <div class="viewport-description">
+          <h3>Mobile (375px) - Key Decisions</h3>
+          <p>
+            Everything stacks in a single column for a natural thumb-scrolling
+            experience. The flow is strictly linear: config, dates, slots,
+            participants, pricing.
+          </p>
+          <ul>
+            <li>
+              <strong>Tabs:</strong> 3-tab navigation with "Daily Workshops" as
+              active tab with green underline. Compact font size (12px) to fit
+              all three tabs.
+            </li>
+            <li>
+              <strong>Config cards:</strong> Full-width stacked cards with radio
+              selection. Selected card has green border + light green
+              background. Tier info shown as inline chips.
+            </li>
+            <li>
+              <strong>Calendar:</strong> Week view is default on mobile to save
+              vertical space. Week/Month toggle available. Past dates are
+              dimmed/disabled. Today gets a green dot.
+            </li>
+            <li>
+              <strong>Time slots:</strong> 2-column grid (3 would be too cramped
+              at 375px). Each slot is 12px rounded card with centered time and
+              availability text.
+            </li>
+            <li>
+              <strong>Slot states:</strong> Available = white with subtle green
+              border on hover. Selected = solid #4F6F52 fill, white text. Full =
+              gray background, 60% opacity, "Full" label. Blocked = diagonal
+              stripe pattern, line-through time, "Blocked" label.
+            </li>
+            <li>
+              <strong>Multi-date:</strong> Selected dates appear as chips that
+              can be tapped to scroll to that date's slots. Active date chip is
+              filled green.
+            </li>
+            <li>
+              <strong>Pricing:</strong> Full-width panel at bottom. Shows
+              optimal tier grouping with per-person price. Savings callout in
+              green background. "Proceed to Payment" is a full-width
+              rounded-full primary button.
+            </li>
+            <li>
+              <strong>Step numbers:</strong> Green numbered circles (1-4) create
+              a visual flow and help orientation during scroll.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           ROW 2: TABLET (768px)
+           ========================================== -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 768px">
+          <div class="viewport-header">
+            <span class="viewport-label">Tablet</span>
+            <span class="viewport-size">768 x 1024</span>
+          </div>
+          <div class="viewport-content tablet">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs">
+              <a href="#">Home</a> / <a href="#">Events</a> / Daily Workshops
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+              <h1 class="page-title">Events & Workshops</h1>
+              <div class="page-title-underline"></div>
+              <p class="page-subtitle">
+                Book hands-on pottery sessions & explore upcoming events
+              </p>
+            </div>
+
+            <!-- 3-Tab Navigation -->
+            <div class="page-tabs">
+              <div class="page-tab active">Daily Workshops</div>
+              <div class="page-tab">Events</div>
+              <div class="page-tab">My Registrations</div>
+            </div>
+
+            <!-- Step 1: Workshop Config - 2 col grid -->
+            <div class="step-label">
+              <span class="step-num">1</span> Choose Workshop Type
+            </div>
+
+            <div class="tablet-config-grid">
+              <!-- Standard - Selected -->
+              <div class="config-card selected">
+                <div class="config-card-header">
+                  <div style="display: flex; align-items: center; gap: 10px">
+                    <div class="config-radio checked"></div>
+                    <span class="config-card-name">Standard Workshop</span>
+                  </div>
+                  <span class="config-card-badge">Popular</span>
+                </div>
+                <div class="config-card-desc">
+                  Hands-on wheel throwing. Great for beginners & regulars.
+                </div>
+                <div class="config-card-tiers">
+                  <span class="config-tier"
+                    ><strong>1 hr:</strong> &#8377;950/pp, 1 pc</span
+                  >
+                  <span class="config-tier"
+                    ><strong>2 hr:</strong> &#8377;1,700/pp, 2 pcs</span
+                  >
+                  <span class="config-tier"
+                    ><strong>3 hr:</strong> &#8377;2,400/pp, 3 pcs</span
+                  >
+                </div>
+              </div>
+
+              <!-- Premium -->
+              <div class="config-card">
+                <div class="config-card-header">
+                  <div style="display: flex; align-items: center; gap: 10px">
+                    <div class="config-radio"></div>
+                    <span class="config-card-name">Premium Workshop</span>
+                  </div>
+                </div>
+                <div class="config-card-desc">
+                  Extended session with glazing, firing & premium clay.
+                </div>
+                <div class="config-card-tiers">
+                  <span class="config-tier"
+                    ><strong>2 hr:</strong> &#8377;2,500/pp, 2 pcs</span
+                  >
+                  <span class="config-tier"
+                    ><strong>3 hr:</strong> &#8377;3,500/pp, 3 pcs</span
+                  >
+                  <span class="config-tier"
+                    ><strong>4 hr:</strong> &#8377;4,200/pp, 4 pcs</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Date Picker - Month view on tablet -->
+            <div class="step-label">
+              <span class="step-num">2</span> Pick Date(s)
+            </div>
+
+            <div class="calendar-section">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 16px;
+                "
+              >
+                <div class="calendar-view-toggle">
+                  <span class="calendar-view-btn">Week</span>
+                  <span class="calendar-view-btn active">Month</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <span class="calendar-nav-btn"
+                    ><svg style="width: 14px; height: 14px">
+                      <use href="#chevron-left" /></svg
+                  ></span>
+                  <span class="calendar-month">February 2026</span>
+                  <span class="calendar-nav-btn"
+                    ><svg style="width: 14px; height: 14px">
+                      <use href="#chevron-right" /></svg
+                  ></span>
+                </div>
+              </div>
+
+              <!-- Month Grid -->
+              <div class="week-strip" style="margin-bottom: 4px">
+                <div class="week-day-header">Mon</div>
+                <div class="week-day-header">Tue</div>
+                <div class="week-day-header">Wed</div>
+                <div class="week-day-header">Thu</div>
+                <div class="week-day-header">Fri</div>
+                <div class="week-day-header">Sat</div>
+                <div class="week-day-header">Sun</div>
+              </div>
+              <div class="month-grid">
+                <!-- Row 1: Jan 26 - Feb 1 -->
+                <div class="month-day other-month">26</div>
+                <div class="month-day other-month">27</div>
+                <div class="month-day other-month">28</div>
+                <div class="month-day other-month">29</div>
+                <div class="month-day other-month">30</div>
+                <div class="month-day other-month">31</div>
+                <div class="month-day has-slots">1</div>
+                <!-- Row 2 -->
+                <div class="month-day disabled">2</div>
+                <div class="month-day disabled">3</div>
+                <div class="month-day disabled">4</div>
+                <div class="month-day disabled">5</div>
+                <div class="month-day today selected has-slots">6</div>
+                <div class="month-day selected has-slots">7</div>
+                <div class="month-day has-slots">8</div>
+                <!-- Row 3 -->
+                <div class="month-day has-slots">9</div>
+                <div class="month-day has-slots">10</div>
+                <div class="month-day has-slots">11</div>
+                <div class="month-day has-slots">12</div>
+                <div class="month-day selected has-slots">13</div>
+                <div class="month-day has-slots">14</div>
+                <div class="month-day has-slots">15</div>
+                <!-- Row 4 -->
+                <div class="month-day has-slots">16</div>
+                <div class="month-day has-slots">17</div>
+                <div class="month-day has-slots">18</div>
+                <div class="month-day has-slots">19</div>
+                <div class="month-day has-slots">20</div>
+                <div class="month-day has-slots">21</div>
+                <div class="month-day has-slots">22</div>
+                <!-- Row 5 -->
+                <div class="month-day has-slots">23</div>
+                <div class="month-day has-slots">24</div>
+                <div class="month-day has-slots">25</div>
+                <div class="month-day has-slots">26</div>
+                <div class="month-day has-slots">27</div>
+                <div class="month-day has-slots">28</div>
+                <div class="month-day other-month">1</div>
+              </div>
+            </div>
+
+            <!-- Selected dates chips -->
+            <div class="selected-dates-panel">
+              <div class="selected-dates-title">Selected Dates (3)</div>
+              <div class="selected-dates-list">
+                <span class="date-chip active">Fri, Feb 6</span>
+                <span class="date-chip">Sat, Feb 7</span>
+                <span class="date-chip">Fri, Feb 13</span>
+              </div>
+            </div>
+
+            <!-- Step 3: Time Slots -->
+            <div class="step-label">
+              <span class="step-num">3</span> Select Time Slots
+            </div>
+            <div class="step-hint">
+              Select consecutive slots for multi-hour tiers. The system
+              auto-groups them for optimal pricing.
+            </div>
+
+            <!-- Slot Legend -->
+            <div class="slot-legend">
+              <div class="legend-item">
+                <span class="legend-swatch available"></span> Available
+              </div>
+              <div class="legend-item">
+                <span class="legend-swatch selected-swatch"></span> Selected
+              </div>
+              <div class="legend-item">
+                <span class="legend-swatch full-swatch"></span> Full
+              </div>
+              <div class="legend-item">
+                <span class="legend-swatch blocked-swatch"></span> Blocked
+              </div>
+            </div>
+
+            <!-- Slots for Feb 6 -->
+            <div class="slots-section">
+              <div class="slots-date-header">
+                Friday, February 6
+                <span class="date-badge">Today</span>
+              </div>
+              <div class="slots-grid">
+                <div class="time-slot selected">
+                  <div class="slot-time">1:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot selected">
+                  <div class="slot-time">2:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">3:00 PM</div>
+                  <div class="slot-spots">4 spots left</div>
+                </div>
+                <div class="time-slot full">
+                  <div class="slot-time">4:00 PM</div>
+                  <div class="slot-status">Full</div>
+                </div>
+                <div class="time-slot blocked">
+                  <div class="slot-time">5:00 PM</div>
+                  <div class="slot-status">Blocked</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">6:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slots for Feb 7 -->
+            <div class="slots-section">
+              <div class="slots-date-header">Saturday, February 7</div>
+              <div class="slots-grid">
+                <div class="time-slot">
+                  <div class="slot-time">1:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+                <div class="time-slot selected">
+                  <div class="slot-time">2:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot selected">
+                  <div class="slot-time">3:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">4:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+                <div class="time-slot full">
+                  <div class="slot-time">5:00 PM</div>
+                  <div class="slot-status">Full</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">6:00 PM</div>
+                  <div class="slot-spots">2 spots left</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slots for Feb 13 -->
+            <div class="slots-section">
+              <div class="slots-date-header">Friday, February 13</div>
+              <div class="slots-grid">
+                <div class="time-slot selected">
+                  <div class="slot-time">1:00 PM</div>
+                  <div class="slot-spots">Selected</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">2:00 PM</div>
+                  <div class="slot-spots">5 spots left</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">3:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">4:00 PM</div>
+                  <div class="slot-spots">6 spots left</div>
+                </div>
+                <div class="time-slot blocked">
+                  <div class="slot-time">5:00 PM</div>
+                  <div class="slot-status">Blocked</div>
+                </div>
+                <div class="time-slot">
+                  <div class="slot-time">6:00 PM</div>
+                  <div class="slot-spots">4 spots left</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selected slots summary -->
+            <div style="margin-bottom: 16px">
+              <div
+                style="
+                  font-size: 12px;
+                  font-weight: 600;
+                  color: #1a1a1a;
+                  margin-bottom: 8px;
+                "
+              >
+                Your Selections (5 slots)
+              </div>
+              <div class="selection-chips">
+                <span class="selection-chip">
+                  Feb 6, 1 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+                <span class="selection-chip">
+                  Feb 6, 2 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+                <span class="selection-chip">
+                  Feb 7, 2 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+                <span class="selection-chip">
+                  Feb 7, 3 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+                <span class="selection-chip">
+                  Feb 13, 1 PM
+                  <span class="chip-remove">&times;</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Step 4: Participants -->
+            <div class="step-label">
+              <span class="step-num">4</span> Participants
+            </div>
+
+            <div class="participants-section">
+              <div class="participants-row">
+                <span class="participants-label">Number of People</span>
+                <div class="participants-counter">
+                  <span class="counter-btn">&minus;</span>
+                  <span class="counter-value">3</span>
+                  <span class="counter-btn">+</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Info callout -->
+            <div class="info-callout">
+              <svg><use href="#info-icon" /></svg>
+              <div>
+                <strong>Smart Pricing:</strong> 5 slots optimized as 2&times;2hr
+                tiers + 1&times;1hr tier for the best available rate.
+              </div>
+            </div>
+
+            <!-- Pricing Panel -->
+            <div class="pricing-panel">
+              <div class="pricing-header">
+                <svg><use href="#tag-icon" /></svg>
+                Pricing Breakdown
+              </div>
+
+              <div class="pricing-line">
+                <span class="label"
+                  >Standard &mdash; 2 hr tier<br /><span
+                    style="font-size: 11px; color: #999"
+                    >Feb 6: 1 PM &ndash; 3 PM</span
+                  ></span
+                >
+                <span class="value">&#8377;1,700/pp</span>
+              </div>
+              <div class="pricing-line detail">
+                <span class="label">2 pieces per person</span>
+                <span class="value"></span>
+              </div>
+
+              <div class="pricing-line">
+                <span class="label"
+                  >Standard &mdash; 2 hr tier<br /><span
+                    style="font-size: 11px; color: #999"
+                    >Feb 7: 2 PM &ndash; 4 PM</span
+                  ></span
+                >
+                <span class="value">&#8377;1,700/pp</span>
+              </div>
+              <div class="pricing-line detail">
+                <span class="label">2 pieces per person</span>
+                <span class="value"></span>
+              </div>
+
+              <div class="pricing-line">
+                <span class="label"
+                  >Standard &mdash; 1 hr tier<br /><span
+                    style="font-size: 11px; color: #999"
+                    >Feb 13: 1 PM &ndash; 2 PM</span
+                  ></span
+                >
+                <span class="value">&#8377;950/pp</span>
+              </div>
+              <div class="pricing-line detail">
+                <span class="label">1 piece per person</span>
+                <span class="value"></span>
+              </div>
+
+              <div class="pricing-separator"></div>
+
+              <div class="pricing-line">
+                <span class="label">Subtotal per person</span>
+                <span class="value">&#8377;4,350</span>
+              </div>
+
+              <div class="pricing-line">
+                <span class="label"
+                  >&times; 3 participants<br /><span
+                    style="font-size: 11px; color: #999"
+                    >5 pieces each (15 total)</span
+                  ></span
+                >
+                <span class="value">&times;3</span>
+              </div>
+
+              <div class="pricing-separator"></div>
+
+              <div class="pricing-total">
+                <span>Total</span>
+                <span class="total-amount">&#8377;13,050</span>
+              </div>
+
+              <div class="pricing-savings">
+                You save &#8377;1,200 vs. booking 5 individual 1-hr sessions!
+              </div>
+
+              <div class="pricing-pieces-note">
+                Total pottery pieces: 15 (5 per person). Firing & glazing
+                included.
+              </div>
+
+              <button class="submit-btn">
+                Proceed to Payment
+                <svg style="width: 18px; height: 18px">
+                  <use href="#arrow-right-icon" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet Description -->
+        <div class="viewport-description">
+          <h3>Tablet (768px) - Key Decisions</h3>
+          <p>
+            At 768px we gain enough room for side-by-side config cards and
+            3-column time slots, but the overall flow remains vertical (no
+            sidebar pricing yet).
+          </p>
+          <ul>
+            <li>
+              <strong>Config cards:</strong> 2-column grid. Both configs visible
+              at a glance without scrolling. Radio + label stays inline.
+            </li>
+            <li>
+              <strong>Calendar:</strong> Month view is default on tablet (enough
+              space). Full calendar grid with green dots for dates that have
+              available slots. Selected dates filled green.
+            </li>
+            <li>
+              <strong>Time slots:</strong> 3-column grid (vs. 2 on mobile). All
+              6 slots per date visible in 2 rows. More scannable layout.
+            </li>
+            <li>
+              <strong>Multiple dates:</strong> Shows 3 dates selected (Feb 6, 7,
+              13) to demonstrate cross-week booking. Each date's slot grid has
+              its own header.
+            </li>
+            <li>
+              <strong>Tab styling:</strong> Standard 13px font tabs with
+              comfortable padding. Green underline on active.
+            </li>
+            <li>
+              <strong>Pricing panel:</strong> Still full-width below the slots.
+              Shows more complex pricing (5 slots grouped into 2&times;2hr +
+              1&times;1hr tiers).
+            </li>
+            <li>
+              <strong>Selection chips:</strong> Wrap naturally across multiple
+              lines. Each has an &times; button for removal.
+            </li>
+            <li>
+              <strong>Scroll depth:</strong> Longer than mobile because month
+              view + 3 dates' worth of slots are shown. Acceptable for tablet
+              scrolling patterns.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           ROW 3: DESKTOP (1200px)
+           ========================================== -->
+      <div class="viewport-row" style="flex-direction: column; gap: 16px">
+        <div class="viewport-box" style="width: 1200px; max-width: 100%">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1200 x 900</span>
+          </div>
+          <div class="viewport-content desktop">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs">
+              <a href="#">Home</a> / <a href="#">Events</a> / Daily Workshops
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+              <h1 class="page-title" style="font-size: 26px">
+                Events & Workshops
+              </h1>
+              <div class="page-title-underline"></div>
+              <p class="page-subtitle">
+                Book hands-on pottery sessions at our studio & explore upcoming
+                community events
+              </p>
+            </div>
+
+            <!-- 3-Tab Navigation -->
+            <div class="page-tabs">
+              <div class="page-tab active">Daily Workshops</div>
+              <div class="page-tab">Events</div>
+              <div class="page-tab">My Registrations</div>
+            </div>
+
+            <!-- Desktop: Main + Sidebar Layout -->
+            <div class="desktop-layout">
+              <!-- Main Column -->
+              <div class="desktop-main">
+                <!-- Step 1: Workshop Config - 2 col -->
+                <div class="step-label">
+                  <span class="step-num">1</span> Choose Workshop Type
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                    margin-bottom: 28px;
+                  "
+                >
+                  <!-- Standard - Selected -->
+                  <div class="config-card selected">
+                    <div class="config-card-header">
+                      <div
+                        style="display: flex; align-items: center; gap: 10px"
+                      >
+                        <div class="config-radio checked"></div>
+                        <span class="config-card-name">Standard Workshop</span>
+                      </div>
+                      <span class="config-card-badge">Popular</span>
+                    </div>
+                    <div class="config-card-desc">
+                      Hands-on wheel throwing. Great for beginners & regulars.
+                      Work with studio clay on our professional wheels.
+                    </div>
+                    <div class="config-card-tiers">
+                      <span class="config-tier"
+                        ><strong>1 hr:</strong> &#8377;950/pp, 1 piece</span
+                      >
+                      <span class="config-tier"
+                        ><strong>2 hr:</strong> &#8377;1,700/pp, 2 pcs</span
+                      >
+                      <span class="config-tier"
+                        ><strong>3 hr:</strong> &#8377;2,400/pp, 3 pcs</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Premium -->
+                  <div class="config-card">
+                    <div class="config-card-header">
+                      <div
+                        style="display: flex; align-items: center; gap: 10px"
+                      >
+                        <div class="config-radio"></div>
+                        <span class="config-card-name">Premium Workshop</span>
+                      </div>
+                    </div>
+                    <div class="config-card-desc">
+                      Extended session with glazing, firing & premium clay. Take
+                      home fully finished, kiln-fired pottery art.
+                    </div>
+                    <div class="config-card-tiers">
+                      <span class="config-tier"
+                        ><strong>2 hr:</strong> &#8377;2,500/pp, 2 pcs</span
+                      >
+                      <span class="config-tier"
+                        ><strong>3 hr:</strong> &#8377;3,500/pp, 3 pcs</span
+                      >
+                      <span class="config-tier"
+                        ><strong>4 hr:</strong> &#8377;4,200/pp, 4 pcs</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Step 2: Calendar - Month view -->
+                <div class="step-label">
+                  <span class="step-num">2</span> Pick Date(s)
+                </div>
+
+                <div class="calendar-section">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    <div class="calendar-view-toggle">
+                      <span class="calendar-view-btn">Week</span>
+                      <span class="calendar-view-btn active">Month</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px">
+                      <span class="calendar-nav-btn"
+                        ><svg style="width: 14px; height: 14px">
+                          <use href="#chevron-left" /></svg
+                      ></span>
+                      <span class="calendar-month">February 2026</span>
+                      <span class="calendar-nav-btn"
+                        ><svg style="width: 14px; height: 14px">
+                          <use href="#chevron-right" /></svg
+                      ></span>
+                    </div>
+                  </div>
+
+                  <!-- Month Grid -->
+                  <div class="week-strip" style="margin-bottom: 4px">
+                    <div class="week-day-header">Mon</div>
+                    <div class="week-day-header">Tue</div>
+                    <div class="week-day-header">Wed</div>
+                    <div class="week-day-header">Thu</div>
+                    <div class="week-day-header">Fri</div>
+                    <div class="week-day-header">Sat</div>
+                    <div class="week-day-header">Sun</div>
+                  </div>
+                  <div class="month-grid">
+                    <div class="month-day other-month">26</div>
+                    <div class="month-day other-month">27</div>
+                    <div class="month-day other-month">28</div>
+                    <div class="month-day other-month">29</div>
+                    <div class="month-day other-month">30</div>
+                    <div class="month-day other-month">31</div>
+                    <div class="month-day has-slots">1</div>
+
+                    <div class="month-day disabled">2</div>
+                    <div class="month-day disabled">3</div>
+                    <div class="month-day disabled">4</div>
+                    <div class="month-day disabled">5</div>
+                    <div class="month-day today selected has-slots">6</div>
+                    <div class="month-day selected has-slots">7</div>
+                    <div class="month-day has-slots">8</div>
+
+                    <div class="month-day has-slots">9</div>
+                    <div class="month-day has-slots">10</div>
+                    <div class="month-day has-slots">11</div>
+                    <div class="month-day has-slots">12</div>
+                    <div class="month-day has-slots">13</div>
+                    <div class="month-day has-slots">14</div>
+                    <div class="month-day has-slots">15</div>
+
+                    <div class="month-day has-slots">16</div>
+                    <div class="month-day has-slots">17</div>
+                    <div class="month-day has-slots">18</div>
+                    <div class="month-day has-slots">19</div>
+                    <div class="month-day has-slots">20</div>
+                    <div class="month-day has-slots">21</div>
+                    <div class="month-day has-slots">22</div>
+
+                    <div class="month-day has-slots">23</div>
+                    <div class="month-day has-slots">24</div>
+                    <div class="month-day has-slots">25</div>
+                    <div class="month-day has-slots">26</div>
+                    <div class="month-day has-slots">27</div>
+                    <div class="month-day has-slots">28</div>
+                    <div class="month-day other-month">1</div>
+                  </div>
+                </div>
+
+                <!-- Selected dates chips -->
+                <div class="selected-dates-panel">
+                  <div class="selected-dates-title">Selected Dates (2)</div>
+                  <div class="selected-dates-list">
+                    <span class="date-chip active">Fri, Feb 6</span>
+                    <span class="date-chip">Sat, Feb 7</span>
+                  </div>
+                </div>
+
+                <!-- Step 3: Time Slots -->
+                <div class="step-label">
+                  <span class="step-num">3</span> Select Time Slots
+                </div>
+                <div class="step-hint">
+                  Click to select slots. Consecutive slots on the same day are
+                  auto-grouped into multi-hour tiers for better pricing.
+                </div>
+
+                <!-- Slot Legend -->
+                <div class="slot-legend">
+                  <div class="legend-item">
+                    <span class="legend-swatch available"></span> Available
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-swatch selected-swatch"></span>
+                    Selected
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-swatch full-swatch"></span> Full
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-swatch blocked-swatch"></span> Blocked
+                  </div>
+                </div>
+
+                <!-- Slots for Feb 6 - 6 column grid on desktop -->
+                <div class="slots-section">
+                  <div class="slots-date-header">
+                    Friday, February 6
+                    <span class="date-badge">Today</span>
+                  </div>
+                  <div class="slots-grid six-col">
+                    <div class="time-slot selected">
+                      <div class="slot-time">1:00 PM</div>
+                      <div class="slot-spots">Selected</div>
+                    </div>
+                    <div class="time-slot selected">
+                      <div class="slot-time">2:00 PM</div>
+                      <div class="slot-spots">Selected</div>
+                    </div>
+                    <div class="time-slot selected">
+                      <div class="slot-time">3:00 PM</div>
+                      <div class="slot-spots">Selected</div>
+                    </div>
+                    <div class="time-slot full">
+                      <div class="slot-time">4:00 PM</div>
+                      <div class="slot-status">Full</div>
+                    </div>
+                    <div class="time-slot blocked">
+                      <div class="slot-time">5:00 PM</div>
+                      <div class="slot-status">Blocked</div>
+                    </div>
+                    <div class="time-slot">
+                      <div class="slot-time">6:00 PM</div>
+                      <div class="slot-spots">6 spots</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slots for Feb 7 -->
+                <div class="slots-section">
+                  <div class="slots-date-header">Saturday, February 7</div>
+                  <div class="slots-grid six-col">
+                    <div class="time-slot">
+                      <div class="slot-time">1:00 PM</div>
+                      <div class="slot-spots">6 spots</div>
+                    </div>
+                    <div class="time-slot selected">
+                      <div class="slot-time">2:00 PM</div>
+                      <div class="slot-spots">Selected</div>
+                    </div>
+                    <div class="time-slot">
+                      <div class="slot-time">3:00 PM</div>
+                      <div class="slot-spots">3 spots</div>
+                    </div>
+                    <div class="time-slot">
+                      <div class="slot-time">4:00 PM</div>
+                      <div class="slot-spots">6 spots</div>
+                    </div>
+                    <div class="time-slot full">
+                      <div class="slot-time">5:00 PM</div>
+                      <div class="slot-status">Full</div>
+                    </div>
+                    <div class="time-slot blocked">
+                      <div class="slot-time">6:00 PM</div>
+                      <div class="slot-status">Blocked</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Selected slots summary -->
+                <div style="margin-bottom: 16px">
+                  <div
+                    style="
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: #1a1a1a;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    Your Selections (4 slots)
+                  </div>
+                  <div class="selection-chips">
+                    <span class="selection-chip">
+                      Feb 6, 1 PM
+                      <span class="chip-remove">&times;</span>
+                    </span>
+                    <span class="selection-chip">
+                      Feb 6, 2 PM
+                      <span class="chip-remove">&times;</span>
+                    </span>
+                    <span class="selection-chip">
+                      Feb 6, 3 PM
+                      <span class="chip-remove">&times;</span>
+                    </span>
+                    <span class="selection-chip">
+                      Feb 7, 2 PM
+                      <span class="chip-remove">&times;</span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Step 4: Participants (inline on desktop) -->
+                <div class="step-label">
+                  <span class="step-num">4</span> Participants
+                </div>
+
+                <div class="participants-section">
+                  <div class="participants-row">
+                    <div style="flex: 1">
+                      <span class="participants-label">Number of People</span>
+                      <div
+                        style="font-size: 11px; color: #999; margin-top: 2px"
+                      >
+                        Max 6 per slot
+                      </div>
+                    </div>
+                    <div class="participants-counter">
+                      <span class="counter-btn">&minus;</span>
+                      <span class="counter-value">2</span>
+                      <span class="counter-btn">+</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sidebar: Pricing Panel (sticky) -->
+              <div class="desktop-sidebar">
+                <div class="pricing-panel sticky">
+                  <div class="pricing-header">
+                    <svg><use href="#tag-icon" /></svg>
+                    Pricing Breakdown
+                  </div>
+
+                  <!-- Tier groupings -->
+                  <div class="pricing-line">
+                    <span class="label"
+                      >Standard &mdash; 3 hr tier<br /><span
+                        style="font-size: 11px; color: #999"
+                        >Feb 6: 1 PM &ndash; 4 PM</span
+                      ></span
+                    >
+                    <span class="value">&#8377;2,400/pp</span>
+                  </div>
+                  <div class="pricing-line detail">
+                    <span class="label">3 pieces per person</span>
+                    <span class="value"></span>
+                  </div>
+
+                  <div class="pricing-line">
+                    <span class="label"
+                      >Standard &mdash; 1 hr tier<br /><span
+                        style="font-size: 11px; color: #999"
+                        >Feb 7: 2 PM &ndash; 3 PM</span
+                      ></span
+                    >
+                    <span class="value">&#8377;950/pp</span>
+                  </div>
+                  <div class="pricing-line detail">
+                    <span class="label">1 piece per person</span>
+                    <span class="value"></span>
+                  </div>
+
+                  <div class="pricing-separator"></div>
+
+                  <div class="pricing-line">
+                    <span class="label">Subtotal per person</span>
+                    <span class="value">&#8377;3,350</span>
+                  </div>
+
+                  <div class="pricing-line">
+                    <span class="label"
+                      >&times; 2 participants<br /><span
+                        style="font-size: 11px; color: #999"
+                        >4 pieces each (8 total)</span
+                      ></span
+                    >
+                    <span class="value">&times;2</span>
+                  </div>
+
+                  <div class="pricing-separator"></div>
+
+                  <div class="pricing-total">
+                    <span>Total</span>
+                    <span class="total-amount">&#8377;6,700</span>
+                  </div>
+
+                  <div class="pricing-savings">
+                    You save &#8377;900 vs. booking 4 individual 1-hr slots!
+                  </div>
+
+                  <div class="pricing-pieces-note">
+                    Total pottery pieces: 8 (4 per person). Firing & glazing
+                    included.
+                  </div>
+
+                  <!-- Info callout -->
+                  <div class="info-callout" style="margin-top: 12px">
+                    <svg><use href="#info-icon" /></svg>
+                    <div>
+                      <strong>Smart Pricing:</strong> 4 slots grouped as
+                      1&times;3hr + 1&times;1hr for the best rate.
+                    </div>
+                  </div>
+
+                  <button class="submit-btn">
+                    Proceed to Payment
+                    <svg style="width: 18px; height: 18px">
+                      <use href="#arrow-right-icon" />
+                    </svg>
+                  </button>
+
+                  <div
+                    style="
+                      text-align: center;
+                      font-size: 11px;
+                      color: #999;
+                      margin-top: 10px;
+                    "
+                  >
+                    Cancellation available up to 24 hrs before session
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Description (below the wide viewport) -->
+        <div
+          style="max-width: 900px; padding: 0 16px"
+          class="viewport-description"
+        >
+          <h3>Desktop (1200px) - Key Decisions</h3>
+          <p>
+            The main layout shift at desktop: pricing moves to a sticky sidebar
+            on the right (340px). The main content column gets the remaining
+            space for config, calendar, and slots. This keeps pricing always
+            visible while the user selects slots.
+          </p>
+          <ul>
+            <li>
+              <strong>Layout:</strong> 2-column grid: main content + 340px
+              sticky sidebar. Sidebar holds the pricing panel, submit button,
+              and cancellation policy note.
+            </li>
+            <li>
+              <strong>Time slots:</strong> 6-column grid on desktop (all 6 slots
+              in a single row per date). Maximum scannability: one glance to see
+              an entire day's availability.
+            </li>
+            <li>
+              <strong>Config cards:</strong> Side-by-side at full width. More
+              room for longer descriptions and all tier chips.
+            </li>
+            <li>
+              <strong>Calendar:</strong> Month view default. Comfortably sized
+              cells. Green dots indicate dates with available slots. Multiple
+              dates can be selected (green fill).
+            </li>
+            <li>
+              <strong>Pricing sidebar:</strong> Sticky positioning means the
+              breakdown stays visible as the user scrolls through date selection
+              and slot picking. Live updates as selections change.
+            </li>
+            <li>
+              <strong>Smart pricing callout:</strong> Moved inside the sidebar
+              for constant visibility. Shows tier optimization explanation.
+            </li>
+            <li>
+              <strong>Participants:</strong> Includes "Max 6 per slot" subtitle
+              since there is space. Counter controls are the same across
+              viewports.
+            </li>
+            <li>
+              <strong>Savings indicator:</strong> Green pill inside pricing
+              panel shows how much the user saves vs. individual 1-hr bookings.
+              Encouraging upsell.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================
+         COMPONENT REFERENCE: SLOT STATES
+         ============================================ -->
+    <div class="divider"></div>
+
+    <div class="section" style="max-width: 800px">
+      <div class="wf-section-title">Component Reference: Slot States</div>
+      <div class="wf-section-desc">
+        Each 1-hour time slot (1 PM - 7 PM IST) has exactly 4 possible states.
+        These are shown at actual size below for pixel-perfect reference.
+      </div>
+
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          margin-bottom: 32px;
+        "
+      >
+        <!-- Available -->
+        <div>
+          <div
+            style="
+              font-size: 10px;
+              font-weight: 700;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-bottom: 8px;
+              text-align: center;
+            "
+          >
+            Available
+          </div>
+          <div class="time-slot">
+            <div class="slot-time">1:00 PM</div>
+            <div class="slot-spots">4 spots left</div>
+          </div>
+          <div
+            style="
+              font-size: 10px;
+              color: #999;
+              margin-top: 6px;
+              text-align: center;
+              line-height: 1.5;
+            "
+          >
+            White bg, subtle border. Clickable. Shows remaining capacity.
+          </div>
+        </div>
+
+        <!-- Selected -->
+        <div>
+          <div
+            style="
+              font-size: 10px;
+              font-weight: 700;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-bottom: 8px;
+              text-align: center;
+            "
+          >
+            Selected
+          </div>
+          <div class="time-slot selected">
+            <div class="slot-time">2:00 PM</div>
+            <div class="slot-spots">Selected</div>
+          </div>
+          <div
+            style="
+              font-size: 10px;
+              color: #999;
+              margin-top: 6px;
+              text-align: center;
+              line-height: 1.5;
+            "
+          >
+            Filled #4F6F52, white text. Toggle off by clicking again.
+          </div>
+        </div>
+
+        <!-- Full -->
+        <div>
+          <div
+            style="
+              font-size: 10px;
+              font-weight: 700;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-bottom: 8px;
+              text-align: center;
+            "
+          >
+            Booked / Full
+          </div>
+          <div class="time-slot full">
+            <div class="slot-time">4:00 PM</div>
+            <div class="slot-status">Full</div>
+          </div>
+          <div
+            style="
+              font-size: 10px;
+              color: #999;
+              margin-top: 6px;
+              text-align: center;
+              line-height: 1.5;
+            "
+          >
+            Gray bg (#f5f5f4), 60% opacity. "Full" label. Not clickable.
+          </div>
+        </div>
+
+        <!-- Blocked -->
+        <div>
+          <div
+            style="
+              font-size: 10px;
+              font-weight: 700;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-bottom: 8px;
+              text-align: center;
+            "
+          >
+            Admin Blocked
+          </div>
+          <div class="time-slot blocked">
+            <div class="slot-time">5:00 PM</div>
+            <div class="slot-status">Blocked</div>
+          </div>
+          <div
+            style="
+              font-size: 10px;
+              color: #999;
+              margin-top: 6px;
+              text-align: center;
+              line-height: 1.5;
+            "
+          >
+            Diagonal stripes, line-through time. "Blocked" label. Not
+            selectable.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================
+         COMPONENT REFERENCE: PRICING TIERS
+         ============================================ -->
+    <div class="section" style="max-width: 800px">
+      <div class="wf-section-title">
+        Component Reference: Smart Pricing Logic
+      </div>
+      <div class="wf-section-desc">
+        The system groups consecutive selected slots into the best possible tier
+        combination. Below shows how different slot selections map to tier
+        combos.
+      </div>
+
+      <div
+        style="
+          background: white;
+          border-radius: 16px;
+          padding: 24px;
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        "
+      >
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+          <thead>
+            <tr style="border-bottom: 2px solid #e5e5e5; text-align: left">
+              <th
+                style="
+                  padding: 8px 12px;
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #4f6f52;
+                "
+              >
+                Slots Selected
+              </th>
+              <th
+                style="
+                  padding: 8px 12px;
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #4f6f52;
+                "
+              >
+                Optimal Tiers
+              </th>
+              <th
+                style="
+                  padding: 8px 12px;
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #4f6f52;
+                "
+              >
+                Per Person
+              </th>
+              <th
+                style="
+                  padding: 8px 12px;
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #4f6f52;
+                "
+              >
+                Pieces
+              </th>
+              <th
+                style="
+                  padding: 8px 12px;
+                  font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #4f6f52;
+                "
+              >
+                Savings
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #f0f0f0">
+              <td style="padding: 10px 12px; color: #555">
+                1 PM (single slot)
+              </td>
+              <td style="padding: 10px 12px">1 hr tier</td>
+              <td style="padding: 10px 12px; font-weight: 600">&#8377;950</td>
+              <td style="padding: 10px 12px">1 pc</td>
+              <td style="padding: 10px 12px; color: #999">&mdash;</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f0f0f0">
+              <td style="padding: 10px 12px; color: #555">
+                1 PM + 2 PM (consecutive)
+              </td>
+              <td style="padding: 10px 12px">2 hr tier</td>
+              <td style="padding: 10px 12px; font-weight: 600">&#8377;1,700</td>
+              <td style="padding: 10px 12px">2 pcs</td>
+              <td style="padding: 10px 12px; color: #4f6f52; font-weight: 600">
+                &#8377;200
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f0f0f0">
+              <td style="padding: 10px 12px; color: #555">
+                1 PM + 2 PM + 3 PM (consecutive)
+              </td>
+              <td style="padding: 10px 12px">3 hr tier</td>
+              <td style="padding: 10px 12px; font-weight: 600">&#8377;2,400</td>
+              <td style="padding: 10px 12px">3 pcs</td>
+              <td style="padding: 10px 12px; color: #4f6f52; font-weight: 600">
+                &#8377;450
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f0f0f0">
+              <td style="padding: 10px 12px; color: #555">
+                1 PM + 2 PM + 4 PM (gap at 3 PM)
+              </td>
+              <td style="padding: 10px 12px">2 hr + 1 hr</td>
+              <td style="padding: 10px 12px; font-weight: 600">&#8377;2,650</td>
+              <td style="padding: 10px 12px">3 pcs</td>
+              <td style="padding: 10px 12px; color: #4f6f52; font-weight: 600">
+                &#8377;200
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 12px; color: #555">
+                1-3 PM (Day A) + 2 PM (Day B)
+              </td>
+              <td style="padding: 10px 12px">3 hr + 1 hr</td>
+              <td style="padding: 10px 12px; font-weight: 600">&#8377;3,350</td>
+              <td style="padding: 10px 12px">4 pcs</td>
+              <td style="padding: 10px 12px; color: #4f6f52; font-weight: 600">
+                &#8377;450
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================
+         IMPLEMENTATION NOTES
+         ============================================ -->
+    <div class="divider"></div>
+
+    <div class="notes">
+      <strong>Implementation Notes:</strong><br />
+      <strong>Slot Hours:</strong> Fixed 6 slots per day: 1:00 PM, 2:00 PM, 3:00
+      PM, 4:00 PM, 5:00 PM, 6:00 PM IST (each 1 hour).<br />
+      <strong>Multi-date:</strong> Users can select dates across different
+      weeks. Each date shows its own slot grid. Date chips act as anchors to
+      scroll to that date's slots.<br />
+      <strong>Tier Optimization:</strong> The frontend groups consecutive slots
+      on the same day into the longest possible tier first (greedy algorithm).
+      Non-consecutive slots or cross-day slots remain individual tiers.<br />
+      <strong>Capacity:</strong> Each slot has a max_capacity (e.g. 6). Current
+      bookings are tracked. Remaining = max - booked. When remaining = 0, slot
+      shows "Full".<br />
+      <strong>Admin Blackout:</strong> Admin can mark specific date+slot combos
+      as blocked. These show with the striped pattern and are never
+      selectable.<br />
+      <strong>Responsive Grid:</strong> Mobile: 2-col slots. Tablet: 3-col
+      slots. Desktop: 6-col slots (all slots in one row).<br />
+      <strong>Calendar Default:</strong> Mobile shows week view (compact).
+      Tablet/Desktop show month view. User can toggle.<br />
+      <strong>Pricing Sidebar:</strong> Desktop only. On mobile/tablet the
+      pricing panel is at the bottom of the flow. On desktop it is sticky in a
+      340px right sidebar.<br />
+      <strong>Selected State Persistence:</strong> Selections are held in client
+      state (Zustand). Navigating between tabs preserves selections. Changing
+      config type clears all slot selections.<br />
+      <strong>Accessibility:</strong> All slots have aria-labels. Keyboard
+      navigation supported. Focus indicators visible. Screen reader announces
+      slot state.
+    </div>
+
+    <div style="height: 80px"></div>
+  </body>
+</html>

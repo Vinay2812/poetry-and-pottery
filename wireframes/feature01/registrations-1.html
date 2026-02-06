@@ -1,0 +1,1748 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      My Registrations - 4-Section View - Poetry & Pottery Wireframes
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../_shared-styles.css" />
+    <style>
+      /* ============================================
+         MY REGISTRATIONS - 4-SECTION VIEW WIREFRAME
+         ============================================ */
+
+      /* Layout: Viewports stacked vertically */
+      .viewports-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+        margin-top: 40px;
+      }
+
+      .viewport-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      .viewport-row .viewport-box {
+        flex-shrink: 0;
+      }
+
+      .viewport-row .viewport-description {
+        flex: 1;
+        min-width: 280px;
+        max-width: 400px;
+        padding-top: 48px;
+      }
+
+      .viewport-description h3 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description p {
+        font-size: 13px;
+        color: #737373;
+        line-height: 1.8;
+        margin-bottom: 12px;
+      }
+
+      .viewport-description ul {
+        list-style: none;
+        font-size: 12px;
+        line-height: 2.2;
+        color: #555;
+        padding: 0;
+      }
+
+      .viewport-description ul li::before {
+        content: "\2713 ";
+        color: #4f6f52;
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      /* Viewport Box */
+      .viewport-box {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      .viewport-header {
+        background: #f5f5f4;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .viewport-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .viewport-size {
+        font-size: 11px;
+        color: #bbb;
+      }
+
+      .viewport-content {
+        padding: 16px;
+      }
+
+      .viewport-content.tablet {
+        padding: 24px 32px;
+      }
+
+      .viewport-content.desktop {
+        padding: 32px 48px;
+      }
+
+      /* ============================================
+         PAGE TABS
+         ============================================ */
+      .page-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid #e5e5e5;
+        margin-bottom: 24px;
+      }
+
+      .page-tab {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 16px;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .page-tab.active {
+        color: #4f6f52;
+        border-bottom-color: #4f6f52;
+      }
+
+      .page-tabs.compact .page-tab {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      .tab-badge {
+        font-size: 10px;
+        font-weight: 700;
+        background: #4f6f52;
+        color: white;
+        padding: 2px 7px;
+        border-radius: 10px;
+        line-height: 1;
+      }
+
+      .tab-badge.inactive {
+        background: #e5e5e5;
+        color: #737373;
+      }
+
+      /* ============================================
+         PAGE HEADER
+         ============================================ */
+      .reg-page-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+
+      .reg-page-subtitle {
+        font-size: 13px;
+        color: #737373;
+        margin-bottom: 20px;
+      }
+
+      /* ============================================
+         SEARCH BAR
+         ============================================ */
+      .search-wrapper {
+        position: relative;
+        margin-bottom: 28px;
+      }
+
+      .search-wrapper .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #999;
+      }
+
+      .search-wrapper input {
+        width: 100%;
+        padding: 10px 14px 10px 36px;
+        border-radius: 12px;
+        border: 1px solid #e5e5e5;
+        font-size: 13px;
+        font-family: "Outfit", sans-serif;
+        background: white;
+        color: #1a1a1a;
+        outline: none;
+      }
+
+      /* ============================================
+         COLLAPSIBLE SECTIONS
+         ============================================ */
+      .reg-section {
+        margin-bottom: 28px;
+      }
+
+      .reg-section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .section-accent {
+        width: 4px;
+        height: 24px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      .section-accent.green {
+        background: #4f6f52;
+      }
+
+      .section-accent.green-muted {
+        background: #b8d4b8;
+      }
+
+      .section-accent.muted {
+        background: #d4d4d4;
+      }
+
+      .reg-section-header h2 {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a1a;
+        flex: 1;
+      }
+
+      .section-count {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        background: #e8ece8;
+        color: #4f6f52;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+
+      .section-count.muted {
+        background: #f5f5f4;
+        color: #737373;
+      }
+
+      .collapse-icon {
+        font-size: 12px;
+        color: #999;
+        transition: transform 0.2s;
+      }
+
+      /* ============================================
+         REGISTRATION CARDS
+         ============================================ */
+      .reg-cards-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .reg-cards-grid.cols-1 {
+        grid-template-columns: 1fr;
+      }
+
+      .reg-cards-grid.cols-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      /* Daily Workshop Registration Card */
+      .dw-reg-card {
+        background: white;
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        transition: all 0.2s ease;
+      }
+
+      .dw-reg-card:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .dw-reg-card.completed {
+        opacity: 0.8;
+      }
+
+      .dw-card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .dw-card-name {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        line-height: 1.3;
+      }
+
+      /* Status Badges */
+      .status-badge {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .status-pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .status-approved {
+        background: #e8ece8;
+        color: #4f6f52;
+      }
+
+      .status-paid {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .status-confirmed {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .status-completed {
+        background: #f5f5f4;
+        color: #737373;
+      }
+
+      .status-cancelled {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      /* Date/Time Chips */
+      .dw-date-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+
+      .date-chip {
+        font-size: 11px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 8px;
+        background: #f5f0e8;
+        color: #8b7355;
+        white-space: nowrap;
+      }
+
+      .date-chip.completed {
+        background: #f5f5f4;
+        color: #999;
+      }
+
+      /* Stats row */
+      .dw-stats {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 10px;
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .dw-stat {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .dw-stat-icon {
+        font-size: 13px;
+        opacity: 0.7;
+      }
+
+      .dw-stat-value {
+        font-weight: 600;
+        color: #555;
+      }
+
+      /* Price */
+      .dw-card-price {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #4f6f52;
+        margin-bottom: 10px;
+      }
+
+      .dw-card-price.muted {
+        color: #737373;
+      }
+
+      /* Card Actions */
+      .dw-card-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding-top: 10px;
+        border-top: 1px solid #f0f0f0;
+      }
+
+      .btn {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .btn-link {
+        background: transparent;
+        color: #4f6f52;
+        padding: 7px 0;
+      }
+
+      .btn-link:hover {
+        text-decoration: underline;
+      }
+
+      .btn-danger-outline {
+        background: transparent;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+      }
+
+      .btn-danger-outline:hover {
+        background: #fef2f2;
+      }
+
+      .btn-primary {
+        background: #4f6f52;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #3d5640;
+      }
+
+      .btn-secondary {
+        background: #f5f5f4;
+        color: #1a1a1a;
+      }
+
+      .btn-secondary:hover {
+        background: #e7e5e4;
+      }
+
+      .btn-review {
+        background: #fef3c7;
+        color: #92400e;
+        font-size: 11px;
+      }
+
+      .btn-review:hover {
+        background: #fde68a;
+      }
+
+      /* Spacer */
+      .actions-spacer {
+        flex: 1;
+      }
+
+      /* ============================================
+         EVENT REGISTRATION CARD (existing pattern)
+         ============================================ */
+      .event-reg-card {
+        display: flex;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        transition: all 0.2s ease;
+      }
+
+      .event-reg-card:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .event-reg-card.completed {
+        opacity: 0.8;
+      }
+
+      .event-reg-thumb {
+        width: 80px;
+        min-width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .event-reg-body {
+        flex: 1;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+      }
+
+      .event-reg-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 3px;
+      }
+
+      .event-reg-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1a1a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .event-reg-meta {
+        font-size: 11px;
+        color: #737373;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 2px;
+      }
+
+      .event-reg-meta-icon {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .event-reg-bottom {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 2px;
+      }
+
+      .event-reg-actions {
+        display: flex;
+        gap: 6px;
+        margin-left: auto;
+        align-items: center;
+      }
+
+      .event-reg-actions .btn {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+
+      /* Review stars inline */
+      .stars-inline {
+        color: #f59e0b;
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+
+      .review-link {
+        font-size: 11px;
+        color: #4f6f52;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .review-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Expanded card for tablet/desktop */
+      .event-reg-card.expanded .event-reg-thumb {
+        width: 100px;
+        min-width: 100px;
+        height: 100px;
+      }
+
+      .event-reg-card.expanded .event-reg-title {
+        font-size: 14px;
+      }
+
+      .event-reg-card.expanded .event-reg-body {
+        padding: 12px 16px;
+      }
+
+      /* Placeholder backgrounds */
+      .bg-clay-1 {
+        background: linear-gradient(135deg, #e8ddd4 0%, #d4c4b0 100%);
+      }
+      .bg-clay-2 {
+        background: linear-gradient(135deg, #d9e8d9 0%, #b8d4b8 100%);
+      }
+      .bg-clay-3 {
+        background: linear-gradient(135deg, #e8e0d4 0%, #c4a882 100%);
+      }
+      .bg-clay-4 {
+        background: linear-gradient(135deg, #dde4e8 0%, #b0c4d4 100%);
+      }
+      .bg-clay-5 {
+        background: linear-gradient(135deg, #f0e8e0 0%, #d4b89c 100%);
+      }
+      .bg-clay-6 {
+        background: linear-gradient(135deg, #e0dde8 0%, #b8b0d4 100%);
+      }
+      .bg-clay-7 {
+        background: linear-gradient(135deg, #8b7355 0%, #a08060 100%);
+      }
+      .bg-clay-8 {
+        background: linear-gradient(135deg, #c4a070 0%, #d4b080 100%);
+      }
+
+      /* Section divider */
+      .section-divider {
+        height: 1px;
+        background: #e5e5e5;
+        margin: 4px 0 28px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Page Title -->
+    <h1>My Registrations - 4-Section View</h1>
+    <p class="subtitle">
+      User's registrations split into 4 collapsible sections: Upcoming Daily
+      Workshops, Completed Daily Workshops, Upcoming Events, and Completed
+      Events. Each section has a colored left border accent and count badge.
+    </p>
+
+    <!-- Route Info -->
+    <div class="option-details" style="max-width: 900px; margin: 0 auto 48px">
+      <strong>Route:</strong> /events/registrations (My Registrations tab
+      active)<br />
+      <strong>Components:</strong> MyRegistrationsContainer &rarr;
+      MyRegistrationsView<br />
+      <strong>Data:</strong> userRegistrations + upcomingRegistrations +
+      completedRegistrations<br />
+      <strong>Sections:</strong> 4 collapsible sections, all expanded by
+      default<br />
+      <strong>DW Cards:</strong> Show workshop config name, date/time chips,
+      stats, price, actions<br />
+      <strong>Event Cards:</strong> Reuse existing horizontal compact event
+      registration cards
+    </div>
+
+    <!-- Viewports Stacked -->
+    <div class="viewports-stack">
+      <!-- =============================================
+           MOBILE (375px)
+           ============================================= -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 375px">
+          <div class="viewport-header">
+            <span class="viewport-label">Mobile</span>
+            <span class="viewport-size">375px</span>
+          </div>
+          <div class="viewport-content">
+            <!-- Page Tabs -->
+            <div class="page-tabs compact">
+              <div class="page-tab">Daily Workshops</div>
+              <div class="page-tab">Events</div>
+              <div class="page-tab active">
+                My Registrations
+                <span class="tab-badge">5</span>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div style="margin-bottom: 16px">
+              <div class="reg-page-title" style="font-size: 18px">
+                My Registrations
+              </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-wrapper">
+              <span class="search-icon">&#128269;</span>
+              <input type="text" placeholder="Search registrations..." />
+            </div>
+
+            <!-- ===== SECTION 1: Upcoming Daily Workshops ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green"></div>
+                <h2>Upcoming Daily Workshops</h2>
+                <span class="section-count">2</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <!-- DW Card 1 -->
+                <div class="dw-reg-card">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name">Wheel Throwing Workshop</div>
+                    <span class="status-badge status-pending">Pending</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip">Feb 10 &bull; 1-3 PM</span>
+                    <span class="date-chip">Feb 12 &bull; 4-5 PM</span>
+                  </div>
+                  <div class="dw-stats">
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#9200;</span>
+                      <span class="dw-stat-value">4h</span>
+                    </span>
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#128100;</span>
+                      <span class="dw-stat-value">2 pax</span>
+                    </span>
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#127843;</span>
+                      <span class="dw-stat-value">8 pieces</span>
+                    </span>
+                  </div>
+                  <div class="dw-card-price">&#8377;3,200</div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-danger-outline">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- DW Card 2 -->
+                <div class="dw-reg-card">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name">Premium Studio Session</div>
+                    <span class="status-badge status-approved">Approved</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip">Feb 18 &bull; 10 AM-12 PM</span>
+                    <span class="date-chip">Feb 19 &bull; 10 AM-12 PM</span>
+                    <span class="date-chip">Feb 20 &bull; 2-4 PM</span>
+                  </div>
+                  <div class="dw-stats">
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#9200;</span>
+                      <span class="dw-stat-value">6h</span>
+                    </span>
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#128100;</span>
+                      <span class="dw-stat-value">1 pax</span>
+                    </span>
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#127843;</span>
+                      <span class="dw-stat-value">6 pieces</span>
+                    </span>
+                  </div>
+                  <div class="dw-card-price">&#8377;4,800</div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-danger-outline">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 2: Completed Daily Workshops ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green-muted"></div>
+                <h2>Completed Daily Workshops</h2>
+                <span class="section-count muted">1</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <div class="dw-reg-card completed">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name">Wheel Throwing Workshop</div>
+                    <span class="status-badge status-completed">Completed</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip completed"
+                      >Jan 20 &bull; 1-3 PM</span
+                    >
+                    <span class="date-chip completed"
+                      >Jan 22 &bull; 4-5 PM</span
+                    >
+                  </div>
+                  <div class="dw-stats">
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#9200;</span>
+                      <span class="dw-stat-value">4h</span>
+                    </span>
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#128100;</span>
+                      <span class="dw-stat-value">1 pax</span>
+                    </span>
+                    <span class="dw-stat">
+                      <span class="dw-stat-icon">&#127843;</span>
+                      <span class="dw-stat-value">4 pieces</span>
+                    </span>
+                  </div>
+                  <div class="dw-card-price muted">&#8377;1,600</div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-review">
+                      &#9733; Write a Review
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 3: Upcoming Events ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green"></div>
+                <h2>Upcoming Events</h2>
+                <span class="section-count">1</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <div class="event-reg-card">
+                  <div class="event-reg-thumb bg-clay-2">&#127843;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title">Studio Practice #25</span>
+                      <span class="status-badge status-confirmed"
+                        >Confirmed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Feb 15, 2026
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 4: Completed Events ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent muted"></div>
+                <h2>Completed Events</h2>
+                <span class="section-count muted">2</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <div class="event-reg-card completed">
+                  <div class="event-reg-thumb bg-clay-7">&#127843;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title">Studio Practice #24</span>
+                      <span class="status-badge status-completed"
+                        >Completed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Jan 25, 2026
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                      <span class="stars-inline"
+                        >&#9733;&#9733;&#9733;&#9733;&#9734;</span
+                      >
+                      <span style="font-size: 11px; color: #737373">4.2</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="event-reg-card completed">
+                  <div class="event-reg-thumb bg-clay-5">&#127926;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title"
+                        >Poetry & Clay Night #8</span
+                      >
+                      <span class="status-badge status-completed"
+                        >Completed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Dec 20, 2025
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                      <a href="#" class="review-link">Write a Review</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="viewport-description">
+          <h3>Mobile (375px)</h3>
+          <p>
+            Single-column layout with all 4 sections stacked vertically. Daily
+            Workshop cards show date/time chips, stats row, price, and action
+            buttons. Event registration cards use the compact horizontal layout
+            with 80px thumbnails.
+          </p>
+          <ul>
+            <li>Compact tabs with badge count on active tab</li>
+            <li>Full-width search bar</li>
+            <li>4 collapsible sections with colored left accents</li>
+            <li>DW cards: date chips, hours/pax/pieces stats</li>
+            <li>Cancel button for Pending/Approved DW registrations</li>
+            <li>"Write a Review" for completed registrations</li>
+            <li>Event cards: 80px thumbnails, compact layout</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- =============================================
+           TABLET (768px)
+           ============================================= -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 768px">
+          <div class="viewport-header">
+            <span class="viewport-label">Tablet</span>
+            <span class="viewport-size">768px</span>
+          </div>
+          <div class="viewport-content tablet">
+            <!-- Page Tabs -->
+            <div class="page-tabs">
+              <div class="page-tab">Daily Workshops</div>
+              <div class="page-tab">Events</div>
+              <div class="page-tab active">
+                My Registrations
+                <span class="tab-badge">5</span>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div style="margin-bottom: 20px">
+              <div class="reg-page-title" style="font-size: 20px">
+                My Registrations
+              </div>
+              <div class="reg-page-subtitle">
+                Track your workshop bookings and event registrations
+              </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-wrapper" style="max-width: 400px">
+              <span class="search-icon">&#128269;</span>
+              <input type="text" placeholder="Search registrations..." />
+            </div>
+
+            <!-- ===== SECTION 1: Upcoming Daily Workshops ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green"></div>
+                <h2 style="font-size: 16px">Upcoming Daily Workshops</h2>
+                <span class="section-count">2</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <!-- DW Card 1 -->
+                <div class="dw-reg-card">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name" style="font-size: 15px">
+                      Wheel Throwing Workshop
+                    </div>
+                    <span class="status-badge status-pending">Pending</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip">Feb 10 &bull; 1-3 PM</span>
+                    <span class="date-chip">Feb 12 &bull; 4-5 PM</span>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div class="dw-stats" style="margin-bottom: 0">
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#9200;</span>
+                        Total: <span class="dw-stat-value">4h</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#128100;</span>
+                        <span class="dw-stat-value">2 participants</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#127843;</span>
+                        <span class="dw-stat-value">8 pieces</span>
+                      </span>
+                    </div>
+                    <div class="dw-card-price" style="margin-bottom: 0">
+                      &#8377;3,200
+                    </div>
+                  </div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-danger-outline">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- DW Card 2 -->
+                <div class="dw-reg-card">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name" style="font-size: 15px">
+                      Premium Studio Session
+                    </div>
+                    <span class="status-badge status-approved">Approved</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip">Feb 18 &bull; 10 AM-12 PM</span>
+                    <span class="date-chip">Feb 19 &bull; 10 AM-12 PM</span>
+                    <span class="date-chip">Feb 20 &bull; 2-4 PM</span>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div class="dw-stats" style="margin-bottom: 0">
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#9200;</span>
+                        Total: <span class="dw-stat-value">6h</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#128100;</span>
+                        <span class="dw-stat-value">1 participant</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#127843;</span>
+                        <span class="dw-stat-value">6 pieces</span>
+                      </span>
+                    </div>
+                    <div class="dw-card-price" style="margin-bottom: 0">
+                      &#8377;4,800
+                    </div>
+                  </div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-danger-outline">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 2: Completed Daily Workshops ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green-muted"></div>
+                <h2 style="font-size: 16px">Completed Daily Workshops</h2>
+                <span class="section-count muted">1</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <div class="dw-reg-card completed">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name" style="font-size: 15px">
+                      Wheel Throwing Workshop
+                    </div>
+                    <span class="status-badge status-completed">Completed</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip completed"
+                      >Jan 20 &bull; 1-3 PM</span
+                    >
+                    <span class="date-chip completed"
+                      >Jan 22 &bull; 4-5 PM</span
+                    >
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div class="dw-stats" style="margin-bottom: 0">
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#9200;</span>
+                        Total: <span class="dw-stat-value">4h</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#128100;</span>
+                        <span class="dw-stat-value">1 participant</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#127843;</span>
+                        <span class="dw-stat-value">4 pieces</span>
+                      </span>
+                    </div>
+                    <div class="dw-card-price muted" style="margin-bottom: 0">
+                      &#8377;1,600
+                    </div>
+                  </div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-review">
+                      &#9733; Write a Review
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 3: Upcoming Events ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green"></div>
+                <h2 style="font-size: 16px">Upcoming Events</h2>
+                <span class="section-count">1</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <div class="event-reg-card expanded">
+                  <div class="event-reg-thumb bg-clay-2">&#127843;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title">Studio Practice #25</span>
+                      <span class="status-badge status-confirmed"
+                        >Confirmed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Feb 15, 2026 &bull; 2:00-5:00 PM
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 4: Completed Events ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent muted"></div>
+                <h2 style="font-size: 16px">Completed Events</h2>
+                <span class="section-count muted">2</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-1">
+                <div class="event-reg-card expanded completed">
+                  <div class="event-reg-thumb bg-clay-7">&#127843;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title">Studio Practice #24</span>
+                      <span class="status-badge status-completed"
+                        >Completed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Jan 25, 2026
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                      <span class="stars-inline"
+                        >&#9733;&#9733;&#9733;&#9733;&#9734;</span
+                      >
+                      <span style="font-size: 11px; color: #737373"
+                        >4.2 (18 reviews)</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="event-reg-card expanded completed">
+                  <div class="event-reg-thumb bg-clay-5">&#127926;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title"
+                        >Poetry & Clay Night #8</span
+                      >
+                      <span class="status-badge status-completed"
+                        >Completed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Dec 20, 2025
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                      <a href="#" class="review-link">Write a Review</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="viewport-description">
+          <h3>Tablet (768px)</h3>
+          <p>
+            Single-column cards with expanded thumbnails (100px) for event
+            registrations. Daily Workshop cards show stats and price on the same
+            line. Search bar is constrained to 400px width. More detail visible
+            in the metadata rows.
+          </p>
+          <ul>
+            <li>Standard tabs with badge on active tab</li>
+            <li>Constrained search bar width</li>
+            <li>DW cards: stats + price on same row</li>
+            <li>Event cards: expanded 100px thumbnails</li>
+            <li>Review count shown for completed events</li>
+            <li>Cancel button aligned right on action row</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- =============================================
+           DESKTOP (1200px)
+           ============================================= -->
+      <div class="viewport-row">
+        <div class="viewport-box" style="width: 1200px">
+          <div class="viewport-header">
+            <span class="viewport-label">Desktop</span>
+            <span class="viewport-size">1200px</span>
+          </div>
+          <div class="viewport-content desktop">
+            <!-- Page Tabs -->
+            <div class="page-tabs">
+              <div class="page-tab">Daily Workshops</div>
+              <div class="page-tab">Events</div>
+              <div class="page-tab active">
+                My Registrations
+                <span class="tab-badge">5</span>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div
+              style="
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                margin-bottom: 24px;
+              "
+            >
+              <div>
+                <div class="reg-page-title">My Registrations</div>
+                <div class="reg-page-subtitle" style="margin-bottom: 0">
+                  Track your workshop bookings and event registrations
+                </div>
+              </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-wrapper" style="max-width: 400px">
+              <span class="search-icon">&#128269;</span>
+              <input type="text" placeholder="Search registrations..." />
+            </div>
+
+            <!-- ===== SECTION 1: Upcoming Daily Workshops ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green"></div>
+                <h2 style="font-size: 17px">Upcoming Daily Workshops</h2>
+                <span class="section-count">2</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-2">
+                <!-- DW Card 1 -->
+                <div class="dw-reg-card">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name" style="font-size: 15px">
+                      Wheel Throwing Workshop
+                    </div>
+                    <span class="status-badge status-pending">Pending</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip">Feb 10 &bull; 1-3 PM</span>
+                    <span class="date-chip">Feb 12 &bull; 4-5 PM</span>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div class="dw-stats" style="margin-bottom: 0">
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#9200;</span>
+                        Total: <span class="dw-stat-value">4h</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#128100;</span>
+                        <span class="dw-stat-value">2 participants</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#127843;</span>
+                        <span class="dw-stat-value">8 pieces</span>
+                      </span>
+                    </div>
+                    <div class="dw-card-price" style="margin-bottom: 0">
+                      &#8377;3,200
+                    </div>
+                  </div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-danger-outline">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- DW Card 2 -->
+                <div class="dw-reg-card">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name" style="font-size: 15px">
+                      Premium Studio Session
+                    </div>
+                    <span class="status-badge status-approved">Approved</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip">Feb 18 &bull; 10 AM-12 PM</span>
+                    <span class="date-chip">Feb 19 &bull; 10 AM-12 PM</span>
+                    <span class="date-chip">Feb 20 &bull; 2-4 PM</span>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div class="dw-stats" style="margin-bottom: 0">
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#9200;</span>
+                        Total: <span class="dw-stat-value">6h</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#128100;</span>
+                        <span class="dw-stat-value">1 participant</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#127843;</span>
+                        <span class="dw-stat-value">6 pieces</span>
+                      </span>
+                    </div>
+                    <div class="dw-card-price" style="margin-bottom: 0">
+                      &#8377;4,800
+                    </div>
+                  </div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-danger-outline">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 2: Completed Daily Workshops ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green-muted"></div>
+                <h2 style="font-size: 17px">Completed Daily Workshops</h2>
+                <span class="section-count muted">1</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-2">
+                <div class="dw-reg-card completed">
+                  <div class="dw-card-top">
+                    <div class="dw-card-name" style="font-size: 15px">
+                      Wheel Throwing Workshop
+                    </div>
+                    <span class="status-badge status-completed">Completed</span>
+                  </div>
+                  <div class="dw-date-chips">
+                    <span class="date-chip completed"
+                      >Jan 20 &bull; 1-3 PM</span
+                    >
+                    <span class="date-chip completed"
+                      >Jan 22 &bull; 4-5 PM</span
+                    >
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div class="dw-stats" style="margin-bottom: 0">
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#9200;</span>
+                        Total: <span class="dw-stat-value">4h</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#128100;</span>
+                        <span class="dw-stat-value">1 participant</span>
+                      </span>
+                      <span class="dw-stat">
+                        <span class="dw-stat-icon">&#127843;</span>
+                        <span class="dw-stat-value">4 pieces</span>
+                      </span>
+                    </div>
+                    <div class="dw-card-price muted" style="margin-bottom: 0">
+                      &#8377;1,600
+                    </div>
+                  </div>
+                  <div class="dw-card-actions">
+                    <a href="#" class="btn btn-link">View Details</a>
+                    <span class="actions-spacer"></span>
+                    <button class="btn btn-review">
+                      &#9733; Write a Review
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section Divider -->
+            <div class="section-divider"></div>
+
+            <!-- ===== SECTION 3: Upcoming Events ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent green"></div>
+                <h2 style="font-size: 17px">Upcoming Events</h2>
+                <span class="section-count">1</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-2">
+                <div class="event-reg-card expanded">
+                  <div class="event-reg-thumb bg-clay-2">&#127843;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title">Studio Practice #25</span>
+                      <span class="status-badge status-confirmed"
+                        >Confirmed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Feb 15, 2026 &bull; 2:00-5:00 PM
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128205;</span>
+                      Studio, 2nd Floor
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== SECTION 4: Completed Events ===== -->
+            <div class="reg-section">
+              <div class="reg-section-header">
+                <div class="section-accent muted"></div>
+                <h2 style="font-size: 17px">Completed Events</h2>
+                <span class="section-count muted">2</span>
+                <span class="collapse-icon">&#9660;</span>
+              </div>
+
+              <div class="reg-cards-grid cols-2">
+                <div class="event-reg-card expanded completed">
+                  <div class="event-reg-thumb bg-clay-7">&#127843;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title">Studio Practice #24</span>
+                      <span class="status-badge status-completed"
+                        >Completed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Jan 25, 2026
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128205;</span>
+                      Studio, 2nd Floor
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                      <span class="stars-inline"
+                        >&#9733;&#9733;&#9733;&#9733;&#9734;</span
+                      >
+                      <span style="font-size: 11px; color: #737373"
+                        >4.2 (18 reviews)</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="event-reg-card expanded completed">
+                  <div class="event-reg-thumb bg-clay-5">&#127926;</div>
+                  <div class="event-reg-body">
+                    <div class="event-reg-top">
+                      <span class="event-reg-title"
+                        >Poetry & Clay Night #8</span
+                      >
+                      <span class="status-badge status-completed"
+                        >Completed</span
+                      >
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128197;</span>
+                      Dec 20, 2025
+                    </div>
+                    <div class="event-reg-meta">
+                      <span class="event-reg-meta-icon">&#128205;</span>
+                      Courtyard
+                    </div>
+                    <div class="event-reg-bottom">
+                      <a href="#" class="btn btn-link" style="font-size: 11px"
+                        >View Details</a
+                      >
+                      <a href="#" class="review-link">Write a Review</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Description (below) -->
+      <div
+        style="
+          max-width: 1200px;
+          margin: -48px auto 0;
+          padding: 0 0 48px;
+          display: flex;
+          gap: 32px;
+        "
+      >
+        <div style="flex: 1">
+          <div
+            style="
+              font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+              font-size: 16px;
+              font-weight: 700;
+              color: #1a1a1a;
+              margin-bottom: 12px;
+            "
+          >
+            Desktop (1200px)
+          </div>
+          <p
+            style="
+              font-size: 13px;
+              color: #737373;
+              line-height: 1.8;
+              margin-bottom: 12px;
+            "
+          >
+            Two-column card grid within each section. Daily Workshop cards and
+            Event cards both display in 2-column grids. A thin divider separates
+            the Daily Workshop sections from the Event sections. Event cards
+            show expanded location metadata.
+          </p>
+          <ul
+            style="
+              list-style: none;
+              font-size: 12px;
+              line-height: 2.2;
+              color: #555;
+              padding: 0;
+            "
+          >
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              2-column grid within each section
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              DW cards: stats + price inline, date chips wrap
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              Event cards: 100px thumbnails, location metadata
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              Colored left accent bars distinguish sections
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              Divider line between DW and Event sections
+            </li>
+            <li style="padding-left: 16px; position: relative">
+              <span
+                style="
+                  position: absolute;
+                  left: 0;
+                  color: #4f6f52;
+                  font-weight: 700;
+                "
+                >&#10003;</span
+              >
+              Collapse icons on section headers
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implementation Notes -->
+    <div class="notes" style="margin-top: 64px">
+      <strong>Implementation Notes:</strong><br />
+      <strong>Route:</strong> /events/registrations (My Registrations tab
+      active)<br />
+      <strong>Data queries:</strong> userRegistrations(filter) with type
+      filtering for DW vs Event<br />
+      <strong>4 Sections:</strong> Upcoming DW, Completed DW, Upcoming Events,
+      Completed Events<br />
+      <strong>Collapsible:</strong> All sections expanded by default, click
+      header to collapse<br />
+      <strong>DW Card Data:</strong> Workshop config name, selected date/time
+      chips, total hours, participants, pieces, price<br />
+      <strong>Status Badges:</strong> Pending (amber), Approved (green), Paid
+      (blue), Confirmed (dark green), Completed (gray)<br />
+      <strong>Cancel Button:</strong> Only visible for Pending and Approved
+      statuses<br />
+      <strong>Reviews:</strong> Completed registrations show "Write a Review"
+      button or star rating<br />
+      <strong>Tab Badge:</strong> Shows total count of active registrations
+      (upcoming DW + upcoming events)<br />
+      <strong>Section Accents:</strong> Green (upcoming active), Muted green
+      (completed DW), Gray (completed events)
+    </div>
+  </body>
+</html>
