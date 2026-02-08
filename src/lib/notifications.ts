@@ -367,7 +367,9 @@ export async function sendRegistrationNotification(
     let html: string;
 
     if (data.type === "event") {
-      subject = safeHeaderValue(`New Workshop Registration - ${data.eventTitle}`);
+      subject = safeHeaderValue(
+        `New Workshop Registration - ${data.eventTitle}`,
+      );
       html = generateEventEmailHtml(data);
     } else if (data.type === "order") {
       subject = safeHeaderValue(`New Order - #${data.orderId}`);

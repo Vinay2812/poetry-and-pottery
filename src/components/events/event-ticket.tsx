@@ -2,7 +2,11 @@ import { Calendar, Check, Clock, MapPin, Printer, User } from "lucide-react";
 import { forwardRef } from "react";
 import QRCode from "react-qr-code";
 
-import { calculateDuration, formatEventTime, formatTicketDate } from "@/lib/date";
+import {
+  calculateDuration,
+  formatEventTime,
+  formatTicketDate,
+} from "@/lib/date";
 
 import type { EventRegistration } from "@/graphql/generated/types";
 
