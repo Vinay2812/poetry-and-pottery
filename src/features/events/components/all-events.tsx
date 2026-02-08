@@ -3,15 +3,18 @@
 import { Calendar, Sparkles } from "lucide-react";
 
 import { EventCard, PastWorkshopCard } from "@/components/cards";
-import { type EventSortOption, EventsListLayout } from "@/components/events";
+import { EventsListLayout } from "@/components/events";
+import { EventsSubTabs } from "@/components/events/events-sub-tabs";
 import { EmptyState } from "@/components/sections";
 import { InfiniteScrollTrigger, StaggeredGrid } from "@/components/shared";
 
-import type { AllEventsProps } from "../types";
+import type { AllEventsProps, AllEventsSubTab } from "../types";
 
 export function AllEvents({
   viewModel,
   loadMoreRef,
+  activeSubTab,
+  onSubTabChange,
   sortBy,
   onSortChange,
   eventTypeFilter,
@@ -21,21 +24,22 @@ export function AllEvents({
   queryString,
   pastEventsLoading,
   pastEventsSkeleton,
-  registeredEventIds,
-  showQuickReserve,
-  onQuickReserve,
-  isQuickReserveLoading,
 }: AllEventsProps) {
   const {
     upcomingEvents,
     pastEvents,
-    hasUpcoming,
-    hasPast,
+    activeSubTab: activeViewSubTab,
     hasNoEvents,
     hasMore,
     isLoading,
     totalEvents,
   } = viewModel;
+
+  const isUpcomingTab = activeViewSubTab === "upcoming";
+  const subTabOptions = [
+    { value: "upcoming", label: "Upcoming", count: upcomingEvents.length },
+    { value: "past", label: "Past", count: pastEvents.length },
+  ];
 
   return (
     <EventsListLayout
@@ -48,16 +52,29 @@ export function AllEvents({
       onSearchChange={onSearchChange}
       queryString={queryString}
     >
+      <EventsSubTabs
+        activeTab={activeSubTab}
+        options={subTabOptions}
+        onTabChange={(value) => onSubTabChange(value as AllEventsSubTab)}
+      />
+
       {hasNoEvents ? (
         <EmptyState
-          icon={Calendar}
-          title="No events available"
-          description="Check back soon for new workshops and events."
+          icon={isUpcomingTab ? Calendar : Sparkles}
+          title={
+            isUpcomingTab
+              ? "No upcoming events available"
+              : "No past events yet"
+          }
+          description={
+            isUpcomingTab
+              ? "Check back soon for new workshops and events."
+              : "Past events will appear here once sessions are completed."
+          }
         />
       ) : (
         <div className="space-y-8 lg:space-y-12">
-          {/* Upcoming Events Section */}
-          {hasUpcoming ? (
+          {isUpcomingTab ? (
             <section>
               <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900 lg:mb-6 lg:text-xl dark:text-neutral-100">
                 Upcoming Events
@@ -69,27 +86,21 @@ export function AllEvents({
               </StaggeredGrid>
             </section>
           ) : (
-            <div className="bg-muted/50 rounded-xl border border-dashed p-8 text-center">
-              <Sparkles className="text-muted-foreground mx-auto mb-2 h-8 w-8" />
-              <p className="text-muted-foreground text-sm">
-                No upcoming events at the moment. Check back soon!
-              </p>
-            </div>
-          )}
-
-          {/* Past Events Section */}
-          {pastEventsLoading && pastEventsSkeleton}
-          {!pastEventsLoading && hasPast && (
-            <section>
-              <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl dark:text-neutral-400">
-                Past Events
-              </h2>
-              <StaggeredGrid className="grid grid-cols-1 gap-4 opacity-75 xl:grid-cols-2 xl:gap-6">
-                {pastEvents.map((event) => (
-                  <PastWorkshopCard key={event.id} event={event} />
-                ))}
-              </StaggeredGrid>
-            </section>
+            <>
+              {pastEventsLoading && pastEventsSkeleton}
+              {!pastEventsLoading && (
+                <section>
+                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl dark:text-neutral-400">
+                    Past Events
+                  </h2>
+                  <StaggeredGrid className="grid grid-cols-1 gap-4 opacity-75 xl:grid-cols-2 xl:gap-6">
+                    {pastEvents.map((event) => (
+                      <PastWorkshopCard key={event.id} event={event} />
+                    ))}
+                  </StaggeredGrid>
+                </section>
+              )}
+            </>
           )}
 
           {/* Load more trigger */}

@@ -1,3 +1,4 @@
+import type { DailyWorkshopRegistration } from "@/data/daily-workshops/types";
 import type {
   EventBase,
   EventDetail,
@@ -130,8 +131,7 @@ export interface PaginationData {
 export interface AllEventsViewModel {
   upcomingEvents: EventBase[];
   pastEvents: EventBase[];
-  hasUpcoming: boolean;
-  hasPast: boolean;
+  activeSubTab: AllEventsSubTab;
   hasNoEvents: boolean;
   hasMore: boolean;
   isLoading: boolean;
@@ -139,10 +139,14 @@ export interface AllEventsViewModel {
   totalEvents: number;
 }
 
+export type AllEventsSubTab = "upcoming" | "past";
+
 // Props for the presentational AllEvents component.
 export interface AllEventsProps {
   viewModel: AllEventsViewModel;
   loadMoreRef: (node?: Element | null) => void;
+  activeSubTab: AllEventsSubTab;
+  onSubTabChange: (tab: AllEventsSubTab) => void;
   sortBy?: EventSortOption;
   onSortChange?: (sort: EventSortOption) => void;
   eventTypeFilter?: EventTypeFilter;
@@ -152,36 +156,36 @@ export interface AllEventsProps {
   queryString?: string;
   pastEventsLoading?: boolean;
   pastEventsSkeleton?: React.ReactNode;
-  registeredEventIds?: Set<string>;
-  showQuickReserve?: boolean;
-  onQuickReserve?: (event: EventBase) => void;
-  isQuickReserveLoading?: (eventId: string) => boolean;
 }
 
 // Props for the AllEventsContainer.
 export interface AllEventsContainerProps {
   initialUpcomingEvents: EventBase[];
   initialUpcomingPagination: PaginationData;
-  registeredEventIds?: string[];
 }
 
 // View model for the Registrations component.
 export interface RegistrationsViewModel {
-  upcomingRegistrations: EventRegistration[];
-  completedRegistrations: EventRegistration[];
+  upcomingEventRegistrations: EventRegistration[];
+  completedEventRegistrations: EventRegistration[];
+  upcomingDailyWorkshopRegistrations: DailyWorkshopRegistration[];
+  completedDailyWorkshopRegistrations: DailyWorkshopRegistration[];
   upcomingEvents: EventBase[];
-  hasUpcomingRegistrations: boolean;
-  hasCompletedRegistrations: boolean;
-  hasAnyRegistrations: boolean;
+  hasAnyUpcomingContent: boolean;
+  hasAnyCompletedContent: boolean;
   hasUpcomingEvents: boolean;
   hasMore: boolean;
   isLoading: boolean;
 }
 
+export type RegistrationsSubTab = "upcoming" | "completed";
+
 // Props for the presentational Registrations component.
 export interface RegistrationsProps {
   viewModel: RegistrationsViewModel;
   loadMoreRef: (node?: Element | null) => void;
+  activeSubTab: RegistrationsSubTab;
+  onSubTabChange: (tab: RegistrationsSubTab) => void;
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
   queryString?: string;
@@ -193,5 +197,7 @@ export interface RegistrationsContainerProps {
   initialUpcomingPagination: PaginationData;
   initialCompletedRegistrations: EventRegistration[];
   initialCompletedPagination: PaginationData;
+  initialUpcomingDailyWorkshopRegistrations: DailyWorkshopRegistration[];
+  initialCompletedDailyWorkshopRegistrations: DailyWorkshopRegistration[];
   upcomingEvents?: EventBase[];
 }

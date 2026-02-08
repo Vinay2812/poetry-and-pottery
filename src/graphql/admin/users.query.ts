@@ -15,6 +15,7 @@ export const ADMIN_USERS_QUERY = gql`
         _count {
           product_orders
           event_registrations
+          daily_workshop_registrations
         }
         pendingOrdersCount
         pendingRegistrationsCount
@@ -42,6 +43,7 @@ export const ADMIN_USER_BY_ID_QUERY = gql`
       _count {
         product_orders
         event_registrations
+        daily_workshop_registrations
         wishlists
         carts
         reviews
@@ -107,6 +109,39 @@ export const ADMIN_USER_REGISTRATIONS_QUERY = gql`
         location
         image
         price
+      }
+    }
+  }
+`;
+
+export const ADMIN_USER_DAILY_WORKSHOP_REGISTRATIONS_FOR_USER_QUERY = gql`
+  query AdminUserDailyWorkshopRegistrationsForUser($userId: Int!) {
+    adminUserDailyWorkshopRegistrations(userId: $userId) {
+      id
+      status
+      participants
+      total_hours
+      slots_count
+      price_per_person
+      pieces_per_person
+      base_amount
+      discount
+      final_amount
+      total_pieces
+      currency
+      pricing_snapshot
+      created_at
+      updated_at
+      request_at
+      approved_at
+      paid_at
+      confirmed_at
+      cancelled_at
+      cancelled_reason
+      slots {
+        id
+        slot_start_at
+        slot_end_at
       }
     }
   }

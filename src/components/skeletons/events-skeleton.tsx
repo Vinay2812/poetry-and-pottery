@@ -90,6 +90,7 @@ export function EventsTabsSkeleton() {
     <div className="mb-6 flex gap-2 overflow-x-auto">
       <Skeleton className="h-10 w-32 shrink-0 rounded-full" />
       <Skeleton className="h-10 w-36 shrink-0 rounded-full" />
+      <Skeleton className="h-10 w-36 shrink-0 rounded-full" />
     </div>
   );
 }

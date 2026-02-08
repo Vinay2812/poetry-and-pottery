@@ -1,4 +1,8 @@
-import { DEFAULT_EVENTS_LIMIT, DEFAULT_PAGE_SIZE } from "@/consts/performance";
+import { DEFAULT_EVENTS_LIMIT } from "@/consts/performance";
+import {
+  getMyCompletedDailyWorkshopRegistrations,
+  getMyUpcomingDailyWorkshopRegistrations,
+} from "@/data/daily-workshops/gateway/server";
 import {
   getCompletedRegistrations,
   getUpcomingEvents,
@@ -25,10 +29,20 @@ async function RegistrationsContent() {
     upcomingRegistrationsResult,
     completedRegistrationsResult,
     upcomingEventsResult,
+    upcomingDailyWorkshopRegistrationsResult,
+    completedDailyWorkshopRegistrationsResult,
   ] = await Promise.all([
     getUpcomingRegistrations({ page: 1, limit: DEFAULT_EVENTS_LIMIT }),
     getCompletedRegistrations({ page: 1, limit: DEFAULT_EVENTS_LIMIT }),
     getUpcomingEvents({ page: 1, limit: DEFAULT_EVENTS_LIMIT }),
+    getMyUpcomingDailyWorkshopRegistrations({
+      page: 1,
+      limit: DEFAULT_EVENTS_LIMIT,
+    }),
+    getMyCompletedDailyWorkshopRegistrations({
+      page: 1,
+      limit: DEFAULT_EVENTS_LIMIT,
+    }),
   ]);
 
   const upcomingRegistrations = upcomingRegistrationsResult.success
@@ -54,6 +68,14 @@ async function RegistrationsContent() {
   const upcomingEvents = upcomingEventsResult.success
     ? upcomingEventsResult.data.data
     : [];
+  const upcomingDailyWorkshopRegistrations =
+    upcomingDailyWorkshopRegistrationsResult.success
+      ? upcomingDailyWorkshopRegistrationsResult.data.data
+      : [];
+  const completedDailyWorkshopRegistrations =
+    completedDailyWorkshopRegistrationsResult.success
+      ? completedDailyWorkshopRegistrationsResult.data.data
+      : [];
 
   return (
     <RegistrationsContainer
@@ -61,6 +83,12 @@ async function RegistrationsContent() {
       initialUpcomingPagination={upcomingPagination}
       initialCompletedRegistrations={completedRegistrations}
       initialCompletedPagination={completedPagination}
+      initialUpcomingDailyWorkshopRegistrations={
+        upcomingDailyWorkshopRegistrations
+      }
+      initialCompletedDailyWorkshopRegistrations={
+        completedDailyWorkshopRegistrations
+      }
       upcomingEvents={upcomingEvents}
     />
   );

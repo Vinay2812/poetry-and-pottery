@@ -22,6 +22,7 @@ interface UseRegistrationsQueryOptions {
   initialCompletedRegistrations: EventRegistration[];
   initialCompletedPagination: PaginationData;
   searchQuery?: string;
+  activeTab?: "upcoming" | "completed";
 }
 
 export function useRegistrationsQuery({
@@ -30,6 +31,7 @@ export function useRegistrationsQuery({
   initialCompletedRegistrations,
   initialCompletedPagination,
   searchQuery,
+  activeTab = "upcoming",
 }: UseRegistrationsQueryOptions) {
   const [fetchUpcomingGraphQL] = useUpcomingRegistrationsLazyQuery({
     fetchPolicy: "network-only",
@@ -147,13 +149,17 @@ export function useRegistrationsQuery({
     rootMargin: DEFAULT_ROOT_MARGIN,
   });
 
-  // Sequential loading: upcoming first, then completed
+  // Keep pagination tied to the currently selected sub-tab.
   useEffect(() => {
     if (inView) {
-      if (hasNextUpcoming && !isFetchingNextUpcoming) {
+      if (
+        activeTab === "upcoming" &&
+        hasNextUpcoming &&
+        !isFetchingNextUpcoming
+      ) {
         fetchNextUpcoming();
       } else if (
-        !hasNextUpcoming &&
+        activeTab === "completed" &&
         hasNextCompleted &&
         !isFetchingNextCompleted
       ) {
@@ -162,6 +168,7 @@ export function useRegistrationsQuery({
     }
   }, [
     inView,
+    activeTab,
     hasNextUpcoming,
     hasNextCompleted,
     isFetchingNextUpcoming,
@@ -192,14 +199,18 @@ export function useRegistrationsQuery({
     });
   }, [completedData]);
 
-  const hasMore = hasNextUpcoming || hasNextCompleted;
-  const isLoading = isFetchingNextUpcoming || isFetchingNextCompleted;
+  const hasMoreUpcoming = hasNextUpcoming ?? false;
+  const hasMoreCompleted = hasNextCompleted ?? false;
+  const isLoadingUpcoming = isFetchingNextUpcoming;
+  const isLoadingCompleted = isFetchingNextCompleted;
 
   return {
     upcomingRegistrations,
     completedRegistrations,
-    hasMore,
-    isLoading,
+    hasMoreUpcoming,
+    hasMoreCompleted,
+    isLoadingUpcoming,
+    isLoadingCompleted,
     loadMoreRef,
   };
 }

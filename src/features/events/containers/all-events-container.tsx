@@ -1,7 +1,7 @@
 "use client";
 
-import type { EventBase } from "@/data/events/types";
-import { Suspense, useCallback, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useMemo, useTransition } from "react";
 
 import { PastEventsSkeleton } from "@/components/skeletons";
 
@@ -11,18 +11,20 @@ import { AllEvents } from "../components/all-events";
 import { useAllEventsQuery } from "../hooks/use-all-events-query";
 import { useEventFilters } from "../hooks/use-event-filters";
 import { usePastEventsQuery } from "../hooks/use-past-events-query";
-import { useQuickReserve } from "../hooks/use-quick-reserve";
-import type { AllEventsContainerProps, AllEventsViewModel } from "../types";
+import type {
+  AllEventsContainerProps,
+  AllEventsSubTab,
+  AllEventsViewModel,
+} from "../types";
 
 export function AllEventsContainer({
   initialUpcomingEvents,
   initialUpcomingPagination,
-  registeredEventIds = [],
 }: AllEventsContainerProps) {
-  const [registeredIds, setRegisteredIds] = useState(
-    () => new Set(registeredEventIds),
-  );
-  const { reserveSeat, isLoading } = useQuickReserve();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isSubTabPending, startSubTabTransition] = useTransition();
   const { filters, setSearch, setEventType, setSort, getQueryString } =
     useEventFilters();
 
@@ -32,7 +34,29 @@ export function AllEventsContainer({
     sort: sortBy,
   } = filters;
 
-  // Convert UI filter to GraphQL enum
+  const activeSubTab = useMemo<AllEventsSubTab>(() => {
+    const tab = searchParams.get("event_tab");
+    return tab === "past" ? "past" : "upcoming";
+  }, [searchParams]);
+
+  const handleSubTabChange = useCallback(
+    (tab: AllEventsSubTab) => {
+      startSubTabTransition(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (tab === "upcoming") {
+          params.delete("event_tab");
+        } else {
+          params.set("event_tab", tab);
+        }
+
+        const query = params.toString();
+        const nextUrl = query ? `${pathname}?${query}` : pathname;
+        router.replace(nextUrl, { scroll: false });
+      });
+    },
+    [pathname, router, searchParams],
+  );
+
   const eventTypeForQuery =
     eventTypeFilter === "all"
       ? null
@@ -40,7 +64,6 @@ export function AllEventsContainer({
         ? EventType.PotteryWorkshop
         : EventType.OpenMic;
 
-  // Upcoming events with initial data from server
   const {
     upcomingEvents: rawUpcomingEvents,
     hasNextPage: hasNextUpcoming,
@@ -64,10 +87,9 @@ export function AllEventsContainer({
   } = usePastEventsQuery({
     searchQuery: searchQuery || undefined,
     eventType: eventTypeForQuery,
-    enabled: !hasNextUpcoming && !isFetchingNextUpcoming,
+    enabled: true,
   });
 
-  // Sort events based on sortBy
   const upcomingEvents = useMemo(() => {
     const sorted = [...rawUpcomingEvents];
     switch (sortBy) {
@@ -93,7 +115,6 @@ export function AllEventsContainer({
         return sorted.sort((a, b) => b.price - a.price);
       case "soonest":
       default:
-        // For past events, "soonest" means most recent first
         return sorted.sort(
           (a, b) =>
             new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime(),
@@ -101,24 +122,26 @@ export function AllEventsContainer({
     }
   }, [rawPastEvents, sortBy]);
 
-  // Build the view model
   const viewModel: AllEventsViewModel = useMemo(() => {
-    const hasUpcoming = upcomingEvents.length > 0;
-    const hasPast = pastEvents.length > 0;
-    const totalEvents = (upcomingTotal ?? 0) + (pastTotal ?? 0);
+    const isUpcomingTab = activeSubTab === "upcoming";
+    const totalEvents = isUpcomingTab ? (upcomingTotal ?? 0) : (pastTotal ?? 0);
 
     return {
       upcomingEvents,
       pastEvents,
-      hasUpcoming,
-      hasPast,
-      hasNoEvents: !hasUpcoming && !hasPast && !isPastEventsLoading,
-      hasMore: hasNextUpcoming || hasNextPast,
-      isLoading: isFetchingNextUpcoming || isFetchingNextPast,
+      activeSubTab,
+      hasNoEvents: isUpcomingTab
+        ? upcomingEvents.length === 0
+        : pastEvents.length === 0 && !isPastEventsLoading,
+      hasMore: isUpcomingTab ? hasNextUpcoming : hasNextPast,
+      isLoading: isUpcomingTab
+        ? isFetchingNextUpcoming || isSubTabPending
+        : isFetchingNextPast || isPastEventsLoading || isSubTabPending,
       searchQuery,
       totalEvents,
     };
   }, [
+    activeSubTab,
     upcomingEvents,
     pastEvents,
     hasNextUpcoming,
@@ -126,35 +149,21 @@ export function AllEventsContainer({
     isFetchingNextUpcoming,
     isFetchingNextPast,
     isPastEventsLoading,
+    isSubTabPending,
     searchQuery,
     upcomingTotal,
     pastTotal,
   ]);
 
-  // Combined load more ref - prioritize upcoming, then past
   const loadMoreRef = useCallback(
     (node?: Element | null) => {
-      if (hasNextUpcoming) {
+      if (activeSubTab === "upcoming") {
         upcomingLoadMoreRef(node);
       } else {
         pastLoadMoreRef(node);
       }
     },
-    [hasNextUpcoming, upcomingLoadMoreRef, pastLoadMoreRef],
-  );
-
-  const handleQuickReserve = useCallback(
-    async (event: EventBase) => {
-      const success = await reserveSeat(event);
-      if (success) {
-        setRegisteredIds((prev) => {
-          const next = new Set(prev);
-          next.add(event.id);
-          return next;
-        });
-      }
-    },
-    [reserveSeat],
+    [activeSubTab, upcomingLoadMoreRef, pastLoadMoreRef],
   );
 
   return (
@@ -162,6 +171,8 @@ export function AllEventsContainer({
       <AllEvents
         viewModel={viewModel}
         loadMoreRef={loadMoreRef}
+        activeSubTab={activeSubTab}
+        onSubTabChange={handleSubTabChange}
         sortBy={sortBy}
         onSortChange={setSort}
         eventTypeFilter={eventTypeFilter}
@@ -171,10 +182,6 @@ export function AllEventsContainer({
         queryString={getQueryString()}
         pastEventsLoading={isPastEventsLoading}
         pastEventsSkeleton={<PastEventsSkeleton />}
-        registeredEventIds={registeredIds}
-        showQuickReserve
-        onQuickReserve={handleQuickReserve}
-        isQuickReserveLoading={isLoading}
       />
     </Suspense>
   );

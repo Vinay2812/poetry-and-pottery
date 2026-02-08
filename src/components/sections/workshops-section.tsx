@@ -1,172 +1,101 @@
 "use client";
 
-import { Mic, Palette } from "lucide-react";
+import type { DailyWorkshopPricingTier } from "@/data/daily-workshops/types";
+import { ArrowRight, Clock3, Users } from "lucide-react";
 import Link from "next/link";
 
-import { ContactForm } from "@/components/forms";
-import { Button } from "@/components/ui/button";
-
-import { type EventBase, EventType } from "@/graphql/generated/graphql";
-
-import { OptimizedImage } from "../shared";
-
-function formatEventDate(dateStr: Date | string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
-
-function formatEventLevel(level: string | null | undefined): string {
-  if (!level) return "";
-  return level.charAt(0) + level.slice(1).toLowerCase();
-}
-
-function formatPrice(price: number): string {
-  return `₹${price.toLocaleString("en-IN")}`;
-}
-
-function getEventTypeIcon(type: EventType) {
-  switch (type) {
-    case EventType.OpenMic:
-      return <Mic className="h-3 w-3" />;
-    case EventType.PotteryWorkshop:
-    default:
-      return <Palette className="h-3 w-3" />;
-  }
-}
-
-interface EventCardProps {
-  event: EventBase;
-}
-
-function EventCard({ event }: EventCardProps) {
-  return (
-    <Link
-      href={`/events/${event.id}`}
-      className="bg-primary-lighter group shadow-soft hover:shadow-card flex items-center gap-4 rounded-2xl p-4 transition-all duration-200 lg:p-5"
-    >
-      <span className="relative aspect-4/3 w-16 overflow-hidden text-2xl lg:text-3xl">
-        <OptimizedImage
-          src={event.image}
-          alt={event.title}
-          fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-          className="rounded-lg object-cover"
-        />
-      </span>
-
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1.5">
-          <span className="text-primary">
-            {getEventTypeIcon(event.event_type)}
-          </span>
-          <h3 className="font-display truncate text-sm font-semibold text-stone-900 lg:text-base">
-            {event.title}
-          </h3>
-        </div>
-        <p className="text-muted-foreground mt-0.5 text-xs lg:text-sm">
-          {formatEventDate(event.starts_at)}
-          {event.level && <> • {formatEventLevel(event.level)}</>}
-          <span className="hidden lg:inline">
-            {" "}
-            • {formatPrice(event.price)}
-          </span>
-        </p>
-      </div>
-
-      <Button
-        variant="outline"
-        size="sm"
-        className="border-primary/20 text-primary hover:bg-primary hidden shrink-0 rounded-lg transition-colors hover:text-white lg:inline-flex"
-        asChild
-      >
-        <span>Book</span>
-      </Button>
-    </Link>
-  );
-}
-
-interface EventCategoryProps {
-  title: string;
-  events: EventBase[];
-  viewAllHref: string;
-}
-
-function EventCategory({ title, events, viewAllHref }: EventCategoryProps) {
-  if (events.length === 0) return null;
-
-  return (
-    <div>
-      <div className="mb-3 flex items-center justify-between lg:mb-4">
-        <h3 className="text-sm font-semibold text-stone-700 lg:text-base">
-          {title}
-        </h3>
-        <Link
-          href={viewAllHref}
-          className="text-primary hover:text-primary-hover text-xs font-medium transition-colors"
-        >
-          View All →
-        </Link>
-      </div>
-      <div className="space-y-3">
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ContactUsCTA() {
-  return (
-    <div>
-      <h2 className="font-display mb-5 text-xl font-bold tracking-tight lg:mb-6 lg:text-2xl">
-        Contact Us
-      </h2>
-
-      <div className="shadow-soft rounded-2xl bg-white p-6 lg:p-8">
-        <p className="text-muted-foreground mb-6 text-sm lg:text-base">
-          Have questions about our pottery or want to schedule a visit? We would
-          love to hear from you.
-        </p>
-        <ContactForm />
-      </div>
-    </div>
-  );
-}
+import { cn } from "@/lib/utils";
 
 interface WorkshopsSectionProps {
-  potteryEvents: EventBase[];
-  poetryEvents: EventBase[];
+  pricingTiers: DailyWorkshopPricingTier[];
 }
 
-export function WorkshopsSection({
-  potteryEvents,
-  poetryEvents,
-}: WorkshopsSectionProps) {
-  if (potteryEvents.length === 0 && poetryEvents.length === 0) {
-    return <ContactUsCTA />;
-  }
+function formatCurrency(value: number): string {
+  return `₹${value.toLocaleString("en-IN")}`;
+}
+
+export function WorkshopsSection({ pricingTiers }: WorkshopsSectionProps) {
+  const sortedTiers = [...pricingTiers].sort((a, b) => a.hours - b.hours);
+  const featuredTiers = sortedTiers.slice(0, 4);
 
   return (
-    <div>
+    <section>
       <div className="mb-5 flex items-center justify-between lg:mb-6">
         <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
-          <span className="hidden lg:inline">Upcoming </span>Events
+          Daily Workshops
         </h2>
+        <Link
+          href="/events/daily-workshops"
+          className="text-primary hover:text-primary-hover text-sm font-semibold transition-colors"
+        >
+          Book Now →
+        </Link>
       </div>
 
-      <div className="space-y-6">
-        <EventCategory
-          title="Pottery Workshops"
-          events={potteryEvents}
-          viewAllHref={`/events/upcoming?type=workshop`}
-        />
-        <EventCategory
-          title="Poetry Open Mics"
-          events={poetryEvents}
-          viewAllHref={`/events/upcoming?type=open_mic`}
-        />
+      <p className="text-muted-foreground mb-5 text-sm leading-6">
+        Pick your own days, choose your own hours, and build pottery at your
+        pace between 1 PM and 7 PM.
+      </p>
+
+      <div className="grid gap-4 xl:grid-cols-2">
+        <div className="space-y-2.5">
+          {featuredTiers.map((tier, index) => (
+            <Link
+              key={tier.id}
+              href="/events/daily-workshops"
+              className={cn(
+                "hover:border-primary/40 block rounded-2xl border bg-white px-4 py-3 shadow-sm transition-colors",
+                index === 1 && "border-primary/60 bg-primary-lighter",
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-neutral-900">
+                    {tier.hours} Hour Session
+                  </p>
+                  <p className="text-xs text-neutral-500">
+                    {tier.pieces_per_person} pieces per person
+                  </p>
+                </div>
+                <p className="text-primary text-lg font-bold">
+                  {formatCurrency(tier.price_per_person)}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <Link
+          href="/events/daily-workshops"
+          className="group block rounded-2xl bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <div className="mb-4 flex items-center justify-between">
+            <span className="bg-primary-lighter text-primary rounded-full px-3 py-1 text-xs font-semibold uppercase">
+              Flexible Booking
+            </span>
+            <ArrowRight className="text-primary h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </div>
+
+          <h3 className="font-display mb-2 text-xl font-bold tracking-tight text-neutral-900">
+            Design Your Own Pottery Schedule
+          </h3>
+          <p className="text-muted-foreground mb-4 text-sm leading-6">
+            Select one or more hourly slots across multiple days, then reserve
+            in one booking.
+          </p>
+
+          <div className="space-y-2 text-sm text-neutral-700">
+            <div className="flex items-center gap-2">
+              <Clock3 className="h-4 w-4 text-neutral-500" />
+              <span>Daily slots from 1:00 PM to 7:00 PM</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4 text-neutral-500" />
+              <span>Book for solo or group sessions</span>
+            </div>
+          </div>
+        </Link>
       </div>
-    </div>
+    </section>
   );
 }

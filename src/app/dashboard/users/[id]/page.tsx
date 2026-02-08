@@ -1,10 +1,12 @@
 import {
   getUserById,
   getUserCart,
+  getUserDailyWorkshopRegistrations,
   getUserOrders,
   getUserRegistrations,
   getUserWishlistPaginated,
 } from "@/data/admin/users/gateway/server";
+import { DailyWorkshopRegistrationsBoardContainer } from "@/features/dashboard/daily-workshops";
 import { OrdersBoardContainer } from "@/features/dashboard/orders";
 import { RegistrationsBoardContainer } from "@/features/dashboard/registrations";
 import {
@@ -37,15 +39,21 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
     notFound();
   }
 
-  const [user, orders, registrations, cart, wishlistResult] = await Promise.all(
-    [
-      getUserById(userId),
-      getUserOrders(userId),
-      getUserRegistrations(userId),
-      getUserCart(userId),
-      getUserWishlistPaginated(userId, 1, 12),
-    ],
-  );
+  const [
+    user,
+    orders,
+    registrations,
+    dailyWorkshopRegistrations,
+    cart,
+    wishlistResult,
+  ] = await Promise.all([
+    getUserById(userId),
+    getUserOrders(userId),
+    getUserRegistrations(userId),
+    getUserDailyWorkshopRegistrations(userId),
+    getUserCart(userId),
+    getUserWishlistPaginated(userId, 1, 12),
+  ]);
 
   if (!user) {
     notFound();
@@ -121,6 +129,11 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
         registrationsContent={
           <RegistrationsBoardContainer registrations={registrations} />
         }
+        dailyWorkshopsContent={
+          <DailyWorkshopRegistrationsBoardContainer
+            registrations={dailyWorkshopRegistrations}
+          />
+        }
         cartContent={<CartView items={cart} />}
         wishlistContent={
           <WishlistView
@@ -135,6 +148,7 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
         }
         orderCount={orders.length}
         registrationCount={registrations.length}
+        dailyWorkshopCount={dailyWorkshopRegistrations.length}
         cartCount={cart.length}
         wishlistCount={wishlistResult.total}
       />

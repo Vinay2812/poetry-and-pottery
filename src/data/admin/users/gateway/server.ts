@@ -1,7 +1,9 @@
 "use server";
 
 import type {
+  AdminDailyWorkshopMutationResponse,
   AdminUserCartItem,
+  AdminUserDailyWorkshopRegistrationsForUserQuery,
   AdminUserDetail,
   AdminUserMutationResponse,
   AdminUserOrder,
@@ -12,6 +14,11 @@ import type {
 } from "@/graphql/generated/types";
 
 import * as graphqlImpl from "../server/graphql";
+
+export type UpdateUserDailyWorkshopRegistrationDetailsInput =
+  graphqlImpl.AdminUpdateDailyWorkshopRegistrationDetailsInput;
+export type UpdateUserDailyWorkshopRegistrationDetailsResponse =
+  graphqlImpl.AdminUpdateDailyWorkshopRegistrationDetailsResponse;
 
 export async function getUsers(
   filter?: AdminUsersFilterInput,
@@ -32,6 +39,26 @@ export async function updateUserRole(
   return graphqlImpl.updateUserRole(userId, role);
 }
 
+export async function updateUserDailyWorkshopRegistrationStatus(
+  registrationId: string,
+  status: string,
+): Promise<AdminDailyWorkshopMutationResponse> {
+  return graphqlImpl.updateUserDailyWorkshopRegistrationStatus(
+    registrationId,
+    status,
+  );
+}
+
+export async function updateUserDailyWorkshopRegistrationDetails(
+  registrationId: string,
+  input: UpdateUserDailyWorkshopRegistrationDetailsInput,
+): Promise<UpdateUserDailyWorkshopRegistrationDetailsResponse> {
+  return graphqlImpl.updateUserDailyWorkshopRegistrationDetails(
+    registrationId,
+    input,
+  );
+}
+
 export async function getUserOrders(userId: number): Promise<AdminUserOrder[]> {
   return graphqlImpl.getUserOrders(userId);
 }
@@ -40,6 +67,14 @@ export async function getUserRegistrations(
   userId: number,
 ): Promise<AdminUserRegistration[]> {
   return graphqlImpl.getUserRegistrations(userId);
+}
+
+export async function getUserDailyWorkshopRegistrations(
+  userId: number,
+): Promise<
+  AdminUserDailyWorkshopRegistrationsForUserQuery["adminUserDailyWorkshopRegistrations"]
+> {
+  return graphqlImpl.getUserDailyWorkshopRegistrations(userId);
 }
 
 export async function getUserCart(

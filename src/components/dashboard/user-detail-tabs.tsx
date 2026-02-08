@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CalendarClockIcon,
   CalendarIcon,
   HeartIcon,
   PackageIcon,
@@ -12,10 +13,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface UserDetailTabsProps {
   ordersContent: React.ReactNode;
   registrationsContent: React.ReactNode;
+  dailyWorkshopsContent: React.ReactNode;
   cartContent: React.ReactNode;
   wishlistContent: React.ReactNode;
   orderCount: number;
   registrationCount: number;
+  dailyWorkshopCount: number;
   cartCount: number;
   wishlistCount: number;
 }
@@ -23,16 +26,18 @@ interface UserDetailTabsProps {
 export function UserDetailTabs({
   ordersContent,
   registrationsContent,
+  dailyWorkshopsContent,
   cartContent,
   wishlistContent,
   orderCount,
   registrationCount,
+  dailyWorkshopCount,
   cartCount,
   wishlistCount,
 }: UserDetailTabsProps) {
   return (
     <Tabs defaultValue="orders" className="space-y-4">
-      <TabsList className="grid h-auto w-full grid-cols-2 gap-4 bg-transparent p-0 md:grid-cols-4">
+      <TabsList className="grid h-auto w-full grid-cols-2 gap-4 bg-transparent p-0 md:grid-cols-5">
         <TabsTrigger
           value="orders"
           className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
@@ -55,6 +60,18 @@ export function UserDetailTabs({
           <div>
             <p className="text-2xl font-bold">{registrationCount}</p>
             <p className="text-sm text-neutral-500">Registrations</p>
+          </div>
+        </TabsTrigger>
+        <TabsTrigger
+          value="daily-workshops"
+          className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
+        >
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white">
+            <CalendarClockIcon className="size-5 text-neutral-500" />
+          </div>
+          <div>
+            <p className="text-2xl font-bold">{dailyWorkshopCount}</p>
+            <p className="text-sm text-neutral-500">Daily Workshops</p>
           </div>
         </TabsTrigger>
         <TabsTrigger
@@ -104,6 +121,18 @@ export function UserDetailTabs({
             </p>
           </div>
           {registrationsContent}
+        </div>
+      </TabsContent>
+
+      <TabsContent value="daily-workshops" className="mt-6">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Daily Workshop Bookings</h2>
+            <p className="text-sm text-neutral-500">
+              Drag cards to change status
+            </p>
+          </div>
+          {dailyWorkshopsContent}
         </div>
       </TabsContent>
 

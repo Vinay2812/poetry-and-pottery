@@ -247,6 +247,121 @@ export type AdminCustomizeCategoryMutationResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type AdminDailyWorkshopBlackoutRule = {
+  auto_cancel_existing: Scalars['Boolean']['output'];
+  config_id: Scalars['Int']['output'];
+  created_at: Scalars['DateTime']['output'];
+  created_by_user_id?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['String']['output'];
+  is_active: Scalars['Boolean']['output'];
+  month_days: Array<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  one_time_end_at?: Maybe<Scalars['DateTime']['output']>;
+  one_time_start_at?: Maybe<Scalars['DateTime']['output']>;
+  range_end_minutes: Scalars['Int']['output'];
+  range_start_minutes: Scalars['Int']['output'];
+  reason?: Maybe<Scalars['String']['output']>;
+  recurrence_end_date?: Maybe<Scalars['DateTime']['output']>;
+  recurrence_start_date?: Maybe<Scalars['DateTime']['output']>;
+  timezone: Scalars['String']['output'];
+  type: DailyWorkshopBlackoutType;
+  updated_at: Scalars['DateTime']['output'];
+  weekdays: Array<Scalars['Int']['output']>;
+};
+
+export type AdminDailyWorkshopBlackoutRuleMutationResponse = {
+  error?: Maybe<Scalars['String']['output']>;
+  rule?: Maybe<AdminDailyWorkshopBlackoutRule>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type AdminDailyWorkshopConfig = {
+  auto_cancel_on_blackout: Scalars['Boolean']['output'];
+  booking_window_days: Scalars['Int']['output'];
+  closing_hour: Scalars['Int']['output'];
+  created_at: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  key: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  opening_hour: Scalars['Int']['output'];
+  slot_capacity: Scalars['Int']['output'];
+  slot_duration_minutes: Scalars['Int']['output'];
+  timezone: Scalars['String']['output'];
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminDailyWorkshopConfigMutationResponse = {
+  config?: Maybe<AdminDailyWorkshopConfig>;
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type AdminDailyWorkshopMutationResponse = {
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type AdminDailyWorkshopPricingTier = {
+  config_id: Scalars['Int']['output'];
+  created_at: Scalars['DateTime']['output'];
+  hours: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  pieces_per_person: Scalars['Int']['output'];
+  price_per_person: Scalars['Int']['output'];
+  sort_order: Scalars['Int']['output'];
+  updated_at: Scalars['DateTime']['output'];
+};
+
+export type AdminDailyWorkshopPricingTierMutationResponse = {
+  error?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+  tier?: Maybe<AdminDailyWorkshopPricingTier>;
+};
+
+export type AdminDailyWorkshopRegistration = {
+  approved_at?: Maybe<Scalars['DateTime']['output']>;
+  base_amount: Scalars['Int']['output'];
+  cancelled_at?: Maybe<Scalars['DateTime']['output']>;
+  cancelled_reason?: Maybe<Scalars['String']['output']>;
+  config_id: Scalars['Int']['output'];
+  confirmed_at?: Maybe<Scalars['DateTime']['output']>;
+  created_at: Scalars['DateTime']['output'];
+  currency: Scalars['String']['output'];
+  discount: Scalars['Int']['output'];
+  final_amount: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  paid_at?: Maybe<Scalars['DateTime']['output']>;
+  participants: Scalars['Int']['output'];
+  pieces_per_person: Scalars['Int']['output'];
+  price_per_person: Scalars['Int']['output'];
+  pricing_snapshot: Scalars['JSON']['output'];
+  request_at?: Maybe<Scalars['DateTime']['output']>;
+  slots: Array<AdminDailyWorkshopRegistrationSlot>;
+  slots_count: Scalars['Int']['output'];
+  status: DailyWorkshopRegistrationStatus;
+  total_hours: Scalars['Int']['output'];
+  total_pieces: Scalars['Int']['output'];
+  updated_at: Scalars['DateTime']['output'];
+  user: AdminDailyWorkshopUser;
+  user_id: Scalars['Int']['output'];
+};
+
+export type AdminDailyWorkshopRegistrationSlot = {
+  id: Scalars['Int']['output'];
+  slot_end_at: Scalars['DateTime']['output'];
+  slot_start_at: Scalars['DateTime']['output'];
+};
+
+export type AdminDailyWorkshopUser = {
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  image?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
 export type AdminEvent = {
   _count: AdminEventCount;
   available_seats: Scalars['Int']['output'];
@@ -533,6 +648,46 @@ export type AdminStatusOption = {
   value: Scalars['String']['output'];
 };
 
+export type AdminUpdateDailyWorkshopConfigInput = {
+  auto_cancel_on_blackout?: InputMaybe<Scalars['Boolean']['input']>;
+  booking_window_days?: InputMaybe<Scalars['Int']['input']>;
+  closing_hour?: InputMaybe<Scalars['Int']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  opening_hour?: InputMaybe<Scalars['Int']['input']>;
+  slot_capacity?: InputMaybe<Scalars['Int']['input']>;
+  slot_duration_minutes?: InputMaybe<Scalars['Int']['input']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AdminUpsertDailyWorkshopBlackoutRuleInput = {
+  auto_cancel_existing?: InputMaybe<Scalars['Boolean']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  month_days?: InputMaybe<Array<Scalars['Int']['input']>>;
+  name: Scalars['String']['input'];
+  one_time_end_at?: InputMaybe<Scalars['DateTime']['input']>;
+  one_time_start_at?: InputMaybe<Scalars['DateTime']['input']>;
+  range_end_minutes: Scalars['Int']['input'];
+  range_start_minutes: Scalars['Int']['input'];
+  reason?: InputMaybe<Scalars['String']['input']>;
+  recurrence_end_date?: InputMaybe<Scalars['DateTime']['input']>;
+  recurrence_start_date?: InputMaybe<Scalars['DateTime']['input']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  type: DailyWorkshopBlackoutType;
+  weekdays?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type AdminUpsertDailyWorkshopPricingTierInput = {
+  hours: Scalars['Int']['input'];
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  pieces_per_person: Scalars['Int']['input'];
+  price_per_person: Scalars['Int']['input'];
+  sort_order?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type AdminUser = {
   _count: AdminUserCount;
   auth_id: Scalars['String']['output'];
@@ -564,6 +719,7 @@ export type AdminUserCartProduct = {
 };
 
 export type AdminUserCount = {
+  daily_workshop_registrations: Scalars['Int']['output'];
   event_registrations: Scalars['Int']['output'];
   product_orders: Scalars['Int']['output'];
 };
@@ -583,6 +739,7 @@ export type AdminUserDetail = {
 
 export type AdminUserDetailCount = {
   carts: Scalars['Int']['output'];
+  daily_workshop_registrations: Scalars['Int']['output'];
   event_registrations: Scalars['Int']['output'];
   product_orders: Scalars['Int']['output'];
   reviews: Scalars['Int']['output'];
@@ -817,6 +974,18 @@ export type CreateCustomizeCategoryInput = {
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type CreateDailyWorkshopRegistrationInput = {
+  discount?: InputMaybe<Scalars['Int']['input']>;
+  participants?: InputMaybe<Scalars['Int']['input']>;
+  slot_start_times: Array<Scalars['DateTime']['input']>;
+};
+
+export type CreateDailyWorkshopRegistrationResponse = {
+  error?: Maybe<Scalars['String']['output']>;
+  registration?: Maybe<DailyWorkshopRegistration>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type CreateEventInput = {
   available_seats: Scalars['Int']['input'];
   description: Scalars['String']['input'];
@@ -942,6 +1111,125 @@ export type CustomizationOptionsResponse = {
   customize_category_id: Scalars['Int']['output'];
   options_by_type: Array<CustomizationOptionsByType>;
   total_options: Scalars['Int']['output'];
+};
+
+export type DailyWorkshopAvailabilityDay = {
+  date_key: Scalars['String']['output'];
+  label: Scalars['String']['output'];
+  slots: Array<DailyWorkshopSlotAvailability>;
+};
+
+export type DailyWorkshopAvailabilityInput = {
+  days?: InputMaybe<Scalars['Int']['input']>;
+  start_date?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type DailyWorkshopAvailabilityResponse = {
+  config: DailyWorkshopConfig;
+  days: Array<DailyWorkshopAvailabilityDay>;
+};
+
+/** Blackout recurrence type for daily workshop slots */
+export enum DailyWorkshopBlackoutType {
+  Daily = 'DAILY',
+  Monthly = 'MONTHLY',
+  OneTime = 'ONE_TIME',
+  Weekly = 'WEEKLY'
+}
+
+export type DailyWorkshopConfig = {
+  auto_cancel_on_blackout: Scalars['Boolean']['output'];
+  booking_window_days: Scalars['Int']['output'];
+  closing_hour: Scalars['Int']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  key: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  opening_hour: Scalars['Int']['output'];
+  pricing_tiers: Array<DailyWorkshopPricingTier>;
+  slot_capacity: Scalars['Int']['output'];
+  slot_duration_minutes: Scalars['Int']['output'];
+  timezone: Scalars['String']['output'];
+};
+
+export type DailyWorkshopPricingTier = {
+  config_id: Scalars['Int']['output'];
+  hours: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  is_active: Scalars['Boolean']['output'];
+  pieces_per_person: Scalars['Int']['output'];
+  price_per_person: Scalars['Int']['output'];
+  sort_order: Scalars['Int']['output'];
+};
+
+export type DailyWorkshopRegistration = {
+  approved_at?: Maybe<Scalars['DateTime']['output']>;
+  base_amount: Scalars['Int']['output'];
+  cancelled_at?: Maybe<Scalars['DateTime']['output']>;
+  cancelled_by_blackout_rule_id?: Maybe<Scalars['String']['output']>;
+  cancelled_by_user_id?: Maybe<Scalars['Int']['output']>;
+  cancelled_reason?: Maybe<Scalars['String']['output']>;
+  config_id: Scalars['Int']['output'];
+  confirmed_at?: Maybe<Scalars['DateTime']['output']>;
+  created_at: Scalars['DateTime']['output'];
+  currency: Scalars['String']['output'];
+  discount: Scalars['Int']['output'];
+  final_amount: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  paid_at?: Maybe<Scalars['DateTime']['output']>;
+  participants: Scalars['Int']['output'];
+  pieces_per_person: Scalars['Int']['output'];
+  price_per_person: Scalars['Int']['output'];
+  pricing_snapshot: Scalars['JSON']['output'];
+  request_at?: Maybe<Scalars['DateTime']['output']>;
+  slots: Array<DailyWorkshopRegistrationSlot>;
+  slots_count: Scalars['Int']['output'];
+  status: DailyWorkshopRegistrationStatus;
+  total_hours: Scalars['Int']['output'];
+  total_pieces: Scalars['Int']['output'];
+  updated_at: Scalars['DateTime']['output'];
+  user_id: Scalars['Int']['output'];
+};
+
+export type DailyWorkshopRegistrationSlot = {
+  id: Scalars['Int']['output'];
+  registration_id: Scalars['String']['output'];
+  slot_end_at: Scalars['DateTime']['output'];
+  slot_start_at: Scalars['DateTime']['output'];
+};
+
+/** Status of a daily workshop registration */
+export enum DailyWorkshopRegistrationStatus {
+  Approved = 'APPROVED',
+  Cancelled = 'CANCELLED',
+  Confirmed = 'CONFIRMED',
+  Paid = 'PAID',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
+
+export type DailyWorkshopRegistrationsFilterInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<DailyWorkshopRegistrationStatus>;
+};
+
+export type DailyWorkshopRegistrationsResponse = {
+  data: Array<DailyWorkshopRegistration>;
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  total_pages: Scalars['Int']['output'];
+};
+
+export type DailyWorkshopSlotAvailability = {
+  is_available: Scalars['Boolean']['output'];
+  reason?: Maybe<Scalars['String']['output']>;
+  remaining_capacity: Scalars['Int']['output'];
+  reserved_participants: Scalars['Int']['output'];
+  slot_end_at: Scalars['DateTime']['output'];
+  slot_start_at: Scalars['DateTime']['output'];
 };
 
 export type DashboardStats = {
@@ -1207,6 +1495,8 @@ export type Mutation = {
   adminDeleteCollection: AdminCollectionMutationResponse;
   adminDeleteCustomizationOption: AdminCustomizationMutationResponse;
   adminDeleteCustomizeCategory: AdminCustomizeCategoryMutationResponse;
+  adminDeleteDailyWorkshopBlackoutRule: AdminDailyWorkshopMutationResponse;
+  adminDeleteDailyWorkshopPricingTier: AdminDailyWorkshopMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
   adminGetPresignedUploadUrl: PresignedUploadUrlResponse;
@@ -1222,6 +1512,8 @@ export type Mutation = {
   adminUpdateContentPage: AdminContentMutationResponse;
   adminUpdateCustomizationOption: AdminCustomizationMutationResponse;
   adminUpdateCustomizeCategory: AdminCustomizeCategoryMutationResponse;
+  adminUpdateDailyWorkshopConfig: AdminDailyWorkshopConfigMutationResponse;
+  adminUpdateDailyWorkshopRegistrationStatus: AdminDailyWorkshopMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
   adminUpdateHeroImages: AdminSettingsMutationResponse;
@@ -1234,6 +1526,8 @@ export type Mutation = {
   adminUpdateRegistrationStatus: AdminRegistrationMutationResponse;
   adminUpdateSocialLinks: AdminSettingsMutationResponse;
   adminUpdateUserRole: AdminUserMutationResponse;
+  adminUpsertDailyWorkshopBlackoutRule: AdminDailyWorkshopBlackoutRuleMutationResponse;
+  adminUpsertDailyWorkshopPricingTier: AdminDailyWorkshopPricingTierMutationResponse;
   cancelOrder: OrderMutationResponse;
   clearCart: Scalars['Boolean']['output'];
   createAddress: AddressMutationResponse;
@@ -1242,6 +1536,7 @@ export type Mutation = {
   createProductReview: CreateReviewResponse;
   deleteAddress: AddressMutationResponse;
   moveToCart: Scalars['Boolean']['output'];
+  registerForDailyWorkshop: CreateDailyWorkshopRegistrationResponse;
   registerForEvent: RegisterForEventResponse;
   removeFromCart: Scalars['Boolean']['output'];
   removeFromWishlist: Scalars['Boolean']['output'];
@@ -1329,6 +1624,16 @@ export type MutationAdminDeleteCustomizeCategoryArgs = {
 };
 
 
+export type MutationAdminDeleteDailyWorkshopBlackoutRuleArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type MutationAdminDeleteDailyWorkshopPricingTierArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationAdminDeleteEventArgs = {
   id: Scalars['String']['input'];
 };
@@ -1410,6 +1715,17 @@ export type MutationAdminUpdateCustomizeCategoryArgs = {
 };
 
 
+export type MutationAdminUpdateDailyWorkshopConfigArgs = {
+  input: AdminUpdateDailyWorkshopConfigInput;
+};
+
+
+export type MutationAdminUpdateDailyWorkshopRegistrationStatusArgs = {
+  registrationId: Scalars['String']['input'];
+  status: Scalars['String']['input'];
+};
+
+
 export type MutationAdminUpdateEventArgs = {
   id: Scalars['String']['input'];
   input: UpdateEventInput;
@@ -1480,6 +1796,16 @@ export type MutationAdminUpdateUserRoleArgs = {
 };
 
 
+export type MutationAdminUpsertDailyWorkshopBlackoutRuleArgs = {
+  input: AdminUpsertDailyWorkshopBlackoutRuleInput;
+};
+
+
+export type MutationAdminUpsertDailyWorkshopPricingTierArgs = {
+  input: AdminUpsertDailyWorkshopPricingTierInput;
+};
+
+
 export type MutationCancelOrderArgs = {
   orderId: Scalars['String']['input'];
 };
@@ -1512,6 +1838,11 @@ export type MutationDeleteAddressArgs = {
 
 export type MutationMoveToCartArgs = {
   productId: Scalars['Int']['input'];
+};
+
+
+export type MutationRegisterForDailyWorkshopArgs = {
+  input: CreateDailyWorkshopRegistrationInput;
 };
 
 
@@ -1820,6 +2151,9 @@ export type Query = {
   adminCustomizationTypes: Array<AdminCustomizationTypeSummary>;
   adminCustomizeCategories: AdminCustomizeCategoriesResponse;
   adminCustomizeCategoryById?: Maybe<AdminCustomizeCategory>;
+  adminDailyWorkshopBlackoutRules: Array<AdminDailyWorkshopBlackoutRule>;
+  adminDailyWorkshopConfig: AdminDailyWorkshopConfig;
+  adminDailyWorkshopPricingTiers: Array<AdminDailyWorkshopPricingTier>;
   adminDashboardStats: DashboardStats;
   adminEventById?: Maybe<AdminEventDetail>;
   adminEventLevelOptions: Array<AdminLevelOption>;
@@ -1840,6 +2174,7 @@ export type Query = {
   adminUpcomingEvents: Array<UpcomingEvent>;
   adminUserById?: Maybe<AdminUserDetail>;
   adminUserCart: Array<AdminUserCartItem>;
+  adminUserDailyWorkshopRegistrations: Array<AdminDailyWorkshopRegistration>;
   adminUserOrders: Array<AdminUserOrder>;
   adminUserRegistrations: Array<AdminUserRegistration>;
   adminUserWishlist: AdminUserWishlistResponse;
@@ -1852,12 +2187,18 @@ export type Query = {
   customizationCategories: CustomizationCategoriesResponse;
   customizationOptionsByCategory: CustomizationOptionsResponse;
   customizationTypes: Array<Scalars['String']['output']>;
+  dailyWorkshopAvailability?: Maybe<DailyWorkshopAvailabilityResponse>;
+  dailyWorkshopPublicConfig?: Maybe<DailyWorkshopConfig>;
+  dailyWorkshopRegistrationById?: Maybe<DailyWorkshopRegistration>;
   eventById?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
   eventWithUserContext?: Maybe<EventWithUserContext>;
   events: EventsResponse;
   featuredReviews: Array<FeaturedReview>;
   globalSearch: GlobalSearchResponse;
+  myCompletedDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
+  myDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
+  myUpcomingDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
   newsletterStatus: NewsletterStatus;
   order?: Maybe<Order>;
   orders: OrdersResponse;
@@ -1984,6 +2325,11 @@ export type QueryAdminUserCartArgs = {
 };
 
 
+export type QueryAdminUserDailyWorkshopRegistrationsArgs = {
+  userId: Scalars['Int']['input'];
+};
+
+
 export type QueryAdminUserOrdersArgs = {
   userId: Scalars['Int']['input'];
 };
@@ -2027,6 +2373,16 @@ export type QueryCustomizationOptionsByCategoryArgs = {
 };
 
 
+export type QueryDailyWorkshopAvailabilityArgs = {
+  filter?: InputMaybe<DailyWorkshopAvailabilityInput>;
+};
+
+
+export type QueryDailyWorkshopRegistrationByIdArgs = {
+  registrationId: Scalars['String']['input'];
+};
+
+
 export type QueryEventByIdArgs = {
   id: Scalars['String']['input'];
 };
@@ -2055,6 +2411,21 @@ export type QueryFeaturedReviewsArgs = {
 
 export type QueryGlobalSearchArgs = {
   input: GlobalSearchInput;
+};
+
+
+export type QueryMyCompletedDailyWorkshopRegistrationsArgs = {
+  filter?: InputMaybe<DailyWorkshopRegistrationsFilterInput>;
+};
+
+
+export type QueryMyDailyWorkshopRegistrationsArgs = {
+  filter?: InputMaybe<DailyWorkshopRegistrationsFilterInput>;
+};
+
+
+export type QueryMyUpcomingDailyWorkshopRegistrationsArgs = {
+  filter?: InputMaybe<DailyWorkshopRegistrationsFilterInput>;
 };
 
 
@@ -2836,6 +3207,85 @@ export type AdminCustomizeCategoryByIdQueryVariables = Exact<{
 
 export type AdminCustomizeCategoryByIdQuery = { adminCustomizeCategoryById?: { id: number, category: string, base_price: number, image_url?: string | null, is_active: boolean, options_count: number, created_at: Date | string, updated_at: Date | string, options: Array<{ id: number, customize_category_id: number, category_name: string, type: string, name: string, value: string, price_modifier: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> } | null };
 
+export type AdminDailyWorkshopConfigMutationFieldsFragment = { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string };
+
+export type AdminDailyWorkshopPricingTierMutationFieldsFragment = { id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string };
+
+export type AdminDailyWorkshopBlackoutRuleMutationFieldsFragment = { id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string };
+
+export type AdminUpdateDailyWorkshopConfigMutationVariables = Exact<{
+  input: AdminUpdateDailyWorkshopConfigInput;
+}>;
+
+
+export type AdminUpdateDailyWorkshopConfigMutation = { adminUpdateDailyWorkshopConfig: { success: boolean, error?: string | null, config?: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string } | null } };
+
+export type AdminUpsertDailyWorkshopPricingTierMutationVariables = Exact<{
+  input: AdminUpsertDailyWorkshopPricingTierInput;
+}>;
+
+
+export type AdminUpsertDailyWorkshopPricingTierMutation = { adminUpsertDailyWorkshopPricingTier: { success: boolean, error?: string | null, tier?: { id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string } | null } };
+
+export type AdminDeleteDailyWorkshopPricingTierMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteDailyWorkshopPricingTierMutation = { adminDeleteDailyWorkshopPricingTier: { success: boolean, error?: string | null } };
+
+export type AdminUpsertDailyWorkshopBlackoutRuleMutationVariables = Exact<{
+  input: AdminUpsertDailyWorkshopBlackoutRuleInput;
+}>;
+
+
+export type AdminUpsertDailyWorkshopBlackoutRuleMutation = { adminUpsertDailyWorkshopBlackoutRule: { success: boolean, error?: string | null, rule?: { id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string } | null } };
+
+export type AdminDeleteDailyWorkshopBlackoutRuleMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type AdminDeleteDailyWorkshopBlackoutRuleMutation = { adminDeleteDailyWorkshopBlackoutRule: { success: boolean, error?: string | null } };
+
+export type AdminUpdateDailyWorkshopRegistrationStatusMutationVariables = Exact<{
+  registrationId: Scalars['String']['input'];
+  status: Scalars['String']['input'];
+}>;
+
+
+export type AdminUpdateDailyWorkshopRegistrationStatusMutation = { adminUpdateDailyWorkshopRegistrationStatus: { success: boolean, error?: string | null } };
+
+export type AdminDailyWorkshopConfigFieldsFragment = { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string };
+
+export type AdminDailyWorkshopPricingTierFieldsFragment = { id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string };
+
+export type AdminDailyWorkshopBlackoutRuleFieldsFragment = { id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string };
+
+export type AdminDailyWorkshopRegistrationFieldsFragment = { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, slot_start_at: Date | string, slot_end_at: Date | string }>, user: { id: number, email: string, name?: string | null, image?: string | null } };
+
+export type AdminDailyWorkshopConfigQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminDailyWorkshopConfigQuery = { adminDailyWorkshopConfig: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string } };
+
+export type AdminDailyWorkshopPricingTiersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminDailyWorkshopPricingTiersQuery = { adminDailyWorkshopPricingTiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> };
+
+export type AdminDailyWorkshopBlackoutRulesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminDailyWorkshopBlackoutRulesQuery = { adminDailyWorkshopBlackoutRules: Array<{ id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string }> };
+
+export type AdminUserDailyWorkshopRegistrationsQueryVariables = Exact<{
+  userId: Scalars['Int']['input'];
+}>;
+
+
+export type AdminUserDailyWorkshopRegistrationsQuery = { adminUserDailyWorkshopRegistrations: Array<{ id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, slot_start_at: Date | string, slot_end_at: Date | string }>, user: { id: number, email: string, name?: string | null, image?: string | null } }> };
+
 export type AdminCreateEventMutationVariables = Exact<{
   input: CreateEventInput;
 }>;
@@ -3122,14 +3572,14 @@ export type AdminUsersQueryVariables = Exact<{
 }>;
 
 
-export type AdminUsersQuery = { adminUsers: { total: number, page: number, limit: number, totalPages: number, users: Array<{ id: number, auth_id: string, email: string, name?: string | null, image?: string | null, phone?: string | null, role: UserRole, created_at: Date | string, pendingOrdersCount: number, pendingRegistrationsCount: number, _count: { product_orders: number, event_registrations: number } }> } };
+export type AdminUsersQuery = { adminUsers: { total: number, page: number, limit: number, totalPages: number, users: Array<{ id: number, auth_id: string, email: string, name?: string | null, image?: string | null, phone?: string | null, role: UserRole, created_at: Date | string, pendingOrdersCount: number, pendingRegistrationsCount: number, _count: { product_orders: number, event_registrations: number, daily_workshop_registrations: number } }> } };
 
 export type AdminUserByIdQueryVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
 
 
-export type AdminUserByIdQuery = { adminUserById?: { id: number, auth_id: string, email: string, name?: string | null, image?: string | null, phone?: string | null, role: UserRole, created_at: Date | string, updated_at: Date | string, _count: { product_orders: number, event_registrations: number, wishlists: number, carts: number, reviews: number } } | null };
+export type AdminUserByIdQuery = { adminUserById?: { id: number, auth_id: string, email: string, name?: string | null, image?: string | null, phone?: string | null, role: UserRole, created_at: Date | string, updated_at: Date | string, _count: { product_orders: number, event_registrations: number, daily_workshop_registrations: number, wishlists: number, carts: number, reviews: number } } | null };
 
 export type AdminUserOrdersQueryVariables = Exact<{
   userId: Scalars['Int']['input'];
@@ -3144,6 +3594,13 @@ export type AdminUserRegistrationsQueryVariables = Exact<{
 
 
 export type AdminUserRegistrationsQuery = { adminUserRegistrations: Array<{ id: string, status: string, seats_reserved: number, price: number, discount: number, created_at: Date | string, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, event: { id: string, title: string, slug: string, starts_at: Date | string, ends_at: Date | string, location: string, image: string, price: number } }> };
+
+export type AdminUserDailyWorkshopRegistrationsForUserQueryVariables = Exact<{
+  userId: Scalars['Int']['input'];
+}>;
+
+
+export type AdminUserDailyWorkshopRegistrationsForUserQuery = { adminUserDailyWorkshopRegistrations: Array<{ id: string, status: DailyWorkshopRegistrationStatus, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, created_at: Date | string, updated_at: Date | string, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, slots: Array<{ id: number, slot_start_at: Date | string, slot_end_at: Date | string }> }> };
 
 export type AdminUserCartQueryVariables = Exact<{
   userId: Scalars['Int']['input'];
@@ -3210,6 +3667,63 @@ export type CustomizationTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CustomizationTypesQuery = { customizationTypes: Array<string> };
+
+export type DailyWorkshopRegistrationMutationFieldsFragment = { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> };
+
+export type RegisterForDailyWorkshopMutationVariables = Exact<{
+  input: CreateDailyWorkshopRegistrationInput;
+}>;
+
+
+export type RegisterForDailyWorkshopMutation = { registerForDailyWorkshop: { success: boolean, error?: string | null, registration?: { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> } | null } };
+
+export type DailyWorkshopPricingTierFieldsFragment = { id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean };
+
+export type DailyWorkshopConfigFieldsFragment = { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, pricing_tiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean }> };
+
+export type DailyWorkshopRegistrationSlotFieldsFragment = { id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string };
+
+export type DailyWorkshopRegistrationFieldsFragment = { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> };
+
+export type DailyWorkshopPublicConfigQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DailyWorkshopPublicConfigQuery = { dailyWorkshopPublicConfig?: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, pricing_tiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean }> } | null };
+
+export type DailyWorkshopAvailabilityQueryVariables = Exact<{
+  filter?: InputMaybe<DailyWorkshopAvailabilityInput>;
+}>;
+
+
+export type DailyWorkshopAvailabilityQuery = { dailyWorkshopAvailability?: { config: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, pricing_tiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean }> }, days: Array<{ date_key: string, label: string, slots: Array<{ slot_start_at: Date | string, slot_end_at: Date | string, is_available: boolean, reserved_participants: number, remaining_capacity: number, reason?: string | null }> }> } | null };
+
+export type MyDailyWorkshopRegistrationsQueryVariables = Exact<{
+  filter?: InputMaybe<DailyWorkshopRegistrationsFilterInput>;
+}>;
+
+
+export type MyDailyWorkshopRegistrationsQuery = { myDailyWorkshopRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> }> } };
+
+export type MyUpcomingDailyWorkshopRegistrationsQueryVariables = Exact<{
+  filter?: InputMaybe<DailyWorkshopRegistrationsFilterInput>;
+}>;
+
+
+export type MyUpcomingDailyWorkshopRegistrationsQuery = { myUpcomingDailyWorkshopRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> }> } };
+
+export type MyCompletedDailyWorkshopRegistrationsQueryVariables = Exact<{
+  filter?: InputMaybe<DailyWorkshopRegistrationsFilterInput>;
+}>;
+
+
+export type MyCompletedDailyWorkshopRegistrationsQuery = { myCompletedDailyWorkshopRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> }> } };
+
+export type DailyWorkshopRegistrationByIdQueryVariables = Exact<{
+  registrationId: Scalars['String']['input'];
+}>;
+
+
+export type DailyWorkshopRegistrationByIdQuery = { dailyWorkshopRegistrationById?: { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> } | null };
 
 export type MutationRegistrationEventFieldsFragment = { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string };
 

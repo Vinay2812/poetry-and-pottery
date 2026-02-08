@@ -1,4 +1,5 @@
 import {
+  DailyWorkshopRegistrationStatus,
   EventLevel,
   EventRegistrationStatus,
   EventStatus,
@@ -69,6 +70,26 @@ export function getRegistrationStatusColor(
     [EventRegistrationStatus.Confirmed]:
       "bg-primary/10 text-primary border-primary/20",
     [EventRegistrationStatus.Cancelled]:
+      "bg-neutral-100 text-neutral-700 border-neutral-200",
+  };
+  return colors[status];
+}
+
+export function getDailyWorkshopRegistrationStatusColor(
+  status: DailyWorkshopRegistrationStatus,
+): string {
+  const colors: Record<DailyWorkshopRegistrationStatus, string> = {
+    [DailyWorkshopRegistrationStatus.Pending]:
+      "bg-amber-100 text-amber-700 border-amber-200",
+    [DailyWorkshopRegistrationStatus.Approved]:
+      "bg-blue-100 text-blue-700 border-blue-200",
+    [DailyWorkshopRegistrationStatus.Rejected]:
+      "bg-red-100 text-red-700 border-red-200",
+    [DailyWorkshopRegistrationStatus.Paid]:
+      "bg-emerald-100 text-emerald-700 border-emerald-200",
+    [DailyWorkshopRegistrationStatus.Confirmed]:
+      "bg-primary/10 text-primary border-primary/20",
+    [DailyWorkshopRegistrationStatus.Cancelled]:
       "bg-neutral-100 text-neutral-700 border-neutral-200",
   };
   return colors[status];

@@ -61,3 +61,7 @@ export { ReviewsSkeleton } from "./reviews-skeleton";
 export { CollectionsSectionSkeleton } from "./collections-section-skeleton";
 export { TestimonialsSectionSkeleton } from "./testimonials-section-skeleton";
 export { WorkshopsSectionSkeleton } from "./workshops-section-skeleton";
+export {
+  DailyWorkshopsBookingSkeleton,
+  DailyWorkshopRegistrationDetailSkeleton,
+} from "./daily-workshops-skeleton";

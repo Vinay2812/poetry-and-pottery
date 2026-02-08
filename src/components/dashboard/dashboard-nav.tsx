@@ -3,6 +3,7 @@
 import {
   BoxIcon,
   CalendarIcon,
+  Clock3Icon,
   FileTextIcon,
   FolderIcon,
   HomeIcon,
@@ -59,6 +60,11 @@ const navItems: NavItem[] = [
     title: "Events",
     href: "/dashboard/events",
     icon: CalendarIcon,
+  },
+  {
+    title: "Daily Workshops",
+    href: "/dashboard/daily-workshops",
+    icon: Clock3Icon,
   },
   {
     title: "Customization",

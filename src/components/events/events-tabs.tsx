@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthAction } from "@/hooks/use-auth-action";
-import { CalendarDays, History, Sparkles, Ticket } from "lucide-react";
+import { CalendarDays, Clock3, Ticket } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef } from "react";
@@ -12,8 +12,7 @@ import { cn } from "@/lib/utils";
 
 export enum TabType {
   ALL = "all",
-  UPCOMING = "upcoming",
-  PAST = "past",
+  DAILY_WORKSHOPS = "daily-workshops",
   REGISTRATIONS = "registrations",
 }
 
@@ -26,18 +25,11 @@ export const EVENTS_TABS = [
     desktopLabel: "All Events",
   },
   {
-    type: TabType.UPCOMING,
-    href: "/events/upcoming",
-    icon: Sparkles,
-    mobileLabel: "Upcoming",
-    desktopLabel: "Upcoming",
-  },
-  {
-    type: TabType.PAST,
-    href: "/events/past",
-    icon: History,
-    mobileLabel: "Past",
-    desktopLabel: "Past Workshops",
+    type: TabType.DAILY_WORKSHOPS,
+    href: "/events/daily-workshops",
+    icon: Clock3,
+    mobileLabel: "Daily",
+    desktopLabel: "Daily Workshops",
   },
   {
     type: TabType.REGISTRATIONS,
