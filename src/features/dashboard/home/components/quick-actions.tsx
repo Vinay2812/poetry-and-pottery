@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useMemo } from "react";
 
+import { createDate } from "@/lib/date";
+
 import type { QuickActionsProps } from "../types";
 
 export function QuickActions({
@@ -20,11 +22,11 @@ export function QuickActions({
     eventsUpcomingIn7Days > 0;
 
   const thisWeek = useMemo(() => {
-    const startDate = new Date();
+    const startDate = createDate();
     const endDate = startDate.setDate(startDate.getDate() + 7);
 
-    const isoStartDate = new Date(startDate).toISOString().split("T")[0];
-    const isoEndDate = new Date(endDate).toISOString().split("T")[0];
+    const isoStartDate = createDate(startDate).toISOString().split("T")[0];
+    const isoEndDate = createDate(endDate).toISOString().split("T")[0];
 
     return {
       startDate: isoStartDate,

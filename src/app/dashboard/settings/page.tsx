@@ -1,14 +1,10 @@
-import {
-  getContactInfo,
-  getHeroImages,
-  getSocialLinks,
-} from "@/data/admin/settings/gateway/server";
-import { SettingsFormContainer } from "@/features/dashboard/settings";
 import { Suspense } from "react";
 
 import { SettingsFormSkeleton } from "@/components/skeletons";
 
-export default async function SettingsPage() {
+import { SettingsFormContent } from "./settings-form-content";
+
+export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -22,21 +18,5 @@ export default async function SettingsPage() {
         <SettingsFormContent />
       </Suspense>
     </div>
-  );
-}
-
-async function SettingsFormContent() {
-  const [heroImages, contactInfo, socialLinks] = await Promise.all([
-    getHeroImages(),
-    getContactInfo(),
-    getSocialLinks(),
-  ]);
-
-  return (
-    <SettingsFormContainer
-      heroImages={heroImages}
-      contactInfo={contactInfo}
-      socialLinks={socialLinks}
-    />
   );
 }

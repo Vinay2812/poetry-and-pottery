@@ -14,6 +14,8 @@ import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 import { StaggeredGrid } from "@/components/shared";
 
+import { createDate } from "@/lib/date";
+
 import { EventType } from "@/graphql/generated/graphql";
 
 interface PastWorkshopsClientProps {
@@ -120,7 +122,8 @@ export function PastWorkshopsClient({
         default:
           // For past events, show most recent first
           return (
-            new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime()
+            createDate(b.starts_at).getTime() -
+            createDate(a.starts_at).getTime()
           );
       }
     });

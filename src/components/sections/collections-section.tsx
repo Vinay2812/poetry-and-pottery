@@ -4,6 +4,7 @@ import { ChevronRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 import { CollectionBase } from "@/graphql/generated/types";
@@ -13,8 +14,8 @@ interface FeaturedCollectionCardProps {
 }
 
 function FeaturedCollectionCard({ collection }: FeaturedCollectionCardProps) {
-  const endsAt = collection.ends_at ? new Date(collection.ends_at) : null;
-  const now = new Date();
+  const endsAt = collection.ends_at ? createDate(collection.ends_at) : null;
+  const now = createDate();
   const isEnding =
     endsAt &&
     endsAt > now &&
@@ -77,8 +78,8 @@ interface CollectionListItemProps {
 }
 
 function CollectionListItem({ collection }: CollectionListItemProps) {
-  const endsAt = collection.ends_at ? new Date(collection.ends_at) : null;
-  const now = new Date();
+  const endsAt = collection.ends_at ? createDate(collection.ends_at) : null;
+  const now = createDate();
   const isEnding =
     endsAt &&
     endsAt > now &&

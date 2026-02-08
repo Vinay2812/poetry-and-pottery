@@ -1,11 +1,11 @@
-import { getPublicPrivacyContent } from "@/data/admin/content/gateway/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { PrivacyPageClient } from "@/components/pages";
 import { PageSkeleton } from "@/components/skeletons";
 
 import { absoluteUrl } from "@/lib/seo";
+
+import { PrivacyContent } from "./privacy-content";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Poetry & Pottery",
@@ -38,38 +38,6 @@ export const metadata: Metadata = {
     ],
   },
 };
-
-async function PrivacyContent() {
-  const content = await getPublicPrivacyContent();
-
-  if (!content) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Page content not available</p>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "Privacy Policy",
-            url: absoluteUrl("/privacy"),
-            dateModified: content.lastUpdated,
-            description:
-              "Read how Poetry & Pottery handles personal information and privacy rights.",
-          }),
-        }}
-      />
-      <PrivacyPageClient content={content} />
-    </>
-  );
-}
 
 export default function PrivacyPage() {
   return (

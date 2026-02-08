@@ -1,6 +1,8 @@
 import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 import Link from "next/link";
 
+import { createDate } from "@/lib/date";
+
 import type { UpcomingEventsSectionProps } from "../types";
 
 export function UpcomingEventsSection({ events }: UpcomingEventsSectionProps) {
@@ -12,7 +14,7 @@ export function UpcomingEventsSection({ events }: UpcomingEventsSectionProps) {
           <h2 className="text-lg font-semibold">Upcoming Events</h2>
         </div>
         <Link
-          href={`/dashboard/events?startDate=${new Date().toISOString().split("T")[0]}`}
+          href={`/dashboard/events?startDate=${createDate().toISOString().split("T")[0]}`}
           className="text-primary flex items-center gap-1 text-sm font-medium hover:underline"
         >
           Manage <ArrowRightIcon className="size-3" />
@@ -32,7 +34,7 @@ export function UpcomingEventsSection({ events }: UpcomingEventsSectionProps) {
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">{event.title}</p>
                 <p className="text-muted-foreground text-sm">
-                  {new Date(event.starts_at).toLocaleDateString("en-IN", {
+                  {createDate(event.starts_at).toLocaleDateString("en-IN", {
                     weekday: "short",
                     day: "numeric",
                     month: "short",

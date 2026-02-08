@@ -4009,6 +4009,20 @@ export type GlobalSearchQueryVariables = Exact<{
 
 export type GlobalSearchQuery = { globalSearch: { products: Array<{ id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean }>, events: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, event_type: EventType, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }>, orders: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean } }> }>, counts: { products: number, events: number, orders: number } } };
 
+export type SitemapProductsQueryVariables = Exact<{
+  filter: ProductsFilterInput;
+}>;
+
+
+export type SitemapProductsQuery = { products: { total_products: number, products: Array<{ id: number, is_active: boolean }> } };
+
+export type SitemapEventsQueryVariables = Exact<{
+  filter?: InputMaybe<EventsFilterInput>;
+}>;
+
+
+export type SitemapEventsQuery = { events: { total: number, data: Array<{ id: string, status: EventStatus, updated_at: Date | string }> } };
+
 export type UserCountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 

@@ -10,6 +10,8 @@ import {
   useTransition,
 } from "react";
 
+import { createDate } from "@/lib/date";
+
 import { PastWorkshopDetail } from "../components/past-workshop-detail";
 import {
   type FormattedReview,
@@ -83,7 +85,7 @@ export function PastWorkshopDetailContainer({
         avatar: review.user?.image || "",
         rating: review.rating,
         content: review.review || "",
-        date: new Date(review.created_at).toLocaleDateString("en-US", {
+        date: createDate(review.created_at).toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
           year: "numeric",

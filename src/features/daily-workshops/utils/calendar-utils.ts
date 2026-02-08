@@ -1,5 +1,7 @@
 "use client";
 
+import { createDate } from "@/lib/date";
+
 import type { DailyWorkshopCalendarDayViewModel } from "../types";
 
 export function formatDateKeyInTimeZone(date: Date, timeZone: string): string {
@@ -18,7 +20,7 @@ export function formatDateKeyInTimeZone(date: Date, timeZone: string): string {
 
 export function parseDateKey(dateKey: string): Date {
   const [year, month, day] = dateKey.split("-").map(Number);
-  return new Date(year, (month ?? 1) - 1, day ?? 1);
+  return createDate(year, (month ?? 1) - 1, day ?? 1);
 }
 
 export function getMinutesOfDayInTimeZone(
@@ -30,7 +32,7 @@ export function getMinutesOfDayInTimeZone(
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).formatToParts(new Date(date));
+  }).formatToParts(createDate(date));
   const map = new Map(parts.map((part) => [part.type, part.value]));
   const hour = Number(map.get("hour") ?? "0");
   const minute = Number(map.get("minute") ?? "0");
@@ -46,15 +48,15 @@ export function buildCalendarDays(
 ): DailyWorkshopCalendarDayViewModel[] {
   const year = monthDate.getFullYear();
   const month = monthDate.getMonth();
-  const firstDayOfMonth = new Date(year, month, 1);
-  const startDate = new Date(firstDayOfMonth);
+  const firstDayOfMonth = createDate(year, month, 1);
+  const startDate = createDate(firstDayOfMonth);
   startDate.setDate(1 - firstDayOfMonth.getDay());
-  const todayDateKey = formatDateKeyInTimeZone(new Date(), timeZone);
+  const todayDateKey = formatDateKeyInTimeZone(createDate(), timeZone);
 
   const days: DailyWorkshopCalendarDayViewModel[] = [];
 
   for (let index = 0; index < 35; index += 1) {
-    const date = new Date(startDate);
+    const date = createDate(startDate);
     date.setDate(startDate.getDate() + index);
     const dateKey = formatDateKeyInTimeZone(date, timeZone);
     const isInCurrentMonth = date.getMonth() === month;
@@ -88,7 +90,7 @@ export function buildSelectedDateTabs(
       const day = dayLookup.get(dateKey);
       const hours = selectedSlotStartTimes.filter((slotStartAt) => {
         return (
-          formatDateKeyInTimeZone(new Date(slotStartAt), timeZone) === dateKey
+          formatDateKeyInTimeZone(createDate(slotStartAt), timeZone) === dateKey
         );
       }).length;
 

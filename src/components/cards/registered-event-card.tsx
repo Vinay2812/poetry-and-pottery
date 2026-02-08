@@ -12,6 +12,7 @@ import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 function getEventTypeIcon(type: EventType) {
@@ -88,7 +89,7 @@ export function RegisteredEventCard({
   const { event, status, id: registrationId } = registration;
   const statusConfig = getStatusConfig(status);
 
-  const eventDate = new Date(event.starts_at);
+  const eventDate = createDate(event.starts_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",

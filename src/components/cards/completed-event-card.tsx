@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 function getEventTypeIcon(type: EventType) {
@@ -52,7 +53,7 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
   const { mutate: createEventReviewMutate } = useCreateEventReview();
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
 
-  const eventDate = new Date(event.ends_at);
+  const eventDate = createDate(event.ends_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",

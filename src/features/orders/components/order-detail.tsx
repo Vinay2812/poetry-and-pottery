@@ -1,310 +1,18 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  ChevronDown,
-  MapPin,
-  Package,
-  Phone,
-  Sparkles,
-  User,
-} from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
-
 import { OrderProgress } from "@/components/orders";
-import {
-  OptimizedImage,
-  ReviewForm,
-  WhatsAppContactButton,
-} from "@/components/shared";
+import { WhatsAppContactButton } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
 import { OrderStatus } from "../types";
-import type {
-  OrderDetailProps,
-  OrderDetailViewModel,
-  OrderItemViewModel,
-  PaymentSummaryViewModel,
-  ShippingAddress,
-} from "../types";
+import type { OrderDetailProps } from "../types";
 import { formatOrderDate } from "../types";
-
-interface OrderItemCardProps {
-  item: OrderItemViewModel;
-  canReview: boolean;
-  onReviewSubmit: (
-    rating: number,
-    review?: string,
-    imageUrls?: string[],
-  ) => Promise<{ success: boolean; error?: string }>;
-}
-
-function OrderItemCard({
-  item,
-  canReview,
-  onReviewSubmit,
-}: OrderItemCardProps) {
-  const [isCustomizationExpanded, setIsCustomizationExpanded] = useState(false);
-  const hasCustomization =
-    item.customData && item.customData.options.length > 0;
-
-  return (
-    <div
-      className={cn(
-        "shadow-soft rounded-2xl border bg-white p-4 dark:bg-neutral-900",
-        hasCustomization
-          ? "border-primary/30 ring-primary/20 ring-2"
-          : "border-neutral-100 dark:border-neutral-800",
-      )}
-    >
-      <div className="flex gap-4">
-        <Link href={`/products/${item.productId}`}>
-          <div
-            className={cn(
-              "h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800",
-              hasCustomization && "ring-primary/30 ring-2",
-            )}
-          >
-            <OptimizedImage
-              src={item.productImage}
-              alt={item.productName}
-              width={80}
-              height={80}
-              className="h-full w-full object-cover transition-transform hover:scale-105"
-            />
-          </div>
-        </Link>
-
-        <div className="flex min-w-0 flex-1 flex-col justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <Link href={`/products/${item.productId}`}>
-                <h3 className="hover:text-primary line-clamp-1 text-sm font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-                  {item.productName}
-                </h3>
-              </Link>
-              {hasCustomization && (
-                <span className="bg-primary/10 text-primary flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium">
-                  <Sparkles className="h-3 w-3" />
-                  <span>Custom</span>
-                </span>
-              )}
-            </div>
-            {item.colorName && (
-              <p className="text-xs text-neutral-500">{item.colorName}</p>
-            )}
-            <p className="text-xs text-neutral-500">Qty: {item.quantity}</p>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <p className="text-primary text-sm font-bold">
-              ₹{item.finalPrice.toLocaleString()}
-            </p>
-            {item.discount > 0 && (
-              <span className="rounded bg-green-50 px-1.5 py-0.5 text-[10px] font-medium text-green-600">
-                -₹{item.discount.toLocaleString()}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Customization Expandable Section */}
-      {hasCustomization && (
-        <div className="mt-3">
-          <button
-            onClick={() => setIsCustomizationExpanded(!isCustomizationExpanded)}
-            className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-left dark:bg-neutral-800"
-          >
-            <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
-              View Customization Details
-            </span>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 text-neutral-400 transition-transform",
-                isCustomizationExpanded && "rotate-180",
-              )}
-            />
-          </button>
-          <AnimatePresence>
-            {isCustomizationExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
-              >
-                <div className="space-y-1.5 pt-2">
-                  {item.customData?.options.map((option) => (
-                    <div
-                      key={option.optionId}
-                      className="flex items-center justify-between text-xs"
-                    >
-                      <span className="text-neutral-500 dark:text-neutral-400">
-                        {option.name}
-                      </span>
-                      <span className="font-medium text-neutral-700 dark:text-neutral-200">
-                        {option.value}
-                        {option.priceModifier !== 0 && (
-                          <span className="text-primary ml-1">
-                            {option.priceModifier > 0 ? "+" : ""}₹
-                            {option.priceModifier.toLocaleString()}
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  ))}
-                  {item.customData && item.customData.totalModifier !== 0 && (
-                    <div className="border-t border-neutral-100 pt-1.5 dark:border-neutral-700">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-neutral-500 dark:text-neutral-400">
-                          Customization Total
-                        </span>
-                        <span className="text-primary font-medium">
-                          {item.customData.totalModifier > 0 ? "+" : ""}₹
-                          {item.customData.totalModifier.toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
-
-      {canReview && (
-        <div className="mt-4 border-t border-neutral-100 pt-4 dark:border-neutral-800">
-          <ReviewForm
-            title={`Review ${item.productName}`}
-            hasReviewed={item.hasReviewed}
-            variant="full-width"
-            onSubmit={onReviewSubmit}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-interface PaymentSummaryCardProps {
-  summary: PaymentSummaryViewModel;
-  className?: string;
-}
-
-function PaymentSummaryCard({ summary, className }: PaymentSummaryCardProps) {
-  return (
-    <div
-      className={cn(
-        "shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 md:p-6 dark:border-neutral-800 dark:bg-neutral-900",
-        className,
-      )}
-    >
-      <p className="mb-4 text-[10px] font-bold tracking-widest text-neutral-400 uppercase">
-        Payment Summary
-      </p>
-      <div className="space-y-3">
-        <div className="flex justify-between text-sm">
-          <span className="text-neutral-500">Subtotal</span>
-          <span className="font-medium text-neutral-900 dark:text-neutral-100">
-            ₹{summary.subtotal.toLocaleString()}
-          </span>
-        </div>
-        {summary.totalDiscount > 0 && (
-          <div className="flex justify-between text-sm">
-            <span className="text-neutral-500">Discount</span>
-            <span className="font-medium text-emerald-600">
-              -₹{summary.totalDiscount.toLocaleString()}
-            </span>
-          </div>
-        )}
-        <div className="flex justify-between text-sm">
-          <span className="text-neutral-500">Shipping</span>
-          <span className="font-medium text-neutral-900 dark:text-neutral-100">
-            ₹{summary.shippingFee.toLocaleString()}
-          </span>
-        </div>
-        <div className="flex items-baseline justify-between border-t border-neutral-100 pt-3 dark:border-neutral-800">
-          <span className="font-semibold text-neutral-900 dark:text-neutral-100">
-            Total
-          </span>
-          <span className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
-            ₹{summary.total.toLocaleString()}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-interface ShippingAddressCardProps {
-  address: ShippingAddress;
-  className?: string;
-}
-
-function ShippingAddressCard({ address, className }: ShippingAddressCardProps) {
-  return (
-    <div
-      className={cn(
-        "shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 md:p-6 dark:border-neutral-800 dark:bg-neutral-900",
-        className,
-      )}
-    >
-      <p className="mb-3 text-[10px] font-bold tracking-widest text-neutral-400 uppercase md:mb-4">
-        Shipping Address
-      </p>
-      <div className="space-y-2 md:space-y-3">
-        <div className="flex items-center gap-2">
-          <User className="text-primary h-4 w-4 shrink-0" />
-          <span className="font-semibold text-neutral-900 dark:text-neutral-100">
-            {address.name}
-          </span>
-        </div>
-        {address.contact_number && (
-          <div className="flex items-center gap-2">
-            <Phone className="h-4 w-4 shrink-0 text-neutral-400" />
-            <span className="text-sm text-neutral-600 dark:text-neutral-400">
-              {address.contact_number}
-            </span>
-          </div>
-        )}
-        <div className="flex items-start gap-2">
-          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-neutral-400" />
-          <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-            {address.address_line_1}
-            {address.address_line_2 && `, ${address.address_line_2}`}
-            {`, ${address.city}`}
-            {`, ${address.state}`}
-            {` - ${address.zip}`}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function OrderNotFound() {
-  return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="bg-primary/10 mb-4 flex h-20 w-20 items-center justify-center rounded-full">
-        <Package className="text-primary h-10 w-10" />
-      </div>
-      <h2 className="mb-2 text-xl font-semibold">Order not found</h2>
-      <p className="text-muted-foreground mb-6 max-w-sm text-sm">
-        We couldn&apos;t find this order. It may have been removed or you may
-        not have access to it.
-      </p>
-      <Link href="/orders">
-        <Button className="rounded-full px-6">Back to Orders</Button>
-      </Link>
-    </div>
-  );
-}
+import { OrderItemCard } from "./order-item-card";
+import { OrderNotFound } from "./order-not-found";
+import { PaymentSummaryCard } from "./payment-summary-card";
+import { ShippingAddressCard } from "./shipping-address-card";
 
 export function OrderDetail({
   viewModel,
@@ -317,7 +25,6 @@ export function OrderDetail({
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-4 md:px-8 md:py-12">
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between">
           <div>
@@ -346,7 +53,6 @@ export function OrderDetail({
           </Badge>
         </div>
 
-        {/* Progress */}
         <div className="mt-6">
           <OrderProgress
             status={viewModel.status || OrderStatus.Processing}
@@ -361,7 +67,6 @@ export function OrderDetail({
         </div>
       </div>
 
-      {/* Order Items */}
       <div className="mb-8">
         <h3 className="mb-4 text-sm font-semibold text-neutral-900 md:text-lg dark:text-neutral-100">
           Items ({viewModel.items.length})
@@ -380,10 +85,8 @@ export function OrderDetail({
         </div>
       </div>
 
-      {/* Payment Summary */}
       <PaymentSummaryCard summary={viewModel.paymentSummary} />
 
-      {/* Shipping Address */}
       {viewModel.shippingAddress && (
         <ShippingAddressCard
           address={viewModel.shippingAddress}

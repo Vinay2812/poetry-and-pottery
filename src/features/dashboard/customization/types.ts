@@ -1,3 +1,5 @@
+import { createDate } from "@/lib/date";
+
 import type {
   AdminCategory,
   AdminCustomizationCategorySummary,
@@ -197,7 +199,7 @@ export function formatPriceModifier(price: number): string {
 
 // Format date for display.
 export function formatDate(date: string | Date): string {
-  return new Date(date).toLocaleDateString("en-IN", {
+  return createDate(date).toLocaleDateString("en-IN", {
     year: "numeric",
     month: "short",
     day: "numeric",

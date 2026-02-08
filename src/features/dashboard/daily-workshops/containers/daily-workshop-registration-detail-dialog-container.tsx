@@ -11,7 +11,7 @@ import {
 } from "react";
 import { toast } from "sonner";
 
-import { formatCreatedAt, formatDateTimeLocal } from "@/lib/date";
+import { createDate, formatCreatedAt, formatDateTimeLocal } from "@/lib/date";
 
 import { DailyWorkshopRegistrationDetailDialog } from "../components/daily-workshop-registration-detail-dialog";
 import type {
@@ -30,8 +30,8 @@ function inferSlotDurationMinutes(
   slots: { slot_start_at: Date | string; slot_end_at: Date | string }[],
 ): number {
   if (slots.length > 0) {
-    const firstStart = new Date(slots[0].slot_start_at);
-    const firstEnd = new Date(slots[0].slot_end_at);
+    const firstStart = createDate(slots[0].slot_start_at);
+    const firstEnd = createDate(slots[0].slot_end_at);
     const diffMinutes = Math.round(
       (firstEnd.getTime() - firstStart.getTime()) / (1000 * 60),
     );
@@ -60,7 +60,7 @@ function getInitialSlots(
 }
 
 function toSlotLabel(value: string, index: number): string {
-  const date = new Date(value);
+  const date = createDate(value);
   if (Number.isNaN(date.getTime())) {
     return `Slot ${index + 1}`;
   }
@@ -146,18 +146,18 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
     setFocusedSlotId(tempId);
 
     setSlots((previous) => {
-      const fallbackStart = new Date();
+      const fallbackStart = createDate();
       fallbackStart.setMinutes(
         fallbackStart.getMinutes() + slotDurationMinutes,
       );
 
       const lastSlot = previous[previous.length - 1];
       const lastSlotStart = lastSlot
-        ? new Date(lastSlot.startAt)
+        ? createDate(lastSlot.startAt)
         : fallbackStart;
       const nextStart = Number.isNaN(lastSlotStart.getTime())
         ? fallbackStart
-        : new Date(lastSlotStart.getTime() + slotDurationMinutes * 60 * 1000);
+        : createDate(lastSlotStart.getTime() + slotDurationMinutes * 60 * 1000);
 
       return [
         ...previous,
@@ -192,7 +192,7 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
   const handleSave = useCallback(async () => {
     if (!registration) return;
 
-    const parsedSlotStarts = slots.map((slot) => new Date(slot.startAt));
+    const parsedSlotStarts = slots.map((slot) => createDate(slot.startAt));
     if (parsedSlotStarts.some((slot) => Number.isNaN(slot.getTime()))) {
       toast.error("Please enter valid date/time for all slots");
       return;

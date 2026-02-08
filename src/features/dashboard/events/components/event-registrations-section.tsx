@@ -5,6 +5,7 @@ import { UserIcon } from "lucide-react";
 import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 
+import { createDate } from "@/lib/date";
 import { getRegistrationStatusColor } from "@/lib/status-utils";
 
 import type { EventRegistrationStatus } from "@/graphql/generated/types";
@@ -131,7 +132,7 @@ export function EventRegistrationsSection({
                       className="text-sm text-neutral-500"
                       suppressHydrationWarning
                     >
-                      {new Date(registration.created_at).toLocaleDateString(
+                      {createDate(registration.created_at).toLocaleDateString(
                         "en-IN",
                         {
                           day: "numeric",

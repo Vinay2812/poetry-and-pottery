@@ -6,11 +6,7 @@ import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  calculateDuration,
-  formatEventDateFull,
-  formatEventTime,
-} from "@/lib/date";
+import { calculateDuration, formatEventDateFull, formatEventTime } from "@/lib/date";
 
 interface TicketDownloadDialogProps {
   registration: EventRegistration;

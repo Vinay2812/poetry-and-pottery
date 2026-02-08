@@ -5,6 +5,8 @@ import { Suspense, useCallback, useMemo, useTransition } from "react";
 
 import { PastEventsSkeleton } from "@/components/skeletons";
 
+import { createDate } from "@/lib/date";
+
 import { EventType } from "@/graphql/generated/graphql";
 
 import { AllEvents } from "../components/all-events";
@@ -101,7 +103,8 @@ export function AllEventsContainer({
       default:
         return sorted.sort(
           (a, b) =>
-            new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime(),
+            createDate(a.starts_at).getTime() -
+            createDate(b.starts_at).getTime(),
         );
     }
   }, [rawUpcomingEvents, sortBy]);
@@ -117,7 +120,8 @@ export function AllEventsContainer({
       default:
         return sorted.sort(
           (a, b) =>
-            new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime(),
+            createDate(b.starts_at).getTime() -
+            createDate(a.starts_at).getTime(),
         );
     }
   }, [rawPastEvents, sortBy]);

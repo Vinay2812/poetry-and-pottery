@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { createDate } from "@/lib/date";
+
 const STATUS_BADGE_CONFIG: Record<
   ReturnType<typeof getCollectionStatus>,
   { label: string; className: string }
@@ -45,8 +47,8 @@ export default async function CollectionDetailPage({
   }
 
   const status = getCollectionStatus(
-    collection.starts_at ? new Date(collection.starts_at) : null,
-    collection.ends_at ? new Date(collection.ends_at) : null,
+    collection.starts_at ? createDate(collection.starts_at) : null,
+    collection.ends_at ? createDate(collection.ends_at) : null,
   );
   const statusConfig = STATUS_BADGE_CONFIG[status];
 

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 type DailyWorkshopCardVariant = "upcoming" | "completed";
@@ -24,7 +25,7 @@ function formatCurrency(amount: number): string {
 }
 
 function formatDate(date: Date | string): string {
-  return new Date(date).toLocaleDateString("en-US", {
+  return createDate(date).toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -33,7 +34,7 @@ function formatDate(date: Date | string): string {
 }
 
 function formatTime(date: Date | string): string {
-  return new Date(date).toLocaleTimeString("en-US", {
+  return createDate(date).toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
@@ -84,7 +85,8 @@ export function DailyWorkshopRegistrationCard({
 }: DailyWorkshopRegistrationCardProps) {
   const sortedSlots = [...registration.slots].sort((a, b) => {
     return (
-      new Date(a.slot_start_at).getTime() - new Date(b.slot_start_at).getTime()
+      createDate(a.slot_start_at).getTime() -
+      createDate(b.slot_start_at).getTime()
     );
   });
 

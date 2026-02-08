@@ -12,6 +12,8 @@ import { useAuthAction } from "@/hooks/use-auth-action";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
+import { createDate } from "@/lib/date";
+
 import { DailyWorkshopsBooking } from "../components/daily-workshops-booking";
 import { useCurrentTimestamp } from "../hooks/use-current-timestamp";
 import { useDailyWorkshopBookingDerivations } from "../hooks/use-daily-workshop-booking-derivations";
@@ -162,7 +164,7 @@ export function DailyWorkshopsBookingContainer({
       resetParticipants();
       clearBookingError();
       resetCalendarToDateKey(
-        formatDateKeyInTimeZone(new Date(), nextConfig.timezone),
+        formatDateKeyInTimeZone(createDate(), nextConfig.timezone),
       );
     },
     [
@@ -178,8 +180,8 @@ export function DailyWorkshopsBookingContainer({
 
   const handleToggleSlot = useCallback(
     (slotStartAt: Date | string) => {
-      const slotStartISO = new Date(slotStartAt).toISOString();
-      const slotStartTime = new Date(slotStartISO).getTime();
+      const slotStartISO = createDate(slotStartAt).toISOString();
+      const slotStartTime = createDate(slotStartISO).getTime();
       const slotInfo = slotAvailabilityByStart.get(slotStartISO);
 
       if (isConfigLoading) {
@@ -231,7 +233,7 @@ export function DailyWorkshopsBookingContainer({
     requireAuth(async () => {
       const now = Date.now();
       const futureSlots = selectedSlotStartTimes.filter(
-        (slotStartISO) => new Date(slotStartISO).getTime() > now,
+        (slotStartISO) => createDate(slotStartISO).getTime() > now,
       );
 
       if (futureSlots.length === 0) {
@@ -293,7 +295,7 @@ export function DailyWorkshopsBookingContainer({
       activeDay?.label ??
       parseDateKey(
         effectiveActiveDateKey ||
-          formatDateKeyInTimeZone(new Date(), availability.config.timezone),
+          formatDateKeyInTimeZone(createDate(), availability.config.timezone),
       ).toLocaleDateString("en-US", {
         weekday: "long",
         month: "short",

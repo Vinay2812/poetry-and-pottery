@@ -15,6 +15,8 @@ import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 import { StaggeredGrid } from "@/components/shared";
 
+import { createDate } from "@/lib/date";
+
 import { EventType } from "@/graphql/generated/graphql";
 
 interface UpcomingEventsClientProps {
@@ -128,7 +130,8 @@ export function UpcomingEventsClient({
         case "soonest":
         default:
           return (
-            new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime()
+            createDate(a.starts_at).getTime() -
+            createDate(b.starts_at).getTime()
           );
       }
     });

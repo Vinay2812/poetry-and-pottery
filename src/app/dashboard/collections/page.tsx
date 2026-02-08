@@ -1,15 +1,14 @@
-import { getCollections } from "@/data/admin/collections/gateway/server";
-import { CollectionsTableContainer } from "@/features/dashboard/collections";
 import { Suspense } from "react";
 
 import { CollectionsTableSkeleton } from "@/components/skeletons";
 
+import {
+  CollectionsTableContent,
+  type DashboardCollectionsSearchParams,
+} from "./collections-table-content";
+
 interface CollectionsPageProps {
-  searchParams: Promise<{
-    search?: string;
-    status?: string;
-    page?: string;
-  }>;
+  searchParams: Promise<DashboardCollectionsSearchParams>;
 }
 
 export default async function CollectionsPage({
@@ -35,24 +34,4 @@ export default async function CollectionsPage({
       </Suspense>
     </div>
   );
-}
-
-async function CollectionsTableContent({
-  search,
-  status,
-  page,
-}: {
-  search?: string;
-  status?: string;
-  page?: string;
-}) {
-  const data = await getCollections({
-    search,
-    active:
-      status === "active" ? true : status === "inactive" ? false : undefined,
-    page: page ? parseInt(page) : 1,
-    limit: 20,
-  });
-
-  return <CollectionsTableContainer data={data} />;
 }

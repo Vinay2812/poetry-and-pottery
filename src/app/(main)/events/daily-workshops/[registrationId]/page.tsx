@@ -1,16 +1,15 @@
-import {
-  getDailyWorkshopPublicConfigs,
-  getDailyWorkshopRegistrationById,
-} from "@/data/daily-workshops/gateway/server";
-import { DailyWorkshopRegistrationDetailContainer } from "@/features/daily-workshops";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { DailyWorkshopRegistrationDetailSkeleton } from "@/components/skeletons";
 
+import {
+  DailyWorkshopRegistrationDetailContent,
+  type DailyWorkshopRegistrationDetailPageParams,
+} from "./daily-workshop-registration-detail-content";
+
 interface DailyWorkshopRegistrationDetailPageProps {
-  params: Promise<{ registrationId: string }>;
+  params: Promise<DailyWorkshopRegistrationDetailPageParams>;
 }
 
 export async function generateMetadata({
@@ -26,33 +25,6 @@ export async function generateMetadata({
       follow: false,
     },
   };
-}
-
-async function DailyWorkshopRegistrationDetailContent({
-  params,
-}: DailyWorkshopRegistrationDetailPageProps) {
-  const { registrationId } = await params;
-  const [registrationResult, configsResult] = await Promise.all([
-    getDailyWorkshopRegistrationById(registrationId),
-    getDailyWorkshopPublicConfigs(),
-  ]);
-
-  if (!registrationResult.success) {
-    notFound();
-  }
-
-  const config = configsResult.success
-    ? (configsResult.data.find(
-        (item) => item.id === registrationResult.data.config_id,
-      ) ?? null)
-    : null;
-
-  return (
-    <DailyWorkshopRegistrationDetailContainer
-      registration={registrationResult.data}
-      config={config}
-    />
-  );
 }
 
 export default function DailyWorkshopRegistrationDetailPage({

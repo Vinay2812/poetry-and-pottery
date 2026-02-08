@@ -4,6 +4,7 @@ import type { MetadataRoute } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { getPublicClient } from "@/lib/apollo";
+import { createDate } from "@/lib/date";
 import { absoluteUrl } from "@/lib/seo";
 
 import type {
@@ -121,7 +122,7 @@ export async function getProductSitemapEntriesByChunk(
     .filter((product) => product.is_active)
     .map((product) => ({
       url: absoluteUrl(`/products/${product.id}`),
-      lastModified: new Date(),
+      lastModified: createDate(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     }));
@@ -149,7 +150,7 @@ export async function getEventSitemapEntriesByChunk(
     )
     .map((event) => ({
       url: absoluteUrl(`/events/${event.id}`),
-      lastModified: new Date(event.updated_at),
+      lastModified: createDate(event.updated_at),
       changeFrequency: "weekly" as const,
       priority: 0.7,
     }));

@@ -1,20 +1,16 @@
-import { getUsers } from "@/data/admin/users/gateway/server";
-import { UsersTableContainer } from "@/features/dashboard/users";
 import { Suspense } from "react";
 
 import { UsersTableSkeleton } from "@/components/skeletons";
 
 import { requireAdminUser } from "@/lib/admin";
 
-import { UserRole } from "@/graphql/generated/types";
+import {
+  type DashboardUsersSearchParams,
+  UsersTableContent,
+} from "./users-table-content";
 
 interface UsersPageProps {
-  searchParams: Promise<{
-    search?: string;
-    role?: string;
-    sort?: string;
-    page?: string;
-  }>;
+  searchParams: Promise<DashboardUsersSearchParams>;
 }
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
@@ -41,27 +37,4 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       </Suspense>
     </div>
   );
-}
-
-async function UsersTableContent({
-  search,
-  role,
-  sort,
-  page,
-  currentUserId,
-}: {
-  search?: string;
-  role?: string;
-  sort?: string;
-  page?: string;
-  currentUserId: number;
-}) {
-  const data = await getUsers({
-    search,
-    role: role as UserRole | undefined,
-    page: page ? parseInt(page) : 1,
-    limit: 20,
-  });
-
-  return <UsersTableContainer data={data} currentUserId={currentUserId} />;
 }

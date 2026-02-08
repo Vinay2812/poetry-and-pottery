@@ -29,6 +29,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { createDate } from "@/lib/date";
+
 import { UserRole } from "@/graphql/generated/types";
 
 import type { UserRowViewModel, UsersTableProps } from "../types";
@@ -163,7 +165,7 @@ function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
       <div className="mt-3 flex items-center justify-between border-t border-neutral-100 pt-3">
         <span className="text-xs text-neutral-500" suppressHydrationWarning>
           Joined{" "}
-          {new Date(user.createdAt).toLocaleDateString("en-IN", {
+          {createDate(user.createdAt).toLocaleDateString("en-IN", {
             day: "numeric",
             month: "short",
             year: "numeric",
@@ -272,7 +274,7 @@ function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
       </td>
       <td className="px-4 py-3">
         <span className="text-sm text-neutral-500" suppressHydrationWarning>
-          {new Date(user.createdAt).toLocaleDateString("en-IN", {
+          {createDate(user.createdAt).toLocaleDateString("en-IN", {
             day: "numeric",
             month: "short",
             year: "numeric",

@@ -6,6 +6,8 @@ import { useCallback } from "react";
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
 import { OptimizedImage } from "@/components/shared";
 
+import { createDate } from "@/lib/date";
+
 import type { AdminUserOrder } from "@/graphql/generated/types";
 
 import { OrderDetailDialogContainer } from "../containers/order-detail-dialog-container";
@@ -78,7 +80,7 @@ function OrderCard({ viewModel, isDragging, onClick }: OrderCardProps) {
           {viewModel.totalItems} item{viewModel.totalItems !== 1 ? "s" : ""}
         </span>
         <span suppressHydrationWarning>
-          {new Date(viewModel.createdAt).toLocaleDateString("en-IN", {
+          {createDate(viewModel.createdAt).toLocaleDateString("en-IN", {
             day: "numeric",
             month: "short",
           })}

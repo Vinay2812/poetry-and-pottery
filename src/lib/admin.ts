@@ -6,6 +6,15 @@ import { redirect } from "next/navigation";
 
 import { UserRole } from "@/graphql/generated/types";
 
+function hasValidEnvironmentClaim(environment: unknown): boolean {
+  if (environment === ENVIRONMENT) {
+    return true;
+  }
+
+  // Relax environment matching during local/non-production runs.
+  return process.env.NODE_ENV !== "production";
+}
+
 export async function isAdmin(): Promise<boolean> {
   if (allowLocalAdminBypass()) {
     return true;
@@ -20,7 +29,7 @@ export async function isAdmin(): Promise<boolean> {
   const environment = sessionClaims?.environment;
 
   // Ensure we're in the correct environment and user has admin role
-  if (environment !== ENVIRONMENT) {
+  if (!hasValidEnvironmentClaim(environment)) {
     return false;
   }
 
@@ -38,7 +47,7 @@ export async function getAuthenticatedDbUser() {
   const environment = sessionClaims?.environment;
   const role = sessionClaims?.role;
 
-  if (!dbUserId || environment !== ENVIRONMENT) {
+  if (!dbUserId || !hasValidEnvironmentClaim(environment)) {
     return null;
   }
 
@@ -89,7 +98,7 @@ export async function getAdminStatus() {
   const environment = sessionClaims?.environment;
 
   // Environment mismatch means we need to re-sync
-  if (environment !== ENVIRONMENT) {
+  if (!hasValidEnvironmentClaim(environment)) {
     return {
       isAuthenticated: true,
       isAdmin: false,

@@ -11,6 +11,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 
 import { contactBusiness } from "@/lib/contact-business";
+import { createDate } from "@/lib/date";
 
 import { useCartLazyQuery } from "@/graphql/generated/graphql";
 import type { CartItem, UserAddress } from "@/graphql/generated/types";
@@ -29,8 +30,8 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
     user_id: item.user_id,
     product_id: item.product_id,
     quantity: item.quantity,
-    created_at: new Date(item.created_at),
-    updated_at: new Date(item.updated_at),
+    created_at: createDate(item.created_at),
+    updated_at: createDate(item.updated_at),
     custom_data: item.custom_data
       ? {
           options: item.custom_data.options.map((opt) => ({
@@ -58,8 +59,8 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
       description: null,
       instructions: [],
       is_active: item.product.is_active,
-      created_at: new Date(),
-      updated_at: new Date(),
+      created_at: createDate(),
+      updated_at: createDate(),
       product_categories: [],
       collection: item.product.collection ?? null,
     },
@@ -159,10 +160,10 @@ export function CartContainer({ initialCartItems }: CartContainerProps) {
                 ends_at: item.product.collection.ends_at ?? null,
                 created_at:
                   item.product.collection.created_at ??
-                  new Date().toISOString(),
+                  createDate().toISOString(),
                 updated_at:
                   item.product.collection.updated_at ??
-                  new Date().toISOString(),
+                  createDate().toISOString(),
                 products_count: 0,
               }
             : null,

@@ -2,6 +2,8 @@ import { StarIcon, UserIcon } from "lucide-react";
 
 import { OptimizedImage } from "@/components/shared";
 
+import { createDate } from "@/lib/date";
+
 import type { AdminProductReview } from "@/graphql/generated/types";
 
 interface ProductReviewsSectionProps {
@@ -95,11 +97,14 @@ export function ProductReviewsSection({
                       className="text-sm text-neutral-500"
                       suppressHydrationWarning
                     >
-                      {new Date(review.created_at).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {createDate(review.created_at).toLocaleDateString(
+                        "en-IN",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )}
                     </span>
                   </div>
                 </div>

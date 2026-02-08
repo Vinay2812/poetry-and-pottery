@@ -6,6 +6,8 @@ import type {
 } from "@/data/daily-workshops/types";
 import { useMemo } from "react";
 
+import { createDate } from "@/lib/date";
+
 import type {
   DailyWorkshopDayTimelineViewModel,
   DailyWorkshopStatusStep,
@@ -18,7 +20,7 @@ import {
 } from "../utils/blackout-recovery-utils";
 
 function formatDateKey(date: Date | string): string {
-  const target = new Date(date);
+  const target = createDate(date);
   const year = target.getFullYear();
   const month = `${target.getMonth() + 1}`.padStart(2, "0");
   const day = `${target.getDate()}`.padStart(2, "0");
@@ -75,7 +77,7 @@ function getAffectedDateLabels(
   timeZone: string,
 ): string[] {
   const sortedDates = [...pendingSlotStartTimes]
-    .map((slotStart) => new Date(slotStart))
+    .map((slotStart) => createDate(slotStart))
     .sort((a, b) => a.getTime() - b.getTime());
   const labels: string[] = [];
   const seen = new Set<string>();
@@ -121,8 +123,8 @@ export function useDailyWorkshopRegistrationDetailDerivations({
     [...registration.slots]
       .sort((a, b) => {
         return (
-          new Date(a.slot_start_at).getTime() -
-          new Date(b.slot_start_at).getTime()
+          createDate(a.slot_start_at).getTime() -
+          createDate(b.slot_start_at).getTime()
         );
       })
       .forEach((slot) => {
@@ -139,7 +141,7 @@ export function useDailyWorkshopRegistrationDetailDerivations({
         }
 
         groups.set(dateKey, {
-          label: new Date(slot.slot_start_at).toLocaleDateString("en-US", {
+          label: createDate(slot.slot_start_at).toLocaleDateString("en-US", {
             weekday: "short",
             month: "short",
             day: "numeric",

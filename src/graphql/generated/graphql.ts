@@ -4016,6 +4016,20 @@ export type GlobalSearchQueryVariables = Exact<{
 
 export type GlobalSearchQuery = { globalSearch: { products: Array<{ id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean }>, events: Array<{ id: string, slug: string, title: string, description: string, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, event_type: EventType, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string, registrations_count: number, reviews_count: number, avg_rating?: number | null }>, orders: Array<{ id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, product: { id: number, slug: string, name: string, image_urls: Array<string>, price: number, reviews_count: number, avg_rating: number, material: string, total_quantity: number, available_quantity: number, color_code: string, color_name: string, in_wishlist: boolean, is_active: boolean } }> }>, counts: { products: number, events: number, orders: number } } };
 
+export type SitemapProductsQueryVariables = Exact<{
+  filter: ProductsFilterInput;
+}>;
+
+
+export type SitemapProductsQuery = { products: { total_products: number, products: Array<{ id: number, is_active: boolean }> } };
+
+export type SitemapEventsQueryVariables = Exact<{
+  filter?: InputMaybe<EventsFilterInput>;
+}>;
+
+
+export type SitemapEventsQuery = { events: { total: number, data: Array<{ id: string, status: EventStatus, updated_at: Date | string }> } };
+
 export type UserCountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -11452,6 +11466,99 @@ export function useGlobalSearchSuspenseQuery(baseOptions?: ApolloReactHooks.Skip
 export type GlobalSearchQueryHookResult = ReturnType<typeof useGlobalSearchQuery>;
 export type GlobalSearchLazyQueryHookResult = ReturnType<typeof useGlobalSearchLazyQuery>;
 export type GlobalSearchSuspenseQueryHookResult = ReturnType<typeof useGlobalSearchSuspenseQuery>;
+export const SitemapProductsDocument = gql`
+    query SitemapProducts($filter: ProductsFilterInput!) {
+  products(filter: $filter) {
+    products {
+      id
+      is_active
+    }
+    total_products
+  }
+}
+    `;
+
+/**
+ * __useSitemapProductsQuery__
+ *
+ * To run a query within a React component, call `useSitemapProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSitemapProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSitemapProductsQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useSitemapProductsQuery(baseOptions: ApolloReactHooks.QueryHookOptions<SitemapProductsQuery, SitemapProductsQueryVariables> & ({ variables: SitemapProductsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<SitemapProductsQuery, SitemapProductsQueryVariables>(SitemapProductsDocument, options);
+      }
+export function useSitemapProductsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SitemapProductsQuery, SitemapProductsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<SitemapProductsQuery, SitemapProductsQueryVariables>(SitemapProductsDocument, options);
+        }
+// @ts-ignore
+export function useSitemapProductsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<SitemapProductsQuery, SitemapProductsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<SitemapProductsQuery, SitemapProductsQueryVariables>;
+export function useSitemapProductsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<SitemapProductsQuery, SitemapProductsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<SitemapProductsQuery | undefined, SitemapProductsQueryVariables>;
+export function useSitemapProductsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<SitemapProductsQuery, SitemapProductsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<SitemapProductsQuery, SitemapProductsQueryVariables>(SitemapProductsDocument, options);
+        }
+export type SitemapProductsQueryHookResult = ReturnType<typeof useSitemapProductsQuery>;
+export type SitemapProductsLazyQueryHookResult = ReturnType<typeof useSitemapProductsLazyQuery>;
+export type SitemapProductsSuspenseQueryHookResult = ReturnType<typeof useSitemapProductsSuspenseQuery>;
+export const SitemapEventsDocument = gql`
+    query SitemapEvents($filter: EventsFilterInput) {
+  events(filter: $filter) {
+    data {
+      id
+      status
+      updated_at
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useSitemapEventsQuery__
+ *
+ * To run a query within a React component, call `useSitemapEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSitemapEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSitemapEventsQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useSitemapEventsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SitemapEventsQuery, SitemapEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<SitemapEventsQuery, SitemapEventsQueryVariables>(SitemapEventsDocument, options);
+      }
+export function useSitemapEventsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SitemapEventsQuery, SitemapEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<SitemapEventsQuery, SitemapEventsQueryVariables>(SitemapEventsDocument, options);
+        }
+// @ts-ignore
+export function useSitemapEventsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<SitemapEventsQuery, SitemapEventsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<SitemapEventsQuery, SitemapEventsQueryVariables>;
+export function useSitemapEventsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<SitemapEventsQuery, SitemapEventsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<SitemapEventsQuery | undefined, SitemapEventsQueryVariables>;
+export function useSitemapEventsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<SitemapEventsQuery, SitemapEventsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<SitemapEventsQuery, SitemapEventsQueryVariables>(SitemapEventsDocument, options);
+        }
+export type SitemapEventsQueryHookResult = ReturnType<typeof useSitemapEventsQuery>;
+export type SitemapEventsLazyQueryHookResult = ReturnType<typeof useSitemapEventsLazyQuery>;
+export type SitemapEventsSuspenseQueryHookResult = ReturnType<typeof useSitemapEventsSuspenseQuery>;
 export const UserCountsDocument = gql`
     query UserCounts {
   userCounts {

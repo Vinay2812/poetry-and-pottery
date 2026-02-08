@@ -1,11 +1,9 @@
-import { getCart } from "@/data/cart/gateway/server";
-import { CartContainer } from "@/features/cart";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { CartSkeleton } from "@/components/skeletons";
 
-import { requireAuth } from "@/lib/auth";
+import { CartContent } from "./cart-content";
 
 export const metadata: Metadata = {
   title: "Shopping Cart | Poetry & Pottery",
@@ -16,14 +14,6 @@ export const metadata: Metadata = {
     follow: false,
   },
 };
-
-async function CartContent() {
-  await requireAuth();
-
-  const cartResult = await getCart();
-
-  return <CartContainer initialCartItems={cartResult.items} />;
-}
 
 export default function CartPage() {
   return (

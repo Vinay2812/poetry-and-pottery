@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { createDate } from "@/lib/date";
 import { absoluteUrl } from "@/lib/seo";
 
 const STATIC_PUBLIC_ROUTES = [
@@ -18,7 +19,7 @@ const STATIC_PUBLIC_ROUTES = [
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  const now = createDate();
 
   return STATIC_PUBLIC_ROUTES.map((route) => ({
     url: absoluteUrl(route),

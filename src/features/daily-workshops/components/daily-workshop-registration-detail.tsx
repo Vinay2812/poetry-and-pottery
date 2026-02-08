@@ -6,12 +6,13 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 import type { DailyWorkshopRegistrationDetailProps } from "../types";
 
 function formatDateTime(date: Date | string): string {
-  return new Date(date).toLocaleDateString("en-US", {
+  return createDate(date).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -21,7 +22,7 @@ function formatDateTime(date: Date | string): string {
 }
 
 function formatTime(date: Date | string): string {
-  return new Date(date).toLocaleTimeString("en-US", {
+  return createDate(date).toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,

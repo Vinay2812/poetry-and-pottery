@@ -1,11 +1,11 @@
-import { getPublicTermsContent } from "@/data/admin/content/gateway/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { TermsPageClient } from "@/components/pages";
 import { PageSkeleton } from "@/components/skeletons";
 
 import { absoluteUrl } from "@/lib/seo";
+
+import { TermsContent } from "./terms-content";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions | Poetry & Pottery",
@@ -38,38 +38,6 @@ export const metadata: Metadata = {
     ],
   },
 };
-
-async function TermsContent() {
-  const content = await getPublicTermsContent();
-
-  if (!content) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Page content not available</p>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "Terms and Conditions",
-            url: absoluteUrl("/terms"),
-            dateModified: content.lastUpdated,
-            description:
-              "Terms governing purchases, workshops, and use of the Poetry & Pottery website.",
-          }),
-        }}
-      />
-      <TermsPageClient content={content} />
-    </>
-  );
-}
 
 export default function TermsPage() {
   return (

@@ -5,6 +5,8 @@ import { getNewsletterSubscriptionStatus } from "@/data/newsletter/gateway/serve
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { createDate } from "@/lib/date";
+
 import { Footer } from "../components/footer";
 import type {
   FooterContactItem,
@@ -109,7 +111,7 @@ export function FooterContainer() {
       linkGroups: LINK_GROUPS,
       contactInfo: CONTACT_INFO,
       socialLinks: SOCIAL_LINKS,
-      currentYear: new Date().getFullYear(),
+      currentYear: createDate().getFullYear(),
       isAuthenticated: !!isSignedIn,
       isAlreadySubscribed,
       subscriptionSuccess,

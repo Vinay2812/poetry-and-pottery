@@ -11,6 +11,7 @@ import {
 import { EventsListLayout } from "@/components/events";
 import { Button } from "@/components/ui/button";
 
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 import type { DailyWorkshopRescheduleProps } from "../types";
@@ -161,8 +162,8 @@ export function DailyWorkshopReschedule({
 
               <div className="space-y-2">
                 {viewModel.activeDaySlots.map((slot) => {
-                  const start = new Date(slot.startAt);
-                  const end = new Date(slot.endAt);
+                  const start = createDate(slot.startAt);
+                  const end = createDate(slot.endAt);
                   const rangeLabel = `${start.toLocaleTimeString("en-US", {
                     hour: "numeric",
                     minute: "2-digit",

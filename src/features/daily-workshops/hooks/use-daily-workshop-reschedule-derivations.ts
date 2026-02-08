@@ -3,6 +3,8 @@
 import type { DailyWorkshopAvailabilityResponse } from "@/data/daily-workshops/types";
 import { useMemo } from "react";
 
+import { createDate } from "@/lib/date";
+
 import {
   buildCalendarDays,
   buildSelectedDateTabs,
@@ -44,7 +46,7 @@ export function useDailyWorkshopRescheduleDerivations({
     selectedSlotStartTimes.forEach((slotStartAt) => {
       keys.add(
         formatDateKeyInTimeZone(
-          new Date(slotStartAt),
+          createDate(slotStartAt),
           availability.config.timezone,
         ),
       );
@@ -92,16 +94,16 @@ export function useDailyWorkshopRescheduleDerivations({
 
     return [...activeDay.slots]
       .filter(
-        (slot) => new Date(slot.slot_start_at).getTime() > currentTimestamp,
+        (slot) => createDate(slot.slot_start_at).getTime() > currentTimestamp,
       )
       .sort((a, b) => {
         return (
-          new Date(a.slot_start_at).getTime() -
-          new Date(b.slot_start_at).getTime()
+          createDate(a.slot_start_at).getTime() -
+          createDate(b.slot_start_at).getTime()
         );
       })
       .map((slot) => {
-        const slotStartISO = new Date(slot.slot_start_at).toISOString();
+        const slotStartISO = createDate(slot.slot_start_at).toISOString();
         return {
           startAt: slot.slot_start_at,
           endAt: slot.slot_end_at,

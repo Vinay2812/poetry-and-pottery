@@ -1,13 +1,10 @@
-import {
-  getAvailableIcons,
-  getCategories,
-} from "@/data/admin/categories/gateway/server";
-import { CategoriesTableContainer } from "@/features/dashboard/categories";
 import { Suspense } from "react";
 
 import { CategoriesTableSkeleton } from "@/components/skeletons";
 
-export default async function CategoriesPage() {
+import { CategoriesTableContent } from "./categories-table-content";
+
+export default function CategoriesPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -22,13 +19,4 @@ export default async function CategoriesPage() {
       </Suspense>
     </div>
   );
-}
-
-async function CategoriesTableContent() {
-  const [data, iconOptions] = await Promise.all([
-    getCategories(),
-    getAvailableIcons(),
-  ]);
-
-  return <CategoriesTableContainer data={data} iconOptions={iconOptions} />;
 }

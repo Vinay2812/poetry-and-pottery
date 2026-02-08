@@ -1,10 +1,10 @@
-import { getContentPages } from "@/data/admin/content/gateway/server";
-import { ContentPagesListContainer } from "@/features/dashboard/content";
 import { Suspense } from "react";
 
 import { ContentPagesListSkeleton } from "@/components/skeletons";
 
-export default async function ContentPage() {
+import { ContentPagesListContent } from "./content-pages-list-content";
+
+export default function ContentPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -20,10 +20,4 @@ export default async function ContentPage() {
       </Suspense>
     </div>
   );
-}
-
-async function ContentPagesListContent() {
-  const pages = await getContentPages();
-
-  return <ContentPagesListContainer data={pages} />;
 }

@@ -1,4 +1,4 @@
-import { formatDateTime } from "@/lib/date";
+import { createDate, formatDateTime } from "@/lib/date";
 
 import { EventLevel, EventStatus, EventType } from "@/graphql/generated/types";
 import type {
@@ -153,7 +153,7 @@ export interface EventFormContainerProps {
 
 // Build event row view model from raw data.
 export function buildEventRowViewModel(event: AdminEvent): EventRowViewModel {
-  const now = new Date();
+  const now = createDate();
   return {
     id: event.id,
     slug: event.slug,
@@ -179,7 +179,7 @@ export function buildEventRowViewModel(event: AdminEvent): EventRowViewModel {
     registrationsCount: event._count.event_registrations,
     reviewsCount: event._count.reviews,
     createdAt: event.created_at,
-    isUpcoming: new Date(event.starts_at) > now,
+    isUpcoming: createDate(event.starts_at) > now,
     isFullyBooked: event.available_seats <= 0,
   };
 }
@@ -232,9 +232,9 @@ export function buildEventFormViewModel(
     (levelOptions?.[0]?.value as EventLevel) || EventLevel.Beginner;
 
   if (!event) {
-    const now = new Date();
-    const startsAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 1 week from now
-    const endsAt = new Date(startsAt.getTime() + 3 * 60 * 60 * 1000); // 3 hours later
+    const now = createDate();
+    const startsAt = createDate(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 1 week from now
+    const endsAt = createDate(startsAt.getTime() + 3 * 60 * 60 * 1000); // 3 hours later
 
     return {
       eventType: EventType.PotteryWorkshop,
@@ -266,8 +266,8 @@ export function buildEventFormViewModel(
     title: event.title,
     slug: event.slug,
     description: event.description,
-    startsAt: new Date(event.starts_at),
-    endsAt: new Date(event.ends_at),
+    startsAt: createDate(event.starts_at),
+    endsAt: createDate(event.ends_at),
     location: event.location,
     fullLocation: event.full_location,
     totalSeats: event.total_seats,

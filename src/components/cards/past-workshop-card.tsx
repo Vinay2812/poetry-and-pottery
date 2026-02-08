@@ -12,6 +12,8 @@ import Link from "next/link";
 import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 
+import { createDate } from "@/lib/date";
+
 function getEventTypeIcon(type: EventType) {
   switch (type) {
     case "OPEN_MIC":
@@ -37,7 +39,7 @@ interface PastWorkshopCardProps {
 }
 
 export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
-  const eventDate = new Date(event.ends_at);
+  const eventDate = createDate(event.ends_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",

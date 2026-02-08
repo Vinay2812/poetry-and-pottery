@@ -1,26 +1,10 @@
-import { getContentPageBySlug } from "@/data/admin/content/gateway/server";
-import { ContentPageEditorContainer } from "@/features/dashboard/content";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { ContentEditorSkeleton } from "@/components/skeletons";
 
-type ContentPageSlug =
-  | "about"
-  | "faq"
-  | "shipping"
-  | "care"
-  | "privacy"
-  | "terms";
-
-const VALID_SLUGS: ContentPageSlug[] = [
-  "about",
-  "faq",
-  "shipping",
-  "care",
-  "privacy",
-  "terms",
-];
+import { ContentEditorContent } from "./content-editor-content";
+import { type ContentPageSlug, VALID_SLUGS } from "./content-page-slug";
 
 interface ContentEditorPageProps {
   params: Promise<{ slug: string }>;
@@ -41,21 +25,5 @@ export default async function ContentEditorPage({
         <ContentEditorContent slug={slug as ContentPageSlug} />
       </Suspense>
     </div>
-  );
-}
-
-async function ContentEditorContent({ slug }: { slug: ContentPageSlug }) {
-  const page = await getContentPageBySlug(slug);
-
-  if (!page) {
-    notFound();
-  }
-
-  return (
-    <ContentPageEditorContainer
-      slug={slug}
-      title={page.title}
-      content={page.content}
-    />
   );
 }

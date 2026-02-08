@@ -15,6 +15,7 @@ import { Rating } from "@/components/shared";
 import { ImageCarousel } from "@/components/shared/image-carousel";
 
 import { openWhatsAppProductRequest } from "@/lib/contact-business";
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 import type { ProductCardProps } from "../types";
@@ -44,15 +45,15 @@ export function ProductCard({
   // Determine if product is archived based on collection date window
   const isCollectionArchived = (() => {
     if (!product.collection) return false;
-    const now = new Date();
+    const now = createDate();
     // Collection ended (ends_at < now)
     if (product.collection.ends_at) {
-      const endsAt = new Date(product.collection.ends_at);
+      const endsAt = createDate(product.collection.ends_at);
       if (now > endsAt) return true;
     }
     // Collection hasn't started yet (starts_at > now)
     if (product.collection.starts_at) {
-      const startsAt = new Date(product.collection.starts_at);
+      const startsAt = createDate(product.collection.starts_at);
       if (now < startsAt) return true;
     }
     return false;

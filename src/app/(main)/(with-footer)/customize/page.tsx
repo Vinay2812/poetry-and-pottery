@@ -1,5 +1,3 @@
-import { getCustomizationCategories } from "@/data/customization/gateway/server";
-import { CustomizeWizardContainer } from "@/features/customize";
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -8,6 +6,11 @@ import { ListingPageHeader } from "@/components/shared";
 import { CustomizeWizardSkeleton } from "@/components/skeletons";
 
 import { absoluteUrl } from "@/lib/seo";
+
+import {
+  CustomizeContent,
+  buildCustomizeStructuredData,
+} from "./customize-content";
 
 export const metadata: Metadata = {
   title: "Customize Your Pottery | Poetry & Pottery",
@@ -50,12 +53,6 @@ export const metadata: Metadata = {
   },
 };
 
-async function CustomizeContent() {
-  const categories = await getCustomizationCategories();
-
-  return <CustomizeWizardContainer initialCategories={categories} />;
-}
-
 export default function CustomizePage() {
   return (
     <>
@@ -82,22 +79,4 @@ export default function CustomizePage() {
       </main>
     </>
   );
-}
-
-function buildCustomizeStructuredData() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: "Custom Pottery Design",
-    serviceType: "Personalized Handcrafted Pottery",
-    provider: {
-      "@type": "Organization",
-      name: "Poetry & Pottery",
-      url: absoluteUrl("/"),
-    },
-    url: absoluteUrl("/customize"),
-    areaServed: "India",
-    description:
-      "Design personalized handcrafted pottery by selecting product type, materials, finishes, and custom engraving options.",
-  };
 }

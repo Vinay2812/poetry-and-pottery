@@ -6,6 +6,8 @@ import { useCallback } from "react";
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
 import { OptimizedImage } from "@/components/shared";
 
+import { createDate } from "@/lib/date";
+
 import type { AdminUserRegistration } from "@/graphql/generated/types";
 
 import { RegistrationDetailDialogContainer } from "../containers/registration-detail-dialog-container";
@@ -74,7 +76,7 @@ function RegistrationCard({
         </span>
         <span className="flex items-center gap-1" suppressHydrationWarning>
           <CalendarIcon className="size-3.5" />
-          {new Date(viewModel.eventStartsAt).toLocaleDateString("en-IN", {
+          {createDate(viewModel.eventStartsAt).toLocaleDateString("en-IN", {
             day: "numeric",
             month: "short",
           })}

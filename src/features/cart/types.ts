@@ -1,5 +1,7 @@
 import type { ProductBase } from "@/data/products/types";
 
+import { createDate } from "@/lib/date";
+
 import type {
   CartItem,
   ProductCustomizationData,
@@ -27,7 +29,7 @@ export function getProductAvailability(
   product: ProductBase,
   requestedQuantity: number,
 ): AvailabilityInfo {
-  const now = new Date();
+  const now = createDate();
 
   // Check if product is archived (inactive)
   if (!product.is_active) {
@@ -41,7 +43,7 @@ export function getProductAvailability(
 
   // Check if collection has ended
   if (product.collection?.ends_at) {
-    const endsAt = new Date(product.collection.ends_at);
+    const endsAt = createDate(product.collection.ends_at);
     if (endsAt < now) {
       return {
         status: "collection_ended",

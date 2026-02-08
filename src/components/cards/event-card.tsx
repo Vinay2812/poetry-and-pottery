@@ -5,6 +5,7 @@ import Link from "next/link";
 import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 
+import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 function getEventTypeIcon(type: EventType) {
@@ -35,7 +36,7 @@ interface EventCardProps {
 // Horizontal layout with square image thumbnail. More compact, shows more events in less space.
 // Good for mobile lists and sidebars. Image and content side by side.
 export function EventCard({ event }: EventCardProps) {
-  const eventDate = new Date(event.starts_at);
+  const eventDate = createDate(event.starts_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",

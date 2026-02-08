@@ -2,6 +2,8 @@
 
 import { useCallback, useState } from "react";
 
+import { createDate } from "@/lib/date";
+
 import { formatDateKeyInTimeZone, parseDateKey } from "../utils/calendar-utils";
 
 interface UseWorkshopCalendarStateInput {
@@ -16,19 +18,19 @@ export function useWorkshopCalendarState({
   const [activeDateKey, setActiveDateKey] = useState(initialDateKey);
   const [calendarMonthDate, setCalendarMonthDate] = useState(() => {
     return parseDateKey(
-      initialDateKey || formatDateKeyInTimeZone(new Date(), timeZone),
+      initialDateKey || formatDateKeyInTimeZone(createDate(), timeZone),
     );
   });
 
   const handlePreviousMonth = useCallback(() => {
     setCalendarMonthDate((current) => {
-      return new Date(current.getFullYear(), current.getMonth() - 1, 1);
+      return createDate(current.getFullYear(), current.getMonth() - 1, 1);
     });
   }, []);
 
   const handleNextMonth = useCallback(() => {
     setCalendarMonthDate((current) => {
-      return new Date(current.getFullYear(), current.getMonth() + 1, 1);
+      return createDate(current.getFullYear(), current.getMonth() + 1, 1);
     });
   }, []);
 
@@ -40,7 +42,7 @@ export function useWorkshopCalendarState({
   const resetCalendarToDateKey = useCallback(
     (dateKey: string) => {
       const nextDateKey =
-        dateKey || formatDateKeyInTimeZone(new Date(), timeZone);
+        dateKey || formatDateKeyInTimeZone(createDate(), timeZone);
       setActiveDateKey(dateKey);
       setCalendarMonthDate(parseDateKey(nextDateKey));
     },

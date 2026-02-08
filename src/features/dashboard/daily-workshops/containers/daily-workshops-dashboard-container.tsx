@@ -14,6 +14,8 @@ import {
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { createDate } from "@/lib/date";
+
 import type {
   AdminDailyWorkshopBlackoutRule,
   AdminDailyWorkshopConfig,
@@ -226,8 +228,8 @@ function validateBlackoutDraft(draft: {
   if (
     draft.recurrenceStartDate &&
     draft.recurrenceEndDate &&
-    new Date(draft.recurrenceEndDate).getTime() <
-      new Date(draft.recurrenceStartDate).getTime()
+    createDate(draft.recurrenceEndDate).getTime() <
+      createDate(draft.recurrenceStartDate).getTime()
   ) {
     errors.recurrenceEndDate = "End date must be on or after start date";
   }

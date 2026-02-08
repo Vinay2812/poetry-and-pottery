@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
+import { createDate } from "@/lib/date";
+
 import type { CollectionFormProps } from "../types";
 import { generateSlug } from "../types";
 
@@ -74,8 +76,8 @@ export function CollectionForm({
         slug: data.slug,
         description: data.description,
         imageUrl: data.imageUrl,
-        startsAt: data.startsAt ? new Date(data.startsAt) : null,
-        endsAt: data.endsAt ? new Date(data.endsAt) : null,
+        startsAt: data.startsAt ? createDate(data.startsAt) : null,
+        endsAt: data.endsAt ? createDate(data.endsAt) : null,
       });
     },
     [onSubmit],

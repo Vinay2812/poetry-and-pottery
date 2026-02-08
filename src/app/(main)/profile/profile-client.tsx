@@ -20,6 +20,8 @@ import { useCallback, useMemo } from "react";
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { ListingPageHeader } from "@/components/shared";
 
+import { createDate } from "@/lib/date";
+
 interface MenuItem {
   icon: React.ReactNode;
   label: string;
@@ -75,7 +77,7 @@ export function ProfileClient() {
     // Format member since date
     const createdAt = user?.createdAt;
     const memberSince = createdAt
-      ? new Date(createdAt).toLocaleDateString("en-US", {
+      ? createDate(createdAt).toLocaleDateString("en-US", {
           month: "short",
           year: "numeric",
         })

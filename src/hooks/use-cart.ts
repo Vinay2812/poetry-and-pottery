@@ -17,6 +17,8 @@ import type {
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useOptimistic, useState, useTransition } from "react";
 
+import { createDate } from "@/lib/date";
+
 import type { CartItem } from "@/graphql/generated/graphql";
 
 // Map GraphQL CartItem to store-compatible CartWithProduct
@@ -26,8 +28,8 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
     user_id: item.user_id,
     product_id: item.product_id,
     quantity: item.quantity,
-    created_at: new Date(item.created_at),
-    updated_at: new Date(item.updated_at),
+    created_at: createDate(item.created_at),
+    updated_at: createDate(item.updated_at),
     custom_data: item.custom_data
       ? {
           options: item.custom_data.options.map((opt) => ({
@@ -55,8 +57,8 @@ function mapToCartWithProduct(item: CartItem): CartWithProduct {
       is_active: item.product.is_active,
       description: null,
       instructions: [],
-      created_at: new Date(),
-      updated_at: new Date(),
+      created_at: createDate(),
+      updated_at: createDate(),
       product_categories: [],
       collection: item.product.collection ?? null,
     },
@@ -120,8 +122,8 @@ function applyCartOptimisticAction(
         user_id: 0,
         product_id: action.productId,
         quantity: action.quantity,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: createDate(),
+        updated_at: createDate(),
         custom_data: action.customData ?? null,
         custom_data_hash: hash,
         product: {

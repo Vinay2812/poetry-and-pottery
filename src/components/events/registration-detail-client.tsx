@@ -31,7 +31,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { openWhatsAppFollowUp } from "@/lib/contact-business";
-import { calculateDuration } from "@/lib/date";
+import { calculateDuration, createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 import { EventRegistrationProgress } from "./event-registration-progress";
@@ -153,7 +153,7 @@ export function RegistrationDetailClient({
     });
   }, [registration, event, statusConfig.label]);
 
-  const eventDate = new Date(event.starts_at);
+  const eventDate = createDate(event.starts_at);
   const formattedDate = eventDate.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",

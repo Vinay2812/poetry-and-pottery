@@ -7,6 +7,8 @@ import { useMemo } from "react";
 import { RegistrationDetailClient } from "@/components/events/registration-detail-client";
 import { EventDetailSkeleton } from "@/components/skeletons";
 
+import { createDate } from "@/lib/date";
+
 import { useUpcomingEventsQuery } from "../hooks/use-upcoming-events-query";
 import { useEventWithUserContextQuery } from "../hooks/use-user-context-query";
 import { EventDetailContainer } from "./event-detail-container";
@@ -26,8 +28,8 @@ export function UnifiedEventDetailContainer({
   });
   // Compute isPastEvent from event data directly (no API call needed)
   const isPastEvent = useMemo(() => {
-    const now = new Date();
-    const endsAt = new Date(event.ends_at);
+    const now = createDate();
+    const endsAt = createDate(event.ends_at);
     return event.status === EventStatus.Completed || endsAt < now;
   }, [event.ends_at, event.status]);
 

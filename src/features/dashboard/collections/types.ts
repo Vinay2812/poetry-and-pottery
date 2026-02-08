@@ -1,3 +1,5 @@
+import { createDate } from "@/lib/date";
+
 import type {
   AdminCollection,
   AdminCollectionDetail,
@@ -118,7 +120,7 @@ export function getCollectionStatus(
   startsAt: Date | null,
   endsAt: Date | null,
 ): CollectionStatus {
-  const now = new Date();
+  const now = createDate();
 
   if (!startsAt && !endsAt) return "always";
   if (startsAt && startsAt > now) return "scheduled";
@@ -130,8 +132,10 @@ export function getCollectionStatus(
 export function buildCollectionRowViewModel(
   collection: AdminCollection,
 ): CollectionRowViewModel {
-  const startsAt = collection.starts_at ? new Date(collection.starts_at) : null;
-  const endsAt = collection.ends_at ? new Date(collection.ends_at) : null;
+  const startsAt = collection.starts_at
+    ? createDate(collection.starts_at)
+    : null;
+  const endsAt = collection.ends_at ? createDate(collection.ends_at) : null;
 
   return {
     id: collection.id,
@@ -197,10 +201,10 @@ export function buildCollectionFormViewModel(
     description: collection.description || "",
     imageUrl: collection.image_url || "",
     startsAt: collection.starts_at
-      ? new Date(collection.starts_at).toISOString().slice(0, 16)
+      ? createDate(collection.starts_at).toISOString().slice(0, 16)
       : "",
     endsAt: collection.ends_at
-      ? new Date(collection.ends_at).toISOString().slice(0, 16)
+      ? createDate(collection.ends_at).toISOString().slice(0, 16)
       : "",
   };
 }
@@ -242,7 +246,7 @@ export function generateSlug(name: string): string {
 // Format date for display.
 export function formatDate(date: Date | string | null): string {
   if (!date) return "—";
-  const d = typeof date === "string" ? new Date(date) : date;
+  const d = typeof date === "string" ? createDate(date) : date;
   return d.toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
@@ -253,7 +257,7 @@ export function formatDate(date: Date | string | null): string {
 // Format datetime for display.
 export function formatDateTime(date: Date | string | null): string {
   if (!date) return "—";
-  const d = typeof date === "string" ? new Date(date) : date;
+  const d = typeof date === "string" ? createDate(date) : date;
   return d.toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",

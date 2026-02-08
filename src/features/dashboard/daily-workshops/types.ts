@@ -1,6 +1,6 @@
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";
 
-import { formatDateTime } from "@/lib/date";
+import { createDate, formatDateTime } from "@/lib/date";
 
 import {
   type AdminDailyWorkshopBlackoutRule,
@@ -210,7 +210,7 @@ function formatDateValue(
   timeZone?: string,
 ): string {
   if (!dateValue) return "-";
-  return new Date(dateValue).toLocaleDateString("en-US", {
+  return createDate(dateValue).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -252,7 +252,9 @@ export function buildDailyWorkshopsDashboardViewModel(
   });
 
   const sortedRules = [...blackoutRules].sort((a, b) => {
-    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    return (
+      createDate(b.created_at).getTime() - createDate(a.created_at).getTime()
+    );
   });
 
   return {
@@ -402,14 +404,14 @@ function makeDateInTimeZone(
   timeZone: string,
 ): Date {
   let utcTime = Date.UTC(year, month - 1, day, hour, minute, 0, 0);
-  let date = new Date(utcTime);
+  let date = createDate(utcTime);
 
   for (let i = 0; i < 2; i += 1) {
     const offsetMinutes = getTimeZoneOffsetMinutes(date, timeZone);
     utcTime =
       Date.UTC(year, month - 1, day, hour, minute, 0, 0) -
       offsetMinutes * 60 * 1000;
-    date = new Date(utcTime);
+    date = createDate(utcTime);
   }
 
   return date;
@@ -419,7 +421,7 @@ function formatDateInputInTimeZone(
   value: Date | string,
   timeZone: string,
 ): string {
-  const parts = getTimeZoneParts(new Date(value), timeZone);
+  const parts = getTimeZoneParts(createDate(value), timeZone);
   const month = String(parts.month).padStart(2, "0");
   const day = String(parts.day).padStart(2, "0");
   return `${parts.year}-${month}-${day}`;

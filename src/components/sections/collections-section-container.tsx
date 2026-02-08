@@ -2,6 +2,8 @@
 
 import { CollectionsSectionSkeleton } from "@/components/skeletons/collections-section-skeleton";
 
+import { createDate } from "@/lib/date";
+
 import { useCollectionsQuery } from "@/graphql/generated/graphql";
 
 import { CollectionsSection } from "./collections-section";
@@ -37,12 +39,12 @@ export function CollectionsSectionContainer({
   }
 
   // Filter to only show active collections (current date is within date window)
-  const now = new Date();
+  const now = createDate();
   const activeCollections = data.collections.filter((collection) => {
     const startsAt = collection.starts_at
-      ? new Date(collection.starts_at)
+      ? createDate(collection.starts_at)
       : null;
-    const endsAt = collection.ends_at ? new Date(collection.ends_at) : null;
+    const endsAt = collection.ends_at ? createDate(collection.ends_at) : null;
 
     const hasStarted = !startsAt || now >= startsAt;
     const hasNotEnded = !endsAt || now <= endsAt;

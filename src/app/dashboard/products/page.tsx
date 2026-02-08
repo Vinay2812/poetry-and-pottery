@@ -1,22 +1,14 @@
-import {
-  getAllCategories,
-  getAllCollections,
-  getProducts,
-} from "@/data/admin/products/gateway/server";
-import { ProductsTableContainer } from "@/features/dashboard/products";
 import { Suspense } from "react";
 
 import { ProductsTableSkeleton } from "@/components/skeletons";
 
+import {
+  type DashboardProductsSearchParams,
+  ProductsTableContent,
+} from "./products-table-content";
+
 interface ProductsPageProps {
-  searchParams: Promise<{
-    search?: string;
-    category?: string;
-    collection?: string;
-    status?: string;
-    stock?: string;
-    page?: string;
-  }>;
+  searchParams: Promise<DashboardProductsSearchParams>;
 }
 
 export default async function ProductsPage({
@@ -44,45 +36,5 @@ export default async function ProductsPage({
         />
       </Suspense>
     </div>
-  );
-}
-
-async function ProductsTableContent({
-  search,
-  category,
-  collection,
-  status,
-  stock,
-  page,
-}: {
-  search?: string;
-  category?: string;
-  collection?: string;
-  status?: string;
-  stock?: string;
-  page?: string;
-}) {
-  const [data, categories, collections] = await Promise.all([
-    getProducts({
-      search,
-      category,
-      collectionId: collection ? parseInt(collection) : undefined,
-      isActive:
-        status === "active" ? true : status === "inactive" ? false : undefined,
-      lowStock: stock === "low" ? true : undefined,
-      outOfStock: stock === "out" ? true : undefined,
-      page: page ? parseInt(page) : 1,
-      limit: 20,
-    }),
-    getAllCategories(),
-    getAllCollections(),
-  ]);
-
-  return (
-    <ProductsTableContainer
-      data={data}
-      categories={categories}
-      collections={collections}
-    />
   );
 }

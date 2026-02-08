@@ -1,6 +1,8 @@
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 
+import { createDate } from "@/lib/date";
+
 import type { RecentOrdersSectionProps } from "../types";
 import { StatusBadge } from "./status-badge";
 
@@ -32,7 +34,7 @@ export function RecentOrdersSection({ orders }: RecentOrdersSectionProps) {
                   {order.user.name || order.user.email.split("@")[0]}
                 </p>
                 <p className="text-muted-foreground text-sm">
-                  {new Date(order.created_at).toLocaleDateString("en-IN", {
+                  {createDate(order.created_at).toLocaleDateString("en-IN", {
                     day: "numeric",
                     month: "short",
                   })}

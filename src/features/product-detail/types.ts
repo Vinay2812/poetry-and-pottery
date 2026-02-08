@@ -1,5 +1,7 @@
 import type { ProductDetail, ProductReview } from "@/data/products/types";
 
+import { createDate } from "@/lib/date";
+
 // Formatted review for display (with optimistic update support).
 export interface FormattedReview {
   id: string;
@@ -56,15 +58,15 @@ export function computeAvailabilityStatus(
   // Check if product is archived based on collection date window
   const isCollectionArchived = (() => {
     if (!product.collection) return false;
-    const now = new Date();
+    const now = createDate();
     // Collection ended (ends_at < now)
     if (product.collection.ends_at) {
-      const endsAt = new Date(product.collection.ends_at);
+      const endsAt = createDate(product.collection.ends_at);
       if (now > endsAt) return true;
     }
     // Collection hasn't started yet (starts_at > now)
     if (product.collection.starts_at) {
-      const startsAt = new Date(product.collection.starts_at);
+      const startsAt = createDate(product.collection.starts_at);
       if (now < startsAt) return true;
     }
     return false;
@@ -110,7 +112,7 @@ export function buildFormattedReviews(
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
       rating: review.rating,
       content: review.review || "",
-      date: new Date(review.created_at).toLocaleDateString("en-US", {
+      date: createDate(review.created_at).toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric",

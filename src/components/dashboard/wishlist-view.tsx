@@ -10,6 +10,8 @@ import { useInView } from "react-intersection-observer";
 import { ImageCarousel } from "@/components/shared/image-carousel";
 import { Badge } from "@/components/ui/badge";
 
+import { createDate } from "@/lib/date";
+
 import type { AdminUserWishlistItem } from "@/graphql/generated/types";
 
 interface WishlistViewProps {
@@ -135,7 +137,7 @@ export function WishlistView({
 
               <p className="text-xs text-neutral-400" suppressHydrationWarning>
                 Added{" "}
-                {new Date(item.created_at).toLocaleDateString("en-IN", {
+                {createDate(item.created_at).toLocaleDateString("en-IN", {
                   day: "numeric",
                   month: "short",
                   year: "numeric",

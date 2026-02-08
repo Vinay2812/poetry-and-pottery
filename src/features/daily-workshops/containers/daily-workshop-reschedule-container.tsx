@@ -4,6 +4,8 @@ import { useRescheduleDailyWorkshopRegistration } from "@/data/daily-workshops/g
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
+import { createDate } from "@/lib/date";
+
 import { DailyWorkshopReschedule } from "../components/daily-workshop-reschedule";
 import { useCurrentTimestamp } from "../hooks/use-current-timestamp";
 import { useDailyWorkshopRescheduleDerivations } from "../hooks/use-daily-workshop-reschedule-derivations";
@@ -96,7 +98,7 @@ export function DailyWorkshopRescheduleContainer({
 
   const handleToggleSlot = useCallback(
     (slotStartAt: Date | string) => {
-      const slotStartISO = new Date(slotStartAt).toISOString();
+      const slotStartISO = createDate(slotStartAt).toISOString();
 
       runSlotSelectionTransition((current) => {
         const isAlreadySelected = current.includes(slotStartISO);
@@ -157,7 +159,7 @@ export function DailyWorkshopRescheduleContainer({
       parseDateKey(
         resolvedActiveDateKey ||
           formatDateKeyInTimeZone(
-            new Date(),
+            createDate(),
             initialAvailability.config.timezone,
           ),
       ).toLocaleDateString("en-US", {

@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { formatDateTimeLocal } from "@/lib/date";
+import { createDate, formatDateTimeLocal } from "@/lib/date";
 
 import { EventLevel, EventStatus, EventType } from "@/graphql/generated/types";
 
@@ -162,8 +162,8 @@ export function EventForm({
         title: data.title,
         slug: data.slug,
         description: data.description,
-        startsAt: new Date(data.startsAt),
-        endsAt: new Date(data.endsAt),
+        startsAt: createDate(data.startsAt),
+        endsAt: createDate(data.endsAt),
         location: data.location,
         fullLocation: data.fullLocation,
         totalSeats: data.totalSeats,

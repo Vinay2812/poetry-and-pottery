@@ -6,6 +6,8 @@ import { useCallback } from "react";
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
 import { Badge } from "@/components/ui/badge";
 
+import { createDate } from "@/lib/date";
+
 import { DailyWorkshopRegistrationDetailDialogContainer } from "../containers/daily-workshop-registration-detail-dialog-container";
 import type {
   AdminUserDailyWorkshopRegistration,
@@ -61,11 +63,14 @@ function DailyWorkshopRegistrationCard({
         <p className="flex items-center gap-1.5" suppressHydrationWarning>
           <CalendarIcon className="size-3.5" />
           {viewModel.firstSlotStartAt
-            ? new Date(viewModel.firstSlotStartAt).toLocaleDateString("en-IN", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })
+            ? createDate(viewModel.firstSlotStartAt).toLocaleDateString(
+                "en-IN",
+                {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                },
+              )
             : "No slots selected"}
         </p>
       </div>
