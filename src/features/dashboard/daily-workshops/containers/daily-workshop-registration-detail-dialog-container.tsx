@@ -100,11 +100,13 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
   }, [registration]);
 
   useEffect(() => {
-    if (registration) {
-      resetDraft();
-    } else {
-      setSlots([]);
-    }
+    startTransition(() => {
+      if (registration) {
+        resetDraft();
+      } else {
+        setSlots([]);
+      }
+    });
   }, [registration, resetDraft]);
 
   const slotDurationMinutes = useMemo(() => {
