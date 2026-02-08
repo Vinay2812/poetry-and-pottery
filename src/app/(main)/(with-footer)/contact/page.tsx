@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ContactForm } from "@/components/forms";
 
 import { getWhatsAppBaseUrl } from "@/lib/contact-business";
+import { absoluteUrl } from "@/lib/seo";
 
 export default function ContactPage() {
   const whatsappLink = getWhatsAppBaseUrl();
@@ -14,6 +15,23 @@ export default function ContactPage() {
   return (
     <>
       <MobileHeaderContainer title="Contact" showBack backHref="/" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact Poetry & Pottery",
+            url: absoluteUrl("/contact"),
+            about: {
+              "@type": "Organization",
+              name: "Poetry & Pottery",
+              email: "poetryandpottery.aj@gmail.com",
+              telephone: "+91 83290 26762",
+            },
+          }),
+        }}
+      />
 
       <main className="flex min-h-screen items-center justify-center bg-neutral-100 px-5 py-20 pt-20 lg:py-16">
         <div className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-lg">

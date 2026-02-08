@@ -15,7 +15,30 @@ async function FAQContent() {
     );
   }
 
-  return <FAQPageClient content={content} />;
+  const faqItems = content.categories.flatMap((category) => category.faqs);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqItems.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
+          }),
+        }}
+      />
+      <FAQPageClient content={content} />
+    </>
+  );
 }
 
 export default function FAQPage() {

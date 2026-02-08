@@ -7,6 +7,12 @@ import { Suspense } from "react";
 
 import { ProductDetailSkeleton } from "@/components/skeletons";
 
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  absoluteUrl,
+  resolveSocialImageUrl,
+} from "@/lib/seo";
+
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
@@ -21,6 +27,10 @@ export async function generateMetadata({
   if (isNaN(numericId)) {
     return {
       title: "Product Not Found | Poetry & Pottery",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
@@ -29,21 +39,30 @@ export async function generateMetadata({
   if (!product) {
     return {
       title: "Product Not Found | Poetry & Pottery",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  const imageUrl =
-    product.image_urls[0] ||
-    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&h=800&fit=crop";
+  const imageUrl = resolveSocialImageUrl(product.image_urls[0]);
+  const canonicalUrl = absoluteUrl(`/products/${product.id}`);
+  const description =
+    product.description?.trim() ||
+    `${product.name} handcrafted by Poetry & Pottery artisans.`;
 
   return {
     title: `${product.name} | Poetry & Pottery`,
-    description: product.description,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${product.name} | Poetry & Pottery`,
-      description: product.description ?? undefined,
+      description,
       type: "website",
-      url: `/products/${product.id}`,
+      url: canonicalUrl,
       images: [
         {
           url: imageUrl,
@@ -56,7 +75,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: `${product.name} | Poetry & Pottery`,
-      description: product.description ?? undefined,
+      description,
       images: [imageUrl],
     },
   };
@@ -90,7 +109,63 @@ async function ProductDetailContent({ params }: ProductPageProps) {
         showBack
         backHref="/products"
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildProductStructuredData(product)),
+        }}
+      />
       <ProductDetailContainer product={product} />
     </>
   );
+}
+
+function buildProductStructuredData(
+  product: Awaited<ReturnType<typeof getProductById>>,
+) {
+  const images =
+    product?.image_urls?.length && product.image_urls.length > 0
+      ? product.image_urls.map((imageUrl) => resolveSocialImageUrl(imageUrl))
+      : [DEFAULT_SOCIAL_IMAGE];
+  const canonicalUrl = absoluteUrl(`/products/${product?.id ?? ""}`);
+
+  const structuredData: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product?.name ?? "Product",
+    image: images,
+    description:
+      product?.description?.trim() ||
+      "Handcrafted ceramic piece by Poetry & Pottery.",
+    sku: String(product?.id ?? ""),
+    category:
+      product?.categories && product.categories.length > 0
+        ? product.categories[0]
+        : undefined,
+    brand: {
+      "@type": "Brand",
+      name: "Poetry & Pottery",
+    },
+    offers: {
+      "@type": "Offer",
+      url: canonicalUrl,
+      priceCurrency: "INR",
+      price: product?.price ?? 0,
+      availability:
+        (product?.available_quantity ?? 0) > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+  };
+
+  if ((product?.reviews_count ?? 0) > 0) {
+    structuredData.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: product?.avg_rating ?? 0,
+      reviewCount: product?.reviews_count ?? 0,
+    };
+  }
+
+  return structuredData;
 }

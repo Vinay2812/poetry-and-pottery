@@ -8,7 +8,6 @@ import type {
   AdminDailyWorkshopMutationResponse,
   AdminDailyWorkshopPricingTier,
   AdminDailyWorkshopPricingTierMutationResponse,
-  AdminDailyWorkshopRegistration,
   AdminUpdateDailyWorkshopConfigInput,
   AdminUpsertDailyWorkshopBlackoutRuleInput,
   AdminUpsertDailyWorkshopPricingTierInput,
@@ -36,12 +35,6 @@ export async function getDailyWorkshopBlackoutRules(
   configId?: number,
 ): Promise<AdminDailyWorkshopBlackoutRule[]> {
   return graphqlImpl.getDailyWorkshopBlackoutRules(configId);
-}
-
-export async function getUserDailyWorkshopRegistrations(
-  userId: number,
-): Promise<AdminDailyWorkshopRegistration[]> {
-  return graphqlImpl.getUserDailyWorkshopRegistrations(userId);
 }
 
 export async function updateDailyWorkshopConfig(
@@ -85,14 +78,4 @@ export async function deleteDailyWorkshopBlackoutRule(
   id: string,
 ): Promise<AdminDailyWorkshopMutationResponse> {
   return graphqlImpl.deleteDailyWorkshopBlackoutRule(id);
-}
-
-export async function updateDailyWorkshopRegistrationStatus(
-  registrationId: string,
-  status: string,
-): Promise<AdminDailyWorkshopMutationResponse> {
-  return graphqlImpl.updateDailyWorkshopRegistrationStatus(
-    registrationId,
-    status,
-  );
 }

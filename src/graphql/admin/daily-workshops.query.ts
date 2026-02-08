@@ -57,45 +57,6 @@ const ADMIN_DAILY_WORKSHOP_BLACKOUT_RULE_FIELDS = gql`
   }
 `;
 
-const ADMIN_DAILY_WORKSHOP_REGISTRATION_FIELDS = gql`
-  fragment AdminDailyWorkshopRegistrationFields on AdminDailyWorkshopRegistration {
-    id
-    config_id
-    user_id
-    participants
-    total_hours
-    slots_count
-    price_per_person
-    pieces_per_person
-    base_amount
-    discount
-    final_amount
-    total_pieces
-    currency
-    pricing_snapshot
-    status
-    request_at
-    approved_at
-    paid_at
-    confirmed_at
-    cancelled_at
-    cancelled_reason
-    created_at
-    updated_at
-    slots {
-      id
-      slot_start_at
-      slot_end_at
-    }
-    user {
-      id
-      email
-      name
-      image
-    }
-  }
-`;
-
 export const ADMIN_DAILY_WORKSHOP_CONFIG_QUERY = gql`
   query AdminDailyWorkshopConfig {
     adminDailyWorkshopConfig {
@@ -130,13 +91,4 @@ export const ADMIN_DAILY_WORKSHOP_BLACKOUT_RULES_QUERY = gql`
     }
   }
   ${ADMIN_DAILY_WORKSHOP_BLACKOUT_RULE_FIELDS}
-`;
-
-export const ADMIN_USER_DAILY_WORKSHOP_REGISTRATIONS_QUERY = gql`
-  query AdminUserDailyWorkshopRegistrations($userId: Int!) {
-    adminUserDailyWorkshopRegistrations(userId: $userId) {
-      ...AdminDailyWorkshopRegistrationFields
-    }
-  }
-  ${ADMIN_DAILY_WORKSHOP_REGISTRATION_FIELDS}
 `;

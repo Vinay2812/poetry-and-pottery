@@ -144,12 +144,3 @@ export const ADMIN_EVENT_LEVEL_OPTIONS_QUERY = gql`
     }
   }
 `;
-
-export const ADMIN_EVENT_TYPE_OPTIONS_QUERY = gql`
-  query AdminEventTypeOptions {
-    adminEventTypeOptions {
-      value
-      label
-    }
-  }
-`;

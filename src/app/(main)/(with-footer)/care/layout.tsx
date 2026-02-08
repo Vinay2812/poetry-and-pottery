@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 
+import { absoluteUrl } from "@/lib/seo";
+
 export const metadata: Metadata = {
   title: "Care Instructions | Poetry & Pottery",
   description:
     "Learn how to care for your handcrafted pottery. Proper care instructions for different glaze types, cleaning tips, and guidelines to keep your ceramics beautiful.",
+  alternates: {
+    canonical: absoluteUrl("/care"),
+  },
   openGraph: {
     title: "Care Instructions | Poetry & Pottery",
     description:
       "Learn how to care for your handcrafted pottery. Cleaning tips and guidelines for different glaze types.",
     type: "website",
-    url: "/care",
+    url: absoluteUrl("/care"),
     images: [
       {
         url: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
@@ -24,6 +29,9 @@ export const metadata: Metadata = {
     title: "Care Instructions | Poetry & Pottery",
     description:
       "Learn how to care for your handcrafted pottery and keep it beautiful for years.",
+    images: [
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
+    ],
   },
 };
 

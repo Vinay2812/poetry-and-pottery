@@ -11,22 +11,46 @@ import { EventsListLayout } from "@/components/events";
 import { EmptyState } from "@/components/sections";
 import { DailyWorkshopsBookingSkeleton } from "@/components/skeletons";
 
+import { absoluteUrl } from "@/lib/seo";
+
+import type { DailyWorkshopConfig } from "@/graphql/generated/types";
+
 export const metadata: Metadata = {
   title: "Daily Workshops | Poetry & Pottery",
   description:
     "Book flexible daily pottery workshop slots between 1 PM and 7 PM. Pick your dates, choose hours, and learn at your own pace.",
+  keywords: [
+    "daily pottery workshop",
+    "flexible pottery booking",
+    "hourly pottery classes",
+    "pottery studio sessions",
+  ],
+  alternates: {
+    canonical: absoluteUrl("/events/daily-workshops"),
+  },
   openGraph: {
     title: "Daily Workshops | Poetry & Pottery",
     description:
       "Flexible pottery workshop booking with hourly slot selection and tiered pricing.",
     type: "website",
-    url: "/events/daily-workshops",
+    url: absoluteUrl("/events/daily-workshops"),
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=630&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Daily pottery workshop booking",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Daily Workshops | Poetry & Pottery",
     description:
       "Flexible pottery workshop booking with hourly slot selection and tiered pricing.",
+    images: [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=630&fit=crop",
+    ],
   },
 };
 
@@ -69,10 +93,20 @@ async function DailyWorkshopsContent() {
   }
 
   return (
-    <DailyWorkshopsBookingContainer
-      initialAvailability={availabilityResult.data}
-      initialConfigs={availableConfigs}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            buildDailyWorkshopStructuredData(availableConfigs),
+          ),
+        }}
+      />
+      <DailyWorkshopsBookingContainer
+        initialAvailability={availabilityResult.data}
+        initialConfigs={availableConfigs}
+      />
+    </>
   );
 }
 
@@ -82,4 +116,32 @@ export default function DailyWorkshopsPage() {
       <DailyWorkshopsContent />
     </Suspense>
   );
+}
+
+function buildDailyWorkshopStructuredData(configs: DailyWorkshopConfig[]) {
+  const activeTiers = configs
+    .flatMap((config) => config.pricing_tiers)
+    .filter((tier) => tier.is_active);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Daily Pottery Workshops",
+    serviceType: "Flexible Hourly Pottery Workshop",
+    provider: {
+      "@type": "Organization",
+      name: "Poetry & Pottery",
+      url: absoluteUrl("/"),
+    },
+    areaServed: "Sangli, Maharashtra, India",
+    url: absoluteUrl("/events/daily-workshops"),
+    description:
+      "Book flexible daily pottery workshop slots between 1 PM and 7 PM with tiered hourly pricing.",
+    offers: activeTiers.map((tier) => ({
+      "@type": "Offer",
+      priceCurrency: "INR",
+      price: tier.price_per_person,
+      description: `${tier.hours} hour session, ${tier.pieces_per_person} pieces per person`,
+    })),
+  };
 }

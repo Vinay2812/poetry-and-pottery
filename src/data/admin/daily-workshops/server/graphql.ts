@@ -8,7 +8,6 @@ import {
   ADMIN_DELETE_DAILY_WORKSHOP_CONFIG_MUTATION,
   ADMIN_DELETE_DAILY_WORKSHOP_PRICING_TIER_MUTATION,
   ADMIN_UPDATE_DAILY_WORKSHOP_CONFIG_MUTATION,
-  ADMIN_UPDATE_DAILY_WORKSHOP_REGISTRATION_STATUS_MUTATION,
   ADMIN_UPSERT_DAILY_WORKSHOP_BLACKOUT_RULE_MUTATION,
   ADMIN_UPSERT_DAILY_WORKSHOP_PRICING_TIER_MUTATION,
 } from "@/graphql/admin/daily-workshops.mutation";
@@ -17,7 +16,6 @@ import {
   ADMIN_DAILY_WORKSHOP_CONFIGS_QUERY,
   ADMIN_DAILY_WORKSHOP_CONFIG_QUERY,
   ADMIN_DAILY_WORKSHOP_PRICING_TIERS_QUERY,
-  ADMIN_USER_DAILY_WORKSHOP_REGISTRATIONS_QUERY,
 } from "@/graphql/admin/daily-workshops.query";
 import type {
   AdminDailyWorkshopBlackoutRule,
@@ -28,18 +26,13 @@ import type {
   AdminDailyWorkshopMutationResponse,
   AdminDailyWorkshopPricingTier,
   AdminDailyWorkshopPricingTierMutationResponse,
-  AdminDailyWorkshopRegistration,
   AdminDeleteDailyWorkshopBlackoutRuleMutation,
   AdminDeleteDailyWorkshopBlackoutRuleMutationVariables,
   AdminDeleteDailyWorkshopPricingTierMutation,
   AdminDeleteDailyWorkshopPricingTierMutationVariables,
   AdminUpdateDailyWorkshopConfigInput,
-  AdminUpdateDailyWorkshopRegistrationStatusMutation,
-  AdminUpdateDailyWorkshopRegistrationStatusMutationVariables,
   AdminUpsertDailyWorkshopBlackoutRuleInput,
   AdminUpsertDailyWorkshopPricingTierInput,
-  AdminUserDailyWorkshopRegistrationsQuery,
-  AdminUserDailyWorkshopRegistrationsQueryVariables,
 } from "@/graphql/generated/types";
 
 type AdminDailyWorkshopConfigsQueryData = {
@@ -169,26 +162,6 @@ export async function getDailyWorkshopBlackoutRules(
   }
 
   return result.data?.adminDailyWorkshopBlackoutRules ?? [];
-}
-
-export async function getUserDailyWorkshopRegistrations(
-  userId: number,
-): Promise<AdminDailyWorkshopRegistration[]> {
-  const client = getClient();
-
-  const result = await client.query<
-    AdminUserDailyWorkshopRegistrationsQuery,
-    AdminUserDailyWorkshopRegistrationsQueryVariables
-  >({
-    query: ADMIN_USER_DAILY_WORKSHOP_REGISTRATIONS_QUERY,
-    variables: { userId },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data!.adminUserDailyWorkshopRegistrations;
 }
 
 export async function updateDailyWorkshopConfig(
@@ -327,25 +300,4 @@ export async function deleteDailyWorkshopBlackoutRule(
   }
 
   return result.data!.adminDeleteDailyWorkshopBlackoutRule;
-}
-
-export async function updateDailyWorkshopRegistrationStatus(
-  registrationId: string,
-  status: string,
-): Promise<AdminDailyWorkshopMutationResponse> {
-  const client = getClient();
-
-  const result = await client.mutate<
-    AdminUpdateDailyWorkshopRegistrationStatusMutation,
-    AdminUpdateDailyWorkshopRegistrationStatusMutationVariables
-  >({
-    mutation: ADMIN_UPDATE_DAILY_WORKSHOP_REGISTRATION_STATUS_MUTATION,
-    variables: { registrationId, status },
-  });
-
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
-  }
-
-  return result.data!.adminUpdateDailyWorkshopRegistrationStatus;
 }

@@ -14,16 +14,28 @@ import {
   WorkshopsSectionContainer,
 } from "@/components/sections";
 
+import { absoluteUrl } from "@/lib/seo";
+
 export const metadata: Metadata = {
   title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
   description:
     "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Functional, decorative, and custom ceramics - each piece tells a story of patience, passion, and the beauty of letting go.",
+  keywords: [
+    "handcrafted ceramics",
+    "pottery studio sangli",
+    "artisan pottery india",
+    "custom ceramic gifts",
+    "pottery workshops",
+  ],
+  alternates: {
+    canonical: absoluteUrl("/"),
+  },
   openGraph: {
     title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
     description:
       "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Each piece tells a story of patience, passion, and the beauty of letting go.",
     type: "website",
-    url: "/",
+    url: absoluteUrl("/"),
     images: [
       {
         url: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
@@ -38,6 +50,9 @@ export const metadata: Metadata = {
     title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
     description:
       "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Shop our collection today.",
+    images: [
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
+    ],
   },
 };
 

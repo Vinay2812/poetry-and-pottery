@@ -6,6 +6,14 @@ import { Suspense } from "react";
 
 import { EventDetailSkeleton } from "@/components/skeletons";
 
+import {
+  DEFAULT_SOCIAL_IMAGE,
+  absoluteUrl,
+  resolveSocialImageUrl,
+} from "@/lib/seo";
+
+import type { EventDetail } from "@/graphql/generated/types";
+
 interface EventDetailPageProps {
   params: Promise<{ id: string }>;
 }
@@ -21,22 +29,31 @@ export async function generateMetadata({
   if (!eventResult.success) {
     return {
       title: "Event Not Found | Poetry & Pottery",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
   const event = eventResult.data;
-  const imageUrl =
-    event.image ||
-    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&h=800&fit=crop";
+  const imageUrl = resolveSocialImageUrl(event.image ?? DEFAULT_SOCIAL_IMAGE);
+  const canonicalUrl = absoluteUrl(`/events/${event.id}`);
+  const description =
+    event.description?.trim() ||
+    `${event.title} pottery workshop by Poetry & Pottery.`;
 
   return {
     title: `${event.title} | Poetry & Pottery`,
-    description: event.description,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${event.title} | Poetry & Pottery`,
-      description: event.description ?? undefined,
+      description,
       type: "website",
-      url: `/events/${event.id}`,
+      url: canonicalUrl,
       images: [
         {
           url: imageUrl,
@@ -49,7 +66,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: `${event.title} | Poetry & Pottery`,
-      description: event.description ?? undefined,
+      description,
       images: [imageUrl],
     },
   };
@@ -64,7 +81,17 @@ async function EventDetailContent({ params }: EventDetailPageProps) {
     notFound();
   }
 
-  return <UnifiedEventDetailContainer event={eventResult.data} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildEventStructuredData(eventResult.data)),
+        }}
+      />
+      <UnifiedEventDetailContainer event={eventResult.data} />
+    </>
+  );
 }
 
 export default function EventDetailPage({ params }: EventDetailPageProps) {
@@ -73,4 +100,41 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
       <EventDetailContent params={params} />
     </Suspense>
   );
+}
+
+function buildEventStructuredData(event: EventDetail) {
+  const structuredData: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    description:
+      event.description?.trim() ||
+      "Join this event hosted by Poetry & Pottery.",
+    startDate: event.starts_at,
+    endDate: event.ends_at,
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: event.location || "Poetry & Pottery",
+      address: event.full_location || event.location || "Sangli, Maharashtra",
+    },
+    image: [resolveSocialImageUrl(event.image ?? DEFAULT_SOCIAL_IMAGE)],
+    organizer: {
+      "@type": "Organization",
+      name: "Poetry & Pottery",
+      url: absoluteUrl("/"),
+    },
+    offers: {
+      "@type": "Offer",
+      url: absoluteUrl(`/events/${event.id}`),
+      priceCurrency: "INR",
+      price: event.price ?? 0,
+      availability:
+        event.available_seats > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/SoldOut",
+    },
+  };
+
+  return structuredData;
 }

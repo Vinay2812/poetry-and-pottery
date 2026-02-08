@@ -356,6 +356,12 @@ export type AdminDailyWorkshopRegistration = {
   user_id: Scalars['Int']['output'];
 };
 
+export type AdminDailyWorkshopRegistrationMutationResponse = {
+  error?: Maybe<Scalars['String']['output']>;
+  registration?: Maybe<AdminDailyWorkshopRegistration>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type AdminDailyWorkshopRegistrationSlot = {
   id: Scalars['Int']['output'];
   slot_end_at: Scalars['DateTime']['output'];
@@ -470,11 +476,6 @@ export type AdminEventReviewsResponse = {
   averageRating: Scalars['Float']['output'];
   reviews: Array<AdminEventReview>;
   total: Scalars['Int']['output'];
-};
-
-export type AdminEventTypeOption = {
-  label: Scalars['String']['output'];
-  value: Scalars['String']['output'];
 };
 
 export type AdminEventsFilterInput = {
@@ -666,6 +667,14 @@ export type AdminUpdateDailyWorkshopConfigInput = {
   slot_capacity?: InputMaybe<Scalars['Int']['input']>;
   slot_duration_minutes?: InputMaybe<Scalars['Int']['input']>;
   timezone?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AdminUpdateDailyWorkshopRegistrationInput = {
+  discount?: InputMaybe<Scalars['Int']['input']>;
+  participants?: InputMaybe<Scalars['Int']['input']>;
+  pieces_per_person?: InputMaybe<Scalars['Int']['input']>;
+  price_per_person?: InputMaybe<Scalars['Int']['input']>;
+  slot_start_times?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
 export type AdminUpsertDailyWorkshopBlackoutRuleInput = {
@@ -982,6 +991,7 @@ export type CreateCustomizeCategoryInput = {
 };
 
 export type CreateDailyWorkshopRegistrationInput = {
+  config_id?: InputMaybe<Scalars['Int']['input']>;
   discount?: InputMaybe<Scalars['Int']['input']>;
   participants?: InputMaybe<Scalars['Int']['input']>;
   slot_start_times: Array<Scalars['DateTime']['input']>;
@@ -1127,6 +1137,7 @@ export type DailyWorkshopAvailabilityDay = {
 };
 
 export type DailyWorkshopAvailabilityInput = {
+  config_id?: InputMaybe<Scalars['Int']['input']>;
   days?: InputMaybe<Scalars['Int']['input']>;
   start_date?: InputMaybe<Scalars['DateTime']['input']>;
 };
@@ -1496,6 +1507,7 @@ export type Mutation = {
   adminCreateCollection: AdminCollectionMutationResponse;
   adminCreateCustomizationOption: AdminCustomizationMutationResponse;
   adminCreateCustomizeCategory: AdminCustomizeCategoryMutationResponse;
+  adminCreateDailyWorkshopConfig: AdminDailyWorkshopConfigMutationResponse;
   adminCreateEvent: AdminEventMutationResponse;
   adminCreateProduct: AdminProductMutationResponse;
   adminDeleteCategory: AdminCategoryMutationResponse;
@@ -1503,6 +1515,7 @@ export type Mutation = {
   adminDeleteCustomizationOption: AdminCustomizationMutationResponse;
   adminDeleteCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminDeleteDailyWorkshopBlackoutRule: AdminDailyWorkshopMutationResponse;
+  adminDeleteDailyWorkshopConfig: AdminDailyWorkshopMutationResponse;
   adminDeleteDailyWorkshopPricingTier: AdminDailyWorkshopMutationResponse;
   adminDeleteEvent: AdminEventMutationResponse;
   adminDeleteProduct: AdminMutationResponse;
@@ -1520,6 +1533,7 @@ export type Mutation = {
   adminUpdateCustomizationOption: AdminCustomizationMutationResponse;
   adminUpdateCustomizeCategory: AdminCustomizeCategoryMutationResponse;
   adminUpdateDailyWorkshopConfig: AdminDailyWorkshopConfigMutationResponse;
+  adminUpdateDailyWorkshopRegistrationDetails: AdminDailyWorkshopRegistrationMutationResponse;
   adminUpdateDailyWorkshopRegistrationStatus: AdminDailyWorkshopMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
@@ -1547,6 +1561,7 @@ export type Mutation = {
   registerForEvent: RegisterForEventResponse;
   removeFromCart: Scalars['Boolean']['output'];
   removeFromWishlist: Scalars['Boolean']['output'];
+  rescheduleDailyWorkshopRegistration: CreateDailyWorkshopRegistrationResponse;
   subscribeToNewsletter: NewsletterMutationResponse;
   toggleReviewLike: ToggleReviewLikeResponse;
   toggleWishlist: ToggleWishlistResponse;
@@ -1633,6 +1648,11 @@ export type MutationAdminDeleteCustomizeCategoryArgs = {
 
 export type MutationAdminDeleteDailyWorkshopBlackoutRuleArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type MutationAdminDeleteDailyWorkshopConfigArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1723,7 +1743,14 @@ export type MutationAdminUpdateCustomizeCategoryArgs = {
 
 
 export type MutationAdminUpdateDailyWorkshopConfigArgs = {
+  configId?: InputMaybe<Scalars['Int']['input']>;
   input: AdminUpdateDailyWorkshopConfigInput;
+};
+
+
+export type MutationAdminUpdateDailyWorkshopRegistrationDetailsArgs = {
+  input: AdminUpdateDailyWorkshopRegistrationInput;
+  registrationId: Scalars['String']['input'];
 };
 
 
@@ -1804,11 +1831,13 @@ export type MutationAdminUpdateUserRoleArgs = {
 
 
 export type MutationAdminUpsertDailyWorkshopBlackoutRuleArgs = {
+  configId?: InputMaybe<Scalars['Int']['input']>;
   input: AdminUpsertDailyWorkshopBlackoutRuleInput;
 };
 
 
 export type MutationAdminUpsertDailyWorkshopPricingTierArgs = {
+  configId?: InputMaybe<Scalars['Int']['input']>;
   input: AdminUpsertDailyWorkshopPricingTierInput;
 };
 
@@ -1866,6 +1895,11 @@ export type MutationRemoveFromCartArgs = {
 
 export type MutationRemoveFromWishlistArgs = {
   productId: Scalars['Int']['input'];
+};
+
+
+export type MutationRescheduleDailyWorkshopRegistrationArgs = {
+  input: RescheduleDailyWorkshopRegistrationInput;
 };
 
 
@@ -2159,7 +2193,8 @@ export type Query = {
   adminCustomizeCategories: AdminCustomizeCategoriesResponse;
   adminCustomizeCategoryById?: Maybe<AdminCustomizeCategory>;
   adminDailyWorkshopBlackoutRules: Array<AdminDailyWorkshopBlackoutRule>;
-  adminDailyWorkshopConfig: AdminDailyWorkshopConfig;
+  adminDailyWorkshopConfig?: Maybe<AdminDailyWorkshopConfig>;
+  adminDailyWorkshopConfigs: Array<AdminDailyWorkshopConfig>;
   adminDailyWorkshopPricingTiers: Array<AdminDailyWorkshopPricingTier>;
   adminDashboardStats: DashboardStats;
   adminEventById?: Maybe<AdminEventDetail>;
@@ -2167,7 +2202,6 @@ export type Query = {
   adminEventRegistrations: AdminEventRegistrationsResponse;
   adminEventReviews: AdminEventReviewsResponse;
   adminEventStatusOptions: Array<AdminStatusOption>;
-  adminEventTypeOptions: Array<AdminEventTypeOption>;
   adminEvents: AdminEventsResponse;
   adminHeroImages: HeroImages;
   adminLowStockProducts: Array<LowStockProduct>;
@@ -2196,6 +2230,7 @@ export type Query = {
   customizationTypes: Array<Scalars['String']['output']>;
   dailyWorkshopAvailability?: Maybe<DailyWorkshopAvailabilityResponse>;
   dailyWorkshopPublicConfig?: Maybe<DailyWorkshopConfig>;
+  dailyWorkshopPublicConfigs: Array<DailyWorkshopConfig>;
   dailyWorkshopRegistrationById?: Maybe<DailyWorkshopRegistration>;
   eventById?: Maybe<EventDetail>;
   eventReviews: ReviewsResponse;
@@ -2259,6 +2294,16 @@ export type QueryAdminCustomizationOptionsArgs = {
 
 export type QueryAdminCustomizeCategoryByIdArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryAdminDailyWorkshopBlackoutRulesArgs = {
+  configId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryAdminDailyWorkshopPricingTiersArgs = {
+  configId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2592,6 +2637,11 @@ export type RegistrationsResponse = {
 export type RegistrationsStats = {
   pending: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
+};
+
+export type RescheduleDailyWorkshopRegistrationInput = {
+  registration_id: Scalars['String']['input'];
+  slot_start_times: Array<Scalars['DateTime']['input']>;
 };
 
 export type ReturnStep = {
@@ -3221,6 +3271,7 @@ export type AdminDailyWorkshopPricingTierMutationFieldsFragment = { id: number, 
 export type AdminDailyWorkshopBlackoutRuleMutationFieldsFragment = { id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string };
 
 export type AdminUpdateDailyWorkshopConfigMutationVariables = Exact<{
+  configId?: InputMaybe<Scalars['Int']['input']>;
   input: AdminUpdateDailyWorkshopConfigInput;
 }>;
 
@@ -3228,6 +3279,7 @@ export type AdminUpdateDailyWorkshopConfigMutationVariables = Exact<{
 export type AdminUpdateDailyWorkshopConfigMutation = { adminUpdateDailyWorkshopConfig: { success: boolean, error?: string | null, config?: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string } | null } };
 
 export type AdminUpsertDailyWorkshopPricingTierMutationVariables = Exact<{
+  configId?: InputMaybe<Scalars['Int']['input']>;
   input: AdminUpsertDailyWorkshopPricingTierInput;
 }>;
 
@@ -3242,6 +3294,7 @@ export type AdminDeleteDailyWorkshopPricingTierMutationVariables = Exact<{
 export type AdminDeleteDailyWorkshopPricingTierMutation = { adminDeleteDailyWorkshopPricingTier: { success: boolean, error?: string | null } };
 
 export type AdminUpsertDailyWorkshopBlackoutRuleMutationVariables = Exact<{
+  configId?: InputMaybe<Scalars['Int']['input']>;
   input: AdminUpsertDailyWorkshopBlackoutRuleInput;
 }>;
 
@@ -3263,35 +3316,55 @@ export type AdminUpdateDailyWorkshopRegistrationStatusMutationVariables = Exact<
 
 export type AdminUpdateDailyWorkshopRegistrationStatusMutation = { adminUpdateDailyWorkshopRegistrationStatus: { success: boolean, error?: string | null } };
 
+export type AdminUpdateDailyWorkshopRegistrationDetailsMutationVariables = Exact<{
+  registrationId: Scalars['String']['input'];
+  input: AdminUpdateDailyWorkshopRegistrationInput;
+}>;
+
+
+export type AdminUpdateDailyWorkshopRegistrationDetailsMutation = { adminUpdateDailyWorkshopRegistrationDetails: { success: boolean, error?: string | null, registration?: { id: string, status: DailyWorkshopRegistrationStatus, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, created_at: Date | string, updated_at: Date | string, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, slots: Array<{ id: number, slot_start_at: Date | string, slot_end_at: Date | string }> } | null } };
+
+export type AdminCreateDailyWorkshopConfigMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCreateDailyWorkshopConfigMutation = { adminCreateDailyWorkshopConfig: { success: boolean, error?: string | null, config?: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string } | null } };
+
+export type AdminDeleteDailyWorkshopConfigMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type AdminDeleteDailyWorkshopConfigMutation = { adminDeleteDailyWorkshopConfig: { success: boolean, error?: string | null } };
+
 export type AdminDailyWorkshopConfigFieldsFragment = { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string };
 
 export type AdminDailyWorkshopPricingTierFieldsFragment = { id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string };
 
 export type AdminDailyWorkshopBlackoutRuleFieldsFragment = { id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string };
 
-export type AdminDailyWorkshopRegistrationFieldsFragment = { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, slot_start_at: Date | string, slot_end_at: Date | string }>, user: { id: number, email: string, name?: string | null, image?: string | null } };
-
 export type AdminDailyWorkshopConfigQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminDailyWorkshopConfigQuery = { adminDailyWorkshopConfig: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string } };
+export type AdminDailyWorkshopConfigQuery = { adminDailyWorkshopConfig?: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string } | null };
 
-export type AdminDailyWorkshopPricingTiersQueryVariables = Exact<{ [key: string]: never; }>;
+export type AdminDailyWorkshopConfigsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminDailyWorkshopConfigsQuery = { adminDailyWorkshopConfigs: Array<{ id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, created_at: Date | string, updated_at: Date | string }> };
+
+export type AdminDailyWorkshopPricingTiersQueryVariables = Exact<{
+  configId?: InputMaybe<Scalars['Int']['input']>;
+}>;
 
 
 export type AdminDailyWorkshopPricingTiersQuery = { adminDailyWorkshopPricingTiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean, created_at: Date | string, updated_at: Date | string }> };
 
-export type AdminDailyWorkshopBlackoutRulesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AdminDailyWorkshopBlackoutRulesQuery = { adminDailyWorkshopBlackoutRules: Array<{ id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string }> };
-
-export type AdminUserDailyWorkshopRegistrationsQueryVariables = Exact<{
-  userId: Scalars['Int']['input'];
+export type AdminDailyWorkshopBlackoutRulesQueryVariables = Exact<{
+  configId?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type AdminUserDailyWorkshopRegistrationsQuery = { adminUserDailyWorkshopRegistrations: Array<{ id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, slot_start_at: Date | string, slot_end_at: Date | string }>, user: { id: number, email: string, name?: string | null, image?: string | null } }> };
+export type AdminDailyWorkshopBlackoutRulesQuery = { adminDailyWorkshopBlackoutRules: Array<{ id: string, config_id: number, name: string, type: DailyWorkshopBlackoutType, is_active: boolean, timezone: string, reason?: string | null, auto_cancel_existing: boolean, one_time_start_at?: Date | string | null, one_time_end_at?: Date | string | null, recurrence_start_date?: Date | string | null, recurrence_end_date?: Date | string | null, weekdays: Array<number>, month_days: Array<number>, range_start_minutes: number, range_end_minutes: number, created_by_user_id?: number | null, created_at: Date | string, updated_at: Date | string }> };
 
 export type AdminCreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -3367,11 +3440,6 @@ export type AdminEventLevelOptionsQueryVariables = Exact<{ [key: string]: never;
 
 
 export type AdminEventLevelOptionsQuery = { adminEventLevelOptions: Array<{ value: string, label: string }> };
-
-export type AdminEventTypeOptionsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AdminEventTypeOptionsQuery = { adminEventTypeOptions: Array<{ value: string, label: string }> };
 
 export type AdminUpdateOrderStatusMutationVariables = Exact<{
   orderId: Scalars['String']['input'];
@@ -3684,6 +3752,13 @@ export type RegisterForDailyWorkshopMutationVariables = Exact<{
 
 export type RegisterForDailyWorkshopMutation = { registerForDailyWorkshop: { success: boolean, error?: string | null, registration?: { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> } | null } };
 
+export type RescheduleDailyWorkshopRegistrationMutationVariables = Exact<{
+  input: RescheduleDailyWorkshopRegistrationInput;
+}>;
+
+
+export type RescheduleDailyWorkshopRegistrationMutation = { rescheduleDailyWorkshopRegistration: { success: boolean, error?: string | null, registration?: { id: string, config_id: number, user_id: number, participants: number, total_hours: number, slots_count: number, price_per_person: number, pieces_per_person: number, base_amount: number, discount: number, final_amount: number, total_pieces: number, currency: string, pricing_snapshot: any, status: DailyWorkshopRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, cancelled_reason?: string | null, cancelled_by_user_id?: number | null, cancelled_by_blackout_rule_id?: string | null, created_at: Date | string, updated_at: Date | string, slots: Array<{ id: number, registration_id: string, slot_start_at: Date | string, slot_end_at: Date | string }> } | null } };
+
 export type DailyWorkshopPricingTierFieldsFragment = { id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean };
 
 export type DailyWorkshopConfigFieldsFragment = { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, pricing_tiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean }> };
@@ -3696,6 +3771,11 @@ export type DailyWorkshopPublicConfigQueryVariables = Exact<{ [key: string]: nev
 
 
 export type DailyWorkshopPublicConfigQuery = { dailyWorkshopPublicConfig?: { id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, pricing_tiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean }> } | null };
+
+export type DailyWorkshopPublicConfigsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DailyWorkshopPublicConfigsQuery = { dailyWorkshopPublicConfigs: Array<{ id: number, key: string, name: string, description?: string | null, is_active: boolean, timezone: string, opening_hour: number, closing_hour: number, slot_duration_minutes: number, slot_capacity: number, booking_window_days: number, auto_cancel_on_blackout: boolean, pricing_tiers: Array<{ id: number, config_id: number, hours: number, price_per_person: number, pieces_per_person: number, sort_order: number, is_active: boolean }> }> };
 
 export type DailyWorkshopAvailabilityQueryVariables = Exact<{
   filter?: InputMaybe<DailyWorkshopAvailabilityInput>;
@@ -4087,44 +4167,6 @@ export const AdminDailyWorkshopBlackoutRuleFieldsFragmentDoc = gql`
   created_by_user_id
   created_at
   updated_at
-}
-    `;
-export const AdminDailyWorkshopRegistrationFieldsFragmentDoc = gql`
-    fragment AdminDailyWorkshopRegistrationFields on AdminDailyWorkshopRegistration {
-  id
-  config_id
-  user_id
-  participants
-  total_hours
-  slots_count
-  price_per_person
-  pieces_per_person
-  base_amount
-  discount
-  final_amount
-  total_pieces
-  currency
-  pricing_snapshot
-  status
-  request_at
-  approved_at
-  paid_at
-  confirmed_at
-  cancelled_at
-  cancelled_reason
-  created_at
-  updated_at
-  slots {
-    id
-    slot_start_at
-    slot_end_at
-  }
-  user {
-    id
-    email
-    name
-    image
-  }
 }
     `;
 export const DailyWorkshopRegistrationMutationFieldsFragmentDoc = gql`
@@ -6193,8 +6235,8 @@ export type AdminCustomizeCategoryByIdQueryHookResult = ReturnType<typeof useAdm
 export type AdminCustomizeCategoryByIdLazyQueryHookResult = ReturnType<typeof useAdminCustomizeCategoryByIdLazyQuery>;
 export type AdminCustomizeCategoryByIdSuspenseQueryHookResult = ReturnType<typeof useAdminCustomizeCategoryByIdSuspenseQuery>;
 export const AdminUpdateDailyWorkshopConfigDocument = gql`
-    mutation AdminUpdateDailyWorkshopConfig($input: AdminUpdateDailyWorkshopConfigInput!) {
-  adminUpdateDailyWorkshopConfig(input: $input) {
+    mutation AdminUpdateDailyWorkshopConfig($configId: Int, $input: AdminUpdateDailyWorkshopConfigInput!) {
+  adminUpdateDailyWorkshopConfig(configId: $configId, input: $input) {
     success
     error
     config {
@@ -6217,6 +6259,7 @@ export const AdminUpdateDailyWorkshopConfigDocument = gql`
  * @example
  * const [adminUpdateDailyWorkshopConfigMutation, { data, loading, error }] = useAdminUpdateDailyWorkshopConfigMutation({
  *   variables: {
+ *      configId: // value for 'configId'
  *      input: // value for 'input'
  *   },
  * });
@@ -6227,8 +6270,8 @@ export function useAdminUpdateDailyWorkshopConfigMutation(baseOptions?: ApolloRe
       }
 export type AdminUpdateDailyWorkshopConfigMutationHookResult = ReturnType<typeof useAdminUpdateDailyWorkshopConfigMutation>;
 export const AdminUpsertDailyWorkshopPricingTierDocument = gql`
-    mutation AdminUpsertDailyWorkshopPricingTier($input: AdminUpsertDailyWorkshopPricingTierInput!) {
-  adminUpsertDailyWorkshopPricingTier(input: $input) {
+    mutation AdminUpsertDailyWorkshopPricingTier($configId: Int, $input: AdminUpsertDailyWorkshopPricingTierInput!) {
+  adminUpsertDailyWorkshopPricingTier(configId: $configId, input: $input) {
     success
     error
     tier {
@@ -6251,6 +6294,7 @@ export const AdminUpsertDailyWorkshopPricingTierDocument = gql`
  * @example
  * const [adminUpsertDailyWorkshopPricingTierMutation, { data, loading, error }] = useAdminUpsertDailyWorkshopPricingTierMutation({
  *   variables: {
+ *      configId: // value for 'configId'
  *      input: // value for 'input'
  *   },
  * });
@@ -6292,8 +6336,8 @@ export function useAdminDeleteDailyWorkshopPricingTierMutation(baseOptions?: Apo
       }
 export type AdminDeleteDailyWorkshopPricingTierMutationHookResult = ReturnType<typeof useAdminDeleteDailyWorkshopPricingTierMutation>;
 export const AdminUpsertDailyWorkshopBlackoutRuleDocument = gql`
-    mutation AdminUpsertDailyWorkshopBlackoutRule($input: AdminUpsertDailyWorkshopBlackoutRuleInput!) {
-  adminUpsertDailyWorkshopBlackoutRule(input: $input) {
+    mutation AdminUpsertDailyWorkshopBlackoutRule($configId: Int, $input: AdminUpsertDailyWorkshopBlackoutRuleInput!) {
+  adminUpsertDailyWorkshopBlackoutRule(configId: $configId, input: $input) {
     success
     error
     rule {
@@ -6316,6 +6360,7 @@ export const AdminUpsertDailyWorkshopBlackoutRuleDocument = gql`
  * @example
  * const [adminUpsertDailyWorkshopBlackoutRuleMutation, { data, loading, error }] = useAdminUpsertDailyWorkshopBlackoutRuleMutation({
  *   variables: {
+ *      configId: // value for 'configId'
  *      input: // value for 'input'
  *   },
  * });
@@ -6391,6 +6436,133 @@ export function useAdminUpdateDailyWorkshopRegistrationStatusMutation(baseOption
         return ApolloReactHooks.useMutation<AdminUpdateDailyWorkshopRegistrationStatusMutation, AdminUpdateDailyWorkshopRegistrationStatusMutationVariables>(AdminUpdateDailyWorkshopRegistrationStatusDocument, options);
       }
 export type AdminUpdateDailyWorkshopRegistrationStatusMutationHookResult = ReturnType<typeof useAdminUpdateDailyWorkshopRegistrationStatusMutation>;
+export const AdminUpdateDailyWorkshopRegistrationDetailsDocument = gql`
+    mutation AdminUpdateDailyWorkshopRegistrationDetails($registrationId: String!, $input: AdminUpdateDailyWorkshopRegistrationInput!) {
+  adminUpdateDailyWorkshopRegistrationDetails(
+    registrationId: $registrationId
+    input: $input
+  ) {
+    success
+    error
+    registration {
+      id
+      status
+      participants
+      total_hours
+      slots_count
+      price_per_person
+      pieces_per_person
+      base_amount
+      discount
+      final_amount
+      total_pieces
+      currency
+      pricing_snapshot
+      created_at
+      updated_at
+      request_at
+      approved_at
+      paid_at
+      confirmed_at
+      cancelled_at
+      cancelled_reason
+      slots {
+        id
+        slot_start_at
+        slot_end_at
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateDailyWorkshopRegistrationDetailsMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateDailyWorkshopRegistrationDetailsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateDailyWorkshopRegistrationDetailsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateDailyWorkshopRegistrationDetailsMutation, { data, loading, error }] = useAdminUpdateDailyWorkshopRegistrationDetailsMutation({
+ *   variables: {
+ *      registrationId: // value for 'registrationId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateDailyWorkshopRegistrationDetailsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateDailyWorkshopRegistrationDetailsMutation, AdminUpdateDailyWorkshopRegistrationDetailsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateDailyWorkshopRegistrationDetailsMutation, AdminUpdateDailyWorkshopRegistrationDetailsMutationVariables>(AdminUpdateDailyWorkshopRegistrationDetailsDocument, options);
+      }
+export type AdminUpdateDailyWorkshopRegistrationDetailsMutationHookResult = ReturnType<typeof useAdminUpdateDailyWorkshopRegistrationDetailsMutation>;
+export const AdminCreateDailyWorkshopConfigDocument = gql`
+    mutation AdminCreateDailyWorkshopConfig {
+  adminCreateDailyWorkshopConfig {
+    success
+    error
+    config {
+      ...AdminDailyWorkshopConfigMutationFields
+    }
+  }
+}
+    ${AdminDailyWorkshopConfigMutationFieldsFragmentDoc}`;
+
+/**
+ * __useAdminCreateDailyWorkshopConfigMutation__
+ *
+ * To run a mutation, you first call `useAdminCreateDailyWorkshopConfigMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminCreateDailyWorkshopConfigMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminCreateDailyWorkshopConfigMutation, { data, loading, error }] = useAdminCreateDailyWorkshopConfigMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminCreateDailyWorkshopConfigMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminCreateDailyWorkshopConfigMutation, AdminCreateDailyWorkshopConfigMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminCreateDailyWorkshopConfigMutation, AdminCreateDailyWorkshopConfigMutationVariables>(AdminCreateDailyWorkshopConfigDocument, options);
+      }
+export type AdminCreateDailyWorkshopConfigMutationHookResult = ReturnType<typeof useAdminCreateDailyWorkshopConfigMutation>;
+export const AdminDeleteDailyWorkshopConfigDocument = gql`
+    mutation AdminDeleteDailyWorkshopConfig($id: Int!) {
+  adminDeleteDailyWorkshopConfig(id: $id) {
+    success
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminDeleteDailyWorkshopConfigMutation__
+ *
+ * To run a mutation, you first call `useAdminDeleteDailyWorkshopConfigMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminDeleteDailyWorkshopConfigMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminDeleteDailyWorkshopConfigMutation, { data, loading, error }] = useAdminDeleteDailyWorkshopConfigMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminDeleteDailyWorkshopConfigMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminDeleteDailyWorkshopConfigMutation, AdminDeleteDailyWorkshopConfigMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminDeleteDailyWorkshopConfigMutation, AdminDeleteDailyWorkshopConfigMutationVariables>(AdminDeleteDailyWorkshopConfigDocument, options);
+      }
+export type AdminDeleteDailyWorkshopConfigMutationHookResult = ReturnType<typeof useAdminDeleteDailyWorkshopConfigMutation>;
 export const AdminDailyWorkshopConfigDocument = gql`
     query AdminDailyWorkshopConfig {
   adminDailyWorkshopConfig {
@@ -6432,9 +6604,50 @@ export function useAdminDailyWorkshopConfigSuspenseQuery(baseOptions?: ApolloRea
 export type AdminDailyWorkshopConfigQueryHookResult = ReturnType<typeof useAdminDailyWorkshopConfigQuery>;
 export type AdminDailyWorkshopConfigLazyQueryHookResult = ReturnType<typeof useAdminDailyWorkshopConfigLazyQuery>;
 export type AdminDailyWorkshopConfigSuspenseQueryHookResult = ReturnType<typeof useAdminDailyWorkshopConfigSuspenseQuery>;
+export const AdminDailyWorkshopConfigsDocument = gql`
+    query AdminDailyWorkshopConfigs {
+  adminDailyWorkshopConfigs {
+    ...AdminDailyWorkshopConfigFields
+  }
+}
+    ${AdminDailyWorkshopConfigFieldsFragmentDoc}`;
+
+/**
+ * __useAdminDailyWorkshopConfigsQuery__
+ *
+ * To run a query within a React component, call `useAdminDailyWorkshopConfigsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminDailyWorkshopConfigsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminDailyWorkshopConfigsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminDailyWorkshopConfigsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>(AdminDailyWorkshopConfigsDocument, options);
+      }
+export function useAdminDailyWorkshopConfigsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>(AdminDailyWorkshopConfigsDocument, options);
+        }
+// @ts-ignore
+export function useAdminDailyWorkshopConfigsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>;
+export function useAdminDailyWorkshopConfigsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminDailyWorkshopConfigsQuery | undefined, AdminDailyWorkshopConfigsQueryVariables>;
+export function useAdminDailyWorkshopConfigsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminDailyWorkshopConfigsQuery, AdminDailyWorkshopConfigsQueryVariables>(AdminDailyWorkshopConfigsDocument, options);
+        }
+export type AdminDailyWorkshopConfigsQueryHookResult = ReturnType<typeof useAdminDailyWorkshopConfigsQuery>;
+export type AdminDailyWorkshopConfigsLazyQueryHookResult = ReturnType<typeof useAdminDailyWorkshopConfigsLazyQuery>;
+export type AdminDailyWorkshopConfigsSuspenseQueryHookResult = ReturnType<typeof useAdminDailyWorkshopConfigsSuspenseQuery>;
 export const AdminDailyWorkshopPricingTiersDocument = gql`
-    query AdminDailyWorkshopPricingTiers {
-  adminDailyWorkshopPricingTiers {
+    query AdminDailyWorkshopPricingTiers($configId: Int) {
+  adminDailyWorkshopPricingTiers(configId: $configId) {
     ...AdminDailyWorkshopPricingTierFields
   }
 }
@@ -6452,6 +6665,7 @@ export const AdminDailyWorkshopPricingTiersDocument = gql`
  * @example
  * const { data, loading, error } = useAdminDailyWorkshopPricingTiersQuery({
  *   variables: {
+ *      configId: // value for 'configId'
  *   },
  * });
  */
@@ -6474,8 +6688,8 @@ export type AdminDailyWorkshopPricingTiersQueryHookResult = ReturnType<typeof us
 export type AdminDailyWorkshopPricingTiersLazyQueryHookResult = ReturnType<typeof useAdminDailyWorkshopPricingTiersLazyQuery>;
 export type AdminDailyWorkshopPricingTiersSuspenseQueryHookResult = ReturnType<typeof useAdminDailyWorkshopPricingTiersSuspenseQuery>;
 export const AdminDailyWorkshopBlackoutRulesDocument = gql`
-    query AdminDailyWorkshopBlackoutRules {
-  adminDailyWorkshopBlackoutRules {
+    query AdminDailyWorkshopBlackoutRules($configId: Int) {
+  adminDailyWorkshopBlackoutRules(configId: $configId) {
     ...AdminDailyWorkshopBlackoutRuleFields
   }
 }
@@ -6493,6 +6707,7 @@ export const AdminDailyWorkshopBlackoutRulesDocument = gql`
  * @example
  * const { data, loading, error } = useAdminDailyWorkshopBlackoutRulesQuery({
  *   variables: {
+ *      configId: // value for 'configId'
  *   },
  * });
  */
@@ -6514,48 +6729,6 @@ export function useAdminDailyWorkshopBlackoutRulesSuspenseQuery(baseOptions?: Ap
 export type AdminDailyWorkshopBlackoutRulesQueryHookResult = ReturnType<typeof useAdminDailyWorkshopBlackoutRulesQuery>;
 export type AdminDailyWorkshopBlackoutRulesLazyQueryHookResult = ReturnType<typeof useAdminDailyWorkshopBlackoutRulesLazyQuery>;
 export type AdminDailyWorkshopBlackoutRulesSuspenseQueryHookResult = ReturnType<typeof useAdminDailyWorkshopBlackoutRulesSuspenseQuery>;
-export const AdminUserDailyWorkshopRegistrationsDocument = gql`
-    query AdminUserDailyWorkshopRegistrations($userId: Int!) {
-  adminUserDailyWorkshopRegistrations(userId: $userId) {
-    ...AdminDailyWorkshopRegistrationFields
-  }
-}
-    ${AdminDailyWorkshopRegistrationFieldsFragmentDoc}`;
-
-/**
- * __useAdminUserDailyWorkshopRegistrationsQuery__
- *
- * To run a query within a React component, call `useAdminUserDailyWorkshopRegistrationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminUserDailyWorkshopRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAdminUserDailyWorkshopRegistrationsQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useAdminUserDailyWorkshopRegistrationsQuery(baseOptions: ApolloReactHooks.QueryHookOptions<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables> & ({ variables: AdminUserDailyWorkshopRegistrationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>(AdminUserDailyWorkshopRegistrationsDocument, options);
-      }
-export function useAdminUserDailyWorkshopRegistrationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>(AdminUserDailyWorkshopRegistrationsDocument, options);
-        }
-// @ts-ignore
-export function useAdminUserDailyWorkshopRegistrationsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>;
-export function useAdminUserDailyWorkshopRegistrationsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminUserDailyWorkshopRegistrationsQuery | undefined, AdminUserDailyWorkshopRegistrationsQueryVariables>;
-export function useAdminUserDailyWorkshopRegistrationsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<AdminUserDailyWorkshopRegistrationsQuery, AdminUserDailyWorkshopRegistrationsQueryVariables>(AdminUserDailyWorkshopRegistrationsDocument, options);
-        }
-export type AdminUserDailyWorkshopRegistrationsQueryHookResult = ReturnType<typeof useAdminUserDailyWorkshopRegistrationsQuery>;
-export type AdminUserDailyWorkshopRegistrationsLazyQueryHookResult = ReturnType<typeof useAdminUserDailyWorkshopRegistrationsLazyQuery>;
-export type AdminUserDailyWorkshopRegistrationsSuspenseQueryHookResult = ReturnType<typeof useAdminUserDailyWorkshopRegistrationsSuspenseQuery>;
 export const AdminCreateEventDocument = gql`
     mutation AdminCreateEvent($input: CreateEventInput!) {
   adminCreateEvent(input: $input) {
@@ -7074,48 +7247,6 @@ export function useAdminEventLevelOptionsSuspenseQuery(baseOptions?: ApolloReact
 export type AdminEventLevelOptionsQueryHookResult = ReturnType<typeof useAdminEventLevelOptionsQuery>;
 export type AdminEventLevelOptionsLazyQueryHookResult = ReturnType<typeof useAdminEventLevelOptionsLazyQuery>;
 export type AdminEventLevelOptionsSuspenseQueryHookResult = ReturnType<typeof useAdminEventLevelOptionsSuspenseQuery>;
-export const AdminEventTypeOptionsDocument = gql`
-    query AdminEventTypeOptions {
-  adminEventTypeOptions {
-    value
-    label
-  }
-}
-    `;
-
-/**
- * __useAdminEventTypeOptionsQuery__
- *
- * To run a query within a React component, call `useAdminEventTypeOptionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminEventTypeOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAdminEventTypeOptionsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAdminEventTypeOptionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>(AdminEventTypeOptionsDocument, options);
-      }
-export function useAdminEventTypeOptionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>(AdminEventTypeOptionsDocument, options);
-        }
-// @ts-ignore
-export function useAdminEventTypeOptionsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>;
-export function useAdminEventTypeOptionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminEventTypeOptionsQuery | undefined, AdminEventTypeOptionsQueryVariables>;
-export function useAdminEventTypeOptionsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<AdminEventTypeOptionsQuery, AdminEventTypeOptionsQueryVariables>(AdminEventTypeOptionsDocument, options);
-        }
-export type AdminEventTypeOptionsQueryHookResult = ReturnType<typeof useAdminEventTypeOptionsQuery>;
-export type AdminEventTypeOptionsLazyQueryHookResult = ReturnType<typeof useAdminEventTypeOptionsLazyQuery>;
-export type AdminEventTypeOptionsSuspenseQueryHookResult = ReturnType<typeof useAdminEventTypeOptionsSuspenseQuery>;
 export const AdminUpdateOrderStatusDocument = gql`
     mutation AdminUpdateOrderStatus($orderId: String!, $status: String!) {
   adminUpdateOrderStatus(orderId: $orderId, status: $status) {
@@ -9279,6 +9410,40 @@ export function useRegisterForDailyWorkshopMutation(baseOptions?: ApolloReactHoo
         return ApolloReactHooks.useMutation<RegisterForDailyWorkshopMutation, RegisterForDailyWorkshopMutationVariables>(RegisterForDailyWorkshopDocument, options);
       }
 export type RegisterForDailyWorkshopMutationHookResult = ReturnType<typeof useRegisterForDailyWorkshopMutation>;
+export const RescheduleDailyWorkshopRegistrationDocument = gql`
+    mutation RescheduleDailyWorkshopRegistration($input: RescheduleDailyWorkshopRegistrationInput!) {
+  rescheduleDailyWorkshopRegistration(input: $input) {
+    success
+    error
+    registration {
+      ...DailyWorkshopRegistrationMutationFields
+    }
+  }
+}
+    ${DailyWorkshopRegistrationMutationFieldsFragmentDoc}`;
+
+/**
+ * __useRescheduleDailyWorkshopRegistrationMutation__
+ *
+ * To run a mutation, you first call `useRescheduleDailyWorkshopRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRescheduleDailyWorkshopRegistrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rescheduleDailyWorkshopRegistrationMutation, { data, loading, error }] = useRescheduleDailyWorkshopRegistrationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRescheduleDailyWorkshopRegistrationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RescheduleDailyWorkshopRegistrationMutation, RescheduleDailyWorkshopRegistrationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<RescheduleDailyWorkshopRegistrationMutation, RescheduleDailyWorkshopRegistrationMutationVariables>(RescheduleDailyWorkshopRegistrationDocument, options);
+      }
+export type RescheduleDailyWorkshopRegistrationMutationHookResult = ReturnType<typeof useRescheduleDailyWorkshopRegistrationMutation>;
 export const DailyWorkshopPublicConfigDocument = gql`
     query DailyWorkshopPublicConfig {
   dailyWorkshopPublicConfig {
@@ -9320,6 +9485,47 @@ export function useDailyWorkshopPublicConfigSuspenseQuery(baseOptions?: ApolloRe
 export type DailyWorkshopPublicConfigQueryHookResult = ReturnType<typeof useDailyWorkshopPublicConfigQuery>;
 export type DailyWorkshopPublicConfigLazyQueryHookResult = ReturnType<typeof useDailyWorkshopPublicConfigLazyQuery>;
 export type DailyWorkshopPublicConfigSuspenseQueryHookResult = ReturnType<typeof useDailyWorkshopPublicConfigSuspenseQuery>;
+export const DailyWorkshopPublicConfigsDocument = gql`
+    query DailyWorkshopPublicConfigs {
+  dailyWorkshopPublicConfigs {
+    ...DailyWorkshopConfigFields
+  }
+}
+    ${DailyWorkshopConfigFieldsFragmentDoc}`;
+
+/**
+ * __useDailyWorkshopPublicConfigsQuery__
+ *
+ * To run a query within a React component, call `useDailyWorkshopPublicConfigsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDailyWorkshopPublicConfigsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDailyWorkshopPublicConfigsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDailyWorkshopPublicConfigsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>(DailyWorkshopPublicConfigsDocument, options);
+      }
+export function useDailyWorkshopPublicConfigsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>(DailyWorkshopPublicConfigsDocument, options);
+        }
+// @ts-ignore
+export function useDailyWorkshopPublicConfigsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>;
+export function useDailyWorkshopPublicConfigsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<DailyWorkshopPublicConfigsQuery | undefined, DailyWorkshopPublicConfigsQueryVariables>;
+export function useDailyWorkshopPublicConfigsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<DailyWorkshopPublicConfigsQuery, DailyWorkshopPublicConfigsQueryVariables>(DailyWorkshopPublicConfigsDocument, options);
+        }
+export type DailyWorkshopPublicConfigsQueryHookResult = ReturnType<typeof useDailyWorkshopPublicConfigsQuery>;
+export type DailyWorkshopPublicConfigsLazyQueryHookResult = ReturnType<typeof useDailyWorkshopPublicConfigsLazyQuery>;
+export type DailyWorkshopPublicConfigsSuspenseQueryHookResult = ReturnType<typeof useDailyWorkshopPublicConfigsSuspenseQuery>;
 export const DailyWorkshopAvailabilityDocument = gql`
     query DailyWorkshopAvailability($filter: DailyWorkshopAvailabilityInput) {
   dailyWorkshopAvailability(filter: $filter) {
