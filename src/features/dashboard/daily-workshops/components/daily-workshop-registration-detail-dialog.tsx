@@ -20,6 +20,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+
 import { cn } from "@/lib/utils";
 
 import type { DailyWorkshopRegistrationDetailDialogProps } from "../types";
@@ -154,13 +155,17 @@ export function DailyWorkshopRegistrationDetailDialog({
               </Button>
             </div>
 
-            <div ref={slotsListRef} className="max-h-64 space-y-2 overflow-y-auto p-3">
+            <div
+              ref={slotsListRef}
+              className="max-h-64 space-y-2 overflow-y-auto p-3"
+            >
               {viewModel.slots.map((slot) => (
                 <div
                   key={slot.id}
                   className={cn(
                     "rounded-lg border bg-neutral-50 p-2.5 transition-colors",
-                    slot.isNew && "border-primary/60 bg-primary/5 ring-2 ring-primary/20",
+                    slot.isNew &&
+                      "border-primary/60 bg-primary/5 ring-primary/20 ring-2",
                   )}
                 >
                   <div className="mb-1.5 flex items-center justify-between">
@@ -180,7 +185,9 @@ export function DailyWorkshopRegistrationDetailDialog({
                       size="icon"
                       className="size-7 text-red-500 hover:text-red-600"
                       onClick={() => onRemoveSlot(slot.id)}
-                      disabled={viewModel.isPending || viewModel.slots.length <= 1}
+                      disabled={
+                        viewModel.isPending || viewModel.slots.length <= 1
+                      }
                     >
                       <Trash2Icon className="size-3.5" />
                     </Button>

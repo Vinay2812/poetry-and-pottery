@@ -1,7 +1,14 @@
 "use client";
 
 import { updateUserDailyWorkshopRegistrationDetails } from "@/data/admin/users/gateway/server";
-import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { toast } from "sonner";
 
 import { formatCreatedAt, formatDateTimeLocal } from "@/lib/date";
@@ -127,7 +134,9 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
 
   const handleSlotStartChange = useCallback((slotId: number, value: string) => {
     setSlots((previous) =>
-      previous.map((slot) => (slot.id === slotId ? { ...slot, startAt: value } : slot)),
+      previous.map((slot) =>
+        slot.id === slotId ? { ...slot, startAt: value } : slot,
+      ),
     );
   }, []);
 
@@ -138,15 +147,22 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
 
     setSlots((previous) => {
       const fallbackStart = new Date();
-      fallbackStart.setMinutes(fallbackStart.getMinutes() + slotDurationMinutes);
+      fallbackStart.setMinutes(
+        fallbackStart.getMinutes() + slotDurationMinutes,
+      );
 
       const lastSlot = previous[previous.length - 1];
-      const lastSlotStart = lastSlot ? new Date(lastSlot.startAt) : fallbackStart;
+      const lastSlotStart = lastSlot
+        ? new Date(lastSlot.startAt)
+        : fallbackStart;
       const nextStart = Number.isNaN(lastSlotStart.getTime())
         ? fallbackStart
         : new Date(lastSlotStart.getTime() + slotDurationMinutes * 60 * 1000);
 
-      return [...previous, { id: tempId, startAt: formatDateTimeLocal(nextStart) }];
+      return [
+        ...previous,
+        { id: tempId, startAt: formatDateTimeLocal(nextStart) },
+      ];
     });
   }, [slotDurationMinutes]);
 
@@ -226,51 +242,52 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
     startTransition,
   ]);
 
-  const viewModel: DailyWorkshopRegistrationDetailViewModel | null = useMemo(() => {
-    if (!registration) return null;
+  const viewModel: DailyWorkshopRegistrationDetailViewModel | null =
+    useMemo(() => {
+      if (!registration) return null;
 
-    const slotsCount = slots.length;
-    const totalHours = Math.max(
-      1,
-      Math.round((slotsCount * slotDurationMinutes) / 60),
-    );
-    const baseAmount = participants * pricePerPerson;
-    const normalizedDiscount = Math.min(Math.max(0, discount), baseAmount);
-    const finalAmount = Math.max(0, baseAmount - normalizedDiscount);
-    const totalPieces = participants * piecesPerPerson;
+      const slotsCount = slots.length;
+      const totalHours = Math.max(
+        1,
+        Math.round((slotsCount * slotDurationMinutes) / 60),
+      );
+      const baseAmount = participants * pricePerPerson;
+      const normalizedDiscount = Math.min(Math.max(0, discount), baseAmount);
+      const finalAmount = Math.max(0, baseAmount - normalizedDiscount);
+      const totalPieces = participants * piecesPerPerson;
 
-    return {
-      id: registration.id,
-      status: registration.status,
-      formattedCreatedAt: formatCreatedAt(registration.created_at),
-      participants,
-      totalHours,
-      slotsCount,
-      pricePerPerson,
-      piecesPerPerson,
-      baseAmount,
-      discount: normalizedDiscount,
-      finalAmount,
-      totalPieces,
-      slots: slots.map((slot, index) => ({
-        id: slot.id,
-        startAt: slot.startAt,
-        displayLabel: toSlotLabel(slot.startAt, index),
-        isNew: slot.id === focusedSlotId,
-      })),
+      return {
+        id: registration.id,
+        status: registration.status,
+        formattedCreatedAt: formatCreatedAt(registration.created_at),
+        participants,
+        totalHours,
+        slotsCount,
+        pricePerPerson,
+        piecesPerPerson,
+        baseAmount,
+        discount: normalizedDiscount,
+        finalAmount,
+        totalPieces,
+        slots: slots.map((slot, index) => ({
+          id: slot.id,
+          startAt: slot.startAt,
+          displayLabel: toSlotLabel(slot.startAt, index),
+          isNew: slot.id === focusedSlotId,
+        })),
+        isPending,
+      };
+    }, [
+      discount,
       isPending,
-    };
-  }, [
-    discount,
-    isPending,
-    participants,
-    piecesPerPerson,
-    pricePerPerson,
-    registration,
-    slotDurationMinutes,
-    slots,
-    focusedSlotId,
-  ]);
+      participants,
+      piecesPerPerson,
+      pricePerPerson,
+      registration,
+      slotDurationMinutes,
+      slots,
+      focusedSlotId,
+    ]);
 
   return (
     <DailyWorkshopRegistrationDetailDialog

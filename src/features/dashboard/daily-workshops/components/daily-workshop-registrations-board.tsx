@@ -6,13 +6,13 @@ import { useCallback } from "react";
 import { KanbanBoard } from "@/components/dashboard/kanban-board";
 import { Badge } from "@/components/ui/badge";
 
+import { DailyWorkshopRegistrationDetailDialogContainer } from "../containers/daily-workshop-registration-detail-dialog-container";
 import type {
   AdminUserDailyWorkshopRegistration,
   DailyWorkshopRegistrationCardProps,
   DailyWorkshopRegistrationsBoardProps,
 } from "../types";
 import { buildDailyWorkshopRegistrationCardViewModel } from "../types";
-import { DailyWorkshopRegistrationDetailDialogContainer } from "../containers/daily-workshop-registration-detail-dialog-container";
 
 function DailyWorkshopRegistrationCard({
   viewModel,

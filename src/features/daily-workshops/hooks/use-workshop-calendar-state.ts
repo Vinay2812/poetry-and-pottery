@@ -2,10 +2,7 @@
 
 import { useCallback, useState } from "react";
 
-import {
-  formatDateKeyInTimeZone,
-  parseDateKey,
-} from "../utils/calendar-utils";
+import { formatDateKeyInTimeZone, parseDateKey } from "../utils/calendar-utils";
 
 interface UseWorkshopCalendarStateInput {
   initialDateKey: string;
@@ -42,7 +39,8 @@ export function useWorkshopCalendarState({
 
   const resetCalendarToDateKey = useCallback(
     (dateKey: string) => {
-      const nextDateKey = dateKey || formatDateKeyInTimeZone(new Date(), timeZone);
+      const nextDateKey =
+        dateKey || formatDateKeyInTimeZone(new Date(), timeZone);
       setActiveDateKey(dateKey);
       setCalendarMonthDate(parseDateKey(nextDateKey));
     },

@@ -4,7 +4,7 @@ import {
   type DailyWorkshopRegistration,
   DailyWorkshopRegistrationStatus,
 } from "@/data/daily-workshops/types";
-import { CalendarDays, Clock3, Palette, Package, Users } from "lucide-react";
+import { CalendarDays, Clock3, Package, Palette, Users } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";

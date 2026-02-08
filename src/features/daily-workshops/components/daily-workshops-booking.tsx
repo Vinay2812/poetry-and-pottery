@@ -360,7 +360,9 @@ export function DailyWorkshopsBooking({
                   variant="outline"
                   className="h-10 w-10 rounded-full p-0"
                   onClick={() => onParticipantsChange(-1)}
-                  disabled={viewModel.participants <= 1 || viewModel.isConfigLoading}
+                  disabled={
+                    viewModel.participants <= 1 || viewModel.isConfigLoading
+                  }
                 >
                   -
                 </Button>

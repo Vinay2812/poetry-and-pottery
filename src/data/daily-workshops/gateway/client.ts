@@ -25,14 +25,12 @@ export type RescheduleDailyWorkshopResult =
   | { success: false; error: string };
 
 interface UseRegisterForDailyWorkshopReturn {
-  mutate: (
-    input: {
-      configId?: number;
-      participants?: number;
-      slotStartTimes: string[];
-      discount?: number;
-    },
-  ) => Promise<RegisterForDailyWorkshopResult>;
+  mutate: (input: {
+    configId?: number;
+    participants?: number;
+    slotStartTimes: string[];
+    discount?: number;
+  }) => Promise<RegisterForDailyWorkshopResult>;
   loading: boolean;
   error: Error | undefined;
 }
@@ -119,7 +117,8 @@ export function useRegisterForDailyWorkshop(): UseRegisterForDailyWorkshopReturn
 
         return {
           success: false,
-          error: registerResponse?.error ?? "Failed to register for daily workshop",
+          error:
+            registerResponse?.error ?? "Failed to register for daily workshop",
         };
       } catch (e) {
         return {

@@ -42,9 +42,9 @@ async function DailyWorkshopRegistrationDetailContent({
   }
 
   const config = configsResult.success
-    ? configsResult.data.find(
+    ? (configsResult.data.find(
         (item) => item.id === registrationResult.data.config_id,
-      ) ?? null
+      ) ?? null)
     : null;
 
   return (

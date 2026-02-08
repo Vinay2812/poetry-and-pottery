@@ -38,8 +38,8 @@ export function DailyWorkshopReschedule({
           <p className="mt-2 max-w-2xl text-sm text-neutral-600">
             Choose new slots for cancelled sessions. You must select{" "}
             {viewModel.requiredSlots} session
-            {viewModel.requiredSlots > 1 ? "s" : ""} (
-            {viewModel.requiredHours} combined hour
+            {viewModel.requiredSlots > 1 ? "s" : ""} ({viewModel.requiredHours}{" "}
+            combined hour
             {viewModel.requiredHours > 1 ? "s" : ""}) and you can split them
             across multiple days.
           </p>
