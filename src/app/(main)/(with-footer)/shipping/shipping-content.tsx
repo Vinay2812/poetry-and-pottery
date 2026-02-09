@@ -23,10 +23,10 @@ export async function ShippingContent() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            headline: "Shipping and Returns Policy",
+            headline: "Shipping and Delivery Policy",
             url: absoluteUrl("/shipping"),
             description:
-              "Shipping timelines, delivery options, return process, and replacement policy for Poetry & Pottery orders.",
+              "Shipping timelines, delivery options, India-only service areas, and damage support policy for Poetry & Pottery orders.",
           }),
         }}
       />
