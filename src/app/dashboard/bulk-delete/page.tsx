@@ -1,7 +1,7 @@
 "use client";
 
-import { BulkDeleteEventsDialog } from "@/features/dashboard/bulk-delete/components/bulk-delete-events-dialog";
-import { BulkDeleteProductsDialog } from "@/features/dashboard/bulk-delete/components/bulk-delete-products-dialog";
+import { BulkDeleteEventsDialogContainer } from "@/features/dashboard/bulk-delete/containers/bulk-delete-events-dialog-container";
+import { BulkDeleteProductsDialogContainer } from "@/features/dashboard/bulk-delete/containers/bulk-delete-products-dialog-container";
 import { BoxIcon, CalendarIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -36,12 +36,12 @@ export default function BulkDeletePage() {
         />
       </div>
 
-      <BulkDeleteProductsDialog
+      <BulkDeleteProductsDialogContainer
         isOpen={isProductsDialogOpen}
         onOpenChange={setIsProductsDialogOpen}
       />
 
-      <BulkDeleteEventsDialog
+      <BulkDeleteEventsDialogContainer
         isOpen={isEventsDialogOpen}
         onOpenChange={setIsEventsDialogOpen}
       />

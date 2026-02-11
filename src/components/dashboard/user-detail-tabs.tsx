@@ -1,5 +1,6 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
 import {
   CalendarClockIcon,
   CalendarIcon,
@@ -9,6 +10,35 @@ import {
 } from "lucide-react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+interface UserDetailTabTriggerProps {
+  value: string;
+  icon: LucideIcon;
+  count: number;
+  label: string;
+}
+
+function UserDetailTabTrigger({
+  value,
+  icon: Icon,
+  count,
+  label,
+}: UserDetailTabTriggerProps) {
+  return (
+    <TabsTrigger
+      value={value}
+      className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
+    >
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white">
+        <Icon className="size-5 text-neutral-500" />
+      </div>
+      <div>
+        <p className="text-2xl font-bold">{count}</p>
+        <p className="text-sm text-neutral-500">{label}</p>
+      </div>
+    </TabsTrigger>
+  );
+}
 
 interface UserDetailTabsProps {
   ordersContent: React.ReactNode;
@@ -38,66 +68,36 @@ export function UserDetailTabs({
   return (
     <Tabs defaultValue="orders" className="space-y-4">
       <TabsList className="grid h-auto w-full grid-cols-2 gap-4 bg-transparent p-0 md:grid-cols-5">
-        <TabsTrigger
+        <UserDetailTabTrigger
           value="orders"
-          className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
-        >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white">
-            <PackageIcon className="size-5 text-neutral-500" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{orderCount}</p>
-            <p className="text-sm text-neutral-500">Orders</p>
-          </div>
-        </TabsTrigger>
-        <TabsTrigger
+          icon={PackageIcon}
+          count={orderCount}
+          label="Orders"
+        />
+        <UserDetailTabTrigger
           value="registrations"
-          className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
-        >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white">
-            <CalendarIcon className="size-5 text-neutral-500" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{registrationCount}</p>
-            <p className="text-sm text-neutral-500">Registrations</p>
-          </div>
-        </TabsTrigger>
-        <TabsTrigger
+          icon={CalendarIcon}
+          count={registrationCount}
+          label="Registrations"
+        />
+        <UserDetailTabTrigger
           value="daily-workshops"
-          className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
-        >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white">
-            <CalendarClockIcon className="size-5 text-neutral-500" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{dailyWorkshopCount}</p>
-            <p className="text-sm text-neutral-500">Daily Workshops</p>
-          </div>
-        </TabsTrigger>
-        <TabsTrigger
+          icon={CalendarClockIcon}
+          count={dailyWorkshopCount}
+          label="Daily Workshops"
+        />
+        <UserDetailTabTrigger
           value="cart"
-          className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
-        >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white">
-            <ShoppingCartIcon className="size-5 text-neutral-500" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{cartCount}</p>
-            <p className="text-sm text-neutral-500">Cart Items</p>
-          </div>
-        </TabsTrigger>
-        <TabsTrigger
+          icon={ShoppingCartIcon}
+          count={cartCount}
+          label="Cart Items"
+        />
+        <UserDetailTabTrigger
           value="wishlist"
-          className="data-[state=active]:border-primary data-[state=active]:bg-primary/5 h-auto cursor-pointer justify-start gap-3 rounded-xl border-2 border-transparent bg-neutral-50 p-4 text-left transition-all"
-        >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white">
-            <HeartIcon className="size-5 text-neutral-500" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{wishlistCount}</p>
-            <p className="text-sm text-neutral-500">Wishlist</p>
-          </div>
-        </TabsTrigger>
+          icon={HeartIcon}
+          count={wishlistCount}
+          label="Wishlist"
+        />
       </TabsList>
 
       <TabsContent value="orders" className="mt-6">

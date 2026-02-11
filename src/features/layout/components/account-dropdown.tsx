@@ -1,5 +1,6 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
 import {
   HelpCircle,
   Info,
@@ -25,6 +26,40 @@ import {
 import { cn } from "@/lib/utils";
 
 import type { AccountDropdownProps } from "../types";
+
+interface AccountDropdownNavItemProps {
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+  badge?: number;
+}
+
+function AccountDropdownNavItem({
+  icon: Icon,
+  label,
+  onClick,
+  badge,
+}: AccountDropdownNavItemProps) {
+  return (
+    <DropdownMenuItem
+      onClick={onClick}
+      className={cn(
+        "flex cursor-pointer items-center rounded-lg px-3 py-2.5 hover:bg-neutral-50",
+        badge != null && badge > 0 ? "justify-between" : "gap-2.5",
+      )}
+    >
+      <span className="flex items-center gap-2.5">
+        <Icon className="h-[18px] w-[18px] text-neutral-500" />
+        <span>{label}</span>
+      </span>
+      {badge != null && badge > 0 && (
+        <span className="bg-primary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white">
+          {badge}
+        </span>
+      )}
+    </DropdownMenuItem>
+  );
+}
 
 export function AccountDropdown({
   viewModel,
@@ -80,82 +115,54 @@ export function AccountDropdown({
         )}
 
         <div className="p-1">
-          <DropdownMenuItem
+          <AccountDropdownNavItem
+            icon={User}
+            label="Profile & Settings"
             onClick={onProfileSettings}
-            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-          >
-            <User className="h-[18px] w-[18px] text-neutral-500" />
-            <span>Profile & Settings</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
+          />
+          <AccountDropdownNavItem
+            icon={Package}
+            label="My Orders"
             onClick={() => onNavigate("/orders")}
-            className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-          >
-            <span className="flex items-center gap-2.5">
-              <Package className="h-[18px] w-[18px] text-neutral-500" />
-              <span>My Orders</span>
-            </span>
-            {viewModel.pendingOrdersCount > 0 && (
-              <span className="bg-primary flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-white">
-                {viewModel.pendingOrdersCount}
-              </span>
-            )}
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
+            badge={viewModel.pendingOrdersCount}
+          />
+          <AccountDropdownNavItem
+            icon={Palette}
+            label="Customize Pottery"
             onClick={() => onNavigate("/customize")}
-            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-          >
-            <Palette className="h-[18px] w-[18px] text-neutral-500" />
-            <span>Customize Pottery</span>
-          </DropdownMenuItem>
-
+          />
           {viewModel.isAdmin && (
-            <DropdownMenuItem
+            <AccountDropdownNavItem
+              icon={LayoutDashboard}
+              label="Dashboard"
               onClick={() => onNavigate("/dashboard")}
-              className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-            >
-              <LayoutDashboard className="h-[18px] w-[18px] text-neutral-500" />
-              <span>Dashboard</span>
-            </DropdownMenuItem>
+            />
           )}
         </div>
 
         <DropdownMenuSeparator className="my-1 bg-neutral-100" />
 
         <div className="p-1">
-          <DropdownMenuItem
+          <AccountDropdownNavItem
+            icon={Info}
+            label="About"
             onClick={() => onNavigate("/about")}
-            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-          >
-            <Info className="h-[18px] w-[18px] text-neutral-500" />
-            <span>About</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
+          />
+          <AccountDropdownNavItem
+            icon={Mail}
+            label="Contact"
             onClick={() => onNavigate("/contact")}
-            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-          >
-            <Mail className="h-[18px] w-[18px] text-neutral-500" />
-            <span>Contact</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
+          />
+          <AccountDropdownNavItem
+            icon={HelpCircle}
+            label="FAQ"
             onClick={() => onNavigate("/faq")}
-            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-          >
-            <HelpCircle className="h-[18px] w-[18px] text-neutral-500" />
-            <span>FAQ</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
+          />
+          <AccountDropdownNavItem
+            icon={Truck}
+            label="Shipping"
             onClick={() => onNavigate("/shipping")}
-            className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
-          >
-            <Truck className="h-[18px] w-[18px] text-neutral-500" />
-            <span>Shipping</span>
-          </DropdownMenuItem>
+          />
         </div>
 
         <DropdownMenuSeparator className="my-1 bg-neutral-100" />

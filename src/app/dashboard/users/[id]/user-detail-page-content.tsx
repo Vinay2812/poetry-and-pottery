@@ -1,9 +1,9 @@
 import { DailyWorkshopRegistrationsBoardContainer } from "@/features/dashboard/daily-workshops";
 import { OrdersBoardContainer } from "@/features/dashboard/orders";
 import { RegistrationsBoardContainer } from "@/features/dashboard/registrations";
+import { WishlistViewContainer as WishlistView } from "@/features/dashboard/users";
 
 import { UserDetailTabs } from "@/components/dashboard/user-detail-tabs";
-import { WishlistView } from "@/components/dashboard/wishlist-view";
 
 import { UserRole } from "@/graphql/generated/types";
 

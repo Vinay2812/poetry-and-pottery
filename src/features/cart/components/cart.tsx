@@ -13,7 +13,148 @@ import { EmptyState } from "@/components/sections";
 import { ListingPageHeader, OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
-import type { CartProps } from "../types";
+import type { CartItemViewModel, CartProps } from "../types";
+
+// Single unavailable item row with image, info, and action buttons.
+interface UnavailableCartItemProps {
+  productSlug: string;
+  productName: string;
+  productImage: string;
+  availabilityMessage: string;
+  onMoveToWishlist: () => void;
+  onRemove: () => void;
+}
+
+function UnavailableCartItem({
+  productSlug,
+  productName,
+  productImage,
+  availabilityMessage,
+  onMoveToWishlist,
+  onRemove,
+}: UnavailableCartItemProps) {
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.15 }}
+      className="group flex items-center gap-3 rounded-xl bg-white/60 p-2.5 transition-colors hover:bg-white"
+    >
+      <Link
+        href={`/products/${productSlug}`}
+        className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-neutral-100 opacity-60 grayscale"
+      >
+        <OptimizedImage
+          src={productImage}
+          alt={productName}
+          fill
+          className="object-cover"
+        />
+      </Link>
+
+      <div className="min-w-0 flex-1">
+        <Link href={`/products/${productSlug}`}>
+          <h4 className="line-clamp-1 text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900">
+            {productName}
+          </h4>
+        </Link>
+        <p className="mt-0.5 text-xs text-amber-600">{availabilityMessage}</p>
+      </div>
+
+      <div className="flex shrink-0 items-center gap-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hover:bg-primary/10 hover:text-primary h-7 w-7 rounded-full text-neutral-400"
+          onClick={onMoveToWishlist}
+          title="Save to Wishlist"
+        >
+          <Heart className="h-3.5 w-3.5" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7 rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-500"
+          onClick={onRemove}
+          title="Remove"
+        >
+          <X className="h-3.5 w-3.5" />
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+
+// Section showing unavailable items with bulk actions.
+interface UnavailableCartSectionProps {
+  items: CartItemViewModel[];
+  onMoveToWishlist: (productId: number) => void;
+  onRemoveItem: (productId: number) => void;
+}
+
+function UnavailableCartSection({
+  items,
+  onMoveToWishlist,
+  onRemoveItem,
+}: UnavailableCartSectionProps) {
+  return (
+    <div className="rounded-2xl border border-amber-200/60 bg-amber-50/30 p-4 lg:p-5">
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-amber-700">
+          <AlertCircle className="h-4 w-4" />
+          <h3 className="text-sm font-medium">Unavailable ({items.length})</h3>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 gap-1.5 px-2 text-xs text-amber-700 hover:bg-amber-100 hover:text-amber-800"
+            onClick={() => {
+              items.forEach((item) => onMoveToWishlist(item.productId));
+            }}
+          >
+            <Heart className="h-3 w-3" />
+            <span className="hidden sm:inline">Save all to Wishlist</span>
+            <span className="sm:hidden">Save all</span>
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 gap-1.5 px-2 text-xs text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700"
+            onClick={() => {
+              items.forEach((item) => onRemoveItem(item.productId));
+            }}
+          >
+            <Trash2 className="h-3 w-3" />
+            <span className="hidden sm:inline">Remove all</span>
+          </Button>
+        </div>
+      </div>
+
+      <p className="mb-4 text-xs text-amber-600/80">
+        These items won&apos;t be included in your order.
+      </p>
+
+      <div className="space-y-2">
+        <AnimatePresence mode="popLayout">
+          {items.map((item) => (
+            <UnavailableCartItem
+              key={item.productId}
+              productSlug={item.product.slug}
+              productName={item.product.name}
+              productImage={item.product.image_urls[0] || "/placeholder.jpg"}
+              availabilityMessage={item.availability.message}
+              onMoveToWishlist={() => onMoveToWishlist(item.productId)}
+              onRemove={() => onRemoveItem(item.productId)}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
 
 export function Cart({
   viewModel,
@@ -106,120 +247,11 @@ export function Cart({
 
                   {/* Unavailable Items Section */}
                   {hasUnavailableItems && (
-                    <div className="rounded-2xl border border-amber-200/60 bg-amber-50/30 p-4 lg:p-5">
-                      <div className="mb-4 flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-amber-700">
-                          <AlertCircle className="h-4 w-4" />
-                          <h3 className="text-sm font-medium">
-                            Unavailable ({unavailableItems.length})
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 gap-1.5 px-2 text-xs text-amber-700 hover:bg-amber-100 hover:text-amber-800"
-                            onClick={() => {
-                              unavailableItems.forEach((item) =>
-                                onMoveToWishlist(item.productId),
-                              );
-                            }}
-                          >
-                            <Heart className="h-3 w-3" />
-                            <span className="hidden sm:inline">
-                              Save all to Wishlist
-                            </span>
-                            <span className="sm:hidden">Save all</span>
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 gap-1.5 px-2 text-xs text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700"
-                            onClick={() => {
-                              unavailableItems.forEach((item) =>
-                                onRemoveItem(item.productId),
-                              );
-                            }}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                            <span className="hidden sm:inline">Remove all</span>
-                          </Button>
-                        </div>
-                      </div>
-
-                      <p className="mb-4 text-xs text-amber-600/80">
-                        These items won&apos;t be included in your order.
-                      </p>
-
-                      {/* Unavailable Items List - Simple rows */}
-                      <div className="space-y-2">
-                        <AnimatePresence mode="popLayout">
-                          {unavailableItems.map((item) => (
-                            <motion.div
-                              key={item.productId}
-                              layout
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, scale: 0.95 }}
-                              transition={{ duration: 0.15 }}
-                              className="group flex items-center gap-3 rounded-xl bg-white/60 p-2.5 transition-colors hover:bg-white"
-                            >
-                              {/* Product Image */}
-                              <Link
-                                href={`/products/${item.product.slug}`}
-                                className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-neutral-100 opacity-60 grayscale"
-                              >
-                                <OptimizedImage
-                                  src={
-                                    item.product.image_urls[0] ||
-                                    "/placeholder.jpg"
-                                  }
-                                  alt={item.product.name}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </Link>
-
-                              {/* Product Info */}
-                              <div className="min-w-0 flex-1">
-                                <Link href={`/products/${item.product.slug}`}>
-                                  <h4 className="line-clamp-1 text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900">
-                                    {item.product.name}
-                                  </h4>
-                                </Link>
-                                <p className="mt-0.5 text-xs text-amber-600">
-                                  {item.availability.message}
-                                </p>
-                              </div>
-
-                              {/* Actions */}
-                              <div className="flex shrink-0 items-center gap-1">
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="hover:bg-primary/10 hover:text-primary h-7 w-7 rounded-full text-neutral-400"
-                                  onClick={() =>
-                                    onMoveToWishlist(item.productId)
-                                  }
-                                  title="Save to Wishlist"
-                                >
-                                  <Heart className="h-3.5 w-3.5" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-7 w-7 rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-500"
-                                  onClick={() => onRemoveItem(item.productId)}
-                                  title="Remove"
-                                >
-                                  <X className="h-3.5 w-3.5" />
-                                </Button>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </AnimatePresence>
-                      </div>
-                    </div>
+                    <UnavailableCartSection
+                      items={unavailableItems}
+                      onMoveToWishlist={onMoveToWishlist}
+                      onRemoveItem={onRemoveItem}
+                    />
                   )}
 
                   {/* Address Selector */}

@@ -1,7 +1,6 @@
 "use client";
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_ROOT_MARGIN } from "@/consts/performance";
-import type { ProductBase } from "@/data/products/types";
 import { useRecommendedProductsQuery } from "@/features/recommended-products";
 import { useWishlist } from "@/hooks";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,27 +13,11 @@ import { useWishlistLazyQuery } from "@/graphql/generated/graphql";
 import type { WishlistItem } from "@/graphql/generated/types";
 
 import { Wishlist } from "../components/wishlist";
-import type { WishlistContainerProps, WishlistViewModel } from "../types";
-
-function mapToProductBase(wishlistItem: WishlistItem): ProductBase {
-  return {
-    id: wishlistItem.product.id,
-    slug: wishlistItem.product.slug,
-    name: wishlistItem.product.name,
-    price: wishlistItem.product.price,
-    image_urls: wishlistItem.product.image_urls,
-    material: wishlistItem.product.material,
-    available_quantity: wishlistItem.product.available_quantity,
-    total_quantity: wishlistItem.product.total_quantity,
-    color_code: wishlistItem.product.color_code,
-    color_name: wishlistItem.product.color_name,
-    avg_rating: wishlistItem.product.avg_rating ?? 0,
-    reviews_count: wishlistItem.product.reviews_count ?? 0,
-    in_wishlist: true,
-    is_active: wishlistItem.product.is_active ?? true,
-    collection: wishlistItem.product.collection ?? null,
-  };
-}
+import {
+  type WishlistContainerProps,
+  type WishlistViewModel,
+  mapToProductBase,
+} from "../types";
 
 const WISHLIST_PAGE_SIZE = 10;
 

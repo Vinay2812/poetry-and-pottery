@@ -1,6 +1,6 @@
 import type { KanbanColumn } from "@/components/dashboard/kanban-board";
 
-import { createDate, formatDateTime } from "@/lib/date";
+import { createDate, formatDateTime, formatDateTimeLocal } from "@/lib/date";
 
 import {
   type AdminDailyWorkshopBlackoutRule,
@@ -159,6 +159,106 @@ export interface DailyWorkshopsDashboardProps {
   onSaveBlackout: () => void;
   onEditBlackout: (ruleId: string) => void;
   onCancelBlackoutEdit: () => void;
+  onDeleteBlackout: (ruleId: string) => void;
+}
+
+export interface ConfigPickerProps {
+  configs: AdminDailyWorkshopConfig[];
+  selectedConfigId: number | null;
+  isPending: boolean;
+  onSelectConfig: (configId: number) => void;
+  onCreateConfig: () => void;
+  onDeleteConfig: () => void;
+}
+
+export interface DailyWorkshopSummaryCardsProps {
+  tiersCount: number;
+  activeTiersCount: number;
+  blackoutsCount: number;
+  activeBlackoutsCount: number;
+  openingHourLabel: string;
+  closingHourLabel: string;
+  slotDurationLabel: string;
+  bookingWindowDays: number;
+}
+
+export interface DailyWorkshopConfigFormProps {
+  configForm: AdminUpdateDailyWorkshopConfigInput;
+  configFormErrors: ConfigFormErrors;
+  openingHourLabel: string;
+  closingHourLabel: string;
+  isPending: boolean;
+  onConfigFormChange: (
+    field: keyof AdminUpdateDailyWorkshopConfigInput,
+    value: string | number | boolean,
+  ) => void;
+  onSaveConfig: () => void;
+}
+
+export interface PricingTierFormProps {
+  tierDraft: PricingTierDraft;
+  editingTierId: number | null;
+  tiersCount: number;
+  isPending: boolean;
+  onTierDraftChange: (
+    field: keyof PricingTierDraft,
+    value: string | number | boolean,
+  ) => void;
+  onSaveTier: () => void;
+  onCancelTierEdit: () => void;
+}
+
+export interface PricingTiersTableProps {
+  tiers: PricingTierRowViewModel[];
+  isPending: boolean;
+  onEditTier: (tierId: number) => void;
+  onDeleteTier: (tierId: number) => void;
+}
+
+export interface PricingTierCardProps {
+  hours: number;
+  pricePerPersonLabel: string;
+  piecesPerPerson: number;
+  sortOrder: number;
+  isActive: boolean;
+  updatedAtLabel: string;
+  isPending: boolean;
+  onEdit: () => void;
+  onDelete: () => void;
+}
+
+export interface BlackoutRuleFormProps {
+  blackoutDraft: BlackoutRuleDraft;
+  blackoutFormErrors: BlackoutFormErrors;
+  editingBlackoutId: string | null;
+  isPending: boolean;
+  onBlackoutDraftChange: (
+    field: keyof BlackoutRuleDraft,
+    value: string | boolean,
+  ) => void;
+  onSaveBlackout: () => void;
+  onCancelBlackoutEdit: () => void;
+}
+
+export interface BlackoutRuleCardProps {
+  name: string;
+  type: DailyWorkshopBlackoutType;
+  isActive: boolean;
+  scheduleLabel: string;
+  rangeLabel: string;
+  timezone: string;
+  reasonLabel: string;
+  createdAtLabel: string;
+  isPending: boolean;
+  onEdit: () => void;
+  onDelete: () => void;
+}
+
+export interface BlackoutRulesListProps {
+  blackoutRules: BlackoutRuleRowViewModel[];
+  blackoutsCount: number;
+  isPending: boolean;
+  onEditBlackout: (ruleId: string) => void;
   onDeleteBlackout: (ruleId: string) => void;
 }
 
@@ -586,6 +686,28 @@ export interface DailyWorkshopRegistrationDetailViewModel {
   isPending: boolean;
 }
 
+export interface RegistrationEditableFieldsProps {
+  participants: number;
+  piecesPerPerson: number;
+  pricePerPerson: number;
+  discount: number;
+  isPending: boolean;
+  onParticipantsChange: (participants: number) => void;
+  onPiecesPerPersonChange: (piecesPerPerson: number) => void;
+  onPricePerPersonChange: (pricePerPerson: number) => void;
+  onDiscountChange: (discount: number) => void;
+}
+
+export interface RegistrationTimeSlotsSectionProps {
+  slots: DailyWorkshopRegistrationSlotViewModel[];
+  isPending: boolean;
+  slotsListRef: React.RefObject<HTMLDivElement | null>;
+  slotInputRefs: React.RefObject<Record<number, HTMLInputElement | null>>;
+  onSlotStartChange: (slotId: number, value: string) => void;
+  onAddSlot: () => void;
+  onRemoveSlot: (slotId: number) => void;
+}
+
 export interface DailyWorkshopRegistrationDetailDialogProps {
   open: boolean;
   viewModel: DailyWorkshopRegistrationDetailViewModel | null;
@@ -646,4 +768,56 @@ export function buildDailyWorkshopRegistrationCardViewModel(
     createdAt: registration.created_at,
     firstSlotStartAt: registration.slots[0]?.slot_start_at ?? null,
   };
+}
+
+// Infers slot duration in minutes from existing slots or total hours.
+export function inferSlotDurationMinutes(
+  totalHours: number,
+  slotsCount: number,
+  slots: { slot_start_at: Date | string; slot_end_at: Date | string }[],
+): number {
+  if (slots.length > 0) {
+    const firstStart = createDate(slots[0].slot_start_at);
+    const firstEnd = createDate(slots[0].slot_end_at);
+    const diffMinutes = Math.round(
+      (firstEnd.getTime() - firstStart.getTime()) / (1000 * 60),
+    );
+    if (diffMinutes > 0) {
+      return diffMinutes;
+    }
+  }
+
+  if (totalHours > 0 && slotsCount > 0) {
+    const inferred = Math.round((totalHours * 60) / slotsCount);
+    if (inferred > 0) {
+      return inferred;
+    }
+  }
+
+  return 60;
+}
+
+// Converts slot data to draft format for editing.
+export function getInitialSlots(
+  slots: { id: number; slot_start_at: Date | string }[],
+): { id: number; startAt: string }[] {
+  return slots.map((slot) => ({
+    id: slot.id,
+    startAt: formatDateTimeLocal(slot.slot_start_at),
+  }));
+}
+
+// Formats a slot datetime value into a human-readable label.
+export function toSlotLabel(value: string, index: number): string {
+  const date = createDate(value);
+  if (Number.isNaN(date.getTime())) {
+    return `Slot ${index + 1}`;
+  }
+
+  return date.toLocaleString("en-IN", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }

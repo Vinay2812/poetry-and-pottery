@@ -1,14 +1,13 @@
 "use client";
 
-import { useToggleReviewLike } from "@/data/reviews/gateway/client";
-import { useAuthAction, useCart, useShare, useWishlist } from "@/hooks";
 import {
-  useCallback,
-  useMemo,
-  useOptimistic,
-  useState,
-  useTransition,
-} from "react";
+  useAuthAction,
+  useCart,
+  useReviewLikes,
+  useShare,
+  useWishlist,
+} from "@/hooks";
+import { useCallback, useMemo, useState } from "react";
 
 import { openWhatsAppProductRequest } from "@/lib/contact-business";
 
@@ -21,23 +20,13 @@ export function ProductDetailContainer({
 }: ProductDetailContainerProps) {
   const [selectedColor, setSelectedColor] = useState(product.color_name || "");
   const [addedToCart, setAddedToCart] = useState(false);
-  const [reviewLikeUpdates, setReviewLikeUpdates] = useState<
-    Record<string, { likes: number; isLiked: boolean }>
-  >({});
-  const [optimisticReviewLikeUpdates, applyOptimisticReviewLike] =
-    useOptimistic(
-      reviewLikeUpdates,
-      (
-        state: Record<string, { likes: number; isLiked: boolean }>,
-        update: { reviewId: string; likes: number; isLiked: boolean },
-      ) => ({
-        ...state,
-        [update.reviewId]: { likes: update.likes, isLiked: update.isLiked },
-      }),
-    );
-  const [, startTransition] = useTransition();
 
-  const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
+  const {
+    optimisticReviewLikeUpdates,
+    handleLikeUpdate,
+    handleReviewLike: baseHandleReviewLike,
+  } = useReviewLikes();
+
   const { requireAuth, userId: currentUserId } = useAuthAction();
   const { addToCart, isLoading: isCartLoading, isAtMaxQuantity } = useCart();
   const {
@@ -115,57 +104,14 @@ export function ProductDetailContainer({
     });
   }, [product.id, product.name, product.price, availabilityStatus]);
 
-  const handleLikeUpdate = useCallback(
-    (reviewId: string, likes: number, isLiked: boolean) => {
-      setReviewLikeUpdates((prev) => ({
-        ...prev,
-        [reviewId]: { likes, isLiked },
-      }));
-    },
-    [],
-  );
-
   const handleReviewLike = useCallback(
     (reviewId: string, currentLikes: number, currentIsLiked: boolean) => {
-      // Debounce check
       const result = requireAuth(() => {
-        // Optimistically update UI
-        const newIsLiked = !currentIsLiked;
-        const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-
-        // Wrap entire async operation in transition
-        startTransition(async () => {
-          applyOptimisticReviewLike({
-            reviewId,
-            likes: newLikes,
-            isLiked: newIsLiked,
-          });
-
-          // Call mutation
-          const result = await toggleReviewLikeMutate(Number(reviewId));
-
-          if (!result.success) {
-            setReviewLikeUpdates((prev) => ({
-              ...prev,
-              [reviewId]: { likes: currentLikes, isLiked: currentIsLiked },
-            }));
-          } else if (result.likesCount !== undefined) {
-            // Sync with server count
-            setReviewLikeUpdates((prev) => ({
-              ...prev,
-              [reviewId]: { likes: result.likesCount, isLiked: newIsLiked },
-            }));
-          }
-        });
+        baseHandleReviewLike(reviewId, currentLikes, currentIsLiked);
       });
       return result ?? false;
     },
-    [
-      requireAuth,
-      applyOptimisticReviewLike,
-      toggleReviewLikeMutate,
-      startTransition,
-    ],
+    [requireAuth, baseHandleReviewLike],
   );
 
   return (

@@ -12,20 +12,7 @@ import {
   createUploadFile,
   createUploadFileFromUrl,
 } from "../types";
-
-async function uploadToR2(presignedUrl: string, file: File): Promise<void> {
-  const response = await fetch(presignedUrl, {
-    method: "PUT",
-    body: file,
-    headers: {
-      "Content-Type": file.type,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to upload file to R2");
-  }
-}
+import { uploadToR2 } from "../utils/upload-to-r2";
 
 export function R2ImageUploaderContainer({
   folder,

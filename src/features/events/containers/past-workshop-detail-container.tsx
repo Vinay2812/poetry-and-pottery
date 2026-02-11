@@ -1,14 +1,7 @@
 "use client";
 
-import { useToggleReviewLike } from "@/data/reviews/gateway/client";
-import { useAuthAction } from "@/hooks";
-import {
-  useCallback,
-  useMemo,
-  useOptimistic,
-  useState,
-  useTransition,
-} from "react";
+import { useAuthAction, useReviewLikes } from "@/hooks";
+import { useCallback, useMemo, useState } from "react";
 
 import { createDate } from "@/lib/date";
 
@@ -30,24 +23,14 @@ export function PastWorkshopDetailContainer({
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
-  const [reviewLikeUpdates, setReviewLikeUpdates] = useState<
-    Record<string, { likes: number; isLiked: boolean }>
-  >({});
-  const [optimisticReviewLikeUpdates, applyOptimisticReviewLike] =
-    useOptimistic(
-      reviewLikeUpdates,
-      (
-        state: Record<string, { likes: number; isLiked: boolean }>,
-        update: { reviewId: string; likes: number; isLiked: boolean },
-      ) => ({
-        ...state,
-        [update.reviewId]: { likes: update.likes, isLiked: update.isLiked },
-      }),
-    );
 
-  const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
+  const {
+    optimisticReviewLikeUpdates,
+    handleLikeUpdate,
+    handleReviewLike: baseHandleReviewLike,
+  } = useReviewLikes();
+
   const { requireAuth } = useAuthAction();
-  const [, startTransition] = useTransition();
 
   const handleOpenGallery = useCallback((index: number) => {
     setSelectedImageIndex(index);
@@ -56,16 +39,6 @@ export function PastWorkshopDetailContainer({
   const handleCloseGallery = useCallback(() => {
     setSelectedImageIndex(null);
   }, []);
-
-  const handleLikeUpdate = useCallback(
-    (reviewId: string, likes: number, isLiked: boolean) => {
-      setReviewLikeUpdates((prev) => ({
-        ...prev,
-        [reviewId]: { likes, isLiked },
-      }));
-    },
-    [],
-  );
 
   // Format reviews for display
   const formattedReviews: FormattedReview[] = useMemo(() => {
@@ -96,53 +69,6 @@ export function PastWorkshopDetailContainer({
       };
     });
   }, [workshop.reviews, currentUserId, optimisticReviewLikeUpdates]);
-
-  const handleReviewLike = useCallback(
-    (reviewId: string) => {
-      // Find the current review state
-      const review = formattedReviews.find((r) => r.id === reviewId);
-      if (!review) return;
-
-      const currentLikes = review.likes;
-      const currentIsLiked = review.isLikedByCurrentUser;
-
-      // Optimistically update UI
-      const newIsLiked = !currentIsLiked;
-      const newLikes = currentIsLiked ? currentLikes - 1 : currentLikes + 1;
-
-      // Wrap entire async operation in transition
-      startTransition(async () => {
-        applyOptimisticReviewLike({
-          reviewId,
-          likes: newLikes,
-          isLiked: newIsLiked,
-        });
-
-        // Call mutation
-        const result = await toggleReviewLikeMutate(Number(reviewId));
-
-        if (!result.success) {
-          // Revert on failure
-          setReviewLikeUpdates((prev) => ({
-            ...prev,
-            [reviewId]: { likes: currentLikes, isLiked: currentIsLiked },
-          }));
-        } else if (result.likesCount !== undefined) {
-          // Sync with server count
-          setReviewLikeUpdates((prev) => ({
-            ...prev,
-            [reviewId]: { likes: result.likesCount, isLiked: newIsLiked },
-          }));
-        }
-      });
-    },
-    [
-      applyOptimisticReviewLike,
-      formattedReviews,
-      toggleReviewLikeMutate,
-      startTransition,
-    ],
-  );
 
   // Calculate average rating
   const averageRating = useMemo(() => {
@@ -186,11 +112,20 @@ export function PastWorkshopDetailContainer({
     [workshop, formattedReviews, averageRating, isWorkshop, isOpenMic],
   );
 
-  const handleAuthenticatedReviewLike = useCallback(
+  const handleReviewLike = useCallback(
     (reviewId: string) => {
-      requireAuth(() => handleReviewLike(reviewId));
+      const review = formattedReviews.find((r) => r.id === reviewId);
+      if (!review) return;
+
+      requireAuth(() => {
+        baseHandleReviewLike(
+          reviewId,
+          review.likes,
+          review.isLikedByCurrentUser,
+        );
+      });
     },
-    [requireAuth, handleReviewLike],
+    [requireAuth, baseHandleReviewLike, formattedReviews],
   );
 
   return (
@@ -200,7 +135,7 @@ export function PastWorkshopDetailContainer({
       selectedImageIndex={selectedImageIndex}
       onOpenGallery={handleOpenGallery}
       onCloseGallery={handleCloseGallery}
-      onReviewLike={handleAuthenticatedReviewLike}
+      onReviewLike={handleReviewLike}
       onLikeUpdate={handleLikeUpdate}
     />
   );

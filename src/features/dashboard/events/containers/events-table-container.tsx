@@ -4,6 +4,7 @@ import {
   deleteEvent,
   updateEventStatus,
 } from "@/data/admin/events/gateway/server";
+import { useURLFilterHandlers } from "@/hooks/use-url-filter-handlers";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 
@@ -20,9 +21,24 @@ export function EventsTableContainer({
 }: EventsTableContainerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
+
+  const {
+    createFilterHandler,
+    createSearchHandler,
+    handlePageChange,
+    isPending,
+  } = useURLFilterHandlers({
+    basePath: "/dashboard/events",
+  });
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
+  const handleSearch = createSearchHandler(setSearch);
+  const handleStatusFilter = createFilterHandler("status");
+  const handleLevelFilter = createFilterHandler("level");
+  const handleEventTypeFilter = createFilterHandler("eventType");
+  const handleStartDateFilter = createFilterHandler("startDate");
+  const handleEndDateFilter = createFilterHandler("endDate");
 
   const viewModel = useMemo(
     () =>
@@ -36,114 +52,6 @@ export function EventsTableContainer({
         searchParams.get("endDate") || "",
       ),
     [data, search, searchParams],
-  );
-
-  const handleSearch = useCallback(
-    (value: string) => {
-      setSearch(value);
-      const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set("search", value);
-      } else {
-        params.delete("search");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/events?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleStatusFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "ALL") {
-        params.set("status", value);
-      } else {
-        params.delete("status");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/events?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleLevelFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "ALL") {
-        params.set("level", value);
-      } else {
-        params.delete("level");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/events?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleEventTypeFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "ALL") {
-        params.set("eventType", value);
-      } else {
-        params.delete("eventType");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/events?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleStartDateFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set("startDate", value);
-      } else {
-        params.delete("startDate");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/events?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleEndDateFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set("endDate", value);
-      } else {
-        params.delete("endDate");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/events?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("page", page.toString());
-      startTransition(() => {
-        router.push(`/dashboard/events?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
   );
 
   const handleStatusChange = useCallback(

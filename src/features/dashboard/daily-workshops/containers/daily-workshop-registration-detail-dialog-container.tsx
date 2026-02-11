@@ -18,60 +18,16 @@ import type {
   DailyWorkshopRegistrationDetailDialogContainerProps,
   DailyWorkshopRegistrationDetailViewModel,
 } from "../types";
+import {
+  getInitialSlots,
+  inferSlotDurationMinutes,
+  toSlotLabel,
+} from "../types";
 
 type SlotDraft = {
   id: number;
   startAt: string;
 };
-
-function inferSlotDurationMinutes(
-  totalHours: number,
-  slotsCount: number,
-  slots: { slot_start_at: Date | string; slot_end_at: Date | string }[],
-): number {
-  if (slots.length > 0) {
-    const firstStart = createDate(slots[0].slot_start_at);
-    const firstEnd = createDate(slots[0].slot_end_at);
-    const diffMinutes = Math.round(
-      (firstEnd.getTime() - firstStart.getTime()) / (1000 * 60),
-    );
-    if (diffMinutes > 0) {
-      return diffMinutes;
-    }
-  }
-
-  if (totalHours > 0 && slotsCount > 0) {
-    const inferred = Math.round((totalHours * 60) / slotsCount);
-    if (inferred > 0) {
-      return inferred;
-    }
-  }
-
-  return 60;
-}
-
-function getInitialSlots(
-  slots: { id: number; slot_start_at: Date | string }[],
-): SlotDraft[] {
-  return slots.map((slot) => ({
-    id: slot.id,
-    startAt: formatDateTimeLocal(slot.slot_start_at),
-  }));
-}
-
-function toSlotLabel(value: string, index: number): string {
-  const date = createDate(value);
-  if (Number.isNaN(date.getTime())) {
-    return `Slot ${index + 1}`;
-  }
-
-  return date.toLocaleString("en-IN", {
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 export function DailyWorkshopRegistrationDetailDialogContainer({
   registration,

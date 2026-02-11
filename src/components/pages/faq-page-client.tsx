@@ -22,6 +22,7 @@ import {
   Utensils,
 } from "lucide-react";
 
+import { ContactCtaBanner } from "@/components/pages/contact-cta-banner";
 import { ListingPageHeader } from "@/components/shared";
 import {
   Accordion,
@@ -210,21 +211,10 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
             </div>
 
             {/* Contact CTA */}
-            <div className="bg-primary-lighter rounded-2xl p-6 text-center lg:p-8">
-              <h3 className="font-display mb-2 text-lg font-semibold text-neutral-900">
-                Still have questions?
-              </h3>
-              <p className="text-muted-foreground mb-4 text-sm">
-                Can&apos;t find the answer you&apos;re looking for? Please reach
-                out to us on WhatsApp.
-              </p>
-              <a
-                href="/contact"
-                className="bg-primary hover:bg-primary-hover inline-flex rounded-lg px-6 py-2.5 text-sm font-medium text-white transition-colors"
-              >
-                Contact Us
-              </a>
-            </div>
+            <ContactCtaBanner
+              title="Still have questions?"
+              description="Can't find the answer you're looking for? Please reach out to us on WhatsApp."
+            />
           </div>
         </div>
       </main>

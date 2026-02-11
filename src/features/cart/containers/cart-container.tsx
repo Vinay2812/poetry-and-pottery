@@ -4,7 +4,6 @@ import { useCreateOrder } from "@/data/orders/gateway/client";
 import type { ShippingAddress } from "@/data/orders/types";
 import { useAuthAction, useCart, useWishlist } from "@/hooks";
 import { useUIStore } from "@/store";
-import type { CartWithProduct } from "@/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -14,7 +13,7 @@ import { contactBusiness } from "@/lib/contact-business";
 import { createDate } from "@/lib/date";
 
 import { useCartLazyQuery } from "@/graphql/generated/graphql";
-import type { CartItem, UserAddress } from "@/graphql/generated/types";
+import type { UserAddress } from "@/graphql/generated/types";
 
 import { Cart } from "../components/cart";
 import type {
@@ -22,50 +21,7 @@ import type {
   CartItemViewModel,
   CartViewModel,
 } from "../types";
-import { getProductAvailability } from "../types";
-
-function mapToCartWithProduct(item: CartItem): CartWithProduct {
-  return {
-    id: item.id,
-    user_id: item.user_id,
-    product_id: item.product_id,
-    quantity: item.quantity,
-    created_at: createDate(item.created_at),
-    updated_at: createDate(item.updated_at),
-    custom_data: item.custom_data
-      ? {
-          options: item.custom_data.options.map((opt) => ({
-            type: opt.type,
-            optionId: opt.optionId,
-            name: opt.name,
-            value: opt.value,
-            priceModifier: opt.priceModifier,
-          })),
-          totalModifier: item.custom_data.totalModifier,
-        }
-      : null,
-    custom_data_hash: item.custom_data_hash,
-    product: {
-      id: item.product.id,
-      slug: item.product.slug,
-      name: item.product.name,
-      price: item.product.price,
-      image_urls: item.product.image_urls,
-      material: item.product.material,
-      available_quantity: item.product.available_quantity,
-      total_quantity: item.product.total_quantity,
-      color_code: item.product.color_code,
-      color_name: item.product.color_name,
-      description: null,
-      instructions: [],
-      is_active: item.product.is_active,
-      created_at: createDate(),
-      updated_at: createDate(),
-      product_categories: [],
-      collection: item.product.collection ?? null,
-    },
-  };
-}
+import { getProductAvailability, mapToCartWithProduct } from "../types";
 
 export function CartContainer({ initialCartItems }: CartContainerProps) {
   const mappedInitialItems = useMemo(

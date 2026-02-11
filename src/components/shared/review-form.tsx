@@ -9,7 +9,7 @@ import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
-import { cn } from "@/lib/utils";
+import { StarRatingInput } from "./star-rating-input";
 
 const MAX_CHARACTERS = 500;
 
@@ -177,27 +177,12 @@ function ReviewFormFields({
       {/* Title + Star Rating - Inline */}
       <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
         <h4 className="text-sm font-semibold text-neutral-900">{title}</h4>
-        <div className="flex gap-0.5">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              type="button"
-              onClick={() => onRatingChange(star)}
-              onMouseEnter={() => onRatingHover(star)}
-              onMouseLeave={() => onRatingHover(0)}
-              className="p-0.5 transition-transform hover:scale-110 focus:outline-none"
-            >
-              <Star
-                className={cn(
-                  "h-7 w-7 transition-colors md:h-10 md:w-10",
-                  (hoveredRating || rating) >= star
-                    ? "fill-amber-400 text-amber-400"
-                    : "text-neutral-300",
-                )}
-              />
-            </button>
-          ))}
-        </div>
+        <StarRatingInput
+          rating={rating}
+          hoveredRating={hoveredRating}
+          onRatingChange={onRatingChange}
+          onRatingHover={onRatingHover}
+        />
       </div>
 
       {/* Review Textarea + Character Counter */}

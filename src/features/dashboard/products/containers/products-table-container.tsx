@@ -4,6 +4,7 @@ import {
   deleteProduct,
   toggleProductActive,
 } from "@/data/admin/products/gateway/server";
+import { useURLFilterHandlers } from "@/hooks/use-url-filter-handlers";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 
@@ -18,9 +19,23 @@ export function ProductsTableContainer({
 }: ProductsTableContainerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
+
+  const {
+    createFilterHandler,
+    createSearchHandler,
+    handlePageChange,
+    isPending,
+  } = useURLFilterHandlers({
+    basePath: "/dashboard/products",
+  });
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
+  const handleSearch = createSearchHandler(setSearch);
+  const handleCategoryFilter = createFilterHandler("category");
+  const handleCollectionFilter = createFilterHandler("collection");
+  const handleActiveFilter = createFilterHandler("status");
+  const handleStockFilter = createFilterHandler("stock");
 
   const viewModel = useMemo(
     () =>
@@ -33,98 +48,6 @@ export function ProductsTableContainer({
         searchParams.get("stock") || "ALL",
       ),
     [data, search, searchParams],
-  );
-
-  const handleSearch = useCallback(
-    (value: string) => {
-      setSearch(value);
-      const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set("search", value);
-      } else {
-        params.delete("search");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/products?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleCategoryFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "ALL") {
-        params.set("category", value);
-      } else {
-        params.delete("category");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/products?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleCollectionFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "ALL") {
-        params.set("collection", value);
-      } else {
-        params.delete("collection");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/products?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleActiveFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "ALL") {
-        params.set("status", value);
-      } else {
-        params.delete("status");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/products?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handleStockFilter = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "ALL") {
-        params.set("stock", value);
-      } else {
-        params.delete("stock");
-      }
-      params.set("page", "1");
-      startTransition(() => {
-        router.push(`/dashboard/products?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
-  );
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("page", page.toString());
-      startTransition(() => {
-        router.push(`/dashboard/products?${params.toString()}`);
-      });
-    },
-    [router, searchParams],
   );
 
   const handleToggleActive = useCallback(

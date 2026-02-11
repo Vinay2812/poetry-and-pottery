@@ -82,6 +82,14 @@ export interface DailyWorkshopRescheduleViewModel {
   bookingError: string | null;
 }
 
+export interface CalendarGridProps {
+  monthLabel: string;
+  calendarDays: DailyWorkshopCalendarDayViewModel[];
+  onPreviousMonth: () => void;
+  onNextMonth: () => void;
+  onSelectDate: (dateKey: string) => void;
+}
+
 export interface DailyWorkshopRescheduleProps {
   viewModel: DailyWorkshopRescheduleViewModel;
   onPreviousMonth: () => void;
@@ -135,6 +143,31 @@ export interface DailyWorkshopRegistrationDetailViewModel {
   discount: number;
   pricePerPerson: number;
   tierLabel: string;
+}
+
+export interface CancellationNoticeProps {
+  cancellationTitle: string | null;
+  cancellationNotice: string;
+  canReschedule: boolean;
+  rescheduleRequiredSlots: number;
+  rescheduleRequiredHours: number;
+  rescheduleHref: string;
+}
+
+export interface DayTimelineTabsProps {
+  dayTimelines: DailyWorkshopDayTimelineViewModel[];
+  activeDayKey: string;
+  onSelectDay: (dayKey: string) => void;
+}
+
+export interface PricingSidebarProps {
+  pricePerPerson: number;
+  participants: number;
+  discount: number;
+  finalAmount: number;
+  tierLabel: string;
+  totalHours: number;
+  totalPieces: number;
 }
 
 export interface DailyWorkshopRegistrationDetailProps {

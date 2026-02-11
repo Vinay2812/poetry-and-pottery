@@ -1,7 +1,6 @@
 "use client";
 
-import { DEFAULT_PAGE_SIZE } from "@/consts/performance";
-import { Loader2, Search, SlidersHorizontal, X } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { ProductCard } from "@/components/cards";
 import { EmptyState } from "@/components/sections";
@@ -11,22 +10,16 @@ import {
   SearchInput,
   StaggeredGrid,
 } from "@/components/shared";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import { cn } from "@/lib/utils";
 
 import { ProductOrderBy } from "@/graphql/generated/types";
 
 import { Filters } from "../hooks/use-products-filter-v2";
 import { useProductsV2 } from "../hooks/use-products-v2";
-import { SORT_OPTIONS } from "../types";
+import { DesktopSearchSort } from "./desktop-search-sort";
+import { InfiniteScrollTrigger } from "./infinite-scroll-trigger";
+import { MobileFilterBar } from "./mobile-filter-bar";
+import { MobileFilterOverlay } from "./mobile-filter-overlay";
+import { ProductArchiveTabs } from "./product-archive-tabs";
 
 export type UseProductsV2Props = ReturnType<typeof useProductsV2>;
 
@@ -94,87 +87,27 @@ export function ProductList({
       </div>
 
       {/* Mobile Filter Bar */}
-      <div className="bg-background sticky z-40 flex items-center gap-2 overflow-y-auto px-4 pt-1 pb-3 lg:hidden">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-9 rounded-full"
-          onClick={onFilterOpen}
-        >
-          <SlidersHorizontal className="mr-2 h-4 w-4" />
-          Filter
-          {activeFilterCount > 0 && (
-            <span className="bg-primary ml-1.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-white">
-              {activeFilterCount}
-            </span>
-          )}
-        </Button>
-
-        <Select value={filters.sort} onValueChange={onSortChange}>
-          <SelectTrigger className="h-9 w-48 rounded-full text-sm">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            {SORT_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {isFetchingProducts && (
-          <div className="text-muted-foreground flex items-center gap-1 text-xs">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            Updating
-          </div>
-        )}
-      </div>
+      <MobileFilterBar
+        sort={filters.sort}
+        activeFilterCount={activeFilterCount}
+        isFetching={isFetchingProducts}
+        onFilterOpen={onFilterOpen}
+        onSortChange={onSortChange}
+      />
 
       {/* Mobile Full-Screen Filter Overlay */}
       {isFilterOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-white lg:hidden dark:bg-neutral-950">
-          {/* Header */}
-          <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4 dark:border-neutral-800">
-            <h2 className="font-display text-lg font-bold">Filters</h2>
-            <button
-              onClick={onFilterClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-200 dark:bg-neutral-800"
-            >
-              <X className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
-            </button>
-          </div>
-
-          {/* Scrollable Body */}
-          <div className="flex-1 overflow-y-auto px-5 py-4">
-            <FilterSidebar
-              filters={filters}
-              filterMetadata={filterMetadata}
-              // filtersClassName="hidden"
-              onFilterClear={onFilterClear}
-              onPriceRangeChange={onPriceRangeChange}
-              onCategoryToggle={onCategoryToggle}
-              onMaterialToggle={onMaterialToggle}
-              onCollectionToggle={onCollectionToggle}
-            />
-          </div>
-
-          {/* Footer */}
-          <div className="flex gap-3 border-t border-neutral-100 px-5 py-4 dark:border-neutral-800">
-            <Button
-              variant="secondary"
-              className="flex-1 rounded-xl"
-              onClick={onFilterClear}
-            >
-              Reset
-            </Button>
-            <Button
-              className="shadow-primary/20 flex-2 rounded-xl shadow-lg"
-              onClick={onFilterClose}
-            >
-              Show {totalProducts} Products
-            </Button>
-          </div>
-        </div>
+        <MobileFilterOverlay
+          filters={filters}
+          filterMetadata={filterMetadata}
+          totalProducts={totalProducts}
+          onFilterClose={onFilterClose}
+          onFilterClear={onFilterClear}
+          onPriceRangeChange={onPriceRangeChange}
+          onCategoryToggle={onCategoryToggle}
+          onMaterialToggle={onMaterialToggle}
+          onCollectionToggle={onCollectionToggle}
+        />
       )}
 
       <div className="container mx-auto px-4 py-0 lg:px-8">
@@ -193,61 +126,12 @@ export function ProductList({
         />
 
         {/* Archive Tabs */}
-        <div className="mb-4 lg:mb-6">
-          <div className="flex items-center gap-1 sm:gap-2">
-            <button
-              onClick={() => onArchiveToggle(false)}
-              className={cn(
-                "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
-                !isArchiveView
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              <span className="hidden sm:inline">Active Products</span>
-              <span className="sm:hidden">Active</span>
-              <span
-                className={cn(
-                  "ml-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
-                  !isArchiveView
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground",
-                )}
-              >
-                {activeProductsCount}
-              </span>
-              {!isArchiveView && (
-                <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
-              )}
-            </button>
-            <button
-              onClick={() => onArchiveToggle(true)}
-              className={cn(
-                "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
-                isArchiveView
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              <span className="hidden sm:inline">Archive</span>
-              <span className="sm:hidden">Archive</span>
-              <span
-                className={cn(
-                  "ml-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold",
-                  isArchiveView
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground",
-                )}
-              >
-                {archivedProductsCount}
-              </span>
-              {isArchiveView && (
-                <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
-              )}
-            </button>
-          </div>
-          <div className="border-border border-b" />
-        </div>
+        <ProductArchiveTabs
+          isArchiveView={isArchiveView}
+          activeProductsCount={activeProductsCount}
+          archivedProductsCount={archivedProductsCount}
+          onArchiveToggle={onArchiveToggle}
+        />
 
         <div className="flex gap-8">
           {/* Desktop Sidebar */}
@@ -269,34 +153,13 @@ export function ProductList({
           {/* Product Grid */}
           <div className="flex-1">
             {/* Desktop Search and Sort */}
-            <div className="mb-6 hidden flex-col gap-4 lg:flex">
-              <SearchInput
-                value={filters.search}
-                onChange={onSearchChange}
-                placeholder="Search products..."
-                className="w-full max-w-md"
-              />
-              <div className="flex items-center justify-end gap-3">
-                {isFetchingProducts && (
-                  <div className="text-muted-foreground flex items-center gap-2 text-xs">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Updating results...
-                  </div>
-                )}
-                <Select value={filters.sort} onValueChange={onSortChange}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SORT_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+            <DesktopSearchSort
+              search={filters.search}
+              sort={filters.sort}
+              isFetching={isFetchingProducts}
+              onSearchChange={onSearchChange}
+              onSortChange={onSortChange}
+            />
 
             {products.length > 0 ? (
               <>
@@ -311,23 +174,13 @@ export function ProductList({
                 </StaggeredGrid>
 
                 {/* Infinite scroll trigger */}
-                <div
-                  ref={fetchNextProductsPageRef}
-                  className="mt-8 mb-4 flex justify-center"
-                >
-                  {isFetchingProducts && (
-                    <div className="text-muted-foreground flex items-center gap-2">
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      <span className="text-sm">Loading more products...</span>
-                    </div>
-                  )}
-                  {!hasNextProductsPage &&
-                    products.length >= DEFAULT_PAGE_SIZE && (
-                      <p className="text-muted-foreground text-sm">
-                        You&apos;ve seen all {totalProducts} products
-                      </p>
-                    )}
-                </div>
+                <InfiniteScrollTrigger
+                  triggerRef={fetchNextProductsPageRef}
+                  isFetching={isFetchingProducts}
+                  hasNextPage={hasNextProductsPage}
+                  itemCount={products.length}
+                  totalCount={totalProducts}
+                />
               </>
             ) : (
               <EmptyState

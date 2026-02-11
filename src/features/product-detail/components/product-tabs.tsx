@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { ReviewCard } from "@/components/cards";
-import { Rating, ReviewsSheet } from "@/components/shared";
+import { Rating, ReviewsSheetContainer } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -125,7 +125,7 @@ export function ProductTabs({
                   </p>
                 </div>
               </div>
-              <ReviewsSheet
+              <ReviewsSheetContainer
                 reviews={reviews}
                 averageRating={averageRating}
                 totalReviews={totalReviews}
@@ -135,7 +135,7 @@ export function ProductTabs({
                 <button className="text-primary text-sm font-medium hover:underline">
                   View All &rarr;
                 </button>
-              </ReviewsSheet>
+              </ReviewsSheetContainer>
             </div>
 
             {/* Preview of first 2-3 reviews */}
@@ -168,7 +168,7 @@ export function ProductTabs({
             {/* View All link */}
             {reviews.length > 3 && (
               <div className="pt-2 text-center">
-                <ReviewsSheet
+                <ReviewsSheetContainer
                   reviews={reviews}
                   averageRating={averageRating}
                   totalReviews={totalReviews}
@@ -178,7 +178,7 @@ export function ProductTabs({
                   <button className="text-primary text-sm font-medium hover:underline">
                     View All {totalReviews} Reviews &rarr;
                   </button>
-                </ReviewsSheet>
+                </ReviewsSheetContainer>
               </div>
             )}
           </div>

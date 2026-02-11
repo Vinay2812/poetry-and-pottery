@@ -1,8 +1,10 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +18,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
-import type {
-  CustomizationOptionFormData,
-  CustomizationOptionFormProps,
-} from "../types";
+import {
+  type CustomizationOptionFormValues,
+  customizationOptionFormSchema,
+} from "@/lib/validations/customization";
+
+import type { CustomizationOptionFormProps } from "../types";
 
 export function CustomizationOptionForm({
   viewModel,
@@ -29,31 +33,38 @@ export function CustomizationOptionForm({
   onSubmit,
   onCancel,
 }: CustomizationOptionFormProps) {
-  const [formData, setFormData] = useState<CustomizationOptionFormData>({
-    category: viewModel.category,
-    type: viewModel.type,
-    name: viewModel.name,
-    value: viewModel.value,
-    priceModifier: viewModel.priceModifier,
-    sortOrder: viewModel.sortOrder,
-    isActive: viewModel.isActive,
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<CustomizationOptionFormValues>({
+    resolver: zodResolver(customizationOptionFormSchema) as never,
+    defaultValues: {
+      category: viewModel.category,
+      type: viewModel.type,
+      name: viewModel.name,
+      value: viewModel.value,
+      priceModifier: viewModel.priceModifier,
+      sortOrder: viewModel.sortOrder,
+      isActive: viewModel.isActive,
+    },
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      await onSubmit(formData);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const typeValue = watch("type");
+  const categoryValue = watch("category");
+  const isActive = watch("isActive");
 
   const filteredTypes = existingTypes.filter((t) =>
-    t.toLowerCase().includes(formData.type.toLowerCase()),
+    t.toLowerCase().includes(typeValue.toLowerCase()),
   );
+
+  const handleFormSubmit = async (data: CustomizationOptionFormValues) => {
+    await onSubmit(data);
+  };
 
   return (
     <div className="space-y-6">
@@ -79,17 +90,17 @@ export function CustomizationOptionForm({
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className="max-w-2xl space-y-6"
+      >
         <div className="grid gap-6 sm:grid-cols-2">
           {/* Category */}
           <div className="space-y-2">
             <Label htmlFor="category">Category *</Label>
             <Select
-              value={formData.category}
-              onValueChange={(value) =>
-                setFormData({ ...formData, category: value })
-              }
-              required
+              value={categoryValue}
+              onValueChange={(value) => setValue("category", value)}
             >
               <SelectTrigger id="category" className="w-full">
                 <SelectValue placeholder="Select a category" />
@@ -102,6 +113,9 @@ export function CustomizationOptionForm({
                 ))}
               </SelectContent>
             </Select>
+            {errors.category && (
+              <p className="text-sm text-red-500">{errors.category.message}</p>
+            )}
           </div>
 
           {/* Type */}
@@ -110,17 +124,13 @@ export function CustomizationOptionForm({
             <Input
               id="type"
               placeholder="e.g., SIZE, COLOR, SHAPE"
-              value={formData.type}
+              {...register("type")}
               onChange={(e) => {
-                setFormData({
-                  ...formData,
-                  type: e.target.value.toUpperCase(),
-                });
+                setValue("type", e.target.value.toUpperCase());
                 setShowTypeDropdown(true);
               }}
               onFocus={() => setShowTypeDropdown(true)}
               onBlur={() => setTimeout(() => setShowTypeDropdown(false), 200)}
-              required
             />
             {showTypeDropdown && filteredTypes.length > 0 && (
               <div className="absolute top-full z-10 mt-1 w-full rounded-md border bg-white shadow-lg">
@@ -130,7 +140,7 @@ export function CustomizationOptionForm({
                     type="button"
                     className="w-full px-3 py-2 text-left text-sm hover:bg-neutral-100"
                     onClick={() => {
-                      setFormData({ ...formData, type: t });
+                      setValue("type", t);
                       setShowTypeDropdown(false);
                     }}
                   >
@@ -138,6 +148,9 @@ export function CustomizationOptionForm({
                   </button>
                 ))}
               </div>
+            )}
+            {errors.type && (
+              <p className="text-sm text-red-500">{errors.type.message}</p>
             )}
           </div>
         </div>
@@ -149,12 +162,11 @@ export function CustomizationOptionForm({
             <Input
               id="name"
               placeholder="e.g., Large, Ocean Blue, Heart Shape"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              required
+              {...register("name")}
             />
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name.message}</p>
+            )}
           </div>
 
           {/* Value */}
@@ -163,12 +175,11 @@ export function CustomizationOptionForm({
             <Input
               id="value"
               placeholder="e.g., large, #3B82F6, heart"
-              value={formData.value}
-              onChange={(e) =>
-                setFormData({ ...formData, value: e.target.value })
-              }
-              required
+              {...register("value")}
             />
+            {errors.value && (
+              <p className="text-sm text-red-500">{errors.value.message}</p>
+            )}
             <p className="text-xs text-neutral-500">
               Internal value used for processing
             </p>
@@ -183,14 +194,13 @@ export function CustomizationOptionForm({
               id="priceModifier"
               type="number"
               placeholder="0"
-              value={formData.priceModifier}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  priceModifier: parseInt(e.target.value) || 0,
-                })
-              }
+              {...register("priceModifier", { valueAsNumber: true })}
             />
+            {errors.priceModifier && (
+              <p className="text-sm text-red-500">
+                {errors.priceModifier.message}
+              </p>
+            )}
             <p className="text-xs text-neutral-500">
               Positive for increase, negative for discount
             </p>
@@ -203,14 +213,11 @@ export function CustomizationOptionForm({
               id="sortOrder"
               type="number"
               placeholder="0"
-              value={formData.sortOrder}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  sortOrder: parseInt(e.target.value) || 0,
-                })
-              }
+              {...register("sortOrder", { valueAsNumber: true })}
             />
+            {errors.sortOrder && (
+              <p className="text-sm text-red-500">{errors.sortOrder.message}</p>
+            )}
             <p className="text-xs text-neutral-500">
               Lower numbers appear first
             </p>
@@ -227,10 +234,8 @@ export function CustomizationOptionForm({
           </div>
           <Switch
             id="isActive"
-            checked={formData.isActive}
-            onCheckedChange={(checked) =>
-              setFormData({ ...formData, isActive: checked })
-            }
+            checked={isActive}
+            onCheckedChange={(checked) => setValue("isActive", checked)}
           />
         </div>
 

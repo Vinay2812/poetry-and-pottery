@@ -9,7 +9,86 @@ import { OptimizedImage, ReviewForm } from "@/components/shared";
 
 import { cn } from "@/lib/utils";
 
+import type { ProductCustomizationData } from "@/graphql/generated/types";
+
 import type { OrderItemViewModel } from "../types";
+
+interface OrderItemCustomizationDetailsProps {
+  customData: ProductCustomizationData;
+  isExpanded: boolean;
+  onToggle: () => void;
+}
+
+function OrderItemCustomizationDetails({
+  customData,
+  isExpanded,
+  onToggle,
+}: OrderItemCustomizationDetailsProps) {
+  return (
+    <div className="mt-3">
+      <button
+        onClick={onToggle}
+        className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-left dark:bg-neutral-800"
+      >
+        <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
+          View Customization Details
+        </span>
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 text-neutral-400 transition-transform",
+            isExpanded && "rotate-180",
+          )}
+        />
+      </button>
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-1.5 pt-2">
+              {customData.options.map((option) => (
+                <div
+                  key={option.optionId}
+                  className="flex items-center justify-between text-xs"
+                >
+                  <span className="text-neutral-500 dark:text-neutral-400">
+                    {option.name}
+                  </span>
+                  <span className="font-medium text-neutral-700 dark:text-neutral-200">
+                    {option.value}
+                    {option.priceModifier !== 0 && (
+                      <span className="text-primary ml-1">
+                        {option.priceModifier > 0 ? "+" : ""}₹
+                        {option.priceModifier.toLocaleString()}
+                      </span>
+                    )}
+                  </span>
+                </div>
+              ))}
+              {customData.totalModifier !== 0 && (
+                <div className="border-t border-neutral-100 pt-1.5 dark:border-neutral-700">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-neutral-500 dark:text-neutral-400">
+                      Customization Total
+                    </span>
+                    <span className="text-primary font-medium">
+                      {customData.totalModifier > 0 ? "+" : ""}₹
+                      {customData.totalModifier.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 interface OrderItemCardProps {
   item: OrderItemViewModel;
@@ -90,69 +169,12 @@ export function OrderItemCard({
         </div>
       </div>
 
-      {hasCustomization && (
-        <div className="mt-3">
-          <button
-            onClick={() => setIsCustomizationExpanded(!isCustomizationExpanded)}
-            className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-left dark:bg-neutral-800"
-          >
-            <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
-              View Customization Details
-            </span>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 text-neutral-400 transition-transform",
-                isCustomizationExpanded && "rotate-180",
-              )}
-            />
-          </button>
-          <AnimatePresence>
-            {isCustomizationExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
-              >
-                <div className="space-y-1.5 pt-2">
-                  {item.customData?.options.map((option) => (
-                    <div
-                      key={option.optionId}
-                      className="flex items-center justify-between text-xs"
-                    >
-                      <span className="text-neutral-500 dark:text-neutral-400">
-                        {option.name}
-                      </span>
-                      <span className="font-medium text-neutral-700 dark:text-neutral-200">
-                        {option.value}
-                        {option.priceModifier !== 0 && (
-                          <span className="text-primary ml-1">
-                            {option.priceModifier > 0 ? "+" : ""}₹
-                            {option.priceModifier.toLocaleString()}
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  ))}
-                  {item.customData && item.customData.totalModifier !== 0 && (
-                    <div className="border-t border-neutral-100 pt-1.5 dark:border-neutral-700">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-neutral-500 dark:text-neutral-400">
-                          Customization Total
-                        </span>
-                        <span className="text-primary font-medium">
-                          {item.customData.totalModifier > 0 ? "+" : ""}₹
-                          {item.customData.totalModifier.toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+      {hasCustomization && item.customData && (
+        <OrderItemCustomizationDetails
+          customData={item.customData}
+          isExpanded={isCustomizationExpanded}
+          onToggle={() => setIsCustomizationExpanded(!isCustomizationExpanded)}
+        />
       )}
 
       {canReview && (

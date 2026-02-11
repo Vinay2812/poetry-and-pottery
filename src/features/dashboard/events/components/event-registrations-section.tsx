@@ -1,15 +1,9 @@
 "use client";
 
-import { UserIcon } from "lucide-react";
-
-import { OptimizedImage } from "@/components/shared";
-import { Badge } from "@/components/ui/badge";
-
-import { createDate } from "@/lib/date";
-import { getRegistrationStatusColor } from "@/lib/status-utils";
-
 import type { EventRegistrationStatus } from "@/graphql/generated/types";
 import type { AdminEventRegistration } from "@/graphql/generated/types";
+
+import { RegistrationTableRow } from "./registration-table-row";
 
 interface EventRegistrationsSectionProps {
   eventId: string;
@@ -65,84 +59,18 @@ export function EventRegistrationsSection({
             </thead>
             <tbody className="divide-y divide-neutral-100">
               {registrations.map((registration) => (
-                <tr
+                <RegistrationTableRow
                   key={registration.id}
-                  className="transition-colors hover:bg-neutral-50/50"
-                >
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      {registration.user.image ? (
-                        <div className="relative size-10 overflow-hidden rounded-full bg-neutral-100">
-                          <OptimizedImage
-                            src={registration.user.image}
-                            alt={registration.user.name || ""}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex size-10 items-center justify-center rounded-full bg-neutral-100">
-                          <UserIcon className="size-5 text-neutral-400" />
-                        </div>
-                      )}
-                      <div>
-                        <div className="font-medium text-neutral-900">
-                          {registration.user.name || "Unnamed User"}
-                        </div>
-                        <div className="text-sm text-neutral-500">
-                          {registration.user.email}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-neutral-600">
-                      {registration.seats_reserved}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="font-medium text-neutral-900">
-                      {new Intl.NumberFormat("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      }).format(registration.price)}
-                    </div>
-                    {registration.discount > 0 && (
-                      <div className="text-sm text-green-600">
-                        -
-                        {new Intl.NumberFormat("en-IN", {
-                          style: "currency",
-                          currency: "INR",
-                          maximumFractionDigits: 0,
-                        }).format(registration.discount)}{" "}
-                        discount
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Badge
-                      className={`border ${getRegistrationStatusColor(registration.status)}`}
-                    >
-                      {registration.status.toLowerCase().replace("_", " ")}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className="text-sm text-neutral-500"
-                      suppressHydrationWarning
-                    >
-                      {createDate(registration.created_at).toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        },
-                      )}
-                    </span>
-                  </td>
-                </tr>
+                  id={registration.id}
+                  userName={registration.user.name || null}
+                  userEmail={registration.user.email}
+                  userImage={registration.user.image || null}
+                  seatsReserved={registration.seats_reserved}
+                  price={registration.price}
+                  discount={registration.discount}
+                  status={registration.status}
+                  createdAt={registration.created_at}
+                />
               ))}
               {registrations.length === 0 && (
                 <tr>

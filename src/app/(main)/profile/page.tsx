@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ProfileClient } from "./profile-client";
+import { ProfileContainer } from "./profile-container";
 
 export const metadata: Metadata = {
   title: "My Profile | Poetry & Pottery",
@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function ProfilePage() {
-  return <ProfileClient />;
+  return <ProfileContainer />;
 }

@@ -1,21 +1,12 @@
 "use client";
 
-import { useToggleReviewLike } from "@/data/reviews/gateway/client";
 import { Star } from "lucide-react";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useOptimistic,
-  useState,
-  useTransition,
-} from "react";
 
 import { ReviewCard } from "@/components/cards";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
-  CarouselApi,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -40,7 +31,7 @@ import {
 import { OptimizedImage } from "./optimized-image";
 
 // Review interface for the sheet component
-interface Review {
+export interface Review {
   id: string;
   authorId: number;
   author: string;
@@ -53,26 +44,26 @@ interface Review {
   images?: string[];
 }
 
-type SortOption = "recent" | "highest" | "lowest" | "top";
-
-interface ReviewLikeState {
-  likedReviews: Set<string>;
-  likeCounts: Record<string, number>;
-}
-
-interface ReviewLikeAction {
-  reviewId: string;
-  likes: number;
-  isLiked: boolean;
-}
-
 interface ReviewsSheetProps {
-  reviews: Review[];
+  reviews: Review[]; // Already sorted
   averageRating: number;
   totalReviews: number;
   currentUserId?: number | null;
-  onLikeUpdate?: (reviewId: string, likes: number, isLiked: boolean) => void;
+  sortBy: string;
+  onSortChange: (value: string) => void;
+  onLike: (reviewId: string) => void;
+  onImageClick: (imageUrl: string) => void;
   onWriteReview?: () => void;
+  likedReviews: Set<string>;
+  likeCounts: Record<string, number>;
+  // Image viewer state
+  imageViewerOpen: boolean;
+  imageWithReview: { image: string; review: Review }[];
+  selectedImageIndex: number | null;
+  currentSlide: number;
+  carouselStartIndex: number;
+  onCarouselApiChange: (api: CarouselApi) => void;
+  onCloseViewer: () => void;
   children: React.ReactNode;
 }
 
@@ -81,176 +72,22 @@ export function ReviewsSheet({
   averageRating,
   totalReviews,
   currentUserId,
-  onLikeUpdate,
+  sortBy,
+  onSortChange,
+  onLike,
+  onImageClick,
   onWriteReview,
+  likedReviews,
+  likeCounts,
+  imageViewerOpen,
+  imageWithReview,
+  selectedImageIndex,
+  currentSlide,
+  carouselStartIndex,
+  onCarouselApiChange,
+  onCloseViewer,
   children,
 }: ReviewsSheetProps) {
-  const { mutate: toggleReviewLikeMutate } = useToggleReviewLike();
-  const [sortBy, setSortBy] = useState<SortOption>("recent");
-  const [reviewState, setReviewState] = useState<ReviewLikeState>(() => {
-    const likedSet = new Set<string>();
-    const likeCounts = reviews.reduce(
-      (acc, review) => {
-        if (review.isLikedByCurrentUser) {
-          likedSet.add(review.id);
-        }
-        acc[review.id] = review.likes ?? 0;
-        return acc;
-      },
-      {} as Record<string, number>,
-    );
-    return { likedReviews: likedSet, likeCounts };
-  });
-  const [optimisticReviewState, applyOptimisticReview] = useOptimistic(
-    reviewState,
-    (state: ReviewLikeState, action: ReviewLikeAction) => {
-      const nextLiked = new Set(state.likedReviews);
-      if (action.isLiked) {
-        nextLiked.add(action.reviewId);
-      } else {
-        nextLiked.delete(action.reviewId);
-      }
-      return {
-        likedReviews: nextLiked,
-        likeCounts: {
-          ...state.likeCounts,
-          [action.reviewId]: action.likes,
-        },
-      };
-    },
-  );
-
-  const { likedReviews, likeCounts } = optimisticReviewState;
-  const [, startTransition] = useTransition();
-
-  const handleLike = useCallback(
-    (reviewId: string) => {
-      const wasLiked = likedReviews.has(reviewId);
-      const newIsLiked = !wasLiked;
-      const newLikesCount = wasLiked
-        ? (likeCounts[reviewId] ?? 0) - 1
-        : (likeCounts[reviewId] ?? 0) + 1;
-
-      // Notify parent of optimistic update
-      onLikeUpdate?.(reviewId, newLikesCount, newIsLiked);
-
-      // Wrap entire async operation in transition
-      startTransition(async () => {
-        applyOptimisticReview({
-          reviewId,
-          likes: newLikesCount,
-          isLiked: newIsLiked,
-        });
-
-        // Call mutation
-        const result = await toggleReviewLikeMutate(Number(reviewId));
-
-        if (!result.success) {
-          const baseLikes = reviewState.likeCounts[reviewId] ?? 0;
-          const baseIsLiked = reviewState.likedReviews.has(reviewId);
-          setReviewState({
-            likedReviews: new Set(reviewState.likedReviews),
-            likeCounts: { ...reviewState.likeCounts },
-          });
-          onLikeUpdate?.(reviewId, baseLikes, baseIsLiked);
-        } else if (result.likesCount !== undefined) {
-          // Sync with server count
-          const serverCount = result.likesCount;
-          setReviewState((prev) => ({
-            likedReviews: new Set(
-              newIsLiked
-                ? [...prev.likedReviews, reviewId]
-                : [...prev.likedReviews].filter((id) => id !== reviewId),
-            ),
-            likeCounts: {
-              ...prev.likeCounts,
-              [reviewId]: serverCount,
-            },
-          }));
-          // Notify parent of server-synced count
-          onLikeUpdate?.(reviewId, serverCount, newIsLiked);
-        }
-      });
-    },
-    [
-      applyOptimisticReview,
-      likedReviews,
-      likeCounts,
-      onLikeUpdate,
-      reviewState,
-      toggleReviewLikeMutate,
-      startTransition,
-    ],
-  );
-
-  const imageWithReview = useMemo(() => {
-    return reviews.flatMap((review) =>
-      (review.images ?? []).map((image) => ({
-        image,
-        review,
-      })),
-    );
-  }, [reviews]);
-
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
-    null,
-  );
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    if (!carouselApi) return;
-
-    const onSelect = () => {
-      setCurrentSlide(carouselApi.selectedScrollSnap());
-    };
-
-    onSelect();
-
-    carouselApi.on("select", onSelect);
-    return () => {
-      carouselApi.off("select", onSelect);
-    };
-  }, [carouselApi]);
-
-  const handleImageClick = useCallback(
-    (imageUrl: string) => {
-      const index = imageWithReview.findIndex(
-        (item) => item.image === imageUrl,
-      );
-      if (index !== -1) {
-        setSelectedImageIndex(index);
-        setCurrentSlide(index);
-      }
-    },
-    [imageWithReview],
-  );
-
-  const handleCloseViewer = useCallback(() => {
-    setSelectedImageIndex(null);
-  }, []);
-
-  const sortedReviews = useMemo(() => {
-    const sorted = [...reviews];
-    switch (sortBy) {
-      case "highest":
-        return sorted.sort((a, b) => b.rating - a.rating);
-      case "lowest":
-        return sorted.sort((a, b) => a.rating - b.rating);
-      case "top":
-        return sorted.sort(
-          (a, b) => (likeCounts[b.id] ?? 0) - (likeCounts[a.id] ?? 0),
-        );
-      case "recent":
-      default:
-        return sorted;
-    }
-  }, [reviews, sortBy, likeCounts]);
-
-  const handleSortChange = (value: string) => {
-    setSortBy(value as SortOption);
-  };
-
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -291,7 +128,7 @@ export function ReviewsSheet({
                 </div>
               </div>
 
-              <Select value={sortBy} onValueChange={handleSortChange}>
+              <Select value={sortBy} onValueChange={onSortChange}>
                 <SelectTrigger size="sm" className="w-auto">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
@@ -307,7 +144,7 @@ export function ReviewsSheet({
 
           {/* Reviews List */}
           <div className="space-y-3 px-4 py-4 pb-8">
-            {sortedReviews.map((review) => (
+            {reviews.map((review) => (
               <ReviewCard
                 key={review.id}
                 author={review.author}
@@ -321,8 +158,8 @@ export function ReviewsSheet({
                   currentUserId != null && review.authorId === currentUserId
                 }
                 images={review.images}
-                onLike={() => handleLike(review.id)}
-                onImageClick={handleImageClick}
+                onLike={() => onLike(review.id)}
+                onImageClick={onImageClick}
               />
             ))}
           </div>
@@ -340,16 +177,16 @@ export function ReviewsSheet({
 
         {/* Fullscreen Image Viewer with Carousel */}
         <Dialog
-          open={selectedImageIndex !== null}
-          onOpenChange={(open) => !open && handleCloseViewer()}
+          open={imageViewerOpen}
+          onOpenChange={(open) => !open && onCloseViewer()}
         >
           <DialogContent className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0">
             <DialogTitle className="sr-only">Review Image Viewer</DialogTitle>
             <div className="max-h-[calc(90vh-2rem)] overflow-y-auto p-4">
               <Carousel
                 className="w-full"
-                opts={{ startIndex: selectedImageIndex ?? 0 }}
-                setApi={setCarouselApi}
+                opts={{ startIndex: carouselStartIndex }}
+                setApi={onCarouselApiChange}
               >
                 <CarouselContent>
                   {imageWithReview.map((item, index) => (

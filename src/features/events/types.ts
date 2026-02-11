@@ -3,8 +3,10 @@ import type {
   EventBase,
   EventDetail,
   EventRegistration,
+  EventRegistrationStatus,
   EventType,
 } from "@/data/events/types";
+import type { LucideIcon } from "lucide-react";
 
 import type { EventSortOption, EventTypeFilter } from "@/components/events";
 
@@ -200,4 +202,74 @@ export interface RegistrationsContainerProps {
   initialUpcomingDailyWorkshopRegistrations: DailyWorkshopRegistration[];
   initialCompletedDailyWorkshopRegistrations: DailyWorkshopRegistration[];
   upcomingEvents?: EventBase[];
+}
+
+// Status config for registration status badge and messaging.
+export interface RegistrationStatusConfig {
+  label: string;
+  icon: LucideIcon;
+  bgColor: string;
+  textColor: string;
+  borderColor: string;
+  message: string;
+}
+
+// View model for the RegistrationDetail component.
+export interface RegistrationDetailViewModel {
+  // Registration
+  registrationId: string;
+  registrationIdUpperCase: string;
+  status: EventRegistrationStatus;
+  seatsReserved: number;
+  totalAmount: string;
+  amountLabel: string;
+  copied: boolean;
+
+  // Status
+  statusConfig: RegistrationStatusConfig;
+  isConfirmed: boolean;
+  isPending: boolean;
+  isApproved: boolean;
+  isPaid: boolean;
+  showTicketDownload: boolean;
+  showWhatsAppButton: boolean;
+
+  // Event details
+  eventTitle: string;
+  eventDescription: string;
+  imageUrl: string;
+  formattedDate: string;
+  formattedTime: string;
+  duration: string;
+  location: string | null;
+  fullLocation: string | null;
+  level: string | null;
+  instructor: string | null;
+  performers: string[];
+  lineupNotes: string | null;
+  includes: string[];
+  isWorkshop: boolean;
+  isOpenMic: boolean;
+
+  // Registration progress props
+  requestAt?: Date | string | null;
+  approvedAt?: Date | string | null;
+  paidAt?: Date | string | null;
+  confirmedAt?: Date | string | null;
+  cancelledAt?: Date | string | null;
+  createdAt: Date | string;
+}
+
+// Props for the presentational RegistrationDetail component.
+export interface RegistrationDetailProps {
+  viewModel: RegistrationDetailViewModel;
+  registration: EventRegistration;
+  onShare: () => void;
+  onCopyRegistrationId: () => void;
+  onWhatsAppContact: () => void;
+}
+
+// Props for the RegistrationDetailContainer.
+export interface RegistrationDetailContainerProps {
+  registration: EventRegistration;
 }

@@ -143,6 +143,184 @@ export function CustomizationDashboard({
   );
 }
 
+// Category Card Header: icon/image, name, stats, and status badge.
+interface CategoryCardHeaderProps {
+  category: string;
+  imageUrl: string | null;
+  basePriceFormatted: string;
+  optionsCount: number;
+  isActive: boolean;
+}
+
+function CategoryCardHeader({
+  category,
+  imageUrl,
+  basePriceFormatted,
+  optionsCount,
+  isActive,
+}: CategoryCardHeaderProps) {
+  return (
+    <div className="flex items-center gap-4">
+      {imageUrl ? (
+        <Image
+          src={imageUrl}
+          alt={category}
+          width={48}
+          height={48}
+          className="rounded-lg object-cover"
+        />
+      ) : (
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-neutral-100">
+          <span className="text-lg font-semibold text-neutral-400">
+            {category[0]?.toUpperCase()}
+          </span>
+        </div>
+      )}
+
+      <div>
+        <h3 className="text-lg font-semibold text-neutral-900">{category}</h3>
+        <p className="text-sm text-neutral-500">
+          Base: {basePriceFormatted} &middot; {optionsCount} options
+        </p>
+      </div>
+
+      <Badge variant={isActive ? "default" : "secondary"}>
+        {isActive ? "Active" : "Inactive"}
+      </Badge>
+    </div>
+  );
+}
+
+// Category Card Actions: add option button and dropdown with edit/toggle/delete.
+interface CategoryCardActionsProps {
+  isActive: boolean;
+  onAddOption: () => void;
+  onEditCategory: () => void;
+  onToggleActive: () => void;
+  onDelete: () => void;
+}
+
+function CategoryCardActions({
+  isActive,
+  onAddOption,
+  onEditCategory,
+  onToggleActive,
+  onDelete,
+}: CategoryCardActionsProps) {
+  return (
+    <div className="flex items-center gap-2">
+      <Button variant="outline" size="sm" onClick={onAddOption}>
+        <Plus className="mr-1 h-3 w-3" /> Add Option
+      </Button>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={onEditCategory}>
+            <Pencil className="mr-2 h-4 w-4" /> Edit Category
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={onToggleActive}>
+            {isActive ? (
+              <>
+                <ToggleLeft className="mr-2 h-4 w-4" /> Deactivate
+              </>
+            ) : (
+              <>
+                <ToggleRight className="mr-2 h-4 w-4" /> Activate
+              </>
+            )}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={onDelete} className="text-red-600">
+            <Trash2 className="mr-2 h-4 w-4" /> Delete Category
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
+
+// Single option row within the options table.
+interface OptionRowProps {
+  id: number;
+  name: string;
+  value: string;
+  priceModifier: number;
+  priceModifierFormatted: string;
+  sortOrder: number;
+  isActive: boolean;
+  onToggleActive: (optionId: number) => void;
+  onDelete: (optionId: number) => void;
+  onEdit: (optionId: number) => void;
+}
+
+function OptionRow({
+  id,
+  name,
+  value,
+  priceModifier,
+  priceModifierFormatted,
+  sortOrder,
+  isActive,
+  onToggleActive,
+  onDelete,
+  onEdit,
+}: OptionRowProps) {
+  return (
+    <TableRow>
+      <TableCell className="font-medium">{name}</TableCell>
+      <TableCell className="text-neutral-500">{value}</TableCell>
+      <TableCell
+        className={`text-right font-mono text-sm ${
+          priceModifier > 0
+            ? "text-green-600"
+            : priceModifier < 0
+              ? "text-red-600"
+              : "text-neutral-500"
+        }`}
+      >
+        {priceModifierFormatted}
+      </TableCell>
+      <TableCell className="text-center text-neutral-500">
+        {sortOrder}
+      </TableCell>
+      <TableCell className="text-center">
+        <Badge variant={isActive ? "default" : "secondary"} className="text-xs">
+          {isActive ? "Active" : "Inactive"}
+        </Badge>
+      </TableCell>
+      <TableCell>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-7 w-7">
+              <MoreHorizontal className="h-3 w-3" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => onEdit(id)}>
+              <Pencil className="mr-2 h-4 w-4" /> Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onToggleActive(id)}>
+              {isActive ? "Deactivate" : "Activate"}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => onDelete(id)}
+              className="text-red-600"
+            >
+              <Trash2 className="mr-2 h-4 w-4" /> Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </TableCell>
+    </TableRow>
+  );
+}
+
 // Category Card Component
 interface CategoryCardProps {
   category: CustomizeCategoryCardViewModel;
@@ -173,77 +351,22 @@ function CategoryCard({
   return (
     <Card className={isPending ? "opacity-50" : ""}>
       <CardHeader className="pb-3">
-        {/* Header Row */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {/* Category Image */}
-            {category.imageUrl ? (
-              <Image
-                src={category.imageUrl}
-                alt={category.category}
-                width={48}
-                height={48}
-                className="rounded-lg object-cover"
-              />
-            ) : (
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-neutral-100">
-                <span className="text-lg font-semibold text-neutral-400">
-                  {category.category[0]?.toUpperCase()}
-                </span>
-              </div>
-            )}
+          <CategoryCardHeader
+            category={category.category}
+            imageUrl={category.imageUrl}
+            basePriceFormatted={category.basePriceFormatted}
+            optionsCount={category.optionsCount}
+            isActive={category.isActive}
+          />
 
-            {/* Category Info */}
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900">
-                {category.category}
-              </h3>
-              <p className="text-sm text-neutral-500">
-                Base: {category.basePriceFormatted} &middot;{" "}
-                {category.optionsCount} options
-              </p>
-            </div>
-
-            {/* Status Badge */}
-            <Badge variant={category.isActive ? "default" : "secondary"}>
-              {category.isActive ? "Active" : "Inactive"}
-            </Badge>
-          </div>
-
-          {/* Right Actions */}
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={onAddOption}>
-              <Plus className="mr-1 h-3 w-3" /> Add Option
-            </Button>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={onEditCategory}>
-                  <Pencil className="mr-2 h-4 w-4" /> Edit Category
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={onToggleActive}>
-                  {category.isActive ? (
-                    <>
-                      <ToggleLeft className="mr-2 h-4 w-4" /> Deactivate
-                    </>
-                  ) : (
-                    <>
-                      <ToggleRight className="mr-2 h-4 w-4" /> Activate
-                    </>
-                  )}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={onDelete} className="text-red-600">
-                  <Trash2 className="mr-2 h-4 w-4" /> Delete Category
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <CategoryCardActions
+            isActive={category.isActive}
+            onAddOption={onAddOption}
+            onEditCategory={onEditCategory}
+            onToggleActive={onToggleActive}
+            onDelete={onDelete}
+          />
         </div>
       </CardHeader>
 
@@ -319,60 +442,19 @@ function OptionsTypeSection({
           </TableHeader>
           <TableBody>
             {options.map((option) => (
-              <TableRow key={option.id}>
-                <TableCell className="font-medium">{option.name}</TableCell>
-                <TableCell className="text-neutral-500">
-                  {option.value}
-                </TableCell>
-                <TableCell
-                  className={`text-right font-mono text-sm ${
-                    option.priceModifier > 0
-                      ? "text-green-600"
-                      : option.priceModifier < 0
-                        ? "text-red-600"
-                        : "text-neutral-500"
-                  }`}
-                >
-                  {option.priceModifierFormatted}
-                </TableCell>
-                <TableCell className="text-center text-neutral-500">
-                  {option.sortOrder}
-                </TableCell>
-                <TableCell className="text-center">
-                  <Badge
-                    variant={option.isActive ? "default" : "secondary"}
-                    className="text-xs"
-                  >
-                    {option.isActive ? "Active" : "Inactive"}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-7 w-7">
-                        <MoreHorizontal className="h-3 w-3" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => onEditOption(option.id)}>
-                        <Pencil className="mr-2 h-4 w-4" /> Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => onToggleOptionActive(option.id)}
-                      >
-                        {option.isActive ? "Deactivate" : "Activate"}
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => onDeleteOption(option.id)}
-                        className="text-red-600"
-                      >
-                        <Trash2 className="mr-2 h-4 w-4" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
+              <OptionRow
+                key={option.id}
+                id={option.id}
+                name={option.name}
+                value={option.value}
+                priceModifier={option.priceModifier}
+                priceModifierFormatted={option.priceModifierFormatted}
+                sortOrder={option.sortOrder}
+                isActive={option.isActive}
+                onToggleActive={onToggleOptionActive}
+                onDelete={onDeleteOption}
+                onEdit={onEditOption}
+              />
             ))}
           </TableBody>
         </Table>

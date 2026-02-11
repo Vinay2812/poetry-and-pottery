@@ -1,11 +1,6 @@
-"use client";
-
-import type { EventRegistration, EventType } from "@/data/events/types";
-import { useCreateEventReview } from "@/data/reviews/gateway/client";
-import { Calendar, MapPin, Mic, Palette, Pencil, Star } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { Calendar, MapPin, Pencil, Star } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
 
 import { OptimizedImage, ReviewForm } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
@@ -18,103 +13,78 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
-function getEventTypeIcon(type: EventType) {
-  switch (type) {
-    case "OPEN_MIC":
-      return <Mic className="h-3 w-3" />;
-    case "POTTERY_WORKSHOP":
-    default:
-      return <Palette className="h-3 w-3" />;
-  }
-}
-
-function getEventTypeLabel(type: EventType) {
-  switch (type) {
-    case "OPEN_MIC":
-      return "Open Mic";
-    case "POTTERY_WORKSHOP":
-    default:
-      return "Workshop";
-  }
+export interface CompletedEventCardViewModel {
+  eventId: string;
+  title: string;
+  imageUrl: string;
+  formattedDate: string;
+  location: string | null;
+  level: string | null;
+  EventTypeIcon: LucideIcon;
+  eventTypeLabel: string;
+  hasReviewed: boolean;
 }
 
 interface CompletedEventCardProps {
-  registration: EventRegistration;
+  viewModel: CompletedEventCardViewModel;
+  isReviewDialogOpen: boolean;
+  onReviewDialogOpenChange: (open: boolean) => void;
+  onReviewSubmit: (
+    rating: number,
+    review?: string,
+    imageUrls?: string[],
+  ) => Promise<{ success: boolean; error?: string }>;
 }
 
-// Option B: Horizontal Card Layout for Completed Registrations
-// Horizontal card with square thumbnail, completed badge, review status, and CTA.
-export function CompletedEventCard({ registration }: CompletedEventCardProps) {
-  const { event, has_reviewed: hasReviewed } = registration;
-  const router = useRouter();
-  const { mutate: createEventReviewMutate } = useCreateEventReview();
-  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
-
-  const eventDate = createDate(event.ends_at);
-  const formattedDate = eventDate.toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-
-  const imageUrl = event.image || "/placeholder.jpg";
-
-  const handleReviewSubmit = useCallback(
-    async (rating: number, review?: string, imageUrls?: string[]) => {
-      const result = await createEventReviewMutate({
-        eventId: event.id,
-        rating,
-        review,
-        imageUrls,
-      });
-
-      if (result.success) {
-        setIsReviewDialogOpen(false);
-        router.refresh();
-      }
-
-      return {
-        success: result.success,
-        error: result.success ? undefined : result.error,
-      };
-    },
-    [event.id, router, createEventReviewMutate],
-  );
+export function CompletedEventCard({
+  viewModel,
+  isReviewDialogOpen,
+  onReviewDialogOpenChange,
+  onReviewSubmit,
+}: CompletedEventCardProps) {
+  const {
+    eventId,
+    title,
+    imageUrl,
+    formattedDate,
+    location,
+    level,
+    EventTypeIcon,
+    eventTypeLabel,
+    hasReviewed,
+  } = viewModel;
 
   return (
     <div className="flex gap-4 rounded-2xl bg-white p-3 lg:p-4 dark:bg-neutral-900">
       {/* Image Thumbnail */}
       <Link
-        href={`/events/${event.id}`}
+        href={`/events/${eventId}`}
         className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28 dark:bg-neutral-800"
       >
         <OptimizedImage
           src={imageUrl}
-          alt={event.title}
+          alt={title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Level Badge */}
-        {event.level && (
+        {level && (
           <div className="absolute top-2 left-2">
             <Badge
               className={cn(
                 "rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase",
-                event.level.toLowerCase() === "beginner" &&
-                  "bg-primary text-white",
-                event.level.toLowerCase() === "intermediate" &&
+                level.toLowerCase() === "beginner" && "bg-primary text-white",
+                level.toLowerCase() === "intermediate" &&
                   "bg-amber-500 text-white",
-                event.level.toLowerCase() === "advanced" &&
-                  "bg-red-500 text-white",
-                event.level.toLowerCase() === "all_levels" &&
+                level.toLowerCase() === "advanced" && "bg-red-500 text-white",
+                level.toLowerCase() === "all_levels" &&
                   "bg-blue-500 text-white",
               )}
             >
-              {event.level.replace("_", " ")}
+              {level.replace("_", " ")}
             </Badge>
           </div>
         )}
@@ -128,15 +98,15 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
           <div className="mb-1.5 flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
               <Link
-                href={`/events/${event.id}`}
+                href={`/events/${eventId}`}
                 className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
               >
-                {event.title}
+                {title}
               </Link>
               {/* Event Type */}
               <span className="text-primary mt-0.5 flex items-center gap-1 text-[10px] font-medium lg:text-xs">
-                {getEventTypeIcon(event.event_type)}
-                <span>{getEventTypeLabel(event.event_type)}</span>
+                <EventTypeIcon className="h-3 w-3" />
+                <span>{eventTypeLabel}</span>
               </span>
             </div>
             <Badge className="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold text-neutral-600">
@@ -151,10 +121,10 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
           </div>
 
           {/* Location */}
-          {event.location && (
+          {location && (
             <div className="flex items-center gap-1.5 text-xs text-neutral-500 lg:text-sm">
               <MapPin className="h-3.5 w-3.5 shrink-0" />
-              <span className="line-clamp-1">{event.location}</span>
+              <span className="line-clamp-1">{location}</span>
             </div>
           )}
         </div>
@@ -184,7 +154,7 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
           {/* Action Button - Bottom right */}
           <div className="shrink-0">
             {hasReviewed ? (
-              <Link href={`/events/${event.id}`}>
+              <Link href={`/events/${eventId}`}>
                 <Button
                   variant="outline"
                   size="sm"
@@ -196,7 +166,7 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
             ) : (
               <Dialog
                 open={isReviewDialogOpen}
-                onOpenChange={setIsReviewDialogOpen}
+                onOpenChange={onReviewDialogOpenChange}
               >
                 <DialogTrigger asChild>
                   <Button
@@ -209,15 +179,13 @@ export function CompletedEventCard({ registration }: CompletedEventCardProps) {
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
-                    <DialogTitle className="font-display">
-                      {event.title}
-                    </DialogTitle>
+                    <DialogTitle className="font-display">{title}</DialogTitle>
                   </DialogHeader>
                   <ReviewForm
                     title="Rate your experience"
                     hasReviewed={hasReviewed}
                     defaultOpen
-                    onSubmit={handleReviewSubmit}
+                    onSubmit={onReviewSubmit}
                   />
                 </DialogContent>
               </Dialog>

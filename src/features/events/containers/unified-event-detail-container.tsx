@@ -4,7 +4,6 @@ import type { EventDetail } from "@/data/events/types";
 import { EventStatus } from "@/data/events/types";
 import { useMemo } from "react";
 
-import { RegistrationDetailClient } from "@/components/events/registration-detail-client";
 import { EventDetailSkeleton } from "@/components/skeletons";
 
 import { createDate } from "@/lib/date";
@@ -13,6 +12,7 @@ import { useUpcomingEventsQuery } from "../hooks/use-upcoming-events-query";
 import { useEventWithUserContextQuery } from "../hooks/use-user-context-query";
 import { EventDetailContainer } from "./event-detail-container";
 import { PastWorkshopDetailContainer } from "./past-workshop-detail-container";
+import { RegistrationDetailContainer } from "./registration-detail-container";
 
 interface UnifiedEventDetailContainerProps {
   event: EventDetail;
@@ -58,7 +58,7 @@ export function UnifiedEventDetailContainer({
 
   // Priority 2: If user has a registration for upcoming event, show registration view
   if (registration) {
-    return <RegistrationDetailClient registration={registration} />;
+    return <RegistrationDetailContainer registration={registration} />;
   }
 
   // Priority 3: Show upcoming event detail view (default)

@@ -3,7 +3,6 @@
 import {
   type EventRegistration,
   EventRegistrationStatus,
-  type EventType,
 } from "@/data/events/types";
 import { Calendar, MapPin, Mic, Palette, Ticket } from "lucide-react";
 import Link from "next/link";
@@ -13,27 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { createDate } from "@/lib/date";
+import { getEventTypeLabel } from "@/lib/event-utils";
 import { cn } from "@/lib/utils";
-
-function getEventTypeIcon(type: EventType) {
-  switch (type) {
-    case "OPEN_MIC":
-      return <Mic className="h-3 w-3" />;
-    case "POTTERY_WORKSHOP":
-    default:
-      return <Palette className="h-3 w-3" />;
-  }
-}
-
-function getEventTypeLabel(type: EventType) {
-  switch (type) {
-    case "OPEN_MIC":
-      return "Open Mic";
-    case "POTTERY_WORKSHOP":
-    default:
-      return "Workshop";
-  }
-}
 
 interface RegisteredEventCardProps {
   registration: EventRegistration;
@@ -101,6 +81,7 @@ export function RegisteredEventCard({
     hour12: true,
   });
 
+  const isOpenMic = event.event_type === "OPEN_MIC";
   const imageUrl = event.image || "/placeholder.jpg";
   const isConfirmed = status === EventRegistrationStatus.Confirmed;
   const isPaid = status === EventRegistrationStatus.Paid;
@@ -165,7 +146,11 @@ export function RegisteredEventCard({
               </Link>
               {/* Event Type */}
               <span className="text-primary mt-0.5 flex items-center gap-1 text-[10px] font-medium lg:text-xs">
-                {getEventTypeIcon(event.event_type)}
+                {isOpenMic ? (
+                  <Mic className="h-3 w-3" />
+                ) : (
+                  <Palette className="h-3 w-3" />
+                )}
                 <span>{getEventTypeLabel(event.event_type)}</span>
               </span>
             </div>

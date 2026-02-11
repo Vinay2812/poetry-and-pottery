@@ -111,3 +111,63 @@ export function buildOrderSearchItem(order: Order): OrderSearchItem {
       firstProduct?.image_urls[0] || "/placeholder-product.jpg",
   };
 }
+
+export function getOrderStatusColor(status: string): string {
+  switch (status) {
+    case "DELIVERED":
+      return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
+    case "SHIPPED":
+      return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
+    case "PROCESSING":
+      return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400";
+    case "CANCELLED":
+      return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+    default:
+      return "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400";
+  }
+}
+
+export interface SearchTabButtonProps {
+  label: string;
+  count: number;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+export interface SearchResultListProps {
+  children: React.ReactNode;
+  isEmpty: boolean;
+  emptyIcon: React.ReactNode;
+  emptyMessage: string;
+  totalCount: number;
+  visibleCount: number;
+  onViewAll?: () => void;
+  viewAllLabel: string;
+}
+
+export interface SearchProductResultItemProps {
+  imageUrl: string;
+  name: string;
+  price: number;
+  isOutOfStock: boolean;
+  onClick: () => void;
+}
+
+export interface SearchEventResultItemProps {
+  title: string;
+  startsAt: string;
+  startsAtTime: string;
+  location: string;
+  price: number;
+  onClick: () => void;
+}
+
+export interface SearchOrderResultItemProps {
+  orderNumber: string;
+  createdAt: string;
+  status: string;
+  productCount: number;
+  firstProductName: string;
+  firstProductImage: string;
+  onClick: () => void;
+}

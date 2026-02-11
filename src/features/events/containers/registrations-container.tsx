@@ -10,6 +10,7 @@ import type {
   RegistrationsContainerProps,
   RegistrationsViewModel,
 } from "../types";
+import { filterDailyWorkshopRegistrations } from "../utils/filter-daily-workshop-registrations";
 
 export function RegistrationsContainer({
   initialUpcomingRegistrations,
@@ -63,37 +64,23 @@ export function RegistrationsContainer({
     activeTab: activeSubTab,
   });
 
-  const filteredUpcomingDailyWorkshopRegistrations = useMemo(() => {
-    const normalizedSearch = searchQuery.trim().toLowerCase();
-    if (!normalizedSearch) {
-      return initialUpcomingDailyWorkshopRegistrations;
-    }
+  const filteredUpcomingDailyWorkshopRegistrations = useMemo(
+    () =>
+      filterDailyWorkshopRegistrations(
+        initialUpcomingDailyWorkshopRegistrations,
+        searchQuery,
+      ),
+    [initialUpcomingDailyWorkshopRegistrations, searchQuery],
+  );
 
-    return initialUpcomingDailyWorkshopRegistrations.filter((registration) => {
-      const registrationId = registration.id.toLowerCase();
-      const status = registration.status.toLowerCase();
-      return (
-        registrationId.includes(normalizedSearch) ||
-        status.includes(normalizedSearch)
-      );
-    });
-  }, [initialUpcomingDailyWorkshopRegistrations, searchQuery]);
-
-  const filteredCompletedDailyWorkshopRegistrations = useMemo(() => {
-    const normalizedSearch = searchQuery.trim().toLowerCase();
-    if (!normalizedSearch) {
-      return initialCompletedDailyWorkshopRegistrations;
-    }
-
-    return initialCompletedDailyWorkshopRegistrations.filter((registration) => {
-      const registrationId = registration.id.toLowerCase();
-      const status = registration.status.toLowerCase();
-      return (
-        registrationId.includes(normalizedSearch) ||
-        status.includes(normalizedSearch)
-      );
-    });
-  }, [initialCompletedDailyWorkshopRegistrations, searchQuery]);
+  const filteredCompletedDailyWorkshopRegistrations = useMemo(
+    () =>
+      filterDailyWorkshopRegistrations(
+        initialCompletedDailyWorkshopRegistrations,
+        searchQuery,
+      ),
+    [initialCompletedDailyWorkshopRegistrations, searchQuery],
+  );
 
   // Build the view model
   const viewModel: RegistrationsViewModel = useMemo(() => {

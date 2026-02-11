@@ -10,37 +10,13 @@ import {
 import { useCallback, useState } from "react";
 import { useFormStatus } from "react-dom";
 
-import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import type { SettingsFormProps, SettingsTab } from "../types";
-
-interface ImagePreviewProps {
-  src: string;
-  alt: string;
-}
-
-function ImagePreview({ src, alt }: ImagePreviewProps) {
-  const [hasError, setHasError] = useState(false);
-
-  if (!src || hasError) {
-    return null;
-  }
-
-  return (
-    <div className="relative mt-2 aspect-video w-full overflow-hidden rounded-lg border bg-neutral-100">
-      <OptimizedImage
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover"
-        onError={() => setHasError(true)}
-      />
-    </div>
-  );
-}
+import { ContactInfoTabContent } from "./contact-info-tab-content";
+import { HeroImagesTabContent } from "./hero-images-tab-content";
+import { SocialLinksTabContent } from "./social-links-tab-content";
 
 export function SettingsForm({
   viewModel,
@@ -103,57 +79,10 @@ export function SettingsForm({
               </div>
               <SettingsSaveButton />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Home Page Hero</label>
-                <Input
-                  value={heroImages.home}
-                  onChange={(e) =>
-                    setHeroImages({ ...heroImages, home: e.target.value })
-                  }
-                  placeholder="https://example.com/image.jpg"
-                />
-                <ImagePreview src={heroImages.home} alt="Home page hero" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">About Page Hero</label>
-                <Input
-                  value={heroImages.ourStory}
-                  onChange={(e) =>
-                    setHeroImages({ ...heroImages, ourStory: e.target.value })
-                  }
-                  placeholder="https://example.com/image.jpg"
-                />
-                <ImagePreview src={heroImages.ourStory} alt="About page hero" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">
-                  Products Page Hero
-                </label>
-                <Input
-                  value={heroImages.products}
-                  onChange={(e) =>
-                    setHeroImages({ ...heroImages, products: e.target.value })
-                  }
-                  placeholder="https://example.com/image.jpg"
-                />
-                <ImagePreview
-                  src={heroImages.products}
-                  alt="Products page hero"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Events Page Hero</label>
-                <Input
-                  value={heroImages.events}
-                  onChange={(e) =>
-                    setHeroImages({ ...heroImages, events: e.target.value })
-                  }
-                  placeholder="https://example.com/image.jpg"
-                />
-                <ImagePreview src={heroImages.events} alt="Events page hero" />
-              </div>
-            </div>
+            <HeroImagesTabContent
+              heroImages={heroImages}
+              onHeroImagesChange={setHeroImages}
+            />
           </form>
         </TabsContent>
 
@@ -172,49 +101,10 @@ export function SettingsForm({
               </div>
               <SettingsSaveButton />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Address</label>
-                <Input
-                  value={contactInfo.address}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, address: e.target.value })
-                  }
-                  placeholder="123 Potter's Lane, Artisan District"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Email</label>
-                <Input
-                  type="email"
-                  value={contactInfo.email}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, email: e.target.value })
-                  }
-                  placeholder="hello@example.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Phone</label>
-                <Input
-                  value={contactInfo.phone}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, phone: e.target.value })
-                  }
-                  placeholder="+91 98765 43210"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Business Hours</label>
-                <Input
-                  value={contactInfo.hours}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, hours: e.target.value })
-                  }
-                  placeholder="Mon-Sat, 10am - 6pm"
-                />
-              </div>
-            </div>
+            <ContactInfoTabContent
+              contactInfo={contactInfo}
+              onContactInfoChange={setContactInfo}
+            />
           </form>
         </TabsContent>
 
@@ -233,54 +123,10 @@ export function SettingsForm({
               </div>
               <SettingsSaveButton />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Instagram</label>
-                <Input
-                  value={socialLinks.instagram}
-                  onChange={(e) =>
-                    setSocialLinks({
-                      ...socialLinks,
-                      instagram: e.target.value,
-                    })
-                  }
-                  placeholder="https://instagram.com/yourprofile"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Facebook</label>
-                <Input
-                  value={socialLinks.facebook}
-                  onChange={(e) =>
-                    setSocialLinks({ ...socialLinks, facebook: e.target.value })
-                  }
-                  placeholder="https://facebook.com/yourpage"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Twitter / X</label>
-                <Input
-                  value={socialLinks.twitter}
-                  onChange={(e) =>
-                    setSocialLinks({ ...socialLinks, twitter: e.target.value })
-                  }
-                  placeholder="https://twitter.com/yourprofile"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Pinterest</label>
-                <Input
-                  value={socialLinks.pinterest}
-                  onChange={(e) =>
-                    setSocialLinks({
-                      ...socialLinks,
-                      pinterest: e.target.value,
-                    })
-                  }
-                  placeholder="https://pinterest.com/yourprofile"
-                />
-              </div>
-            </div>
+            <SocialLinksTabContent
+              socialLinks={socialLinks}
+              onSocialLinksChange={setSocialLinks}
+            />
           </form>
         </TabsContent>
       </Tabs>

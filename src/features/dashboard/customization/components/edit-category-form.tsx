@@ -1,9 +1,11 @@
 "use client";
 
 import { R2ImageUploaderContainer } from "@/features/uploads";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +19,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
-import type { EditCategoryFormProps, UpdateCategoryFormData } from "../types";
+import {
+  type EditCategoryFormValues,
+  editCategoryFormSchema,
+} from "@/lib/validations/customization";
+
+import type { EditCategoryFormProps } from "../types";
 
 export function EditCategoryForm({
   viewModel,
@@ -25,36 +32,39 @@ export function EditCategoryForm({
   onSubmit,
   onCancel,
 }: EditCategoryFormProps) {
-  const [formData, setFormData] = useState<UpdateCategoryFormData>({
-    category: viewModel.category,
-    basePrice: viewModel.basePrice,
-    imageUrl: viewModel.imageUrl || undefined,
-    isActive: viewModel.isActive,
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<EditCategoryFormValues>({
+    resolver: zodResolver(editCategoryFormSchema) as never,
+    defaultValues: {
+      category: viewModel.category,
+      basePrice: viewModel.basePrice,
+      imageUrl: viewModel.imageUrl || undefined,
+      isActive: viewModel.isActive,
+    },
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleImageChange = useCallback((urls: string[]) => {
-    setFormData((prev) => ({
-      ...prev,
-      imageUrl: urls[0] || undefined,
-    }));
-  }, []);
+  const categoryValue = watch("category");
+  const imageUrl = watch("imageUrl");
+  const isActive = watch("isActive");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleImageChange = useCallback(
+    (urls: string[]) => {
+      setValue("imageUrl", urls[0] || undefined);
+    },
+    [setValue],
+  );
 
-    if (!formData.category) {
-      alert("Please select a category");
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await onSubmit(formData);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const handleFormSubmit = useCallback(
+    async (data: EditCategoryFormValues) => {
+      await onSubmit(data);
+    },
+    [onSubmit],
+  );
 
   return (
     <div className="space-y-6">
@@ -74,15 +84,16 @@ export function EditCategoryForm({
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className="max-w-2xl space-y-6"
+      >
         {/* Category Name */}
         <div className="space-y-2">
           <Label htmlFor="category">Product Category *</Label>
           <Select
-            value={formData.category}
-            onValueChange={(value) =>
-              setFormData({ ...formData, category: value })
-            }
+            value={categoryValue}
+            onValueChange={(value) => setValue("category", value)}
           >
             <SelectTrigger id="category">
               <SelectValue placeholder="Select a category" />
@@ -95,6 +106,9 @@ export function EditCategoryForm({
               ))}
             </SelectContent>
           </Select>
+          {errors.category && (
+            <p className="text-sm text-red-500">{errors.category.message}</p>
+          )}
         </div>
 
         {/* Base Price */}
@@ -104,15 +118,12 @@ export function EditCategoryForm({
             id="basePrice"
             type="number"
             placeholder="0"
-            value={formData.basePrice}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                basePrice: parseInt(e.target.value, 10) || 0,
-              })
-            }
             min={0}
+            {...register("basePrice", { valueAsNumber: true })}
           />
+          {errors.basePrice && (
+            <p className="text-sm text-red-500">{errors.basePrice.message}</p>
+          )}
           <p className="text-xs text-neutral-500">
             The starting price for customization in this category
           </p>
@@ -125,7 +136,7 @@ export function EditCategoryForm({
             folder="customize-categories"
             multiple={false}
             maxFiles={1}
-            value={formData.imageUrl ? [formData.imageUrl] : []}
+            value={imageUrl ? [imageUrl] : []}
             onChange={handleImageChange}
             disabled={isSubmitting}
           />
@@ -141,10 +152,8 @@ export function EditCategoryForm({
           </div>
           <Switch
             id="isActive"
-            checked={formData.isActive}
-            onCheckedChange={(checked) =>
-              setFormData({ ...formData, isActive: checked })
-            }
+            checked={isActive}
+            onCheckedChange={(checked) => setValue("isActive", checked)}
           />
         </div>
 

@@ -6,6 +6,9 @@ import { Slider } from "@/components/ui/slider";
 
 import { cn } from "@/lib/utils";
 
+import { PriceHistogramBars } from "./price-histogram-bars";
+import { PriceInput } from "./price-input";
+
 interface PriceHistogram {
   min: number;
   max: number;
@@ -117,26 +120,14 @@ export function PriceRangeSlider({
   return (
     <div className={cn("space-y-3", className)}>
       <div className="space-y-1">
-        <div className="flex h-12 w-full items-end gap-[1px] px-1">
-          {histogram?.map((bucket, index) => {
-            const heightPercentage =
-              maxCount > 0 ? (bucket.count / maxCount) * 100 : 0;
-            const bucketMid = (bucket.min + bucket.max) / 2;
-            const isSelected =
-              bucketMid >= localValue[0] && bucketMid <= localValue[1];
-
-            return (
-              <div
-                key={index}
-                className={cn(
-                  "flex-1 rounded-t-sm transition-colors",
-                  isSelected ? "bg-primary" : "bg-muted",
-                )}
-                style={{ height: `${heightPercentage}%`, minHeight: "2px" }}
-              />
-            );
-          })}
-        </div>
+        {histogram && (
+          <PriceHistogramBars
+            histogram={histogram}
+            maxCount={maxCount}
+            rangeMin={localValue[0]}
+            rangeMax={localValue[1]}
+          />
+        )}
         <Slider
           min={min}
           max={max}
@@ -157,35 +148,21 @@ export function PriceRangeSlider({
       </div>
 
       <div className="flex items-center justify-between gap-3 px-1">
-        <div className="relative flex-1">
-          <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-neutral-400">
-            ₹
-          </span>
-          <input
-            type="number"
-            value={inputValues[0]}
-            onChange={(e) => handleInputChange(0, e)}
-            onBlur={() => handleInputBlur(0)}
-            onKeyDown={(e) => handleKeyDown(0, e)}
-            className="focus:ring-primary/30 h-10 w-full [appearance:textfield] rounded-lg border-none bg-neutral-100 pr-2 pl-7 text-sm font-medium text-neutral-900 focus:ring-2 focus:outline-none dark:bg-neutral-800 dark:text-neutral-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-          />
-        </div>
+        <PriceInput
+          value={inputValues[0]}
+          onChange={(e) => handleInputChange(0, e)}
+          onBlur={() => handleInputBlur(0)}
+          onKeyDown={(e) => handleKeyDown(0, e)}
+        />
 
         <div className="h-[1px] w-3 bg-neutral-300" />
 
-        <div className="relative flex-1">
-          <span className="absolute top-1/2 left-3 -translate-y-1/2 text-sm text-neutral-400">
-            ₹
-          </span>
-          <input
-            type="number"
-            value={inputValues[1]}
-            onChange={(e) => handleInputChange(1, e)}
-            onBlur={() => handleInputBlur(1)}
-            onKeyDown={(e) => handleKeyDown(1, e)}
-            className="focus:ring-primary/30 h-10 w-full [appearance:textfield] rounded-lg border-none bg-neutral-100 pr-2 pl-7 text-sm font-medium text-neutral-900 focus:ring-2 focus:outline-none dark:bg-neutral-800 dark:text-neutral-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-          />
-        </div>
+        <PriceInput
+          value={inputValues[1]}
+          onChange={(e) => handleInputChange(1, e)}
+          onBlur={() => handleInputBlur(1)}
+          onKeyDown={(e) => handleKeyDown(1, e)}
+        />
       </div>
     </div>
   );

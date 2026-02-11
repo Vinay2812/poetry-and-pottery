@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import {
+  type AddOptionFormValues,
+  addOptionFormSchema,
+} from "@/lib/validations/customization";
+
 import type { AddOptionModalProps } from "../types";
 
 export function AddOptionModal({
@@ -23,60 +30,50 @@ export function AddOptionModal({
   onClose,
   onSubmit,
 }: AddOptionModalProps) {
-  const [type, setType] = useState("");
-  const [name, setName] = useState("");
-  const [value, setValue] = useState("");
-  const [priceModifier, setPriceModifier] = useState(0);
-  const [sortOrder, setSortOrder] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<AddOptionFormValues>({
+    resolver: zodResolver(addOptionFormSchema) as never,
+    defaultValues: {
+      type: "",
+      name: "",
+      value: "",
+      priceModifier: 0,
+      sortOrder: 0,
+    },
+  });
+
   const [showTypeSuggestions, setShowTypeSuggestions] = useState(false);
 
+  const typeValue = watch("type");
+
   const filteredTypes = existingTypes.filter((t) =>
-    t.toLowerCase().includes(type.toLowerCase()),
+    t.toLowerCase().includes(typeValue.toLowerCase()),
   );
 
-  const handleSubmit = async () => {
-    if (!type.trim()) {
-      alert("Type is required");
-      return;
-    }
-    if (!name.trim()) {
-      alert("Name is required");
-      return;
-    }
-    if (!value.trim()) {
-      alert("Value is required");
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
+  const handleFormSubmit = useCallback(
+    async (data: AddOptionFormValues) => {
       await onSubmit({
-        type: type.trim().toUpperCase(),
-        name: name.trim(),
-        value: value.trim(),
-        priceModifier,
-        sortOrder,
+        type: data.type.trim().toUpperCase(),
+        name: data.name.trim(),
+        value: data.value.trim(),
+        priceModifier: data.priceModifier,
+        sortOrder: data.sortOrder,
       });
-      // Reset form on success
-      setType("");
-      setName("");
-      setValue("");
-      setPriceModifier(0);
-      setSortOrder(0);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      reset();
+    },
+    [onSubmit, reset],
+  );
 
-  const handleClose = () => {
-    setType("");
-    setName("");
-    setValue("");
-    setPriceModifier(0);
-    setSortOrder(0);
+  const handleClose = useCallback(() => {
+    reset();
     onClose();
-  };
+  }, [reset, onClose]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -88,106 +85,120 @@ export function AddOptionModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-4">
-          <div className="relative grid gap-2">
-            <Label htmlFor="type">Type *</Label>
-            <Input
-              id="type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              onFocus={() => setShowTypeSuggestions(true)}
-              onBlur={() =>
-                setTimeout(() => setShowTypeSuggestions(false), 200)
-              }
-              placeholder="e.g., SIZE, COLOR, SHAPE"
-            />
-            {showTypeSuggestions && filteredTypes.length > 0 && (
-              <div className="absolute top-full z-10 mt-1 w-full rounded-md border bg-white shadow-lg">
-                {filteredTypes.map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-neutral-100"
-                    onClick={() => {
-                      setType(t);
-                      setShowTypeSuggestions(false);
-                    }}
-                  >
-                    {t}
-                  </button>
-                ))}
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
+          <div className="grid gap-4 py-4">
+            <div className="relative grid gap-2">
+              <Label htmlFor="type">Type *</Label>
+              <Input
+                id="type"
+                {...register("type")}
+                onChange={(e) => setValue("type", e.target.value)}
+                onFocus={() => setShowTypeSuggestions(true)}
+                onBlur={() =>
+                  setTimeout(() => setShowTypeSuggestions(false), 200)
+                }
+                placeholder="e.g., SIZE, COLOR, SHAPE"
+              />
+              {showTypeSuggestions && filteredTypes.length > 0 && (
+                <div className="absolute top-full z-10 mt-1 w-full rounded-md border bg-white shadow-lg">
+                  {filteredTypes.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      className="w-full px-3 py-2 text-left text-sm hover:bg-neutral-100"
+                      onClick={() => {
+                        setValue("type", t);
+                        setShowTypeSuggestions(false);
+                      }}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {errors.type && (
+                <p className="text-sm text-red-500">{errors.type.message}</p>
+              )}
+              <p className="text-xs text-neutral-500">
+                Enter existing type or create new
+              </p>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="name">Display Name *</Label>
+              <Input
+                id="name"
+                {...register("name")}
+                placeholder="e.g., Small, Ocean Blue, Round"
+              />
+              {errors.name && (
+                <p className="text-sm text-red-500">{errors.name.message}</p>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="value">Value *</Label>
+              <Input
+                id="value"
+                {...register("value")}
+                placeholder="e.g., S, #4682B4, circle"
+              />
+              {errors.value && (
+                <p className="text-sm text-red-500">{errors.value.message}</p>
+              )}
+              <p className="text-xs text-neutral-500">
+                Internal value used for processing
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="priceModifier">Price Modifier (INR)</Label>
+                <Input
+                  id="priceModifier"
+                  type="number"
+                  placeholder="0"
+                  {...register("priceModifier", { valueAsNumber: true })}
+                />
+                {errors.priceModifier && (
+                  <p className="text-sm text-red-500">
+                    {errors.priceModifier.message}
+                  </p>
+                )}
               </div>
-            )}
-            <p className="text-xs text-neutral-500">
-              Enter existing type or create new
-            </p>
-          </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="name">Display Name *</Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Small, Ocean Blue, Round"
-            />
-          </div>
-
-          <div className="grid gap-2">
-            <Label htmlFor="value">Value *</Label>
-            <Input
-              id="value"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="e.g., S, #4682B4, circle"
-            />
-            <p className="text-xs text-neutral-500">
-              Internal value used for processing
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="priceModifier">Price Modifier (INR)</Label>
-              <Input
-                id="priceModifier"
-                type="number"
-                value={priceModifier}
-                onChange={(e) =>
-                  setPriceModifier(parseInt(e.target.value, 10) || 0)
-                }
-                placeholder="0"
-              />
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="sortOrder">Sort Order</Label>
-              <Input
-                id="sortOrder"
-                type="number"
-                value={sortOrder}
-                onChange={(e) =>
-                  setSortOrder(parseInt(e.target.value, 10) || 0)
-                }
-                placeholder="0"
-                min={0}
-              />
+              <div className="grid gap-2">
+                <Label htmlFor="sortOrder">Sort Order</Label>
+                <Input
+                  id="sortOrder"
+                  type="number"
+                  placeholder="0"
+                  min={0}
+                  {...register("sortOrder", { valueAsNumber: true })}
+                />
+                {errors.sortOrder && (
+                  <p className="text-sm text-red-500">
+                    {errors.sortOrder.message}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={handleClose}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create Option"}
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create Option"}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

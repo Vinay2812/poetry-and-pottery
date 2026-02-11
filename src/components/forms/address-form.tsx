@@ -1,9 +1,10 @@
 "use client";
 
 import { INDIAN_STATES } from "@/consts/forms";
-import { useCallback, useState } from "react";
-import type { ChangeEvent } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
 import { useFormStatus } from "react-dom";
+import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,10 @@ import {
 } from "@/components/ui/select";
 
 import { cn } from "@/lib/utils";
+import {
+  type AddressFormValues,
+  addressFormSchema,
+} from "@/lib/validations/address";
 
 import type { UserAddress } from "@/graphql/generated/types";
 
@@ -45,118 +50,83 @@ export function AddressForm({
   onCancel,
   submitLabel = "Save Address",
 }: AddressFormProps) {
-  const [formData, setFormData] = useState<AddressFormData>({
-    name: initialData?.name || "",
-    addressLine1: initialData?.address_line_1 || "",
-    addressLine2: initialData?.address_line_2 || "",
-    landmark: initialData?.landmark || "",
-    city: initialData?.city || "",
-    state: initialData?.state || "",
-    zip: initialData?.zip || "",
-    contactNumber: initialData?.contact_number || "",
+  const {
+    register,
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors },
+  } = useForm<AddressFormValues>({
+    resolver: zodResolver(addressFormSchema) as never,
+    defaultValues: {
+      name: initialData?.name || "",
+      addressLine1: initialData?.address_line_1 || "",
+      addressLine2: initialData?.address_line_2 || "",
+      landmark: initialData?.landmark || "",
+      city: initialData?.city || "",
+      state: initialData?.state || "",
+      zip: initialData?.zip || "",
+      contactNumber: initialData?.contact_number || "",
+    },
   });
-  const [errors, setErrors] = useState<Partial<AddressFormData>>({});
 
-  const validateForm = useCallback(() => {
-    const newErrors: Partial<AddressFormData> = {};
+  const handleFormSubmit = useCallback(
+    async (data: AddressFormValues) => {
+      const result = await onSubmit({
+        name: data.name,
+        addressLine1: data.addressLine1,
+        addressLine2: data.addressLine2 || "",
+        landmark: data.landmark || "",
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
+        contactNumber: data.contactNumber || "",
+      });
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Full name is required";
-    }
-    if (!formData.addressLine1.trim()) {
-      newErrors.addressLine1 = "Address is required";
-    }
-    if (!formData.city.trim()) {
-      newErrors.city = "City is required";
-    }
-    if (!formData.state) {
-      newErrors.state = "State is required";
-    }
-    if (!formData.zip.trim()) {
-      newErrors.zip = "Pincode is required";
-    } else if (!/^\d{6}$/.test(formData.zip.trim())) {
-      newErrors.zip = "Pincode must be 6 digits";
-    }
-    if (
-      formData.contactNumber &&
-      !/^(\+91|91)?[6-9]\d{9}$/.test(formData.contactNumber.trim())
-    ) {
-      newErrors.contactNumber = "Enter a valid 10-digit mobile number";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [formData]);
-
-  const handleChange = useCallback(
-    (field: keyof AddressFormData) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData((prev) => ({ ...prev, [field]: e.target.value }));
-        if (errors[field]) {
-          setErrors((prev) => ({ ...prev, [field]: undefined }));
-        }
-      },
-    [errors],
-  );
-
-  const handleStateChange = useCallback(
-    (value: string) => {
-      setFormData((prev) => ({ ...prev, state: value }));
-      if (errors.state) {
-        setErrors((prev) => ({ ...prev, state: undefined }));
+      if (!result.success && result.error) {
+        setError("name", { message: result.error });
       }
     },
-    [errors.state],
+    [onSubmit, setError],
   );
 
-  const handleSubmitAction = useCallback(async () => {
-    if (!validateForm()) return;
-
-    const result = await onSubmit(formData);
-
-    if (!result.success && result.error) {
-      setErrors((prev) => ({ ...prev, name: result.error }));
-    }
-  }, [formData, onSubmit, validateForm]);
+  const handleFormAction = useCallback(async () => {
+    await handleSubmit(handleFormSubmit)();
+  }, [handleSubmit, handleFormSubmit]);
 
   const inputClassName =
     "h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20";
 
   return (
-    <form action={handleSubmitAction} className="space-y-5">
+    <form action={handleFormAction} className="space-y-5">
       <AddressFormFields
-        formData={formData}
+        register={register}
+        control={control}
         errors={errors}
         inputClassName={inputClassName}
         submitLabel={submitLabel}
         onCancel={onCancel}
-        onChange={handleChange}
-        onStateChange={handleStateChange}
       />
     </form>
   );
 }
 
 interface AddressFormFieldsProps {
-  formData: AddressFormData;
-  errors: Partial<AddressFormData>;
+  register: ReturnType<typeof useForm<AddressFormValues>>["register"];
+  control: ReturnType<typeof useForm<AddressFormValues>>["control"];
+  errors: ReturnType<typeof useForm<AddressFormValues>>["formState"]["errors"];
   inputClassName: string;
   submitLabel: string;
   onCancel: () => void;
-  onChange: (
-    field: keyof AddressFormData,
-  ) => (e: ChangeEvent<HTMLInputElement>) => void;
-  onStateChange: (value: string) => void;
 }
 
 function AddressFormFields({
-  formData,
+  register,
+  control,
   errors,
   inputClassName,
   submitLabel,
   onCancel,
-  onChange,
-  onStateChange,
 }: AddressFormFieldsProps) {
   const { pending } = useFormStatus();
 
@@ -174,14 +144,13 @@ function AddressFormFields({
           id="name"
           type="text"
           placeholder="Enter your full name"
-          value={formData.name}
-          onChange={onChange("name")}
           disabled={pending}
           aria-invalid={!!errors.name}
           className={cn(inputClassName, errors.name && "border-destructive")}
+          {...register("name")}
         />
         {errors.name && (
-          <p className="text-destructive text-xs">{errors.name}</p>
+          <p className="text-destructive text-xs">{errors.name.message}</p>
         )}
       </div>
 
@@ -197,17 +166,18 @@ function AddressFormFields({
           id="contactNumber"
           type="tel"
           placeholder="10-digit mobile number"
-          value={formData.contactNumber}
-          onChange={onChange("contactNumber")}
           disabled={pending}
           aria-invalid={!!errors.contactNumber}
           className={cn(
             inputClassName,
             errors.contactNumber && "border-destructive",
           )}
+          {...register("contactNumber")}
         />
         {errors.contactNumber && (
-          <p className="text-destructive text-xs">{errors.contactNumber}</p>
+          <p className="text-destructive text-xs">
+            {errors.contactNumber.message}
+          </p>
         )}
       </div>
 
@@ -223,17 +193,18 @@ function AddressFormFields({
           id="addressLine1"
           type="text"
           placeholder="House no., Building, Street"
-          value={formData.addressLine1}
-          onChange={onChange("addressLine1")}
           disabled={pending}
           aria-invalid={!!errors.addressLine1}
           className={cn(
             inputClassName,
             errors.addressLine1 && "border-destructive",
           )}
+          {...register("addressLine1")}
         />
         {errors.addressLine1 && (
-          <p className="text-destructive text-xs">{errors.addressLine1}</p>
+          <p className="text-destructive text-xs">
+            {errors.addressLine1.message}
+          </p>
         )}
       </div>
 
@@ -250,10 +221,9 @@ function AddressFormFields({
           id="addressLine2"
           type="text"
           placeholder="Apartment, Suite, Area"
-          value={formData.addressLine2}
-          onChange={onChange("addressLine2")}
           disabled={pending}
           className={inputClassName}
+          {...register("addressLine2")}
         />
       </div>
 
@@ -270,10 +240,9 @@ function AddressFormFields({
           id="landmark"
           type="text"
           placeholder="Nearby landmark"
-          value={formData.landmark}
-          onChange={onChange("landmark")}
           disabled={pending}
           className={inputClassName}
+          {...register("landmark")}
         />
       </div>
 
@@ -290,14 +259,13 @@ function AddressFormFields({
             id="city"
             type="text"
             placeholder="Enter city"
-            value={formData.city}
-            onChange={onChange("city")}
             disabled={pending}
             aria-invalid={!!errors.city}
             className={cn(inputClassName, errors.city && "border-destructive")}
+            {...register("city")}
           />
           {errors.city && (
-            <p className="text-destructive text-xs">{errors.city}</p>
+            <p className="text-destructive text-xs">{errors.city.message}</p>
           )}
         </div>
 
@@ -313,14 +281,13 @@ function AddressFormFields({
             type="text"
             placeholder="Enter pincode"
             maxLength={6}
-            value={formData.zip}
-            onChange={onChange("zip")}
             disabled={pending}
             aria-invalid={!!errors.zip}
             className={cn(inputClassName, errors.zip && "border-destructive")}
+            {...register("zip")}
           />
           {errors.zip && (
-            <p className="text-destructive text-xs">{errors.zip}</p>
+            <p className="text-destructive text-xs">{errors.zip.message}</p>
           )}
         </div>
       </div>
@@ -333,31 +300,37 @@ function AddressFormFields({
         >
           State
         </label>
-        <Select
-          value={formData.state}
-          onValueChange={onStateChange}
-          disabled={pending}
-        >
-          <SelectTrigger
-            id="state"
-            className={cn(
-              "focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:bg-white focus:ring-2",
-              errors.state && "border-destructive",
-            )}
-            aria-invalid={!!errors.state}
-          >
-            <SelectValue placeholder="Select state" />
-          </SelectTrigger>
-          <SelectContent className="max-h-[300px]">
-            {INDIAN_STATES.map((state) => (
-              <SelectItem key={state} value={state}>
-                {state}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Controller
+          name="state"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value}
+              onValueChange={field.onChange}
+              disabled={pending}
+            >
+              <SelectTrigger
+                id="state"
+                className={cn(
+                  "focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:bg-white focus:ring-2",
+                  errors.state && "border-destructive",
+                )}
+                aria-invalid={!!errors.state}
+              >
+                <SelectValue placeholder="Select state" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[300px]">
+                {INDIAN_STATES.map((state) => (
+                  <SelectItem key={state} value={state}>
+                    {state}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
         {errors.state && (
-          <p className="text-destructive text-xs">{errors.state}</p>
+          <p className="text-destructive text-xs">{errors.state.message}</p>
         )}
       </div>
 

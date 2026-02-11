@@ -3,17 +3,19 @@
 import { MAX_CART_QUANTITY } from "@/consts/performance";
 import type { ProductBase } from "@/data/products/types";
 import type { AvailabilityInfo } from "@/features/cart/types";
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Heart, Loader2, Sparkles, Trash2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 import { OptimizedImage, QuantitySelector } from "@/components/shared";
-import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
 import type { ProductCustomizationData } from "@/graphql/generated/types";
+
+import { CartItemActions } from "./cart-item-actions";
+import { CartItemCustomizationDetails } from "./cart-item-customization-details";
 
 interface CartItemCardProps {
   product: ProductBase;
@@ -53,6 +55,10 @@ export function CartItemCard({
     if (quantity > 1) {
       onQuantityChange(quantity - 1);
     }
+  };
+
+  const handleToggleCustomization = () => {
+    setIsCustomizationExpanded(!isCustomizationExpanded);
   };
 
   return (
@@ -102,34 +108,11 @@ export function CartItemCard({
               </Link>
               <p className="mt-0.5 text-xs text-neutral-500">{category}</p>
             </div>
-            <div className="flex shrink-0 items-center gap-1">
-              {onMoveToWishlist && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="hover:bg-primary/10 hover:text-primary h-8 w-8 rounded-full text-neutral-400"
-                  onClick={onMoveToWishlist}
-                  disabled={isLoading}
-                  title="Save to Wishlist"
-                >
-                  <Heart className="h-4 w-4" />
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-500"
-                onClick={onRemove}
-                disabled={isLoading}
-                title="Remove"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Trash2 className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
+            <CartItemActions
+              onRemove={onRemove}
+              onMoveToWishlist={onMoveToWishlist}
+              isLoading={isLoading}
+            />
           </div>
 
           <div className="flex items-center justify-between gap-2">
@@ -143,7 +126,7 @@ export function CartItemCard({
                 size="sm"
                 disabled={isLoading}
               />
-              <span className="text-xs text-neutral-500">×</span>
+              <span className="text-xs text-neutral-500">&times;</span>
               <span className="text-sm font-medium text-neutral-700">
                 ₹{effectivePrice.toLocaleString()}
               </span>
@@ -157,70 +140,15 @@ export function CartItemCard({
 
       {/* Mobile Customization Expandable Section */}
       {hasCustomization && (
-        <div className="mt-3 lg:hidden">
-          <button
-            onClick={() => setIsCustomizationExpanded(!isCustomizationExpanded)}
-            className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-left"
-          >
-            <span className="text-xs font-medium text-neutral-600">
-              View Customization Details
-            </span>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 text-neutral-400 transition-transform",
-                isCustomizationExpanded && "rotate-180",
-              )}
-            />
-          </button>
-          <AnimatePresence>
-            {isCustomizationExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
-              >
-                <div className="space-y-1.5 pt-2">
-                  {customData.options.map((option) => (
-                    <div
-                      key={option.optionId}
-                      className="flex items-center justify-between text-xs"
-                    >
-                      <span className="text-neutral-500">{option.name}</span>
-                      <span className="font-medium text-neutral-700">
-                        {option.value}
-                        {option.priceModifier !== 0 && (
-                          <span className="text-primary ml-1">
-                            {option.priceModifier > 0 ? "+" : ""}₹
-                            {option.priceModifier.toLocaleString()}
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  ))}
-                  <div className="border-t border-neutral-100 pt-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-neutral-500">Base Price</span>
-                      <span className="text-neutral-700">
-                        ₹{product.price.toLocaleString()}
-                      </span>
-                    </div>
-                    {customizationModifier !== 0 && (
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-neutral-500">Customization</span>
-                        <span className="text-primary font-medium">
-                          {customizationModifier > 0 ? "+" : ""}₹
-                          {customizationModifier.toLocaleString()}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <CartItemCustomizationDetails
+          customData={customData}
+          basePrice={product.price}
+          customizationModifier={customizationModifier}
+          effectivePrice={effectivePrice}
+          isExpanded={isCustomizationExpanded}
+          onToggle={handleToggleCustomization}
+          variant="mobile"
+        />
       )}
 
       {/* Desktop Layout - Grid aligned with table header */}
@@ -270,7 +198,7 @@ export function CartItemCard({
             size="sm"
             disabled={isLoading}
           />
-          <span className="text-sm text-neutral-500">×</span>
+          <span className="text-sm text-neutral-500">&times;</span>
           <span className="text-primary text-sm font-semibold">
             ₹{effectivePrice.toLocaleString()}
           </span>
@@ -282,101 +210,24 @@ export function CartItemCard({
         </span>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-1">
-          {onMoveToWishlist && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-primary/10 hover:text-primary h-8 w-8 rounded-full text-neutral-400"
-              onClick={onMoveToWishlist}
-              disabled={isLoading}
-              title="Save to Wishlist"
-            >
-              <Heart className="h-4 w-4" />
-            </Button>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 rounded-full text-neutral-400 hover:bg-red-50 hover:text-red-500"
-            onClick={onRemove}
-            disabled={isLoading}
-            title="Remove"
-          >
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Trash2 className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
+        <CartItemActions
+          onRemove={onRemove}
+          onMoveToWishlist={onMoveToWishlist}
+          isLoading={isLoading}
+        />
       </div>
 
       {/* Desktop Customization Expandable Section */}
       {hasCustomization && (
-        <div className="mt-3 hidden lg:block">
-          <button
-            onClick={() => setIsCustomizationExpanded(!isCustomizationExpanded)}
-            className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-4 py-2 text-left"
-          >
-            <span className="text-sm font-medium text-neutral-600">
-              View Customization Details
-            </span>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 text-neutral-400 transition-transform",
-                isCustomizationExpanded && "rotate-180",
-              )}
-            />
-          </button>
-          <AnimatePresence>
-            {isCustomizationExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
-              >
-                <div className="grid grid-cols-2 gap-x-8 gap-y-2 px-4 pt-3">
-                  {customData.options.map((option) => (
-                    <div
-                      key={option.optionId}
-                      className="flex items-center justify-between text-sm"
-                    >
-                      <span className="text-neutral-500">{option.name}</span>
-                      <span className="font-medium text-neutral-700">
-                        {option.value}
-                        {option.priceModifier !== 0 && (
-                          <span className="text-primary ml-1.5">
-                            {option.priceModifier > 0 ? "+" : ""}₹
-                            {option.priceModifier.toLocaleString()}
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-2 border-t border-neutral-100 px-4 pt-2">
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="text-neutral-500">
-                      Base: ₹{product.price.toLocaleString()}
-                    </span>
-                    {customizationModifier !== 0 && (
-                      <span className="text-primary font-medium">
-                        Customization: {customizationModifier > 0 ? "+" : ""}₹
-                        {customizationModifier.toLocaleString()}
-                      </span>
-                    )}
-                    <span className="ml-auto font-semibold text-neutral-900">
-                      Total: ₹{effectivePrice.toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <CartItemCustomizationDetails
+          customData={customData}
+          basePrice={product.price}
+          customizationModifier={customizationModifier}
+          effectivePrice={effectivePrice}
+          isExpanded={isCustomizationExpanded}
+          onToggle={handleToggleCustomization}
+          variant="desktop"
+        />
       )}
     </motion.div>
   );

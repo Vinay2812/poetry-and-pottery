@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  useCreateAddress,
-  useDeleteAddress,
-  useUpdateAddress,
-} from "@/data/address/gateway/client";
 import { MapPin, Plus } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { AddressCard } from "@/components/cards";
 import { AddressForm } from "@/components/forms/address-form";
@@ -24,8 +19,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-
-import { cn } from "@/lib/utils";
 
 import type { UserAddress } from "@/graphql/generated/types";
 
@@ -93,151 +86,66 @@ function AddressCarousel({
   );
 }
 
-interface AddressSelectorProps {
+export interface AddressSelectorViewModel {
   addresses: UserAddress[];
   selectedAddressId: number | null;
-  onSelectAddress: (address: UserAddress | null) => void;
-  onAddressesChange?: (addresses: UserAddress[]) => void;
+  editingAddress: UserAddress | null;
+  isAddingNew: boolean;
+  deletingId: number | null;
+  hasAddresses: boolean;
+  isEditSheetOpen: boolean;
+}
+
+export interface AddressSelectorProps {
+  viewModel: AddressSelectorViewModel;
+  onSelectAddress: (address: UserAddress) => void;
+  onEditAddress: (address: UserAddress) => void;
+  onDeleteAddress: (addressId: number) => void;
+  onAddAddress: (data: {
+    name: string;
+    addressLine1: string;
+    addressLine2: string;
+    landmark: string;
+    city: string;
+    state: string;
+    zip: string;
+    contactNumber: string;
+  }) => Promise<{ success: boolean; error?: string }>;
+  onUpdateAddress: (data: {
+    name: string;
+    addressLine1: string;
+    addressLine2: string;
+    landmark: string;
+    city: string;
+    state: string;
+    zip: string;
+    contactNumber: string;
+  }) => Promise<{ success: boolean; error?: string }>;
+  onOpenAddSheet: () => void;
+  onCloseAddSheet: () => void;
+  onCloseEditSheet: () => void;
 }
 
 export function AddressSelector({
-  addresses: initialAddresses,
-  selectedAddressId,
+  viewModel,
   onSelectAddress,
-  onAddressesChange,
+  onEditAddress,
+  onDeleteAddress,
+  onAddAddress,
+  onUpdateAddress,
+  onOpenAddSheet,
+  onCloseAddSheet,
+  onCloseEditSheet,
 }: AddressSelectorProps) {
-  const { mutate: createAddressMutate } = useCreateAddress();
-  const { mutate: updateAddressMutate } = useUpdateAddress();
-  const { mutate: deleteAddressMutate } = useDeleteAddress();
-
-  const [addresses, setAddresses] = useState<UserAddress[]>(initialAddresses);
-  const [isAddingNew, setIsAddingNew] = useState(false);
-  const [editingAddress, setEditingAddress] = useState<UserAddress | null>(
-    null,
-  );
-  const [deletingId, setDeletingId] = useState<number | null>(null);
-
-  const updateAddresses = useCallback(
-    (newAddresses: UserAddress[]) => {
-      setAddresses(newAddresses);
-      onAddressesChange?.(newAddresses);
-    },
-    [onAddressesChange],
-  );
-
-  const handleAddAddress = useCallback(
-    async (data: {
-      name: string;
-      addressLine1: string;
-      addressLine2: string;
-      landmark: string;
-      city: string;
-      state: string;
-      zip: string;
-      contactNumber: string;
-    }) => {
-      const result = await createAddressMutate({
-        name: data.name,
-        addressLine1: data.addressLine1,
-        addressLine2: data.addressLine2 || undefined,
-        landmark: data.landmark || undefined,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        contactNumber: data.contactNumber || undefined,
-      });
-
-      if (result.success) {
-        const newAddresses = [result.data, ...addresses];
-        updateAddresses(newAddresses);
-        onSelectAddress(result.data);
-        setIsAddingNew(false);
-        return { success: true };
-      }
-
-      return { success: false, error: result.error };
-    },
-    [addresses, onSelectAddress, updateAddresses, createAddressMutate],
-  );
-
-  const handleUpdateAddress = useCallback(
-    async (data: {
-      name: string;
-      addressLine1: string;
-      addressLine2: string;
-      landmark: string;
-      city: string;
-      state: string;
-      zip: string;
-      contactNumber: string;
-    }) => {
-      if (!editingAddress)
-        return { success: false, error: "No address selected" };
-
-      const result = await updateAddressMutate(editingAddress.id, {
-        name: data.name,
-        addressLine1: data.addressLine1,
-        addressLine2: data.addressLine2 || undefined,
-        landmark: data.landmark || undefined,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        contactNumber: data.contactNumber || undefined,
-      });
-
-      if (result.success) {
-        const newAddresses = addresses.map((addr) =>
-          addr.id === editingAddress.id ? result.data : addr,
-        );
-        updateAddresses(newAddresses);
-        if (selectedAddressId === editingAddress.id) {
-          onSelectAddress(result.data);
-        }
-        setEditingAddress(null);
-        return { success: true };
-      }
-
-      return { success: false, error: result.error };
-    },
-    [
-      addresses,
-      editingAddress,
-      onSelectAddress,
-      selectedAddressId,
-      updateAddresses,
-      updateAddressMutate,
-    ],
-  );
-
-  const handleDeleteAddress = useCallback(
-    async (addressId: number) => {
-      setDeletingId(addressId);
-      const result = await deleteAddressMutate(addressId);
-      setDeletingId(null);
-
-      if (result.success) {
-        const newAddresses = addresses.filter((addr) => addr.id !== addressId);
-        updateAddresses(newAddresses);
-        if (selectedAddressId === addressId) {
-          onSelectAddress(newAddresses[0] || null);
-        }
-      }
-    },
-    [
-      addresses,
-      onSelectAddress,
-      selectedAddressId,
-      updateAddresses,
-      deleteAddressMutate,
-    ],
-  );
-
-  const handleSelectAddress = useCallback(
-    (address: UserAddress) => {
-      onSelectAddress(address);
-    },
-    [onSelectAddress],
-  );
+  const {
+    addresses,
+    selectedAddressId,
+    editingAddress,
+    isAddingNew,
+    deletingId,
+    hasAddresses,
+    isEditSheetOpen,
+  } = viewModel;
 
   return (
     <div className="w-full min-w-0 space-y-4">
@@ -247,11 +155,11 @@ export function AddressSelector({
           <MapPin className="text-primary h-5 w-5" />
           <h3 className="font-semibold text-neutral-900">Delivery Address</h3>
         </div>
-        {addresses.length > 0 && (
+        {hasAddresses && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setIsAddingNew(true)}
+            onClick={onOpenAddSheet}
             className="text-primary hover:bg-primary/10 h-8 rounded-full text-sm"
           >
             <Plus className="mr-1 h-4 w-4" />
@@ -261,13 +169,13 @@ export function AddressSelector({
       </div>
 
       {/* Address List */}
-      {addresses.length > 0 ? (
+      {hasAddresses ? (
         <AddressCarousel
           addresses={addresses}
           selectedAddressId={selectedAddressId}
-          onSelectAddress={handleSelectAddress}
-          onEdit={setEditingAddress}
-          onDelete={handleDeleteAddress}
+          onSelectAddress={onSelectAddress}
+          onEdit={onEditAddress}
+          onDelete={onDeleteAddress}
           deletingId={deletingId}
         />
       ) : (
@@ -276,7 +184,7 @@ export function AddressSelector({
           <p className="text-muted-foreground mb-4 text-sm">
             No saved addresses yet. Add one to continue.
           </p>
-          <Button onClick={() => setIsAddingNew(true)} className="rounded-full">
+          <Button onClick={onOpenAddSheet} className="rounded-full">
             <Plus className="mr-2 h-4 w-4" />
             Add Address
           </Button>
@@ -284,7 +192,10 @@ export function AddressSelector({
       )}
 
       {/* Add Address Sheet */}
-      <Sheet open={isAddingNew} onOpenChange={setIsAddingNew}>
+      <Sheet
+        open={isAddingNew}
+        onOpenChange={(open) => !open && onCloseAddSheet()}
+      >
         <SheetContent
           side="bottom"
           className="flex h-[85vh] flex-col rounded-t-3xl px-5 pt-6 pb-0"
@@ -297,8 +208,8 @@ export function AddressSelector({
           </SheetHeader>
           <div className="-mx-5 flex-1 overflow-y-auto px-5 pb-8">
             <AddressForm
-              onSubmit={handleAddAddress}
-              onCancel={() => setIsAddingNew(false)}
+              onSubmit={onAddAddress}
+              onCancel={onCloseAddSheet}
               submitLabel="Save & Use This Address"
             />
           </div>
@@ -307,8 +218,8 @@ export function AddressSelector({
 
       {/* Edit Address Sheet */}
       <Sheet
-        open={editingAddress !== null}
-        onOpenChange={(open) => !open && setEditingAddress(null)}
+        open={isEditSheetOpen}
+        onOpenChange={(open) => !open && onCloseEditSheet()}
       >
         <SheetContent
           side="bottom"
@@ -322,8 +233,8 @@ export function AddressSelector({
             {editingAddress && (
               <AddressForm
                 initialData={editingAddress}
-                onSubmit={handleUpdateAddress}
-                onCancel={() => setEditingAddress(null)}
+                onSubmit={onUpdateAddress}
+                onCancel={onCloseEditSheet}
                 submitLabel="Update Address"
               />
             )}

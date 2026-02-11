@@ -1,4 +1,4 @@
-import { DashboardShell } from "@/components/dashboard";
+import { DashboardShellContainer } from "@/components/dashboard";
 
 import { requireAdminAccess } from "@/lib/admin";
 
@@ -9,5 +9,5 @@ export default async function DashboardLayout({
 }) {
   await requireAdminAccess();
 
-  return <DashboardShell>{children}</DashboardShell>;
+  return <DashboardShellContainer>{children}</DashboardShellContainer>;
 }

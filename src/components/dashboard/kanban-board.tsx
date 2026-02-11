@@ -93,6 +93,32 @@ interface DroppableColumnProps {
   isOver?: boolean;
 }
 
+interface KanbanColumnHeaderProps {
+  title: string;
+  count: number;
+  colorClass: string;
+}
+
+function KanbanColumnHeader({
+  title,
+  count,
+  colorClass,
+}: KanbanColumnHeaderProps) {
+  return (
+    <div
+      className={cn(
+        "mb-3 flex items-center gap-2 rounded-lg border px-3 py-1.5",
+        colorClass,
+      )}
+    >
+      <span className="text-sm font-semibold">{title}</span>
+      <span className="rounded-full bg-white/50 px-2 py-0.5 text-xs font-medium">
+        {count}
+      </span>
+    </div>
+  );
+}
+
 function DroppableColumn({ id, children, isOver }: DroppableColumnProps) {
   const { setNodeRef } = useDroppable({
     id,
@@ -236,17 +262,11 @@ export function KanbanBoard<T extends { id: string }>({
       <div className="flex gap-4 overflow-x-auto pb-4">
         {columns.map((column) => (
           <div key={column.id} className="min-w-[280px] flex-1">
-            <div
-              className={cn(
-                "mb-3 flex items-center gap-2 rounded-lg border px-3 py-1.5",
-                column.colorClass,
-              )}
-            >
-              <span className="text-sm font-semibold">{column.title}</span>
-              <span className="rounded-full bg-white/50 px-2 py-0.5 text-xs font-medium">
-                {column.items.length}
-              </span>
-            </div>
+            <KanbanColumnHeader
+              title={column.title}
+              count={column.items.length}
+              colorClass={column.colorClass}
+            />
 
             <SortableContext
               id={column.id}

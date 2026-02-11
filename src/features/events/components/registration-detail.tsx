@@ -1,173 +1,71 @@
-"use client";
-
-import {
-  type EventRegistration,
-  EventRegistrationStatus,
-} from "@/data/events/types";
 import { MobileHeaderContainer } from "@/features/layout";
-import { useShare } from "@/hooks";
 import {
-  Ban,
   Check,
-  CheckCircle2,
   ChevronRight,
-  Clock,
   CopyIcon,
   Download,
-  HourglassIcon,
   MapPin,
   Mic,
   Palette,
   Share2,
-  ThumbsUp,
   User,
-  XCircle,
 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useState } from "react";
 
+import { EventRegistrationProgress } from "@/components/events/event-registration-progress";
+import { TicketDownloadDialog } from "@/components/events/ticket-download-dialog";
 import { OptimizedImage, WhatsAppContactButton } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { openWhatsAppFollowUp } from "@/lib/contact-business";
-import { calculateDuration, createDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
-import { EventRegistrationProgress } from "./event-registration-progress";
-import { TicketDownloadDialog } from "./ticket-download-dialog";
+import type { RegistrationDetailProps } from "../types";
 
-function getStatusConfig(status: EventRegistrationStatus) {
-  switch (status) {
-    case EventRegistrationStatus.Pending:
-      return {
-        label: "Pending",
-        icon: HourglassIcon,
-        bgColor: "bg-amber-500",
-        textColor: "text-amber-500",
-        borderColor: "border-amber-500",
-        message: "Awaiting approval",
-      };
-    case EventRegistrationStatus.Approved:
-      return {
-        label: "Approved",
-        icon: ThumbsUp,
-        bgColor: "bg-blue-500",
-        textColor: "text-blue-500",
-        borderColor: "border-blue-500",
-        message: "Please complete payment",
-      };
-    case EventRegistrationStatus.Paid:
-      return {
-        label: "Paid",
-        icon: Check,
-        bgColor: "bg-teal-500",
-        textColor: "text-teal-500",
-        borderColor: "border-teal-500",
-        message: "Payment received",
-      };
-    case EventRegistrationStatus.Confirmed:
-      return {
-        label: "Confirmed",
-        icon: CheckCircle2,
-        bgColor: "bg-emerald-500",
-        textColor: "text-emerald-500",
-        borderColor: "border-emerald-500",
-        message: "You're registered!",
-      };
-    case EventRegistrationStatus.Rejected:
-      return {
-        label: "Rejected",
-        icon: XCircle,
-        bgColor: "bg-red-500",
-        textColor: "text-red-500",
-        borderColor: "border-red-500",
-        message: "Registration rejected",
-      };
-    case EventRegistrationStatus.Cancelled:
-      return {
-        label: "Cancelled",
-        icon: Ban,
-        bgColor: "bg-neutral-500",
-        textColor: "text-neutral-500",
-        borderColor: "border-neutral-500",
-        message: "Registration cancelled",
-      };
-    default:
-      return {
-        label: "Unknown",
-        icon: Clock,
-        bgColor: "bg-neutral-500",
-        textColor: "text-neutral-500",
-        borderColor: "border-neutral-500",
-        message: "",
-      };
-  }
-}
-
-interface RegistrationDetailClientProps {
-  registration: EventRegistration;
-}
-
-export function RegistrationDetailClient({
+export function RegistrationDetail({
+  viewModel,
   registration,
-}: RegistrationDetailClientProps) {
-  const { event, status } = registration;
-  const { share } = useShare();
+  onShare,
+  onCopyRegistrationId,
+  onWhatsAppContact,
+}: RegistrationDetailProps) {
+  const {
+    registrationIdUpperCase,
+    status,
+    seatsReserved,
+    totalAmount,
+    amountLabel,
+    copied,
+    statusConfig,
+    isPending,
+    isApproved,
+    isPaid,
+    showTicketDownload,
+    showWhatsAppButton,
+    eventTitle,
+    eventDescription,
+    imageUrl,
+    formattedDate,
+    formattedTime,
+    duration,
+    location,
+    fullLocation,
+    level,
+    instructor,
+    performers,
+    lineupNotes,
+    includes,
+    isWorkshop,
+    isOpenMic,
+    requestAt,
+    approvedAt,
+    paidAt,
+    confirmedAt,
+    cancelledAt,
+    createdAt,
+  } = viewModel;
 
-  const statusConfig = getStatusConfig(status);
   const StatusIcon = statusConfig.icon;
-  const isConfirmed = status === EventRegistrationStatus.Confirmed;
-  const isPending = status === EventRegistrationStatus.Pending;
-  const isApproved = status === EventRegistrationStatus.Approved;
-  const isPaid = status === EventRegistrationStatus.Paid;
-  const showTicketDownload = isConfirmed;
-
-  const [copied, setCopied] = useState(false);
-
-  const handleShare = useCallback(() => {
-    share({
-      title: `My registration for ${event.title}`,
-      text: `I'm attending ${event.title}! Check out this workshop.`,
-      url: window.location.href,
-    });
-  }, [share, event.title]);
-
-  const handleCopyRegistrationId = useCallback(() => {
-    navigator.clipboard.writeText(registration.id.toUpperCase());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [registration.id]);
-
-  const showWhatsAppButton = !isConfirmed;
-
-  const handleWhatsAppContact = useCallback(() => {
-    openWhatsAppFollowUp({
-      type: "event-followup",
-      registrationId: registration.id.toUpperCase(),
-      eventTitle: event.title,
-      eventDate: event.starts_at,
-      registrationStatus: statusConfig.label,
-      customerName: registration.user.name || registration.user.email,
-      customerEmail: registration.user.email,
-    });
-  }, [registration, event, statusConfig.label]);
-
-  const eventDate = createDate(event.starts_at);
-  const formattedDate = eventDate.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-  const formattedTime = eventDate.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-  const duration = calculateDuration(event.starts_at, event.ends_at);
-  const imageUrl = event.image || "/placeholder.jpg";
-  const isWorkshop = event.event_type === "POTTERY_WORKSHOP";
-  const isOpenMic = event.event_type === "OPEN_MIC";
 
   return (
     <>
@@ -195,14 +93,14 @@ export function RegistrationDetailClient({
               Registrations
             </Link>
             <ChevronRight className="h-3.5 w-3.5 text-neutral-300" />
-            <span className="text-foreground font-medium">{event.title}</span>
+            <span className="text-foreground font-medium">{eventTitle}</span>
           </nav>
 
           {/* Hero Image */}
           <div className="relative aspect-4/5 w-full overflow-hidden lg:aspect-21/9 lg:rounded-2xl">
             <OptimizedImage
               src={imageUrl}
-              alt={event.title}
+              alt={eventTitle}
               fill
               className="object-cover"
             />
@@ -210,7 +108,7 @@ export function RegistrationDetailClient({
 
             {/* Share Button */}
             <button
-              onClick={handleShare}
+              onClick={onShare}
               className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
               aria-label="Share registration"
             >
@@ -228,9 +126,9 @@ export function RegistrationDetailClient({
                 <StatusIcon className="mr-1 h-3 w-3" />
                 {statusConfig.label}
               </Badge>
-              {event.level && isWorkshop && (
+              {level && isWorkshop && (
                 <Badge className="border-none bg-white/90 px-3 py-1.5 text-xs font-semibold text-neutral-900">
-                  {event.level}
+                  {level}
                 </Badge>
               )}
             </div>
@@ -257,10 +155,10 @@ export function RegistrationDetailClient({
                     Registration
                   </span>
                   <span className="font-mono text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                    #{registration.id.toUpperCase()}
+                    #{registrationIdUpperCase}
                   </span>
                   <button
-                    onClick={handleCopyRegistrationId}
+                    onClick={onCopyRegistrationId}
                     className="inline-flex items-center justify-center rounded p-1 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
                     aria-label="Copy registration ID"
                   >
@@ -274,25 +172,25 @@ export function RegistrationDetailClient({
 
                 {/* Title */}
                 <h1 className="font-display mb-2 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
-                  {event.title}
+                  {eventTitle}
                 </h1>
 
                 {/* Inline Metadata */}
                 <p className="mb-6 text-sm text-neutral-500 lg:text-base">
                   {formattedDate} · {formattedTime} · {duration}
-                  {event.location && ` · ${event.location}`}
+                  {location && ` · ${location}`}
                 </p>
 
                 {/* Mobile Registration Progress */}
                 <div className="mb-6 lg:hidden">
                   <EventRegistrationProgress
                     status={status}
-                    requestAt={registration.request_at}
-                    approvedAt={registration.approved_at}
-                    paidAt={registration.paid_at}
-                    confirmedAt={registration.confirmed_at}
-                    cancelledAt={registration.cancelled_at}
-                    createdAt={registration.created_at}
+                    requestAt={requestAt}
+                    approvedAt={approvedAt}
+                    paidAt={paidAt}
+                    confirmedAt={confirmedAt}
+                    cancelledAt={cancelledAt}
+                    createdAt={createdAt}
                   />
                 </div>
 
@@ -302,12 +200,12 @@ export function RegistrationDetailClient({
                     About
                   </h2>
                   <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
-                    {event.description}
+                    {eventDescription}
                   </p>
                 </div>
 
                 {/* Instructor - Workshop Only */}
-                {event.instructor && isWorkshop && (
+                {instructor && isWorkshop && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Instructor
@@ -318,7 +216,7 @@ export function RegistrationDetailClient({
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                          {event.instructor}
+                          {instructor}
                         </p>
                         <p className="text-xs text-neutral-500">
                           Lead Facilitator
@@ -329,35 +227,33 @@ export function RegistrationDetailClient({
                 )}
 
                 {/* Performers - Open Mic Only */}
-                {isOpenMic &&
-                  event.performers &&
-                  event.performers.length > 0 && (
-                    <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                      <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                        Lineup
-                      </h2>
-                      <ul className="space-y-3">
-                        {event.performers.map((performer, index) => (
-                          <li key={index} className="flex items-center gap-3">
-                            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
-                              <Mic className="text-primary h-4 w-4" />
-                            </div>
-                            <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                              {performer}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                      {event.lineup_notes && (
-                        <p className="mt-3 text-sm text-neutral-500 italic">
-                          {event.lineup_notes}
-                        </p>
-                      )}
-                    </div>
-                  )}
+                {isOpenMic && performers && performers.length > 0 && (
+                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                      Lineup
+                    </h2>
+                    <ul className="space-y-3">
+                      {performers.map((performer, index) => (
+                        <li key={index} className="flex items-center gap-3">
+                          <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                            <Mic className="text-primary h-4 w-4" />
+                          </div>
+                          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                            {performer}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {lineupNotes && (
+                      <p className="mt-3 text-sm text-neutral-500 italic">
+                        {lineupNotes}
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 {/* Location */}
-                {event.location && (
+                {location && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       Location
@@ -368,11 +264,11 @@ export function RegistrationDetailClient({
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                          {event.location}
+                          {location}
                         </p>
-                        {event.full_location && (
+                        {fullLocation && (
                           <p className="text-xs text-neutral-500">
-                            {event.full_location}
+                            {fullLocation}
                           </p>
                         )}
                       </div>
@@ -381,13 +277,13 @@ export function RegistrationDetailClient({
                 )}
 
                 {/* What's Included */}
-                {event.includes && event.includes.length > 0 && (
+                {includes && includes.length > 0 && (
                   <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                       What&apos;s included
                     </h2>
                     <ul className="grid gap-3 sm:grid-cols-2">
-                      {event.includes.map((item, index) => (
+                      {includes.map((item, index) => (
                         <li key={index} className="flex items-center gap-3">
                           <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
                             <Check className="h-3 w-3 text-emerald-500" />
@@ -410,12 +306,12 @@ export function RegistrationDetailClient({
                 <div className="mb-5">
                   <EventRegistrationProgress
                     status={status}
-                    requestAt={registration.request_at}
-                    approvedAt={registration.approved_at}
-                    paidAt={registration.paid_at}
-                    confirmedAt={registration.confirmed_at}
-                    cancelledAt={registration.cancelled_at}
-                    createdAt={registration.created_at}
+                    requestAt={requestAt}
+                    approvedAt={approvedAt}
+                    paidAt={paidAt}
+                    confirmedAt={confirmedAt}
+                    cancelledAt={cancelledAt}
+                    createdAt={createdAt}
                   />
                 </div>
 
@@ -426,18 +322,13 @@ export function RegistrationDetailClient({
                   <div className="flex justify-between text-sm">
                     <span className="text-neutral-500">Seats</span>
                     <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                      {registration.seats_reserved}
+                      {seatsReserved}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-neutral-500">
-                      {isPaid || isConfirmed ? "Amount Paid" : "Total Amount"}
-                    </span>
+                    <span className="text-neutral-500">{amountLabel}</span>
                     <span className="text-primary font-semibold">
-                      ₹
-                      {(
-                        event.price * registration.seats_reserved
-                      ).toLocaleString()}
+                      ₹{totalAmount}
                     </span>
                   </div>
                 </div>
@@ -487,7 +378,7 @@ export function RegistrationDetailClient({
 
                 {showWhatsAppButton && (
                   <div className="mt-3">
-                    <WhatsAppContactButton onClick={handleWhatsAppContact} />
+                    <WhatsAppContactButton onClick={onWhatsAppContact} />
                   </div>
                 )}
               </div>
@@ -524,7 +415,7 @@ export function RegistrationDetailClient({
               </span>
             </div>
             {showWhatsAppButton && (
-              <WhatsAppContactButton onClick={handleWhatsAppContact} />
+              <WhatsAppContactButton onClick={onWhatsAppContact} />
             )}
           </div>
         )}

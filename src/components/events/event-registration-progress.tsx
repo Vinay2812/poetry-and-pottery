@@ -11,12 +11,11 @@ import {
 } from "lucide-react";
 import { useCallback } from "react";
 
+import { CancelledStatusBanner } from "@/components/shared/cancelled-status-banner";
 import {
   type ProgressStep,
   ProgressStepper,
 } from "@/components/shared/progress-stepper";
-
-import { formatProgressDate } from "@/lib/date";
 
 export const REGISTRATION_STEPS: readonly ProgressStep[] = [
   {
@@ -102,49 +101,23 @@ export function EventRegistrationProgress({
 
   if (isCancelled) {
     return (
-      <div className="rounded-2xl">
-        <h2 className="mb-5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-          Registration Status
-        </h2>
-        <div className="flex items-center gap-4 rounded-xl bg-red-50 p-4 dark:bg-red-950/20">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-            <Ban className="h-5 w-5 text-red-600 dark:text-red-400" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-red-700 dark:text-red-400">
-              Registration Cancelled
-            </p>
-            {cancelledAt && (
-              <time className="mt-0.5 block text-[10px] font-bold tracking-wider text-red-500">
-                {formatProgressDate(cancelledAt)}
-              </time>
-            )}
-          </div>
-        </div>
-      </div>
+      <CancelledStatusBanner
+        title="Registration Status"
+        label="Registration Cancelled"
+        icon={Ban}
+        timestamp={cancelledAt}
+      />
     );
   }
 
   if (isRejected) {
     return (
-      <div className="rounded-2xl">
-        <h2 className="mb-5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-          Registration Status
-        </h2>
-        <div className="flex items-center gap-4 rounded-xl bg-red-50 p-4 dark:bg-red-950/20">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-            <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-red-700 dark:text-red-400">
-              Registration Rejected
-            </p>
-            <p className="mt-0.5 text-xs text-red-500">
-              Please contact support for more information
-            </p>
-          </div>
-        </div>
-      </div>
+      <CancelledStatusBanner
+        title="Registration Status"
+        label="Registration Rejected"
+        icon={XCircle}
+        subtitle="Please contact support for more information"
+      />
     );
   }
 

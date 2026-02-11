@@ -10,12 +10,11 @@ import {
 } from "lucide-react";
 import { useCallback } from "react";
 
+import { CancelledStatusBanner } from "@/components/shared/cancelled-status-banner";
 import {
   type ProgressStep,
   ProgressStepper,
 } from "@/components/shared/progress-stepper";
-
-import { formatProgressDate } from "@/lib/date";
 
 import { OrderStatus } from "@/graphql/generated/types";
 
@@ -115,26 +114,12 @@ export function OrderProgress({
 
   if (isCancelled) {
     return (
-      <div className="rounded-2xl">
-        <h2 className="mb-6 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-          Order Status
-        </h2>
-        <div className="flex items-center gap-4 rounded-xl bg-red-50 p-4 dark:bg-red-950/20">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-            <Ban className="h-5 w-5 text-red-600 dark:text-red-400" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-red-700 dark:text-red-400">
-              Order Cancelled
-            </p>
-            {cancelledAt && (
-              <time className="mt-0.5 block text-[10px] font-bold tracking-wider text-red-500 uppercase">
-                {formatProgressDate(cancelledAt)}
-              </time>
-            )}
-          </div>
-        </div>
-      </div>
+      <CancelledStatusBanner
+        title="Order Status"
+        label="Order Cancelled"
+        icon={Ban}
+        timestamp={cancelledAt}
+      />
     );
   }
 

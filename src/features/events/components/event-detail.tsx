@@ -1,33 +1,27 @@
 "use client";
 
 import { MobileHeaderContainer } from "@/features/layout";
-import { motion } from "framer-motion";
 import {
-  ArrowRight,
   Bookmark,
-  Calendar,
-  Check,
-  CheckCircle,
   ChevronRight,
-  Clock,
-  Loader2,
   MapPin,
   Mic,
   Palette,
   Share2,
-  User,
-  Users,
 } from "lucide-react";
 import Link from "next/link";
 
-import { OptimizedImage } from "@/components/shared";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { cn } from "@/lib/utils";
-
 import type { EventDetailProps } from "../types";
-import { formatEventDate } from "../types";
+import { EventHeroImage } from "./event-hero-image";
+import { EventIncludes } from "./event-includes";
+import { EventInstructor } from "./event-instructor";
+import { EventLineup } from "./event-lineup";
+import { EventMetadata } from "./event-metadata";
+import { EventMobileCTA } from "./event-mobile-cta";
+import { EventReserveSidebar } from "./event-reserve-sidebar";
+import { OtherEventsList } from "./other-events-list";
 
 export function EventDetail({
   viewModel,
@@ -112,40 +106,15 @@ export function EventDetail({
             <span className="text-foreground font-medium">{title}</span>
           </nav>
 
-          {/* Hero Image */}
-          <div
-            className="relative aspect-4/5 w-full overflow-hidden lg:aspect-21/9 lg:rounded-2xl"
-            style={{ viewTransitionName: `event-image-${viewModel.id}` }}
-          >
-            <OptimizedImage
-              src={imageUrl}
-              alt={title}
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-
-            {/* Level Badge on Image - Workshop Only */}
-            {level && isWorkshop && (
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-primary rounded-lg px-3 py-1.5 text-xs font-semibold text-white">
-                  {level}
-                </Badge>
-              </div>
-            )}
-
-            {/* Low Spots Warning Badge */}
-            {availableSeats != null && availableSeats <= 5 && !soldOut && (
-              <div className="absolute bottom-4 left-4">
-                <Badge
-                  variant="secondary"
-                  className="text-foreground rounded-lg bg-white/90 px-3 py-1.5 text-xs font-semibold"
-                >
-                  Only {availableSeats} spots left
-                </Badge>
-              </div>
-            )}
-          </div>
+          <EventHeroImage
+            id={viewModel.id}
+            imageUrl={imageUrl}
+            title={title}
+            level={level}
+            isWorkshop={isWorkshop}
+            availableSeats={availableSeats}
+            soldOut={soldOut}
+          />
 
           {/* Content Grid: 3fr 1fr */}
           <div className="mt-0 grid gap-0 lg:mt-8 lg:grid-cols-[3fr_1fr] lg:gap-8">
@@ -167,37 +136,14 @@ export function EventDetail({
                   {title}
                 </h1>
 
-                {/* Metadata Rows with Icons */}
-                <div className="mb-5 space-y-2.5">
-                  <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
-                    <Calendar className="h-4 w-4 text-neutral-400" />
-                    <span>{formattedDate}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
-                    <Clock className="h-4 w-4 text-neutral-400" />
-                    <span>
-                      {formattedTime} ({duration})
-                    </span>
-                  </div>
-                  {location && (
-                    <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
-                      <MapPin className="h-4 w-4 text-neutral-400" />
-                      <span>{fullLocation || location}</span>
-                    </div>
-                  )}
-                  {availableSeats != null && (
-                    <div className="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400">
-                      <Users className="h-4 w-4 text-neutral-400" />
-                      <span
-                        className={cn(
-                          availableSeats <= 5 && "font-medium text-amber-600",
-                        )}
-                      >
-                        {availableSeats} spots remaining
-                      </span>
-                    </div>
-                  )}
-                </div>
+                <EventMetadata
+                  formattedDate={formattedDate}
+                  formattedTime={formattedTime}
+                  duration={duration}
+                  location={location}
+                  fullLocation={fullLocation}
+                  availableSeats={availableSeats}
+                />
 
                 {/* Share & Save Buttons */}
                 <div className="mb-6 flex gap-3">
@@ -230,52 +176,15 @@ export function EventDetail({
                   </p>
                 </div>
 
-                {/* Your Instructor - Workshop Only */}
                 {instructor && isWorkshop && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                      Your Instructor
-                    </h2>
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
-                        <User className="h-5 w-5 text-neutral-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                          {instructor}
-                        </p>
-                        <p className="text-xs text-neutral-500">
-                          Lead Facilitator
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <EventInstructor instructor={instructor} />
                 )}
 
-                {/* Tonight's Lineup - Open Mic Only */}
                 {isOpenMic && performers && performers.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                      Tonight&apos;s Lineup
-                    </h2>
-                    <ul className="space-y-3">
-                      {performers.map((performer, index) => (
-                        <li key={index} className="flex items-center gap-3">
-                          <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
-                            <Mic className="text-primary h-4 w-4" />
-                          </div>
-                          <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                            {performer}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                    {lineupNotes && (
-                      <p className="mt-3 text-sm text-neutral-500 italic">
-                        {lineupNotes}
-                      </p>
-                    )}
-                  </div>
+                  <EventLineup
+                    performers={performers}
+                    lineupNotes={lineupNotes}
+                  />
                 )}
 
                 {/* Location */}
@@ -302,176 +211,35 @@ export function EventDetail({
                   </div>
                 )}
 
-                {/* What's Included */}
                 {includes && includes.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                      What&apos;s Included
-                    </h2>
-                    <ul className="grid gap-3 sm:grid-cols-2">
-                      {includes.map((item, index) => (
-                        <li key={index} className="flex items-center gap-3">
-                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
-                            <Check className="h-3 w-3 text-emerald-500" />
-                          </div>
-                          <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                            {item}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <EventIncludes includes={includes} />
                 )}
               </div>
             </div>
 
-            {/* Desktop Sidebar */}
-            <div className="hidden lg:block">
-              <div className="sticky top-24">
-                <div className="text-primary mb-1 text-2xl font-extrabold">
-                  ₹{price.toLocaleString()}
-                </div>
-                <p className="mb-5 text-xs text-neutral-500">per seat</p>
-
-                <motion.div whileTap={{ scale: 0.98 }}>
-                  <Button
-                    className={cn(
-                      "h-12 w-full rounded-xl text-sm font-bold transition-all",
-                      registered && "bg-green-600 hover:bg-green-700",
-                    )}
-                    size="lg"
-                    disabled={soldOut || isLoading || registered}
-                    onClick={onReserveSeat}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Reserving seat...
-                      </>
-                    ) : registered ? (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="mr-2"
-                      >
-                        <CheckCircle className="h-5 w-5" />
-                      </motion.div>
-                    ) : null}
-                    {soldOut
-                      ? "Sold Out"
-                      : registered
-                        ? "Registered!"
-                        : isOpenMic
-                          ? "Reserve Spot"
-                          : "Reserve Seat"}
-                    {!isLoading && !registered && !soldOut && (
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    )}
-                  </Button>
-                </motion.div>
-
-                {availableSeats != null && !soldOut && !registered && (
-                  <p className="mt-3 text-center text-xs font-semibold text-emerald-600">
-                    ✓ {availableSeats} seats available
-                  </p>
-                )}
-              </div>
-            </div>
+            <EventReserveSidebar
+              price={price}
+              availableSeats={availableSeats}
+              soldOut={soldOut}
+              isLoading={isLoading}
+              registered={registered}
+              isOpenMic={isOpenMic}
+              onReserveSeat={onReserveSeat}
+            />
           </div>
 
-          {/* Other Events */}
-          {otherEvents.length > 0 && (
-            <div className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-16 lg:px-0 lg:pt-12 dark:border-neutral-800">
-              <h2 className="font-display mb-6 text-xl font-bold tracking-tight text-neutral-900 lg:text-2xl dark:text-white">
-                Other events you might like
-              </h2>
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
-                {otherEvents.map((otherEvent) => {
-                  const otherFormattedDate = formatEventDate(
-                    otherEvent.starts_at,
-                  );
-                  const otherImageUrl = otherEvent.image || "/placeholder.jpg";
-
-                  return (
-                    <Link
-                      key={otherEvent.id}
-                      href={`/events/${otherEvent.id}`}
-                      className="group flex flex-col gap-3"
-                    >
-                      <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">
-                        <OptimizedImage
-                          src={otherImageUrl}
-                          alt={otherEvent.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-1 px-1">
-                        <h3 className="font-display line-clamp-1 text-sm font-bold text-neutral-900 lg:text-base dark:text-neutral-100">
-                          {otherEvent.title}
-                        </h3>
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs font-medium text-neutral-500">
-                            {otherFormattedDate}
-                          </p>
-                          <span className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
-                            ₹{otherEvent.price.toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <OtherEventsList events={otherEvents} />
         </div>
       </main>
 
-      {/* Mobile Fixed Bottom CTA */}
-      <div className="fixed right-0 bottom-16 left-0 z-40 bg-white/95 p-4 backdrop-blur-md lg:hidden">
-        <motion.div whileTap={{ scale: 0.98 }}>
-          <Button
-            className={cn(
-              "h-12 w-full rounded-xl transition-all",
-              registered && "bg-green-600 hover:bg-green-700",
-            )}
-            size="lg"
-            disabled={soldOut || isLoading || registered}
-            onClick={onReserveSeat}
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Reserving seat...
-              </>
-            ) : registered ? (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="mr-2"
-              >
-                <CheckCircle className="h-5 w-5" />
-              </motion.div>
-            ) : null}
-            {soldOut
-              ? "Sold Out"
-              : registered
-                ? "Registered!"
-                : isOpenMic
-                  ? "Reserve Spot"
-                  : "Reserve Seat"}
-            {!isLoading && !registered && !soldOut && (
-              <>
-                <span className="ml-1 text-sm font-normal opacity-90">
-                  · ₹{price.toLocaleString()}
-                </span>
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </>
-            )}
-          </Button>
-        </motion.div>
-      </div>
+      <EventMobileCTA
+        price={price}
+        soldOut={soldOut}
+        isLoading={isLoading}
+        registered={registered}
+        isOpenMic={isOpenMic}
+        onReserveSeat={onReserveSeat}
+      />
     </>
   );
 }

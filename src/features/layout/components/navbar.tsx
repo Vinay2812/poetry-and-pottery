@@ -3,6 +3,7 @@
 import { NAV_LINKS } from "@/consts/client";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import { Heart, Search, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -14,6 +15,48 @@ import { cn } from "@/lib/utils";
 import { AccountDropdownContainer } from "../containers/account-dropdown-container";
 import type { NavbarProps } from "../types";
 import { Logo } from "./logo";
+
+interface NavIconLinkProps {
+  href: string;
+  icon: LucideIcon;
+  count: number;
+  isActive: boolean;
+  activeIconClassName?: string;
+}
+
+function NavIconLink({
+  href,
+  icon: Icon,
+  count,
+  isActive,
+  activeIconClassName,
+}: NavIconLinkProps) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105",
+        isActive
+          ? "bg-primary/10"
+          : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
+      )}
+    >
+      <Icon
+        className={cn(
+          "h-5 w-5 transition-colors",
+          isActive
+            ? cn("text-primary", activeIconClassName)
+            : "text-muted-foreground group-hover:text-foreground",
+        )}
+      />
+      {count > 0 && (
+        <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
+          {count}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
   const isActiveRoute = (href: string) => {
@@ -79,54 +122,21 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
             </button>
 
             {/* Wishlist */}
-            <Link
+            <NavIconLink
               href="/wishlist"
-              className={cn(
-                "group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105",
-                isActiveRoute("/wishlist")
-                  ? "bg-primary/10"
-                  : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
-              )}
-            >
-              <Heart
-                className={cn(
-                  "h-5 w-5 transition-colors",
-                  isActiveRoute("/wishlist")
-                    ? "text-primary fill-primary/20"
-                    : "text-muted-foreground group-hover:text-foreground",
-                )}
-              />
-              {viewModel.wishlistCount > 0 && (
-                <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
-                  {viewModel.wishlistCount}
-                </span>
-              )}
-            </Link>
+              icon={Heart}
+              count={viewModel.wishlistCount}
+              isActive={isActiveRoute("/wishlist")}
+              activeIconClassName="fill-primary/20"
+            />
 
             {/* Cart */}
-            <Link
+            <NavIconLink
               href="/cart"
-              className={cn(
-                "group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105",
-                isActiveRoute("/cart")
-                  ? "bg-primary/10"
-                  : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
-              )}
-            >
-              <ShoppingCartIcon
-                className={cn(
-                  "h-5 w-5 transition-colors",
-                  isActiveRoute("/cart")
-                    ? "text-primary"
-                    : "text-muted-foreground group-hover:text-foreground",
-                )}
-              />
-              {viewModel.cartCount > 0 && (
-                <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
-                  {viewModel.cartCount}
-                </span>
-              )}
-            </Link>
+              icon={ShoppingCartIcon}
+              count={viewModel.cartCount}
+              isActive={isActiveRoute("/cart")}
+            />
 
             <div className="mx-1 h-6 w-px bg-neutral-200 dark:bg-neutral-700" />
 

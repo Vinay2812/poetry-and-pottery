@@ -1,4 +1,5 @@
 import type { ProductBase } from "@/data/products/types";
+import type { CartWithProduct } from "@/types";
 
 import { createDate } from "@/lib/date";
 
@@ -128,4 +129,48 @@ export interface CartProps {
 // Props for the CartContainer component.
 export interface CartContainerProps {
   initialCartItems: CartItem[];
+}
+
+// Maps a GraphQL CartItem to the local CartWithProduct type.
+export function mapToCartWithProduct(item: CartItem): CartWithProduct {
+  return {
+    id: item.id,
+    user_id: item.user_id,
+    product_id: item.product_id,
+    quantity: item.quantity,
+    created_at: createDate(item.created_at),
+    updated_at: createDate(item.updated_at),
+    custom_data: item.custom_data
+      ? {
+          options: item.custom_data.options.map((opt) => ({
+            type: opt.type,
+            optionId: opt.optionId,
+            name: opt.name,
+            value: opt.value,
+            priceModifier: opt.priceModifier,
+          })),
+          totalModifier: item.custom_data.totalModifier,
+        }
+      : null,
+    custom_data_hash: item.custom_data_hash,
+    product: {
+      id: item.product.id,
+      slug: item.product.slug,
+      name: item.product.name,
+      price: item.product.price,
+      image_urls: item.product.image_urls,
+      material: item.product.material,
+      available_quantity: item.product.available_quantity,
+      total_quantity: item.product.total_quantity,
+      color_code: item.product.color_code,
+      color_name: item.product.color_name,
+      description: null,
+      instructions: [],
+      is_active: item.product.is_active,
+      created_at: createDate(),
+      updated_at: createDate(),
+      product_categories: [],
+      collection: item.product.collection ?? null,
+    },
+  };
 }

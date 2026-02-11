@@ -1,4 +1,4 @@
-import type { EventBase, EventType } from "@/data/events/types";
+import type { EventBase } from "@/data/events/types";
 import { Calendar, MapPin, Mic, Palette } from "lucide-react";
 import Link from "next/link";
 
@@ -6,27 +6,8 @@ import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
 
 import { createDate } from "@/lib/date";
+import { getEventTypeLabel } from "@/lib/event-utils";
 import { cn } from "@/lib/utils";
-
-function getEventTypeIcon(type: EventType) {
-  switch (type) {
-    case "OPEN_MIC":
-      return <Mic className="h-3 w-3" />;
-    case "POTTERY_WORKSHOP":
-    default:
-      return <Palette className="h-3 w-3" />;
-  }
-}
-
-function getEventTypeLabel(type: EventType) {
-  switch (type) {
-    case "OPEN_MIC":
-      return "Open Mic";
-    case "POTTERY_WORKSHOP":
-    default:
-      return "Workshop";
-  }
-}
 
 interface EventCardProps {
   event: EventBase;
@@ -47,6 +28,7 @@ export function EventCard({ event }: EventCardProps) {
     hour12: true,
   });
 
+  const isOpenMic = event.event_type === "OPEN_MIC";
   const availableSeats = event.available_seats;
   const isSoldOut = availableSeats === 0;
   const isLowStock =
@@ -109,7 +91,11 @@ export function EventCard({ event }: EventCardProps) {
           </h3>
           {/* Event Type Badge */}
           <span className="text-primary flex shrink-0 items-center gap-1 text-[10px] font-medium lg:text-xs">
-            {getEventTypeIcon(event.event_type)}
+            {isOpenMic ? (
+              <Mic className="h-3 w-3" />
+            ) : (
+              <Palette className="h-3 w-3" />
+            )}
             <span className="hidden lg:inline">
               {getEventTypeLabel(event.event_type)}
             </span>

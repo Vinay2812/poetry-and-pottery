@@ -1,250 +1,27 @@
 "use client";
 
-import type { EventBase } from "@/data/events/types";
 import { MobileHeaderContainer } from "@/features/layout";
 import {
-  Check,
   CheckCircle2,
   ChevronRight,
   MapPin,
   Mic,
   Palette,
   Share2,
-  Star,
-  User,
-  X,
 } from "lucide-react";
 import Link from "next/link";
 
-import { ReviewCard } from "@/components/cards";
-import {
-  ImageCarousel,
-  OptimizedImage,
-  ReviewsSheet,
-} from "@/components/shared";
+import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
-import type {
-  FormattedReview,
-  PastWorkshopDetailProps,
-  PastWorkshopDetailViewModel,
-} from "../types";
-import { formatEventDate } from "../types";
-
-const MAX_VISIBLE_IMAGES = 4;
-
-interface GalleryGridProps {
-  gallery: string[];
-  onOpenGallery: (index: number) => void;
-}
-
-function GalleryGrid({ gallery, onOpenGallery }: GalleryGridProps) {
-  const remainingImages = gallery.length - MAX_VISIBLE_IMAGES;
-
-  return (
-    <div className="grid grid-cols-2 gap-3">
-      {gallery.slice(0, MAX_VISIBLE_IMAGES).map((image, index) => {
-        const isLastVisible =
-          index === MAX_VISIBLE_IMAGES - 1 && remainingImages > 0;
-
-        return (
-          <button
-            key={index}
-            onClick={() => onOpenGallery(index)}
-            className="group focus:ring-primary relative aspect-square overflow-hidden rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
-          >
-            <OptimizedImage
-              src={image}
-              alt={`Workshop gallery image ${index + 1}`}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
-
-            {isLastVisible && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                <span className="text-2xl font-bold text-white">
-                  +{remainingImages}
-                </span>
-              </div>
-            )}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-interface ReviewsSectionProps {
-  reviews: FormattedReview[];
-  averageRating: number;
-  currentUserId?: number | null;
-  onReviewLike: (reviewId: string) => void;
-  onLikeUpdate: (reviewId: string, likes: number, isLiked: boolean) => void;
-}
-
-function ReviewsSection({
-  reviews,
-  averageRating,
-  currentUserId,
-  onReviewLike,
-  onLikeUpdate,
-}: ReviewsSectionProps) {
-  if (!reviews || reviews.length === 0) return null;
-
-  return (
-    <div>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-            Reviews
-          </h2>
-          <div className="flex items-center gap-1 text-sm">
-            <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-            <span className="font-medium text-neutral-900 dark:text-neutral-100">
-              {averageRating.toFixed(1)}
-            </span>
-            <span className="text-neutral-500">({reviews.length})</span>
-          </div>
-        </div>
-        {reviews.length > 2 && (
-          <ReviewsSheet
-            reviews={reviews}
-            averageRating={averageRating}
-            totalReviews={reviews.length}
-            currentUserId={currentUserId}
-            onLikeUpdate={onLikeUpdate}
-          >
-            <button className="text-primary text-sm hover:underline">
-              View All →
-            </button>
-          </ReviewsSheet>
-        )}
-      </div>
-      <div className="space-y-3">
-        {reviews.slice(0, 2).map((review) => (
-          <ReviewCard
-            key={review.id}
-            author={review.author}
-            avatar={review.avatar}
-            rating={review.rating}
-            content={review.content}
-            date={review.date}
-            likes={review.likes}
-            isLiked={review.isLikedByCurrentUser}
-            isOwnReview={
-              currentUserId != null && review.authorId === currentUserId
-            }
-            images={review.images}
-            onLike={() => onReviewLike(review.id)}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-interface UpcomingEventCardProps {
-  event: EventBase;
-}
-
-function UpcomingEventCard({ event }: UpcomingEventCardProps) {
-  const formattedDate = formatEventDate(event.starts_at);
-  const imageUrl = event.image || "/placeholder.jpg";
-
-  return (
-    <Link
-      href={`/events/${event.id}`}
-      className="group flex gap-3 py-2 transition-colors"
-    >
-      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg">
-        <OptimizedImage
-          src={imageUrl}
-          alt={event.title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-      <div className="min-w-0 flex-1">
-        <h4 className="line-clamp-1 text-sm font-medium text-neutral-900 dark:text-neutral-100">
-          {event.title}
-        </h4>
-        <p className="text-xs text-neutral-500">{formattedDate}</p>
-      </div>
-      <span className="text-primary shrink-0 text-sm font-semibold">
-        ₹{event.price.toLocaleString()}
-      </span>
-    </Link>
-  );
-}
-
-interface DesktopSidebarProps {
-  viewModel: PastWorkshopDetailViewModel;
-  upcomingEvents: EventBase[];
-}
-
-function DesktopSidebar({ viewModel, upcomingEvents }: DesktopSidebarProps) {
-  const { quickInfo, reviews, averageRating, isOpenMic } = viewModel;
-
-  return (
-    <div className="hidden lg:block">
-      <div className="sticky top-24">
-        {/* Completed Status */}
-        <div className="mb-4 flex items-center gap-2 text-emerald-600">
-          <CheckCircle2 className="h-5 w-5" />
-          <span className="text-sm font-semibold">
-            {isOpenMic ? "Event Completed" : "Workshop Completed"}
-          </span>
-        </div>
-
-        {/* Summary */}
-        <div className="mb-5 space-y-2.5">
-          <div className="flex justify-between text-sm">
-            <span className="text-neutral-500">Attendees</span>
-            <span className="font-medium text-neutral-900 dark:text-neutral-100">
-              {quickInfo.attendees}
-            </span>
-          </div>
-          {reviews.length > 0 && (
-            <div className="flex justify-between text-sm">
-              <span className="text-neutral-500">Rating</span>
-              <div className="flex items-center gap-1">
-                <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                  {averageRating.toFixed(1)}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="mb-5 border-t border-neutral-100 dark:border-neutral-800" />
-
-        {/* Upcoming Events */}
-        {upcomingEvents.length > 0 && (
-          <div className="mb-4 space-y-1">
-            {upcomingEvents.map((event) => (
-              <UpcomingEventCard key={event.id} event={event} />
-            ))}
-          </div>
-        )}
-
-        <Link href="/events/upcoming">
-          <Button className="h-12 w-full rounded-xl text-sm font-bold">
-            View Upcoming →
-          </Button>
-        </Link>
-      </div>
-    </div>
-  );
-}
+import type { PastWorkshopDetailProps } from "../types";
+import { EventIncludes } from "./event-includes";
+import { EventInstructor } from "./event-instructor";
+import { EventLineup } from "./event-lineup";
+import { PastWorkshopGallery } from "./past-workshop-gallery";
+import { PastWorkshopHighlights } from "./past-workshop-highlights";
+import { PastWorkshopReviewsSection } from "./past-workshop-reviews-section";
+import { PastWorkshopSidebar } from "./past-workshop-sidebar";
 
 export function PastWorkshopDetail({
   viewModel,
@@ -371,50 +148,19 @@ export function PastWorkshopDetail({
 
                 {/* Instructor - Workshop Only */}
                 {quickInfo.instructor && isWorkshop && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                      Instructor
-                    </h2>
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
-                        <User className="h-5 w-5 text-neutral-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                          {quickInfo.instructor}
-                        </p>
-                        <p className="text-xs text-neutral-500">
-                          Lead Facilitator
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <EventInstructor
+                    instructor={quickInfo.instructor}
+                    title="Instructor"
+                  />
                 )}
 
                 {/* Performers - Open Mic Only */}
                 {isOpenMic && performers && performers.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                      Lineup
-                    </h2>
-                    <ul className="space-y-3">
-                      {performers.map((performer, index) => (
-                        <li key={index} className="flex items-center gap-3">
-                          <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
-                            <Mic className="text-primary h-4 w-4" />
-                          </div>
-                          <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                            {performer}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                    {lineupNotes && (
-                      <p className="mt-3 text-sm text-neutral-500 italic">
-                        {lineupNotes}
-                      </p>
-                    )}
-                  </div>
+                  <EventLineup
+                    performers={performers}
+                    lineupNotes={lineupNotes}
+                    title="Lineup"
+                  />
                 )}
 
                 {/* Location */}
@@ -443,113 +189,42 @@ export function PastWorkshopDetail({
 
                 {/* What was covered */}
                 {includes && includes.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                      What was covered
-                    </h2>
-                    <ul className="grid gap-3 sm:grid-cols-2">
-                      {includes.map((item, index) => (
-                        <li key={index} className="flex items-center gap-3">
-                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
-                            <Check className="h-3 w-3 text-emerald-500" />
-                          </div>
-                          <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                            {item}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <EventIncludes includes={includes} title="What was covered" />
                 )}
 
                 {/* Highlights */}
                 {highlights.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                      Highlights
-                    </h2>
-                    <ul className="space-y-3">
-                      {highlights.map((highlight, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <Star className="text-primary mt-0.5 h-4 w-4 shrink-0" />
-                          <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                            {highlight}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <PastWorkshopHighlights highlights={highlights} />
                 )}
 
                 {/* Gallery */}
                 {gallery.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <div className="mb-3 flex items-center gap-2">
-                      <h2 className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                        Gallery
-                      </h2>
-                      <span className="text-xs text-neutral-400">
-                        ({gallery.length} photos)
-                      </span>
-                    </div>
-                    <GalleryGrid
-                      gallery={gallery}
-                      onOpenGallery={onOpenGallery}
-                    />
-                  </div>
+                  <PastWorkshopGallery
+                    gallery={gallery}
+                    selectedImageIndex={selectedImageIndex}
+                    onOpenGallery={onOpenGallery}
+                    onCloseGallery={onCloseGallery}
+                  />
                 )}
-
-                {/* Gallery Lightbox */}
-                <Dialog
-                  open={selectedImageIndex !== null}
-                  onOpenChange={(open) => !open && onCloseGallery()}
-                >
-                  <DialogContent
-                    className="max-h-[90vh] w-full max-w-lg overflow-hidden p-0"
-                    showCloseButton={false}
-                  >
-                    <div className="flex flex-col p-4">
-                      <div className="mb-4 flex items-center justify-between">
-                        <DialogTitle className="text-base font-medium">
-                          Gallery
-                        </DialogTitle>
-                        <DialogClose className="text-muted-foreground hover:text-foreground rounded-sm transition-colors">
-                          <X className="h-5 w-5" />
-                          <span className="sr-only">Close</span>
-                        </DialogClose>
-                      </div>
-
-                      <div className="relative">
-                        <ImageCarousel
-                          images={gallery}
-                          alt="Workshop gallery image"
-                          startIndex={selectedImageIndex ?? 0}
-                          imageClassName="object-contain"
-                          showDots={false}
-                          showCounter={true}
-                        />
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
 
                 {/* Reviews */}
                 {reviews.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <ReviewsSection
-                      reviews={reviews}
-                      averageRating={averageRating}
-                      onReviewLike={onReviewLike}
-                      onLikeUpdate={onLikeUpdate}
-                    />
-                  </div>
+                  <PastWorkshopReviewsSection
+                    reviews={reviews}
+                    averageRating={averageRating}
+                    onReviewLike={onReviewLike}
+                    onLikeUpdate={onLikeUpdate}
+                  />
                 )}
               </div>
             </div>
 
             {/* Desktop Sidebar */}
-            <DesktopSidebar
-              viewModel={viewModel}
+            <PastWorkshopSidebar
+              isOpenMic={isOpenMic}
+              attendees={quickInfo.attendees}
+              reviews={reviews}
+              averageRating={averageRating}
               upcomingEvents={upcomingEvents}
             />
           </div>

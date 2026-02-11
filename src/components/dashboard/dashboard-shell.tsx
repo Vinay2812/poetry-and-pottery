@@ -1,6 +1,5 @@
 "use client";
 
-import { useClerk, useUser } from "@clerk/nextjs";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -10,10 +9,7 @@ import {
   StoreIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
 
-import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,66 +36,44 @@ import { cn } from "@/lib/utils";
 
 import { DashboardNav } from "./dashboard-nav";
 
-const PAGE_TITLES: Record<string, string> = {
-  "/dashboard": "Dashboard",
-  "/dashboard/users": "Users",
-  "/dashboard/products": "Products",
-  "/dashboard/categories": "Categories",
-  "/dashboard/events": "Events",
-  "/dashboard/daily-workshops": "Daily Workshops",
-  "/dashboard/content": "Content",
-  "/dashboard/settings": "Settings",
-};
-
-function getPageTitle(pathname: string): string {
-  // Check for exact match first
-  if (PAGE_TITLES[pathname]) {
-    return PAGE_TITLES[pathname];
-  }
-  // Check for partial match (for nested routes)
-  for (const [path, title] of Object.entries(PAGE_TITLES)) {
-    if (pathname.startsWith(path) && path !== "/dashboard") {
-      return title;
-    }
-  }
-  return "Dashboard";
+export interface DashboardShellViewModel {
+  pageTitle: string;
+  isSidebarCollapsed: boolean;
+  isMobileNavOpen: boolean;
+  userImageUrl: string | null;
+  userInitial: string;
+  userDisplayName: string;
+  userEmail: string;
 }
 
 interface DashboardShellProps {
+  viewModel: DashboardShellViewModel;
   children: React.ReactNode;
+  onToggleSidebar: () => void;
+  onSignOut: () => void;
+  onGoHome: () => void;
+  onMobileNavToggle: (open: boolean) => void;
+  onMobileNavClose: () => void;
 }
 
-const SIDEBAR_COLLAPSED_KEY = "dashboard-sidebar-collapsed";
-
-export function DashboardShell({ children }: DashboardShellProps) {
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(
-    localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true",
-  );
-  const { user } = useUser();
-  const { signOut } = useClerk();
-  const router = useRouter();
-  const { startNavigation } = useRouteAnimation();
-  const pathname = usePathname();
-  const pageTitle = getPageTitle(pathname);
-
-  const toggleCollapsed = useCallback(() => {
-    setIsCollapsed((prev) => {
-      const newValue = !prev;
-      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(newValue));
-      return newValue;
-    });
-  }, []);
-
-  const handleSignOut = useCallback(() => {
-    signOut({ redirectUrl: "/" });
-  }, [signOut]);
-
-  const handleGoHome = useCallback(() => {
-    startNavigation(() => {
-      router.push("/");
-    });
-  }, [router, startNavigation]);
+export function DashboardShell({
+  viewModel,
+  children,
+  onToggleSidebar,
+  onSignOut,
+  onGoHome,
+  onMobileNavToggle,
+  onMobileNavClose,
+}: DashboardShellProps) {
+  const {
+    pageTitle,
+    isSidebarCollapsed,
+    isMobileNavOpen,
+    userImageUrl,
+    userInitial,
+    userDisplayName,
+    userEmail,
+  } = viewModel;
 
   return (
     <div className="min-h-screen">
@@ -107,7 +81,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-40 hidden border-r border-white/20 bg-white/70 backdrop-blur-xl transition-all duration-300 lg:block dark:border-white/10 dark:bg-black/70",
-          isCollapsed ? "w-[72px]" : "w-64",
+          isSidebarCollapsed ? "w-[72px]" : "w-64",
         )}
       >
         <div className="flex h-full flex-col">
@@ -115,20 +89,20 @@ export function DashboardShell({ children }: DashboardShellProps) {
           <div
             className={cn(
               "flex h-16 items-center border-b border-white/20 dark:border-white/10",
-              isCollapsed ? "justify-center px-2" : "px-6",
+              isSidebarCollapsed ? "justify-center px-2" : "px-6",
             )}
           >
             <Link
               href="/dashboard"
               className={cn(
                 "group flex items-center",
-                isCollapsed ? "justify-center" : "gap-3",
+                isSidebarCollapsed ? "justify-center" : "gap-3",
               )}
             >
               <div className="bg-primary shadow-primary/20 flex size-10 shrink-0 items-center justify-center rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
                 <span className="text-lg font-bold text-white">P</span>
               </div>
-              {!isCollapsed && (
+              {!isSidebarCollapsed && (
                 <span className="text-foreground text-xl font-bold tracking-tight">
                   Admin
                 </span>
@@ -140,20 +114,20 @@ export function DashboardShell({ children }: DashboardShellProps) {
           <div
             className={cn(
               "flex-1 overflow-y-auto",
-              isCollapsed ? "p-2" : "p-4",
+              isSidebarCollapsed ? "p-2" : "p-4",
             )}
           >
-            <DashboardNav isCollapsed={isCollapsed} />
+            <DashboardNav isCollapsed={isSidebarCollapsed} />
           </div>
 
           {/* Footer */}
           <div
             className={cn(
               "border-t border-white/20 dark:border-white/10",
-              isCollapsed ? "p-2" : "p-4",
+              isSidebarCollapsed ? "p-2" : "p-4",
             )}
           >
-            {isCollapsed ? (
+            {isSidebarCollapsed ? (
               <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
                   <Link
@@ -179,11 +153,13 @@ export function DashboardShell({ children }: DashboardShellProps) {
           {/* Collapse Toggle Button */}
           <div className="border-t border-white/20 p-2 dark:border-white/10">
             <button
-              onClick={toggleCollapsed}
+              onClick={onToggleSidebar}
               className="text-muted-foreground hover:text-foreground flex w-full items-center justify-center rounded-lg p-2.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
-              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label={
+                isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+              }
             >
-              {isCollapsed ? (
+              {isSidebarCollapsed ? (
                 <ChevronRightIcon className="size-5" />
               ) : (
                 <ChevronLeftIcon className="size-5" />
@@ -197,7 +173,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
       <div
         className={cn(
           "flex min-h-screen flex-col transition-all duration-300",
-          isCollapsed ? "lg:ml-[72px]" : "lg:ml-64",
+          isSidebarCollapsed ? "lg:ml-[72px]" : "lg:ml-64",
         )}
       >
         {/* Top Header - Glassmorphism style */}
@@ -206,7 +182,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
 
           {/* Left side - Mobile Menu + Page Title */}
           <div className="relative z-10 flex items-center gap-4">
-            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+            <Sheet open={isMobileNavOpen} onOpenChange={onMobileNavToggle}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="lg:hidden">
                   <MenuIcon className="size-5" />
@@ -223,12 +199,12 @@ export function DashboardShell({ children }: DashboardShellProps) {
                   </SheetTitle>
                 </SheetHeader>
                 <div className="p-4">
-                  <DashboardNav onItemClick={() => setMobileNavOpen(false)} />
+                  <DashboardNav onItemClick={onMobileNavClose} />
                 </div>
                 <div className="mt-auto border-t border-white/20 p-4 dark:border-white/10">
                   <Link
                     href="/"
-                    onClick={() => setMobileNavOpen(false)}
+                    onClick={onMobileNavClose}
                     className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   >
                     <StoreIcon className="size-5" />
@@ -249,11 +225,11 @@ export function DashboardShell({ children }: DashboardShellProps) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="focus-visible:ring-primary/30 relative flex size-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105 hover:bg-neutral-100 focus-visible:ring-2 focus-visible:outline-none dark:hover:bg-neutral-800">
-                  {user?.imageUrl ? (
+                  {userImageUrl ? (
                     <div className="relative size-8">
                       <OptimizedImage
-                        src={user.imageUrl}
-                        alt={user.fullName || "Profile"}
+                        src={userImageUrl}
+                        alt={userDisplayName || "Profile"}
                         fill
                         className="rounded-full object-cover"
                       />
@@ -261,9 +237,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
                   ) : (
                     <div className="bg-primary/10 text-primary flex size-8 items-center justify-center rounded-full">
                       <span className="text-sm font-semibold">
-                        {user?.firstName?.[0] ||
-                          user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() ||
-                          "U"}
+                        {userInitial}
                       </span>
                     </div>
                   )}
@@ -272,23 +246,20 @@ export function DashboardShell({ children }: DashboardShellProps) {
               <DropdownMenuContent align="end" className="w-48">
                 <div className="px-2 py-1.5">
                   <p className="truncate text-sm font-medium">
-                    {user?.fullName || user?.emailAddresses?.[0]?.emailAddress}
+                    {userDisplayName}
                   </p>
                   <p className="text-muted-foreground truncate text-xs">
-                    {user?.emailAddresses?.[0]?.emailAddress}
+                    {userEmail}
                   </p>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={handleGoHome}
-                  className="cursor-pointer"
-                >
+                <DropdownMenuItem onClick={onGoHome} className="cursor-pointer">
                   <HomeIcon className="mr-2 size-4" />
                   Go to Home
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={handleSignOut}
+                  onClick={onSignOut}
                   className="cursor-pointer text-red-600 focus:text-red-600"
                 >
                   <LogOutIcon className="mr-2 size-4" />

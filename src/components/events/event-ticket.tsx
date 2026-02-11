@@ -10,6 +10,8 @@ import {
 
 import type { EventRegistration } from "@/graphql/generated/types";
 
+import { TicketDetailRow, TicketDetailRowEmoji } from "./ticket-detail-row";
+
 interface EventTicketProps {
   registration: EventRegistration;
   onPrint?: () => void;
@@ -19,13 +21,7 @@ interface EventTicketProps {
 const colors = {
   primary: "#4f6f52",
   primaryLight: "#e8ece8",
-  primaryLighter: "#f4f6f4",
   muted: "#6b7280",
-  border: "#e5e7eb",
-  background: "#ffffff",
-  green: "#16a34a",
-  gray900: "#111827",
-  gray700: "#374151",
   gray600: "#4b5563",
   gray50: "#f9fafb",
 };
@@ -120,98 +116,41 @@ export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
 
           {/* Event Details */}
           <div className="space-y-4 p-6">
-            {/* Date */}
-            <div className="flex items-start gap-4">
-              <div
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-                style={{ backgroundColor: colors.primaryLighter }}
-              >
-                <Calendar
-                  className="h-4 w-4"
-                  style={{ color: colors.primary }}
-                />
-              </div>
-              <div>
-                <p className="text-xs text-neutral-500">Date</p>
-                <p className="text-sm font-medium text-neutral-700">
-                  {formattedDate}
-                </p>
-              </div>
-            </div>
+            <TicketDetailRow
+              icon={Calendar}
+              label="Date"
+              value={formattedDate}
+            />
 
-            {/* Time */}
-            <div className="flex items-start gap-4">
-              <div
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-                style={{ backgroundColor: colors.primaryLighter }}
-              >
-                <Clock className="h-4 w-4" style={{ color: colors.primary }} />
-              </div>
-              <div>
-                <p className="text-xs text-neutral-500">Time</p>
-                <p className="text-sm font-medium text-neutral-700">
-                  {formattedTime} ({duration})
-                </p>
-              </div>
-            </div>
+            <TicketDetailRow
+              icon={Clock}
+              label="Time"
+              value={`${formattedTime} (${duration})`}
+            />
 
-            {/* Location */}
             {event.location && (
-              <div className="flex items-start gap-4">
-                <div
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-                  style={{ backgroundColor: colors.primaryLighter }}
-                >
-                  <MapPin
-                    className="h-4 w-4"
-                    style={{ color: colors.primary }}
-                  />
-                </div>
-                <div>
-                  <p className="text-xs text-neutral-500">Location</p>
-                  <p className="text-sm font-medium text-neutral-700">
-                    {event.location}
-                  </p>
-                </div>
-              </div>
+              <TicketDetailRow
+                icon={MapPin}
+                label="Location"
+                value={event.location}
+              />
             )}
 
-            {/* Instructor */}
             {event.instructor && (
-              <div className="flex items-start gap-4">
-                <div
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-                  style={{ backgroundColor: colors.primaryLighter }}
-                >
-                  <User className="h-4 w-4" style={{ color: colors.primary }} />
-                </div>
-                <div>
-                  <p className="text-xs text-neutral-500">Instructor</p>
-                  <p className="text-sm font-medium text-neutral-700">
-                    {event.instructor}
-                  </p>
-                </div>
-              </div>
+              <TicketDetailRow
+                icon={User}
+                label="Instructor"
+                value={event.instructor}
+              />
             )}
 
-            {/* Skill Level */}
             {event.level && (
-              <div className="flex items-start gap-4">
-                <div
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-                  style={{ backgroundColor: colors.primaryLighter }}
-                >
-                  <span className="text-sm" style={{ color: colors.primary }}>
-                    🏺
-                  </span>
-                </div>
-                <div>
-                  <p className="text-xs text-neutral-500">Skill Level</p>
-                  <p className="text-sm font-medium text-neutral-700 capitalize">
-                    {event.level.toLowerCase().replace("_", " ")}
-                  </p>
-                </div>
-              </div>
+              <TicketDetailRowEmoji
+                emoji={"\u{1F3FA}"}
+                label="Skill Level"
+                value={event.level.toLowerCase().replace("_", " ")}
+                capitalize
+              />
             )}
           </div>
 
@@ -264,7 +203,7 @@ export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
           <div
             className="px-6 py-4 text-center text-xs"
             style={{
-              backgroundColor: colors.primaryLighter,
+              backgroundColor: "#f4f6f4",
               color: colors.muted,
             }}
           >

@@ -5,7 +5,6 @@ import {
   Droplets,
   Flame,
   Hand,
-  Lightbulb,
   type LucideIcon,
   Sparkles,
   ThermometerSun,
@@ -15,6 +14,10 @@ import {
 import { ListingPageHeader } from "@/components/shared";
 
 import type { CarePageContent } from "@/graphql/generated/types";
+
+import { CareCard } from "./care-card";
+import { ContactCtaBanner } from "./contact-cta-banner";
+import { ProTipsCallout } from "./pro-tips-callout";
 
 interface CarePageClientProps {
   content: CarePageContent;
@@ -99,51 +102,18 @@ export function CarePageClient({ content }: CarePageClientProps) {
           {/* Care Cards Grid */}
           <div className="mx-auto max-w-[900px]">
             <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {CARE_CARDS.map((card) => {
-                const Icon = card.icon;
-                return (
-                  <div
-                    key={card.title}
-                    className="shadow-soft rounded-xl bg-white p-5 text-center"
-                  >
-                    <div className="bg-primary-lighter text-primary mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="font-display mb-2 font-semibold text-neutral-900">
-                      {card.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {card.description}
-                    </p>
-                  </div>
-                );
-              })}
+              {CARE_CARDS.map((card) => (
+                <CareCard
+                  key={card.title}
+                  icon={card.icon}
+                  title={card.title}
+                  description={card.description}
+                />
+              ))}
             </div>
 
             {/* Pro Tips Callout */}
-            <div className="mx-auto max-w-3xl">
-              <div className="bg-cream rounded-2xl p-6 lg:p-8">
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
-                    <Lightbulb className="h-5 w-5" />
-                  </div>
-                  <h3 className="font-display text-lg font-semibold text-neutral-900">
-                    Pro Tips
-                  </h3>
-                </div>
-                <ul className="space-y-3">
-                  {PRO_TIPS.map((tip, index) => (
-                    <li
-                      key={index}
-                      className="text-muted-foreground flex items-start gap-3 text-sm"
-                    >
-                      <span className="bg-primary mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
-                      {tip}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <ProTipsCallout tips={PRO_TIPS} />
 
             {/* Additional Sections from Content */}
             {content.glazeTypes && content.glazeTypes.length > 0 && (
@@ -184,20 +154,10 @@ export function CarePageClient({ content }: CarePageClientProps) {
 
             {/* Contact CTA */}
             <div className="mx-auto mt-12 max-w-3xl">
-              <div className="bg-primary-lighter rounded-2xl p-6 text-center lg:p-8">
-                <h3 className="font-display mb-2 text-lg font-semibold text-neutral-900">
-                  Questions about pottery care?
-                </h3>
-                <p className="text-muted-foreground mb-4 text-sm">
-                  Our team is happy to help with specific care questions.
-                </p>
-                <a
-                  href="/contact"
-                  className="bg-primary hover:bg-primary-hover inline-flex rounded-lg px-6 py-2.5 text-sm font-medium text-white transition-colors"
-                >
-                  Contact Us
-                </a>
-              </div>
+              <ContactCtaBanner
+                title="Questions about pottery care?"
+                description="Our team is happy to help with specific care questions."
+              />
             </div>
           </div>
         </div>
