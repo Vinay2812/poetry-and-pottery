@@ -81,6 +81,10 @@ export default function RootLayout({
         href="https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg"
         className="h-6 w-6 rounded-full"
       />
+      <meta
+        name="google-site-verification"
+        content="8pRueMyFU6VMEHTAFq1O83ga6iEQksb-u5wRyb-BYwg"
+      />
       <body
         className={`${outfit.variable} ${plusJakartaSans.variable} font-sans antialiased`}
       >
