@@ -1,19 +1,10 @@
 "use server";
 
-import { ENVIRONMENT, allowLocalAdminBypass } from "@/consts/env";
+import { allowLocalAdminBypass } from "@/consts/env";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { UserRole } from "@/graphql/generated/types";
-
-function hasValidEnvironmentClaim(environment: unknown): boolean {
-  if (environment === ENVIRONMENT) {
-    return true;
-  }
-
-  // Relax environment matching during local/non-production runs.
-  return process.env.NODE_ENV !== "production";
-}
 
 export async function isAdmin(): Promise<boolean> {
   if (allowLocalAdminBypass()) {
@@ -26,12 +17,6 @@ export async function isAdmin(): Promise<boolean> {
   }
 
   const role = sessionClaims?.role;
-  const environment = sessionClaims?.environment;
-
-  // Ensure we're in the correct environment and user has admin role
-  if (!hasValidEnvironmentClaim(environment)) {
-    return false;
-  }
 
   return role === UserRole.Admin;
 }
@@ -44,10 +29,9 @@ export async function getAuthenticatedDbUser() {
   }
 
   const dbUserId = sessionClaims?.dbUserId;
-  const environment = sessionClaims?.environment;
   const role = sessionClaims?.role;
 
-  if (!dbUserId || !hasValidEnvironmentClaim(environment)) {
+  if (!dbUserId) {
     return null;
   }
 
@@ -95,16 +79,6 @@ export async function getAdminStatus() {
   }
 
   const role = sessionClaims?.role;
-  const environment = sessionClaims?.environment;
-
-  // Environment mismatch means we need to re-sync
-  if (!hasValidEnvironmentClaim(environment)) {
-    return {
-      isAuthenticated: true,
-      isAdmin: false,
-      role: null,
-    };
-  }
 
   return {
     isAuthenticated: true,

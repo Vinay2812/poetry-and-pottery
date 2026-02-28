@@ -5,7 +5,6 @@ export const REPLICA_URL = process.env.REPLICA_URL;
 export const OPTIMIZE_API_KEY = process.env.OPTIMIZE_API_KEY;
 
 export const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
-export const ENVIRONMENT = process.env.NODE_ENV;
 
 // Business email
 export const BUSINESS_EMAIL = process.env.BUSINESS_EMAIL;

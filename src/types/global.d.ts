@@ -3,7 +3,6 @@ import type { UserRole } from "@/graphql/generated/types";
 declare global {
   interface CustomJwtSessionClaims {
     dbUserId?: number;
-    environment?: "development" | "production" | "staging";
     role?: UserRole;
   }
 

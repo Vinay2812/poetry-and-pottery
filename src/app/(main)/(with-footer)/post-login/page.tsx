@@ -1,4 +1,3 @@
-import { ENVIRONMENT } from "@/consts/env";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
@@ -22,12 +21,6 @@ export default async function PostLoginPage({
   }
 
   const role = sessionClaims?.role;
-  const environment = sessionClaims?.environment;
-
-  // Environment mismatch → redirect to intended URL or home
-  if (environment !== ENVIRONMENT) {
-    redirect(redirect_url ? decodeURIComponent(redirect_url) : "/");
-  }
 
   // Non-admin users → redirect immediately to intended URL or home
   if (role !== UserRole.Admin) {
