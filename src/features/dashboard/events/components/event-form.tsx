@@ -3,7 +3,7 @@
 import { R2ImageUploaderContainer } from "@/features/uploads";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, TrashIcon } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useFormStatus } from "react-dom";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -81,15 +81,8 @@ export function EventForm({
   onSubmit,
   onCancel,
 }: EventFormProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(eventFormSchema) as never,
-    defaultValues: {
+  const formDefaults = useMemo(
+    () => ({
       eventType: viewModel.eventType,
       title: viewModel.title,
       slug: viewModel.slug,
@@ -110,8 +103,25 @@ export function EventForm({
       level: viewModel.level ?? "",
       performers: viewModel.performers.map((p) => ({ value: p })),
       lineupNotes: viewModel.lineupNotes ?? "",
-    },
+    }),
+    [viewModel],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(eventFormSchema) as never,
+    defaultValues: formDefaults,
   });
+
+  useEffect(() => {
+    reset(formDefaults);
+  }, [formDefaults, reset]);
 
   const {
     fields: includesFields,

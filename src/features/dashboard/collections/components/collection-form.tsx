@@ -2,7 +2,7 @@
 
 import { R2ImageUploaderContainer } from "@/features/uploads";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -41,23 +41,33 @@ export function CollectionForm({
   onSubmit,
   onCancel,
 }: CollectionFormProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(collectionFormSchema) as never,
-    defaultValues: {
+  const formDefaults = useMemo(
+    () => ({
       name: viewModel.name,
       slug: viewModel.slug,
       description: viewModel.description,
       imageUrl: viewModel.imageUrl,
       startsAt: viewModel.startsAt,
       endsAt: viewModel.endsAt,
-    },
+    }),
+    [viewModel],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(collectionFormSchema) as never,
+    defaultValues: formDefaults,
   });
+
+  useEffect(() => {
+    reset(formDefaults);
+  }, [formDefaults, reset]);
 
   const name = useWatch({ control, name: "name" });
   const imageUrl = useWatch({ control, name: "imageUrl" });

@@ -19,7 +19,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GripVertical, PlusIcon, TrashIcon } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useFormStatus } from "react-dom";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -135,15 +135,8 @@ export function ProductForm({
   onSubmit,
   onCancel,
 }: ProductFormProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(productFormSchema) as never,
-    defaultValues: {
+  const formDefaults = useMemo(
+    () => ({
       name: viewModel.name,
       slug: viewModel.slug,
       description: viewModel.description,
@@ -157,8 +150,25 @@ export function ProductForm({
       imageUrls: viewModel.imageUrls,
       categories: viewModel.categories,
       collectionId: viewModel.collectionId,
-    },
+    }),
+    [viewModel],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(productFormSchema) as never,
+    defaultValues: formDefaults,
   });
+
+  useEffect(() => {
+    reset(formDefaults);
+  }, [formDefaults, reset]);
 
   const { fields, append, remove, move } = useFieldArray({
     control,

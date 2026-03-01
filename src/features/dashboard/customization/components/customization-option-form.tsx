@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -33,15 +33,8 @@ export function CustomizationOptionForm({
   onSubmit,
   onCancel,
 }: CustomizationOptionFormProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<CustomizationOptionFormValues>({
-    resolver: zodResolver(customizationOptionFormSchema) as never,
-    defaultValues: {
+  const formDefaults = useMemo(
+    () => ({
       category: viewModel.category,
       type: viewModel.type,
       name: viewModel.name,
@@ -49,8 +42,25 @@ export function CustomizationOptionForm({
       priceModifier: viewModel.priceModifier,
       sortOrder: viewModel.sortOrder,
       isActive: viewModel.isActive,
-    },
+    }),
+    [viewModel],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<CustomizationOptionFormValues>({
+    resolver: zodResolver(customizationOptionFormSchema) as never,
+    defaultValues: formDefaults,
   });
+
+  useEffect(() => {
+    reset(formDefaults);
+  }, [formDefaults, reset]);
 
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
 

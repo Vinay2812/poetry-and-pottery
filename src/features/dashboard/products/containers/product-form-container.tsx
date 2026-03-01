@@ -41,7 +41,7 @@ export function ProductFormContainer({
               input: {
                 name: data.name,
                 slug: data.slug,
-                description: data.description || undefined,
+                description: data.description,
                 instructions: data.instructions,
                 price: data.price,
                 total_quantity: data.totalQuantity,
@@ -74,7 +74,7 @@ export function ProductFormContainer({
             input: {
               name: data.name,
               slug: data.slug,
-              description: data.description || undefined,
+              description: data.description,
               instructions: data.instructions,
               price: data.price,
               total_quantity: data.totalQuantity,

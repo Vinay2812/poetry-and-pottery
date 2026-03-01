@@ -44,8 +44,8 @@ export function CollectionFormContainer({
               input: {
                 name: data.name,
                 slug: data.slug,
-                description: data.description || undefined,
-                image_url: data.imageUrl || undefined,
+                description: data.description,
+                image_url: data.imageUrl,
                 starts_at: data.startsAt?.toISOString() ?? null,
                 ends_at: data.endsAt?.toISOString() ?? null,
               },
@@ -69,8 +69,8 @@ export function CollectionFormContainer({
             input: {
               name: data.name,
               slug: data.slug,
-              description: data.description || undefined,
-              image_url: data.imageUrl || undefined,
+              description: data.description,
+              image_url: data.imageUrl,
               starts_at: data.startsAt?.toISOString(),
               ends_at: data.endsAt?.toISOString(),
             },

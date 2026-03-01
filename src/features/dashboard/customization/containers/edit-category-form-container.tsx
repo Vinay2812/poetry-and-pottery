@@ -44,7 +44,7 @@ export function EditCategoryFormContainer({
       const input = {
         category: formData.category,
         base_price: formData.basePrice,
-        image_url: formData.imageUrl,
+        image_url: formData.imageUrl ?? null,
         is_active: formData.isActive,
       };
 

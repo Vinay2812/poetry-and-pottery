@@ -4,7 +4,7 @@ import { R2ImageUploaderContainer } from "@/features/uploads";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useCallback } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -32,21 +32,31 @@ export function EditCategoryForm({
   onSubmit,
   onCancel,
 }: EditCategoryFormProps) {
+  const formDefaults = useMemo(
+    () => ({
+      category: viewModel.category,
+      basePrice: viewModel.basePrice,
+      imageUrl: viewModel.imageUrl ?? undefined,
+      isActive: viewModel.isActive,
+    }),
+    [viewModel],
+  );
+
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<EditCategoryFormValues>({
     resolver: zodResolver(editCategoryFormSchema) as never,
-    defaultValues: {
-      category: viewModel.category,
-      basePrice: viewModel.basePrice,
-      imageUrl: viewModel.imageUrl || undefined,
-      isActive: viewModel.isActive,
-    },
+    defaultValues: formDefaults,
   });
+
+  useEffect(() => {
+    reset(formDefaults);
+  }, [formDefaults, reset]);
 
   const categoryValue = useWatch({ control, name: "category" });
   const imageUrl = useWatch({ control, name: "imageUrl" });
