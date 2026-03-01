@@ -194,6 +194,7 @@ export function ProductForm({
   const collectionId = useWatch({ control, name: "collectionId" });
   const colorCode = useWatch({ control, name: "colorCode" });
   const isActive = useWatch({ control, name: "isActive" }) ?? false;
+  const description = useWatch({ control, name: "description" }) ?? "";
 
   // Calculate sold and available quantities
   const soldQuantity = viewModel.soldQuantity ?? 0;
@@ -210,7 +211,6 @@ export function ProductForm({
     async (data: FormValues) => {
       await onSubmit({
         ...data,
-        description: data.description || "",
         instructions: data.instructions.map((i) => i.value).filter(Boolean),
         availableQuantity, // Pass the calculated available quantity
         collectionId: data.collectionId,
@@ -273,7 +273,8 @@ export function ProductForm({
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
-              {...register("description")}
+              value={description}
+              onChange={(e) => setValue("description", e.target.value)}
               placeholder="Product description..."
               rows={4}
             />
