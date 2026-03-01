@@ -9,9 +9,7 @@ import { useAdminUpdateDailyWorkshopRegistrationStatusMutation } from "@/graphql
 import { DailyWorkshopRegistrationStatus } from "@/graphql/generated/types";
 
 import { DailyWorkshopRegistrationsBoard } from "../components/daily-workshop-registrations-board";
-import type {
-  DailyWorkshopRegistrationsBoardContainerProps,
-} from "../types";
+import type { DailyWorkshopRegistrationsBoardContainerProps } from "../types";
 
 const DAILY_WORKSHOP_COLUMNS: {
   id: DailyWorkshopRegistrationStatus;

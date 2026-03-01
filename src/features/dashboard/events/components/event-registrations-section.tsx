@@ -25,17 +25,17 @@ export function EventRegistrationsSection({
           Total registrations: <span className="font-medium">{total}</span>
         </p>
         <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {Object.entries(statusCounts).map(([status, count]) => (
-          <div
-            key={status}
-            className="rounded-xl border border-neutral-200 bg-white p-4"
-          >
-            <div className="text-2xl font-bold text-neutral-900">{count}</div>
-            <div className="text-sm text-neutral-500">
-              {status.toLowerCase().replace("_", " ")}
+          {Object.entries(statusCounts).map(([status, count]) => (
+            <div
+              key={status}
+              className="rounded-xl border border-neutral-200 bg-white p-4"
+            >
+              <div className="text-2xl font-bold text-neutral-900">{count}</div>
+              <div className="text-sm text-neutral-500">
+                {status.toLowerCase().replace("_", " ")}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         </div>
       </div>
 

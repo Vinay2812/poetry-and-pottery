@@ -2,9 +2,7 @@
 
 import { useCallback } from "react";
 
-import type {
-  DailyWorkshopRegistration,
-} from "@/graphql/generated/graphql";
+import type { DailyWorkshopRegistration } from "@/graphql/generated/graphql";
 import {
   useDailyWorkshopAvailabilityQuery,
   useDailyWorkshopPublicConfigQuery,

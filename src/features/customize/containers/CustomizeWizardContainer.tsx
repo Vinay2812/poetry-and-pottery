@@ -1,9 +1,7 @@
 "use client";
 
 import type { CustomDataInput } from "@/data/cart/gateway/client";
-import {
-  getCustomizationOptionsByCategory,
-} from "@/data/customization/gateway/server";
+import { getCustomizationOptionsByCategory } from "@/data/customization/gateway/server";
 import { useCart } from "@/hooks/use-cart";
 import { useUIStore } from "@/store";
 import { useRouter } from "next/navigation";
