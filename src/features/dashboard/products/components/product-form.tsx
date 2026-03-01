@@ -138,7 +138,7 @@ export function ProductForm({
     () => ({
       name: viewModel.name,
       slug: viewModel.slug,
-      description: viewModel.description,
+      description: viewModel.description || "",
       instructions: viewModel.instructions.map((i) => ({ value: i })),
       price: viewModel.price,
       totalQuantity: viewModel.totalQuantity,
@@ -210,6 +210,7 @@ export function ProductForm({
     async (data: FormValues) => {
       await onSubmit({
         ...data,
+        description: data.description || "",
         instructions: data.instructions.map((i) => i.value).filter(Boolean),
         availableQuantity, // Pass the calculated available quantity
         collectionId: data.collectionId,
