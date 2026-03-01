@@ -2,9 +2,13 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
+const Textarea = React.forwardRef<
+  HTMLTextAreaElement,
+  React.ComponentProps<"textarea">
+>(({ className, ...props }, ref) => {
   return (
     <textarea
+      ref={ref}
       data-slot="textarea"
       className={cn(
         "placeholder:text-muted-foreground flex min-h-[120px] w-full resize-y rounded-lg border border-neutral-200 bg-white px-3.5 py-3 text-sm transition-colors duration-150 outline-none",
@@ -17,6 +21,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
       {...props}
     />
   );
-}
+});
+Textarea.displayName = "Textarea";
 
 export { Textarea };
