@@ -20,7 +20,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GripVertical, PlusIcon, TrashIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo } from "react";
-import { useFormStatus } from "react-dom";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -160,7 +159,7 @@ export function ProductForm({
     control,
     setValue,
     reset,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(productFormSchema) as never,
     defaultValues: formDefaults,
@@ -219,10 +218,6 @@ export function ProductForm({
     [availableQuantity, onSubmit],
   );
 
-  const handleFormAction = useCallback(async () => {
-    await handleSubmit(handleFormSubmit)();
-  }, [handleSubmit, handleFormSubmit]);
-
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -242,7 +237,7 @@ export function ProductForm({
   );
 
   return (
-    <form action={handleFormAction} className="space-y-8">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8">
       {/* Basic Information */}
       <div className="rounded-xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-neutral-900">
@@ -514,26 +509,33 @@ export function ProductForm({
       </div>
 
       {/* Form Actions */}
-      <ProductFormActions isEditing={isEditing} onCancel={onCancel} />
+      <ProductFormActions
+        isEditing={isEditing}
+        isSubmitting={isSubmitting}
+        onCancel={onCancel}
+      />
     </form>
   );
 }
 
 interface ProductFormActionsProps {
   isEditing: boolean;
+  isSubmitting: boolean;
   onCancel: () => void;
 }
 
-function ProductFormActions({ isEditing, onCancel }: ProductFormActionsProps) {
-  const { pending } = useFormStatus();
-
+function ProductFormActions({
+  isEditing,
+  isSubmitting,
+  onCancel,
+}: ProductFormActionsProps) {
   return (
     <div className="flex items-center justify-end gap-3">
       <Button type="button" variant="outline" onClick={onCancel}>
         Cancel
       </Button>
-      <Button type="submit" disabled={pending}>
-        {pending
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting
           ? "Saving..."
           : isEditing
             ? "Update Product"
