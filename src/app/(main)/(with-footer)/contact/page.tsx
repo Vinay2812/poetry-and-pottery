@@ -7,6 +7,16 @@ import { absoluteUrl } from "@/lib/seo";
 import { ContactFormPanel } from "./contact-form-panel";
 import { ContactInfoPanel } from "./contact-info-panel";
 
+/**
+ * Route: /contact
+ * Page does: Contact page with business details and a direct inquiry form.
+ * Key UI operations:
+ * - Submit a message through Name, Email, Phone (optional), Subject, and Message fields.
+ * - Use direct contact channels (phone, email, Instagram, WhatsApp) from the info panel.
+ * UI info needed for operations:
+ * - Validated form fields and submission handler for contact requests.
+ * - Business contact metadata rendered in the info panel and structured data snippet.
+ */
 export default function ContactPage() {
   return (
     <>

@@ -1,13 +1,12 @@
 "use client";
 
-import { updateOrderStatus } from "@/data/admin/orders/gateway/server";
 import { useKanbanOptimisticBoard } from "@/hooks";
 import { useCallback } from "react";
 
 import { getOrderStatusColor } from "@/lib/status-utils";
 
+import { useAdminUpdateOrderStatusMutation } from "@/graphql/generated/graphql";
 import { OrderStatus } from "@/graphql/generated/types";
-import type { AdminUserOrder } from "@/graphql/generated/types";
 
 import { OrdersBoard } from "../components/orders-board";
 import type { OrdersBoardContainerProps } from "../types";
@@ -22,11 +21,21 @@ const ORDER_COLUMNS: { id: OrderStatus; title: string }[] = [
 ];
 
 export function OrdersBoardContainer({ orders }: OrdersBoardContainerProps) {
+  const [updateOrderStatusMutation] = useAdminUpdateOrderStatusMutation();
+
   const handleUpdateStatus = useCallback(
     async (orderId: string, status: OrderStatus) => {
-      return updateOrderStatus(orderId, status);
+      try {
+        const { data } = await updateOrderStatusMutation({
+          variables: { orderId, status },
+        });
+        return data?.adminUpdateOrderStatus ?? { success: false, error: null };
+      } catch (error) {
+        console.error("Failed to update order status:", error);
+        return { success: false, error: "Failed to update order status" };
+      }
     },
-    [],
+    [updateOrderStatusMutation],
   );
 
   const {

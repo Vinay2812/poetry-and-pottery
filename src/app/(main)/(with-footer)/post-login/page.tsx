@@ -9,6 +9,16 @@ interface PostLoginPageProps {
   searchParams: Promise<{ redirect_url?: string }>;
 }
 
+/**
+ * Route: /post-login
+ * Page does: Post-auth router page that resolves where a signed-in user should be sent next.
+ * Key UI operations:
+ * - Redirect non-admin users to the requested destination or home.
+ * - Show the admin flow chooser when the signed-in user has admin role.
+ * UI info needed for operations:
+ * - Auth session claims (`isAuthenticated`, `sessionClaims.role`) to authorize route behavior.
+ * - Optional `redirect_url` query param to preserve the user's intended destination.
+ */
 export default async function PostLoginPage({
   searchParams,
 }: PostLoginPageProps) {

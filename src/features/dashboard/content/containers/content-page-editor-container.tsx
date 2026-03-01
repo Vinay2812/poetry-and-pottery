@@ -1,12 +1,12 @@
 "use client";
 
-import { updateContentPage } from "@/data/admin/content/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
 
+import { useAdminUpdateContentPageMutation } from "@/graphql/generated/graphql";
 import type {
   AboutPageContent,
   CarePageContent,
@@ -29,6 +29,7 @@ export function ContentPageEditorContainer({
 }: ContentPageEditorContainerProps) {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
+  const [updateContentPageMutation] = useAdminUpdateContentPageMutation();
 
   const viewModel = useMemo(
     () => buildContentPageEditorViewModel(slug, title, content),
@@ -45,15 +46,30 @@ export function ContentPageEditorContainer({
         | PrivacyPageContent
         | TermsPageContent,
     ) => {
-      const result = await updateContentPage(slug, newContent);
-      if (result.success) {
-        toast.success("Content updated successfully");
-        router.refresh();
-      } else {
-        toast.error(result.error || "Failed to update content");
+      try {
+        const { data } = await updateContentPageMutation({
+          variables: {
+            slug,
+            input: {
+              content: newContent,
+            },
+          },
+        });
+        const result = data?.adminUpdateContentPage;
+
+        if (result?.success) {
+          toast.success("Content updated successfully");
+          router.refresh();
+        } else {
+          toast.error(result?.error || "Failed to update content");
+        }
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : "Failed to update content",
+        );
       }
     },
-    [slug, router],
+    [router, slug, updateContentPageMutation],
   );
 
   const handleCancel = useCallback(() => {

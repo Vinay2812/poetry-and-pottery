@@ -8,6 +8,16 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+/**
+ * Route: /dashboard/events/new
+ * Page does: Admin create page for publishing a new workshop/class event.
+ * Key UI operations:
+ * - Fill event form details (content, schedule, seats, pricing, status/level) and save.
+ * - Navigate back to events index after creation from the dashboard flow.
+ * UI info needed for operations:
+ * - Status and level option sets used by event form selectors.
+ * - Event creation payload schema including scheduling and capacity constraints.
+ */
 export default async function NewEventPage() {
   const [statusOptions, levelOptions] = await Promise.all([
     Promise.resolve(getEventStatusOptions()),

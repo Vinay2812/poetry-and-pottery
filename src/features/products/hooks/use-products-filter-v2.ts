@@ -3,11 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 
-import {
-  CollectionBase,
-  ProductOrderBy,
-  ProductsResponse,
-} from "@/graphql/generated/types";
+import { ProductOrderBy, ProductsResponse } from "@/graphql/generated/types";
 
 export type Filters = {
   categories: string[];

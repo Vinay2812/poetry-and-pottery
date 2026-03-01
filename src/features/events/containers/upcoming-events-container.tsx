@@ -4,10 +4,9 @@ import { DEFAULT_ROOT_MARGIN } from "@/consts/performance";
 import { getUpcomingEvents } from "@/data/events/gateway/server";
 import type { EventBase } from "@/data/events/types";
 import { useEventFilters } from "@/features/events/hooks/use-event-filters";
-import { useQuickReserve } from "@/features/events/hooks/use-quick-reserve";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { EventCard } from "@/components/cards";
@@ -35,10 +34,10 @@ export function UpcomingEventsContainer({
   registeredEventIds = [],
   excludeRegistered = false,
 }: UpcomingEventsContainerProps) {
-  const [registeredIds, setRegisteredIds] = useState(
+  const registeredIds = useMemo(
     () => new Set(registeredEventIds),
+    [registeredEventIds],
   );
-  const { reserveSeat, isLoading } = useQuickReserve();
   const { filters, setSearch, setEventType, setSort, getQueryString } =
     useEventFilters();
 

@@ -56,6 +56,16 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Route: /
+ * Page does: Landing page for brand storytelling, featured shopping sections, and top-level navigation.
+ * Key UI operations:
+ * - Navigate to Shop, About, category collections, and workshop booking entry points.
+ * - Browse featured products and trigger quick purchase actions directly from homepage cards.
+ * UI info needed for operations:
+ * - Homepage content blocks (hero media, categories, collections, featured products, workshop promos, testimonials).
+ * - Linked product/event identifiers and CTA targets used by cards and section buttons.
+ */
 export default function Home() {
   return (
     <>

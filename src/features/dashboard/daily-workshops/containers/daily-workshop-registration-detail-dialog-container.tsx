@@ -1,6 +1,5 @@
 "use client";
 
-import { updateUserDailyWorkshopRegistrationDetails } from "@/data/admin/users/gateway/server";
 import {
   useCallback,
   useEffect,
@@ -12,6 +11,8 @@ import {
 import { toast } from "sonner";
 
 import { createDate, formatCreatedAt, formatDateTimeLocal } from "@/lib/date";
+
+import { useAdminUpdateDailyWorkshopRegistrationDetailsMutation } from "@/graphql/generated/graphql";
 
 import { DailyWorkshopRegistrationDetailDialog } from "../components/daily-workshop-registration-detail-dialog";
 import type {
@@ -36,6 +37,8 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
   onRegistrationUpdated,
 }: DailyWorkshopRegistrationDetailDialogContainerProps) {
   const [isPending, startTransition] = useTransition();
+  const [updateRegistrationDetailsMutation] =
+    useAdminUpdateDailyWorkshopRegistrationDetailsMutation();
   const [participants, setParticipants] = useState(1);
   const [pricePerPerson, setPricePerPerson] = useState(0);
   const [piecesPerPerson, setPiecesPerPerson] = useState(0);
@@ -164,19 +167,24 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
 
     startTransition(async () => {
       try {
-        const result = await updateUserDailyWorkshopRegistrationDetails(
-          registration.id,
-          {
-            participants,
-            price_per_person: pricePerPerson,
-            pieces_per_person: piecesPerPerson,
-            discount,
-            slot_start_times: slotStartTimes,
+        const { data } = await updateRegistrationDetailsMutation({
+          variables: {
+            registrationId: registration.id,
+            input: {
+              participants,
+              price_per_person: pricePerPerson,
+              pieces_per_person: piecesPerPerson,
+              discount,
+              slot_start_times: slotStartTimes,
+            },
           },
-        );
+        });
+        const result = data?.adminUpdateDailyWorkshopRegistrationDetails;
 
-        if (!result.success || !result.registration) {
-          toast.error(result.error ?? "Failed to update workshop registration");
+        if (!result?.success || !result.registration) {
+          toast.error(
+            result?.error ?? "Failed to update workshop registration",
+          );
           return;
         }
 
@@ -197,7 +205,7 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
     pricePerPerson,
     registration,
     slots,
-    startTransition,
+    updateRegistrationDetailsMutation,
   ]);
 
   const viewModel: DailyWorkshopRegistrationDetailViewModel | null =

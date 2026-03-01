@@ -69,7 +69,7 @@ export function ImageCarousel({
     return () => {
       api.off("select", onSelect);
     };
-  }, [api]);
+  }, [api, onIndexChange, startIndex]);
 
   const hasMultipleImages = images.length > 1;
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { updateUserRole } from "@/data/admin/users/gateway/server";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 
+import { useAdminUpdateUserRoleMutation } from "@/graphql/generated/graphql";
 import type { UserRole } from "@/graphql/generated/types";
 
 import { UsersTable } from "../components/users-table";
@@ -18,6 +18,7 @@ export function UsersTableContainer({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const [updateUserRoleMutation] = useAdminUpdateUserRoleMutation();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
 
@@ -99,14 +100,21 @@ export function UsersTableContainer({
   const handleRoleChange = useCallback(
     (userId: number, newRole: UserRole) => {
       startTransition(async () => {
-        const result = await updateUserRole(userId, newRole);
-        if (!result.success) {
-          console.error("Failed to update role:", result.error);
+        try {
+          const { data } = await updateUserRoleMutation({
+            variables: { userId, role: newRole },
+          });
+          const result = data?.adminUpdateUserRole;
+          if (!result?.success) {
+            console.error("Failed to update role:", result?.error);
+          }
+        } catch (error) {
+          console.error("Failed to update role:", error);
         }
         router.refresh();
       });
     },
-    [router],
+    [router, updateUserRoleMutation],
   );
 
   return (

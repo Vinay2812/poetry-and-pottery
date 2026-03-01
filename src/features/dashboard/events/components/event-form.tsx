@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { useFormStatus } from "react-dom";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -85,7 +85,6 @@ export function EventForm({
     register,
     handleSubmit,
     control,
-    watch,
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
@@ -141,12 +140,14 @@ export function EventForm({
     name: "performers",
   });
 
-  const title = watch("title");
-  const eventType = watch("eventType");
+  const title = useWatch({ control, name: "title" });
+  const eventType = useWatch({ control, name: "eventType" });
   const isWorkshop = eventType === EventType.PotteryWorkshop;
   const isOpenMic = eventType === EventType.OpenMic;
-  const image = watch("image");
-  const gallery = watch("gallery");
+  const image = useWatch({ control, name: "image" });
+  const gallery = useWatch({ control, name: "gallery" }) ?? [];
+  const status = useWatch({ control, name: "status" });
+  const level = useWatch({ control, name: "level" });
 
   // Auto-generate slug from title when creating new event
   useEffect(() => {
@@ -156,8 +157,8 @@ export function EventForm({
   }, [title, isEditing, setValue]);
 
   const handleFormSubmit = useCallback(
-    (data: FormValues) => {
-      onSubmit({
+    async (data: FormValues) => {
+      await onSubmit({
         eventType: data.eventType as EventType,
         title: data.title,
         slug: data.slug,
@@ -279,7 +280,7 @@ export function EventForm({
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
               <Select
-                value={watch("status")}
+                value={status}
                 onValueChange={(value) => setValue("status", value)}
               >
                 <SelectTrigger>
@@ -300,7 +301,7 @@ export function EventForm({
               <div className="space-y-2">
                 <Label htmlFor="level">Level</Label>
                 <Select
-                  value={watch("level")}
+                  value={level}
                   onValueChange={(value) => setValue("level", value)}
                 >
                   <SelectTrigger>

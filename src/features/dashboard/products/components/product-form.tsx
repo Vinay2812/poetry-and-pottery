@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { GripVertical, PlusIcon, TrashIcon } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { useFormStatus } from "react-dom";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -139,7 +139,6 @@ export function ProductForm({
     register,
     handleSubmit,
     control,
-    watch,
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
@@ -177,11 +176,13 @@ export function ProductForm({
     }),
   );
 
-  const name = watch("name");
-  const imageUrls = watch("imageUrls");
-  const categories = watch("categories");
-  const totalQuantity = watch("totalQuantity");
-  const collectionId = watch("collectionId");
+  const name = useWatch({ control, name: "name" });
+  const imageUrls = useWatch({ control, name: "imageUrls" }) ?? [];
+  const categories = useWatch({ control, name: "categories" }) ?? [];
+  const totalQuantity = useWatch({ control, name: "totalQuantity" });
+  const collectionId = useWatch({ control, name: "collectionId" });
+  const colorCode = useWatch({ control, name: "colorCode" });
+  const isActive = useWatch({ control, name: "isActive" }) ?? false;
 
   // Calculate sold and available quantities
   const soldQuantity = viewModel.soldQuantity ?? 0;
@@ -195,8 +196,8 @@ export function ProductForm({
   }, [name, isEditing, setValue]);
 
   const handleFormSubmit = useCallback(
-    (data: FormValues) => {
-      onSubmit({
+    async (data: FormValues) => {
+      await onSubmit({
         ...data,
         instructions: data.instructions.map((i) => i.value).filter(Boolean),
         availableQuantity, // Pass the calculated available quantity
@@ -302,12 +303,12 @@ export function ProductForm({
               <div className="flex items-center gap-2">
                 <input
                   type="color"
-                  value={watch("colorCode")}
+                  value={colorCode}
                   onChange={(e) => setValue("colorCode", e.target.value)}
                   className="h-10 w-16 cursor-pointer rounded border border-neutral-200"
                 />
                 <Input
-                  value={watch("colorCode")}
+                  value={colorCode}
                   onChange={(e) => setValue("colorCode", e.target.value)}
                   className="flex-1"
                 />
@@ -371,7 +372,7 @@ export function ProductForm({
           <div className="flex items-center space-x-2 md:col-span-3">
             <Checkbox
               id="isActive"
-              checked={watch("isActive")}
+              checked={isActive}
               onCheckedChange={(checked) =>
                 setValue("isActive", checked === true)
               }

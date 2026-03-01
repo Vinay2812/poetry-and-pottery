@@ -1,12 +1,10 @@
 "use client";
 
 import {
-  bulkDeleteEvents,
   getEventLevelOptions,
   getEventStatusOptions,
   getEvents,
 } from "@/data/admin/events/gateway/server";
-import type { AdminBulkDeleteEventsResponse } from "@/data/admin/events/gateway/server";
 import { useSelection } from "@/hooks";
 import {
   useCallback,
@@ -23,6 +21,8 @@ import {
 
 import { formatDateTime } from "@/lib/date";
 
+import { useAdminBulkDeleteEventsMutation } from "@/graphql/generated/graphql";
+import type { AdminBulkDeleteEventsMutation } from "@/graphql/generated/graphql";
 import type {
   AdminLevelOption,
   AdminStatusOption,
@@ -47,6 +47,7 @@ export function BulkDeleteEventsDialogContainer({
   onOpenChange,
 }: BulkDeleteEventsDialogContainerProps) {
   const [isPending, startTransition] = useTransition();
+  const [bulkDeleteEventsMutation] = useAdminBulkDeleteEventsMutation();
   const [isLoading, setIsLoading] = useState(false);
 
   // Filter state
@@ -81,8 +82,9 @@ export function BulkDeleteEventsDialogContainer({
   // Dialog states
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isResultsDialogOpen, setIsResultsDialogOpen] = useState(false);
-  const [bulkDeleteResults, setBulkDeleteResults] =
-    useState<AdminBulkDeleteEventsResponse | null>(null);
+  const [bulkDeleteResults, setBulkDeleteResults] = useState<
+    AdminBulkDeleteEventsMutation["adminBulkDeleteEvents"] | null
+  >(null);
 
   const allEventIds = useMemo(() => events.map((e) => e.id), [events]);
   const isAllSelected =
@@ -194,7 +196,13 @@ export function BulkDeleteEventsDialogContainer({
   const handleConfirmBulkDelete = useCallback(() => {
     setIsConfirmDialogOpen(false);
     startTransition(async () => {
-      const result = await bulkDeleteEvents(selectedIds);
+      const { data: bulkDeleteData } = await bulkDeleteEventsMutation({
+        variables: { input: { ids: selectedIds } },
+      });
+      const result = bulkDeleteData?.adminBulkDeleteEvents;
+      if (!result) {
+        return;
+      }
       setBulkDeleteResults(result);
       setIsResultsDialogOpen(true);
       clearSelection();
@@ -234,6 +242,7 @@ export function BulkDeleteEventsDialogContainer({
     levelFilter,
     page,
     pageSize,
+    bulkDeleteEventsMutation,
   ]);
 
   const resultsWithNames = useMemo(() => {
@@ -249,7 +258,7 @@ export function BulkDeleteEventsDialogContainer({
           id: r.id,
           name: event?.title ?? `Event #${r.id}`,
           action: r.action,
-          error: r.error,
+          error: r.error ?? null,
         };
       }),
     };

@@ -30,6 +30,16 @@ interface CollectionDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
+/**
+ * Route: /dashboard/collections/[id]
+ * Page does: Admin collection editor page with tabs for collection details and product assignments.
+ * Key UI operations:
+ * - Edit collection metadata/status window and manage products linked to that collection.
+ * - Use tabbed panels to switch between details form and collection-products workspace.
+ * UI info needed for operations:
+ * - Route param `id` resolving to a valid collection record and not-found guard on invalid values.
+ * - Collection payload (name, slug, dates, status, product count) plus assigned product data.
+ */
 export default async function CollectionDetailPage({
   params,
 }: CollectionDetailPageProps) {

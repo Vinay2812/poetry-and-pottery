@@ -1,5 +1,4 @@
 import { ClassValue } from "clsx";
-import { CheckCircle2, Clock, Package, Truck } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 

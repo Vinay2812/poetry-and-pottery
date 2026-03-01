@@ -27,6 +27,16 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Route: /events/daily-workshops/[registrationId]/reschedule
+ * Page does: Reschedule page for system-cancelled or partially-cancelled daily workshop bookings.
+ * Key UI operations:
+ * - Pick replacement slots from current availability and submit reschedule selection.
+ * - Show empty-state guidance when no valid recovery slots are currently available.
+ * UI info needed for operations:
+ * - Route param `registrationId` and cancellation metadata proving reschedule eligibility.
+ * - Fresh availability matrix for the registration's config to drive slot selection UI.
+ */
 export default function DailyWorkshopReschedulePage({
   params,
 }: DailyWorkshopReschedulePageProps) {

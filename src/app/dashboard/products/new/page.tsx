@@ -6,6 +6,16 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+/**
+ * Route: /dashboard/products/new
+ * Page does: Admin create page for adding a new catalog product.
+ * Key UI operations:
+ * - Fill product form (content, pricing, stock, media, category/collection mapping) and publish.
+ * - Navigate back to products index after successful creation.
+ * UI info needed for operations:
+ * - Configured category names and collection options used by product form selectors.
+ * - Product creation schema with validation for inventory, pricing, and media inputs.
+ */
 export default async function NewProductPage() {
   const [configuredCategories, collections] = await Promise.all([
     getAllConfiguredCategories(),

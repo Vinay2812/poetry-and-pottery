@@ -38,7 +38,7 @@ import {
 
 import { getEventLevelColor, getEventStatusColor } from "@/lib/status-utils";
 
-import { EventLevel, EventStatus, EventType } from "@/graphql/generated/types";
+import { EventStatus, EventType } from "@/graphql/generated/types";
 import type { AdminStatusOption } from "@/graphql/generated/types";
 
 import type { EventRowViewModel, EventsTableProps } from "../types";

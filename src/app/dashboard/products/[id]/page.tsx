@@ -22,6 +22,16 @@ interface ProductDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
+/**
+ * Route: /dashboard/products/[id]
+ * Page does: Admin product detail page with editing and review-management tabs.
+ * Key UI operations:
+ * - Edit product details/media/inventory and inspect product reviews from a dedicated tab.
+ * - Jump to storefront view of the same product for QA verification.
+ * UI info needed for operations:
+ * - Route param `id` parsed to numeric product ID with not-found handling.
+ * - Product record, category/collection lookup data, and review aggregates for tab content.
+ */
 export default async function ProductDetailPage({
   params,
 }: ProductDetailPageProps) {

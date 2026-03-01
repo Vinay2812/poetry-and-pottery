@@ -1,18 +1,16 @@
 "use client";
 
-import { useMutation, useQuery } from "@apollo/client/react";
 import { useCallback } from "react";
 
-import {
-  REGISTER_FOR_DAILY_WORKSHOP_MUTATION,
-  RESCHEDULE_DAILY_WORKSHOP_REGISTRATION_MUTATION,
-} from "@/graphql/daily-workshops.mutation";
-import { DAILY_WORKSHOP_AVAILABILITY_QUERY } from "@/graphql/daily-workshops.query";
 import type {
-  DailyWorkshopAvailabilityResponse,
   DailyWorkshopRegistration,
 } from "@/graphql/generated/graphql";
-import { useDailyWorkshopPublicConfigQuery } from "@/graphql/generated/graphql";
+import {
+  useDailyWorkshopAvailabilityQuery,
+  useDailyWorkshopPublicConfigQuery,
+  useRegisterForDailyWorkshopMutation,
+  useRescheduleDailyWorkshopRegistrationMutation,
+} from "@/graphql/generated/graphql";
 
 export { useDailyWorkshopPublicConfigQuery };
 
@@ -35,16 +33,6 @@ interface UseRegisterForDailyWorkshopReturn {
   error: Error | undefined;
 }
 
-interface DailyWorkshopAvailabilityFilterInput {
-  start_date?: string;
-  days?: number;
-  config_id?: number;
-}
-
-interface DailyWorkshopAvailabilityQueryData {
-  dailyWorkshopAvailability?: DailyWorkshopAvailabilityResponse | null;
-}
-
 interface UseDailyWorkshopAvailabilityByConfigQueryOptions {
   configId?: number;
   days?: number;
@@ -65,10 +53,7 @@ export function useDailyWorkshopAvailabilityByConfigQuery({
   days,
   skip = false,
 }: UseDailyWorkshopAvailabilityByConfigQueryOptions) {
-  return useQuery<
-    DailyWorkshopAvailabilityQueryData,
-    { filter?: DailyWorkshopAvailabilityFilterInput }
-  >(DAILY_WORKSHOP_AVAILABILITY_QUERY, {
+  return useDailyWorkshopAvailabilityQuery({
     variables: {
       filter: {
         ...(typeof days === "number" ? { days } : {}),
@@ -80,13 +65,8 @@ export function useDailyWorkshopAvailabilityByConfigQuery({
 }
 
 export function useRegisterForDailyWorkshop(): UseRegisterForDailyWorkshopReturn {
-  const [graphqlMutate, { loading, error }] = useMutation<{
-    registerForDailyWorkshop?: {
-      success: boolean;
-      error?: string | null;
-      registration?: DailyWorkshopRegistration | null;
-    } | null;
-  }>(REGISTER_FOR_DAILY_WORKSHOP_MUTATION);
+  const [graphqlMutate, { loading, error }] =
+    useRegisterForDailyWorkshopMutation();
 
   const mutate = useCallback(
     async (input: {
@@ -134,13 +114,8 @@ export function useRegisterForDailyWorkshop(): UseRegisterForDailyWorkshopReturn
 }
 
 export function useRescheduleDailyWorkshopRegistration(): UseRescheduleDailyWorkshopRegistrationReturn {
-  const [graphqlMutate, { loading, error }] = useMutation<{
-    rescheduleDailyWorkshopRegistration?: {
-      success: boolean;
-      error?: string | null;
-      registration?: DailyWorkshopRegistration | null;
-    } | null;
-  }>(RESCHEDULE_DAILY_WORKSHOP_REGISTRATION_MUTATION);
+  const [graphqlMutate, { loading, error }] =
+    useRescheduleDailyWorkshopRegistrationMutation();
 
   const mutate = useCallback(
     async (input: {

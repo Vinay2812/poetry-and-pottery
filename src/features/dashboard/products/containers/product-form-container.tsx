@@ -1,13 +1,14 @@
 "use client";
 
-import {
-  createProduct,
-  updateProduct,
-} from "@/data/admin/products/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
+import {
+  useAdminCreateProductMutation,
+  useAdminUpdateProductMutation,
+} from "@/graphql/generated/graphql";
 
 import { ProductForm } from "../components/product-form";
 import type { ProductFormContainerProps, ProductFormData } from "../types";
@@ -20,6 +21,8 @@ export function ProductFormContainer({
 }: ProductFormContainerProps) {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
+  const [createProductMutation] = useAdminCreateProductMutation();
+  const [updateProductMutation] = useAdminUpdateProductMutation();
 
   const viewModel = useMemo(
     () => buildProductFormViewModel(product),
@@ -30,62 +33,86 @@ export function ProductFormContainer({
 
   const handleSubmit = useCallback(
     async (data: ProductFormData) => {
-      if (isEditing && product) {
-        const result = await updateProduct(product.id, {
-          name: data.name,
-          slug: data.slug,
-          description: data.description || undefined,
-          instructions: data.instructions,
-          price: data.price,
-          total_quantity: data.totalQuantity,
-          available_quantity: data.availableQuantity,
-          is_active: data.isActive,
-          color_name: data.colorName,
-          color_code: data.colorCode,
-          material: data.material,
-          image_urls: data.imageUrls,
-          categories: data.categories,
-          collection_id: data.collectionId,
-        });
+      try {
+        if (isEditing && product) {
+          const { data: updateData } = await updateProductMutation({
+            variables: {
+              id: product.id,
+              input: {
+                name: data.name,
+                slug: data.slug,
+                description: data.description || undefined,
+                instructions: data.instructions,
+                price: data.price,
+                total_quantity: data.totalQuantity,
+                available_quantity: data.availableQuantity,
+                is_active: data.isActive,
+                color_name: data.colorName,
+                color_code: data.colorCode,
+                material: data.material,
+                image_urls: data.imageUrls,
+                categories: data.categories,
+                collection_id: data.collectionId,
+              },
+            },
+          });
+          const result = updateData?.adminUpdateProduct;
 
-        if (result.success) {
+          if (result?.success) {
+            startNavigation(() => {
+              router.push("/dashboard/products");
+              router.refresh();
+            });
+          } else {
+            alert(result?.error || "Failed to update product");
+          }
+          return;
+        }
+
+        const { data: createData } = await createProductMutation({
+          variables: {
+            input: {
+              name: data.name,
+              slug: data.slug,
+              description: data.description || undefined,
+              instructions: data.instructions,
+              price: data.price,
+              total_quantity: data.totalQuantity,
+              available_quantity: data.availableQuantity,
+              is_active: data.isActive,
+              color_name: data.colorName,
+              color_code: data.colorCode,
+              material: data.material,
+              image_urls: data.imageUrls,
+              categories: data.categories,
+              collection_id: data.collectionId,
+            },
+          },
+        });
+        const result = createData?.adminCreateProduct;
+
+        if (result?.success) {
           startNavigation(() => {
             router.push("/dashboard/products");
             router.refresh();
           });
         } else {
-          alert(result.error || "Failed to update product");
+          alert(result?.error || "Failed to create product");
         }
-        return;
-      }
-
-      const result = await createProduct({
-        name: data.name,
-        slug: data.slug,
-        description: data.description || undefined,
-        instructions: data.instructions,
-        price: data.price,
-        total_quantity: data.totalQuantity,
-        available_quantity: data.availableQuantity,
-        is_active: data.isActive,
-        color_name: data.colorName,
-        color_code: data.colorCode,
-        material: data.material,
-        image_urls: data.imageUrls,
-        categories: data.categories,
-        collection_id: data.collectionId,
-      });
-
-      if (result.success) {
-        startNavigation(() => {
-          router.push("/dashboard/products");
-          router.refresh();
-        });
-      } else {
-        alert(result.error || "Failed to create product");
+      } catch (error) {
+        alert(
+          error instanceof Error ? error.message : "Failed to save product",
+        );
       }
     },
-    [isEditing, product, router, startNavigation],
+    [
+      createProductMutation,
+      isEditing,
+      product,
+      router,
+      startNavigation,
+      updateProductMutation,
+    ],
   );
 
   const handleCancel = useCallback(() => {

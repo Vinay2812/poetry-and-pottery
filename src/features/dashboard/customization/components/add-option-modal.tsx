@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +33,7 @@ export function AddOptionModal({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     reset,
     formState: { errors, isSubmitting },
@@ -50,7 +50,7 @@ export function AddOptionModal({
 
   const [showTypeSuggestions, setShowTypeSuggestions] = useState(false);
 
-  const typeValue = watch("type");
+  const typeValue = useWatch({ control, name: "type" }) ?? "";
 
   const filteredTypes = existingTypes.filter((t) =>
     t.toLowerCase().includes(typeValue.toLowerCase()),

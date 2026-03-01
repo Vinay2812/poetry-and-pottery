@@ -1,9 +1,10 @@
 "use client";
 
-import { toggleContentPageActive } from "@/data/admin/content/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useTransition } from "react";
 import { toast } from "sonner";
+
+import { useAdminToggleContentPageActiveMutation } from "@/graphql/generated/graphql";
 
 import { ContentPagesList } from "../components/content-pages-list";
 import {
@@ -17,28 +18,41 @@ export function ContentPagesListContainer({
 }: ContentPagesListContainerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [toggleContentPageActiveMutation, { loading: toggleLoading }] =
+    useAdminToggleContentPageActiveMutation();
 
   const viewModel = useMemo(() => buildContentPagesListViewModel(data), [data]);
 
   const handleToggleActive = useCallback(
     (slug: ContentPageSlug) => {
       startTransition(async () => {
-        const result = await toggleContentPageActive(slug);
-        if (result.success) {
-          toast.success("Page status updated");
-          router.refresh();
-        } else {
-          toast.error(result.error || "Failed to update page status");
+        try {
+          const { data } = await toggleContentPageActiveMutation({
+            variables: { slug },
+          });
+          const result = data?.adminToggleContentPageActive;
+          if (result?.success) {
+            toast.success("Page status updated");
+            router.refresh();
+          } else {
+            toast.error(result?.error || "Failed to update page status");
+          }
+        } catch (error) {
+          toast.error(
+            error instanceof Error
+              ? error.message
+              : "Failed to update page status",
+          );
         }
       });
     },
-    [router],
+    [router, toggleContentPageActiveMutation],
   );
 
   return (
     <ContentPagesList
       viewModel={viewModel}
-      isPending={isPending}
+      isPending={isPending || toggleLoading}
       onToggleActive={handleToggleActive}
     />
   );

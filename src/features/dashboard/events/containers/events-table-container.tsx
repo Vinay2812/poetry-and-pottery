@@ -1,13 +1,13 @@
 "use client";
 
-import {
-  deleteEvent,
-  updateEventStatus,
-} from "@/data/admin/events/gateway/server";
 import { useURLFilterHandlers } from "@/hooks/use-url-filter-handlers";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState } from "react";
 
+import {
+  useAdminDeleteEventMutation,
+  useAdminUpdateEventStatusMutation,
+} from "@/graphql/generated/graphql";
 import type { EventStatus } from "@/graphql/generated/types";
 
 import { EventsTable } from "../components/events-table";
@@ -21,7 +21,10 @@ export function EventsTableContainer({
 }: EventsTableContainerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [, startTransition] = useTransition();
+  const [deleteEventMutation, { loading: deleteLoading }] =
+    useAdminDeleteEventMutation();
+  const [updateEventStatusMutation, { loading: statusLoading }] =
+    useAdminUpdateEventStatusMutation();
 
   const {
     createFilterHandler,
@@ -55,35 +58,51 @@ export function EventsTableContainer({
   );
 
   const handleStatusChange = useCallback(
-    (eventId: string, status: EventStatus) => {
-      startTransition(async () => {
-        const result = await updateEventStatus(eventId, status);
-        if (!result.success) {
-          alert(result.error || "Failed to update event status");
+    async (eventId: string, status: EventStatus) => {
+      try {
+        const { data } = await updateEventStatusMutation({
+          variables: { id: eventId, status },
+        });
+        const result = data?.adminUpdateEventStatus;
+        if (!result?.success) {
+          alert(result?.error || "Failed to update event status");
         }
+      } catch (error) {
+        alert(
+          error instanceof Error ? error.message : "Failed to update event",
+        );
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [router, updateEventStatusMutation],
   );
 
   const handleDelete = useCallback(
-    (eventId: string) => {
+    async (eventId: string) => {
       if (!confirm("Are you sure you want to delete this event?")) {
         return;
       }
 
-      startTransition(async () => {
-        const result = await deleteEvent(eventId);
-        if (!result.success) {
-          alert(result.error || "Failed to delete event");
+      try {
+        const { data } = await deleteEventMutation({
+          variables: { id: eventId },
+        });
+        const result = data?.adminDeleteEvent;
+        if (!result?.success) {
+          alert(result?.error || "Failed to delete event");
         } else if (result.error) {
           alert(result.error);
         }
+      } catch (error) {
+        alert(
+          error instanceof Error ? error.message : "Failed to delete event",
+        );
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [deleteEventMutation, router],
   );
 
   return (
@@ -91,7 +110,7 @@ export function EventsTableContainer({
       viewModel={viewModel}
       statusOptions={statusOptions}
       levelOptions={levelOptions}
-      isPending={isPending}
+      isPending={isPending || deleteLoading || statusLoading}
       onSearch={handleSearch}
       onStatusFilter={handleStatusFilter}
       onLevelFilter={handleLevelFilter}

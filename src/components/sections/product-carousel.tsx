@@ -3,7 +3,6 @@
 import type { ProductBase } from "@/data/products/types";
 import useEmblaCarousel from "embla-carousel-react";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
 
 import { ProductCard } from "@/components/cards";
 

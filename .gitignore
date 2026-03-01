@@ -51,3 +51,8 @@ src/lib/reset-db.ts
 wireframes/screenshots/
 screenshots/
 !wireframes/designs/
+
+latest.tsv
+route-check.mjs
+review-audit/
+scripts/

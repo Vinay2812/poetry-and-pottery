@@ -20,6 +20,16 @@ import { Suspense } from "react";
 
 import { DashboardSectionSkeleton } from "@/components/skeletons";
 
+/**
+ * Route: /dashboard
+ * Page does: Admin analytics home for revenue, operations health, and quick-action monitoring.
+ * Key UI operations:
+ * - Review KPI cards, recent activity, inventory alerts, upcoming events, and newsletter stats.
+ * - Use quick actions to jump into high-priority operational workflows.
+ * UI info needed for operations:
+ * - Admin authorization and aggregated analytics payloads from orders, registrations, users, products, and events.
+ * - Recent-activity datasets and totals required by each dashboard section component.
+ */
 export default async function DashboardPage() {
   const [
     stats,

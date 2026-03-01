@@ -7,7 +7,6 @@ import type { LucideIcon } from "lucide-react";
 import { Heart, Search, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
-import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";

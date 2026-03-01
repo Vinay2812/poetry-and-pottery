@@ -11,6 +11,16 @@ interface ProductsPageProps {
   searchParams: Promise<DashboardProductsSearchParams>;
 }
 
+/**
+ * Route: /dashboard/products
+ * Page does: Admin product index page for catalog, inventory, and status management.
+ * Key UI operations:
+ * - Search/filter by category, collection, status, and stock state; paginate through products.
+ * - Open product detail editor from the table for updates and review moderation.
+ * UI info needed for operations:
+ * - Query params: `search`, `category`, `collection`, `status`, `stock`, `page`.
+ * - Product summary dataset including inventory/status fields required by table cells.
+ */
 export default async function ProductsPage({
   searchParams,
 }: ProductsPageProps) {

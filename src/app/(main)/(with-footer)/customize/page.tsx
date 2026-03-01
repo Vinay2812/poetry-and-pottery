@@ -53,6 +53,16 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Route: /customize
+ * Page does: Product customization flow where users configure made-to-order pottery before checkout.
+ * Key UI operations:
+ * - Choose a base category, select option groups, and review the configured item before adding to cart.
+ * - Move through wizard steps with loading fallbacks while options and pricing metadata resolve.
+ * UI info needed for operations:
+ * - Customization categories, option matrices, pricing rules, and preview media for each selection.
+ * - Cart/user context required to persist configured selections into a cart line item.
+ */
 export default function CustomizePage() {
   return (
     <>

@@ -41,21 +41,21 @@ export function useKanbanOptimisticBoard<TItem, TStatus extends string>({
 
   type OptimisticAction = { type: "status"; itemId: string; status: TStatus };
 
-  function applyOptimisticAction(
-    state: TItem[],
-    action: OptimisticAction,
-  ): TItem[] {
-    switch (action.type) {
-      case "status":
-        return state.map((item) =>
-          getItemId(item) === action.itemId
-            ? ({ ...item, status: action.status } as TItem)
-            : item,
-        );
-      default:
-        return state;
-    }
-  }
+  const applyOptimisticAction = useCallback(
+    (state: TItem[], action: OptimisticAction): TItem[] => {
+      switch (action.type) {
+        case "status":
+          return state.map((item) =>
+            getItemId(item) === action.itemId
+              ? ({ ...item, status: action.status } as TItem)
+              : item,
+          );
+        default:
+          return state;
+      }
+    },
+    [getItemId],
+  );
 
   const [optimisticItems, setOptimisticItems] = useOptimistic(
     itemsState,
@@ -146,7 +146,7 @@ export function useKanbanOptimisticBoard<TItem, TStatus extends string>({
         }
       });
     },
-    [setOptimisticItems, startTransition, updateStatus],
+    [applyOptimisticAction, setOptimisticItems, startTransition, updateStatus],
   );
 
   const updateSelectedItem = useCallback(

@@ -9,6 +9,16 @@ interface SignInPageProps {
   searchParams: Promise<{ redirect_url?: string }>;
 }
 
+/**
+ * Route: /sign-in
+ * Page does: Authentication page for existing users via Clerk sign-in flows.
+ * Key UI operations:
+ * - Sign in using Google or email/password and continue through Clerk's auth card UI.
+ * - Return users to their intended route through preserved redirect behavior.
+ * UI info needed for operations:
+ * - Optional `redirect_url` query param to construct post-login destination.
+ * - Clerk appearance/config and sign-in state handling for secure auth completion.
+ */
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const { redirect_url } = await searchParams;
 

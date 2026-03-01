@@ -1,11 +1,12 @@
 "use client";
 
-import {
-  createCustomizationOption,
-  updateCustomizationOption,
-} from "@/data/admin/customization/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
+
+import {
+  useAdminCreateCustomizationOptionMutation,
+  useAdminUpdateCustomizationOptionMutation,
+} from "@/graphql/generated/graphql";
 
 import { CustomizationOptionForm } from "../components/customization-option-form";
 import type {
@@ -21,6 +22,10 @@ export function CustomizationOptionFormContainer({
 }: CustomizationOptionFormContainerProps) {
   const router = useRouter();
   const isEditing = !!option;
+  const [createCustomizationOptionMutation] =
+    useAdminCreateCustomizationOptionMutation();
+  const [updateCustomizationOptionMutation] =
+    useAdminUpdateCustomizationOptionMutation();
 
   const viewModel = useMemo(
     () => buildCustomizationOptionFormViewModel(option),
@@ -54,15 +59,24 @@ export function CustomizationOptionFormContainer({
       };
 
       if (isEditing && option) {
-        const result = await updateCustomizationOption(option.id, input);
-        if (!result.success) {
-          alert(result.error || "Failed to update option");
+        const { data } = await updateCustomizationOptionMutation({
+          variables: {
+            id: option.id,
+            input,
+          },
+        });
+        const result = data?.adminUpdateCustomizationOption;
+        if (!result?.success) {
+          alert(result?.error || "Failed to update option");
           return;
         }
       } else {
-        const result = await createCustomizationOption(input);
-        if (!result.success) {
-          alert(result.error || "Failed to create option");
+        const { data } = await createCustomizationOptionMutation({
+          variables: { input },
+        });
+        const result = data?.adminCreateCustomizationOption;
+        if (!result?.success) {
+          alert(result?.error || "Failed to create option");
           return;
         }
       }
@@ -70,7 +84,14 @@ export function CustomizationOptionFormContainer({
       router.push("/dashboard/customization");
       router.refresh();
     },
-    [isEditing, option, router, categories],
+    [
+      categories,
+      createCustomizationOptionMutation,
+      isEditing,
+      option,
+      router,
+      updateCustomizationOptionMutation,
+    ],
   );
 
   const handleCancel = useCallback(() => {

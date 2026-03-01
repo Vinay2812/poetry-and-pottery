@@ -1,12 +1,13 @@
 "use client";
 
-import {
-  deleteCustomizationOption,
-  toggleCustomizationOptionActive,
-} from "@/data/admin/customization/gateway/server";
 import { useURLFilterHandlers } from "@/hooks/use-url-filter-handlers";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
+
+import {
+  useAdminDeleteCustomizationOptionMutation,
+  useAdminToggleCustomizationOptionActiveMutation,
+} from "@/graphql/generated/graphql";
 
 import { CustomizationOptionsTable } from "../components/customization-options-table";
 import type { CustomizationOptionsTableContainerProps } from "../types";
@@ -20,6 +21,10 @@ export function CustomizationOptionsTableContainer({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
+  const [deleteCustomizationOptionMutation, { loading: deleteLoading }] =
+    useAdminDeleteCustomizationOptionMutation();
+  const [toggleCustomizationOptionActiveMutation, { loading: toggleLoading }] =
+    useAdminToggleCustomizationOptionActiveMutation();
 
   const {
     createFilterHandler,
@@ -51,14 +56,17 @@ export function CustomizationOptionsTableContainer({
   const handleToggleActive = useCallback(
     (optionId: number) => {
       startTransition(async () => {
-        const result = await toggleCustomizationOptionActive(optionId);
-        if (!result.success) {
-          console.error("Failed to toggle option status:", result.error);
+        const { data } = await toggleCustomizationOptionActiveMutation({
+          variables: { id: optionId },
+        });
+        const result = data?.adminToggleCustomizationOptionActive;
+        if (!result?.success) {
+          console.error("Failed to toggle option status:", result?.error);
         }
         router.refresh();
       });
     },
-    [router],
+    [router, toggleCustomizationOptionActiveMutation],
   );
 
   const handleDelete = useCallback(
@@ -70,14 +78,17 @@ export function CustomizationOptionsTableContainer({
       }
 
       startTransition(async () => {
-        const result = await deleteCustomizationOption(optionId);
-        if (!result.success) {
-          console.error("Failed to delete option:", result.error);
+        const { data } = await deleteCustomizationOptionMutation({
+          variables: { id: optionId },
+        });
+        const result = data?.adminDeleteCustomizationOption;
+        if (!result?.success) {
+          console.error("Failed to delete option:", result?.error);
         }
         router.refresh();
       });
     },
-    [router],
+    [deleteCustomizationOptionMutation, router],
   );
 
   return (
@@ -85,7 +96,7 @@ export function CustomizationOptionsTableContainer({
       viewModel={viewModel}
       categories={categories}
       types={types}
-      isPending={isPending}
+      isPending={isPending || deleteLoading || toggleLoading}
       onSearch={handleSearch}
       onCategoryFilter={handleCategoryFilter}
       onTypeFilter={handleTypeFilter}

@@ -78,6 +78,16 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Route: /products/[id]
+ * Page does: Product detail page for media browsing and conversion actions.
+ * Key UI operations:
+ * - Browse gallery/variants, inspect description/reviews, and add the item to cart or wishlist.
+ * - Use price/stock signals to decide purchase and proceed to cart flow.
+ * UI info needed for operations:
+ * - Route param `id` for product lookup with not-found fallback on invalid IDs.
+ * - Product detail payload (images, price, inventory, categories, rating/review metrics).
+ */
 export default function ProductPage({ params }: ProductPageProps) {
   return (
     <Suspense fallback={<ProductDetailSkeleton />}>

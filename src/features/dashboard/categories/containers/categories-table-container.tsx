@@ -1,13 +1,14 @@
 "use client";
 
-import {
-  addCategory,
-  deleteCategory,
-  renameCategory,
-  updateCategoryIcon,
-} from "@/data/admin/categories/gateway/server";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useTransition } from "react";
+import { useCallback, useMemo } from "react";
+
+import {
+  useAdminAddCategoryMutation,
+  useAdminDeleteCategoryMutation,
+  useAdminRenameCategoryMutation,
+  useAdminUpdateCategoryIconMutation,
+} from "@/graphql/generated/graphql";
 
 import { CategoriesTable } from "../components/categories-table";
 import type { CategoriesTableContainerProps } from "../types";
@@ -18,67 +19,109 @@ export function CategoriesTableContainer({
   iconOptions,
 }: CategoriesTableContainerProps) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [updateCategoryIconMutation, { loading: updateCategoryIconLoading }] =
+    useAdminUpdateCategoryIconMutation();
+  const [renameCategoryMutation, { loading: renameCategoryLoading }] =
+    useAdminRenameCategoryMutation();
+  const [deleteCategoryMutation, { loading: deleteCategoryLoading }] =
+    useAdminDeleteCategoryMutation();
+  const [addCategoryMutation, { loading: addCategoryLoading }] =
+    useAdminAddCategoryMutation();
 
   const viewModel = useMemo(() => buildCategoriesTableViewModel(data), [data]);
 
   const handleIconChange = useCallback(
-    (name: string, icon: string) => {
-      startTransition(async () => {
-        const result = await updateCategoryIcon(name, icon);
-        if (!result.success) {
-          alert(result.error || "Failed to update icon");
+    async (name: string, icon: string) => {
+      try {
+        const { data } = await updateCategoryIconMutation({
+          variables: { category: name, icon },
+        });
+        const result = data?.adminUpdateCategoryIcon;
+        if (!result?.success) {
+          alert(result?.error || "Failed to update icon");
         }
+      } catch (error) {
+        alert(error instanceof Error ? error.message : "Failed to update icon");
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [router, updateCategoryIconMutation],
   );
 
   const handleRename = useCallback(
-    (oldName: string, newName: string) => {
-      startTransition(async () => {
-        const result = await renameCategory(oldName, newName);
-        if (!result.success) {
-          alert(result.error || "Failed to rename category");
+    async (oldName: string, newName: string) => {
+      try {
+        const { data } = await renameCategoryMutation({
+          variables: { oldName, newName },
+        });
+        const result = data?.adminRenameCategory;
+        if (!result?.success) {
+          alert(result?.error || "Failed to rename category");
         }
+      } catch (error) {
+        alert(
+          error instanceof Error ? error.message : "Failed to rename category",
+        );
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [renameCategoryMutation, router],
   );
 
   const handleDelete = useCallback(
-    (name: string) => {
-      startTransition(async () => {
-        const result = await deleteCategory(name);
-        if (!result.success) {
-          alert(result.error || "Failed to delete category");
+    async (name: string) => {
+      try {
+        const { data } = await deleteCategoryMutation({
+          variables: { name },
+        });
+        const result = data?.adminDeleteCategory;
+        if (!result?.success) {
+          alert(result?.error || "Failed to delete category");
         }
+      } catch (error) {
+        alert(
+          error instanceof Error ? error.message : "Failed to delete category",
+        );
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [deleteCategoryMutation, router],
   );
 
   const handleAdd = useCallback(
-    (name: string, icon: string) => {
-      startTransition(async () => {
-        const result = await addCategory(name, icon);
-        if (!result.success) {
-          alert(result.error || "Failed to add category");
+    async (name: string, icon: string) => {
+      try {
+        const { data } = await addCategoryMutation({
+          variables: { name, icon },
+        });
+        const result = data?.adminAddCategory;
+        if (!result?.success) {
+          alert(result?.error || "Failed to add category");
         }
+      } catch (error) {
+        alert(
+          error instanceof Error ? error.message : "Failed to add category",
+        );
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [addCategoryMutation, router],
   );
 
   return (
     <CategoriesTable
       viewModel={viewModel}
       iconOptions={iconOptions}
-      isPending={isPending}
+      isPending={
+        updateCategoryIconLoading ||
+        renameCategoryLoading ||
+        deleteCategoryLoading ||
+        addCategoryLoading
+      }
       onIconChange={handleIconChange}
       onRename={handleRename}
       onDelete={handleDelete}

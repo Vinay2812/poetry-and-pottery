@@ -27,6 +27,16 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Route: /events/daily-workshops/[registrationId]
+ * Page does: Daily-workshop booking detail page for a specific registration record.
+ * Key UI operations:
+ * - Review booked slots, pricing snapshot, and status timeline for the registration.
+ * - Use follow-up actions from the registration detail card/state components.
+ * UI info needed for operations:
+ * - Route param `registrationId` mapped to a valid daily-workshop registration record.
+ * - Registration payload plus matching workshop config for rendering slot and tier context.
+ */
 export default function DailyWorkshopRegistrationDetailPage({
   params,
 }: DailyWorkshopRegistrationDetailPageProps) {

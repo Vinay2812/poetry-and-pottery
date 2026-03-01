@@ -1,8 +1,9 @@
 "use client";
 
-import { updateCustomizeCategory } from "@/data/admin/customization/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
+
+import { useAdminUpdateCustomizeCategoryMutation } from "@/graphql/generated/graphql";
 
 import { EditCategoryForm } from "../components/edit-category-form";
 import type {
@@ -18,6 +19,8 @@ export function EditCategoryFormContainer({
   customizeCategories,
 }: EditCategoryFormContainerProps) {
   const router = useRouter();
+  const [updateCustomizeCategoryMutation] =
+    useAdminUpdateCustomizeCategoryMutation();
 
   const viewModel = useMemo(
     () => buildEditCategoryFormViewModel(category),
@@ -37,24 +40,30 @@ export function EditCategoryFormContainer({
   }, [customizeCategories, productCategories, category.id]);
 
   const handleSubmit = useCallback(
-    async (data: UpdateCategoryFormData) => {
+    async (formData: UpdateCategoryFormData) => {
       const input = {
-        category: data.category,
-        base_price: data.basePrice,
-        image_url: data.imageUrl,
-        is_active: data.isActive,
+        category: formData.category,
+        base_price: formData.basePrice,
+        image_url: formData.imageUrl,
+        is_active: formData.isActive,
       };
 
-      const result = await updateCustomizeCategory(category.id, input);
-      if (!result.success) {
-        alert(result.error || "Failed to update category");
+      const { data: mutationData } = await updateCustomizeCategoryMutation({
+        variables: {
+          id: category.id,
+          input,
+        },
+      });
+      const result = mutationData?.adminUpdateCustomizeCategory;
+      if (!result?.success) {
+        alert(result?.error || "Failed to update category");
         return;
       }
 
       router.push("/dashboard/customization");
       router.refresh();
     },
-    [category.id, router],
+    [category.id, router, updateCustomizeCategoryMutation],
   );
 
   const handleCancel = useCallback(() => {

@@ -55,6 +55,16 @@ interface ProductsPageProps {
   searchParams: Promise<ProductsPageSearchParams>;
 }
 
+/**
+ * Route: /products
+ * Page does: Catalog page with faceted filtering, sorting, and direct purchase shortcuts.
+ * Key UI operations:
+ * - Filter by archive state, price range, category, material, and search/sort controls.
+ * - Paginate results, open product details, and trigger add-to-cart/wishlist from cards.
+ * UI info needed for operations:
+ * - Query params: `archive`, `categories`, `materials`, `collection_ids`, `sort`, `page`, `min_price`, `max_price`, `search`.
+ * - Product list payload plus filter metadata (counts, price bounds, available facets).
+ */
 export default function ProductsPage({ searchParams }: ProductsPageProps) {
   return (
     <>

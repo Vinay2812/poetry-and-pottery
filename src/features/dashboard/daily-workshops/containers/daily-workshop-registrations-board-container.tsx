@@ -1,16 +1,15 @@
 "use client";
 
-import { updateUserDailyWorkshopRegistrationStatus } from "@/data/admin/users/gateway/server";
 import { useKanbanOptimisticBoard } from "@/hooks";
 import { useCallback } from "react";
 
 import { getDailyWorkshopRegistrationStatusColor } from "@/lib/status-utils";
 
+import { useAdminUpdateDailyWorkshopRegistrationStatusMutation } from "@/graphql/generated/graphql";
 import { DailyWorkshopRegistrationStatus } from "@/graphql/generated/types";
 
 import { DailyWorkshopRegistrationsBoard } from "../components/daily-workshop-registrations-board";
 import type {
-  AdminUserDailyWorkshopRegistration,
   DailyWorkshopRegistrationsBoardContainerProps,
 } from "../types";
 
@@ -29,11 +28,30 @@ const DAILY_WORKSHOP_COLUMNS: {
 export function DailyWorkshopRegistrationsBoardContainer({
   registrations,
 }: DailyWorkshopRegistrationsBoardContainerProps) {
+  const [updateDailyWorkshopRegistrationStatusMutation] =
+    useAdminUpdateDailyWorkshopRegistrationStatusMutation();
+
   const handleUpdateStatus = useCallback(
     async (registrationId: string, status: DailyWorkshopRegistrationStatus) => {
-      return updateUserDailyWorkshopRegistrationStatus(registrationId, status);
+      try {
+        const { data } = await updateDailyWorkshopRegistrationStatusMutation({
+          variables: { registrationId, status },
+        });
+        return (
+          data?.adminUpdateDailyWorkshopRegistrationStatus ?? {
+            success: false,
+            error: null,
+          }
+        );
+      } catch (error) {
+        console.error("Failed to update workshop registration status:", error);
+        return {
+          success: false,
+          error: "Failed to update workshop registration status",
+        };
+      }
     },
-    [],
+    [updateDailyWorkshopRegistrationStatusMutation],
   );
 
   const {

@@ -51,6 +51,16 @@ interface EventsPageProps {
   searchParams: Promise<EventsPageSearchParams>;
 }
 
+/**
+ * Route: /events
+ * Page does: Main events discovery page for workshops with search and tabbed discovery flows.
+ * Key UI operations:
+ * - Switch between All Events, Daily Workshops, and My Registrations views and search events.
+ * - Open event details and start reservation flows from event cards.
+ * UI info needed for operations:
+ * - `search` query param plus client-side tab state (`event_tab`) used for the active view.
+ * - Upcoming event feed with seat availability, price, schedule, and location metadata.
+ */
 export default function EventsPage({ searchParams }: EventsPageProps) {
   return (
     <Suspense fallback={<EventsSkeleton />}>

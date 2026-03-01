@@ -20,7 +20,11 @@ export function EventRegistrationsSection({
   return (
     <div className="space-y-6">
       {/* Summary Stats */}
-      <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      <div>
+        <p className="mb-3 text-sm text-neutral-500">
+          Total registrations: <span className="font-medium">{total}</span>
+        </p>
+        <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {Object.entries(statusCounts).map(([status, count]) => (
           <div
             key={status}
@@ -32,6 +36,7 @@ export function EventRegistrationsSection({
             </div>
           </div>
         ))}
+        </div>
       </div>
 
       {/* Registrations List */}

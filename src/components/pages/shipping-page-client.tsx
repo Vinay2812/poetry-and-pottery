@@ -17,6 +17,7 @@ interface ShippingPageClientProps {
 }
 
 export function ShippingPageClient({ content }: ShippingPageClientProps) {
+  void content;
   return (
     <>
       <MobileHeaderContainer title="Shipping" showBack backHref="/" />

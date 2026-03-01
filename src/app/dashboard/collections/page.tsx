@@ -11,6 +11,16 @@ interface CollectionsPageProps {
   searchParams: Promise<DashboardCollectionsSearchParams>;
 }
 
+/**
+ * Route: /dashboard/collections
+ * Page does: Admin collection index page with search/filter controls and pagination.
+ * Key UI operations:
+ * - Filter collections by status, search by term, and paginate through result sets.
+ * - Open individual collection detail pages for deeper editing.
+ * UI info needed for operations:
+ * - Query params: `search`, `status`, and `page` for table state and server-side fetches.
+ * - Collection summary dataset including status badges and product counts.
+ */
 export default async function CollectionsPage({
   searchParams,
 }: CollectionsPageProps) {

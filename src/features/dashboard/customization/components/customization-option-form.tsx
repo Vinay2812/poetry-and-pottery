@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +36,7 @@ export function CustomizationOptionForm({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<CustomizationOptionFormValues>({
@@ -54,9 +54,9 @@ export function CustomizationOptionForm({
 
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
 
-  const typeValue = watch("type");
-  const categoryValue = watch("category");
-  const isActive = watch("isActive");
+  const typeValue = useWatch({ control, name: "type" }) ?? "";
+  const categoryValue = useWatch({ control, name: "category" });
+  const isActive = useWatch({ control, name: "isActive" }) ?? false;
 
   const filteredTypes = existingTypes.filter((t) =>
     t.toLowerCase().includes(typeValue.toLowerCase()),

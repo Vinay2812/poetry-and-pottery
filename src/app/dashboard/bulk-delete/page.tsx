@@ -7,6 +7,16 @@ import { useState } from "react";
 
 import { EntityCard } from "./entity-card";
 
+/**
+ * Route: /dashboard/bulk-delete
+ * Page does: Admin utility page for destructive multi-select actions across products and events.
+ * Key UI operations:
+ * - Open products/events bulk-delete dialogs and submit multi-item deletion/deactivation actions.
+ * - Apply safety logic where ordered products deactivate and registered events are cancelled.
+ * UI info needed for operations:
+ * - Admin authorization plus candidate entity lists selected in each bulk-delete dialog.
+ * - Business-rule outcomes (hard delete vs deactivate/cancel) tied to relational dependencies.
+ */
 export default function BulkDeletePage() {
   const [isProductsDialogOpen, setIsProductsDialogOpen] = useState(false);
   const [isEventsDialogOpen, setIsEventsDialogOpen] = useState(false);

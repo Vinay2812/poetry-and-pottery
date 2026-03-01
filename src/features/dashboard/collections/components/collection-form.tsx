@@ -3,7 +3,7 @@
 import { R2ImageUploaderContainer } from "@/features/uploads";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,7 @@ export function CollectionForm({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
@@ -59,8 +59,8 @@ export function CollectionForm({
     },
   });
 
-  const name = watch("name");
-  const imageUrl = watch("imageUrl");
+  const name = useWatch({ control, name: "name" });
+  const imageUrl = useWatch({ control, name: "imageUrl" });
 
   // Auto-generate slug from name when creating new collection
   useEffect(() => {

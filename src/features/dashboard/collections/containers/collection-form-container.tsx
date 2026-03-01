@@ -1,13 +1,14 @@
 "use client";
 
-import {
-  createCollection,
-  updateCollection,
-} from "@/data/admin/collections/gateway/server";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useTransition } from "react";
+import { useCallback, useMemo } from "react";
 
 import { useRouteAnimation } from "@/components/providers/route-animation-provider";
+
+import {
+  useAdminCreateCollectionMutation,
+  useAdminUpdateCollectionMutation,
+} from "@/graphql/generated/graphql";
 
 import { CollectionForm } from "../components/collection-form";
 import type {
@@ -21,7 +22,10 @@ export function CollectionFormContainer({
 }: CollectionFormContainerProps) {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
-  const [isPending, startTransition] = useTransition();
+  const [createCollectionMutation, { loading: createLoading }] =
+    useAdminCreateCollectionMutation();
+  const [updateCollectionMutation, { loading: updateLoading }] =
+    useAdminUpdateCollectionMutation();
 
   const viewModel = useMemo(
     () => buildCollectionFormViewModel(collection),
@@ -32,48 +36,70 @@ export function CollectionFormContainer({
 
   const handleSubmit = useCallback(
     async (data: CollectionFormData) => {
-      startTransition(async () => {
+      try {
         if (isEditing && collection) {
-          const result = await updateCollection(collection.id, {
-            name: data.name,
-            slug: data.slug,
-            description: data.description || undefined,
-            image_url: data.imageUrl || undefined,
-            starts_at: data.startsAt?.toISOString() ?? null,
-            ends_at: data.endsAt?.toISOString() ?? null,
+          const { data: updateData } = await updateCollectionMutation({
+            variables: {
+              id: collection.id,
+              input: {
+                name: data.name,
+                slug: data.slug,
+                description: data.description || undefined,
+                image_url: data.imageUrl || undefined,
+                starts_at: data.startsAt?.toISOString() ?? null,
+                ends_at: data.endsAt?.toISOString() ?? null,
+              },
+            },
           });
+          const result = updateData?.adminUpdateCollection;
 
-          if (result.success) {
+          if (result?.success) {
             startNavigation(() => {
               router.push("/dashboard/collections");
               router.refresh();
             });
           } else {
-            alert(result.error || "Failed to update collection");
+            alert(result?.error || "Failed to update collection");
           }
           return;
         }
 
-        const result = await createCollection({
-          name: data.name,
-          slug: data.slug,
-          description: data.description || undefined,
-          image_url: data.imageUrl || undefined,
-          starts_at: data.startsAt?.toISOString(),
-          ends_at: data.endsAt?.toISOString(),
+        const { data: createData } = await createCollectionMutation({
+          variables: {
+            input: {
+              name: data.name,
+              slug: data.slug,
+              description: data.description || undefined,
+              image_url: data.imageUrl || undefined,
+              starts_at: data.startsAt?.toISOString(),
+              ends_at: data.endsAt?.toISOString(),
+            },
+          },
         });
+        const result = createData?.adminCreateCollection;
 
-        if (result.success) {
+        if (result?.success) {
           startNavigation(() => {
             router.push("/dashboard/collections");
             router.refresh();
           });
         } else {
-          alert(result.error || "Failed to create collection");
+          alert(result?.error || "Failed to create collection");
         }
-      });
+      } catch (error) {
+        alert(
+          error instanceof Error ? error.message : "Failed to save collection",
+        );
+      }
     },
-    [isEditing, collection, router, startNavigation, startTransition],
+    [
+      collection,
+      createCollectionMutation,
+      isEditing,
+      router,
+      startNavigation,
+      updateCollectionMutation,
+    ],
   );
 
   const handleCancel = useCallback(() => {
@@ -86,7 +112,7 @@ export function CollectionFormContainer({
     <CollectionForm
       viewModel={viewModel}
       isEditing={isEditing}
-      isPending={isPending}
+      isPending={createLoading || updateLoading}
       onSubmit={handleSubmit}
       onCancel={handleCancel}
     />

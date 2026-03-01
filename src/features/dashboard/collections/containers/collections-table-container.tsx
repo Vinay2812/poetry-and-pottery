@@ -1,8 +1,9 @@
 "use client";
 
-import { deleteCollection } from "@/data/admin/collections/gateway/server";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
+
+import { useAdminDeleteCollectionMutation } from "@/graphql/generated/graphql";
 
 import { CollectionsTable } from "../components/collections-table";
 import type { CollectionsTableContainerProps } from "../types";
@@ -14,6 +15,8 @@ export function CollectionsTableContainer({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const [deleteCollectionMutation, { loading: deleteLoading }] =
+    useAdminDeleteCollectionMutation();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
 
@@ -72,7 +75,7 @@ export function CollectionsTableContainer({
   );
 
   const handleDelete = useCallback(
-    (collectionId: number) => {
+    async (collectionId: number) => {
       if (
         !confirm(
           "Are you sure you want to delete this collection? Products will be unassigned from it.",
@@ -81,22 +84,28 @@ export function CollectionsTableContainer({
         return;
       }
 
-      startTransition(async () => {
-        const result = await deleteCollection(collectionId);
-        if (!result.success) {
-          console.error("Failed to delete collection:", result.error);
-          alert(result.error || "Failed to delete collection");
+      try {
+        const { data } = await deleteCollectionMutation({
+          variables: { id: collectionId },
+        });
+        const result = data?.adminDeleteCollection;
+        if (!result?.success) {
+          console.error("Failed to delete collection:", result?.error);
+          alert(result?.error || "Failed to delete collection");
         }
+      } catch (error) {
+        console.error("Failed to delete collection:", error);
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [deleteCollectionMutation, router],
   );
 
   return (
     <CollectionsTable
       viewModel={viewModel}
-      isPending={isPending}
+      isPending={isPending || deleteLoading}
       onSearch={handleSearch}
       onStatusFilter={handleStatusFilter}
       onPageChange={handlePageChange}

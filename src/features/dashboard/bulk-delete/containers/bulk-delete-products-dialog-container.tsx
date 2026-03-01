@@ -1,12 +1,10 @@
 "use client";
 
 import {
-  bulkDeleteProducts,
   getAllCategories,
   getAllCollections,
   getProducts,
 } from "@/data/admin/products/gateway/server";
-import type { AdminBulkDeleteProductsResponse } from "@/data/admin/products/gateway/server";
 import { useSelection } from "@/hooks";
 import {
   useCallback,
@@ -21,6 +19,8 @@ import {
   BulkDeleteResultsDialog,
 } from "@/components/shared";
 
+import { useAdminBulkDeleteProductsMutation } from "@/graphql/generated/graphql";
+import type { AdminBulkDeleteProductsMutation } from "@/graphql/generated/graphql";
 import type { AdminProductCollection } from "@/graphql/generated/types";
 
 import { BulkDeleteProductsDialog } from "../components/bulk-delete-products-dialog";
@@ -42,6 +42,7 @@ export function BulkDeleteProductsDialogContainer({
   onOpenChange,
 }: BulkDeleteProductsDialogContainerProps) {
   const [isPending, startTransition] = useTransition();
+  const [bulkDeleteProductsMutation] = useAdminBulkDeleteProductsMutation();
   const [isLoading, setIsLoading] = useState(false);
 
   // Filter state
@@ -77,8 +78,9 @@ export function BulkDeleteProductsDialogContainer({
   // Dialog states
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [isResultsDialogOpen, setIsResultsDialogOpen] = useState(false);
-  const [bulkDeleteResults, setBulkDeleteResults] =
-    useState<AdminBulkDeleteProductsResponse | null>(null);
+  const [bulkDeleteResults, setBulkDeleteResults] = useState<
+    AdminBulkDeleteProductsMutation["adminBulkDeleteProducts"] | null
+  >(null);
 
   const allProductIds = useMemo(() => products.map((p) => p.id), [products]);
   const isAllSelected =
@@ -210,7 +212,13 @@ export function BulkDeleteProductsDialogContainer({
   const handleConfirmBulkDelete = useCallback(() => {
     setIsConfirmDialogOpen(false);
     startTransition(async () => {
-      const result = await bulkDeleteProducts(selectedIds);
+      const { data: bulkDeleteData } = await bulkDeleteProductsMutation({
+        variables: { input: { ids: selectedIds } },
+      });
+      const result = bulkDeleteData?.adminBulkDeleteProducts;
+      if (!result) {
+        return;
+      }
       setBulkDeleteResults(result);
       setIsResultsDialogOpen(true);
       clearSelection();
@@ -257,6 +265,7 @@ export function BulkDeleteProductsDialogContainer({
     activeFilter,
     page,
     pageSize,
+    bulkDeleteProductsMutation,
   ]);
 
   const resultsWithNames = useMemo(() => {
@@ -272,7 +281,7 @@ export function BulkDeleteProductsDialogContainer({
           id: r.id,
           name: product?.name ?? `Product #${r.id}`,
           action: r.action,
-          error: r.error,
+          error: r.error ?? null,
         };
       }),
     };

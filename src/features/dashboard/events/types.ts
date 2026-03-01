@@ -228,8 +228,7 @@ export function buildEventFormViewModel(
 ): EventFormViewModel {
   const defaultStatus =
     (statusOptions?.[0]?.value as EventStatus) || EventStatus.Upcoming;
-  const defaultLevel =
-    (levelOptions?.[0]?.value as EventLevel) || EventLevel.Beginner;
+  void levelOptions;
 
   if (!event) {
     const now = createDate();

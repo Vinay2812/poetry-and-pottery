@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +35,7 @@ export function EditCategoryForm({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<EditCategoryFormValues>({
@@ -48,9 +48,9 @@ export function EditCategoryForm({
     },
   });
 
-  const categoryValue = watch("category");
-  const imageUrl = watch("imageUrl");
-  const isActive = watch("isActive");
+  const categoryValue = useWatch({ control, name: "category" });
+  const imageUrl = useWatch({ control, name: "imageUrl" });
+  const isActive = useWatch({ control, name: "isActive" }) ?? false;
 
   const handleImageChange = useCallback(
     (urls: string[]) => {

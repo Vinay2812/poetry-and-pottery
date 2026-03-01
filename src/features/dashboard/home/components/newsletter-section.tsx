@@ -1,4 +1,5 @@
 import { Mail, Users } from "lucide-react";
+import Image from "next/image";
 
 import { formatCreatedAt } from "@/lib/date";
 
@@ -43,9 +44,11 @@ export function NewsletterSection({
             >
               <div className="flex min-w-0 flex-1 items-center gap-3">
                 {subscriber.image ? (
-                  <img
+                  <Image
                     src={subscriber.image}
                     alt=""
+                    width={32}
+                    height={32}
                     className="h-8 w-8 rounded-full object-cover"
                   />
                 ) : (

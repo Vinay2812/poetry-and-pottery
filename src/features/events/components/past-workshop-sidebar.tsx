@@ -5,7 +5,7 @@ import Link from "next/link";
 import { OptimizedImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
-import type { FormattedReview, PastWorkshopDetailViewModel } from "../types";
+import type { FormattedReview } from "../types";
 import { formatEventDate } from "../types";
 
 interface UpcomingEventCardProps {

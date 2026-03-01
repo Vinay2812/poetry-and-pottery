@@ -1,9 +1,10 @@
 "use client";
 
-import { updateRegistrationDetails } from "@/data/admin/registrations/gateway/server";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
 import { formatCreatedAt, formatDateShort, formatTime } from "@/lib/date";
+
+import { useAdminUpdateRegistrationDetailsMutation } from "@/graphql/generated/graphql";
 
 import { RegistrationDetailDialog } from "../components/registration-detail-dialog";
 import type {
@@ -17,6 +18,8 @@ export function RegistrationDetailDialogContainer({
   onOpenChange,
 }: RegistrationDetailDialogContainerProps) {
   const [isPending, startTransition] = useTransition();
+  const [updateRegistrationDetailsMutation] =
+    useAdminUpdateRegistrationDetailsMutation();
   const [editedPrice, setEditedPrice] = useState<number>(0);
   const [editedDiscount, setEditedDiscount] = useState<number>(0);
   const [editedSeats, setEditedSeats] = useState<number>(1);
@@ -55,22 +58,38 @@ export function RegistrationDetailDialogContainer({
     if (!registration) return;
 
     startTransition(async () => {
-      // Check if any values changed
-      const hasChanges =
-        editedPrice !== registration.price ||
-        editedDiscount !== registration.discount ||
-        editedSeats !== registration.seats_reserved;
+      try {
+        // Check if any values changed
+        const hasChanges =
+          editedPrice !== registration.price ||
+          editedDiscount !== registration.discount ||
+          editedSeats !== registration.seats_reserved;
 
-      if (hasChanges) {
-        await updateRegistrationDetails(registration.id, {
-          price: editedPrice,
-          discount: editedDiscount,
-          seatsReserved: editedSeats,
-        });
+        if (hasChanges) {
+          await updateRegistrationDetailsMutation({
+            variables: {
+              registrationId: registration.id,
+              input: {
+                price: editedPrice,
+                discount: editedDiscount,
+                seatsReserved: editedSeats,
+              },
+            },
+          });
+        }
+        onOpenChange(false);
+      } catch (error) {
+        console.error("Failed to update registration details:", error);
       }
-      onOpenChange(false);
     });
-  }, [registration, editedPrice, editedDiscount, editedSeats, onOpenChange]);
+  }, [
+    editedDiscount,
+    editedPrice,
+    editedSeats,
+    onOpenChange,
+    registration,
+    updateRegistrationDetailsMutation,
+  ]);
 
   const handleCancel = useCallback(() => {
     // Reset to original values

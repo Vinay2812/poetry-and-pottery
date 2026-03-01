@@ -2,7 +2,6 @@
 
 import type { CustomDataInput } from "@/data/cart/gateway/client";
 import {
-  getCustomizationCategories,
   getCustomizationOptionsByCategory,
 } from "@/data/customization/gateway/server";
 import { useCart } from "@/hooks/use-cart";

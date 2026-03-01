@@ -4,6 +4,16 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+/**
+ * Route: /dashboard/collections/new
+ * Page does: Admin create page for defining a new storefront collection.
+ * Key UI operations:
+ * - Fill collection form fields and save a new seasonal/curated collection.
+ * - Return to the collections index after successful creation.
+ * UI info needed for operations:
+ * - Admin authorization and collection form schema (name, slug, banner/media, schedule/status).
+ * - Validation rules ensuring unique identifiers and valid scheduling boundaries.
+ */
 export default function NewCollectionPage() {
   return (
     <div className="space-y-6">

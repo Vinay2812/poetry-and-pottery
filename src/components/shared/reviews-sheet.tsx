@@ -88,6 +88,8 @@ export function ReviewsSheet({
   onCloseViewer,
   children,
 }: ReviewsSheetProps) {
+  const activeSlide = selectedImageIndex ?? currentSlide;
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -250,7 +252,7 @@ export function ReviewsSheet({
               {/* Counter */}
               {imageWithReview.length > 1 && (
                 <div className="mt-4 text-center text-sm text-neutral-500">
-                  {currentSlide + 1} / {imageWithReview.length}
+                  {activeSlide + 1} / {imageWithReview.length}
                 </div>
               )}
             </div>

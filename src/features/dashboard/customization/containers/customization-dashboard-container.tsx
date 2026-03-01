@@ -1,15 +1,16 @@
 "use client";
 
-import {
-  createCustomizationOption,
-  createCustomizeCategory,
-  deleteCustomizationOption,
-  deleteCustomizeCategory,
-  toggleCustomizationOptionActive,
-  toggleCustomizeCategoryActive,
-} from "@/data/admin/customization/gateway/server";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
+
+import {
+  useAdminCreateCustomizationOptionMutation,
+  useAdminCreateCustomizeCategoryMutation,
+  useAdminDeleteCustomizationOptionMutation,
+  useAdminDeleteCustomizeCategoryMutation,
+  useAdminToggleCustomizationOptionActiveMutation,
+  useAdminToggleCustomizeCategoryActiveMutation,
+} from "@/graphql/generated/graphql";
 
 import { CustomizationDashboard } from "../components/customization-dashboard";
 import type {
@@ -27,6 +28,18 @@ export function CustomizationDashboardContainer({
 }: CustomizationDashboardContainerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [createCustomizeCategoryMutation] =
+    useAdminCreateCustomizeCategoryMutation();
+  const [createCustomizationOptionMutation] =
+    useAdminCreateCustomizationOptionMutation();
+  const [toggleCustomizeCategoryActiveMutation] =
+    useAdminToggleCustomizeCategoryActiveMutation();
+  const [deleteCustomizeCategoryMutation] =
+    useAdminDeleteCustomizeCategoryMutation();
+  const [toggleCustomizationOptionActiveMutation] =
+    useAdminToggleCustomizationOptionActiveMutation();
+  const [deleteCustomizationOptionMutation] =
+    useAdminDeleteCustomizationOptionMutation();
   const [addCategoryOpen, setAddCategoryOpen] = useState(false);
   const [addOptionForCategory, setAddOptionForCategory] = useState<{
     id: number;
@@ -50,39 +63,49 @@ export function CustomizationDashboardContainer({
 
   const handleAddCategory = useCallback(
     async (formData: CreateCategoryFormData) => {
-      const result = await createCustomizeCategory({
-        category: formData.category,
-        base_price: formData.basePrice,
-        image_url: formData.imageUrl,
+      const { data } = await createCustomizeCategoryMutation({
+        variables: {
+          input: {
+            category: formData.category,
+            base_price: formData.basePrice,
+            image_url: formData.imageUrl,
+          },
+        },
       });
-      if (!result.success) {
-        alert(result.error || "Failed to create category");
+      const result = data?.adminCreateCustomizeCategory;
+      if (!result?.success) {
+        alert(result?.error || "Failed to create category");
         return;
       }
       setAddCategoryOpen(false);
       startTransition(() => router.refresh());
     },
-    [router],
+    [createCustomizeCategoryMutation, router],
   );
 
   const handleAddOption = useCallback(
     async (categoryId: number, formData: CreateOptionFormData) => {
-      const result = await createCustomizationOption({
-        customize_category_id: categoryId,
-        type: formData.type,
-        name: formData.name,
-        value: formData.value,
-        price_modifier: formData.priceModifier,
-        sort_order: formData.sortOrder,
+      const { data } = await createCustomizationOptionMutation({
+        variables: {
+          input: {
+            customize_category_id: categoryId,
+            type: formData.type,
+            name: formData.name,
+            value: formData.value,
+            price_modifier: formData.priceModifier,
+            sort_order: formData.sortOrder,
+          },
+        },
       });
-      if (!result.success) {
-        alert(result.error || "Failed to create option");
+      const result = data?.adminCreateCustomizationOption;
+      if (!result?.success) {
+        alert(result?.error || "Failed to create option");
         return;
       }
       setAddOptionForCategory(null);
       startTransition(() => router.refresh());
     },
-    [router],
+    [createCustomizationOptionMutation, router],
   );
 
   const handleEditCategory = useCallback(
@@ -95,11 +118,13 @@ export function CustomizationDashboardContainer({
   const handleToggleCategoryActive = useCallback(
     (categoryId: number) => {
       startTransition(async () => {
-        await toggleCustomizeCategoryActive(categoryId);
+        await toggleCustomizeCategoryActiveMutation({
+          variables: { id: categoryId },
+        });
         router.refresh();
       });
     },
-    [router],
+    [router, toggleCustomizeCategoryActiveMutation],
   );
 
   const handleDeleteCategory = useCallback(
@@ -111,35 +136,42 @@ export function CustomizationDashboardContainer({
       )
         return;
       startTransition(async () => {
-        const result = await deleteCustomizeCategory(categoryId);
-        if (!result.success) {
-          alert(result.error || "Failed to delete category");
+        const { data } = await deleteCustomizeCategoryMutation({
+          variables: { id: categoryId },
+        });
+        const result = data?.adminDeleteCustomizeCategory;
+        if (!result?.success) {
+          alert(result?.error || "Failed to delete category");
         }
         router.refresh();
       });
     },
-    [router],
+    [deleteCustomizeCategoryMutation, router],
   );
 
   const handleToggleOptionActive = useCallback(
     (optionId: number) => {
       startTransition(async () => {
-        await toggleCustomizationOptionActive(optionId);
+        await toggleCustomizationOptionActiveMutation({
+          variables: { id: optionId },
+        });
         router.refresh();
       });
     },
-    [router],
+    [router, toggleCustomizationOptionActiveMutation],
   );
 
   const handleDeleteOption = useCallback(
     (optionId: number) => {
       if (!confirm("Delete this option?")) return;
       startTransition(async () => {
-        await deleteCustomizationOption(optionId);
+        await deleteCustomizationOptionMutation({
+          variables: { id: optionId },
+        });
         router.refresh();
       });
     },
-    [router],
+    [deleteCustomizationOptionMutation, router],
   );
 
   const handleEditOption = useCallback(

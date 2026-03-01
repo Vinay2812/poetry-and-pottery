@@ -1,13 +1,12 @@
 "use client";
 
-import { updateRegistrationStatus } from "@/data/admin/registrations/gateway/server";
 import { useKanbanOptimisticBoard } from "@/hooks";
 import { useCallback } from "react";
 
 import { getRegistrationStatusColor } from "@/lib/status-utils";
 
+import { useAdminUpdateRegistrationStatusMutation } from "@/graphql/generated/graphql";
 import { EventRegistrationStatus } from "@/graphql/generated/types";
-import type { AdminUserRegistration } from "@/graphql/generated/types";
 
 import { RegistrationsBoard } from "../components/registrations-board";
 import type { RegistrationsBoardContainerProps } from "../types";
@@ -24,11 +23,27 @@ const REGISTRATION_COLUMNS: { id: EventRegistrationStatus; title: string }[] = [
 export function RegistrationsBoardContainer({
   registrations,
 }: RegistrationsBoardContainerProps) {
+  const [updateRegistrationStatusMutation] =
+    useAdminUpdateRegistrationStatusMutation();
+
   const handleUpdateStatus = useCallback(
     async (registrationId: string, status: EventRegistrationStatus) => {
-      return updateRegistrationStatus(registrationId, status);
+      try {
+        const { data } = await updateRegistrationStatusMutation({
+          variables: { registrationId, status },
+        });
+        return (
+          data?.adminUpdateRegistrationStatus ?? { success: false, error: null }
+        );
+      } catch (error) {
+        console.error("Failed to update registration status:", error);
+        return {
+          success: false,
+          error: "Failed to update registration status",
+        };
+      }
     },
-    [],
+    [updateRegistrationStatusMutation],
   );
 
   const {

@@ -12,6 +12,16 @@ interface EditCategoryPageProps {
   }>;
 }
 
+/**
+ * Route: /dashboard/customization/category/[id]
+ * Page does: Admin edit page for a customization category and its product mapping rules.
+ * Key UI operations:
+ * - Modify category metadata and map it to relevant product categories.
+ * - Block editing UI when category ID is invalid or record cannot be found.
+ * UI info needed for operations:
+ * - Route param `id` parsed to numeric category ID with not-found safeguards.
+ * - Category record plus product category list and existing customization category references.
+ */
 export default async function EditCategoryPage({
   params,
 }: EditCategoryPageProps) {

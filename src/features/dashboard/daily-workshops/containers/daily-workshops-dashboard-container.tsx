@@ -1,21 +1,23 @@
 "use client";
 
 import {
-  createDailyWorkshopConfig,
-  deleteDailyWorkshopBlackoutRule,
-  deleteDailyWorkshopConfig,
-  deleteDailyWorkshopPricingTier,
   getDailyWorkshopBlackoutRules,
   getDailyWorkshopPricingTiers,
-  updateDailyWorkshopConfig,
-  upsertDailyWorkshopBlackoutRule,
-  upsertDailyWorkshopPricingTier,
 } from "@/data/admin/daily-workshops/gateway/server";
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { createDate } from "@/lib/date";
 
+import {
+  useAdminCreateDailyWorkshopConfigMutation,
+  useAdminDeleteDailyWorkshopBlackoutRuleMutation,
+  useAdminDeleteDailyWorkshopConfigMutation,
+  useAdminDeleteDailyWorkshopPricingTierMutation,
+  useAdminUpdateDailyWorkshopConfigMutation,
+  useAdminUpsertDailyWorkshopBlackoutRuleMutation,
+  useAdminUpsertDailyWorkshopPricingTierMutation,
+} from "@/graphql/generated/graphql";
 import type {
   AdminDailyWorkshopBlackoutRule,
   AdminDailyWorkshopConfig,
@@ -274,6 +276,20 @@ export function DailyWorkshopsDashboardContainer({
   const [activeTab, setActiveTab] =
     useState<DailyWorkshopsDashboardTab>("config");
   const [isPending, startTransition] = useTransition();
+  const [createDailyWorkshopConfigMutation] =
+    useAdminCreateDailyWorkshopConfigMutation();
+  const [deleteDailyWorkshopConfigMutation] =
+    useAdminDeleteDailyWorkshopConfigMutation();
+  const [updateDailyWorkshopConfigMutation] =
+    useAdminUpdateDailyWorkshopConfigMutation();
+  const [upsertDailyWorkshopPricingTierMutation] =
+    useAdminUpsertDailyWorkshopPricingTierMutation();
+  const [deleteDailyWorkshopPricingTierMutation] =
+    useAdminDeleteDailyWorkshopPricingTierMutation();
+  const [upsertDailyWorkshopBlackoutRuleMutation] =
+    useAdminUpsertDailyWorkshopBlackoutRuleMutation();
+  const [deleteDailyWorkshopBlackoutRuleMutation] =
+    useAdminDeleteDailyWorkshopBlackoutRuleMutation();
 
   const [configData, setConfigData] = useState<AdminDailyWorkshopConfig | null>(
     initialSelectedConfig,
@@ -360,7 +376,12 @@ export function DailyWorkshopsDashboardContainer({
   const handleCreateConfig = useCallback(() => {
     startTransition(async () => {
       try {
-        const result = await createDailyWorkshopConfig();
+        const { data } = await createDailyWorkshopConfigMutation();
+        const result = data?.adminCreateDailyWorkshopConfig;
+        if (!result) {
+          toast.error("Failed to create config");
+          return;
+        }
         const createdConfig = result.config;
 
         if (!result.success || !createdConfig) {
@@ -384,7 +405,7 @@ export function DailyWorkshopsDashboardContainer({
         );
       }
     });
-  }, [resetEditorDrafts]);
+  }, [createDailyWorkshopConfigMutation, resetEditorDrafts]);
 
   const handleDeleteConfig = useCallback(() => {
     if (!selectedConfigId) {
@@ -402,7 +423,14 @@ export function DailyWorkshopsDashboardContainer({
 
     startTransition(async () => {
       try {
-        const result = await deleteDailyWorkshopConfig(selectedConfigId);
+        const { data } = await deleteDailyWorkshopConfigMutation({
+          variables: { id: selectedConfigId },
+        });
+        const result = data?.adminDeleteDailyWorkshopConfig;
+        if (!result) {
+          toast.error("Failed to delete config");
+          return;
+        }
 
         if (!result.success) {
           toast.error(result.error || "Failed to delete config");
@@ -451,7 +479,12 @@ export function DailyWorkshopsDashboardContainer({
         );
       }
     });
-  }, [configs, resetEditorDrafts, selectedConfigId]);
+  }, [
+    configs,
+    deleteDailyWorkshopConfigMutation,
+    resetEditorDrafts,
+    selectedConfigId,
+  ]);
 
   const handleConfigFormChange = useCallback(
     (
@@ -482,10 +515,17 @@ export function DailyWorkshopsDashboardContainer({
 
     startTransition(async () => {
       try {
-        const result = await updateDailyWorkshopConfig(
-          configForm,
-          selectedConfigId,
-        );
+        const { data } = await updateDailyWorkshopConfigMutation({
+          variables: {
+            configId: selectedConfigId,
+            input: configForm,
+          },
+        });
+        const result = data?.adminUpdateDailyWorkshopConfig;
+        if (!result) {
+          toast.error("Failed to update configuration");
+          return;
+        }
         const updatedConfig = result.config;
 
         if (!result.success || !updatedConfig) {
@@ -510,7 +550,7 @@ export function DailyWorkshopsDashboardContainer({
         );
       }
     });
-  }, [configForm, selectedConfigId]);
+  }, [configForm, selectedConfigId, updateDailyWorkshopConfigMutation]);
 
   const handleTierDraftChange = useCallback(
     (field: keyof typeof tierDraft, value: string | number | boolean) => {
@@ -540,10 +580,17 @@ export function DailyWorkshopsDashboardContainer({
 
     startTransition(async () => {
       try {
-        const result = await upsertDailyWorkshopPricingTier(
-          toTierInput(tierDraft, editingTierId ?? undefined),
-          selectedConfigId,
-        );
+        const { data } = await upsertDailyWorkshopPricingTierMutation({
+          variables: {
+            configId: selectedConfigId,
+            input: toTierInput(tierDraft, editingTierId ?? undefined),
+          },
+        });
+        const result = data?.adminUpsertDailyWorkshopPricingTier;
+        if (!result) {
+          toast.error("Failed to save tier");
+          return;
+        }
 
         if (!result.success || !result.tier) {
           toast.error(result.error || "Failed to save tier");
@@ -560,7 +607,12 @@ export function DailyWorkshopsDashboardContainer({
         );
       }
     });
-  }, [editingTierId, selectedConfigId, tierDraft]);
+  }, [
+    editingTierId,
+    selectedConfigId,
+    tierDraft,
+    upsertDailyWorkshopPricingTierMutation,
+  ]);
 
   const handleEditTier = useCallback(
     (tierId: number) => {
@@ -593,7 +645,14 @@ export function DailyWorkshopsDashboardContainer({
 
       startTransition(async () => {
         try {
-          const result = await deleteDailyWorkshopPricingTier(tierId);
+          const { data } = await deleteDailyWorkshopPricingTierMutation({
+            variables: { id: tierId },
+          });
+          const result = data?.adminDeleteDailyWorkshopPricingTier;
+          if (!result) {
+            toast.error("Failed to delete tier");
+            return;
+          }
           if (!result.success) {
             toast.error(result.error || "Failed to delete tier");
             return;
@@ -614,7 +673,7 @@ export function DailyWorkshopsDashboardContainer({
         }
       });
     },
-    [editingTierId],
+    [deleteDailyWorkshopPricingTierMutation, editingTierId],
   );
 
   const handleBlackoutDraftChange = useCallback(
@@ -643,10 +702,20 @@ export function DailyWorkshopsDashboardContainer({
 
     startTransition(async () => {
       try {
-        const result = await upsertDailyWorkshopBlackoutRule(
-          toBlackoutInput(blackoutDraft, editingBlackoutId ?? undefined),
-          selectedConfigId,
-        );
+        const { data } = await upsertDailyWorkshopBlackoutRuleMutation({
+          variables: {
+            configId: selectedConfigId,
+            input: toBlackoutInput(
+              blackoutDraft,
+              editingBlackoutId ?? undefined,
+            ),
+          },
+        });
+        const result = data?.adminUpsertDailyWorkshopBlackoutRule;
+        if (!result) {
+          toast.error("Failed to save blackout rule");
+          return;
+        }
 
         if (!result.success || !result.rule) {
           toast.error(result.error || "Failed to save blackout rule");
@@ -668,7 +737,13 @@ export function DailyWorkshopsDashboardContainer({
         );
       }
     });
-  }, [blackoutDraft, configData, editingBlackoutId, selectedConfigId]);
+  }, [
+    blackoutDraft,
+    configData,
+    editingBlackoutId,
+    selectedConfigId,
+    upsertDailyWorkshopBlackoutRuleMutation,
+  ]);
 
   const handleEditBlackout = useCallback(
     (ruleId: string) => {
@@ -699,7 +774,14 @@ export function DailyWorkshopsDashboardContainer({
 
       startTransition(async () => {
         try {
-          const result = await deleteDailyWorkshopBlackoutRule(ruleId);
+          const { data } = await deleteDailyWorkshopBlackoutRuleMutation({
+            variables: { id: ruleId },
+          });
+          const result = data?.adminDeleteDailyWorkshopBlackoutRule;
+          if (!result) {
+            toast.error("Failed to delete blackout rule");
+            return;
+          }
           if (!result.success) {
             toast.error(result.error || "Failed to delete blackout rule");
             return;
@@ -729,7 +811,7 @@ export function DailyWorkshopsDashboardContainer({
         }
       });
     },
-    [configData, editingBlackoutId],
+    [configData, deleteDailyWorkshopBlackoutRuleMutation, editingBlackoutId],
   );
 
   return (

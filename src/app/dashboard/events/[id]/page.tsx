@@ -26,6 +26,16 @@ interface EventDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
+/**
+ * Route: /dashboard/events/[id]
+ * Page does: Admin event detail page with tabs for event details, registrations, and reviews.
+ * Key UI operations:
+ * - Edit event configuration, inspect registrations, and review feedback metrics in tabbed UI.
+ * - Use status/level selectors and moderation controls tied to the selected event.
+ * UI info needed for operations:
+ * - Route param `id` identifying the event plus not-found guard for missing records.
+ * - Event payload, status/level options, registrations dataset, and review aggregates.
+ */
 export default async function EventDetailPage({
   params,
 }: EventDetailPageProps) {

@@ -28,6 +28,16 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Route: /orders/[id]
+ * Page does: Order detail page for shipment state, item breakdown, and post-purchase actions.
+ * Key UI operations:
+ * - Inspect order timeline/items and navigate follow-up actions such as writing reviews.
+ * - Return to order history while keeping route-specific order context.
+ * UI info needed for operations:
+ * - Route param `id` used to fetch a single order record for the signed-in user.
+ * - Order payload (items, shipping address, payment totals, shipment status, review eligibility).
+ */
 export default function OrderDetailPage({ params }: OrderDetailPageProps) {
   return (
     <Suspense fallback={<OrderDetailSkeleton />}>

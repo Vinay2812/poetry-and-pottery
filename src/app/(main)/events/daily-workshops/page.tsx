@@ -46,6 +46,16 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Route: /events/daily-workshops
+ * Page does: Calendar-style daily workshop booking page with tiered session pricing.
+ * Key UI operations:
+ * - Navigate months, inspect slot availability, and select date/time slots for booking.
+ * - Choose pricing tiers and complete booking flow for solo/group workshop sessions.
+ * UI info needed for operations:
+ * - Daily availability grid (days, slots, availability flags) for the calendar interaction.
+ * - Public workshop configs and active pricing tiers used by booking/price summary panels.
+ */
 export default function DailyWorkshopsPage() {
   return (
     <Suspense fallback={<DailyWorkshopsBookingSkeleton />}>

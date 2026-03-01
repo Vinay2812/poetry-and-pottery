@@ -15,6 +15,16 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Route: /wishlist
+ * Page does: Authenticated wishlist page for saved products and quick conversion to cart.
+ * Key UI operations:
+ * - Browse saved items, remove/save states, and add wishlist products directly to cart.
+ * - Load additional wishlist pages while preserving current list state.
+ * UI info needed for operations:
+ * - Authenticated user context and wishlist pagination metadata.
+ * - Wishlist item payload with product identifiers needed for cart and detail navigation.
+ */
 export default function WishlistPage() {
   return (
     <Suspense fallback={<WishlistSkeleton />}>

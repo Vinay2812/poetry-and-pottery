@@ -2,10 +2,7 @@
 
 import { useCallback } from "react";
 
-import type {
-  CartItem,
-  ProductCustomizationData,
-} from "@/graphql/generated/graphql";
+import type { CartItem } from "@/graphql/generated/graphql";
 import {
   useAddToCartMutation as useAddToCartGraphQL,
   useRemoveFromCartMutation as useRemoveFromCartGraphQL,

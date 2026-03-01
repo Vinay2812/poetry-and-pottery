@@ -55,6 +55,7 @@ const typePolicies = {
       // Reviews are fetched separately, merge them properly
       reviews: {
         merge(existing: unknown[] = [], incoming: unknown[]) {
+          void existing;
           return incoming; // Always use latest reviews
         },
       },
@@ -154,7 +155,7 @@ export const { getClient, query: apolloClient } = registerApolloClient(() => {
   });
 
   return new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ typePolicies }),
     link: authLink.concat(httpLink),
     defaultOptions: {
       watchQuery: {
@@ -181,7 +182,7 @@ export const { getClient: getPublicClient, query: publicApolloClient } =
     });
 
     return new ApolloClient({
-      cache: new InMemoryCache(),
+      cache: new InMemoryCache({ typePolicies }),
       link: httpLink,
       defaultOptions: {
         watchQuery: {

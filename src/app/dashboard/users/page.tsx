@@ -13,6 +13,16 @@ interface UsersPageProps {
   searchParams: Promise<DashboardUsersSearchParams>;
 }
 
+/**
+ * Route: /dashboard/users
+ * Page does: Admin user directory page with role-aware filtering and sorting.
+ * Key UI operations:
+ * - Search users, filter by role, sort results, and paginate table data.
+ * - Open a specific user record for deeper account-level analysis.
+ * UI info needed for operations:
+ * - Query params: `search`, `role`, `sort`, and `page` controlling table state.
+ * - Current admin user id and user list payload used for row-level actions/permissions.
+ */
 export default async function UsersPage({ searchParams }: UsersPageProps) {
   const currentUser = await requireAdminUser();
   const params = await searchParams;

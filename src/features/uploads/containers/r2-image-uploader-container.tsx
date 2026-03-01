@@ -1,9 +1,10 @@
 "use client";
 
 import { ACCEPTED_IMAGE_TYPES } from "@/consts/uploads";
-import { getPresignedUploadUrl } from "@/data/admin/uploads/gateway/server";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { useAdminGetPresignedUploadUrlMutation } from "@/graphql/generated/graphql";
 
 import { R2ImageUploader } from "../components/r2-image-uploader";
 import type { R2ImageUploaderContainerProps, UploadFile } from "../types";
@@ -22,6 +23,8 @@ export function R2ImageUploaderContainer({
   onChange,
   disabled = false,
 }: R2ImageUploaderContainerProps) {
+  const [getPresignedUploadUrlMutation] =
+    useAdminGetPresignedUploadUrlMutation();
   // Initialize state with existing URLs using lazy initialization
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>(() =>
     value.map(createUploadFileFromUrl),
@@ -59,12 +62,21 @@ export function R2ImageUploaderContainer({
           ),
         );
 
-        const result = await getPresignedUploadUrl({
-          filename: fileToUpload.file.name,
-          contentType: fileToUpload.file.type,
-          fileSize: fileToUpload.file.size,
-          folder,
+        const { data } = await getPresignedUploadUrlMutation({
+          variables: {
+            input: {
+              filename: fileToUpload.file.name,
+              contentType: fileToUpload.file.type,
+              fileSize: fileToUpload.file.size,
+              folder,
+            },
+          },
         });
+        const result = data?.adminGetPresignedUploadUrl;
+
+        if (!result) {
+          throw new Error("Failed to get presigned URL");
+        }
 
         if (!result.success || !result.presignedUrl || !result.publicUrl) {
           throw new Error(result.error || "Failed to get presigned URL");
@@ -105,7 +117,7 @@ export function R2ImageUploaderContainer({
         );
       }
     },
-    [folder],
+    [folder, getPresignedUploadUrlMutation],
   );
 
   const handleFilesSelect = useCallback(

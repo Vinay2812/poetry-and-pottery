@@ -18,6 +18,8 @@
     "lint": "eslint .",
     "prettier": "prettier --check .",
     "prettier:format": "prettier --write .",
+    "route:check": "node scripts/route-check.mjs --base-url http://localhost:3005 --out review-audit/route-check/latest.tsv",
+    "route:e2e": "node scripts/route-e2e-audit.mjs --base-url http://localhost:3005 --out-dir ../review-audit/e2e-full",
     "start": "next start",
     "tsc": "bunx tsc --noEmit"
   },

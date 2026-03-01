@@ -72,6 +72,16 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Route: /events/[id]
+ * Page does: Single-event detail page for booking decisions and event context review.
+ * Key UI operations:
+ * - Review event metadata and use share/save/reserve actions from the event detail layout.
+ * - Discover related/upcoming events through secondary recommendation modules.
+ * UI info needed for operations:
+ * - Route param `id` for event lookup and not-found handling when missing/invalid.
+ * - Event detail payload (timing, location, seats, price, description, media) for CTA state.
+ */
 export default function EventDetailPage({ params }: EventDetailPageProps) {
   return (
     <Suspense fallback={<EventDetailSkeleton />}>

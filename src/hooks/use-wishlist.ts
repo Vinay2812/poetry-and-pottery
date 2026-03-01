@@ -47,9 +47,6 @@ export function useWishlist() {
         return false;
       }
 
-      // Store previous state for rollback
-      const wasInWishlist = storeIsInWishlist(productId);
-
       // Optimistically update
       toggleWishlistId(productId);
 
@@ -71,7 +68,6 @@ export function useWishlist() {
     },
     [
       isSignedIn,
-      storeIsInWishlist,
       addToast,
       setSignInModalOpen,
       setSignInRedirectUrl,

@@ -1,11 +1,12 @@
 "use client";
 
-import {
-  assignProductsToCollection,
-  removeProductFromCollection,
-} from "@/data/admin/collections/gateway/server";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState } from "react";
+
+import {
+  useAdminAssignProductsToCollectionMutation,
+  useAdminRemoveProductFromCollectionMutation,
+} from "@/graphql/generated/graphql";
 
 import { CollectionProductsSection } from "../components/collection-products-section";
 import { ProductSelectorDialog } from "../components/product-selector-dialog";
@@ -16,7 +17,10 @@ export function CollectionProductsContainer({
   collection,
 }: CollectionProductsContainerProps) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [assignProductsToCollectionMutation, { loading: assignLoading }] =
+    useAdminAssignProductsToCollectionMutation();
+  const [removeProductFromCollectionMutation, { loading: removeLoading }] =
+    useAdminRemoveProductFromCollectionMutation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const products = useMemo(
@@ -25,21 +29,27 @@ export function CollectionProductsContainer({
   );
 
   const handleRemoveProduct = useCallback(
-    (productId: number) => {
+    async (productId: number) => {
       if (!confirm("Remove this product from the collection?")) {
         return;
       }
 
-      startTransition(async () => {
-        const result = await removeProductFromCollection(productId);
-        if (!result.success) {
-          console.error("Failed to remove product:", result.error);
-          alert(result.error || "Failed to remove product");
+      try {
+        const { data } = await removeProductFromCollectionMutation({
+          variables: { productId },
+        });
+        const result = data?.adminRemoveProductFromCollection;
+        if (!result?.success) {
+          console.error("Failed to remove product:", result?.error);
+          alert(result?.error || "Failed to remove product");
         }
+      } catch (error) {
+        console.error("Failed to remove product:", error);
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [removeProductFromCollectionMutation, router],
   );
 
   const handleManageProducts = useCallback(() => {
@@ -51,30 +61,37 @@ export function CollectionProductsContainer({
   }, []);
 
   const handleAssignProducts = useCallback(
-    (productIds: number[]) => {
-      startTransition(async () => {
-        const result = await assignProductsToCollection({
-          collectionId: collection.id,
-          productIds,
+    async (productIds: number[]) => {
+      try {
+        const { data } = await assignProductsToCollectionMutation({
+          variables: {
+            input: {
+              collectionId: collection.id,
+              productIds,
+            },
+          },
         });
+        const result = data?.adminAssignProductsToCollection;
 
-        if (!result.success) {
-          console.error("Failed to assign products:", result.error);
-          alert(result.error || "Failed to assign products");
+        if (!result?.success) {
+          console.error("Failed to assign products:", result?.error);
+          alert(result?.error || "Failed to assign products");
         }
-
+      } catch (error) {
+        console.error("Failed to assign products:", error);
+      } finally {
         setIsDialogOpen(false);
         router.refresh();
-      });
+      }
     },
-    [collection.id, router],
+    [assignProductsToCollectionMutation, collection.id, router],
   );
 
   return (
     <>
       <CollectionProductsSection
         products={products}
-        isPending={isPending}
+        isPending={assignLoading || removeLoading}
         onRemoveProduct={handleRemoveProduct}
         onManageProducts={handleManageProducts}
       />
@@ -84,7 +101,7 @@ export function CollectionProductsContainer({
         onClose={handleDialogClose}
         onConfirm={handleAssignProducts}
         selectedProductIds={collection.products.map((p) => p.id)}
-        isPending={isPending}
+        isPending={assignLoading || removeLoading}
       />
     </>
   );

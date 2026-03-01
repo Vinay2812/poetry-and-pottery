@@ -1,12 +1,13 @@
 "use client";
 
-import {
-  deleteProduct,
-  toggleProductActive,
-} from "@/data/admin/products/gateway/server";
 import { useURLFilterHandlers } from "@/hooks/use-url-filter-handlers";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState } from "react";
+
+import {
+  useAdminDeleteProductMutation,
+  useAdminToggleProductActiveMutation,
+} from "@/graphql/generated/graphql";
 
 import { ProductsTable } from "../components/products-table";
 import type { ProductsTableContainerProps } from "../types";
@@ -19,7 +20,10 @@ export function ProductsTableContainer({
 }: ProductsTableContainerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [, startTransition] = useTransition();
+  const [deleteProductMutation, { loading: deleteLoading }] =
+    useAdminDeleteProductMutation();
+  const [toggleProductActiveMutation, { loading: toggleLoading }] =
+    useAdminToggleProductActiveMutation();
 
   const {
     createFilterHandler,
@@ -51,35 +55,50 @@ export function ProductsTableContainer({
   );
 
   const handleToggleActive = useCallback(
-    (productId: number) => {
-      startTransition(async () => {
-        const result = await toggleProductActive(productId);
-        if (!result.success) {
-          console.error("Failed to toggle product status:", result.error);
+    async (productId: number) => {
+      try {
+        const { data } = await toggleProductActiveMutation({
+          variables: { id: productId },
+        });
+        const result = data?.adminToggleProductActive;
+        if (!result?.success) {
+          console.error("Failed to toggle product status:", result?.error);
         }
+      } catch (error) {
+        console.error("Failed to toggle product status:", error);
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [router, toggleProductActiveMutation],
   );
 
   const handleDelete = useCallback(
-    (productId: number) => {
+    async (productId: number) => {
       if (!confirm("Are you sure you want to delete this product?")) {
         return;
       }
 
-      startTransition(async () => {
-        const result = await deleteProduct(productId);
-        if (!result.success) {
-          console.error("Failed to delete product:", result.error);
+      try {
+        const { data } = await deleteProductMutation({
+          variables: { id: productId },
+        });
+        const result = data?.adminDeleteProduct;
+        if (!result?.success) {
+          console.error("Failed to delete product:", result?.error);
+          if (result?.error) {
+            alert(result.error);
+          }
         } else if (result.error) {
           alert(result.error);
         }
+      } catch (error) {
+        console.error("Failed to delete product:", error);
+      } finally {
         router.refresh();
-      });
+      }
     },
-    [router],
+    [deleteProductMutation, router],
   );
 
   return (
@@ -87,7 +106,7 @@ export function ProductsTableContainer({
       viewModel={viewModel}
       categories={categories}
       collections={collections}
-      isPending={isPending}
+      isPending={isPending || deleteLoading || toggleLoading}
       onSearch={handleSearch}
       onCategoryFilter={handleCategoryFilter}
       onCollectionFilter={handleCollectionFilter}
