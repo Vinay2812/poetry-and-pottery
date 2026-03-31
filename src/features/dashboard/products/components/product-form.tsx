@@ -158,18 +158,12 @@ export function ProductForm({
     handleSubmit,
     control,
     setValue,
-    reset,
-    formState: { errors, isDirty, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(productFormSchema) as never,
     defaultValues: formDefaults,
+    values: formDefaults,
   });
-
-  useEffect(() => {
-    if (!isDirty) {
-      reset(formDefaults);
-    }
-  }, [formDefaults, isDirty, reset]);
 
   const { fields, append, remove, move } = useFieldArray({
     control,
