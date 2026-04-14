@@ -6,36 +6,36 @@ const envFile = `.env.${env}`;
 dotenv.config({ path: envFile });
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // output: "standalone",
   env: {
     LOCAL_ADMIN_BYPASS_SECRET:
       process.env.NODE_ENV === "production"
         ? ""
         : process.env.LOCAL_ADMIN_BYPASS_SECRET || "",
   },
-  cacheComponents: true,
-  cacheLife: {
-    products: {
-      stale: 60,
-      revalidate: 300,
-      expire: 1800,
-    },
-    events: {
-      stale: 60,
-      revalidate: 300,
-      expire: 1800,
-    },
-    content: {
-      stale: 300,
-      revalidate: 3600,
-      expire: 86400,
-    },
-    customization: {
-      stale: 300,
-      revalidate: 3600,
-      expire: 86400,
-    },
-  },
+  // cacheComponents: true,
+  // cacheLife: {
+  //   products: {
+  //     stale: 60,
+  //     revalidate: 300,
+  //     expire: 1800,
+  //   },
+  //   events: {
+  //     stale: 60,
+  //     revalidate: 300,
+  //     expire: 1800,
+  //   },
+  //   content: {
+  //     stale: 300,
+  //     revalidate: 3600,
+  //     expire: 86400,
+  //   },
+  //   customization: {
+  //     stale: 300,
+  //     revalidate: 3600,
+  //     expire: 86400,
+  //   },
+  // },
   reactCompiler: true,
   images: {
     remotePatterns: [
