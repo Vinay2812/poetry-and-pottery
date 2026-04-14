@@ -83,7 +83,7 @@ export function DailyWorkshopRegistrationDetail({
               onSelectDay={onSelectDay}
             />
 
-            <div className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
+            <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
               <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
                 Status History
               </h2>

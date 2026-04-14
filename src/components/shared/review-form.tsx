@@ -123,7 +123,7 @@ export function ReviewForm({
   return (
     <form
       action={handleSubmitAction}
-      className="rounded-2xl bg-neutral-50 p-5 md:p-6"
+      className="bg-cream rounded-2xl p-5 md:p-6"
     >
       <ReviewFormFields
         title={title}
@@ -195,7 +195,7 @@ function ReviewFormFields({
             }
           }}
           placeholder="Share your thoughts (optional)"
-          className="focus:border-primary focus:ring-primary min-h-[80px] resize-none rounded-lg border-neutral-200 text-sm focus:ring-1"
+          className="focus:border-primary focus:ring-primary border-border min-h-[80px] resize-none rounded-lg text-sm focus:ring-1"
           disabled={pending}
         />
         <p className="mt-1.5 text-right text-xs text-neutral-400">

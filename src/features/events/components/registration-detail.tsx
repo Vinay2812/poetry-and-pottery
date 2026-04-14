@@ -195,7 +195,7 @@ export function RegistrationDetail({
                 </div>
 
                 {/* About */}
-                <div className="border-t border-neutral-100 pt-6 pb-6">
+                <div className="border-border border-t pt-6 pb-6">
                   <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                     About
                   </h2>
@@ -206,7 +206,7 @@ export function RegistrationDetail({
 
                 {/* Instructor - Workshop Only */}
                 {instructor && isWorkshop && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                  <div className="border-border border-t pt-6 pb-6">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Instructor
                     </h2>
@@ -228,7 +228,7 @@ export function RegistrationDetail({
 
                 {/* Performers - Open Mic Only */}
                 {isOpenMic && performers && performers.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                  <div className="border-border border-t pt-6 pb-6">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Lineup
                     </h2>
@@ -254,7 +254,7 @@ export function RegistrationDetail({
 
                 {/* Location */}
                 {location && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                  <div className="border-border border-t pt-6 pb-6">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Location
                     </h2>
@@ -278,7 +278,7 @@ export function RegistrationDetail({
 
                 {/* What's Included */}
                 {includes && includes.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                  <div className="border-border border-t pt-6 pb-6">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       What&apos;s included
                     </h2>
@@ -315,7 +315,7 @@ export function RegistrationDetail({
                   />
                 </div>
 
-                <div className="mb-5 border-t border-neutral-100" />
+                <div className="border-border mb-5 border-t" />
 
                 {/* Summary */}
                 <div className="mb-5 space-y-2.5">

@@ -12,7 +12,7 @@ export function PricingSidebar({
   totalPieces,
 }: PricingSidebarProps) {
   return (
-    <div className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
+    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
       <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
         Pricing
       </h2>
@@ -34,7 +34,7 @@ export function PricingSidebar({
           </span>
         </div>
       </div>
-      <div className="mt-4 border-t border-neutral-200 pt-4">
+      <div className="border-border mt-4 border-t pt-4">
         <div className="flex items-center justify-between">
           <span className="text-sm text-neutral-600">Total</span>
           <span className="text-primary text-2xl font-bold">

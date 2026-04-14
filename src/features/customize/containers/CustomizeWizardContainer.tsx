@@ -218,7 +218,7 @@ export function CustomizeWizardContainer({
       />
 
       {/* Step Content */}
-      <div className="rounded-2xl bg-neutral-50 p-6">
+      <div className="bg-cream rounded-2xl p-6">
         {currentStep === "category" && (
           <CategorySelector
             categories={categoryViewModels}

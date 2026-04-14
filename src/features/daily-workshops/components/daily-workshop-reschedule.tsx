@@ -27,7 +27,7 @@ export function DailyWorkshopReschedule({
   return (
     <EventsListLayout>
       <div>
-        <section className="border-primary/20 from-primary-lighter/70 mb-6 rounded-3xl border bg-gradient-to-br via-white to-white p-5 shadow-sm lg:mb-8 lg:p-6">
+        <section className="border-primary/20 from-primary-lighter/70 via-card to-card mb-6 rounded-3xl border bg-gradient-to-br p-5 shadow-sm lg:mb-8 lg:p-6">
           <h1 className="font-display text-2xl font-bold tracking-tight text-neutral-900 lg:text-3xl">
             Reschedule Daily Workshop
           </h1>
@@ -61,7 +61,7 @@ export function DailyWorkshopReschedule({
               onSelectDate={onSelectDate}
             />
 
-            <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
+            <section className="bg-card border-border rounded-2xl border p-5 shadow-sm">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <p className="font-display text-lg font-semibold text-neutral-900">
@@ -89,7 +89,7 @@ export function DailyWorkshopReschedule({
                         "rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
                         tab.dateKey === viewModel.activeDateKey
                           ? "border-primary bg-primary text-white"
-                          : "hover:border-primary/40 bg-card border-neutral-200 text-neutral-600",
+                          : "hover:border-primary/40 bg-card border-border text-neutral-600",
                       )}
                       onClick={() => onSelectDate(tab.dateKey)}
                     >
@@ -124,9 +124,9 @@ export function DailyWorkshopReschedule({
                           "border-primary bg-primary text-primary-foreground shadow-sm",
                         !slot.isSelected &&
                           slot.isAvailable &&
-                          "hover:border-primary/40 hover:bg-primary-lighter/50 border-neutral-200",
+                          "hover:border-primary/40 hover:bg-primary-lighter/50 border-border",
                         !slot.isAvailable &&
-                          "cursor-not-allowed border-neutral-100 bg-neutral-50 text-neutral-400",
+                          "border-border bg-cream cursor-not-allowed text-neutral-400",
                       )}
                       onClick={() => onToggleSlot(slot.startAt)}
                     >
@@ -147,7 +147,7 @@ export function DailyWorkshopReschedule({
             </section>
           </div>
 
-          <aside className="bg-card h-fit rounded-2xl border border-neutral-200/80 p-5 shadow-sm xl:sticky xl:top-24">
+          <aside className="bg-card border-border h-fit rounded-2xl border p-5 shadow-sm xl:sticky xl:top-24">
             <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
               Reschedule Summary
             </h2>

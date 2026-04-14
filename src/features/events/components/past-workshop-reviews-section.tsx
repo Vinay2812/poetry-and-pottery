@@ -23,7 +23,7 @@ export function PastWorkshopReviewsSection({
   if (!reviews || reviews.length === 0) return null;
 
   return (
-    <div className="border-t border-neutral-100 pt-6 pb-6">
+    <div className="border-border border-t pt-6 pb-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h2 className="text-xs font-semibold text-neutral-500">Reviews</h2>

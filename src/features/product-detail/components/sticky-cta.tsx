@@ -59,7 +59,7 @@ export function StickyCTA({
   return (
     <div
       className={cn(
-        "bg-background/95 fixed right-0 bottom-16 left-0 z-40 border-t border-neutral-100 px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] backdrop-blur-md transition-transform duration-300 md:hidden",
+        "bg-background/95 border-border fixed right-0 bottom-16 left-0 z-40 border-t px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] backdrop-blur-md transition-transform duration-300 md:hidden",
         isVisible ? "translate-y-0" : "translate-y-full",
       )}
     >

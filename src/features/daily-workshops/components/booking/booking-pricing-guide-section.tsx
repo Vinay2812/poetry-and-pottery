@@ -10,7 +10,7 @@ export function BookingPricingGuideSection({
   viewModel,
 }: BookingPricingGuideSectionProps) {
   return (
-    <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
+    <section className="bg-card border-border rounded-2xl border p-5 shadow-sm">
       <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
         Pricing Guide
       </h2>
@@ -27,7 +27,7 @@ export function BookingPricingGuideSection({
                   "flex items-center justify-between rounded-xl border px-4 py-3",
                   isActive
                     ? "border-primary bg-primary-lighter"
-                    : "border-neutral-200",
+                    : "border-border",
                 )}
               >
                 <div>

@@ -27,7 +27,7 @@ export function UploadEmptyState({
       onDrop={onDrop}
       disabled={disabled}
       className={cn(
-        "hover:border-primary/50 hover:bg-primary/5 hover:text-primary flex w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 px-6 py-10 text-neutral-500 transition-colors",
+        "hover:border-primary/50 hover:bg-primary/5 hover:text-primary bg-cream flex w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-neutral-300 px-6 py-10 text-neutral-500 transition-colors",
         disabled && "pointer-events-none opacity-50",
       )}
     >

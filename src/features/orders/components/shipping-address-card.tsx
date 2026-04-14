@@ -16,7 +16,7 @@ export function ShippingAddressCard({
   return (
     <div
       className={cn(
-        "shadow-soft bg-card rounded-2xl border border-neutral-100 p-4 md:p-6",
+        "shadow-soft bg-card border-border rounded-2xl border p-4 md:p-6",
         className,
       )}
     >

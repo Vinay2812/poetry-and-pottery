@@ -151,7 +151,7 @@ export function ProgressStepper({
                       className={cn(
                         "h-14 w-0.5",
                         nextStepState === "upcoming"
-                          ? "border-l-2 border-dashed border-neutral-200"
+                          ? "border-border border-l-2 border-dashed"
                           : "bg-primary",
                       )}
                     />
@@ -204,7 +204,7 @@ export function ProgressStepper({
                       className={cn(
                         "h-0.5 flex-1",
                         stepState === "upcoming"
-                          ? "border-t-2 border-dashed border-neutral-200"
+                          ? "border-border border-t-2 border-dashed"
                           : "bg-primary",
                       )}
                     />
@@ -222,7 +222,7 @@ export function ProgressStepper({
                       className={cn(
                         "h-0.5 flex-1",
                         nextStepState === "upcoming"
-                          ? "border-t-2 border-dashed border-neutral-200"
+                          ? "border-border border-t-2 border-dashed"
                           : "bg-primary",
                       )}
                     />

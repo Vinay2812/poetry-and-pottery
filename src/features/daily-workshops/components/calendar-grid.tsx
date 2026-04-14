@@ -14,7 +14,7 @@ export function CalendarGrid({
   onSelectDate,
 }: CalendarGridProps) {
   return (
-    <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
+    <section className="bg-card border-border rounded-2xl border p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <button
           type="button"

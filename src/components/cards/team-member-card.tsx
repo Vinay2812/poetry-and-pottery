@@ -14,7 +14,7 @@ export function TeamMemberCard({
   image,
 }: TeamMemberCardProps) {
   return (
-    <div className="group shadow-soft hover:shadow-card bg-card overflow-hidden rounded-[2rem] border border-neutral-100 p-3 transition-all duration-300 hover:-translate-y-1">
+    <div className="group shadow-soft hover:shadow-card bg-card border-border overflow-hidden rounded-[2rem] border p-3 transition-all duration-300 hover:-translate-y-1">
       <div className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100">
         <OptimizedImage
           src={image}

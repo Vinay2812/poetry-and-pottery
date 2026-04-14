@@ -87,7 +87,7 @@ export function PastWorkshopSidebar({
           )}
         </div>
 
-        <div className="mb-5 border-t border-neutral-100" />
+        <div className="border-border mb-5 border-t" />
 
         {/* Upcoming Events */}
         {upcomingEvents.length > 0 && (

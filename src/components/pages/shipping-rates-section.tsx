@@ -20,7 +20,7 @@ export function ShippingRatesSection() {
       <div className="shadow-soft bg-card border-border overflow-hidden rounded-2xl border">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-neutral-100 bg-neutral-50">
+            <tr className="border-border bg-cream border-b">
               <th className="px-5 py-3 text-left text-sm font-medium text-neutral-900">
                 Method
               </th>

@@ -32,7 +32,7 @@ export function MobileFilterOverlay({
   return (
     <div className="bg-background fixed inset-0 z-50 flex flex-col lg:hidden">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+      <div className="border-border flex items-center justify-between border-b px-5 py-4">
         <h2 className="font-display text-lg font-bold">Filters</h2>
         <button
           onClick={onFilterClose}
@@ -56,7 +56,7 @@ export function MobileFilterOverlay({
       </div>
 
       {/* Footer */}
-      <div className="flex gap-3 border-t border-neutral-100 px-5 py-4">
+      <div className="border-border flex gap-3 border-t px-5 py-4">
         <Button
           variant="secondary"
           className="flex-1 rounded-xl"

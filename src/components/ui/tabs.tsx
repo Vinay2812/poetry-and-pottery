@@ -26,7 +26,7 @@ function TabsList({
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "inline-flex w-full items-center gap-0 overflow-x-auto border-b border-neutral-200 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        "border-border inline-flex w-full items-center gap-0 overflow-x-auto border-b [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
       {...props}
@@ -42,11 +42,9 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "text-muted-foreground relative inline-flex items-center justify-center gap-1.5 px-4 py-3 text-sm font-semibold whitespace-nowrap transition-colors duration-150",
+        "text-muted-foreground relative inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-semibold whitespace-nowrap transition-all duration-150",
         "hover:text-primary",
-        "data-[state=active]:text-primary",
-        "after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:bg-transparent after:transition-colors after:duration-150",
-        "data-[state=active]:after:bg-primary",
+        "data-[state=active]:text-primary data-[state=active]:border-border data-[state=active]:bg-cream data-[state=active]:rounded-full data-[state=active]:border",
         "focus-visible:ring-primary/30 focus-visible:ring-2 focus-visible:outline-none",
         "disabled:pointer-events-none disabled:opacity-50",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",

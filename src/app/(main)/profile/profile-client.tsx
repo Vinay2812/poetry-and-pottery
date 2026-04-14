@@ -83,7 +83,7 @@ export function ProfileClient({
                 {/* Edit Button - Desktop/Tablet */}
                 <button
                   onClick={onProfileSettings}
-                  className="text-primary hover:bg-primary-lighter hidden items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-2 text-sm font-medium transition-colors sm:flex"
+                  className="text-primary hover:bg-primary-lighter border-border hidden items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition-colors sm:flex"
                 >
                   <Settings className="h-4 w-4" />
                   <span className="hidden lg:inline">Edit</span>

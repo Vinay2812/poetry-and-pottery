@@ -179,7 +179,7 @@ export function AddressSelector({
           deletingId={deletingId}
         />
       ) : (
-        <div className="rounded-2xl border-2 border-dashed border-neutral-200 bg-neutral-50 p-6 text-center">
+        <div className="border-border bg-card rounded-2xl border-2 border-dashed p-6 text-center">
           <MapPin className="text-muted-foreground mx-auto mb-3 h-10 w-10" />
           <p className="text-muted-foreground mb-4 text-sm">
             No saved addresses yet. Add one to continue.

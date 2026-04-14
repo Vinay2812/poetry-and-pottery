@@ -17,7 +17,7 @@ export function BookingSlotsSection({
   isSlotSelectionPending,
 }: BookingSlotsSectionProps) {
   return (
-    <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
+    <section className="bg-card border-border rounded-2xl border p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <p className="font-display text-lg font-semibold text-neutral-900">
@@ -44,7 +44,7 @@ export function BookingSlotsSection({
                 "rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
                 tab.dateKey === viewModel.activeDateKey
                   ? "border-primary bg-primary text-white"
-                  : "hover:border-primary/40 bg-card border-neutral-200 text-neutral-600",
+                  : "hover:border-primary/40 bg-card border-border text-neutral-600",
               )}
               onClick={() => onSelectDate(tab.dateKey)}
             >
@@ -56,7 +56,7 @@ export function BookingSlotsSection({
 
       <div className="space-y-2">
         {viewModel.activeDaySlots.length === 0 && (
-          <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50 px-4 py-5 text-sm text-neutral-500">
+          <div className="border-border bg-cream rounded-xl border border-dashed px-4 py-5 text-sm text-neutral-500">
             {viewModel.isConfigLoading
               ? "Loading available slots..."
               : "No slots available for this day. Pick another date or workshop config."}
@@ -87,9 +87,9 @@ export function BookingSlotsSection({
                   "border-primary bg-primary text-primary-foreground shadow-sm",
                 !slot.isSelected &&
                   slot.isAvailable &&
-                  "hover:border-primary/40 hover:bg-primary-lighter/50 border-neutral-200",
+                  "hover:border-primary/40 hover:bg-primary-lighter/50 border-border",
                 !slot.isAvailable &&
-                  "cursor-not-allowed border-neutral-100 bg-neutral-50 text-neutral-400",
+                  "border-border bg-cream cursor-not-allowed text-neutral-400",
               )}
               onClick={() => onToggleSlot(slot.startAt)}
             >

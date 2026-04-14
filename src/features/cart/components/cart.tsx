@@ -208,7 +208,7 @@ export function Cart({
                   {availableItemCount > 0 && (
                     <div>
                       {/* Desktop Table Header */}
-                      <div className="hidden border-b border-neutral-200 pb-3 lg:grid lg:grid-cols-[1fr_200px_100px_80px] lg:gap-4 lg:px-4">
+                      <div className="border-border hidden border-b pb-3 lg:grid lg:grid-cols-[1fr_200px_100px_80px] lg:gap-4 lg:px-4">
                         <span className="text-xs font-medium tracking-wider text-neutral-500 uppercase">
                           Product
                         </span>
@@ -255,7 +255,7 @@ export function Cart({
                   )}
 
                   {/* Address Selector */}
-                  <div className="shadow-soft bg-card overflow-hidden rounded-2xl border border-neutral-100 p-4 lg:p-6">
+                  <div className="shadow-soft bg-card border-border overflow-hidden rounded-2xl border p-4 lg:p-6">
                     <AddressSelectorContainer
                       selectedAddressId={selectedAddress?.id}
                       onSelectAddress={onSelectAddress}

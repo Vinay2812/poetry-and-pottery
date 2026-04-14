@@ -97,7 +97,7 @@ export function ReviewsSheet({
         side="bottom"
         className="h-[85vh] rounded-t-3xl px-0 md:h-[90vh]"
       >
-        <SheetHeader className="border-b border-neutral-100 px-4 pb-4">
+        <SheetHeader className="border-border border-b px-4 pb-4">
           <SheetTitle className="font-display text-lg">
             Customer Reviews
           </SheetTitle>
@@ -105,7 +105,7 @@ export function ReviewsSheet({
 
         <div className="scrollbar-hide flex-1 overflow-y-auto">
           {/* Rating Summary + Sort */}
-          <div className="border-b border-neutral-100 px-4 py-4">
+          <div className="border-border border-b px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-3xl font-bold text-neutral-900">
@@ -169,7 +169,7 @@ export function ReviewsSheet({
 
         {/* Write a Review CTA */}
         {onWriteReview && (
-          <div className="border-t border-neutral-100 px-4 py-3">
+          <div className="border-border border-t px-4 py-3">
             <Button className="w-full rounded-lg" onClick={onWriteReview}>
               <Star className="mr-2 h-4 w-4" />
               Write a Review

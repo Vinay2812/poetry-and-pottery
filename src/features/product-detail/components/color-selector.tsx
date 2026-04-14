@@ -22,7 +22,7 @@ export function ColorSelector({
       <div className="flex gap-2">
         <button
           onClick={() => onColorSelect(colorName)}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 transition-all"
+          className="border-border flex h-8 w-8 items-center justify-center rounded-full border transition-all"
           style={{
             backgroundColor: colorCode,
             outline:

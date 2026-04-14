@@ -133,7 +133,7 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
               {content.categories.map((category) => (
                 <div key={category.title}>
                   {/* Category Heading */}
-                  <h2 className="font-display mb-4 border-b border-neutral-200 pb-2 text-lg font-semibold text-neutral-900">
+                  <h2 className="font-display border-border mb-4 border-b pb-2 text-lg font-semibold text-neutral-900">
                     {category.title}
                   </h2>
 

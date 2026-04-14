@@ -71,7 +71,7 @@ export function OrderSummary({
                 placeholder="Enter coupon code"
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
-                className="h-10 flex-1 rounded-lg border-neutral-200 text-sm"
+                className="border-border h-10 flex-1 rounded-lg text-sm"
               />
               <Button
                 variant="outline"
@@ -106,7 +106,7 @@ export function OrderSummary({
           </Button>
 
           {/* Trust Badges */}
-          <div className="mt-6 flex items-center justify-center gap-5 border-t border-neutral-100 pt-5">
+          <div className="border-border mt-6 flex items-center justify-center gap-5 border-t pt-5">
             <div className="flex flex-col items-center gap-1.5">
               <div className="bg-primary-lighter flex h-8 w-8 items-center justify-center rounded-full">
                 <Lock className="text-primary h-4 w-4" />
@@ -136,10 +136,10 @@ export function OrderSummary({
       </div>
 
       {/* Mobile Version - Sticky Bottom Bar */}
-      <div className="bg-background/95 fixed right-0 bottom-16 left-0 z-40 border-t border-neutral-200 backdrop-blur-md lg:hidden">
+      <div className="bg-background/95 border-border fixed right-0 bottom-16 left-0 z-40 border-t backdrop-blur-md lg:hidden">
         <div className="p-4">
           {/* Summary Details */}
-          <div className="mb-3 rounded-xl bg-neutral-50 p-3">
+          <div className="border-border bg-cream mb-3 rounded-xl border p-3">
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-neutral-500">Subtotal</span>

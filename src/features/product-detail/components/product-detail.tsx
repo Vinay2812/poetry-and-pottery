@@ -125,7 +125,7 @@ export function ProductDetail({
             <RecommendedProductsContainer
               productId={product.id}
               title="You might also like"
-              className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16"
+              className="border-border mt-12 border-t px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16"
             />
           </Suspense>
         </div>
