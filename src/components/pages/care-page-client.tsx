@@ -112,8 +112,12 @@ export function CarePageClient({ content }: CarePageClientProps) {
               ))}
             </div>
 
+            <hr className="border-border my-10" />
+
             {/* Pro Tips Callout */}
             <ProTipsCallout tips={PRO_TIPS} />
+
+            <hr className="border-border my-10" />
 
             {/* Additional Sections from Content */}
             {content.glazeTypes && content.glazeTypes.length > 0 && (

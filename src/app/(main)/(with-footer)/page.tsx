@@ -99,6 +99,8 @@ export default function Home() {
         {/* Explore Categories */}
         <ExploreSectionContainer />
 
+        <hr className="border-border mx-auto w-[92%]" />
+
         {/* Collections Carousel */}
         <section>
           <CollectionsSectionContainer
@@ -108,6 +110,8 @@ export default function Home() {
             viewAllHref="/products"
           />
         </section>
+
+        <hr className="border-border mx-auto w-[92%]" />
 
         {/* Featured Products */}
         <section>
@@ -119,8 +123,12 @@ export default function Home() {
           />
         </section>
 
+        <hr className="border-border mx-auto w-[92%]" />
+
         {/* Customize Your Pottery */}
         <CustomizeSection />
+
+        <hr className="border-border mx-auto w-[92%]" />
 
         {/* Behind the Scenes + Workshops — side by side on desktop */}
         <section>
@@ -131,6 +139,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <hr className="border-border mx-auto w-[92%]" />
 
         {/* Testimonials */}
         <TestimonialsSectionContainer />

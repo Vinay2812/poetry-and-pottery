@@ -96,6 +96,8 @@ export function ShippingPageClient({ content }: ShippingPageClientProps) {
 
             <ShippingPaymentReturnsSection />
 
+            <hr className="border-border my-10" />
+
             {/* Questions CTA */}
             <ContactCtaBanner
               title="Have questions about shipping?"
