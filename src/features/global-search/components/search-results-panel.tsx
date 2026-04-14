@@ -48,7 +48,7 @@ export function SearchResultsPanel({
       onValueChange={(v) => onTabChange(v as SearchTab)}
       className="w-full"
     >
-      <div className="bg-card sticky top-0 z-10 border-b border-neutral-200 px-4">
+      <div className="bg-card border-border sticky top-0 z-10 border-b px-4">
         <div className="flex gap-6">
           <SearchTabButton
             label="Products"

@@ -42,7 +42,7 @@ function CheckboxFilterSection({
   if (options.length === 0) return null;
 
   return (
-    <AccordionItem value={value} className="border-b border-neutral-100">
+    <AccordionItem value={value} className="border-border border-b">
       <AccordionTrigger className="font-display py-4 text-sm font-semibold hover:no-underline">
         {title}
       </AccordionTrigger>
@@ -157,7 +157,7 @@ export function FilterSidebar({
         defaultValue={["collections", "categories", "materials", "price"]}
         className={cn("w-full", filtersClassName)}
       >
-        <AccordionItem value="price" className="border-b border-neutral-100">
+        <AccordionItem value="price" className="border-border border-b">
           <AccordionTrigger className="font-display py-4 text-sm font-semibold hover:no-underline">
             Price Range
           </AccordionTrigger>

@@ -33,7 +33,7 @@ export function CartItemCustomizationDetails({
       <button
         onClick={onToggle}
         className={cn(
-          "flex w-full items-center justify-between rounded-lg bg-neutral-50 text-left",
+          "bg-cream flex w-full items-center justify-between rounded-lg text-left",
           isMobile ? "px-3 py-2" : "px-4 py-2",
         )}
       >
@@ -112,7 +112,7 @@ function MobileCustomizationContent({
           </span>
         </div>
       ))}
-      <div className="border-t border-neutral-100 pt-1.5">
+      <div className="border-border border-t pt-1.5">
         <div className="flex items-center justify-between text-xs">
           <span className="text-neutral-500">Base Price</span>
           <span className="text-neutral-700">
@@ -167,7 +167,7 @@ function DesktopCustomizationContent({
           </div>
         ))}
       </div>
-      <div className="mt-2 border-t border-neutral-100 px-4 pt-2">
+      <div className="border-border mt-2 border-t px-4 pt-2">
         <div className="flex items-center gap-4 text-sm">
           <span className="text-neutral-500">
             Base: ₹{basePrice.toLocaleString()}

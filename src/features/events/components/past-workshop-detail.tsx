@@ -137,7 +137,7 @@ export function PastWorkshopDetail({
                 </p>
 
                 {/* About */}
-                <div className="border-t border-neutral-100 pt-6 pb-6">
+                <div className="border-border border-t pt-6 pb-6">
                   <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                     About
                   </h2>
@@ -165,7 +165,7 @@ export function PastWorkshopDetail({
 
                 {/* Location */}
                 {quickInfo.location && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                  <div className="border-border border-t pt-6 pb-6">
                     <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Location
                     </h2>

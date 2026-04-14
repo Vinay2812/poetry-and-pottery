@@ -34,9 +34,9 @@ function NewsletterContent({
   // Already subscribed
   if (viewModel.isAlreadySubscribed || viewModel.subscriptionSuccess) {
     return (
-      <div className="bg-card flex items-center justify-center gap-2 rounded-full px-6 py-3">
-        <Check className="text-primary h-5 w-5" />
-        <span className="text-foreground text-sm font-medium">
+      <div className="flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3">
+        <Check className="h-5 w-5 text-emerald-300" />
+        <span className="text-sm font-medium text-white/90">
           You&apos;re subscribed to our newsletter
         </span>
       </div>
@@ -47,10 +47,13 @@ function NewsletterContent({
   if (!viewModel.isAuthenticated) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-white/60">
           Sign in to subscribe to our newsletter
         </p>
-        <Button asChild className="h-10 rounded-full">
+        <Button
+          asChild
+          className="h-10 rounded-full bg-white px-6 text-sm font-semibold text-neutral-900 hover:bg-white/90"
+        >
           <Link href="/sign-in">
             Sign In
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -68,7 +71,7 @@ function NewsletterContent({
     >
       <NewsletterSubmitButton />
       {viewModel.subscriptionError && (
-        <p className="text-sm text-red-500">{viewModel.subscriptionError}</p>
+        <p className="text-sm text-red-300">{viewModel.subscriptionError}</p>
       )}
     </form>
   );
@@ -81,7 +84,7 @@ function NewsletterSubmitButton() {
     <Button
       type="submit"
       disabled={pending}
-      className="bg-primary hover:bg-primary-hover shadow-primary/20 h-121 rounded-full px-7 text-sm font-semibold shadow-lg transition-transform duration-200 hover:scale-[1.03] lg:h-12 lg:px-8 lg:text-base"
+      className="h-11 rounded-full bg-white px-7 text-sm font-semibold text-neutral-900 shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:bg-white/90 lg:h-12 lg:px-8 lg:text-base"
     >
       {pending ? (
         <>
@@ -100,45 +103,36 @@ function NewsletterSubmitButton() {
 
 export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
   return (
-    <footer className="bg-background mt-auto">
-      {/* Newsletter Section */}
-      <section className="bg-cream">
-        <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="font-display mb-3 text-2xl font-bold tracking-tight lg:text-3xl">
-              Join Our Community
-            </h2>
-            <p className="text-muted-foreground mb-6 text-sm leading-relaxed lg:text-base">
-              Subscribe to receive updates on new collections, workshops, and
-              exclusive offers.
-            </p>
-            <NewsletterContent
-              viewModel={viewModel}
-              onNewsletterSubmit={onNewsletterSubmit}
-            />
-          </div>
-        </div>
-      </section>
+    <footer className="bg-primary relative mt-auto overflow-hidden">
+      {/* Subtle decorative elements */}
+      <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-white/[0.03] blur-3xl" />
+      <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-white/[0.03] blur-3xl" />
 
-      {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-12 lg:gap-12">
-          {/* Brand Section */}
-          <div className="col-span-2 lg:col-span-4">
-            <Link href="/" className="mb-4 inline-flex items-center gap-2">
-              <div className="bg-primary flex h-9 w-9 items-center justify-center rounded-full">
-                <span className="text-sm font-bold text-white">P</span>
-              </div>
-              <span className="font-display text-foreground text-lg">
-                Poetry & Pottery
-              </span>
-            </Link>
-            <p className="text-muted-foreground mb-6 max-w-xs text-sm leading-relaxed">
+      <div className="relative">
+        {/* Top Section — Brand + Newsletter */}
+        <div className="container mx-auto px-4 pt-16 pb-12 lg:px-8 lg:pt-20 lg:pb-16">
+          <div className="mx-auto max-w-4xl text-center">
+            {/* Large Brand Name */}
+            <h2 className="font-display mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Poetry & Pottery
+            </h2>
+            <p className="mx-auto mb-8 max-w-lg text-sm leading-relaxed text-white/60 lg:mb-10 lg:text-base">
               {viewModel.brandDescription}
             </p>
 
+            {/* Newsletter — integrated */}
+            <div className="mb-8 lg:mb-10">
+              <p className="mb-4 text-xs font-semibold tracking-widest text-white/40 uppercase">
+                Join our community
+              </p>
+              <NewsletterContent
+                viewModel={viewModel}
+                onNewsletterSubmit={onNewsletterSubmit}
+              />
+            </div>
+
             {/* Social Links */}
-            <div className="flex gap-2">
+            <div className="flex justify-center gap-3">
               {viewModel.socialLinks.map((social) => {
                 const Icon = socialIcons[social.platform];
                 return (
@@ -148,96 +142,109 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 transition-all duration-150 hover:border-white/30 hover:bg-white/10 hover:text-white"
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-[18px] w-[18px]" />
                   </a>
                 );
               })}
             </div>
           </div>
+        </div>
 
-          {/* Link Groups */}
-          {viewModel.linkGroups.map((group) => (
-            <div key={group.title} className="lg:col-span-2">
-              <h4 className="text-foreground mb-4 text-sm font-semibold tracking-widest uppercase">
-                {group.title}
+        {/* Divider */}
+        <div className="mx-auto w-[90%] border-t border-white/10" />
+
+        {/* Middle Section — Links + Contact */}
+        <div className="container mx-auto px-4 py-10 lg:px-8 lg:py-12">
+          <div className="grid grid-cols-2 gap-8 lg:grid-cols-12 lg:gap-12">
+            {/* Link Groups */}
+            {viewModel.linkGroups.map((group) => (
+              <div key={group.title} className="lg:col-span-3">
+                <h4 className="mb-4 text-xs font-semibold tracking-widest text-white/40 uppercase">
+                  {group.title}
+                </h4>
+                <ul className="space-y-3">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-white/60 transition-colors duration-150 hover:text-white"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            {/* Contact Section */}
+            <div className="col-span-2 lg:col-span-3">
+              <h4 className="mb-4 text-xs font-semibold tracking-widest text-white/40 uppercase">
+                Contact
               </h4>
               <ul className="space-y-3">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
+                {viewModel.contactInfo.map((contact) => {
+                  const Icon = contactIcons[contact.type];
+                  const content = (
+                    <span className="flex items-start gap-2">
+                      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
+                      <span className="text-sm text-white/60">
+                        {contact.value}
+                      </span>
+                    </span>
+                  );
+
+                  if (contact.href) {
+                    return (
+                      <li key={contact.type}>
+                        <a
+                          href={contact.href}
+                          className="transition-colors duration-150 hover:text-white [&_span]:hover:text-white"
+                        >
+                          {content}
+                        </a>
+                      </li>
+                    );
+                  }
+
+                  return <li key={contact.type}>{content}</li>;
+                })}
               </ul>
             </div>
-          ))}
-
-          {/* Contact Section */}
-          <div className="col-span-2 lg:col-span-2">
-            <h4 className="text-foreground mb-4 text-sm font-semibold tracking-widest uppercase">
-              Contact
-            </h4>
-            <ul className="space-y-3">
-              {viewModel.contactInfo.map((contact) => {
-                const Icon = contactIcons[contact.type];
-                const content = (
-                  <span className="flex items-start gap-2">
-                    <Icon className="text-primary mt-0.5 h-4 w-4 shrink-0" />
-                    <span className="text-muted-foreground text-sm">
-                      {contact.value}
-                    </span>
-                  </span>
-                );
-
-                if (contact.href) {
-                  return (
-                    <li key={contact.type}>
-                      <a
-                        href={contact.href}
-                        className="text-muted-foreground hover:text-foreground transition-colors duration-150"
-                      >
-                        {content}
-                      </a>
-                    </li>
-                  );
-                }
-
-                return <li key={contact.type}>{content}</li>;
-              })}
-            </ul>
           </div>
         </div>
 
+        {/* Divider */}
+        <div className="mx-auto w-[90%] border-t border-white/10" />
+
         {/* Bottom Bar */}
-        <div className="border-border my-12 flex flex-col items-center justify-between gap-4 border-t pt-8 lg:mt-16 lg:mb-0 lg:flex-row lg:pt-8">
-          <p className="text-muted-foreground text-center text-sm">
-            © {viewModel.currentYear} Poetry & Pottery. All rights reserved.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 lg:gap-6">
-            <Link
-              href="/privacy"
-              className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="/shipping"
-              className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
-            >
-              Shipping Info
-            </Link>
+        <div className="container mx-auto px-4 py-6 pb-20 lg:px-8 lg:pb-6">
+          <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
+            <p className="text-center text-xs text-white/40">
+              © {viewModel.currentYear} Poetry & Pottery. All rights reserved.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 lg:gap-6">
+              <Link
+                href="/privacy"
+                className="text-xs text-white/40 transition-colors duration-150 hover:text-white/70"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="text-xs text-white/40 transition-colors duration-150 hover:text-white/70"
+              >
+                Terms of Service
+              </Link>
+              <Link
+                href="/shipping"
+                className="text-xs text-white/40 transition-colors duration-150 hover:text-white/70"
+              >
+                Shipping Info
+              </Link>
+            </div>
           </div>
         </div>
       </div>

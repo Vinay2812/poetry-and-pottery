@@ -24,7 +24,7 @@ export function EventsSubTabs({
   return (
     <div className="mb-6">
       <div
-        className="scrollbar-hide bg-card inline-flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border border-neutral-200 p-1"
+        className="scrollbar-hide bg-card border-border inline-flex max-w-full items-center gap-1.5 overflow-x-auto rounded-full border p-1"
         role="tablist"
         aria-label={ariaLabel}
       >

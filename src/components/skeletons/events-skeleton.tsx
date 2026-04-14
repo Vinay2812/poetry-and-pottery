@@ -155,7 +155,7 @@ export function EventDetailSkeleton() {
             {/* Info Grid */}
             <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="space-y-2 rounded-xl bg-neutral-50 p-4">
+                <div key={i} className="bg-cream space-y-2 rounded-xl p-4">
                   <Skeleton className="h-4 w-16" />
                   <Skeleton className="h-5 w-24" />
                 </div>

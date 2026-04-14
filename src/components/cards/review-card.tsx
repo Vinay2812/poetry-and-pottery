@@ -51,7 +51,7 @@ export function ReviewCard({
   return (
     <div
       className={cn(
-        "rounded-2xl bg-neutral-50 p-5",
+        "bg-cream rounded-2xl p-5",
         isCompact ? "w-[280px] shrink-0" : "w-full",
       )}
     >

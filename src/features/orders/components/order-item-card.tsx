@@ -28,7 +28,7 @@ function OrderItemCustomizationDetails({
     <div className="mt-3">
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-left"
+        className="bg-cream flex w-full items-center justify-between rounded-lg px-3 py-2 text-left"
       >
         <span className="text-xs font-medium text-neutral-600">
           View Customization Details
@@ -68,7 +68,7 @@ function OrderItemCustomizationDetails({
                 </div>
               ))}
               {customData.totalModifier !== 0 && (
-                <div className="border-t border-neutral-100 pt-1.5">
+                <div className="border-border border-t pt-1.5">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-neutral-500">
                       Customization Total
@@ -113,7 +113,7 @@ export function OrderItemCard({
         "shadow-soft bg-card rounded-2xl border p-4",
         hasCustomization
           ? "border-primary/30 ring-primary/20 ring-2"
-          : "border-neutral-100",
+          : "border-border",
       )}
     >
       <div className="flex gap-4">
@@ -176,7 +176,7 @@ export function OrderItemCard({
       )}
 
       {canReview && (
-        <div className="mt-4 border-t border-neutral-100 pt-4">
+        <div className="border-border mt-4 border-t pt-4">
           <ReviewForm
             title={`Review ${item.productName}`}
             hasReviewed={item.hasReviewed}

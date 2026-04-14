@@ -17,7 +17,7 @@ export function DayTimelineTabs({
   onSelectDay,
 }: DayTimelineTabsProps) {
   return (
-    <div className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
+    <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
       <div className="mb-4 flex flex-wrap gap-2">
         {dayTimelines.map((day) => (
           <button
@@ -27,7 +27,7 @@ export function DayTimelineTabs({
               "rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
               activeDayKey === day.dateKey
                 ? "border-primary bg-primary text-white"
-                : "hover:border-primary/40 bg-card border-neutral-200 text-neutral-600",
+                : "hover:border-primary/40 bg-card border-border text-neutral-600",
             )}
             onClick={() => onSelectDay(day.dateKey)}
           >
@@ -43,7 +43,7 @@ export function DayTimelineTabs({
             {activeDay.slots.map((slot) => (
               <div
                 key={slot.id}
-                className="rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3"
+                className="border-border bg-cream rounded-xl border px-4 py-3"
               >
                 <p className="text-sm font-semibold text-neutral-900">
                   {formatTime(slot.startAt)} - {formatTime(slot.endAt)}

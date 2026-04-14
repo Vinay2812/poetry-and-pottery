@@ -18,7 +18,7 @@ export function BookingSummaryAside({
   isBooking,
 }: BookingSummaryAsideProps) {
   return (
-    <aside className="bg-card h-fit rounded-2xl border border-neutral-200/80 p-5 shadow-sm xl:sticky xl:top-24">
+    <aside className="bg-card border-border h-fit rounded-2xl border p-5 shadow-sm xl:sticky xl:top-24">
       <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
         Booking Summary
       </h2>
@@ -38,7 +38,7 @@ export function BookingSummaryAside({
         </div>
       </div>
 
-      <div className="my-5 rounded-xl bg-neutral-50 p-3">
+      <div className="border-border bg-cream my-5 rounded-xl border p-3">
         <p className="text-xs font-semibold tracking-wide text-neutral-500 uppercase">
           Applied Tier
         </p>
@@ -66,7 +66,7 @@ export function BookingSummaryAside({
         </div>
       </div>
 
-      <div className="border-t border-neutral-200 pt-4">
+      <div className="border-border border-t pt-4">
         <div className="mb-4 flex items-center justify-between">
           <span className="text-sm text-neutral-600">Total</span>
           <span className="text-primary text-2xl font-bold">
@@ -83,7 +83,7 @@ export function BookingSummaryAside({
           >
             -
           </Button>
-          <span className="inline-flex h-10 min-w-12 items-center justify-center rounded-full border border-neutral-200 px-3 text-sm font-semibold text-neutral-800">
+          <span className="border-border inline-flex h-10 min-w-12 items-center justify-center rounded-full border px-3 text-sm font-semibold text-neutral-800">
             {viewModel.participants}
           </span>
           <Button

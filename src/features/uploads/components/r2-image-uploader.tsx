@@ -191,7 +191,7 @@ export function R2ImageUploader({
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
                 className={cn(
-                  "hover:border-primary/50 hover:bg-primary/5 hover:text-primary flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 text-neutral-500 transition-colors",
+                  "hover:border-primary/50 hover:bg-primary/5 hover:text-primary bg-cream flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-neutral-300 text-neutral-500 transition-colors",
                   viewModel.isAnyUploading && "pointer-events-none opacity-50",
                 )}
               >

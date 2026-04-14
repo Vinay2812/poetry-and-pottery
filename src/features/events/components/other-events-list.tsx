@@ -13,7 +13,7 @@ export function OtherEventsList({ events }: OtherEventsListProps) {
   if (events.length === 0) return null;
 
   return (
-    <div className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-16 lg:px-0 lg:pt-12">
+    <div className="border-border mt-12 border-t px-4 pt-10 lg:mt-16 lg:px-0 lg:pt-12">
       <h2 className="font-display text-foreground mb-6 text-xl font-bold tracking-tight lg:text-2xl">
         Other events you might like
       </h2>

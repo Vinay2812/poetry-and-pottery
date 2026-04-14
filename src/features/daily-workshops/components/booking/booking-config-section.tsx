@@ -31,7 +31,7 @@ export function BookingConfigSection({
           onValueChange={(value) => onSelectConfig(Number(value))}
           disabled={viewModel.isConfigLoading}
         >
-          <SelectTrigger className="bg-card h-10 w-full rounded-xl border-neutral-200 text-sm">
+          <SelectTrigger className="bg-card border-border h-10 w-full rounded-xl text-sm">
             <SelectValue placeholder="Select workshop type" />
           </SelectTrigger>
           <SelectContent>

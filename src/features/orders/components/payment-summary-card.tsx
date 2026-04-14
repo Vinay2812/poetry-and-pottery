@@ -14,7 +14,7 @@ export function PaymentSummaryCard({
   return (
     <div
       className={cn(
-        "shadow-soft bg-card rounded-2xl border border-neutral-100 p-4 md:p-6",
+        "shadow-soft bg-card border-border rounded-2xl border p-4 md:p-6",
         className,
       )}
     >
@@ -42,7 +42,7 @@ export function PaymentSummaryCard({
             ₹{summary.shippingFee.toLocaleString()}
           </span>
         </div>
-        <div className="flex items-baseline justify-between border-t border-neutral-100 pt-3">
+        <div className="border-border flex items-baseline justify-between border-t pt-3">
           <span className="text-foreground font-semibold">Total</span>
           <span className="text-foreground text-xl font-bold">
             ₹{summary.total.toLocaleString()}

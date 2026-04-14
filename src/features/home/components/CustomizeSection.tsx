@@ -29,21 +29,29 @@ interface StepCardProps {
   description: string;
 }
 
-function StepCard({ icon: Icon, title, description }: StepCardProps) {
+function StepCard({
+  icon: Icon,
+  title,
+  description,
+  step,
+}: StepCardProps & { step: number }) {
   const router = useRouter();
   const onClick = useCallback(() => {
     router.push("/customize");
   }, [router]);
   return (
     <div
-      className="shadow-soft bg-card border-border flex gap-3 rounded-xl border p-3 md:gap-4 md:rounded-2xl md:p-4 lg:p-5"
+      className="group hover:border-border hover:bg-cream hover:shadow-soft flex cursor-pointer gap-3 rounded-xl border border-transparent p-3 transition-all duration-200 md:gap-4 md:rounded-2xl md:p-4 lg:p-5"
       onClick={onClick}
     >
-      <div className="bg-primary-light flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] md:h-12 md:w-12 md:rounded-xl lg:h-14 lg:w-14">
+      <div className="bg-primary shadow-primary-sm relative flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] md:h-12 md:w-12 md:rounded-xl lg:h-14 lg:w-14">
         <Icon
-          className="text-primary h-[22px] w-[22px] md:h-6 md:w-6 lg:h-7 lg:w-7"
+          className="h-[22px] w-[22px] text-white md:h-6 md:w-6 lg:h-7 lg:w-7"
           strokeWidth={2}
         />
+        <span className="bg-terracotta absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white">
+          {step}
+        </span>
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-[13px] font-bold text-neutral-900 md:text-sm lg:text-base">
@@ -59,7 +67,7 @@ function StepCard({ icon: Icon, title, description }: StepCardProps) {
 
 export function CustomizeSection() {
   return (
-    <section className="bg-neutral-200/40">
+    <section>
       <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
         {/* Header */}
         <div className="mb-5 flex items-center justify-between lg:mb-6">
@@ -76,28 +84,34 @@ export function CustomizeSection() {
         </div>
 
         {/* Unified Layout - Vertical on mobile, horizontal on tablet+ */}
-        <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-6 lg:gap-10">
-          {/* Hero Image */}
-          <div className="bg-clay relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl md:aspect-auto md:min-h-[240px] md:rounded-[20px]">
-            <Image
-              src="https://images.pexels.com/photos/6312157/pexels-photo-6312157.jpeg?w=800&h=600"
-              alt="Custom pottery piece"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </div>
-
-          {/* Steps List */}
-          <div className="flex flex-col gap-2 md:gap-3 lg:gap-4">
-            {CUSTOMIZE_STEPS.map((step) => (
-              <StepCard
-                key={step.title}
-                icon={step.icon}
-                title={step.title}
-                description={step.description}
+        <div className="border-border shadow-card overflow-hidden rounded-3xl border">
+          <div className="flex flex-col md:grid md:grid-cols-2">
+            {/* Hero Image */}
+            <div className="bg-clay relative flex aspect-[4/3] items-center justify-center overflow-hidden md:aspect-auto md:min-h-[300px]">
+              <Image
+                src="https://images.pexels.com/photos/6312157/pexels-photo-6312157.jpeg?w=800&h=600"
+                alt="Custom pottery piece"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
-            ))}
+            </div>
+
+            {/* Steps List */}
+            <div className="bg-cream flex flex-col justify-center gap-1 p-5 md:gap-2 md:p-6 lg:gap-3 lg:p-8">
+              <p className="mb-1 text-xs font-semibold tracking-widest text-neutral-500 uppercase">
+                How it works
+              </p>
+              {CUSTOMIZE_STEPS.map((step, index) => (
+                <StepCard
+                  key={step.title}
+                  icon={step.icon}
+                  title={step.title}
+                  description={step.description}
+                  step={index + 1}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -93,7 +93,7 @@ export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
           </div>
 
           {/* Attendee Info */}
-          <div className="border-b border-neutral-100 p-6 pb-5">
+          <div className="border-border border-b p-6 pb-5">
             <div className="flex items-center gap-4">
               {/* Avatar with initials */}
               <div
@@ -156,7 +156,7 @@ export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
 
           {/* Torn Edge / Dashed Divider */}
           <div className="relative px-6">
-            <div className="border-t-2 border-dashed border-neutral-200" />
+            <div className="border-border border-t-2 border-dashed" />
             {/* Notches */}
             <div className="absolute top-1/2 -left-3 h-6 w-6 -translate-y-1/2 rounded-full bg-neutral-100 print:bg-white" />
             <div className="absolute top-1/2 -right-3 h-6 w-6 -translate-y-1/2 rounded-full bg-neutral-100 print:bg-white" />
@@ -188,7 +188,7 @@ export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
 
           {/* Print Button */}
           {onPrint && (
-            <div className="border-t border-neutral-100 p-4 print:hidden">
+            <div className="border-border border-t p-4 print:hidden">
               <button
                 onClick={onPrint}
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-100 px-4 py-3 text-sm font-semibold text-neutral-700 transition-colors hover:bg-neutral-200"

@@ -14,7 +14,7 @@ export function AddressSelectorSkeleton() {
       <div className="flex gap-3 overflow-hidden">
         {[1, 2].map((i) => (
           <div key={i} className="shrink-0 basis-[85%] md:basis-[45%]">
-            <div className="space-y-3 rounded-xl border-2 border-neutral-200 p-4">
+            <div className="border-border space-y-3 rounded-xl border-2 p-4">
               <Skeleton className="h-4 w-24" />
               <div className="space-y-2">
                 <Skeleton className="h-3 w-full" />
