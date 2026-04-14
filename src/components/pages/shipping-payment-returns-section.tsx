@@ -6,7 +6,7 @@ export function ShippingPaymentReturnsSection() {
       <h2 className="font-display mb-4 text-xl font-semibold text-neutral-900">
         Payment & Returns
       </h2>
-      <div className="shadow-soft bg-card space-y-4 rounded-2xl p-5 lg:p-6">
+      <div className="shadow-soft bg-card border-border space-y-4 rounded-2xl border p-5 lg:p-6">
         <div className="flex gap-4">
           <div className="bg-primary-lighter text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
             <CreditCard className="h-5 w-5" />

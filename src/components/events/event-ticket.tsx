@@ -59,7 +59,7 @@ export const EventTicket = forwardRef<HTMLDivElement, EventTicketProps>(
       >
         {/* Main Ticket */}
         <div
-          className="overflow-hidden rounded-2xl bg-white shadow-xl print:shadow-none"
+          className="bg-card overflow-hidden rounded-2xl shadow-xl print:shadow-none"
           style={{ boxShadow: "0 4px 24px rgba(0, 0, 0, 0.12)" }}
         >
           {/* Header with brand */}

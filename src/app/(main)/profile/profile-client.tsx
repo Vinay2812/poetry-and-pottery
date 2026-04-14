@@ -47,7 +47,7 @@ export function ProfileClient({
 
           <div className="mx-auto max-w-3xl">
             {/* Profile Card - Horizontal Layout */}
-            <div className="shadow-soft bg-card mb-4 rounded-2xl p-4 lg:mb-6 lg:p-5">
+            <div className="shadow-soft bg-card border-border mb-4 rounded-2xl border p-4 lg:mb-6 lg:p-5">
               <div className="flex items-center gap-4">
                 {/* Avatar */}
                 <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-full lg:h-[100px] lg:w-[100px]">
@@ -94,7 +94,7 @@ export function ProfileClient({
             {/* Menu Sections */}
             <div className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
               {/* Account Section */}
-              <div className="shadow-soft bg-card rounded-2xl">
+              <div className="shadow-soft bg-card border-border rounded-2xl border">
                 <div className="divide-y divide-neutral-100">
                   {viewModel.accountItems.map((item) => {
                     const IconComponent = ICON_MAP[item.icon];
@@ -129,7 +129,7 @@ export function ProfileClient({
                   Settings
                 </h3>
 
-                <div className="shadow-soft bg-card rounded-2xl">
+                <div className="shadow-soft bg-card border-border rounded-2xl border">
                   <div className="divide-y divide-neutral-100">
                     {viewModel.settingsItems.map((item) => {
                       const IconComponent = ICON_MAP[item.icon];

@@ -123,9 +123,9 @@
   /* Background colors */
   --background: #f2ede3;
   --foreground: #1a1a1a;
-  --card: #ffffff;
+  --card: #faf8f4;
   --card-foreground: #1a1a1a;
-  --popover: #ffffff;
+  --popover: #faf8f4;
   --popover-foreground: #1a1a1a;
 
   /* Primary colors - Forest Green */
@@ -167,7 +167,7 @@
 
   /* Pottery brand colors */
   --subtle-green: #e8e4dc;
-  --surface: #ffffff;
+  --surface: #faf8f4;
   --cream: #f5f0e8;
   --terracotta: #e88c3a;
   --terracotta-hover: #d47b2e;

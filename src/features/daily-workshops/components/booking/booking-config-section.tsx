@@ -21,7 +21,7 @@ export function BookingConfigSection({
   onSelectConfig,
 }: BookingConfigSectionProps) {
   return (
-    <section className="border-primary/20 from-primary-lighter/70 mb-6 rounded-3xl border bg-gradient-to-br via-white to-white p-5 shadow-sm lg:mb-8 lg:p-6">
+    <section className="border-primary/20 from-primary-lighter/70 via-card to-card mb-6 rounded-3xl border bg-gradient-to-br p-5 shadow-sm lg:mb-8 lg:p-6">
       <div className="max-w-xl">
         <p className="mb-1 text-xs font-semibold tracking-wide text-neutral-500 uppercase">
           Select workshop type

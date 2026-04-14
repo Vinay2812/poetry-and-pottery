@@ -39,7 +39,7 @@ export function OrderSummary({
     <>
       {/* Desktop Version - Elevated Card */}
       <div className="hidden lg:block">
-        <div className="shadow-card bg-card sticky top-24 rounded-2xl p-6">
+        <div className="shadow-card bg-card border-border sticky top-24 rounded-2xl border p-6">
           <h2 className="mb-4 text-lg font-semibold text-neutral-900">
             Order Summary
           </h2>

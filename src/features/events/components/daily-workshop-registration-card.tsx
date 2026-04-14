@@ -99,7 +99,7 @@ export function DailyWorkshopRegistrationCard({
   return (
     <div
       className={cn(
-        "bg-card flex gap-4 rounded-2xl p-3 lg:p-4",
+        "bg-card border-border flex gap-4 rounded-2xl border p-3 lg:p-4",
         isCancelled && "opacity-60",
       )}
     >

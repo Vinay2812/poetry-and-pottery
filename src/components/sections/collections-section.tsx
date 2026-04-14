@@ -24,7 +24,7 @@ function FeaturedCollectionCard({ collection }: FeaturedCollectionCardProps) {
   return (
     <Link
       href={`/products?collection_ids=${collection.id}`}
-      className="group bg-primary-light shadow-soft hover:shadow-card flex flex-col overflow-hidden rounded-2xl transition-all duration-200 hover:-translate-y-1"
+      className="group bg-primary-light shadow-soft hover:shadow-card border-border flex flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1"
     >
       {/* Image Section */}
       <div className="relative aspect-4/3 min-h-0 overflow-hidden lg:aspect-auto lg:flex-1">
@@ -88,7 +88,7 @@ function CollectionListItem({ collection }: CollectionListItemProps) {
   return (
     <Link
       href={`/products?collection_ids=${collection.id}`}
-      className="bg-primary-lighter group shadow-soft hover:shadow-card flex items-center gap-4 rounded-xl p-3 transition-all duration-200"
+      className="bg-primary-lighter group shadow-soft hover:shadow-card border-border flex items-center gap-4 rounded-xl border p-3 transition-all duration-200"
     >
       {/* Thumbnail */}
       <div className="bg-primary-light relative h-16 w-16 shrink-0 overflow-hidden rounded-lg">

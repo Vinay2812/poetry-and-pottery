@@ -24,7 +24,7 @@ function TestimonialCard({
   initial,
 }: TestimonialCardProps) {
   return (
-    <div className="border-border flex w-[300px] shrink-0 flex-col gap-3 rounded-2xl border bg-white p-6">
+    <div className="border-border bg-card flex w-[300px] shrink-0 flex-col gap-3 rounded-2xl border p-6">
       <div className="flex gap-0.5">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star

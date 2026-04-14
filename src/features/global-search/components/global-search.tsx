@@ -61,8 +61,8 @@ export function GlobalSearch({
             transition={{ duration: 0.2 }}
             className="fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 lg:top-24"
           >
-            <div className="bg-background flex flex-col justify-center overflow-hidden rounded-2xl border border-neutral-200/50 shadow-2xl">
-              <div className="relative w-full border-b border-neutral-200">
+            <div className="bg-card border-border flex flex-col justify-center overflow-hidden rounded-2xl border shadow-2xl">
+              <div className="border-border relative w-full border-b">
                 <SearchInput
                   value={viewModel.searchQuery}
                   onChange={onQueryChange}
