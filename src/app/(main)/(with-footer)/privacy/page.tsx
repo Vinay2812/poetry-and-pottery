@@ -7,8 +7,6 @@ import { absoluteUrl } from "@/lib/seo";
 
 import { PrivacyContent } from "./privacy-content";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Privacy Policy | Poetry & Pottery",
   description:

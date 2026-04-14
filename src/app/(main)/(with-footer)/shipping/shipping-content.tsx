@@ -1,10 +1,12 @@
 import { getPublicShippingContent } from "@/data/admin/content/gateway/server";
+import { connection } from "next/server";
 
 import { ShippingPageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
 
 export async function ShippingContent() {
+  await connection();
   const content = await getPublicShippingContent();
 
   if (!content) {

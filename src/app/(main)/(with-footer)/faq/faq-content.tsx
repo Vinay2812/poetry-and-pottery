@@ -1,8 +1,10 @@
 import { getPublicFAQContent } from "@/data/admin/content/gateway/server";
+import { connection } from "next/server";
 
 import { FAQPageClient } from "@/components/pages";
 
 export async function FAQContent() {
+  await connection();
   const content = await getPublicFAQContent();
 
   if (!content) {

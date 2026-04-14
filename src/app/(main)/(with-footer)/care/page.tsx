@@ -4,8 +4,6 @@ import { PageSkeleton } from "@/components/skeletons";
 
 import { CareContent } from "./care-content";
 
-export const dynamic = "force-dynamic";
-
 /**
  * Route: /care
  * Page does: Care guide page for handling pottery, glaze-specific instructions, and support escalation.

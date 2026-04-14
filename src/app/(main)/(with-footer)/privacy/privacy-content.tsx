@@ -1,10 +1,12 @@
 import { getPublicPrivacyContent } from "@/data/admin/content/gateway/server";
+import { connection } from "next/server";
 
 import { PrivacyPageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
 
 export async function PrivacyContent() {
+  await connection();
   const content = await getPublicPrivacyContent();
 
   if (!content) {

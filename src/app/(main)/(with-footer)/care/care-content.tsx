@@ -1,10 +1,12 @@
 import { getPublicCareContent } from "@/data/admin/content/gateway/server";
+import { connection } from "next/server";
 
 import { CarePageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
 
 export async function CareContent() {
+  await connection();
   const content = await getPublicCareContent();
 
   if (!content) {

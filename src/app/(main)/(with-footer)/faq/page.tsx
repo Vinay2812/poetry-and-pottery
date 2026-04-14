@@ -4,8 +4,6 @@ import { PageSkeleton } from "@/components/skeletons";
 
 import { FAQContent } from "./faq-content";
 
-export const dynamic = "force-dynamic";
-
 /**
  * Route: /faq
  * Page does: Support knowledge base page with categorized FAQs in accordion format.

@@ -7,8 +7,6 @@ import { absoluteUrl } from "@/lib/seo";
 
 import { TermsContent } from "./terms-content";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Terms & Conditions | Poetry & Pottery",
   description:

@@ -4,8 +4,6 @@ import { PageSkeleton } from "@/components/skeletons";
 
 import { ShippingContent } from "./shipping-content";
 
-export const dynamic = "force-dynamic";
-
 /**
  * Route: /shipping
  * Page does: Shipping and returns information page for order fulfillment expectations.

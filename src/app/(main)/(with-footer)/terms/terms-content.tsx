@@ -1,10 +1,12 @@
 import { getPublicTermsContent } from "@/data/admin/content/gateway/server";
+import { connection } from "next/server";
 
 import { TermsPageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
 
 export async function TermsContent() {
+  await connection();
   const content = await getPublicTermsContent();
 
   if (!content) {
