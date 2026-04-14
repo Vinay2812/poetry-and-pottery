@@ -1,7 +1,11 @@
 import Providers from "@/providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
-import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  DM_Sans,
+  DM_Serif_Display,
+} from "next/font/google";
 import { Suspense } from "react";
 
 import { RouteAnimationProvider } from "@/components/providers/route-animation-provider";
@@ -10,16 +14,24 @@ import { DEFAULT_SOCIAL_IMAGE, SITE_METADATA_BASE, SITE_NAME } from "@/lib/seo";
 
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const dmSerifDisplay = DM_Serif_Display({
+  variable: "--font-dm-serif",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 export const viewport: Viewport = {
@@ -86,7 +98,7 @@ export default function RootLayout({
         content="8pRueMyFU6VMEHTAFq1O83ga6iEQksb-u5wRyb-BYwg"
       />
       <body
-        className={`${outfit.variable} ${plusJakartaSans.variable} font-sans antialiased`}
+        className={`${dmSans.variable} ${dmSerifDisplay.variable} ${cormorantGaramond.variable} font-sans antialiased`}
       >
         <script
           type="application/ld+json"
