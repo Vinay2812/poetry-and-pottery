@@ -80,7 +80,7 @@ export function HeroSection({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="mb-3 inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold tracking-widest text-white uppercase backdrop-blur-md md:mb-3 md:px-4 md:py-1.5 md:text-[11px] lg:mb-5"
+                className="mb-3 inline-flex items-center rounded-full border border-white/40 bg-white/10 px-3 py-1 text-[10px] font-bold tracking-widest text-white uppercase backdrop-blur-md md:mb-3 md:px-4 md:py-1.5 md:text-[11px] lg:mb-5"
               >
                 {badge}
               </motion.span>

@@ -97,7 +97,7 @@ export function ProductCard({
       transition={{ duration: 0.2, ease: "easeOut" }}
       className={cn("group relative", className)}
     >
-      <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:bg-neutral-900">
+      <div className="bg-cream relative flex h-full flex-col overflow-hidden rounded-2xl transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
         {/* Image Container */}
         <div
           className="relative w-full overflow-hidden"
@@ -141,19 +141,15 @@ export function ProductCard({
             href={`/products/${product.id}`}
             className="flex flex-col gap-1"
           >
-            <h3 className="font-display line-clamp-2 text-sm leading-tight font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
+            <h3 className="font-display line-clamp-2 text-sm leading-tight font-semibold text-neutral-900 lg:text-base">
               {product.name}
             </h3>
-            <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
-              {category}
-            </p>
+            <p className="text-xs font-medium text-neutral-500">{category}</p>
             <div className="mt-0.5 flex items-center justify-between gap-2">
               <span
                 className={cn(
                   "text-sm font-bold lg:text-base",
-                  isUnavailable
-                    ? "text-neutral-500 dark:text-neutral-400"
-                    : "text-neutral-900 dark:text-neutral-100",
+                  isUnavailable ? "text-neutral-500" : "text-neutral-900",
                 )}
               >
                 {formattedPrice}
@@ -203,7 +199,7 @@ export function ProductCard({
                     className={cn(
                       "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors duration-200 lg:text-sm",
                       addedToCart
-                        ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                        ? "bg-neutral-900 text-white"
                         : "bg-primary hover:bg-primary-hover text-white",
                       !inStock && "cursor-not-allowed opacity-50",
                     )}
@@ -224,9 +220,7 @@ export function ProductCard({
                 whileTap={{ scale: 0.9 }}
                 className={cn(
                   "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors duration-200 lg:h-9 lg:w-9",
-                  inWishlist
-                    ? "bg-red-50 dark:bg-red-900/20"
-                    : "bg-neutral-100 hover:bg-red-50 dark:bg-neutral-800 dark:hover:bg-red-900/20",
+                  inWishlist ? "bg-red-50" : "bg-neutral-100 hover:bg-red-50",
                 )}
                 onClick={(e) => {
                   e.preventDefault();
@@ -239,14 +233,14 @@ export function ProductCard({
                     "h-4 w-4 transition-colors",
                     inWishlist
                       ? "fill-red-500 text-red-500"
-                      : "text-neutral-600 dark:text-neutral-400",
+                      : "text-neutral-600",
                   )}
                 />
               </motion.button>
             ) : (
               <motion.button
                 whileTap={{ scale: 0.9 }}
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-100 transition-colors hover:bg-red-50 hover:text-red-500 lg:h-9 lg:w-9 dark:bg-neutral-800 dark:hover:bg-red-900/30"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-100 transition-colors hover:bg-red-50 hover:text-red-500 lg:h-9 lg:w-9"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

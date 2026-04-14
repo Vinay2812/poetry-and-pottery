@@ -30,7 +30,7 @@ export function ExploreSection({ categories }: ExploreSectionProps) {
   };
 
   return (
-    <section className="bg-white">
+    <section>
       <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
         <div className="mb-5 flex items-center justify-between lg:mb-6">
           <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">
@@ -52,7 +52,7 @@ export function ExploreSection({ categories }: ExploreSectionProps) {
               <Link
                 key={category.name}
                 href={`/products?category=${category.name.toLowerCase()}`}
-                className="hover:border-primary/30 hover:bg-primary/5 hover:text-primary flex shrink-0 items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 shadow-sm transition-all duration-200 lg:px-5 lg:py-3 lg:text-base"
+                className="hover:border-primary hover:bg-primary/5 hover:text-primary border-border flex shrink-0 items-center gap-2 rounded-full border bg-transparent px-4 py-2.5 text-sm font-medium text-stone-700 transition-all duration-200 lg:px-5 lg:py-3 lg:text-base"
               >
                 <span className="text-base lg:text-lg">{emoji}</span>
                 {formatCategoryName(category.name)}
