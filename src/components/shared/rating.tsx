@@ -47,8 +47,8 @@ export function Rating({
               className={cn(
                 sizeClasses[size],
                 isFilled || isHalf
-                  ? "fill-primary text-primary"
-                  : "fill-[#D4E5D6] text-[#D4E5D6]",
+                  ? "fill-terracotta text-terracotta"
+                  : "fill-neutral-200 text-neutral-200",
               )}
             />
           );

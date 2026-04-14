@@ -24,20 +24,20 @@ function TestimonialCard({
   initial,
 }: TestimonialCardProps) {
   return (
-    <div className="flex w-[300px] shrink-0 flex-col gap-3 rounded-2xl bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
+    <div className="border-border flex w-[300px] shrink-0 flex-col gap-3 rounded-2xl border bg-white p-6">
       <div className="flex gap-0.5">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star
             key={i}
             className={`h-3.5 w-3.5 ${
               i < rating
-                ? "fill-amber-400 text-amber-400"
+                ? "fill-terracotta text-terracotta"
                 : "fill-neutral-200 text-neutral-200"
             }`}
           />
         ))}
       </div>
-      <p className="text-[13px] leading-relaxed text-neutral-600">
+      <p className="font-script text-base leading-relaxed text-neutral-600 italic">
         &ldquo;{text}&rdquo;
       </p>
       <div className="mt-auto flex items-center gap-2">
