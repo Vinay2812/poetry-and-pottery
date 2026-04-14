@@ -35,9 +35,7 @@ function NavIconLink({
       href={href}
       className={cn(
         "group relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105",
-        isActive
-          ? "bg-primary/10"
-          : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
+        isActive ? "bg-primary/10" : "hover:bg-neutral-100",
       )}
     >
       <Icon
@@ -49,7 +47,7 @@ function NavIconLink({
         )}
       />
       {count > 0 && (
-        <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
+        <span className="bg-primary ring-background absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2">
           {count}
         </span>
       )}
@@ -65,7 +63,7 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
 
   return (
     <header className="fixed top-0 z-50 hidden w-full transition-all duration-300 lg:block">
-      <div className="absolute inset-0 border-b border-white/20 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-black/70" />
+      <div className="bg-background border-border absolute inset-0 border-b" />
       <div className="relative container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between gap-8 py-2">
           {/* Logo */}
@@ -77,7 +75,7 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
           </Link>
 
           {/* Navigation Pills */}
-          <nav className="hidden items-center gap-1 rounded-full bg-neutral-100/50 p-1.5 backdrop-blur-sm lg:flex dark:bg-neutral-800/50">
+          <nav className="hidden items-center gap-1 rounded-full bg-neutral-100 p-1.5 lg:flex">
             {NAV_LINKS.map((link) => {
               const isActive = isActiveRoute(link.href);
               return (
@@ -94,7 +92,7 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
                   {isActive && (
                     <motion.div
                       layoutId="navbar-active"
-                      className="absolute inset-0 rounded-full bg-white shadow-sm dark:bg-neutral-700"
+                      className="bg-card absolute inset-0 rounded-full shadow-sm"
                       transition={{
                         type: "spring",
                         bounce: 0.2,
@@ -114,7 +112,7 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
             {/* Search Button */}
             <button
               onClick={onSearchClick}
-              className="hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100/50 px-4 text-sm transition-colors hover:bg-neutral-200/50 xl:flex dark:bg-neutral-800/50 dark:hover:bg-neutral-700/50"
+              className="hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100 px-4 text-sm transition-colors hover:bg-neutral-200 xl:flex"
             >
               <Search className="text-muted-foreground h-4 w-4" />
               <span className="text-muted-foreground">Search...</span>
@@ -137,7 +135,7 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
               isActive={isActiveRoute("/cart")}
             />
 
-            <div className="mx-1 h-6 w-px bg-neutral-200 dark:bg-neutral-700" />
+            <div className="bg-border mx-1 h-6 w-px" />
 
             {/* Auth */}
             <SignedOut>

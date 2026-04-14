@@ -31,7 +31,7 @@ export function MobileNav({ viewModel, currentPath }: MobileNavProps) {
   return (
     <nav className="fixed right-0 bottom-0 left-0 isolate z-50 lg:hidden">
       {/* Background with Blur */}
-      <div className="absolute inset-0 border-t border-white/20 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-black/80" />
+      <div className="bg-background border-border absolute inset-0 border-t" />
 
       <div className="relative grid h-16 grid-cols-4 items-center px-2 py-2">
         {NAV_ITEMS.map((item) => {
@@ -48,7 +48,7 @@ export function MobileNav({ viewModel, currentPath }: MobileNavProps) {
               {isActive && (
                 <motion.div
                   layoutId="mobile-nav-active"
-                  className="absolute inset-x-2 top-1 bottom-1 rounded-2xl bg-neutral-100 dark:bg-neutral-800"
+                  className="absolute inset-x-2 top-1 bottom-1 rounded-2xl bg-neutral-100"
                   transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                 />
               )}
@@ -68,7 +68,7 @@ export function MobileNav({ viewModel, currentPath }: MobileNavProps) {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         exit={{ scale: 0 }}
-                        className="bg-primary absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-white dark:ring-black"
+                        className="bg-primary ring-background absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-1"
                       >
                         {badgeCount}
                       </motion.span>

@@ -34,9 +34,9 @@ function NewsletterContent({
   // Already subscribed
   if (viewModel.isAlreadySubscribed || viewModel.subscriptionSuccess) {
     return (
-      <div className="flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 dark:bg-neutral-800">
+      <div className="bg-card flex items-center justify-center gap-2 rounded-full px-6 py-3">
         <Check className="text-primary h-5 w-5" />
-        <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+        <span className="text-foreground text-sm font-medium">
           You&apos;re subscribed to our newsletter
         </span>
       </div>
@@ -100,9 +100,9 @@ function NewsletterSubmitButton() {
 
 export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
   return (
-    <footer className="mt-auto bg-neutral-50 dark:bg-neutral-900">
+    <footer className="bg-background mt-auto">
       {/* Newsletter Section */}
-      <section className="bg-primary/5 dark:bg-primary/10">
+      <section className="bg-cream">
         <div className="container mx-auto px-4 py-12 lg:px-8 lg:py-16">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="font-display mb-3 text-2xl font-bold tracking-tight lg:text-3xl">
@@ -129,7 +129,7 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
               <div className="bg-primary flex h-9 w-9 items-center justify-center rounded-full">
                 <span className="text-sm font-bold text-white">P</span>
               </div>
-              <span className="bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-lg font-bold text-transparent dark:from-neutral-100 dark:to-neutral-400">
+              <span className="font-display text-foreground text-lg">
                 Poetry & Pottery
               </span>
             </Link>
@@ -148,7 +148,7 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                    className="text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200"
                   >
                     <Icon className="h-5 w-5" />
                   </a>
@@ -160,7 +160,7 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
           {/* Link Groups */}
           {viewModel.linkGroups.map((group) => (
             <div key={group.title} className="lg:col-span-2">
-              <h4 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+              <h4 className="text-foreground mb-4 text-sm font-semibold tracking-widest uppercase">
                 {group.title}
               </h4>
               <ul className="space-y-3">
@@ -180,7 +180,7 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
 
           {/* Contact Section */}
           <div className="col-span-2 lg:col-span-2">
-            <h4 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+            <h4 className="text-foreground mb-4 text-sm font-semibold tracking-widest uppercase">
               Contact
             </h4>
             <ul className="space-y-3">
@@ -215,7 +215,7 @@ export function Footer({ viewModel, onNewsletterSubmit }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="my-12 flex flex-col items-center justify-between gap-4 border-t border-neutral-200 pt-8 lg:mt-16 lg:mb-0 lg:flex-row lg:pt-8 dark:border-neutral-800">
+        <div className="border-border my-12 flex flex-col items-center justify-between gap-4 border-t pt-8 lg:mt-16 lg:mb-0 lg:flex-row lg:pt-8">
           <p className="text-muted-foreground text-center text-sm">
             © {viewModel.currentYear} Poetry & Pottery. All rights reserved.
           </p>
