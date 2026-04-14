@@ -31,7 +31,7 @@ function FallbackImage({
   return (
     <div
       className={cn(
-        "bg-primary-light absolute inset-0 z-10 flex items-center justify-center overflow-hidden dark:bg-neutral-800",
+        "bg-primary-light absolute inset-0 z-10 flex items-center justify-center overflow-hidden",
       )}
       style={style}
     >

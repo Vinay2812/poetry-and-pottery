@@ -146,7 +146,7 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
                           <AccordionItem
                             key={index}
                             value={`${category.title}-${index}`}
-                            className="shadow-soft hover:shadow-card mb-3 overflow-hidden rounded-xl border-0 bg-white transition-shadow"
+                            className="shadow-soft hover:shadow-card bg-card mb-3 overflow-hidden rounded-xl border-0 transition-shadow"
                           >
                             <AccordionTrigger className="px-5 py-4 text-left font-medium hover:no-underline data-[state=open]:bg-neutral-50">
                               <span className="flex items-center gap-3">
@@ -173,7 +173,7 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
               <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
                 Important Policies
               </h2>
-              <div className="shadow-soft grid gap-4 rounded-2xl bg-white p-5 sm:grid-cols-3 lg:p-6">
+              <div className="shadow-soft bg-card grid gap-4 rounded-2xl p-5 sm:grid-cols-3 lg:p-6">
                 <div className="flex items-start gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50">
                     <CreditCard className="h-5 w-5 text-amber-600" />

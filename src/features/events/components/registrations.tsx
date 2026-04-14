@@ -101,7 +101,7 @@ export function Registrations({
             <>
               {upcomingDailyWorkshopRegistrations.length > 0 && (
                 <section>
-                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900 lg:mb-6 lg:text-xl dark:text-neutral-100">
+                  <h2 className="font-display text-foreground mb-4 text-lg font-semibold lg:mb-6 lg:text-xl">
                     Daily Workshops
                   </h2>
                   <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
@@ -118,7 +118,7 @@ export function Registrations({
 
               {upcomingEventRegistrations.length > 0 && (
                 <section>
-                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900 lg:mb-6 lg:text-xl dark:text-neutral-100">
+                  <h2 className="font-display text-foreground mb-4 text-lg font-semibold lg:mb-6 lg:text-xl">
                     Event Registrations
                   </h2>
                   <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
@@ -146,7 +146,7 @@ export function Registrations({
 
               {completedDailyWorkshopRegistrations.length > 0 && (
                 <section>
-                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl dark:text-neutral-400">
+                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl">
                     Completed Daily Workshops
                   </h2>
                   <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
@@ -163,7 +163,7 @@ export function Registrations({
 
               {completedEventRegistrations.length > 0 && (
                 <section>
-                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl dark:text-neutral-400">
+                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl">
                     Completed Events
                   </h2>
                   <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">

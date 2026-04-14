@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function AuthCardSkeleton() {
   return (
-    <div className="mx-auto w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
+    <div className="bg-card mx-auto w-full max-w-md rounded-2xl border border-neutral-200 p-6 shadow-sm">
       <div className="space-y-3">
         <Skeleton className="h-6 w-32" />
         <Skeleton className="h-4 w-48" />

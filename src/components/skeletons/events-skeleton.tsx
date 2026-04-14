@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 // Square image thumbnail on left, content on right
 export function EventCardSkeleton() {
   return (
-    <div className="flex gap-4 rounded-2xl bg-white p-3 lg:p-4 dark:bg-neutral-900">
+    <div className="bg-card flex gap-4 rounded-2xl p-3 lg:p-4">
       {/* Image Thumbnail */}
       <Skeleton className="h-24 w-24 shrink-0 rounded-xl lg:h-28 lg:w-28" />
 
@@ -38,7 +38,7 @@ export function EventCardSkeleton() {
 // Registration card skeleton with status badge and action button
 export function RegistrationCardSkeleton() {
   return (
-    <div className="flex gap-4 rounded-2xl bg-white p-3 lg:p-4 dark:bg-neutral-900">
+    <div className="bg-card flex gap-4 rounded-2xl p-3 lg:p-4">
       {/* Image Thumbnail */}
       <Skeleton className="h-24 w-24 shrink-0 rounded-xl lg:h-28 lg:w-28" />
 
@@ -194,7 +194,7 @@ export function EventDetailSkeleton() {
       </div>
 
       {/* Mobile CTA */}
-      <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
+      <div className="border-border bg-background/95 fixed right-0 bottom-16 left-0 z-40 border-t p-4 backdrop-blur-md lg:hidden">
         <div className="flex items-center justify-between gap-4">
           <div className="space-y-1">
             <Skeleton className="h-6 w-20" />

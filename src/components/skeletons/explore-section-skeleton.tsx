@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function ExploreSectionSkeleton() {
   return (
-    <section className="bg-white">
+    <section>
       <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
         <div className="mb-5 flex items-center justify-between lg:mb-6">
           <h2 className="font-display text-xl font-bold tracking-tight lg:text-2xl">

@@ -53,8 +53,8 @@ export function ProductDetail({
               />
             </div>
 
-            <div className="relative -mt-6 rounded-t-3xl bg-white px-5 pt-6 lg:mt-0 lg:rounded-t-none lg:bg-transparent lg:px-0 lg:pt-0 dark:bg-neutral-950 lg:dark:bg-transparent">
-              <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-200 lg:hidden dark:bg-neutral-700" />
+            <div className="bg-background relative -mt-6 rounded-t-3xl px-5 pt-6 lg:mt-0 lg:rounded-t-none lg:bg-transparent lg:px-0 lg:pt-0">
+              <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-neutral-200 lg:hidden" />
 
               <ProductInfoHeader
                 product={product}
@@ -125,7 +125,7 @@ export function ProductDetail({
             <RecommendedProductsContainer
               productId={product.id}
               title="You might also like"
-              className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16 dark:border-neutral-800"
+              className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-20 lg:px-0 lg:pt-16"
             />
           </Suspense>
         </div>

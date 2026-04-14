@@ -14,7 +14,7 @@ export function PaymentSummaryCard({
   return (
     <div
       className={cn(
-        "shadow-soft rounded-2xl border border-neutral-100 bg-white p-4 md:p-6 dark:border-neutral-800 dark:bg-neutral-900",
+        "shadow-soft bg-card rounded-2xl border border-neutral-100 p-4 md:p-6",
         className,
       )}
     >
@@ -24,7 +24,7 @@ export function PaymentSummaryCard({
       <div className="space-y-3">
         <div className="flex justify-between text-sm">
           <span className="text-neutral-500">Subtotal</span>
-          <span className="font-medium text-neutral-900 dark:text-neutral-100">
+          <span className="text-foreground font-medium">
             ₹{summary.subtotal.toLocaleString()}
           </span>
         </div>
@@ -38,15 +38,13 @@ export function PaymentSummaryCard({
         )}
         <div className="flex justify-between text-sm">
           <span className="text-neutral-500">Shipping</span>
-          <span className="font-medium text-neutral-900 dark:text-neutral-100">
+          <span className="text-foreground font-medium">
             ₹{summary.shippingFee.toLocaleString()}
           </span>
         </div>
-        <div className="flex items-baseline justify-between border-t border-neutral-100 pt-3 dark:border-neutral-800">
-          <span className="font-semibold text-neutral-900 dark:text-neutral-100">
-            Total
-          </span>
-          <span className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+        <div className="flex items-baseline justify-between border-t border-neutral-100 pt-3">
+          <span className="text-foreground font-semibold">Total</span>
+          <span className="text-foreground text-xl font-bold">
             ₹{summary.total.toLocaleString()}
           </span>
         </div>

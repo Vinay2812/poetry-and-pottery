@@ -40,7 +40,7 @@ export function HomePageSkeleton() {
 
       <ExploreSectionSkeleton />
 
-      <section className="bg-white">
+      <section>
         <CollectionsSectionSkeleton
           className="container mx-auto px-4 py-8 lg:px-8 lg:py-12"
           title="Shop by Collection"
@@ -58,7 +58,7 @@ export function HomePageSkeleton() {
         />
       </section>
 
-      <section className="bg-white">
+      <section>
         <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
             <WorkshopsSectionSkeleton />

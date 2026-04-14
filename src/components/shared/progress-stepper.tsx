@@ -87,9 +87,7 @@ function ProgressStepLabel({
       <h3
         className={cn(
           "text-sm font-semibold",
-          stepState === "upcoming"
-            ? "text-neutral-400"
-            : "text-neutral-900 dark:text-neutral-100",
+          stepState === "upcoming" ? "text-neutral-400" : "text-foreground",
         )}
       >
         {label}
@@ -115,9 +113,7 @@ export function ProgressStepper({
 }: ProgressStepperProps) {
   return (
     <div className="rounded-2xl">
-      <h2 className="mb-5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-        {title}
-      </h2>
+      <h2 className="mb-5 text-xs font-semibold text-neutral-500">{title}</h2>
 
       {/* Mobile: Vertical Layout */}
       <div className="md:hidden">

@@ -127,7 +127,7 @@ export function CarePageClient({ content }: CarePageClientProps) {
                     return (
                       <div
                         key={glaze.name}
-                        className="shadow-soft rounded-xl bg-white p-5"
+                        className="shadow-soft bg-card rounded-xl p-5"
                       >
                         <div className="flex gap-4">
                           <div className="bg-primary-lighter text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">

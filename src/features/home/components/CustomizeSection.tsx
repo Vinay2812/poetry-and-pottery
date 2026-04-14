@@ -36,7 +36,7 @@ function StepCard({ icon: Icon, title, description }: StepCardProps) {
   }, [router]);
   return (
     <div
-      className="shadow-soft flex gap-3 rounded-xl bg-white p-3 md:gap-4 md:rounded-2xl md:p-4 lg:p-5"
+      className="shadow-soft bg-card flex gap-3 rounded-xl p-3 md:gap-4 md:rounded-2xl md:p-4 lg:p-5"
       onClick={onClick}
     >
       <div className="bg-primary-light flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] md:h-12 md:w-12 md:rounded-xl lg:h-14 lg:w-14">
@@ -59,7 +59,7 @@ function StepCard({ icon: Icon, title, description }: StepCardProps) {
 
 export function CustomizeSection() {
   return (
-    <section className="bg-neutral-100">
+    <section className="bg-neutral-200/40">
       <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
         {/* Header */}
         <div className="mb-5 flex items-center justify-between lg:mb-6">

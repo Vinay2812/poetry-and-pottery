@@ -12,7 +12,7 @@ export function PricingSidebar({
   totalPieces,
 }: PricingSidebarProps) {
   return (
-    <div className="rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm">
+    <div className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
       <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
         Pricing
       </h2>

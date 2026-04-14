@@ -31,7 +31,7 @@ export function BookingConfigSection({
           onValueChange={(value) => onSelectConfig(Number(value))}
           disabled={viewModel.isConfigLoading}
         >
-          <SelectTrigger className="h-10 w-full rounded-xl border-neutral-200 bg-white text-sm">
+          <SelectTrigger className="bg-card h-10 w-full rounded-xl border-neutral-200 text-sm">
             <SelectValue placeholder="Select workshop type" />
           </SelectTrigger>
           <SelectContent>
@@ -49,16 +49,16 @@ export function BookingConfigSection({
         )}
       </div>
       <div className="mt-4 flex flex-wrap gap-2.5">
-        <span className="ring-primary/10 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
+        <span className="ring-primary/10 bg-card/80 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
           <Clock3 className="text-primary h-3.5 w-3.5" />
           {formatHourLabel(viewModel.config.opening_hour)} -{" "}
           {formatHourLabel(viewModel.config.closing_hour)}
         </span>
-        <span className="ring-primary/10 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
+        <span className="ring-primary/10 bg-card/80 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
           <Users className="text-primary h-3.5 w-3.5" />
           Up to {viewModel.config.slot_capacity} people per slot
         </span>
-        <span className="ring-primary/10 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
+        <span className="ring-primary/10 bg-card/80 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
           <CalendarDays className="text-primary h-3.5 w-3.5" />
           Book up to {viewModel.config.booking_window_days} days ahead
         </span>

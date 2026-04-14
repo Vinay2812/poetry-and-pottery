@@ -9,7 +9,7 @@ export function ProductSpecs({ material }: ProductSpecsProps) {
         <span className="block text-[11px] font-medium text-neutral-400">
           Material
         </span>
-        <span className="text-sm font-medium text-neutral-900 dark:text-white">
+        <span className="text-foreground text-sm font-medium">
           {material || "Ceramic"}
         </span>
       </div>

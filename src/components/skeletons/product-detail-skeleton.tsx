@@ -87,7 +87,7 @@ export function ProductDetailSkeleton() {
       </main>
 
       {/* Mobile Fixed Bottom CTA Skeleton */}
-      <div className="border-border fixed right-0 bottom-16 left-0 z-40 border-t bg-white/95 p-4 backdrop-blur-md lg:hidden">
+      <div className="border-border bg-background/95 fixed right-0 bottom-16 left-0 z-40 border-t p-4 backdrop-blur-md lg:hidden">
         <div className="flex gap-3">
           <Skeleton className="h-12 w-12 shrink-0 rounded-xl" />
           <Skeleton className="h-12 flex-1 rounded-xl" />

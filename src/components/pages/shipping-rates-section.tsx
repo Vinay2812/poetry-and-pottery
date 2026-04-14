@@ -17,7 +17,7 @@ export function ShippingRatesSection() {
       <h2 className="font-display mb-4 text-xl font-semibold text-neutral-900">
         Shipping Rates
       </h2>
-      <div className="shadow-soft overflow-hidden rounded-2xl bg-white">
+      <div className="shadow-soft bg-card overflow-hidden rounded-2xl">
         <table className="w-full">
           <thead>
             <tr className="border-b border-neutral-100 bg-neutral-50">

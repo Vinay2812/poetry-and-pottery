@@ -41,7 +41,7 @@ export function CollectionsSectionSkeleton({
       {/* Grid Layout */}
       <div className="grid gap-4 lg:grid-cols-[1fr_1fr] lg:gap-6">
         {/* Featured Collection Skeleton */}
-        <div className="shadow-soft flex flex-col overflow-hidden rounded-2xl bg-white">
+        <div className="shadow-soft bg-card flex flex-col overflow-hidden rounded-2xl">
           <Skeleton className="aspect-4/3 min-h-0 w-full lg:aspect-auto lg:flex-1" />
           <div className="p-4">
             <Skeleton className="h-6 w-3/4" />
@@ -54,7 +54,7 @@ export function CollectionsSectionSkeleton({
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="shadow-soft flex items-center gap-4 rounded-xl bg-white p-3"
+              className="shadow-soft bg-card flex items-center gap-4 rounded-xl p-3"
             >
               <Skeleton className="h-16 w-16 shrink-0 rounded-lg" />
               <div className="flex-1">

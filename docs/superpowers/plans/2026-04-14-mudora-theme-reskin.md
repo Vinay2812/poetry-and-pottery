@@ -17,10 +17,12 @@
 No new files created. All changes are modifications to existing files.
 
 ### High Impact (2 files)
+
 - `src/app/globals.css` — All CSS tokens, shadows, dark mode removal
 - `src/app/layout.tsx` — Font imports, CSS variable classes, frame border
 
 ### Medium Impact (14 files)
+
 - `src/features/layout/components/navbar.tsx`
 - `src/features/layout/components/footer.tsx`
 - `src/features/layout/components/mobile-header.tsx`
@@ -37,6 +39,7 @@ No new files created. All changes are modifications to existing files.
 - `src/components/shared/section-header.tsx`
 
 ### Low Impact (10+ files)
+
 - `src/components/shared/rating.tsx`
 - `src/components/ui/badge.tsx`
 - About page components, event cards, filter sidebar, listing page header
@@ -46,6 +49,7 @@ No new files created. All changes are modifications to existing files.
 ### Task 1: Core Theme — globals.css
 
 **Files:**
+
 - Modify: `src/app/globals.css`
 
 This is the highest-impact change. Updating CSS tokens cascades to the entire app.
@@ -55,6 +59,7 @@ This is the highest-impact change. Updating CSS tokens cascades to the entire ap
 In `src/app/globals.css`, replace the `@custom-variant dark` line and update the `@theme inline` block:
 
 Replace:
+
 ```css
 @custom-variant dark (&:is(.dark *));
 
@@ -67,6 +72,7 @@ Replace:
 ```
 
 With:
+
 ```css
 @theme inline {
   --color-background: var(--background);
@@ -79,10 +85,10 @@ With:
 Also add new color tokens inside `@theme inline`, after the existing custom pottery colors:
 
 ```css
-  /* Frame and sage colors */
-  --color-frame: var(--frame);
-  --color-sage: var(--sage);
-  --color-light-sage: var(--light-sage);
+/* Frame and sage colors */
+--color-frame: var(--frame);
+--color-sage: var(--sage);
+--color-light-sage: var(--light-sage);
 ```
 
 - [ ] **Step 2: Update shadow tints from green to warm brown**
@@ -90,21 +96,21 @@ Also add new color tokens inside `@theme inline`, after the existing custom pott
 Replace all shadow definitions in `@theme inline`:
 
 ```css
-  /* Custom shadows */
-  --shadow-soft: 0 2px 8px rgba(44, 33, 24, 0.08);
-  --shadow-card: 0 4px 12px rgba(44, 33, 24, 0.1);
-  --shadow-float: 0 8px 24px rgba(44, 33, 24, 0.15);
-  --shadow-nav: 0 -2px 10px rgba(0, 0, 0, 0.05);
-  --shadow-header: 0 2px 10px rgba(0, 0, 0, 0.05);
+/* Custom shadows */
+--shadow-soft: 0 2px 8px rgba(44, 33, 24, 0.08);
+--shadow-card: 0 4px 12px rgba(44, 33, 24, 0.1);
+--shadow-float: 0 8px 24px rgba(44, 33, 24, 0.15);
+--shadow-nav: 0 -2px 10px rgba(0, 0, 0, 0.05);
+--shadow-header: 0 2px 10px rgba(0, 0, 0, 0.05);
 
-  /* Primary glow shadows */
-  --shadow-primary-sm: 0 2px 8px rgba(45, 59, 45, 0.25);
-  --shadow-primary-md: 0 4px 14px rgba(45, 59, 45, 0.35);
-  --shadow-primary-lg: 0 8px 20px rgba(45, 59, 45, 0.4);
+/* Primary glow shadows */
+--shadow-primary-sm: 0 2px 8px rgba(45, 59, 45, 0.25);
+--shadow-primary-md: 0 4px 14px rgba(45, 59, 45, 0.35);
+--shadow-primary-lg: 0 8px 20px rgba(45, 59, 45, 0.4);
 
-  /* Terracotta glow shadows */
-  --shadow-terracotta-sm: 0 2px 8px rgba(232, 140, 58, 0.25);
-  --shadow-terracotta-md: 0 4px 14px rgba(232, 140, 58, 0.35);
+/* Terracotta glow shadows */
+--shadow-terracotta-sm: 0 2px 8px rgba(232, 140, 58, 0.25);
+--shadow-terracotta-md: 0 4px 14px rgba(232, 140, 58, 0.35);
 ```
 
 - [ ] **Step 3: Replace entire :root block with new MUDORA colors**
@@ -295,6 +301,7 @@ git commit -m "feat: replace all CSS tokens with MUDORA theme colors and shadows
 ### Task 2: Core Theme — layout.tsx Font Imports
 
 **Files:**
+
 - Modify: `src/app/layout.tsx`
 
 - [ ] **Step 1: Replace font imports and definitions**
@@ -302,16 +309,23 @@ git commit -m "feat: replace all CSS tokens with MUDORA theme colors and shadows
 In `src/app/layout.tsx`, replace the font imports and configurations:
 
 Replace:
+
 ```tsx
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 ```
 
 With:
+
 ```tsx
-import { Cormorant_Garamond, DM_Sans, DM_Serif_Display } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  DM_Sans,
+  DM_Serif_Display,
+} from "next/font/google";
 ```
 
 Replace:
+
 ```tsx
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -327,6 +341,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 ```
 
 With:
+
 ```tsx
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -352,11 +367,13 @@ const cormorantGaramond = Cormorant_Garamond({
 - [ ] **Step 2: Update body className to use new font variables**
 
 Replace:
+
 ```tsx
         className={`${outfit.variable} ${plusJakartaSans.variable} font-sans antialiased`}
 ```
 
 With:
+
 ```tsx
         className={`${dmSans.variable} ${dmSerifDisplay.variable} ${cormorantGaramond.variable} font-sans antialiased`}
 ```
@@ -384,28 +401,33 @@ git commit -m "feat: replace fonts with DM Sans, DM Serif Display, Cormorant Gar
 ### Task 3: Navbar — Remove Glassmorphism, Update Colors
 
 **Files:**
+
 - Modify: `src/features/layout/components/navbar.tsx`
 
 - [ ] **Step 1: Update header background — solid cream, remove blur and dark mode**
 
 Replace:
+
 ```tsx
-      <div className="bg-background/85 absolute inset-0 border-b border-neutral-300/30 backdrop-blur-xl dark:border-neutral-700/50 dark:bg-black/80" />
+<div className="bg-background/85 absolute inset-0 border-b border-neutral-300/30 backdrop-blur-xl dark:border-neutral-700/50 dark:bg-black/80" />
 ```
 
 With:
+
 ```tsx
-      <div className="bg-background absolute inset-0 border-b border-border" />
+<div className="bg-background border-border absolute inset-0 border-b" />
 ```
 
 - [ ] **Step 2: Update nav pills container — remove backdrop blur and dark mode**
 
 Replace:
+
 ```tsx
           <nav className="hidden items-center gap-1 rounded-full bg-neutral-100/50 p-1.5 backdrop-blur-sm lg:flex dark:bg-neutral-800/50">
 ```
 
 With:
+
 ```tsx
           <nav className="hidden items-center gap-1 rounded-full bg-neutral-100 p-1.5 lg:flex">
 ```
@@ -413,6 +435,7 @@ With:
 - [ ] **Step 3: Update active nav pill background — remove dark mode**
 
 Replace:
+
 ```tsx
                     <motion.div
                       layoutId="navbar-active"
@@ -420,6 +443,7 @@ Replace:
 ```
 
 With:
+
 ```tsx
                     <motion.div
                       layoutId="navbar-active"
@@ -429,11 +453,13 @@ With:
 - [ ] **Step 4: Update icon link hover — remove dark mode**
 
 Replace:
+
 ```tsx
           : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
 ```
 
 With:
+
 ```tsx
           : "hover:bg-neutral-100",
 ```
@@ -441,11 +467,13 @@ With:
 - [ ] **Step 5: Update count badge — remove dark ring**
 
 Replace:
+
 ```tsx
         <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
 ```
 
 With:
+
 ```tsx
         <span className="bg-primary absolute top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-background">
 ```
@@ -453,25 +481,31 @@ With:
 - [ ] **Step 6: Update search button — remove dark mode**
 
 Replace:
+
 ```tsx
-              className="hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100/50 px-4 text-sm transition-colors hover:bg-neutral-200/50 xl:flex dark:bg-neutral-800/50 dark:hover:bg-neutral-700/50"
+className =
+  "hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100/50 px-4 text-sm transition-colors hover:bg-neutral-200/50 xl:flex dark:bg-neutral-800/50 dark:hover:bg-neutral-700/50";
 ```
 
 With:
+
 ```tsx
-              className="hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100 px-4 text-sm transition-colors hover:bg-neutral-200 xl:flex"
+className =
+  "hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100 px-4 text-sm transition-colors hover:bg-neutral-200 xl:flex";
 ```
 
 - [ ] **Step 7: Update divider — remove dark mode**
 
 Replace:
+
 ```tsx
-            <div className="mx-1 h-6 w-px bg-neutral-200 dark:bg-neutral-700" />
+<div className="mx-1 h-6 w-px bg-neutral-200 dark:bg-neutral-700" />
 ```
 
 With:
+
 ```tsx
-            <div className="mx-1 h-6 w-px bg-border" />
+<div className="bg-border mx-1 h-6 w-px" />
 ```
 
 - [ ] **Step 8: Commit**
@@ -487,18 +521,21 @@ git commit -m "feat: update navbar to MUDORA theme — solid cream bg, remove da
 ### Task 4: Mobile Header & Mobile Nav
 
 **Files:**
+
 - Modify: `src/features/layout/components/mobile-header.tsx`
 - Modify: `src/features/layout/components/mobile-nav.tsx`
 
 - [ ] **Step 1: Update mobile-header.tsx — solid cream bg, remove dark mode**
 
 Replace:
+
 ```tsx
         "bg-background/85 fixed top-0 right-0 left-0 z-50 backdrop-blur-xl transition-shadow duration-200 lg:hidden dark:bg-black/80",
         "border-b border-neutral-300/30 dark:border-neutral-700/50",
 ```
 
 With:
+
 ```tsx
         "bg-background fixed top-0 right-0 left-0 z-50 transition-shadow duration-200 lg:hidden",
         "border-b border-border",
@@ -519,16 +556,19 @@ Replace `ring-2 ring-white dark:ring-black` with `ring-2 ring-background`.
 - [ ] **Step 3: Update mobile-nav.tsx — solid cream bg, remove dark mode**
 
 Replace:
+
 ```tsx
-      <div className="bg-background/80 absolute inset-0 border-t border-white/20 backdrop-blur-xl dark:border-white/10 dark:bg-black/80" />
+<div className="bg-background/80 absolute inset-0 border-t border-white/20 backdrop-blur-xl dark:border-white/10 dark:bg-black/80" />
 ```
 
 With:
+
 ```tsx
-      <div className="bg-background absolute inset-0 border-t border-border" />
+<div className="bg-background border-border absolute inset-0 border-t" />
 ```
 
 Replace:
+
 ```tsx
                 <motion.div
                   layoutId="mobile-nav-active"
@@ -536,6 +576,7 @@ Replace:
 ```
 
 With:
+
 ```tsx
                 <motion.div
                   layoutId="mobile-nav-active"
@@ -543,13 +584,17 @@ With:
 ```
 
 Replace:
+
 ```tsx
-                        className="bg-primary absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-white dark:ring-black"
+className =
+  "bg-primary absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-white dark:ring-black";
 ```
 
 With:
+
 ```tsx
-                        className="bg-primary absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-background"
+className =
+  "bg-primary absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-1 ring-background";
 ```
 
 - [ ] **Step 4: Commit**
@@ -565,16 +610,19 @@ git commit -m "feat: update mobile header and nav to MUDORA theme — solid crea
 ### Task 5: Footer — Serif Brand Name, Remove Dark Mode
 
 **Files:**
+
 - Modify: `src/features/layout/components/footer.tsx`
 
 - [ ] **Step 1: Update footer background — remove dark mode**
 
 Replace:
+
 ```tsx
     <footer className="mt-auto bg-neutral-50 dark:bg-neutral-900">
 ```
 
 With:
+
 ```tsx
     <footer className="mt-auto bg-background">
 ```
@@ -582,11 +630,13 @@ With:
 - [ ] **Step 2: Update newsletter section bg — remove dark mode**
 
 Replace:
+
 ```tsx
       <section className="bg-primary/5 dark:bg-primary/10">
 ```
 
 With:
+
 ```tsx
       <section className="bg-cream">
 ```
@@ -594,21 +644,25 @@ With:
 - [ ] **Step 3: Update newsletter subscribed state — remove dark mode**
 
 Replace:
+
 ```tsx
       <div className="bg-card flex items-center justify-center gap-2 rounded-full px-6 py-3 dark:bg-neutral-800">
 ```
 
 With:
+
 ```tsx
       <div className="bg-card flex items-center justify-center gap-2 rounded-full px-6 py-3">
 ```
 
 Replace:
+
 ```tsx
         <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
 ```
 
 With:
+
 ```tsx
         <span className="text-sm font-medium text-foreground">
 ```
@@ -616,39 +670,45 @@ With:
 - [ ] **Step 4: Update brand section — serif name, remove dark mode**
 
 Replace:
+
 ```tsx
-              <span className="bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-lg font-bold text-transparent dark:from-neutral-100 dark:to-neutral-400">
-                Poetry & Pottery
-              </span>
+<span className="bg-gradient-to-r from-neutral-900 to-neutral-600 bg-clip-text text-lg font-bold text-transparent dark:from-neutral-100 dark:to-neutral-400">
+  Poetry & Pottery
+</span>
 ```
 
 With:
+
 ```tsx
-              <span className="font-display text-lg text-foreground">
-                Poetry & Pottery
-              </span>
+<span className="font-display text-foreground text-lg">Poetry & Pottery</span>
 ```
 
 - [ ] **Step 5: Update social links — remove dark mode**
 
 Replace:
+
 ```tsx
-                    className="text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+className =
+  "text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700";
 ```
 
 With:
+
 ```tsx
-                    className="text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200"
+className =
+  "text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 transition-colors duration-150 hover:bg-neutral-200";
 ```
 
 - [ ] **Step 6: Update column titles — remove dark mode**
 
 Replace all instances of:
+
 ```tsx
               <h4 className="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
 ```
 
 With:
+
 ```tsx
               <h4 className="mb-4 text-sm font-semibold uppercase tracking-widest text-foreground">
 ```
@@ -658,11 +718,13 @@ With:
 - [ ] **Step 7: Update bottom bar — remove dark mode**
 
 Replace:
+
 ```tsx
         <div className="my-12 flex flex-col items-center justify-between gap-4 border-t border-neutral-200 pt-8 lg:mt-16 lg:mb-0 lg:flex-row lg:pt-8 dark:border-neutral-800">
 ```
 
 With:
+
 ```tsx
         <div className="my-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 lg:mt-16 lg:mb-0 lg:flex-row lg:pt-8">
 ```
@@ -680,6 +742,7 @@ git commit -m "feat: update footer to MUDORA theme — serif brand name, cream b
 ### Task 6: Hero Section — Cream Background with Overlay
 
 **Files:**
+
 - Modify: `src/components/sections/hero-section.tsx`
 
 The hero keeps its existing video/image and overlay structure. We update colors so it works with the cream-background page while keeping the dark overlay for readability on the media.
@@ -687,13 +750,17 @@ The hero keeps its existing video/image and overlay structure. We update colors 
 - [ ] **Step 1: Update badge style — outline pill instead of glassmorphic**
 
 Replace:
+
 ```tsx
-                className="mb-3 inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold tracking-widest text-white uppercase backdrop-blur-md md:mb-3 md:px-4 md:py-1.5 md:text-[11px] lg:mb-5"
+className =
+  "mb-3 inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold tracking-widest text-white uppercase backdrop-blur-md md:mb-3 md:px-4 md:py-1.5 md:text-[11px] lg:mb-5";
 ```
 
 With:
+
 ```tsx
-                className="mb-3 inline-flex items-center rounded-full border border-white/40 bg-white/10 px-3 py-1 text-[10px] font-bold tracking-widest text-white uppercase backdrop-blur-md md:mb-3 md:px-4 md:py-1.5 md:text-[11px] lg:mb-5"
+className =
+  "mb-3 inline-flex items-center rounded-full border border-white/40 bg-white/10 px-3 py-1 text-[10px] font-bold tracking-widest text-white uppercase backdrop-blur-md md:mb-3 md:px-4 md:py-1.5 md:text-[11px] lg:mb-5";
 ```
 
 - [ ] **Step 2: Commit**
@@ -709,6 +776,7 @@ git commit -m "feat: update hero badge to MUDORA outline pill style"
 ### Task 7: Explore Section — Outline Category Pills
 
 **Files:**
+
 - Modify: `src/components/sections/explore-section.tsx`
 
 - [ ] **Step 1: Read current explore-section.tsx**
@@ -736,32 +804,37 @@ git commit -m "feat: update explore category pills to MUDORA outline style"
 ### Task 8: Testimonials — Script Font, Terracotta Stars
 
 **Files:**
+
 - Modify: `src/components/sections/testimonials-section.tsx`
 
 - [ ] **Step 1: Update star colors from amber to terracotta**
 
 Replace:
+
 ```tsx
-              i < rating
-                ? "fill-amber-400 text-amber-400"
-                : "fill-neutral-200 text-neutral-200"
+i < rating
+  ? "fill-amber-400 text-amber-400"
+  : "fill-neutral-200 text-neutral-200";
 ```
 
 With:
+
 ```tsx
-              i < rating
-                ? "fill-terracotta text-terracotta"
-                : "fill-neutral-200 text-neutral-200"
+i < rating
+  ? "fill-terracotta text-terracotta"
+  : "fill-neutral-200 text-neutral-200";
 ```
 
 - [ ] **Step 2: Update card styling — add border, use script font for quote**
 
 Replace:
+
 ```tsx
     <div className="bg-card flex w-[300px] shrink-0 flex-col gap-3 rounded-2xl p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
 ```
 
 With:
+
 ```tsx
     <div className="flex w-[300px] shrink-0 flex-col gap-3 rounded-2xl border border-border bg-white p-6">
 ```
@@ -769,11 +842,13 @@ With:
 - [ ] **Step 3: Update quote text to use script font**
 
 Replace:
+
 ```tsx
       <p className="text-[13px] leading-relaxed text-neutral-600">
 ```
 
 With:
+
 ```tsx
       <p className="font-script text-base leading-relaxed italic text-neutral-600">
 ```
@@ -791,11 +866,13 @@ git commit -m "feat: update testimonials to MUDORA — script font quotes, terra
 ### Task 9: Rating Component — Terracotta Stars
 
 **Files:**
+
 - Modify: `src/components/shared/rating.tsx`
 
 - [ ] **Step 1: Update star colors from primary green to terracotta**
 
 Replace:
+
 ```tsx
                 isFilled || isHalf
                   ? "fill-primary text-primary"
@@ -803,6 +880,7 @@ Replace:
 ```
 
 With:
+
 ```tsx
                 isFilled || isHalf
                   ? "fill-terracotta text-terracotta"
@@ -822,6 +900,7 @@ git commit -m "feat: update rating stars to terracotta color"
 ### Task 10: Product Card — Cream BG, Serif Name
 
 **Files:**
+
 - Modify: `src/features/product-card/components/product-card.tsx`
 
 - [ ] **Step 1: Read current product-card.tsx for exact class strings**
@@ -855,6 +934,7 @@ git commit -m "feat: update product card to MUDORA — cream bg, serif name, rem
 ### Task 11: Collections, Workshops, Behind Scenes, Customize Sections
 
 **Files:**
+
 - Modify: `src/components/sections/collections-section.tsx`
 - Modify: `src/components/sections/workshops-section.tsx`
 - Modify: `src/components/sections/behind-scenes-section.tsx`
@@ -871,15 +951,19 @@ In each file, search for `dark:` and remove every dark mode class variant. This 
 - [ ] **Step 3: Update any hardcoded color references**
 
 In collections-section.tsx:
+
 - If there are hardcoded `bg-primary-light` or `bg-primary-lighter` references, these will inherit the new warm cream values from tokens automatically.
 
 In workshops-section.tsx:
+
 - Pricing cards inherit from tokens. Verify no hardcoded hex values.
 
 In behind-scenes-section.tsx:
+
 - The video stays exactly as-is. Only update the overlay button if it has dark mode classes.
 
 In customize-section.tsx:
+
 - Update any dark mode classes, inherit the rest from tokens.
 
 - [ ] **Step 4: Commit**
@@ -895,6 +979,7 @@ git commit -m "feat: update homepage sections to MUDORA — remove dark mode, in
 ### Task 12: Sweep All Remaining Dark Mode References
 
 **Files:**
+
 - All files in `src/` that contain `dark:` class prefixes
 
 - [ ] **Step 1: Find all files with dark mode references**
@@ -906,6 +991,7 @@ Run: `cd /Users/apple/Desktop/personal/poetry-and-pottery-workspace/poetry-and-p
 Go through each file found in Step 1 and remove all `dark:` prefixed classes. Do NOT change any logic, props, or state — only remove the dark: utility class strings.
 
 Common patterns to remove:
+
 - `dark:bg-*` → remove
 - `dark:text-*` → remove
 - `dark:border-*` → remove
@@ -933,6 +1019,7 @@ git commit -m "feat: remove all dark mode classes from codebase"
 ### Task 13: Product Carousel & Section Header Font Updates
 
 **Files:**
+
 - Modify: `src/components/sections/product-carousel.tsx`
 - Modify: `src/components/shared/section-header.tsx`
 
@@ -957,6 +1044,7 @@ git commit -m "feat: verify section header and carousel fonts use font-display t
 ### Task 14: UI Primitives — Badge Outline Style
 
 **Files:**
+
 - Modify: `src/components/ui/badge.tsx`
 
 - [ ] **Step 1: Read current badge.tsx**
@@ -980,6 +1068,7 @@ git commit -m "feat: update badge outline to use MUDORA warm sand border"
 ### Task 15: About Page Components — Font Updates
 
 **Files:**
+
 - All `src/components/pages/about-*.tsx` files
 
 - [ ] **Step 1: Read about page component files**
@@ -989,6 +1078,7 @@ Read each about page component to identify font and dark mode classes.
 - [ ] **Step 2: Update headings to font-display, quotes to font-script**
 
 For each file:
+
 - Any section heading using old font should use `font-display`
 - Any decorative/quote text should use `font-script italic`
 - Remove all `dark:` classes
@@ -1007,6 +1097,7 @@ git commit -m "feat: update about page components to MUDORA fonts and remove dar
 ### Task 16: Event Cards, Filter Sidebar, Listing Header
 
 **Files:**
+
 - Modify: `src/components/cards/event-card.tsx`
 - Modify: `src/components/shared/filter-sidebar.tsx`
 - Modify: `src/components/shared/listing-page-header.tsx`
@@ -1018,6 +1109,7 @@ Read the three files to identify dark mode and font issues.
 - [ ] **Step 2: Remove dark mode classes and update fonts**
 
 For each file:
+
 - Remove all `dark:` prefixed classes
 - Ensure headings use `font-display` where appropriate
 - Ensure body/labels use `font-sans` (already default)
@@ -1035,6 +1127,7 @@ git commit -m "feat: update event cards, filter sidebar, listing header to MUDOR
 ### Task 17: Format, Type Check, Build Verify
 
 **Files:**
+
 - All modified files
 
 - [ ] **Step 1: Run Prettier formatting on entire codebase**
@@ -1058,6 +1151,7 @@ Expected: Build succeeds. There may be lint warnings but no errors.
 - [ ] **Step 4: Fix any build errors if found**
 
 If TypeScript or build errors occur, fix them. Common issues:
+
 - Missing font variable names (check layout.tsx matches globals.css)
 - Tailwind class names not recognized (check @theme inline has new color tokens)
 
@@ -1080,6 +1174,7 @@ Run: `cd /Users/apple/Desktop/personal/poetry-and-pottery-workspace/poetry-and-p
 - [ ] **Step 2: Verify homepage visually using agent-browser**
 
 Open http://localhost:3005 and verify:
+
 - Cream background (`#F2EDE3`) visible
 - Dark chocolate frame border on left and right
 - DM Serif Display font on hero title, section headings
@@ -1092,6 +1187,7 @@ Open http://localhost:3005 and verify:
 - [ ] **Step 3: Verify products page**
 
 Navigate to http://localhost:3005/products and verify:
+
 - Product cards have cream background
 - Product names are in serif font
 - Star ratings are terracotta
@@ -1101,6 +1197,7 @@ Navigate to http://localhost:3005/products and verify:
 - [ ] **Step 4: Verify events page and about page**
 
 Navigate to http://localhost:3005/events and http://localhost:3005/about:
+
 - Section headings are serif
 - No dark mode artifacts
 - All colors are warm/cream/forest green
@@ -1108,6 +1205,7 @@ Navigate to http://localhost:3005/events and http://localhost:3005/about:
 - [ ] **Step 5: Verify mobile views**
 
 Check responsive views at 375px width:
+
 - Mobile header has cream background (no blur)
 - Bottom nav has cream background
 - Frame border is 2px on mobile

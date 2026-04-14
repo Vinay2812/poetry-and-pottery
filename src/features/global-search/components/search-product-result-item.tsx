@@ -14,9 +14,9 @@ export function SearchProductResultItem({
   return (
     <button
       onClick={onClick}
-      className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
+      className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50"
     >
-      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[10px] bg-neutral-100 dark:bg-neutral-800">
+      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[10px] bg-neutral-100">
         <OptimizedImage
           src={imageUrl}
           alt={name}
@@ -26,9 +26,7 @@ export function SearchProductResultItem({
         />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
-          {name}
-        </p>
+        <p className="text-foreground truncate text-sm font-medium">{name}</p>
         {isOutOfStock && (
           <p className="text-xs text-neutral-500">Out of stock</p>
         )}

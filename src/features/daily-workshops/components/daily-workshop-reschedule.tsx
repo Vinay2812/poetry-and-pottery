@@ -40,11 +40,11 @@ export function DailyWorkshopReschedule({
             across multiple days.
           </p>
           <div className="mt-4 flex flex-wrap gap-2.5">
-            <span className="ring-primary/10 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
+            <span className="ring-primary/10 bg-card/80 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
               <CalendarDays className="text-primary h-3.5 w-3.5" />
               Required sessions: {viewModel.requiredSlots}
             </span>
-            <span className="ring-primary/10 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
+            <span className="ring-primary/10 bg-card/80 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-700 ring-1">
               <Clock3 className="text-primary h-3.5 w-3.5" />
               Combined hours: {viewModel.requiredHours}
             </span>
@@ -61,7 +61,7 @@ export function DailyWorkshopReschedule({
               onSelectDate={onSelectDate}
             />
 
-            <section className="rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm">
+            <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <p className="font-display text-lg font-semibold text-neutral-900">
@@ -89,7 +89,7 @@ export function DailyWorkshopReschedule({
                         "rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
                         tab.dateKey === viewModel.activeDateKey
                           ? "border-primary bg-primary text-white"
-                          : "hover:border-primary/40 border-neutral-200 bg-white text-neutral-600",
+                          : "hover:border-primary/40 bg-card border-neutral-200 text-neutral-600",
                       )}
                       onClick={() => onSelectDate(tab.dateKey)}
                     >
@@ -147,7 +147,7 @@ export function DailyWorkshopReschedule({
             </section>
           </div>
 
-          <aside className="h-fit rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm xl:sticky xl:top-24">
+          <aside className="bg-card h-fit rounded-2xl border border-neutral-200/80 p-5 shadow-sm xl:sticky xl:top-24">
             <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
               Reschedule Summary
             </h2>

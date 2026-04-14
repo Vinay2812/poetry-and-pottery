@@ -67,11 +67,9 @@ export function PastWorkshopGallery({
 }: PastWorkshopGalleryProps) {
   return (
     <>
-      <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+      <div className="border-t border-neutral-100 pt-6 pb-6">
         <div className="mb-3 flex items-center gap-2">
-          <h2 className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-            Gallery
-          </h2>
+          <h2 className="text-xs font-semibold text-neutral-500">Gallery</h2>
           <span className="text-xs text-neutral-400">
             ({gallery.length} photos)
           </span>

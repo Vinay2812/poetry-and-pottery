@@ -44,7 +44,7 @@ export function CategorySelector({
             key={category.id}
             onClick={() => onSelect(category.id)}
             className={cn(
-              "group hover:border-primary-light relative flex flex-col items-center rounded-xl border-2 bg-white p-4 text-center transition-all",
+              "group hover:border-primary-light bg-card relative flex flex-col items-center rounded-xl border-2 p-4 text-center transition-all",
               category.isSelected
                 ? "border-primary bg-primary-light/30"
                 : "shadow-soft border-transparent",

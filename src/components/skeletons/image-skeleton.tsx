@@ -21,7 +21,7 @@ export function ImageSkeleton({
   return (
     <Skeleton
       className={cn(
-        "bg-primary-light absolute inset-0 flex items-center justify-center overflow-hidden dark:bg-neutral-800",
+        "bg-primary-light absolute inset-0 flex items-center justify-center overflow-hidden",
         className,
       )}
       style={style}

@@ -12,7 +12,7 @@ export function EventLineup({
   title = "Tonight's Lineup",
 }: EventLineupProps) {
   return (
-    <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+    <div className="border-t border-neutral-100 pt-6 pb-6">
       <h2 className="mb-3 text-xs font-bold tracking-widest text-neutral-400 uppercase">
         {title}
       </h2>
@@ -22,9 +22,7 @@ export function EventLineup({
             <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
               <Mic className="text-primary h-4 w-4" />
             </div>
-            <span className="text-sm text-neutral-700 dark:text-neutral-300">
-              {performer}
-            </span>
+            <span className="text-sm text-neutral-700">{performer}</span>
           </li>
         ))}
       </ul>

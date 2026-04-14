@@ -4,7 +4,7 @@ export function ProfileSkeleton() {
   return (
     <>
       {/* Mobile Header */}
-      <header className="border-border sticky top-0 z-50 border-b bg-white lg:hidden">
+      <header className="border-border bg-background sticky top-0 z-50 border-b lg:hidden">
         <div className="flex h-14 items-center justify-center px-4">
           <Skeleton className="h-5 w-16" />
         </div>
@@ -14,7 +14,7 @@ export function ProfileSkeleton() {
         <div className="container mx-auto px-4 py-6 lg:px-8">
           <div className="flex justify-center">
             {/* Clerk UserProfile skeleton */}
-            <div className="w-full max-w-2xl space-y-6 rounded-2xl bg-white p-6 shadow-sm">
+            <div className="bg-card w-full max-w-2xl space-y-6 rounded-2xl p-6 shadow-sm">
               {/* Avatar and name */}
               <div className="flex items-center gap-4">
                 <Skeleton className="h-16 w-16 rounded-full" />

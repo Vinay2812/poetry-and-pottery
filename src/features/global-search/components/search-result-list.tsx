@@ -20,7 +20,7 @@ export function SearchResultList({
   }
 
   return (
-    <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+    <div className="divide-y divide-neutral-100">
       {children}
       {totalCount > visibleCount && onViewAll && (
         <button

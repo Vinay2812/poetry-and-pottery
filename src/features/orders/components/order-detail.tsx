@@ -31,7 +31,7 @@ export function OrderDetail({
             <p className="mb-1 text-xs font-bold tracking-widest text-neutral-400 uppercase">
               Order
             </p>
-            <h1 className="text-sm font-bold text-neutral-900 md:text-base dark:text-neutral-100">
+            <h1 className="text-foreground text-sm font-bold md:text-base">
               #{viewModel.orderId.toUpperCase()}
             </h1>
             <p className="mt-1 text-xs text-neutral-500">
@@ -68,7 +68,7 @@ export function OrderDetail({
       </div>
 
       <div className="mb-8">
-        <h3 className="mb-4 text-sm font-semibold text-neutral-900 md:text-lg dark:text-neutral-100">
+        <h3 className="text-foreground mb-4 text-sm font-semibold md:text-lg">
           Items ({viewModel.items.length})
         </h3>
         <div className="space-y-4">
@@ -95,8 +95,8 @@ export function OrderDetail({
       )}
 
       {viewModel.canReview && (
-        <div className="mt-6 rounded-2xl bg-emerald-50 p-4 text-center dark:bg-emerald-950/20">
-          <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+        <div className="mt-6 rounded-2xl bg-emerald-50 p-4 text-center">
+          <p className="text-xs font-medium text-emerald-700">
             Your order has been delivered! Leave reviews for your items.
           </p>
         </div>

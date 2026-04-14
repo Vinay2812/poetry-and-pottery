@@ -17,7 +17,7 @@ export function BookingSlotsSection({
   isSlotSelectionPending,
 }: BookingSlotsSectionProps) {
   return (
-    <section className="rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm">
+    <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <p className="font-display text-lg font-semibold text-neutral-900">
@@ -44,7 +44,7 @@ export function BookingSlotsSection({
                 "rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
                 tab.dateKey === viewModel.activeDateKey
                   ? "border-primary bg-primary text-white"
-                  : "hover:border-primary/40 border-neutral-200 bg-white text-neutral-600",
+                  : "hover:border-primary/40 bg-card border-neutral-200 text-neutral-600",
               )}
               onClick={() => onSelectDate(tab.dateKey)}
             >

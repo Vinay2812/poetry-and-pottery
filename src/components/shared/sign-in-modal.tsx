@@ -48,13 +48,13 @@ export function SignInModal() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2"
           >
-            <div className="relative rounded-2xl bg-white p-2 shadow-2xl">
+            <div className="bg-card relative rounded-2xl p-2 shadow-2xl">
               {/* Close button */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={handleClose}
-                className="absolute top-4 right-4 z-10 h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
+                className="bg-card/80 hover:bg-card absolute top-4 right-4 z-10 h-8 w-8 rounded-full backdrop-blur-sm"
               >
                 <X className="h-4 w-4" />
               </Button>

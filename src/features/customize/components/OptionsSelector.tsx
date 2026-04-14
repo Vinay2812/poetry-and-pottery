@@ -57,7 +57,7 @@ export function OptionsSelector({
                     title={option.name}
                   >
                     {option.priceModifier !== 0 && (
-                      <span className="text-primary absolute -top-1 -right-1 rounded-full bg-white px-1.5 py-0.5 text-[9px] font-medium shadow-sm">
+                      <span className="text-primary bg-card absolute -top-1 -right-1 rounded-full px-1.5 py-0.5 text-[9px] font-medium shadow-sm">
                         {option.priceModifierFormatted}
                       </span>
                     )}

@@ -40,7 +40,7 @@ function UnavailableCartItem({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.15 }}
-      className="group flex items-center gap-3 rounded-xl bg-white/60 p-2.5 transition-colors hover:bg-white"
+      className="group bg-card/60 hover:bg-card flex items-center gap-3 rounded-xl p-2.5 transition-colors"
     >
       <Link
         href={`/products/${productSlug}`}
@@ -255,7 +255,7 @@ export function Cart({
                   )}
 
                   {/* Address Selector */}
-                  <div className="shadow-soft overflow-hidden rounded-2xl border border-neutral-100 bg-white p-4 lg:p-6">
+                  <div className="shadow-soft bg-card overflow-hidden rounded-2xl border border-neutral-100 p-4 lg:p-6">
                     <AddressSelectorContainer
                       selectedAddressId={selectedAddress?.id}
                       onSelectAddress={onSelectAddress}

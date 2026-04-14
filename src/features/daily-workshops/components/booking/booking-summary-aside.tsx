@@ -18,7 +18,7 @@ export function BookingSummaryAside({
   isBooking,
 }: BookingSummaryAsideProps) {
   return (
-    <aside className="h-fit rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm xl:sticky xl:top-24">
+    <aside className="bg-card h-fit rounded-2xl border border-neutral-200/80 p-5 shadow-sm xl:sticky xl:top-24">
       <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
         Booking Summary
       </h2>

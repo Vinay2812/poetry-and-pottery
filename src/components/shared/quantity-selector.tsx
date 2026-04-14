@@ -57,7 +57,7 @@ export function QuantitySelector({
         onClick={onDecrease}
         disabled={disabled || isMin}
         className={cn(
-          "inline-flex items-center justify-center rounded-full bg-white text-neutral-800 transition-colors",
+          "bg-card inline-flex items-center justify-center rounded-full text-neutral-800 transition-colors",
           "hover:bg-neutral-100",
           "disabled:pointer-events-none disabled:text-neutral-400",
           config.button,
@@ -79,7 +79,7 @@ export function QuantitySelector({
         onClick={onIncrease}
         disabled={disabled || isMax}
         className={cn(
-          "inline-flex items-center justify-center rounded-full bg-white text-neutral-800 transition-colors",
+          "bg-card inline-flex items-center justify-center rounded-full text-neutral-800 transition-colors",
           "hover:bg-neutral-100",
           "disabled:pointer-events-none disabled:text-neutral-400",
           config.button,
