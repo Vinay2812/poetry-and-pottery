@@ -168,8 +168,10 @@ export function FAQPageClient({ content }: FAQPageClientProps) {
               ))}
             </div>
 
+            <hr className="border-border my-10" />
+
             {/* Important Policies */}
-            <div className="mt-12 mb-8">
+            <div className="mb-8">
               <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
                 Important Policies
               </h2>

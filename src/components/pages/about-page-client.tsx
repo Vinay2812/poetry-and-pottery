@@ -43,10 +43,15 @@ export function AboutPageClient() {
         </div>
 
         <AboutStorySection />
+        <hr className="border-border mx-auto w-[92%]" />
         <AboutStatsSection />
+        <hr className="border-border mx-auto w-[92%]" />
         <AboutValuesSection />
+        <hr className="border-border mx-auto w-[92%]" />
         <AboutOpenMicSection />
+        <hr className="border-border mx-auto w-[92%]" />
         <AboutTeamSection />
+        <hr className="border-border mx-auto w-[92%]" />
         <AboutCtaSection />
       </main>
     </>
