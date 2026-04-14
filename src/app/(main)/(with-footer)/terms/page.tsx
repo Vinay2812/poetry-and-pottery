@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 
 import { PageSkeleton } from "@/components/skeletons";
@@ -50,6 +51,8 @@ export const metadata: Metadata = {
  * - Canonical/legal metadata used for SEO and structured data outputs.
  */
 export default function TermsPage() {
+  noStore();
+
   return (
     <Suspense fallback={<PageSkeleton />}>
       <TermsContent />

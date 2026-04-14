@@ -1,3 +1,5 @@
+import { unstable_noStore as noStore } from "next/cache";
+
 import { AboutPageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
@@ -13,6 +15,8 @@ import { absoluteUrl } from "@/lib/seo";
  * - Media assets and section ordering used by the about page client composition.
  */
 export default function AboutPage() {
+  noStore();
+
   return (
     <>
       <script

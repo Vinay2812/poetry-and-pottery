@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 
 import { PageSkeleton } from "@/components/skeletons";
@@ -15,6 +16,8 @@ import { FAQContent } from "./faq-content";
  * - Policy summary values shown in the highlighted info cards section.
  */
 export default function FAQPage() {
+  noStore();
+
   return (
     <Suspense fallback={<PageSkeleton />}>
       <FAQContent />

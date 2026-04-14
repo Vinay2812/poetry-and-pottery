@@ -1,5 +1,6 @@
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 
 import { ListingPageHeader } from "@/components/shared";
@@ -64,6 +65,8 @@ export const metadata: Metadata = {
  * - Cart/user context required to persist configured selections into a cart line item.
  */
 export default function CustomizePage() {
+  noStore();
+
   return (
     <>
       <MobileHeaderContainer title="Customize Pottery" showBack backHref="/" />

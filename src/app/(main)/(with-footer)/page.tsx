@@ -3,6 +3,7 @@ import { CustomizeSection } from "@/features/home";
 import { MobileHeaderContainer } from "@/features/layout";
 import { RecommendedProductsContainer } from "@/features/recommended-products";
 import type { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
 import {
@@ -67,6 +68,8 @@ export const metadata: Metadata = {
  * - Linked product/event identifiers and CTA targets used by cards and section buttons.
  */
 export default function Home() {
+  noStore();
+
   return (
     <>
       <MobileHeaderContainer />
