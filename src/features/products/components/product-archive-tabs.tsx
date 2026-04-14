@@ -19,9 +19,9 @@ export function ProductArchiveTabs({
         <button
           onClick={() => onArchiveToggle(false)}
           className={cn(
-            "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-all sm:px-4 sm:py-3",
+            "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
             !isArchiveView
-              ? "border-border text-primary bg-cream rounded-full border"
+              ? "text-primary"
               : "text-muted-foreground hover:text-foreground",
           )}
         >
@@ -37,13 +37,16 @@ export function ProductArchiveTabs({
           >
             {activeProductsCount}
           </span>
+          {!isArchiveView && (
+            <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
+          )}
         </button>
         <button
           onClick={() => onArchiveToggle(true)}
           className={cn(
-            "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-all sm:px-4 sm:py-3",
+            "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
             isArchiveView
-              ? "border-border text-primary bg-cream rounded-full border"
+              ? "text-primary"
               : "text-muted-foreground hover:text-foreground",
           )}
         >
@@ -59,6 +62,9 @@ export function ProductArchiveTabs({
           >
             {archivedProductsCount}
           </span>
+          {isArchiveView && (
+            <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
+          )}
         </button>
       </div>
       <div className="border-border border-b" />
