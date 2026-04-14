@@ -99,19 +99,19 @@ export function DailyWorkshopRegistrationCard({
   return (
     <div
       className={cn(
-        "flex gap-4 rounded-2xl bg-white p-3 lg:p-4 dark:bg-neutral-900",
+        "bg-card flex gap-4 rounded-2xl p-3 lg:p-4",
         isCancelled && "opacity-60",
       )}
     >
       <Link
         href={`/events/daily-workshops/${registration.id}`}
-        className="group relative flex h-24 w-24 shrink-0 flex-col items-center justify-between overflow-hidden rounded-xl bg-neutral-100 p-3 lg:h-28 lg:w-28 dark:bg-neutral-800"
+        className="group relative flex h-24 w-24 shrink-0 flex-col items-center justify-between overflow-hidden rounded-xl bg-neutral-100 p-3 lg:h-28 lg:w-28"
       >
         <Badge className="bg-primary-lighter text-primary border-none px-1.5 py-0.5 text-[10px] font-semibold uppercase">
           Daily
         </Badge>
         <Palette className="text-primary h-7 w-7" />
-        <span className="text-center text-[10px] font-medium text-neutral-600 dark:text-neutral-300">
+        <span className="text-center text-[10px] font-medium text-neutral-600">
           Flexible Slots
         </span>
       </Link>
@@ -122,7 +122,7 @@ export function DailyWorkshopRegistrationCard({
             <div className="min-w-0 flex-1">
               <Link
                 href={`/events/daily-workshops/${registration.id}`}
-                className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
+                className="font-display text-foreground line-clamp-2 text-sm leading-snug font-semibold hover:underline lg:text-base"
               >
                 Daily Workshop
               </Link>

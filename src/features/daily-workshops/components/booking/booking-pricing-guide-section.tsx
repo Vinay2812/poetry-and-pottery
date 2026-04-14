@@ -10,7 +10,7 @@ export function BookingPricingGuideSection({
   viewModel,
 }: BookingPricingGuideSectionProps) {
   return (
-    <section className="rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm">
+    <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
       <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900">
         Pricing Guide
       </h2>

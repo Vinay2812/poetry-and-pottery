@@ -124,7 +124,7 @@ export function PastWorkshopDetail({
                 </div>
 
                 {/* Title */}
-                <h1 className="font-display mb-2 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
+                <h1 className="font-display text-foreground mb-2 text-2xl leading-tight font-bold tracking-tight lg:text-4xl">
                   {title}
                 </h1>
 
@@ -137,11 +137,11 @@ export function PastWorkshopDetail({
                 </p>
 
                 {/* About */}
-                <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                  <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                <div className="border-t border-neutral-100 pt-6 pb-6">
+                  <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                     About
                   </h2>
-                  <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
+                  <p className="text-sm leading-relaxed text-neutral-600 lg:text-base">
                     {description}
                   </p>
                 </div>
@@ -165,16 +165,16 @@ export function PastWorkshopDetail({
 
                 {/* Location */}
                 {quickInfo.location && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Location
                     </h2>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">
                         <MapPin className="h-5 w-5 text-neutral-500" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        <p className="text-foreground text-sm font-semibold">
                           {quickInfo.location}
                         </p>
                         {quickInfo.fullLocation && (

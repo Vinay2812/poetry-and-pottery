@@ -39,7 +39,7 @@ export function OrderSummary({
     <>
       {/* Desktop Version - Elevated Card */}
       <div className="hidden lg:block">
-        <div className="shadow-card sticky top-24 rounded-2xl bg-white p-6">
+        <div className="shadow-card bg-card sticky top-24 rounded-2xl p-6">
           <h2 className="mb-4 text-lg font-semibold text-neutral-900">
             Order Summary
           </h2>
@@ -136,7 +136,7 @@ export function OrderSummary({
       </div>
 
       {/* Mobile Version - Sticky Bottom Bar */}
-      <div className="fixed right-0 bottom-16 left-0 z-40 border-t border-neutral-200 bg-white/95 backdrop-blur-md lg:hidden">
+      <div className="bg-background/95 fixed right-0 bottom-16 left-0 z-40 border-t border-neutral-200 backdrop-blur-md lg:hidden">
         <div className="p-4">
           {/* Summary Details */}
           <div className="mb-3 rounded-xl bg-neutral-50 p-3">

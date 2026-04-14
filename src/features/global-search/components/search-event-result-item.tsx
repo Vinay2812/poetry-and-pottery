@@ -13,7 +13,7 @@ export function SearchEventResultItem({
   return (
     <button
       onClick={onClick}
-      className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
+      className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50"
     >
       <div className="bg-primary/10 flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-[10px]">
         <span className="text-primary text-[10px] leading-none font-bold uppercase">
@@ -24,9 +24,7 @@ export function SearchEventResultItem({
         </span>
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
-          {title}
-        </p>
+        <p className="text-foreground truncate text-sm font-medium">{title}</p>
         <p className="text-muted-foreground truncate text-xs">
           {startsAtTime} · {location}
         </p>

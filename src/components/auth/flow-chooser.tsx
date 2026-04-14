@@ -39,7 +39,7 @@ export function FlowChooser({ redirectUrl }: FlowChooserProps) {
       <div className="grid gap-4">
         <button
           onClick={handleDashboard}
-          className="group hover:border-primary flex items-center gap-4 rounded-xl border-2 border-neutral-200 bg-white p-6 text-left transition-all hover:shadow-lg"
+          className="group hover:border-primary bg-card flex items-center gap-4 rounded-xl border-2 border-neutral-200 p-6 text-left transition-all hover:shadow-lg"
         >
           <div className="bg-primary/10 text-primary group-hover:bg-primary rounded-xl p-4 transition-colors group-hover:text-white">
             <LayoutDashboardIcon className="size-8" />
@@ -56,7 +56,7 @@ export function FlowChooser({ redirectUrl }: FlowChooserProps) {
 
         <button
           onClick={handleShop}
-          className="group hover:border-primary flex items-center gap-4 rounded-xl border-2 border-neutral-200 bg-white p-6 text-left transition-all hover:shadow-lg"
+          className="group hover:border-primary bg-card flex items-center gap-4 rounded-xl border-2 border-neutral-200 p-6 text-left transition-all hover:shadow-lg"
         >
           <div className="bg-primary/10 text-primary group-hover:bg-primary rounded-xl p-4 transition-colors group-hover:text-white">
             <StoreIcon className="size-8" />

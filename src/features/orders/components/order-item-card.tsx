@@ -28,9 +28,9 @@ function OrderItemCustomizationDetails({
     <div className="mt-3">
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-left dark:bg-neutral-800"
+        className="flex w-full items-center justify-between rounded-lg bg-neutral-50 px-3 py-2 text-left"
       >
-        <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
+        <span className="text-xs font-medium text-neutral-600">
           View Customization Details
         </span>
         <ChevronDown
@@ -55,10 +55,8 @@ function OrderItemCustomizationDetails({
                   key={option.optionId}
                   className="flex items-center justify-between text-xs"
                 >
-                  <span className="text-neutral-500 dark:text-neutral-400">
-                    {option.name}
-                  </span>
-                  <span className="font-medium text-neutral-700 dark:text-neutral-200">
+                  <span className="text-neutral-500">{option.name}</span>
+                  <span className="font-medium text-neutral-700">
                     {option.value}
                     {option.priceModifier !== 0 && (
                       <span className="text-primary ml-1">
@@ -70,9 +68,9 @@ function OrderItemCustomizationDetails({
                 </div>
               ))}
               {customData.totalModifier !== 0 && (
-                <div className="border-t border-neutral-100 pt-1.5 dark:border-neutral-700">
+                <div className="border-t border-neutral-100 pt-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-neutral-500 dark:text-neutral-400">
+                    <span className="text-neutral-500">
                       Customization Total
                     </span>
                     <span className="text-primary font-medium">
@@ -112,17 +110,17 @@ export function OrderItemCard({
   return (
     <div
       className={cn(
-        "shadow-soft rounded-2xl border bg-white p-4 dark:bg-neutral-900",
+        "shadow-soft bg-card rounded-2xl border p-4",
         hasCustomization
           ? "border-primary/30 ring-primary/20 ring-2"
-          : "border-neutral-100 dark:border-neutral-800",
+          : "border-neutral-100",
       )}
     >
       <div className="flex gap-4">
         <Link href={`/products/${item.productId}`}>
           <div
             className={cn(
-              "h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800",
+              "h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-100",
               hasCustomization && "ring-primary/30 ring-2",
             )}
           >
@@ -140,7 +138,7 @@ export function OrderItemCard({
           <div>
             <div className="flex items-center gap-2">
               <Link href={`/products/${item.productId}`}>
-                <h3 className="hover:text-primary line-clamp-1 text-sm font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+                <h3 className="hover:text-primary text-foreground line-clamp-1 text-sm font-semibold transition-colors">
                   {item.productName}
                 </h3>
               </Link>
@@ -178,7 +176,7 @@ export function OrderItemCard({
       )}
 
       {canReview && (
-        <div className="mt-4 border-t border-neutral-100 pt-4 dark:border-neutral-800">
+        <div className="mt-4 border-t border-neutral-100 pt-4">
           <ReviewForm
             title={`Review ${item.productName}`}
             hasReviewed={item.hasReviewed}

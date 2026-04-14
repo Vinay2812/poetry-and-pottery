@@ -30,7 +30,7 @@ function UpcomingEventCard({ event }: UpcomingEventCardProps) {
         />
       </div>
       <div className="min-w-0 flex-1">
-        <h4 className="line-clamp-1 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+        <h4 className="text-foreground line-clamp-1 text-sm font-medium">
           {event.title}
         </h4>
         <p className="text-xs text-neutral-500">{formattedDate}</p>
@@ -72,16 +72,14 @@ export function PastWorkshopSidebar({
         <div className="mb-5 space-y-2.5">
           <div className="flex justify-between text-sm">
             <span className="text-neutral-500">Attendees</span>
-            <span className="font-medium text-neutral-900 dark:text-neutral-100">
-              {attendees}
-            </span>
+            <span className="text-foreground font-medium">{attendees}</span>
           </div>
           {reviews.length > 0 && (
             <div className="flex justify-between text-sm">
               <span className="text-neutral-500">Rating</span>
               <div className="flex items-center gap-1">
                 <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                <span className="text-foreground font-medium">
                   {averageRating.toFixed(1)}
                 </span>
               </div>
@@ -89,7 +87,7 @@ export function PastWorkshopSidebar({
           )}
         </div>
 
-        <div className="mb-5 border-t border-neutral-100 dark:border-neutral-800" />
+        <div className="mb-5 border-t border-neutral-100" />
 
         {/* Upcoming Events */}
         {upcomingEvents.length > 0 && (

@@ -24,7 +24,7 @@ export function PriceInput({
         onChange={onChange}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
-        className="focus:ring-primary/30 h-10 w-full [appearance:textfield] rounded-lg border-none bg-neutral-100 pr-2 pl-7 text-sm font-medium text-neutral-900 focus:ring-2 focus:outline-none dark:bg-neutral-800 dark:text-neutral-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        className="focus:ring-primary/30 text-foreground h-10 w-full [appearance:textfield] rounded-lg border-none bg-neutral-100 pr-2 pl-7 text-sm font-medium focus:ring-2 focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
     </div>
   );

@@ -76,7 +76,7 @@ export function AllEvents({
         <div className="space-y-8 lg:space-y-12">
           {isUpcomingTab ? (
             <section>
-              <h2 className="font-display mb-4 text-lg font-semibold text-neutral-900 lg:mb-6 lg:text-xl dark:text-neutral-100">
+              <h2 className="font-display text-foreground mb-4 text-lg font-semibold lg:mb-6 lg:text-xl">
                 Upcoming Events
               </h2>
               <StaggeredGrid className="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-6">
@@ -90,7 +90,7 @@ export function AllEvents({
               {pastEventsLoading && pastEventsSkeleton}
               {!pastEventsLoading && (
                 <section>
-                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl dark:text-neutral-400">
+                  <h2 className="font-display mb-4 text-lg font-semibold text-neutral-500 lg:mb-6 lg:text-xl">
                     Past Events
                   </h2>
                   <StaggeredGrid className="grid grid-cols-1 gap-4 opacity-75 xl:grid-cols-2 xl:gap-6">

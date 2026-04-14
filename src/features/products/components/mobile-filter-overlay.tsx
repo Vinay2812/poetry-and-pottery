@@ -30,15 +30,15 @@ export function MobileFilterOverlay({
   onCollectionToggle,
 }: MobileFilterOverlayProps) {
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white lg:hidden dark:bg-neutral-950">
+    <div className="bg-background fixed inset-0 z-50 flex flex-col lg:hidden">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4 dark:border-neutral-800">
+      <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h2 className="font-display text-lg font-bold">Filters</h2>
         <button
           onClick={onFilterClose}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-200 dark:bg-neutral-800"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 transition-colors hover:bg-neutral-200"
         >
-          <X className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
+          <X className="h-5 w-5 text-neutral-600" />
         </button>
       </div>
 
@@ -56,7 +56,7 @@ export function MobileFilterOverlay({
       </div>
 
       {/* Footer */}
-      <div className="flex gap-3 border-t border-neutral-100 px-5 py-4 dark:border-neutral-800">
+      <div className="flex gap-3 border-t border-neutral-100 px-5 py-4">
         <Button
           variant="secondary"
           className="flex-1 rounded-xl"

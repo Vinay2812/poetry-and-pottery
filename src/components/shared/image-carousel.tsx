@@ -77,7 +77,7 @@ export function ImageCarousel({
     return (
       <div
         className={cn(
-          "relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800",
+          "relative w-full overflow-hidden bg-neutral-100",
           className,
         )}
       >
@@ -97,7 +97,7 @@ export function ImageCarousel({
     return (
       <div
         className={cn(
-          "relative w-full max-w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800",
+          "relative w-full max-w-full overflow-hidden bg-neutral-100",
           className,
         )}
       >
@@ -128,7 +128,7 @@ export function ImageCarousel({
   return (
     <div
       className={cn(
-        "relative w-full max-w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800",
+        "relative w-full max-w-full overflow-hidden bg-neutral-100",
         className,
       )}
     >
@@ -166,14 +166,14 @@ export function ImageCarousel({
             {showArrows && (
               <>
                 <CarouselPrevious
-                  className="left-2 z-20 border-none bg-white/70 text-neutral-900 shadow-sm backdrop-blur-sm hover:bg-white dark:bg-black/70 dark:text-white dark:hover:bg-black"
+                  className="left-2 z-20 border-none bg-white/70 text-neutral-900 shadow-sm backdrop-blur-sm hover:bg-white"
                   onClick={(e) => {
                     e.stopPropagation();
                     api?.scrollPrev();
                   }}
                 />
                 <CarouselNext
-                  className="right-2 z-20 border-none bg-white/70 text-neutral-900 shadow-sm backdrop-blur-sm hover:bg-white dark:bg-black/70 dark:text-white dark:hover:bg-black"
+                  className="right-2 z-20 border-none bg-white/70 text-neutral-900 shadow-sm backdrop-blur-sm hover:bg-white"
                   onClick={(e) => {
                     e.stopPropagation();
                     api?.scrollNext();

@@ -23,15 +23,13 @@ export function PastWorkshopReviewsSection({
   if (!reviews || reviews.length === 0) return null;
 
   return (
-    <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
+    <div className="border-t border-neutral-100 pt-6 pb-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-            Reviews
-          </h2>
+          <h2 className="text-xs font-semibold text-neutral-500">Reviews</h2>
           <div className="flex items-center gap-1 text-sm">
             <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-            <span className="font-medium text-neutral-900 dark:text-neutral-100">
+            <span className="text-foreground font-medium">
               {averageRating.toFixed(1)}
             </span>
             <span className="text-neutral-500">({reviews.length})</span>

@@ -25,7 +25,7 @@ export function ReviewSummary({
       </div>
 
       {/* Summary Card */}
-      <div className="shadow-soft rounded-2xl bg-white p-6">
+      <div className="shadow-soft bg-card rounded-2xl p-6">
         {/* Category */}
         <div className="mb-4 border-b pb-4">
           <span className="text-xs font-medium tracking-wider text-neutral-400 uppercase">

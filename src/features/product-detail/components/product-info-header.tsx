@@ -27,7 +27,7 @@ export function ProductInfoHeader({
         {category}
       </Badge>
 
-      <h1 className="font-display mb-2 text-xl font-bold tracking-tight text-neutral-900 md:text-2xl lg:text-3xl dark:text-white">
+      <h1 className="font-display text-foreground mb-2 text-xl font-bold tracking-tight md:text-2xl lg:text-3xl">
         {product.name}
       </h1>
 
@@ -46,8 +46,8 @@ export function ProductInfoHeader({
           className={cn(
             "text-xl font-bold md:text-2xl",
             availabilityStatus.isUnavailable
-              ? "text-neutral-500 dark:text-neutral-400"
-              : "text-neutral-900 dark:text-white",
+              ? "text-neutral-500"
+              : "text-foreground",
           )}
         >
           ₹{product.price.toLocaleString()}
@@ -55,7 +55,7 @@ export function ProductInfoHeader({
       </div>
 
       {product.description && (
-        <p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        <p className="mt-3 text-sm leading-relaxed text-neutral-600">
           {product.description}
         </p>
       )}

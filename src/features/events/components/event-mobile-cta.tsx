@@ -20,7 +20,7 @@ export function EventMobileCTA({
   onReserveSeat,
 }: EventMobileCTAProps) {
   return (
-    <div className="fixed right-0 bottom-16 left-0 z-40 bg-white/95 p-4 backdrop-blur-md lg:hidden">
+    <div className="bg-background/95 fixed right-0 bottom-16 left-0 z-40 p-4 backdrop-blur-md lg:hidden">
       <ReserveButton
         isLoading={isLoading}
         registered={registered}

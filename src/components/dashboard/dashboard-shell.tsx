@@ -80,7 +80,7 @@ export function DashboardShell({
       {/* Desktop Sidebar - Fixed */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 hidden border-r border-white/20 bg-white/70 backdrop-blur-xl transition-all duration-300 lg:block dark:border-white/10 dark:bg-black/70",
+          "fixed inset-y-0 left-0 z-40 hidden border-r border-white/20 bg-white/70 backdrop-blur-xl transition-all duration-300 lg:block",
           isSidebarCollapsed ? "w-[72px]" : "w-64",
         )}
       >
@@ -88,7 +88,7 @@ export function DashboardShell({
           {/* Logo */}
           <div
             className={cn(
-              "flex h-16 items-center border-b border-white/20 dark:border-white/10",
+              "flex h-16 items-center border-b border-white/20",
               isSidebarCollapsed ? "justify-center px-2" : "px-6",
             )}
           >
@@ -123,7 +123,7 @@ export function DashboardShell({
           {/* Footer */}
           <div
             className={cn(
-              "border-t border-white/20 dark:border-white/10",
+              "border-t border-white/20",
               isSidebarCollapsed ? "p-2" : "p-4",
             )}
           >
@@ -132,7 +132,7 @@ export function DashboardShell({
                 <TooltipTrigger asChild>
                   <Link
                     href="/"
-                    className="text-muted-foreground hover:text-foreground flex size-11 items-center justify-center rounded-lg transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    className="text-muted-foreground hover:text-foreground flex size-11 items-center justify-center rounded-lg transition-colors hover:bg-neutral-100"
                   >
                     <StoreIcon className="size-5" />
                   </Link>
@@ -142,7 +142,7 @@ export function DashboardShell({
             ) : (
               <Link
                 href="/"
-                className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100"
               >
                 <StoreIcon className="size-5" />
                 Back to Shop
@@ -151,10 +151,10 @@ export function DashboardShell({
           </div>
 
           {/* Collapse Toggle Button */}
-          <div className="border-t border-white/20 p-2 dark:border-white/10">
+          <div className="border-t border-white/20 p-2">
             <button
               onClick={onToggleSidebar}
-              className="text-muted-foreground hover:text-foreground flex w-full items-center justify-center rounded-lg p-2.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              className="text-muted-foreground hover:text-foreground flex w-full items-center justify-center rounded-lg p-2.5 transition-colors hover:bg-neutral-100"
               aria-label={
                 isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
               }
@@ -178,7 +178,7 @@ export function DashboardShell({
       >
         {/* Top Header - Glassmorphism style */}
         <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between px-4 lg:px-6">
-          <div className="absolute inset-0 border-b border-white/20 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-black/70" />
+          <div className="absolute inset-0 border-b border-white/20 bg-white/70 backdrop-blur-xl" />
 
           {/* Left side - Mobile Menu + Page Title */}
           <div className="relative z-10 flex items-center gap-4">
@@ -190,7 +190,7 @@ export function DashboardShell({
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">
-                <SheetHeader className="border-b border-white/20 px-6 py-4 dark:border-white/10">
+                <SheetHeader className="border-b border-white/20 px-6 py-4">
                   <SheetTitle className="flex items-center gap-3">
                     <div className="bg-primary flex size-8 items-center justify-center rounded-lg">
                       <span className="text-sm font-bold text-white">P</span>
@@ -201,11 +201,11 @@ export function DashboardShell({
                 <div className="p-4">
                   <DashboardNav onItemClick={onMobileNavClose} />
                 </div>
-                <div className="mt-auto border-t border-white/20 p-4 dark:border-white/10">
+                <div className="mt-auto border-t border-white/20 p-4">
                   <Link
                     href="/"
                     onClick={onMobileNavClose}
-                    className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    className="text-muted-foreground hover:text-foreground flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100"
                   >
                     <StoreIcon className="size-5" />
                     Back to Shop
@@ -224,7 +224,7 @@ export function DashboardShell({
           <div className="relative z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="focus-visible:ring-primary/30 relative flex size-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105 hover:bg-neutral-100 focus-visible:ring-2 focus-visible:outline-none dark:hover:bg-neutral-800">
+                <button className="focus-visible:ring-primary/30 relative flex size-10 items-center justify-center rounded-full transition-all duration-200 hover:scale-105 hover:bg-neutral-100 focus-visible:ring-2 focus-visible:outline-none">
                   {userImageUrl ? (
                     <div className="relative size-8">
                       <OptimizedImage

@@ -151,15 +151,15 @@ export function RegistrationDetail({
 
                 {/* Registration ID */}
                 <div className="mb-3 flex items-center gap-2">
-                  <span className="text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
+                  <span className="text-[10px] font-medium text-neutral-500">
                     Registration
                   </span>
-                  <span className="font-mono text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                  <span className="font-mono text-xs font-medium text-neutral-600">
                     #{registrationIdUpperCase}
                   </span>
                   <button
                     onClick={onCopyRegistrationId}
-                    className="inline-flex items-center justify-center rounded p-1 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    className="inline-flex items-center justify-center rounded p-1 transition-colors hover:bg-neutral-100"
                     aria-label="Copy registration ID"
                   >
                     {copied ? (
@@ -171,7 +171,7 @@ export function RegistrationDetail({
                 </div>
 
                 {/* Title */}
-                <h1 className="font-display mb-2 text-2xl leading-tight font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-white">
+                <h1 className="font-display text-foreground mb-2 text-2xl leading-tight font-bold tracking-tight lg:text-4xl">
                   {eventTitle}
                 </h1>
 
@@ -195,27 +195,27 @@ export function RegistrationDetail({
                 </div>
 
                 {/* About */}
-                <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                  <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                <div className="border-t border-neutral-100 pt-6 pb-6">
+                  <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                     About
                   </h2>
-                  <p className="text-sm leading-relaxed text-neutral-600 lg:text-base dark:text-neutral-400">
+                  <p className="text-sm leading-relaxed text-neutral-600 lg:text-base">
                     {eventDescription}
                   </p>
                 </div>
 
                 {/* Instructor - Workshop Only */}
                 {instructor && isWorkshop && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Instructor
                     </h2>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">
                         <User className="h-5 w-5 text-neutral-500" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        <p className="text-foreground text-sm font-semibold">
                           {instructor}
                         </p>
                         <p className="text-xs text-neutral-500">
@@ -228,8 +228,8 @@ export function RegistrationDetail({
 
                 {/* Performers - Open Mic Only */}
                 {isOpenMic && performers && performers.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Lineup
                     </h2>
                     <ul className="space-y-3">
@@ -238,7 +238,7 @@ export function RegistrationDetail({
                           <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
                             <Mic className="text-primary h-4 w-4" />
                           </div>
-                          <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                          <span className="text-sm text-neutral-700">
                             {performer}
                           </span>
                         </li>
@@ -254,16 +254,16 @@ export function RegistrationDetail({
 
                 {/* Location */}
                 {location && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       Location
                     </h2>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">
                         <MapPin className="h-5 w-5 text-neutral-500" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        <p className="text-foreground text-sm font-semibold">
                           {location}
                         </p>
                         {fullLocation && (
@@ -278,8 +278,8 @@ export function RegistrationDetail({
 
                 {/* What's Included */}
                 {includes && includes.length > 0 && (
-                  <div className="border-t border-neutral-100 pt-6 pb-6 dark:border-neutral-800">
-                    <h2 className="mb-3 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                  <div className="border-t border-neutral-100 pt-6 pb-6">
+                    <h2 className="mb-3 text-xs font-semibold text-neutral-500">
                       What&apos;s included
                     </h2>
                     <ul className="grid gap-3 sm:grid-cols-2">
@@ -288,7 +288,7 @@ export function RegistrationDetail({
                           <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50">
                             <Check className="h-3 w-3 text-emerald-500" />
                           </div>
-                          <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                          <span className="text-sm text-neutral-600">
                             {item}
                           </span>
                         </li>
@@ -315,13 +315,13 @@ export function RegistrationDetail({
                   />
                 </div>
 
-                <div className="mb-5 border-t border-neutral-100 dark:border-neutral-800" />
+                <div className="mb-5 border-t border-neutral-100" />
 
                 {/* Summary */}
                 <div className="mb-5 space-y-2.5">
                   <div className="flex justify-between text-sm">
                     <span className="text-neutral-500">Seats</span>
-                    <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                    <span className="text-foreground font-medium">
                       {seatsReserved}
                     </span>
                   </div>
@@ -348,9 +348,9 @@ export function RegistrationDetail({
                   <div
                     className={cn(
                       "flex items-center gap-2 rounded-xl p-3",
-                      isPending && "bg-amber-50 dark:bg-amber-950/20",
-                      isApproved && "bg-blue-50 dark:bg-blue-950/20",
-                      isPaid && "bg-teal-50 dark:bg-teal-950/20",
+                      isPending && "bg-amber-50",
+                      isApproved && "bg-blue-50",
+                      isPaid && "bg-teal-50",
                     )}
                   >
                     <StatusIcon
@@ -388,7 +388,7 @@ export function RegistrationDetail({
       </main>
 
       {/* Mobile Fixed Bottom CTA */}
-      <div className="fixed right-0 bottom-16 left-0 z-40 bg-white/95 p-4 backdrop-blur-md lg:hidden">
+      <div className="bg-background/95 fixed right-0 bottom-16 left-0 z-40 p-4 backdrop-blur-md lg:hidden">
         {showTicketDownload ? (
           <TicketDownloadDialog
             registration={registration}
@@ -404,9 +404,9 @@ export function RegistrationDetail({
             <div
               className={cn(
                 "flex items-center justify-center gap-2 rounded-xl p-3",
-                isPending && "bg-amber-50 dark:bg-amber-950/20",
-                isApproved && "bg-blue-50 dark:bg-blue-950/20",
-                isPaid && "bg-teal-50 dark:bg-teal-950/20",
+                isPending && "bg-amber-50",
+                isApproved && "bg-blue-50",
+                isPaid && "bg-teal-50",
               )}
             >
               <StatusIcon className={cn("h-5 w-5", statusConfig.textColor)} />

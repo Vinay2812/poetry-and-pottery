@@ -13,8 +13,8 @@ export function OtherEventsList({ events }: OtherEventsListProps) {
   if (events.length === 0) return null;
 
   return (
-    <div className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-16 lg:px-0 lg:pt-12 dark:border-neutral-800">
-      <h2 className="font-display mb-6 text-xl font-bold tracking-tight text-neutral-900 lg:text-2xl dark:text-white">
+    <div className="mt-12 border-t border-neutral-100 px-4 pt-10 lg:mt-16 lg:px-0 lg:pt-12">
+      <h2 className="font-display text-foreground mb-6 text-xl font-bold tracking-tight lg:text-2xl">
         Other events you might like
       </h2>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
@@ -37,14 +37,14 @@ export function OtherEventsList({ events }: OtherEventsListProps) {
                 />
               </div>
               <div className="flex flex-col gap-1 px-1">
-                <h3 className="font-display line-clamp-1 text-sm font-bold text-neutral-900 lg:text-base dark:text-neutral-100">
+                <h3 className="font-display text-foreground line-clamp-1 text-sm font-bold lg:text-base">
                   {otherEvent.title}
                 </h3>
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-medium text-neutral-500">
                     {otherFormattedDate}
                   </p>
-                  <span className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+                  <span className="text-foreground text-sm font-bold">
                     ₹{otherEvent.price.toLocaleString()}
                   </span>
                 </div>

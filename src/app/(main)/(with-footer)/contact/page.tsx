@@ -39,8 +39,8 @@ export default function ContactPage() {
         }}
       />
 
-      <main className="flex min-h-screen items-center justify-center bg-neutral-100 px-5 py-20 pt-20 lg:py-16">
-        <div className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-lg">
+      <main className="flex min-h-screen items-center justify-center px-5 py-20 pt-20 lg:py-16">
+        <div className="bg-card w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg">
           <div className="grid lg:grid-cols-5">
             <ContactInfoPanel />
             <ContactFormPanel />

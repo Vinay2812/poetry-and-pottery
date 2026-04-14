@@ -95,7 +95,7 @@ export function AddressForm({
   }, [handleSubmit, handleFormSubmit]);
 
   const inputClassName =
-    "h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20";
+    "h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:border-primary focus:bg-card focus:ring-2 focus:ring-primary/20";
 
   return (
     <form action={handleFormAction} className="space-y-5">
@@ -312,7 +312,7 @@ function AddressFormFields({
               <SelectTrigger
                 id="state"
                 className={cn(
-                  "focus:border-primary focus:ring-primary/20 h-12 w-full rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:bg-white focus:ring-2",
+                  "focus:border-primary focus:ring-primary/20 focus:bg-card h-12 w-full rounded-xl border-neutral-200 bg-neutral-50 px-4 text-base transition-all focus:ring-2",
                   errors.state && "border-destructive",
                 )}
                 aria-invalid={!!errors.state}

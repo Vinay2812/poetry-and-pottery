@@ -14,8 +14,8 @@ export function TeamMemberCard({
   image,
 }: TeamMemberCardProps) {
   return (
-    <div className="group shadow-soft hover:shadow-card overflow-hidden rounded-[2rem] border border-neutral-100 bg-white p-3 transition-all duration-300 hover:-translate-y-1 dark:border-neutral-800 dark:bg-neutral-900">
-      <div className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800">
+    <div className="group shadow-soft hover:shadow-card bg-card overflow-hidden rounded-[2rem] border border-neutral-100 p-3 transition-all duration-300 hover:-translate-y-1">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100">
         <OptimizedImage
           src={image}
           alt={name}
@@ -24,13 +24,13 @@ export function TeamMemberCard({
         />
       </div>
       <div className="p-3 text-center">
-        <h3 className="text-base font-bold text-neutral-900 lg:text-lg dark:text-neutral-100">
+        <h3 className="text-foreground text-base font-bold lg:text-lg">
           {name}
         </h3>
         <p className="text-primary mt-1 text-xs font-bold tracking-wider uppercase">
           {role}
         </p>
-        <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
+        <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-neutral-500">
           {bio}
         </p>
       </div>

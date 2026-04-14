@@ -86,7 +86,7 @@ function OrderCard({ order }: OrderCardProps) {
   return (
     <Link
       href={`/orders/${order.id}`}
-      className="group shadow-soft hover:shadow-card block rounded-2xl bg-white p-4 transition-all duration-200 hover:-translate-y-1 lg:p-5"
+      className="group shadow-soft hover:shadow-card bg-card block rounded-2xl p-4 transition-all duration-200 hover:-translate-y-1 lg:p-5"
     >
       {/* Header: Product Title, Status Badge */}
       <div className="mb-4 flex items-start justify-between gap-3">

@@ -65,7 +65,7 @@ export function OrderDetailSkeleton() {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Desktop Sidebar Skeleton */}
           <div className="hidden lg:block">
-            <div className="shadow-soft space-y-6 rounded-2xl bg-white p-6">
+            <div className="shadow-soft bg-card space-y-6 rounded-2xl p-6">
               <Skeleton className="h-12 w-full rounded-xl" />
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
@@ -109,7 +109,7 @@ export function OrderDetailSkeleton() {
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="shadow-soft flex gap-4 rounded-2xl bg-white p-4"
+                  className="shadow-soft bg-card flex gap-4 rounded-2xl p-4"
                 >
                   <Skeleton className="h-20 w-20 rounded-xl" />
                   <div className="flex-1 space-y-2">

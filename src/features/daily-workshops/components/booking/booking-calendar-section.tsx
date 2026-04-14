@@ -20,7 +20,7 @@ export function BookingCalendarSection({
   onSelectDate,
 }: BookingCalendarSectionProps) {
   return (
-    <section className="rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-sm">
+    <section className="bg-card rounded-2xl border border-neutral-200/80 p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <button
           type="button"

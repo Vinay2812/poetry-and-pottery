@@ -39,7 +39,7 @@ export function AboutValuesSection() {
           return (
             <div
               key={value.title}
-              className="shadow-soft rounded-2xl bg-white p-6 text-center"
+              className="shadow-soft bg-card rounded-2xl p-6 text-center"
             >
               <div className="bg-primary-lighter text-primary mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full">
                 <Icon className="h-6 w-6" />
