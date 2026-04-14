@@ -4,6 +4,9 @@ import {
 } from "@/data/sitemap/server";
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateSitemaps() {
   return getEventSitemapChunks();
 }
