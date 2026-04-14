@@ -36,7 +36,7 @@ function StepCard({ icon: Icon, title, description }: StepCardProps) {
   }, [router]);
   return (
     <div
-      className="shadow-soft bg-card flex gap-3 rounded-xl p-3 md:gap-4 md:rounded-2xl md:p-4 lg:p-5"
+      className="shadow-soft bg-card border-border flex gap-3 rounded-xl border p-3 md:gap-4 md:rounded-2xl md:p-4 lg:p-5"
       onClick={onClick}
     >
       <div className="bg-primary-light flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] md:h-12 md:w-12 md:rounded-xl lg:h-14 lg:w-14">

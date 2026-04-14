@@ -8,7 +8,7 @@ interface CareCardProps {
 
 export function CareCard({ icon: Icon, title, description }: CareCardProps) {
   return (
-    <div className="shadow-soft bg-card rounded-xl p-5 text-center">
+    <div className="shadow-soft bg-card border-border rounded-xl border p-5 text-center">
       <div className="bg-primary-lighter text-primary mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
         <Icon className="h-5 w-5" />
       </div>

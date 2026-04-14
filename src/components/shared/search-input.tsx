@@ -59,7 +59,7 @@ export function SearchInput({
   return (
     <div
       className={cn(
-        "border-border relative mt-2 flex items-center justify-center rounded-full border px-4",
+        "border-border bg-cream relative mt-2 flex items-center justify-center rounded-full border px-4",
         isFocused && "ring-primary/20 ring-2",
         className,
       )}

@@ -69,7 +69,7 @@ export function CartItemCard({
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.2 }}
       className={cn(
-        "group shadow-soft hover:shadow-card bg-card relative overflow-hidden rounded-2xl p-4 transition-all duration-300",
+        "group shadow-soft hover:shadow-card bg-card border-border relative overflow-hidden rounded-2xl border p-4 transition-all duration-300",
         hasCustomization && "ring-primary/20 ring-2",
       )}
     >

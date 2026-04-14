@@ -112,7 +112,7 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
             {/* Search Button */}
             <button
               onClick={onSearchClick}
-              className="hidden h-10 w-48 items-center gap-2 rounded-full bg-neutral-100 px-4 text-sm transition-colors hover:bg-neutral-200 xl:flex"
+              className="border-border bg-cream hidden h-10 w-48 items-center gap-2 rounded-full border px-4 text-sm transition-colors hover:bg-neutral-200 xl:flex"
             >
               <Search className="text-muted-foreground h-4 w-4" />
               <span className="text-muted-foreground">Search...</span>

@@ -97,7 +97,7 @@ export function ProductCard({
       transition={{ duration: 0.2, ease: "easeOut" }}
       className={cn("group relative", className)}
     >
-      <div className="bg-cream relative flex h-full flex-col overflow-hidden rounded-2xl transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
+      <div className="bg-cream border-border relative flex h-full flex-col overflow-hidden rounded-2xl border transition-shadow duration-300 lg:hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
         {/* Image Container */}
         <div
           className="relative w-full overflow-hidden"
@@ -136,7 +136,7 @@ export function ProductCard({
         </div>
 
         {/* Product Details */}
-        <div className="flex flex-1 flex-col gap-1.5 p-4 lg:p-5">
+        <div className="border-border flex flex-1 flex-col gap-1.5 border-t p-4 lg:p-5">
           <Link
             href={`/products/${product.id}`}
             className="flex flex-col gap-1"

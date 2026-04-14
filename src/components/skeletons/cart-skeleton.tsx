@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function CartItemSkeleton() {
   return (
-    <div className="bg-card flex gap-4 rounded-2xl p-4 shadow-sm">
+    <div className="bg-card border-border flex gap-4 rounded-2xl border p-4 shadow-sm">
       <Skeleton className="h-24 w-24 shrink-0 rounded-xl" />
       <div className="flex flex-1 flex-col justify-between">
         <div className="space-y-1">

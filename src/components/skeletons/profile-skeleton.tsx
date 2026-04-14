@@ -14,7 +14,7 @@ export function ProfileSkeleton() {
         <div className="container mx-auto px-4 py-6 lg:px-8">
           <div className="flex justify-center">
             {/* Clerk UserProfile skeleton */}
-            <div className="bg-card w-full max-w-2xl space-y-6 rounded-2xl p-6 shadow-sm">
+            <div className="bg-card border-border w-full max-w-2xl space-y-6 rounded-2xl border p-6 shadow-sm">
               {/* Avatar and name */}
               <div className="flex items-center gap-4">
                 <Skeleton className="h-16 w-16 rounded-full" />

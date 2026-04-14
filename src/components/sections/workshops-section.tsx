@@ -67,7 +67,7 @@ export function WorkshopsSection({ pricingTiers }: WorkshopsSectionProps) {
 
         <Link
           href="/events/daily-workshops"
-          className="group bg-card block rounded-2xl p-5 shadow-sm transition-shadow hover:shadow-md"
+          className="group bg-card border-border block rounded-2xl border p-5 shadow-sm transition-shadow hover:shadow-md"
         >
           <div className="mb-4 flex items-center justify-between">
             <span className="bg-primary-lighter text-primary rounded-full px-3 py-1 text-xs font-semibold uppercase">

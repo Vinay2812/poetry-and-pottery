@@ -57,7 +57,7 @@ export function CompletedEventCard({
   } = viewModel;
 
   return (
-    <div className="bg-card flex gap-4 rounded-2xl p-3 lg:p-4">
+    <div className="bg-card border-border flex gap-4 rounded-2xl border p-3 lg:p-4">
       {/* Image Thumbnail */}
       <Link
         href={`/events/${eventId}`}

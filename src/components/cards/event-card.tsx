@@ -37,7 +37,7 @@ export function EventCard({ event }: EventCardProps) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="group bg-card flex gap-4 rounded-2xl p-3 transition-all duration-200 hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] lg:p-4"
+      className="group bg-card border-border flex gap-4 rounded-2xl border p-3 transition-all duration-200 hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] lg:p-4"
     >
       {/* Image Thumbnail */}
       <div
