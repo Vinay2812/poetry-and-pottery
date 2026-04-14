@@ -93,14 +93,14 @@ export function RegisteredEventCard({
   return (
     <div
       className={cn(
-        "flex gap-4 rounded-2xl bg-white p-3 lg:p-4 dark:bg-neutral-900",
+        "bg-card flex gap-4 rounded-2xl p-3 lg:p-4",
         isCancelled && "opacity-60",
       )}
     >
       {/* Image Thumbnail */}
       <Link
         href={`/events/${event.id}`}
-        className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28 dark:bg-neutral-800"
+        className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28"
       >
         <OptimizedImage
           src={imageUrl}
@@ -140,7 +140,7 @@ export function RegisteredEventCard({
             <div className="min-w-0 flex-1">
               <Link
                 href={`/events/${event.id}`}
-                className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base dark:text-neutral-100"
+                className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 hover:underline lg:text-base"
               >
                 {event.title}
               </Link>

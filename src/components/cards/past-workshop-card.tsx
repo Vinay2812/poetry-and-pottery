@@ -53,10 +53,10 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="group flex gap-4 rounded-2xl bg-white p-3 transition-all duration-200 hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] lg:p-4 dark:bg-neutral-900"
+      className="group bg-card flex gap-4 rounded-2xl p-3 transition-all duration-200 hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] lg:p-4"
     >
       {/* Image Thumbnail */}
-      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28 dark:bg-neutral-800">
+      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28">
         <OptimizedImage
           src={imageUrl}
           alt={event.title}
@@ -82,7 +82,7 @@ export function PastWorkshopCard({ event }: PastWorkshopCardProps) {
       <div className="flex min-w-0 flex-1 flex-col justify-between">
         {/* Header: Title + Type Badge */}
         <div className="mb-1.5 flex items-start justify-between gap-2">
-          <h3 className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 lg:text-base dark:text-neutral-100">
+          <h3 className="font-display line-clamp-2 text-sm leading-snug font-semibold text-neutral-900 lg:text-base">
             {event.title}
           </h3>
           {/* Event Type Badge */}

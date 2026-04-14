@@ -41,7 +41,7 @@ export function ListingPageHeader({
           ))}
         </nav>
       )}
-      <h1 className="font-display text-2xl font-bold text-neutral-900 lg:text-3xl dark:text-neutral-100">
+      <h1 className="font-display text-2xl font-bold text-neutral-900 lg:text-3xl">
         {title}
       </h1>
       <div className="bg-primary mt-3 h-[3px] w-12 rounded-full" />
