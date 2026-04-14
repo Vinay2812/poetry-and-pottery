@@ -1,9 +1,10 @@
-import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 
 import { PageSkeleton } from "@/components/skeletons";
 
 import { ShippingContent } from "./shipping-content";
+
+export const dynamic = "force-dynamic";
 
 /**
  * Route: /shipping
@@ -16,8 +17,6 @@ import { ShippingContent } from "./shipping-content";
  * - Contact escalation targets referenced in the page CTA and help pathways.
  */
 export default function ShippingPage() {
-  noStore();
-
   return (
     <Suspense fallback={<PageSkeleton />}>
       <ShippingContent />

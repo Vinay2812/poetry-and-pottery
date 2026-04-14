@@ -1,9 +1,10 @@
-import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 
 import { PageSkeleton } from "@/components/skeletons";
 
 import { CareContent } from "./care-content";
+
+export const dynamic = "force-dynamic";
 
 /**
  * Route: /care
@@ -16,8 +17,6 @@ import { CareContent } from "./care-content";
  * - Support contact destination used by the care-page CTA panel.
  */
 export default function CarePage() {
-  noStore();
-
   return (
     <Suspense fallback={<PageSkeleton />}>
       <CareContent />
