@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
         ? ""
         : process.env.LOCAL_ADMIN_BYPASS_SECRET || "",
   },
-  // cacheComponents: true,
+  cacheComponents: true,
   cacheLife: {
     products: {
       stale: 60,
