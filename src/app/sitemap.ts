@@ -3,6 +3,9 @@ import type { MetadataRoute } from "next";
 import { createDate } from "@/lib/date";
 import { absoluteUrl } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const STATIC_PUBLIC_ROUTES = [
   "/",
   "/products",
