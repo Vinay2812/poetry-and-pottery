@@ -28,8 +28,8 @@ export function MobileHeader({
       animate={isHidden ? "hidden" : "visible"}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={cn(
-        "fixed top-0 right-0 left-0 z-50 bg-white/80 backdrop-blur-xl transition-shadow duration-200 lg:hidden dark:bg-black/80",
-        "border-b border-neutral-200/50 dark:border-neutral-700/50",
+        "bg-background fixed top-0 right-0 left-0 z-50 transition-shadow duration-200 lg:hidden",
+        "border-border border-b",
       )}
     >
       <div className="flex h-14 items-center px-4 py-2">
@@ -39,7 +39,7 @@ export function MobileHeader({
             <div className="flex items-center gap-2">
               <button
                 onClick={onBack}
-                className="-ml-2 rounded-full p-2 transition-colors hover:bg-black/5 focus:outline-none active:bg-black/10 dark:hover:bg-white/10"
+                className="-ml-2 rounded-full p-2 transition-colors hover:bg-black/5 focus:outline-none active:bg-black/10"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
@@ -64,18 +64,18 @@ export function MobileHeader({
         <div className="flex items-center gap-0.5">
           <button
             onClick={onSearchClick}
-            className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-black/5 focus:outline-none active:bg-black/10 dark:hover:bg-white/10"
+            className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-black/5 focus:outline-none active:bg-black/10"
           >
-            <Search className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
+            <Search className="text-muted-foreground h-5 w-5" />
           </button>
 
           <Link
             href="/wishlist"
             className={cn(
-              "relative flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-black/5 active:bg-black/10 dark:hover:bg-white/10",
+              "relative flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-black/5 active:bg-black/10",
               viewModel.isWishlistActive
                 ? "bg-primary/10"
-                : "hover:bg-neutral-100 dark:hover:bg-neutral-800",
+                : "hover:bg-neutral-100",
             )}
           >
             <Heart
@@ -87,7 +87,7 @@ export function MobileHeader({
               )}
             />
             {viewModel.wishlistCount > 0 && (
-              <span className="bg-primary absolute top-1 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-black">
+              <span className="bg-primary ring-background absolute top-1 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-sm ring-2">
                 {viewModel.wishlistCount}
               </span>
             )}
@@ -98,8 +98,8 @@ export function MobileHeader({
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
-              <button className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-black/5 focus:outline-none active:bg-black/10 dark:hover:bg-white/10">
-                <User className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
+              <button className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-black/5 focus:outline-none active:bg-black/10">
+                <User className="text-muted-foreground h-5 w-5" />
               </button>
             </SignInButton>
           </SignedOut>
