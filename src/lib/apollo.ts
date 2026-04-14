@@ -177,6 +177,7 @@ export const { getClient: getPublicClient, query: publicApolloClient } =
       credentials: "include",
       headers: {
         "content-type": "application/json",
+        "apollo-require-preflight": "true",
         origin: DOMAIN,
       },
     });

@@ -56,50 +56,72 @@ function buildChunkIds(totalItems: number): SitemapChunk[] {
 }
 
 async function fetchSitemapProductsPage(page: number, limit: number) {
-  const client = getPublicClient();
+  try {
+    const client = getPublicClient();
 
-  const result = await client.query<
-    SitemapProductsQueryResult,
-    SitemapProductsQueryVariables
-  >({
-    query: SITEMAP_PRODUCTS_QUERY,
-    variables: {
-      filter: {
-        page,
-        limit,
-        archive: false,
+    const result = await client.query<
+      SitemapProductsQueryResult,
+      SitemapProductsQueryVariables
+    >({
+      query: SITEMAP_PRODUCTS_QUERY,
+      context: {
+        headers: {
+          "content-type": "application/json",
+          "apollo-require-preflight": "true",
+          "x-apollo-operation-name": "SitemapProducts",
+        },
       },
-    },
-  });
+      variables: {
+        filter: {
+          page,
+          limit,
+          archive: false,
+        },
+      },
+    });
 
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
+    if (result.error) {
+      return { products: [], total_products: 0 };
+    }
+
+    return result.data?.products ?? { products: [], total_products: 0 };
+  } catch {
+    return { products: [], total_products: 0 };
   }
-
-  return result.data?.products ?? { products: [], total_products: 0 };
 }
 
 async function fetchSitemapEventsPage(page: number, limit: number) {
-  const client = getPublicClient();
+  try {
+    const client = getPublicClient();
 
-  const result = await client.query<
-    SitemapEventsQueryResult,
-    SitemapEventsQueryVariables
-  >({
-    query: SITEMAP_EVENTS_QUERY,
-    variables: {
-      filter: {
-        page,
-        limit,
+    const result = await client.query<
+      SitemapEventsQueryResult,
+      SitemapEventsQueryVariables
+    >({
+      query: SITEMAP_EVENTS_QUERY,
+      context: {
+        headers: {
+          "content-type": "application/json",
+          "apollo-require-preflight": "true",
+          "x-apollo-operation-name": "SitemapEvents",
+        },
       },
-    },
-  });
+      variables: {
+        filter: {
+          page,
+          limit,
+        },
+      },
+    });
 
-  if (result.error) {
-    throw new Error(`GraphQL error: ${result.error.message}`);
+    if (result.error) {
+      return { data: [], total: 0 };
+    }
+
+    return result.data?.events ?? { data: [], total: 0 };
+  } catch {
+    return { data: [], total: 0 };
   }
-
-  return result.data?.events ?? { data: [], total: 0 };
 }
 
 export async function getProductSitemapChunks(): Promise<SitemapChunk[]> {
