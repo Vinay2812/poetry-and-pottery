@@ -100,9 +100,9 @@ export function EventsTabs({
               key={tab.type}
               href={getTabHref(tab.href)}
               className={cn(
-                "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-all sm:px-4 sm:py-3",
+                "relative flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4 sm:py-3",
                 isActive
-                  ? "border-border text-primary bg-cream rounded-full border"
+                  ? "text-primary"
                   : "text-muted-foreground hover:text-foreground",
               )}
               onClick={(e) => handleTabClick(e, tab.type, tab.href)}
@@ -116,13 +116,18 @@ export function EventsTabs({
                   {registeredCount}
                 </span>
               )}
+
+              {/* Active underline */}
+              {isActive && (
+                <span className="bg-primary absolute right-3 bottom-0 left-3 h-0.5 rounded-full sm:right-4 sm:left-4" />
+              )}
             </Link>
           );
         })}
       </div>
 
       {/* Bottom border */}
-      <div className="border-border -mx-4 mt-1 border-b sm:mx-0" />
+      <div className="border-border -mx-4 border-b sm:mx-0" />
     </div>
   );
 }
