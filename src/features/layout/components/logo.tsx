@@ -8,7 +8,7 @@ export function Logo() {
         alt="Poetry & Pottery"
         width={32}
         height={32}
-        className="h-8 w-8 rounded-full"
+        className="h-8 w-8 rounded-full bg-white"
       />
       <span className="font-display text-foreground text-medium tracking-tight">
         Poetry & Pottery
