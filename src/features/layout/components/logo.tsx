@@ -6,9 +6,9 @@ export function Logo() {
       <OptimizedImage
         src="https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.png"
         alt="Poetry & Pottery"
-        width={32}
-        height={32}
-        className="h-8 w-8 rounded-full bg-white"
+        width={36}
+        height={36}
+        className="h-9 w-9 rounded-full border-4 border-white bg-white object-contain"
       />
       <span className="font-display text-foreground text-medium tracking-tight">
         Poetry & Pottery
