@@ -30,7 +30,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   return (
     <>
       <MobileHeaderContainer title="Sign In" showBack backHref="/" />
-      <div className="from-background bg-background container mx-auto flex min-h-[70vh] items-center justify-center bg-linear-to-br px-4 py-0 lg:px-8 lg:pt-10">
+      <div className="from-background bg-background container mx-auto flex min-h-[70vh] items-center justify-center bg-linear-to-br px-4 pt-14 pb-12 lg:px-8 lg:pt-20 lg:pb-12">
         <div className="w-full">
           <ListingPageHeader
             title="Sign In"

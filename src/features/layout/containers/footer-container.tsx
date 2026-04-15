@@ -17,21 +17,26 @@ import type {
 
 const LINK_GROUPS: FooterLinkGroup[] = [
   {
-    title: "Shop",
+    title: "Quick Links",
     links: [
-      { label: "All Products", href: "/products" },
-      { label: "Vases", href: "/products?category=vases" },
-      { label: "Plates", href: "/products?category=plates" },
-      { label: "Mugs", href: "/products?category=mugs" },
-      { label: "Planters", href: "/products?category=planters" },
+      { label: "Home", href: "/" },
+      { label: "Workshops", href: "/events" },
+      { label: "Categories", href: "/products" },
     ],
   },
   {
     title: "Company",
     links: [
+      { label: "Products", href: "/products" },
       { label: "Our Story", href: "/about" },
-      { label: "Workshops", href: "/events" },
       { label: "Contact", href: "/contact" },
+    ],
+  },
+  {
+    title: "Help Centre",
+    links: [
+      { label: "Shipping Info", href: "/shipping" },
+      { label: "Order Tracking", href: "/orders" },
       { label: "FAQ", href: "/faq" },
     ],
   },
@@ -68,7 +73,7 @@ const CONTACT_INFO: FooterContactItem[] = [
 ];
 
 const BRAND_DESCRIPTION =
-  "Handcrafted pottery with a touch of poetry. Each piece tells a story, shaped with passion and the beauty of letting go. From Sangli, Maharashtra since 2024.";
+  "Crafting handmade touch to life\u2019s simplest \uD83C\uDF3C joys :)";
 
 export function FooterContainer() {
   const { isSignedIn } = useAuth();
