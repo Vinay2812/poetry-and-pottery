@@ -54,6 +54,8 @@ export function RegistrationsContainer({
     hasMoreCompleted,
     isLoadingUpcoming,
     isLoadingCompleted,
+    totalUpcoming,
+    totalCompleted,
     loadMoreRef,
   } = useRegistrationsQuery({
     initialUpcomingRegistrations,
@@ -109,6 +111,10 @@ export function RegistrationsContainer({
       hasMore: activeSubTab === "upcoming" ? hasMoreUpcoming : hasMoreCompleted,
       isLoading:
         activeSubTab === "upcoming" ? isLoadingUpcoming : isLoadingCompleted,
+      upcomingCount:
+        totalUpcoming + filteredUpcomingDailyWorkshopRegistrations.length,
+      completedCount:
+        totalCompleted + filteredCompletedDailyWorkshopRegistrations.length,
     };
   }, [
     activeSubTab,
@@ -121,6 +127,8 @@ export function RegistrationsContainer({
     hasMoreCompleted,
     isLoadingUpcoming,
     isLoadingCompleted,
+    totalUpcoming,
+    totalCompleted,
   ]);
 
   return (

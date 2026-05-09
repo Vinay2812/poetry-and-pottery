@@ -12,6 +12,9 @@ export function NavbarContainer() {
   const pathname = usePathname();
   const cartCount = useUIStore((state) => state.cartCount);
   const wishlistCount = useUIStore((state) => state.wishlistCount);
+  const eventRegistrationCount = useUIStore(
+    (state) => state.eventRegistrationsCount,
+  );
 
   const { handleOpen: handleSearchOpen, GlobalSearchComponent } =
     useGlobalSearchContainer();
@@ -20,8 +23,9 @@ export function NavbarContainer() {
     () => ({
       cartCount,
       wishlistCount,
+      eventRegistrationCount,
     }),
-    [cartCount, wishlistCount],
+    [cartCount, wishlistCount, eventRegistrationCount],
   );
 
   return (

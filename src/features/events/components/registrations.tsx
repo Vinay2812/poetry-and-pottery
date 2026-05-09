@@ -35,22 +35,20 @@ export function Registrations({
     hasUpcomingEvents,
     hasMore,
     isLoading,
+    upcomingCount,
+    completedCount,
   } = viewModel;
   const isUpcomingTab = activeSubTab === "upcoming";
   const subTabOptions = [
     {
       value: "upcoming",
       label: "Upcoming",
-      count:
-        upcomingDailyWorkshopRegistrations.length +
-        upcomingEventRegistrations.length,
+      count: upcomingCount,
     },
     {
       value: "completed",
       label: "Completed",
-      count:
-        completedDailyWorkshopRegistrations.length +
-        completedEventRegistrations.length,
+      count: completedCount,
     },
   ];
 

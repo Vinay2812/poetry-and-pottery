@@ -10,6 +10,7 @@ export interface UserInfo {
 export interface NavbarViewModel {
   cartCount: number;
   wishlistCount: number;
+  eventRegistrationCount: number;
 }
 
 // Props for the presentational Navbar component.

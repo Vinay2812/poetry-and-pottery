@@ -35,7 +35,7 @@ export function ProfileClient({
     <>
       <MobileHeaderContainer title="My Profile" showBack backHref="/" />
 
-      <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
+      <main className="pt-18 pb-24 lg:pt-20 lg:pb-12">
         <div className="container mx-auto px-4 py-0 lg:px-8">
           {/* Desktop Page Header */}
           <div className="hidden lg:block">

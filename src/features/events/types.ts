@@ -139,6 +139,8 @@ export interface AllEventsViewModel {
   isLoading: boolean;
   searchQuery: string;
   totalEvents: number;
+  upcomingCount: number;
+  pastCount: number;
 }
 
 export type AllEventsSubTab = "upcoming" | "past";
@@ -178,6 +180,8 @@ export interface RegistrationsViewModel {
   hasUpcomingEvents: boolean;
   hasMore: boolean;
   isLoading: boolean;
+  upcomingCount: number;
+  completedCount: number;
 }
 
 export type RegistrationsSubTab = "upcoming" | "completed";

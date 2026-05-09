@@ -33,12 +33,14 @@ export function AllEvents({
     hasMore,
     isLoading,
     totalEvents,
+    upcomingCount,
+    pastCount,
   } = viewModel;
 
   const isUpcomingTab = activeViewSubTab === "upcoming";
   const subTabOptions = [
-    { value: "upcoming", label: "Upcoming", count: upcomingEvents.length },
-    { value: "past", label: "Past", count: pastEvents.length },
+    { value: "upcoming", label: "Upcoming", count: upcomingCount },
+    { value: "past", label: "Past", count: pastCount },
   ];
 
   return (

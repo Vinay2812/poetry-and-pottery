@@ -143,6 +143,8 @@ export function AllEventsContainer({
         : isFetchingNextPast || isPastEventsLoading || isSubTabPending,
       searchQuery,
       totalEvents,
+      upcomingCount: upcomingTotal ?? 0,
+      pastCount: pastTotal ?? 0,
     };
   }, [
     activeSubTab,

@@ -78,12 +78,14 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
           <nav className="hidden items-center gap-1 rounded-full bg-neutral-100 p-1.5 lg:flex">
             {NAV_LINKS.map((link) => {
               const isActive = isActiveRoute(link.href);
+              const showEventBadge =
+                link.href === "/events" && viewModel.eventRegistrationCount > 0;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "relative z-10 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-200",
+                    "relative z-10 inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-200",
                     isActive
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground",
@@ -102,6 +104,11 @@ export function Navbar({ viewModel, currentPath, onSearchClick }: NavbarProps) {
                     />
                   )}
                   {link.label}
+                  {showEventBadge && (
+                    <span className="bg-primary text-primary-foreground inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold">
+                      {viewModel.eventRegistrationCount}
+                    </span>
+                  )}
                 </Link>
               );
             })}

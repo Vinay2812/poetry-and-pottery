@@ -105,14 +105,6 @@ export function ProductListContainer({
     [filters, onFilterChange],
   );
 
-  // Calculate display counts - use current total when in that view
-  const displayActiveCount = filters.archive
-    ? activeProductsCount
-    : filterMetadata.total_products;
-  const displayArchivedCount = filters.archive
-    ? filterMetadata.total_products
-    : archivedProductsCount;
-
   return (
     <ProductList
       products={products}
@@ -121,8 +113,8 @@ export function ProductListContainer({
       isFetchingProducts={isFetchingProducts}
       isFilterOpen={isFilterOpen}
       hasNextProductsPage={hasNextProductsPage}
-      activeProductsCount={displayActiveCount}
-      archivedProductsCount={displayArchivedCount}
+      activeProductsCount={activeProductsCount}
+      archivedProductsCount={archivedProductsCount}
       fetchNextProductsPageRef={fetchNextProductsPageRef}
       onSearchChange={onSearchChange}
       onFilterOpen={onFilterOpen}

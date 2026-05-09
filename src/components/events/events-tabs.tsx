@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthAction } from "@/hooks/use-auth-action";
+import { useUIStore } from "@/store";
 import { CalendarDays, Clock3, Ticket } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -42,18 +43,16 @@ export const EVENTS_TABS = [
 
 interface EventsTabsProps {
   activeTab: TabType;
-  registeredCount?: number;
   queryString?: string;
 }
 
-export function EventsTabs({
-  activeTab,
-  registeredCount = 0,
-  queryString = "",
-}: EventsTabsProps) {
+export function EventsTabs({ activeTab, queryString = "" }: EventsTabsProps) {
   const router = useRouter();
   const { startNavigation } = useRouteAnimation();
   const tabsRef = useRef<HTMLDivElement>(null);
+  const upcomingRegistrationsCount = useUIStore(
+    (state) => state.eventRegistrationsCount,
+  );
 
   const { requireAuth } = useAuthAction();
 
@@ -92,8 +91,9 @@ export function EventsTabs({
       >
         {EVENTS_TABS.map((tab) => {
           const isActive = tab.type === activeTab;
-          const showBadge =
-            tab.type === TabType.REGISTRATIONS && registeredCount > 0;
+          const showRegistrationBadge =
+            tab.type === TabType.REGISTRATIONS &&
+            upcomingRegistrationsCount > 0;
 
           return (
             <Link
@@ -110,10 +110,9 @@ export function EventsTabs({
               <span className="hidden sm:inline">{tab.desktopLabel}</span>
               <span className="sm:hidden">{tab.mobileLabel}</span>
 
-              {/* Badge for registrations */}
-              {showBadge && (
+              {showRegistrationBadge && (
                 <span className="bg-primary text-primary-foreground ml-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold">
-                  {registeredCount}
+                  {upcomingRegistrationsCount}
                 </span>
               )}
 

@@ -203,6 +203,8 @@ export function useRegistrationsQuery({
   const hasMoreCompleted = hasNextCompleted ?? false;
   const isLoadingUpcoming = isFetchingNextUpcoming;
   const isLoadingCompleted = isFetchingNextCompleted;
+  const totalUpcoming = upcomingData?.pages[0]?.total ?? 0;
+  const totalCompleted = completedData?.pages[0]?.total ?? 0;
 
   return {
     upcomingRegistrations,
@@ -211,6 +213,8 @@ export function useRegistrationsQuery({
     hasMoreCompleted,
     isLoadingUpcoming,
     isLoadingCompleted,
+    totalUpcoming,
+    totalCompleted,
     loadMoreRef,
   };
 }

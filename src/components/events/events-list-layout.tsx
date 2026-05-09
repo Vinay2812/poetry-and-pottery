@@ -1,7 +1,6 @@
 "use client";
 
 import { MobileHeaderContainer } from "@/features/layout";
-import { useUIStore } from "@/store";
 import { Filter, SlidersHorizontal } from "lucide-react";
 import { redirect, usePathname } from "next/navigation";
 
@@ -47,9 +46,6 @@ export function EventsListLayout({
   queryString = "",
 }: EventsListLayoutProps) {
   const pathname = usePathname();
-  const registrationCount = useUIStore(
-    (state) => state.eventRegistrationsCount,
-  );
 
   // Match paths to determine active tab (check longer paths first)
   const sortedTabs = [...EVENTS_TABS].sort(
@@ -77,11 +73,7 @@ export function EventsListLayout({
           />
 
           {/* Tab Navigation */}
-          <EventsTabs
-            activeTab={activeTab}
-            registeredCount={registrationCount}
-            queryString={queryString}
-          />
+          <EventsTabs activeTab={activeTab} queryString={queryString} />
 
           {/* Search Bar */}
           {onSearchChange && (
