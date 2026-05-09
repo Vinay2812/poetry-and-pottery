@@ -136,7 +136,7 @@ export function ProductCard({
         </div>
 
         {/* Product Details */}
-        <div className="border-border flex flex-1 flex-col gap-1.5 border-t p-4 lg:p-5">
+        <div className="border-border flex flex-1 flex-col gap-1.5 border-t p-3 sm:p-4 lg:p-5">
           <Link
             href={`/products/${product.id}`}
             className="flex flex-col gap-1"
@@ -145,7 +145,7 @@ export function ProductCard({
               {product.name}
             </h3>
             <p className="text-xs font-medium text-neutral-500">{category}</p>
-            <div className="mt-0.5 flex items-center justify-between gap-2">
+            <div className="mt-0.5 flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
               <span
                 className={cn(
                   "text-sm font-bold lg:text-base",
@@ -209,7 +209,12 @@ export function ProductCard({
                     ) : (
                       <ShoppingBag className="h-3.5 w-3.5" />
                     )}
-                    <span>{addedToCart ? "Added" : "Add to Cart"}</span>
+                    <span className="sm:hidden">
+                      {addedToCart ? "Added" : "Cart"}
+                    </span>
+                    <span className="hidden sm:inline">
+                      {addedToCart ? "Added" : "Add to Cart"}
+                    </span>
                   </motion.button>
                 )
               )}

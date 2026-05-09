@@ -93,48 +93,47 @@ export function RegisteredEventCard({
   return (
     <div
       className={cn(
-        "bg-card border-border flex gap-4 rounded-2xl border p-3 lg:p-4",
+        "bg-card border-border rounded-2xl border p-3 lg:p-4",
         isCancelled && "opacity-60",
       )}
     >
-      {/* Image Thumbnail */}
-      <Link
-        href={`/events/${event.id}`}
-        className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28"
-      >
-        <OptimizedImage
-          src={imageUrl}
-          alt={event.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+      <div className="flex gap-4">
+        {/* Image Thumbnail */}
+        <Link
+          href={`/events/${event.id}`}
+          className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28"
+        >
+          <OptimizedImage
+            src={imageUrl}
+            alt={event.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
 
-        {/* Level Badge - Only for workshops */}
-        {event.level && (
-          <div className="absolute top-2 left-2">
-            <Badge
-              className={cn(
-                "rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase",
-                event.level.toLowerCase() === "beginner" &&
-                  "bg-primary text-white",
-                event.level.toLowerCase() === "intermediate" &&
-                  "bg-amber-500 text-white",
-                event.level.toLowerCase() === "advanced" &&
-                  "bg-red-500 text-white",
-                event.level.toLowerCase() === "all_levels" &&
-                  "bg-blue-500 text-white",
-              )}
-            >
-              {event.level.replace("_", " ")}
-            </Badge>
-          </div>
-        )}
-      </Link>
+          {/* Level Badge - Only for workshops */}
+          {event.level && (
+            <div className="absolute top-2 left-2">
+              <Badge
+                className={cn(
+                  "rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase",
+                  event.level.toLowerCase() === "beginner" &&
+                    "bg-primary text-white",
+                  event.level.toLowerCase() === "intermediate" &&
+                    "bg-amber-500 text-white",
+                  event.level.toLowerCase() === "advanced" &&
+                    "bg-red-500 text-white",
+                  event.level.toLowerCase() === "all_levels" &&
+                    "bg-blue-500 text-white",
+                )}
+              >
+                {event.level.replace("_", " ")}
+              </Badge>
+            </div>
+          )}
+        </Link>
 
-      {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col justify-between">
-        {/* Top section */}
-        <div>
+        {/* Content */}
+        <div className="flex min-w-0 flex-1 flex-col">
           {/* Header: Title + Type + Status */}
           <div className="mb-1.5 flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
@@ -180,49 +179,49 @@ export function RegisteredEventCard({
             </div>
           )}
         </div>
+      </div>
 
-        {/* Bottom row: Registration ID + Action Buttons */}
-        <div className="flex items-center justify-between gap-2">
-          <p className="font-mono text-[10px] text-neutral-400 lg:text-xs">
-            Reg #{registrationId.toUpperCase().slice(0, 12)}
-          </p>
+      {/* Bottom row: Registration ID + Action Buttons - spans full card width */}
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <p className="font-mono text-[10px] text-neutral-400 lg:text-xs">
+          Reg #{registrationId.toUpperCase().slice(0, 12)}
+        </p>
 
-          {/* Action Buttons - Bottom right */}
-          <div className="flex shrink-0 gap-2">
-            {isConfirmed || isPaid ? (
+        {/* Action Buttons - Bottom right */}
+        <div className="flex shrink-0 gap-2">
+          {isConfirmed || isPaid ? (
+            <Link href={`/events/${event.id}`}>
+              <Button
+                size="sm"
+                className="h-8 rounded-lg px-4 text-xs font-medium"
+              >
+                <Ticket className="mr-1.5 h-3.5 w-3.5" />
+                View Ticket
+              </Button>
+            </Link>
+          ) : (
+            <>
               <Link href={`/events/${event.id}`}>
                 <Button
+                  variant="outline"
                   size="sm"
                   className="h-8 rounded-lg px-4 text-xs font-medium"
                 >
-                  <Ticket className="mr-1.5 h-3.5 w-3.5" />
-                  View Ticket
+                  View Details
                 </Button>
               </Link>
-            ) : (
-              <>
-                <Link href={`/events/${event.id}`}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 rounded-lg px-4 text-xs font-medium"
-                  >
-                    View Details
-                  </Button>
-                </Link>
-                {canCancel && onCancel && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 rounded-lg px-3 text-xs font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
-                    onClick={() => onCancel(registrationId)}
-                  >
-                    Cancel
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
+              {canCancel && onCancel && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 rounded-lg px-3 text-xs font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
+                  onClick={() => onCancel(registrationId)}
+                >
+                  Cancel
+                </Button>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

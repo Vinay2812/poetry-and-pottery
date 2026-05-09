@@ -57,43 +57,42 @@ export function CompletedEventCard({
   } = viewModel;
 
   return (
-    <div className="bg-card border-border flex gap-4 rounded-2xl border p-3 lg:p-4">
-      {/* Image Thumbnail */}
-      <Link
-        href={`/events/${eventId}`}
-        className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28"
-      >
-        <OptimizedImage
-          src={imageUrl}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+    <div className="bg-card border-border rounded-2xl border p-3 lg:p-4">
+      <div className="flex gap-4">
+        {/* Image Thumbnail */}
+        <Link
+          href={`/events/${eventId}`}
+          className="group relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-neutral-100 lg:h-28 lg:w-28"
+        >
+          <OptimizedImage
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
 
-        {/* Level Badge */}
-        {level && (
-          <div className="absolute top-2 left-2">
-            <Badge
-              className={cn(
-                "rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase",
-                level.toLowerCase() === "beginner" && "bg-primary text-white",
-                level.toLowerCase() === "intermediate" &&
-                  "bg-amber-500 text-white",
-                level.toLowerCase() === "advanced" && "bg-red-500 text-white",
-                level.toLowerCase() === "all_levels" &&
-                  "bg-blue-500 text-white",
-              )}
-            >
-              {level.replace("_", " ")}
-            </Badge>
-          </div>
-        )}
-      </Link>
+          {/* Level Badge */}
+          {level && (
+            <div className="absolute top-2 left-2">
+              <Badge
+                className={cn(
+                  "rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase",
+                  level.toLowerCase() === "beginner" && "bg-primary text-white",
+                  level.toLowerCase() === "intermediate" &&
+                    "bg-amber-500 text-white",
+                  level.toLowerCase() === "advanced" && "bg-red-500 text-white",
+                  level.toLowerCase() === "all_levels" &&
+                    "bg-blue-500 text-white",
+                )}
+              >
+                {level.replace("_", " ")}
+              </Badge>
+            </div>
+          )}
+        </Link>
 
-      {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col justify-between">
-        {/* Top section */}
-        <div>
+        {/* Content */}
+        <div className="flex min-w-0 flex-1 flex-col">
           {/* Header: Title + Type + Completed Badge */}
           <div className="mb-1.5 flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
@@ -128,69 +127,69 @@ export function CompletedEventCard({
             </div>
           )}
         </div>
+      </div>
 
-        {/* Bottom row: Review Status + Action Button */}
-        <div className="flex items-center justify-between gap-2">
-          {/* Review Status */}
-          <div>
-            {hasReviewed ? (
-              <div className="flex items-center gap-1 text-xs text-amber-600 lg:text-sm">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
-                  />
-                ))}
-                <span className="ml-1 text-neutral-500">Reviewed</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1.5 text-xs text-neutral-500 lg:text-sm">
-                <Pencil className="h-3.5 w-3.5" />
-                <span>Review pending</span>
-              </div>
-            )}
-          </div>
+      {/* Bottom row: Review Status + Action Button - spans full card width */}
+      <div className="mt-3 flex items-center justify-between gap-2">
+        {/* Review Status */}
+        <div>
+          {hasReviewed ? (
+            <div className="flex items-center gap-1 text-xs text-amber-600 lg:text-sm">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
+                />
+              ))}
+              <span className="ml-1 text-neutral-500">Reviewed</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 text-xs text-neutral-500 lg:text-sm">
+              <Pencil className="h-3.5 w-3.5" />
+              <span>Review pending</span>
+            </div>
+          )}
+        </div>
 
-          {/* Action Button - Bottom right */}
-          <div className="shrink-0">
-            {hasReviewed ? (
-              <Link href={`/events/${eventId}`}>
+        {/* Action Button - Bottom right */}
+        <div className="shrink-0">
+          {hasReviewed ? (
+            <Link href={`/events/${eventId}`}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 rounded-lg px-4 text-xs font-medium"
+              >
+                View Review
+              </Button>
+            </Link>
+          ) : (
+            <Dialog
+              open={isReviewDialogOpen}
+              onOpenChange={onReviewDialogOpenChange}
+            >
+              <DialogTrigger asChild>
                 <Button
-                  variant="outline"
                   size="sm"
                   className="h-8 rounded-lg px-4 text-xs font-medium"
                 >
-                  View Review
+                  <Pencil className="mr-1.5 h-3.5 w-3.5" />
+                  Write a Review
                 </Button>
-              </Link>
-            ) : (
-              <Dialog
-                open={isReviewDialogOpen}
-                onOpenChange={onReviewDialogOpenChange}
-              >
-                <DialogTrigger asChild>
-                  <Button
-                    size="sm"
-                    className="h-8 rounded-lg px-4 text-xs font-medium"
-                  >
-                    <Pencil className="mr-1.5 h-3.5 w-3.5" />
-                    Write a Review
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle className="font-display">{title}</DialogTitle>
-                  </DialogHeader>
-                  <ReviewForm
-                    title="Rate your experience"
-                    hasReviewed={hasReviewed}
-                    defaultOpen
-                    onSubmit={onReviewSubmit}
-                  />
-                </DialogContent>
-              </Dialog>
-            )}
-          </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="font-display">{title}</DialogTitle>
+                </DialogHeader>
+                <ReviewForm
+                  title="Rate your experience"
+                  hasReviewed={hasReviewed}
+                  defaultOpen
+                  onSubmit={onReviewSubmit}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
       </div>
     </div>

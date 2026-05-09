@@ -61,8 +61,8 @@ export function Wishlist({
               <div
                 className={
                   displayRecommendations
-                    ? "mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
-                    : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
+                    ? "mb-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-6"
+                    : "grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-6"
                 }
               >
                 <AnimatePresence mode="popLayout">

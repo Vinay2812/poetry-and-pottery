@@ -99,25 +99,25 @@ export function DailyWorkshopRegistrationCard({
   return (
     <div
       className={cn(
-        "bg-card border-border flex gap-4 rounded-2xl border p-3 lg:p-4",
+        "bg-card border-border rounded-2xl border p-3 lg:p-4",
         isCancelled && "opacity-60",
       )}
     >
-      <Link
-        href={`/events/daily-workshops/${registration.id}`}
-        className="group relative flex h-24 w-24 shrink-0 flex-col items-center justify-between overflow-hidden rounded-xl bg-neutral-100 p-3 lg:h-28 lg:w-28"
-      >
-        <Badge className="bg-primary-lighter text-primary border-none px-1.5 py-0.5 text-[10px] font-semibold uppercase">
-          Daily
-        </Badge>
-        <Palette className="text-primary h-7 w-7" />
-        <span className="text-center text-[10px] font-medium text-neutral-600">
-          Flexible Slots
-        </span>
-      </Link>
+      <div className="flex gap-4">
+        <Link
+          href={`/events/daily-workshops/${registration.id}`}
+          className="group relative flex h-24 w-24 shrink-0 flex-col items-center justify-between overflow-hidden rounded-xl bg-neutral-100 p-3 lg:h-28 lg:w-28"
+        >
+          <Badge className="bg-primary-lighter text-primary border-none px-1.5 py-0.5 text-[10px] font-semibold uppercase">
+            Daily
+          </Badge>
+          <Palette className="text-primary h-7 w-7" />
+          <span className="text-center text-[10px] font-medium text-neutral-600">
+            Flexible Slots
+          </span>
+        </Link>
 
-      <div className="flex min-w-0 flex-1 flex-col justify-between">
-        <div>
+        <div className="flex min-w-0 flex-1 flex-col">
           <div className="mb-1.5 flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
               <Link
@@ -173,26 +173,26 @@ export function DailyWorkshopRegistrationCard({
             <span>{registration.total_pieces} pieces included</span>
           </div>
         </div>
+      </div>
 
-        <div className="mt-2 flex items-center justify-between gap-2">
-          <p className="font-mono text-[10px] text-neutral-400 lg:text-xs">
-            Reg #{registration.id.toUpperCase().slice(0, 12)}
-          </p>
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <p className="font-mono text-[10px] text-neutral-400 lg:text-xs">
+          Reg #{registration.id.toUpperCase().slice(0, 12)}
+        </p>
 
-          <div className="flex items-center gap-2">
-            <span className="text-primary text-sm font-semibold lg:text-base">
-              {formatCurrency(registration.final_amount)}
-            </span>
-            <Link href={`/events/daily-workshops/${registration.id}`}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 rounded-lg px-4 text-xs font-medium"
-              >
-                View Details
-              </Button>
-            </Link>
-          </div>
+        <div className="flex items-center gap-2">
+          <span className="text-primary text-sm font-semibold lg:text-base">
+            {formatCurrency(registration.final_amount)}
+          </span>
+          <Link href={`/events/daily-workshops/${registration.id}`}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 rounded-lg px-4 text-xs font-medium"
+            >
+              View Details
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

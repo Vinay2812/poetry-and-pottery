@@ -185,27 +185,39 @@ export function ImageCarousel({
             {showDots && (
               <div
                 className={cn(
-                  "absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-1.5 backdrop-blur-sm transition-all duration-300",
+                  "absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5",
                   dotsClassName,
                 )}
               >
-                {images.map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      api?.scrollTo(idx);
-                    }}
-                    className={cn(
-                      "h-2 w-2 rounded-full transition-all duration-300",
-                      idx === current
-                        ? "w-5 bg-white"
-                        : "bg-white/50 hover:bg-white/80",
-                    )}
-                  />
-                ))}
+                {images.map((_, idx) => {
+                  const distance = Math.abs(idx - current);
+                  const isActive = distance === 0;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      aria-label={`Go to image ${idx + 1}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        api?.scrollTo(idx);
+                      }}
+                      className={cn(
+                        "rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.45)] transition-all duration-300",
+                        isActive && "h-2 w-5 bg-white",
+                        !isActive &&
+                          distance === 1 &&
+                          "h-2 w-2 bg-white/85 hover:bg-white",
+                        !isActive &&
+                          distance === 2 &&
+                          "h-1.5 w-1.5 bg-white/70 hover:bg-white",
+                        !isActive &&
+                          distance >= 3 &&
+                          "h-1 w-1 bg-white/55 hover:bg-white",
+                      )}
+                    />
+                  );
+                })}
               </div>
             )}
           </>
