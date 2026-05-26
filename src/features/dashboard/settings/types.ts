@@ -14,7 +14,7 @@ export interface SettingsViewModel {
 export interface HeroImagesViewModel {
   home: string;
   ourStory: string;
-  products: string;
+  store: string;
   events: string;
 }
 
@@ -61,7 +61,7 @@ export function buildSettingsViewModel(
     heroImages: {
       home: heroImages.home,
       ourStory: heroImages.ourStory,
-      products: heroImages.products,
+      store: heroImages.store,
       events: heroImages.events,
     },
     contactInfo: {

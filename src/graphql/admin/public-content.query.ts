@@ -119,9 +119,17 @@ export const PUBLIC_HERO_IMAGES_QUERY = gql`
   query PublicHeroImages {
     publicHeroImages {
       home
-      ourStory
-      products
+      store
       events
+      about
+      contact
+      faq
+      shipping
+      care
+      privacy
+      terms
+      customize
+      ourStory
     }
   }
 `;

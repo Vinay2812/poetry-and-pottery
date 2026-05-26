@@ -863,6 +863,14 @@ export type AssignProductsToCollectionInput = {
   productIds: Array<Scalars['Int']['input']>;
 };
 
+export type BrandAssets = {
+  appleTouchIcon: Scalars['String']['output'];
+  defaultOgImage: Scalars['String']['output'];
+  favicon: Scalars['String']['output'];
+  logo: Scalars['String']['output'];
+  logoDark: Scalars['String']['output'];
+};
+
 export type BulkDeleteEventResult = {
   action: Scalars['String']['output'];
   error?: Maybe<Scalars['String']['output']>;
@@ -1448,6 +1456,33 @@ export type FeaturedReview = {
   user_id: Scalars['Int']['output'];
 };
 
+export type FooterColumn = {
+  links: Array<FooterLink>;
+  title: Scalars['String']['output'];
+};
+
+export type FooterColumnInput = {
+  links: Array<FooterLinkInput>;
+  title: Scalars['String']['input'];
+};
+
+export type FooterContent = {
+  columns: Array<FooterColumn>;
+  copyright: Scalars['String']['output'];
+  newsletterBlurb: Scalars['String']['output'];
+  tagline: Scalars['String']['output'];
+};
+
+export type FooterLink = {
+  href: Scalars['String']['output'];
+  label: Scalars['String']['output'];
+};
+
+export type FooterLinkInput = {
+  href: Scalars['String']['input'];
+  label: Scalars['String']['input'];
+};
+
 export type GetPresignedUploadUrlInput = {
   contentType: Scalars['String']['input'];
   fileSize: Scalars['Int']['input'];
@@ -1475,10 +1510,32 @@ export type GlobalSearchResponse = {
 };
 
 export type HeroImages = {
+  about: Scalars['String']['output'];
+  care: Scalars['String']['output'];
+  contact: Scalars['String']['output'];
+  customize: Scalars['String']['output'];
   events: Scalars['String']['output'];
+  faq: Scalars['String']['output'];
   home: Scalars['String']['output'];
   ourStory: Scalars['String']['output'];
-  products: Scalars['String']['output'];
+  privacy: Scalars['String']['output'];
+  shipping: Scalars['String']['output'];
+  store: Scalars['String']['output'];
+  terms: Scalars['String']['output'];
+};
+
+export type HeroVideoEntry = {
+  poster: Scalars['String']['output'];
+  src: Scalars['String']['output'];
+};
+
+export type HeroVideoEntryInput = {
+  poster?: InputMaybe<Scalars['String']['input']>;
+  src?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type HeroVideos = {
+  home: HeroVideoEntry;
 };
 
 export type LowStockProduct = {
@@ -1519,6 +1576,7 @@ export type Mutation = {
   adminToggleCustomizationOptionActive: AdminCustomizationMutationResponse;
   adminToggleCustomizeCategoryActive: AdminCustomizeCategoryMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
+  adminUpdateBrandAssets: AdminSettingsMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
   adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
@@ -1530,14 +1588,18 @@ export type Mutation = {
   adminUpdateDailyWorkshopRegistrationStatus: AdminDailyWorkshopMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
+  adminUpdateFooterContent: AdminSettingsMutationResponse;
   adminUpdateHeroImages: AdminSettingsMutationResponse;
+  adminUpdateHeroVideos: AdminSettingsMutationResponse;
   adminUpdateOrderDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemQuantity: AdminOrderMutationResponse;
   adminUpdateOrderStatus: AdminOrderMutationResponse;
+  adminUpdatePageTaglines: AdminSettingsMutationResponse;
   adminUpdateProduct: AdminMutationResponse;
   adminUpdateRegistrationDetails: AdminRegistrationMutationResponse;
   adminUpdateRegistrationStatus: AdminRegistrationMutationResponse;
+  adminUpdateSeoMetadata: AdminSettingsMutationResponse;
   adminUpdateSocialLinks: AdminSettingsMutationResponse;
   adminUpdateUserRole: AdminUserMutationResponse;
   adminUpsertDailyWorkshopBlackoutRule: AdminDailyWorkshopBlackoutRuleMutationResponse;
@@ -1700,6 +1762,11 @@ export type MutationAdminToggleProductActiveArgs = {
 };
 
 
+export type MutationAdminUpdateBrandAssetsArgs = {
+  input: UpdateBrandAssetsInput;
+};
+
+
 export type MutationAdminUpdateCategoryIconArgs = {
   category: Scalars['String']['input'];
   icon: Scalars['String']['input'];
@@ -1765,8 +1832,18 @@ export type MutationAdminUpdateEventStatusArgs = {
 };
 
 
+export type MutationAdminUpdateFooterContentArgs = {
+  input: UpdateFooterContentInput;
+};
+
+
 export type MutationAdminUpdateHeroImagesArgs = {
   input: UpdateHeroImagesInput;
+};
+
+
+export type MutationAdminUpdateHeroVideosArgs = {
+  input: UpdateHeroVideosInput;
 };
 
 
@@ -1794,6 +1871,11 @@ export type MutationAdminUpdateOrderStatusArgs = {
 };
 
 
+export type MutationAdminUpdatePageTaglinesArgs = {
+  input: UpdatePageTaglinesInput;
+};
+
+
 export type MutationAdminUpdateProductArgs = {
   id: Scalars['Int']['input'];
   input: UpdateProductInput;
@@ -1809,6 +1891,11 @@ export type MutationAdminUpdateRegistrationDetailsArgs = {
 export type MutationAdminUpdateRegistrationStatusArgs = {
   registrationId: Scalars['String']['input'];
   status: Scalars['String']['input'];
+};
+
+
+export type MutationAdminUpdateSeoMetadataArgs = {
+  input: UpdateSeoMetadataInput;
 };
 
 
@@ -2020,6 +2107,17 @@ export type OrdersStats = {
   total: Scalars['Int']['output'];
 };
 
+export type PageContent = {
+  hero: Scalars['String']['output'];
+  seo: SeoEntry;
+  tagline: TaglineEntry;
+  video?: Maybe<HeroVideoEntry>;
+};
+
+export type PageTaglines = {
+  entries: Scalars['JSON']['output'];
+};
+
 export type PresignedUploadUrlResponse = {
   error?: Maybe<Scalars['String']['output']>;
   key?: Maybe<Scalars['String']['output']>;
@@ -2173,6 +2271,7 @@ export type Query = {
   adminAllCollections: Array<AdminProductCollection>;
   adminAllConfiguredCategories: Array<AdminCategoryConfig>;
   adminAvailableIcons: Array<AdminIconOption>;
+  adminBrandAssets: BrandAssets;
   adminCategories: AdminCategoriesResponse;
   adminCollectionById?: Maybe<AdminCollectionDetail>;
   adminCollections: AdminCollectionsResponse;
@@ -2196,14 +2295,19 @@ export type Query = {
   adminEventReviews: AdminEventReviewsResponse;
   adminEventStatusOptions: Array<AdminStatusOption>;
   adminEvents: AdminEventsResponse;
+  adminFooterContent: FooterContent;
   adminHeroImages: HeroImages;
+  adminHeroVideos: HeroVideos;
   adminLowStockProducts: Array<LowStockProduct>;
   adminNewsletterSubscribers: Array<NewsletterSubscriber>;
+  adminPageContent: PageContent;
+  adminPageTaglines: PageTaglines;
   adminProductById?: Maybe<AdminProductDetail>;
   adminProductReviews: AdminProductReviewsResponse;
   adminProducts: AdminProductsResponse;
   adminRecentOrders: Array<RecentOrder>;
   adminRecentRegistrations: Array<RecentRegistration>;
+  adminSeoMetadata: SeoMetadata;
   adminSocialLinks: SocialLinks;
   adminUpcomingEvents: Array<UpcomingEvent>;
   adminUserById?: Maybe<AdminUserDetail>;
@@ -2213,6 +2317,7 @@ export type Query = {
   adminUserRegistrations: Array<AdminUserRegistration>;
   adminUserWishlist: AdminUserWishlistResponse;
   adminUsers: AdminUsersResponse;
+  brandAssets: BrandAssets;
   cart: CartResponse;
   categories: Array<Scalars['String']['output']>;
   categoriesWithImages: Array<CategoryWithImage>;
@@ -2230,13 +2335,18 @@ export type Query = {
   eventWithUserContext?: Maybe<EventWithUserContext>;
   events: EventsResponse;
   featuredReviews: Array<FeaturedReview>;
+  footerContent: FooterContent;
   globalSearch: GlobalSearchResponse;
+  heroImages: HeroImages;
+  heroVideos: HeroVideos;
   myCompletedDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
   myDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
   myUpcomingDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
   newsletterStatus: NewsletterStatus;
   order?: Maybe<Order>;
   orders: OrdersResponse;
+  pageContent: PageContent;
+  pageTaglines: PageTaglines;
   pastEvents: EventsResponse;
   productById?: Maybe<ProductDetail>;
   productReviews: ReviewsResponse;
@@ -2249,6 +2359,8 @@ export type Query = {
   publicShippingContent?: Maybe<ShippingPageContent>;
   publicTermsContent?: Maybe<TermsPageContent>;
   recommendedProducts: RecommendedProductsResponse;
+  seoMetadata: SeoMetadata;
+  siteContentDefaults: SiteContentDefaults;
   upcomingEvents: EventsResponse;
   upcomingRegistrations: RegistrationsResponse;
   user: UserResponse;
@@ -2327,6 +2439,11 @@ export type QueryAdminLowStockProductsArgs = {
 
 export type QueryAdminNewsletterSubscribersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryAdminPageContentArgs = {
+  pageSlug: Scalars['String']['input'];
 };
 
 
@@ -2481,6 +2598,11 @@ export type QueryOrderArgs = {
 
 export type QueryOrdersArgs = {
   filter?: InputMaybe<OrdersFilterInput>;
+};
+
+
+export type QueryPageContentArgs = {
+  pageSlug: Scalars['String']['input'];
 };
 
 
@@ -2699,6 +2821,26 @@ export type SearchCounts = {
   products: Scalars['Int']['output'];
 };
 
+export type SeoEntry = {
+  description: Scalars['String']['output'];
+  ogDescription: Scalars['String']['output'];
+  ogImage: Scalars['String']['output'];
+  ogTitle: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+};
+
+export type SeoEntryInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  ogDescription?: InputMaybe<Scalars['String']['input']>;
+  ogImage?: InputMaybe<Scalars['String']['input']>;
+  ogTitle?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SeoMetadata = {
+  entries: Scalars['JSON']['output'];
+};
+
 export type ShippingAddressInput = {
   address_line_1: Scalars['String']['input'];
   address_line_2?: InputMaybe<Scalars['String']['input']>;
@@ -2728,11 +2870,27 @@ export type ShippingPageContent = {
   shippingOptions: Array<ShippingOption>;
 };
 
+export type SiteContentDefaults = {
+  value: Scalars['JSON']['output'];
+};
+
 export type SocialLinks = {
   facebook: Scalars['String']['output'];
   instagram: Scalars['String']['output'];
   pinterest: Scalars['String']['output'];
   twitter: Scalars['String']['output'];
+};
+
+export type TaglineEntry = {
+  ctaText: Scalars['String']['output'];
+  heading: Scalars['String']['output'];
+  subheading: Scalars['String']['output'];
+};
+
+export type TaglineEntryInput = {
+  ctaText?: InputMaybe<Scalars['String']['input']>;
+  heading?: InputMaybe<Scalars['String']['input']>;
+  subheading?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type TermsPageContent = {
@@ -2795,6 +2953,14 @@ export type UpdateAddressInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   zip?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateBrandAssetsInput = {
+  appleTouchIcon?: InputMaybe<Scalars['String']['input']>;
+  defaultOgImage?: InputMaybe<Scalars['String']['input']>;
+  favicon?: InputMaybe<Scalars['String']['input']>;
+  logo?: InputMaybe<Scalars['String']['input']>;
+  logoDark?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateCartQuantityInput = {
@@ -2863,11 +3029,35 @@ export type UpdateEventInput = {
   total_seats?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type UpdateFooterContentInput = {
+  columns?: InputMaybe<Array<FooterColumnInput>>;
+  copyright?: InputMaybe<Scalars['String']['input']>;
+  newsletterBlurb?: InputMaybe<Scalars['String']['input']>;
+  tagline?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateHeroImagesInput = {
+  about?: InputMaybe<Scalars['String']['input']>;
+  care?: InputMaybe<Scalars['String']['input']>;
+  contact?: InputMaybe<Scalars['String']['input']>;
+  customize?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<Scalars['String']['input']>;
+  faq?: InputMaybe<Scalars['String']['input']>;
   home?: InputMaybe<Scalars['String']['input']>;
   ourStory?: InputMaybe<Scalars['String']['input']>;
-  products?: InputMaybe<Scalars['String']['input']>;
+  privacy?: InputMaybe<Scalars['String']['input']>;
+  shipping?: InputMaybe<Scalars['String']['input']>;
+  store?: InputMaybe<Scalars['String']['input']>;
+  terms?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateHeroVideosInput = {
+  home?: InputMaybe<HeroVideoEntryInput>;
+};
+
+export type UpdatePageTaglinesInput = {
+  entry: TaglineEntryInput;
+  page: Scalars['String']['input'];
 };
 
 export type UpdateProductInput = {
@@ -2891,6 +3081,11 @@ export type UpdateRegistrationDetailsInput = {
   discount: Scalars['Float']['input'];
   price: Scalars['Float']['input'];
   seatsReserved: Scalars['Int']['input'];
+};
+
+export type UpdateSeoMetadataInput = {
+  entry: SeoEntryInput;
+  page: Scalars['String']['input'];
 };
 
 export type UpdateSocialLinksInput = {
@@ -3566,7 +3761,7 @@ export type PublicTermsContentQuery = { publicTermsContent?: { lastUpdated: stri
 export type PublicHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PublicHeroImagesQuery = { publicHeroImages: { home: string, ourStory: string, products: string, events: string } };
+export type PublicHeroImagesQuery = { publicHeroImages: { home: string, store: string, events: string, about: string, contact: string, faq: string, shipping: string, care: string, privacy: string, terms: string, customize: string, ourStory: string } };
 
 export type AdminUpdateRegistrationStatusMutationVariables = Exact<{
   registrationId: Scalars['String']['input'];
@@ -3605,10 +3800,45 @@ export type AdminUpdateSocialLinksMutationVariables = Exact<{
 
 export type AdminUpdateSocialLinksMutation = { adminUpdateSocialLinks: { success: boolean, error?: string | null } };
 
+export type AdminUpdateHeroVideosMutationVariables = Exact<{
+  input: UpdateHeroVideosInput;
+}>;
+
+
+export type AdminUpdateHeroVideosMutation = { adminUpdateHeroVideos: { success: boolean, error?: string | null } };
+
+export type AdminUpdateBrandAssetsMutationVariables = Exact<{
+  input: UpdateBrandAssetsInput;
+}>;
+
+
+export type AdminUpdateBrandAssetsMutation = { adminUpdateBrandAssets: { success: boolean, error?: string | null } };
+
+export type AdminUpdateSeoMetadataMutationVariables = Exact<{
+  input: UpdateSeoMetadataInput;
+}>;
+
+
+export type AdminUpdateSeoMetadataMutation = { adminUpdateSeoMetadata: { success: boolean, error?: string | null } };
+
+export type AdminUpdateFooterContentMutationVariables = Exact<{
+  input: UpdateFooterContentInput;
+}>;
+
+
+export type AdminUpdateFooterContentMutation = { adminUpdateFooterContent: { success: boolean, error?: string | null } };
+
+export type AdminUpdatePageTaglinesMutationVariables = Exact<{
+  input: UpdatePageTaglinesInput;
+}>;
+
+
+export type AdminUpdatePageTaglinesMutation = { adminUpdatePageTaglines: { success: boolean, error?: string | null } };
+
 export type AdminHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminHeroImagesQuery = { adminHeroImages: { home: string, ourStory: string, products: string, events: string } };
+export type AdminHeroImagesQuery = { adminHeroImages: { home: string, store: string, events: string, about: string, contact: string, faq: string, shipping: string, care: string, privacy: string, terms: string, customize: string, ourStory: string } };
 
 export type AdminContactInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3619,6 +3849,43 @@ export type AdminSocialLinksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AdminSocialLinksQuery = { adminSocialLinks: { instagram: string, facebook: string, twitter: string, pinterest: string } };
+
+export type AdminHeroVideosQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminHeroVideosQuery = { adminHeroVideos: { home: { src: string, poster: string } } };
+
+export type AdminBrandAssetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminBrandAssetsQuery = { adminBrandAssets: { logo: string, logoDark: string, favicon: string, appleTouchIcon: string, defaultOgImage: string } };
+
+export type AdminSeoMetadataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminSeoMetadataQuery = { adminSeoMetadata: { entries: any } };
+
+export type AdminFooterContentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminFooterContentQuery = { adminFooterContent: { tagline: string, copyright: string, newsletterBlurb: string, columns: Array<{ title: string, links: Array<{ label: string, href: string }> }> } };
+
+export type AdminPageTaglinesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminPageTaglinesQuery = { adminPageTaglines: { entries: any } };
+
+export type AdminPageContentQueryVariables = Exact<{
+  pageSlug: Scalars['String']['input'];
+}>;
+
+
+export type AdminPageContentQuery = { adminPageContent: { hero: string, video?: { src: string, poster: string } | null, seo: { title: string, description: string, ogImage: string, ogTitle: string, ogDescription: string }, tagline: { heading: string, subheading: string, ctaText: string } } };
+
+export type SiteContentDefaultsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SiteContentDefaultsQuery = { siteContentDefaults: { value: any } };
 
 export type AdminGetPresignedUploadUrlMutationVariables = Exact<{
   input: GetPresignedUploadUrlInput;
@@ -3685,6 +3952,11 @@ export type AdminUserWishlistQueryVariables = Exact<{
 
 
 export type AdminUserWishlistQuery = { adminUserWishlist: { total: number, page: number, totalPages: number, data: Array<{ id: number, created_at: Date | string, product: { id: number, name: string, slug: string, price: number, available_quantity: number, image_urls: Array<string> } }> } };
+
+export type BrandAssetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BrandAssetsQuery = { brandAssets: { logo: string, logoDark: string, favicon: string, appleTouchIcon: string, defaultOgImage: string } };
 
 export type AddToCartMutationVariables = Exact<{
   input: AddToCartInput;
@@ -3880,6 +4152,11 @@ export type CompletedRegistrationsQueryVariables = Exact<{
 
 export type CompletedRegistrationsQuery = { completedRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
 
+export type FooterContentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FooterContentQuery = { footerContent: { tagline: string, copyright: string, newsletterBlurb: string, columns: Array<{ title: string, links: Array<{ label: string, href: string }> }> } };
+
 export type SubscribeToNewsletterMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3917,6 +4194,13 @@ export type OrderQueryVariables = Exact<{
 
 
 export type OrderQuery = { order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, custom_data?: { totalModifier: number, options: Array<{ type: string, optionId: number, name: string, value: string, priceModifier: number }> } | null, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null };
+
+export type PageContentQueryVariables = Exact<{
+  pageSlug: Scalars['String']['input'];
+}>;
+
+
+export type PageContentQuery = { pageContent: { hero: string, video?: { src: string, poster: string } | null, seo: { title: string, description: string, ogImage: string, ogTitle: string, ogDescription: string }, tagline: { heading: string, subheading: string, ctaText: string } } };
 
 export type CollectionFieldsFragment = { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number };
 

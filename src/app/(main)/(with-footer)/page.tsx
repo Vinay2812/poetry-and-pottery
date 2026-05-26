@@ -1,8 +1,6 @@
-import { HERO_VIDEOS } from "@/consts/client";
 import { CustomizeSection } from "@/features/home";
 import { MobileHeaderContainer } from "@/features/layout";
 import { RecommendedProductsContainer } from "@/features/recommended-products";
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import {
@@ -15,46 +13,24 @@ import {
 } from "@/components/sections";
 
 import { absoluteUrl } from "@/lib/seo";
+import { buildMetadataFromSeo, getPageContent } from "@/lib/site-content";
 
-export const metadata: Metadata = {
-  title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
-  description:
-    "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Functional, decorative, and custom ceramics - each piece tells a story of patience, passion, and the beauty of letting go.",
-  keywords: [
-    "handcrafted ceramics",
-    "pottery studio sangli",
-    "artisan pottery india",
-    "custom ceramic gifts",
-    "pottery workshops",
-  ],
-  alternates: {
-    canonical: absoluteUrl("/"),
-  },
-  openGraph: {
-    title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
-    description:
-      "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Each piece tells a story of patience, passion, and the beauty of letting go.",
-    type: "website",
-    url: absoluteUrl("/"),
-    images: [
-      {
-        url: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
-        width: 1200,
-        height: 630,
-        alt: "Poetry & Pottery Collection",
-      },
+export async function generateMetadata() {
+  const base = await buildMetadataFromSeo("home");
+  return {
+    ...base,
+    keywords: [
+      "handcrafted ceramics",
+      "pottery studio sangli",
+      "artisan pottery india",
+      "custom ceramic gifts",
+      "pottery workshops",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
-    description:
-      "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Shop our collection today.",
-    images: [
-      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
-    ],
-  },
-};
+    alternates: {
+      canonical: absoluteUrl("/"),
+    },
+  };
+}
 
 /**
  * Route: /
@@ -66,7 +42,8 @@ export const metadata: Metadata = {
  * - Homepage content blocks (hero media, categories, collections, featured products, workshop promos, testimonials).
  * - Linked product/event identifiers and CTA targets used by cards and section buttons.
  */
-export default function Home() {
+export default async function Home() {
+  const { video } = await getPageContent("home");
   return (
     <>
       <MobileHeaderContainer />
@@ -74,7 +51,7 @@ export default function Home() {
       <main className="min-h-screen pt-14 lg:pt-20">
         {/* Hero Section */}
         <HeroSection
-          video={HERO_VIDEOS.hero}
+          video={video?.src ?? ""}
           imageAlt="Handcrafted pottery in our Sangli studio"
           badge="HANDCRAFTED IN SANGLI"
           title="Where earth meets artistry"

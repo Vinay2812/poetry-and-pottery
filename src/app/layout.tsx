@@ -11,6 +11,7 @@ import { Suspense } from "react";
 import { RouteAnimationProvider } from "@/components/providers/route-animation-provider";
 
 import { DEFAULT_SOCIAL_IMAGE, SITE_METADATA_BASE, SITE_NAME } from "@/lib/seo";
+import { getBrandAssets } from "@/lib/site-content";
 
 import "./globals.css";
 
@@ -40,46 +41,53 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export const metadata: Metadata = {
-  metadataBase: SITE_METADATA_BASE,
-  applicationName: SITE_NAME,
-  title: SITE_NAME,
-  description:
-    "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Each piece tells a story - functional, decorative, and custom ceramics crafted with passion. Shop unique pottery and join our workshops.",
-  keywords: [
-    "handcrafted pottery",
-    "ceramic studio",
-    "pottery workshops",
-    "artisan ceramics",
-    "custom pottery",
-  ],
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const brand = await getBrandAssets();
+  return {
+    metadataBase: SITE_METADATA_BASE,
+    applicationName: SITE_NAME,
     title: SITE_NAME,
     description:
-      "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Shop unique ceramics and join immersive pottery workshops.",
-    type: "website",
-    siteName: SITE_NAME,
-    url: "/",
-    images: [
-      {
-        url: DEFAULT_SOCIAL_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: "Poetry & Pottery handcrafted ceramics",
-      },
+      "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Each piece tells a story - functional, decorative, and custom ceramics crafted with passion. Shop unique pottery and join our workshops.",
+    keywords: [
+      "handcrafted pottery",
+      "ceramic studio",
+      "pottery workshops",
+      "artisan ceramics",
+      "custom pottery",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_NAME,
-    description:
-      "Handcrafted pottery from Sangli, Maharashtra. Shop artisan ceramics and join pottery workshops.",
-    images: [DEFAULT_SOCIAL_IMAGE],
-  },
-};
+    alternates: {
+      canonical: "/",
+    },
+    icons: {
+      icon: brand.favicon,
+      apple: brand.appleTouchIcon,
+    },
+    openGraph: {
+      title: SITE_NAME,
+      description:
+        "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Shop unique ceramics and join immersive pottery workshops.",
+      type: "website",
+      siteName: SITE_NAME,
+      url: "/",
+      images: [
+        {
+          url: brand.defaultOgImage || DEFAULT_SOCIAL_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: "Poetry & Pottery handcrafted ceramics",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: SITE_NAME,
+      description:
+        "Handcrafted pottery from Sangli, Maharashtra. Shop artisan ceramics and join pottery workshops.",
+      images: [brand.defaultOgImage || DEFAULT_SOCIAL_IMAGE],
+    },
+  };
+}
 
 export default function RootLayout({
   children,
@@ -88,11 +96,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link
-        rel="icon"
-        href="https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg"
-        className="h-6 w-6 rounded-full"
-      />
       <meta
         name="google-site-verification"
         content="8pRueMyFU6VMEHTAFq1O83ga6iEQksb-u5wRyb-BYwg"

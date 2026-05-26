@@ -870,6 +870,14 @@ export type AssignProductsToCollectionInput = {
   productIds: Array<Scalars['Int']['input']>;
 };
 
+export type BrandAssets = {
+  appleTouchIcon: Scalars['String']['output'];
+  defaultOgImage: Scalars['String']['output'];
+  favicon: Scalars['String']['output'];
+  logo: Scalars['String']['output'];
+  logoDark: Scalars['String']['output'];
+};
+
 export type BulkDeleteEventResult = {
   action: Scalars['String']['output'];
   error?: Maybe<Scalars['String']['output']>;
@@ -1455,6 +1463,33 @@ export type FeaturedReview = {
   user_id: Scalars['Int']['output'];
 };
 
+export type FooterColumn = {
+  links: Array<FooterLink>;
+  title: Scalars['String']['output'];
+};
+
+export type FooterColumnInput = {
+  links: Array<FooterLinkInput>;
+  title: Scalars['String']['input'];
+};
+
+export type FooterContent = {
+  columns: Array<FooterColumn>;
+  copyright: Scalars['String']['output'];
+  newsletterBlurb: Scalars['String']['output'];
+  tagline: Scalars['String']['output'];
+};
+
+export type FooterLink = {
+  href: Scalars['String']['output'];
+  label: Scalars['String']['output'];
+};
+
+export type FooterLinkInput = {
+  href: Scalars['String']['input'];
+  label: Scalars['String']['input'];
+};
+
 export type GetPresignedUploadUrlInput = {
   contentType: Scalars['String']['input'];
   fileSize: Scalars['Int']['input'];
@@ -1482,10 +1517,32 @@ export type GlobalSearchResponse = {
 };
 
 export type HeroImages = {
+  about: Scalars['String']['output'];
+  care: Scalars['String']['output'];
+  contact: Scalars['String']['output'];
+  customize: Scalars['String']['output'];
   events: Scalars['String']['output'];
+  faq: Scalars['String']['output'];
   home: Scalars['String']['output'];
   ourStory: Scalars['String']['output'];
-  products: Scalars['String']['output'];
+  privacy: Scalars['String']['output'];
+  shipping: Scalars['String']['output'];
+  store: Scalars['String']['output'];
+  terms: Scalars['String']['output'];
+};
+
+export type HeroVideoEntry = {
+  poster: Scalars['String']['output'];
+  src: Scalars['String']['output'];
+};
+
+export type HeroVideoEntryInput = {
+  poster?: InputMaybe<Scalars['String']['input']>;
+  src?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type HeroVideos = {
+  home: HeroVideoEntry;
 };
 
 export type LowStockProduct = {
@@ -1526,6 +1583,7 @@ export type Mutation = {
   adminToggleCustomizationOptionActive: AdminCustomizationMutationResponse;
   adminToggleCustomizeCategoryActive: AdminCustomizeCategoryMutationResponse;
   adminToggleProductActive: AdminMutationResponse;
+  adminUpdateBrandAssets: AdminSettingsMutationResponse;
   adminUpdateCategoryIcon: AdminCategoryMutationResponse;
   adminUpdateCollection: AdminCollectionMutationResponse;
   adminUpdateContactInfo: AdminSettingsMutationResponse;
@@ -1537,14 +1595,18 @@ export type Mutation = {
   adminUpdateDailyWorkshopRegistrationStatus: AdminDailyWorkshopMutationResponse;
   adminUpdateEvent: AdminEventMutationResponse;
   adminUpdateEventStatus: AdminEventMutationResponse;
+  adminUpdateFooterContent: AdminSettingsMutationResponse;
   adminUpdateHeroImages: AdminSettingsMutationResponse;
+  adminUpdateHeroVideos: AdminSettingsMutationResponse;
   adminUpdateOrderDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemDiscount: AdminOrderMutationResponse;
   adminUpdateOrderItemQuantity: AdminOrderMutationResponse;
   adminUpdateOrderStatus: AdminOrderMutationResponse;
+  adminUpdatePageTaglines: AdminSettingsMutationResponse;
   adminUpdateProduct: AdminMutationResponse;
   adminUpdateRegistrationDetails: AdminRegistrationMutationResponse;
   adminUpdateRegistrationStatus: AdminRegistrationMutationResponse;
+  adminUpdateSeoMetadata: AdminSettingsMutationResponse;
   adminUpdateSocialLinks: AdminSettingsMutationResponse;
   adminUpdateUserRole: AdminUserMutationResponse;
   adminUpsertDailyWorkshopBlackoutRule: AdminDailyWorkshopBlackoutRuleMutationResponse;
@@ -1707,6 +1769,11 @@ export type MutationAdminToggleProductActiveArgs = {
 };
 
 
+export type MutationAdminUpdateBrandAssetsArgs = {
+  input: UpdateBrandAssetsInput;
+};
+
+
 export type MutationAdminUpdateCategoryIconArgs = {
   category: Scalars['String']['input'];
   icon: Scalars['String']['input'];
@@ -1772,8 +1839,18 @@ export type MutationAdminUpdateEventStatusArgs = {
 };
 
 
+export type MutationAdminUpdateFooterContentArgs = {
+  input: UpdateFooterContentInput;
+};
+
+
 export type MutationAdminUpdateHeroImagesArgs = {
   input: UpdateHeroImagesInput;
+};
+
+
+export type MutationAdminUpdateHeroVideosArgs = {
+  input: UpdateHeroVideosInput;
 };
 
 
@@ -1801,6 +1878,11 @@ export type MutationAdminUpdateOrderStatusArgs = {
 };
 
 
+export type MutationAdminUpdatePageTaglinesArgs = {
+  input: UpdatePageTaglinesInput;
+};
+
+
 export type MutationAdminUpdateProductArgs = {
   id: Scalars['Int']['input'];
   input: UpdateProductInput;
@@ -1816,6 +1898,11 @@ export type MutationAdminUpdateRegistrationDetailsArgs = {
 export type MutationAdminUpdateRegistrationStatusArgs = {
   registrationId: Scalars['String']['input'];
   status: Scalars['String']['input'];
+};
+
+
+export type MutationAdminUpdateSeoMetadataArgs = {
+  input: UpdateSeoMetadataInput;
 };
 
 
@@ -2027,6 +2114,17 @@ export type OrdersStats = {
   total: Scalars['Int']['output'];
 };
 
+export type PageContent = {
+  hero: Scalars['String']['output'];
+  seo: SeoEntry;
+  tagline: TaglineEntry;
+  video?: Maybe<HeroVideoEntry>;
+};
+
+export type PageTaglines = {
+  entries: Scalars['JSON']['output'];
+};
+
 export type PresignedUploadUrlResponse = {
   error?: Maybe<Scalars['String']['output']>;
   key?: Maybe<Scalars['String']['output']>;
@@ -2180,6 +2278,7 @@ export type Query = {
   adminAllCollections: Array<AdminProductCollection>;
   adminAllConfiguredCategories: Array<AdminCategoryConfig>;
   adminAvailableIcons: Array<AdminIconOption>;
+  adminBrandAssets: BrandAssets;
   adminCategories: AdminCategoriesResponse;
   adminCollectionById?: Maybe<AdminCollectionDetail>;
   adminCollections: AdminCollectionsResponse;
@@ -2203,14 +2302,19 @@ export type Query = {
   adminEventReviews: AdminEventReviewsResponse;
   adminEventStatusOptions: Array<AdminStatusOption>;
   adminEvents: AdminEventsResponse;
+  adminFooterContent: FooterContent;
   adminHeroImages: HeroImages;
+  adminHeroVideos: HeroVideos;
   adminLowStockProducts: Array<LowStockProduct>;
   adminNewsletterSubscribers: Array<NewsletterSubscriber>;
+  adminPageContent: PageContent;
+  adminPageTaglines: PageTaglines;
   adminProductById?: Maybe<AdminProductDetail>;
   adminProductReviews: AdminProductReviewsResponse;
   adminProducts: AdminProductsResponse;
   adminRecentOrders: Array<RecentOrder>;
   adminRecentRegistrations: Array<RecentRegistration>;
+  adminSeoMetadata: SeoMetadata;
   adminSocialLinks: SocialLinks;
   adminUpcomingEvents: Array<UpcomingEvent>;
   adminUserById?: Maybe<AdminUserDetail>;
@@ -2220,6 +2324,7 @@ export type Query = {
   adminUserRegistrations: Array<AdminUserRegistration>;
   adminUserWishlist: AdminUserWishlistResponse;
   adminUsers: AdminUsersResponse;
+  brandAssets: BrandAssets;
   cart: CartResponse;
   categories: Array<Scalars['String']['output']>;
   categoriesWithImages: Array<CategoryWithImage>;
@@ -2237,13 +2342,18 @@ export type Query = {
   eventWithUserContext?: Maybe<EventWithUserContext>;
   events: EventsResponse;
   featuredReviews: Array<FeaturedReview>;
+  footerContent: FooterContent;
   globalSearch: GlobalSearchResponse;
+  heroImages: HeroImages;
+  heroVideos: HeroVideos;
   myCompletedDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
   myDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
   myUpcomingDailyWorkshopRegistrations: DailyWorkshopRegistrationsResponse;
   newsletterStatus: NewsletterStatus;
   order?: Maybe<Order>;
   orders: OrdersResponse;
+  pageContent: PageContent;
+  pageTaglines: PageTaglines;
   pastEvents: EventsResponse;
   productById?: Maybe<ProductDetail>;
   productReviews: ReviewsResponse;
@@ -2256,6 +2366,8 @@ export type Query = {
   publicShippingContent?: Maybe<ShippingPageContent>;
   publicTermsContent?: Maybe<TermsPageContent>;
   recommendedProducts: RecommendedProductsResponse;
+  seoMetadata: SeoMetadata;
+  siteContentDefaults: SiteContentDefaults;
   upcomingEvents: EventsResponse;
   upcomingRegistrations: RegistrationsResponse;
   user: UserResponse;
@@ -2334,6 +2446,11 @@ export type QueryAdminLowStockProductsArgs = {
 
 export type QueryAdminNewsletterSubscribersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryAdminPageContentArgs = {
+  pageSlug: Scalars['String']['input'];
 };
 
 
@@ -2488,6 +2605,11 @@ export type QueryOrderArgs = {
 
 export type QueryOrdersArgs = {
   filter?: InputMaybe<OrdersFilterInput>;
+};
+
+
+export type QueryPageContentArgs = {
+  pageSlug: Scalars['String']['input'];
 };
 
 
@@ -2706,6 +2828,26 @@ export type SearchCounts = {
   products: Scalars['Int']['output'];
 };
 
+export type SeoEntry = {
+  description: Scalars['String']['output'];
+  ogDescription: Scalars['String']['output'];
+  ogImage: Scalars['String']['output'];
+  ogTitle: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+};
+
+export type SeoEntryInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  ogDescription?: InputMaybe<Scalars['String']['input']>;
+  ogImage?: InputMaybe<Scalars['String']['input']>;
+  ogTitle?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SeoMetadata = {
+  entries: Scalars['JSON']['output'];
+};
+
 export type ShippingAddressInput = {
   address_line_1: Scalars['String']['input'];
   address_line_2?: InputMaybe<Scalars['String']['input']>;
@@ -2735,11 +2877,27 @@ export type ShippingPageContent = {
   shippingOptions: Array<ShippingOption>;
 };
 
+export type SiteContentDefaults = {
+  value: Scalars['JSON']['output'];
+};
+
 export type SocialLinks = {
   facebook: Scalars['String']['output'];
   instagram: Scalars['String']['output'];
   pinterest: Scalars['String']['output'];
   twitter: Scalars['String']['output'];
+};
+
+export type TaglineEntry = {
+  ctaText: Scalars['String']['output'];
+  heading: Scalars['String']['output'];
+  subheading: Scalars['String']['output'];
+};
+
+export type TaglineEntryInput = {
+  ctaText?: InputMaybe<Scalars['String']['input']>;
+  heading?: InputMaybe<Scalars['String']['input']>;
+  subheading?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type TermsPageContent = {
@@ -2802,6 +2960,14 @@ export type UpdateAddressInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   zip?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateBrandAssetsInput = {
+  appleTouchIcon?: InputMaybe<Scalars['String']['input']>;
+  defaultOgImage?: InputMaybe<Scalars['String']['input']>;
+  favicon?: InputMaybe<Scalars['String']['input']>;
+  logo?: InputMaybe<Scalars['String']['input']>;
+  logoDark?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateCartQuantityInput = {
@@ -2870,11 +3036,35 @@ export type UpdateEventInput = {
   total_seats?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type UpdateFooterContentInput = {
+  columns?: InputMaybe<Array<FooterColumnInput>>;
+  copyright?: InputMaybe<Scalars['String']['input']>;
+  newsletterBlurb?: InputMaybe<Scalars['String']['input']>;
+  tagline?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateHeroImagesInput = {
+  about?: InputMaybe<Scalars['String']['input']>;
+  care?: InputMaybe<Scalars['String']['input']>;
+  contact?: InputMaybe<Scalars['String']['input']>;
+  customize?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<Scalars['String']['input']>;
+  faq?: InputMaybe<Scalars['String']['input']>;
   home?: InputMaybe<Scalars['String']['input']>;
   ourStory?: InputMaybe<Scalars['String']['input']>;
-  products?: InputMaybe<Scalars['String']['input']>;
+  privacy?: InputMaybe<Scalars['String']['input']>;
+  shipping?: InputMaybe<Scalars['String']['input']>;
+  store?: InputMaybe<Scalars['String']['input']>;
+  terms?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateHeroVideosInput = {
+  home?: InputMaybe<HeroVideoEntryInput>;
+};
+
+export type UpdatePageTaglinesInput = {
+  entry: TaglineEntryInput;
+  page: Scalars['String']['input'];
 };
 
 export type UpdateProductInput = {
@@ -2898,6 +3088,11 @@ export type UpdateRegistrationDetailsInput = {
   discount: Scalars['Float']['input'];
   price: Scalars['Float']['input'];
   seatsReserved: Scalars['Int']['input'];
+};
+
+export type UpdateSeoMetadataInput = {
+  entry: SeoEntryInput;
+  page: Scalars['String']['input'];
 };
 
 export type UpdateSocialLinksInput = {
@@ -3573,7 +3768,7 @@ export type PublicTermsContentQuery = { publicTermsContent?: { lastUpdated: stri
 export type PublicHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PublicHeroImagesQuery = { publicHeroImages: { home: string, ourStory: string, products: string, events: string } };
+export type PublicHeroImagesQuery = { publicHeroImages: { home: string, store: string, events: string, about: string, contact: string, faq: string, shipping: string, care: string, privacy: string, terms: string, customize: string, ourStory: string } };
 
 export type AdminUpdateRegistrationStatusMutationVariables = Exact<{
   registrationId: Scalars['String']['input'];
@@ -3612,10 +3807,45 @@ export type AdminUpdateSocialLinksMutationVariables = Exact<{
 
 export type AdminUpdateSocialLinksMutation = { adminUpdateSocialLinks: { success: boolean, error?: string | null } };
 
+export type AdminUpdateHeroVideosMutationVariables = Exact<{
+  input: UpdateHeroVideosInput;
+}>;
+
+
+export type AdminUpdateHeroVideosMutation = { adminUpdateHeroVideos: { success: boolean, error?: string | null } };
+
+export type AdminUpdateBrandAssetsMutationVariables = Exact<{
+  input: UpdateBrandAssetsInput;
+}>;
+
+
+export type AdminUpdateBrandAssetsMutation = { adminUpdateBrandAssets: { success: boolean, error?: string | null } };
+
+export type AdminUpdateSeoMetadataMutationVariables = Exact<{
+  input: UpdateSeoMetadataInput;
+}>;
+
+
+export type AdminUpdateSeoMetadataMutation = { adminUpdateSeoMetadata: { success: boolean, error?: string | null } };
+
+export type AdminUpdateFooterContentMutationVariables = Exact<{
+  input: UpdateFooterContentInput;
+}>;
+
+
+export type AdminUpdateFooterContentMutation = { adminUpdateFooterContent: { success: boolean, error?: string | null } };
+
+export type AdminUpdatePageTaglinesMutationVariables = Exact<{
+  input: UpdatePageTaglinesInput;
+}>;
+
+
+export type AdminUpdatePageTaglinesMutation = { adminUpdatePageTaglines: { success: boolean, error?: string | null } };
+
 export type AdminHeroImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AdminHeroImagesQuery = { adminHeroImages: { home: string, ourStory: string, products: string, events: string } };
+export type AdminHeroImagesQuery = { adminHeroImages: { home: string, store: string, events: string, about: string, contact: string, faq: string, shipping: string, care: string, privacy: string, terms: string, customize: string, ourStory: string } };
 
 export type AdminContactInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3626,6 +3856,43 @@ export type AdminSocialLinksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AdminSocialLinksQuery = { adminSocialLinks: { instagram: string, facebook: string, twitter: string, pinterest: string } };
+
+export type AdminHeroVideosQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminHeroVideosQuery = { adminHeroVideos: { home: { src: string, poster: string } } };
+
+export type AdminBrandAssetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminBrandAssetsQuery = { adminBrandAssets: { logo: string, logoDark: string, favicon: string, appleTouchIcon: string, defaultOgImage: string } };
+
+export type AdminSeoMetadataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminSeoMetadataQuery = { adminSeoMetadata: { entries: any } };
+
+export type AdminFooterContentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminFooterContentQuery = { adminFooterContent: { tagline: string, copyright: string, newsletterBlurb: string, columns: Array<{ title: string, links: Array<{ label: string, href: string }> }> } };
+
+export type AdminPageTaglinesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminPageTaglinesQuery = { adminPageTaglines: { entries: any } };
+
+export type AdminPageContentQueryVariables = Exact<{
+  pageSlug: Scalars['String']['input'];
+}>;
+
+
+export type AdminPageContentQuery = { adminPageContent: { hero: string, video?: { src: string, poster: string } | null, seo: { title: string, description: string, ogImage: string, ogTitle: string, ogDescription: string }, tagline: { heading: string, subheading: string, ctaText: string } } };
+
+export type SiteContentDefaultsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SiteContentDefaultsQuery = { siteContentDefaults: { value: any } };
 
 export type AdminGetPresignedUploadUrlMutationVariables = Exact<{
   input: GetPresignedUploadUrlInput;
@@ -3692,6 +3959,11 @@ export type AdminUserWishlistQueryVariables = Exact<{
 
 
 export type AdminUserWishlistQuery = { adminUserWishlist: { total: number, page: number, totalPages: number, data: Array<{ id: number, created_at: Date | string, product: { id: number, name: string, slug: string, price: number, available_quantity: number, image_urls: Array<string> } }> } };
+
+export type BrandAssetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BrandAssetsQuery = { brandAssets: { logo: string, logoDark: string, favicon: string, appleTouchIcon: string, defaultOgImage: string } };
 
 export type AddToCartMutationVariables = Exact<{
   input: AddToCartInput;
@@ -3887,6 +4159,11 @@ export type CompletedRegistrationsQueryVariables = Exact<{
 
 export type CompletedRegistrationsQuery = { completedRegistrations: { total: number, page: number, total_pages: number, data: Array<{ id: string, event_id: string, user_id: number, seats_reserved: number, price: number, discount: number, status: EventRegistrationStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, confirmed_at?: Date | string | null, cancelled_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, event: { id: string, slug: string, title: string, description: string, event_type: EventType, starts_at: Date | string, ends_at: Date | string, location: string, full_location: string, total_seats: number, available_seats: number, instructor?: string | null, includes: Array<string>, price: number, image: string, highlights: Array<string>, gallery: Array<string>, status: EventStatus, level?: EventLevel | null, performers: Array<string>, lineup_notes?: string | null, created_at: Date | string, updated_at: Date | string }, user: { id: number, email: string, name?: string | null, image?: string | null } }> } };
 
+export type FooterContentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FooterContentQuery = { footerContent: { tagline: string, copyright: string, newsletterBlurb: string, columns: Array<{ title: string, links: Array<{ label: string, href: string }> }> } };
+
 export type SubscribeToNewsletterMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3924,6 +4201,13 @@ export type OrderQueryVariables = Exact<{
 
 
 export type OrderQuery = { order?: { id: string, user_id: number, shipping_fee: number, subtotal: number, discount: number, total: number, status: OrderStatus, request_at?: Date | string | null, approved_at?: Date | string | null, paid_at?: Date | string | null, shipped_at?: Date | string | null, delivered_at?: Date | string | null, cancelled_at?: Date | string | null, returned_at?: Date | string | null, refunded_at?: Date | string | null, shipping_address: any, created_at: Date | string, updated_at: Date | string, user: { id: number, email: string, name?: string | null }, ordered_products: Array<{ id: number, order_id: string, product_id: number, quantity: number, discount: number, price: number, created_at: Date | string, updated_at: Date | string, has_reviewed: boolean, custom_data?: { totalModifier: number, options: Array<{ type: string, optionId: number, name: string, value: string, priceModifier: number }> } | null, product: { id: number, slug: string, name: string, price: number, image_urls: Array<string>, reviews_count: number, avg_rating: number, material: string, in_wishlist: boolean, is_active: boolean, available_quantity: number, total_quantity: number, color_code: string, color_name: string } }> } | null };
+
+export type PageContentQueryVariables = Exact<{
+  pageSlug: Scalars['String']['input'];
+}>;
+
+
+export type PageContentQuery = { pageContent: { hero: string, video?: { src: string, poster: string } | null, seo: { title: string, description: string, ogImage: string, ogTitle: string, ogDescription: string }, tagline: { heading: string, subheading: string, ctaText: string } } };
 
 export type CollectionFieldsFragment = { id: number, slug: string, name: string, description?: string | null, image_url?: string | null, starts_at?: Date | string | null, ends_at?: Date | string | null, created_at: Date | string, updated_at: Date | string, products_count: number };
 
@@ -8145,9 +8429,17 @@ export const PublicHeroImagesDocument = gql`
     query PublicHeroImages {
   publicHeroImages {
     home
-    ourStory
-    products
+    store
     events
+    about
+    contact
+    faq
+    shipping
+    care
+    privacy
+    terms
+    customize
+    ourStory
   }
 }
     `;
@@ -8342,13 +8634,176 @@ export function useAdminUpdateSocialLinksMutation(baseOptions?: ApolloReactHooks
         return ApolloReactHooks.useMutation<AdminUpdateSocialLinksMutation, AdminUpdateSocialLinksMutationVariables>(AdminUpdateSocialLinksDocument, options);
       }
 export type AdminUpdateSocialLinksMutationHookResult = ReturnType<typeof useAdminUpdateSocialLinksMutation>;
+export const AdminUpdateHeroVideosDocument = gql`
+    mutation AdminUpdateHeroVideos($input: UpdateHeroVideosInput!) {
+  adminUpdateHeroVideos(input: $input) {
+    success
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateHeroVideosMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateHeroVideosMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateHeroVideosMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateHeroVideosMutation, { data, loading, error }] = useAdminUpdateHeroVideosMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateHeroVideosMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateHeroVideosMutation, AdminUpdateHeroVideosMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateHeroVideosMutation, AdminUpdateHeroVideosMutationVariables>(AdminUpdateHeroVideosDocument, options);
+      }
+export type AdminUpdateHeroVideosMutationHookResult = ReturnType<typeof useAdminUpdateHeroVideosMutation>;
+export const AdminUpdateBrandAssetsDocument = gql`
+    mutation AdminUpdateBrandAssets($input: UpdateBrandAssetsInput!) {
+  adminUpdateBrandAssets(input: $input) {
+    success
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateBrandAssetsMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateBrandAssetsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateBrandAssetsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateBrandAssetsMutation, { data, loading, error }] = useAdminUpdateBrandAssetsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateBrandAssetsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateBrandAssetsMutation, AdminUpdateBrandAssetsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateBrandAssetsMutation, AdminUpdateBrandAssetsMutationVariables>(AdminUpdateBrandAssetsDocument, options);
+      }
+export type AdminUpdateBrandAssetsMutationHookResult = ReturnType<typeof useAdminUpdateBrandAssetsMutation>;
+export const AdminUpdateSeoMetadataDocument = gql`
+    mutation AdminUpdateSeoMetadata($input: UpdateSeoMetadataInput!) {
+  adminUpdateSeoMetadata(input: $input) {
+    success
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateSeoMetadataMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateSeoMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateSeoMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateSeoMetadataMutation, { data, loading, error }] = useAdminUpdateSeoMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateSeoMetadataMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateSeoMetadataMutation, AdminUpdateSeoMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateSeoMetadataMutation, AdminUpdateSeoMetadataMutationVariables>(AdminUpdateSeoMetadataDocument, options);
+      }
+export type AdminUpdateSeoMetadataMutationHookResult = ReturnType<typeof useAdminUpdateSeoMetadataMutation>;
+export const AdminUpdateFooterContentDocument = gql`
+    mutation AdminUpdateFooterContent($input: UpdateFooterContentInput!) {
+  adminUpdateFooterContent(input: $input) {
+    success
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdateFooterContentMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateFooterContentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateFooterContentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateFooterContentMutation, { data, loading, error }] = useAdminUpdateFooterContentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateFooterContentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateFooterContentMutation, AdminUpdateFooterContentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateFooterContentMutation, AdminUpdateFooterContentMutationVariables>(AdminUpdateFooterContentDocument, options);
+      }
+export type AdminUpdateFooterContentMutationHookResult = ReturnType<typeof useAdminUpdateFooterContentMutation>;
+export const AdminUpdatePageTaglinesDocument = gql`
+    mutation AdminUpdatePageTaglines($input: UpdatePageTaglinesInput!) {
+  adminUpdatePageTaglines(input: $input) {
+    success
+    error
+  }
+}
+    `;
+
+/**
+ * __useAdminUpdatePageTaglinesMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdatePageTaglinesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdatePageTaglinesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdatePageTaglinesMutation, { data, loading, error }] = useAdminUpdatePageTaglinesMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdatePageTaglinesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdatePageTaglinesMutation, AdminUpdatePageTaglinesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdatePageTaglinesMutation, AdminUpdatePageTaglinesMutationVariables>(AdminUpdatePageTaglinesDocument, options);
+      }
+export type AdminUpdatePageTaglinesMutationHookResult = ReturnType<typeof useAdminUpdatePageTaglinesMutation>;
 export const AdminHeroImagesDocument = gql`
     query AdminHeroImages {
   adminHeroImages {
     home
-    ourStory
-    products
+    store
     events
+    about
+    contact
+    faq
+    shipping
+    care
+    privacy
+    terms
+    customize
+    ourStory
   }
 }
     `;
@@ -8474,6 +8929,326 @@ export function useAdminSocialLinksSuspenseQuery(baseOptions?: ApolloReactHooks.
 export type AdminSocialLinksQueryHookResult = ReturnType<typeof useAdminSocialLinksQuery>;
 export type AdminSocialLinksLazyQueryHookResult = ReturnType<typeof useAdminSocialLinksLazyQuery>;
 export type AdminSocialLinksSuspenseQueryHookResult = ReturnType<typeof useAdminSocialLinksSuspenseQuery>;
+export const AdminHeroVideosDocument = gql`
+    query AdminHeroVideos {
+  adminHeroVideos {
+    home {
+      src
+      poster
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminHeroVideosQuery__
+ *
+ * To run a query within a React component, call `useAdminHeroVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminHeroVideosQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminHeroVideosQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminHeroVideosQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>(AdminHeroVideosDocument, options);
+      }
+export function useAdminHeroVideosLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>(AdminHeroVideosDocument, options);
+        }
+// @ts-ignore
+export function useAdminHeroVideosSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>;
+export function useAdminHeroVideosSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminHeroVideosQuery | undefined, AdminHeroVideosQueryVariables>;
+export function useAdminHeroVideosSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminHeroVideosQuery, AdminHeroVideosQueryVariables>(AdminHeroVideosDocument, options);
+        }
+export type AdminHeroVideosQueryHookResult = ReturnType<typeof useAdminHeroVideosQuery>;
+export type AdminHeroVideosLazyQueryHookResult = ReturnType<typeof useAdminHeroVideosLazyQuery>;
+export type AdminHeroVideosSuspenseQueryHookResult = ReturnType<typeof useAdminHeroVideosSuspenseQuery>;
+export const AdminBrandAssetsDocument = gql`
+    query AdminBrandAssets {
+  adminBrandAssets {
+    logo
+    logoDark
+    favicon
+    appleTouchIcon
+    defaultOgImage
+  }
+}
+    `;
+
+/**
+ * __useAdminBrandAssetsQuery__
+ *
+ * To run a query within a React component, call `useAdminBrandAssetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminBrandAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminBrandAssetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminBrandAssetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>(AdminBrandAssetsDocument, options);
+      }
+export function useAdminBrandAssetsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>(AdminBrandAssetsDocument, options);
+        }
+// @ts-ignore
+export function useAdminBrandAssetsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>;
+export function useAdminBrandAssetsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminBrandAssetsQuery | undefined, AdminBrandAssetsQueryVariables>;
+export function useAdminBrandAssetsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminBrandAssetsQuery, AdminBrandAssetsQueryVariables>(AdminBrandAssetsDocument, options);
+        }
+export type AdminBrandAssetsQueryHookResult = ReturnType<typeof useAdminBrandAssetsQuery>;
+export type AdminBrandAssetsLazyQueryHookResult = ReturnType<typeof useAdminBrandAssetsLazyQuery>;
+export type AdminBrandAssetsSuspenseQueryHookResult = ReturnType<typeof useAdminBrandAssetsSuspenseQuery>;
+export const AdminSeoMetadataDocument = gql`
+    query AdminSeoMetadata {
+  adminSeoMetadata {
+    entries
+  }
+}
+    `;
+
+/**
+ * __useAdminSeoMetadataQuery__
+ *
+ * To run a query within a React component, call `useAdminSeoMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminSeoMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminSeoMetadataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminSeoMetadataQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>(AdminSeoMetadataDocument, options);
+      }
+export function useAdminSeoMetadataLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>(AdminSeoMetadataDocument, options);
+        }
+// @ts-ignore
+export function useAdminSeoMetadataSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>;
+export function useAdminSeoMetadataSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminSeoMetadataQuery | undefined, AdminSeoMetadataQueryVariables>;
+export function useAdminSeoMetadataSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminSeoMetadataQuery, AdminSeoMetadataQueryVariables>(AdminSeoMetadataDocument, options);
+        }
+export type AdminSeoMetadataQueryHookResult = ReturnType<typeof useAdminSeoMetadataQuery>;
+export type AdminSeoMetadataLazyQueryHookResult = ReturnType<typeof useAdminSeoMetadataLazyQuery>;
+export type AdminSeoMetadataSuspenseQueryHookResult = ReturnType<typeof useAdminSeoMetadataSuspenseQuery>;
+export const AdminFooterContentDocument = gql`
+    query AdminFooterContent {
+  adminFooterContent {
+    tagline
+    copyright
+    newsletterBlurb
+    columns {
+      title
+      links {
+        label
+        href
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminFooterContentQuery__
+ *
+ * To run a query within a React component, call `useAdminFooterContentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminFooterContentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminFooterContentQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminFooterContentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminFooterContentQuery, AdminFooterContentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminFooterContentQuery, AdminFooterContentQueryVariables>(AdminFooterContentDocument, options);
+      }
+export function useAdminFooterContentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminFooterContentQuery, AdminFooterContentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminFooterContentQuery, AdminFooterContentQueryVariables>(AdminFooterContentDocument, options);
+        }
+// @ts-ignore
+export function useAdminFooterContentSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminFooterContentQuery, AdminFooterContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminFooterContentQuery, AdminFooterContentQueryVariables>;
+export function useAdminFooterContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminFooterContentQuery, AdminFooterContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminFooterContentQuery | undefined, AdminFooterContentQueryVariables>;
+export function useAdminFooterContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminFooterContentQuery, AdminFooterContentQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminFooterContentQuery, AdminFooterContentQueryVariables>(AdminFooterContentDocument, options);
+        }
+export type AdminFooterContentQueryHookResult = ReturnType<typeof useAdminFooterContentQuery>;
+export type AdminFooterContentLazyQueryHookResult = ReturnType<typeof useAdminFooterContentLazyQuery>;
+export type AdminFooterContentSuspenseQueryHookResult = ReturnType<typeof useAdminFooterContentSuspenseQuery>;
+export const AdminPageTaglinesDocument = gql`
+    query AdminPageTaglines {
+  adminPageTaglines {
+    entries
+  }
+}
+    `;
+
+/**
+ * __useAdminPageTaglinesQuery__
+ *
+ * To run a query within a React component, call `useAdminPageTaglinesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPageTaglinesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPageTaglinesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminPageTaglinesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>(AdminPageTaglinesDocument, options);
+      }
+export function useAdminPageTaglinesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>(AdminPageTaglinesDocument, options);
+        }
+// @ts-ignore
+export function useAdminPageTaglinesSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>;
+export function useAdminPageTaglinesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminPageTaglinesQuery | undefined, AdminPageTaglinesQueryVariables>;
+export function useAdminPageTaglinesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminPageTaglinesQuery, AdminPageTaglinesQueryVariables>(AdminPageTaglinesDocument, options);
+        }
+export type AdminPageTaglinesQueryHookResult = ReturnType<typeof useAdminPageTaglinesQuery>;
+export type AdminPageTaglinesLazyQueryHookResult = ReturnType<typeof useAdminPageTaglinesLazyQuery>;
+export type AdminPageTaglinesSuspenseQueryHookResult = ReturnType<typeof useAdminPageTaglinesSuspenseQuery>;
+export const AdminPageContentDocument = gql`
+    query AdminPageContent($pageSlug: String!) {
+  adminPageContent(pageSlug: $pageSlug) {
+    hero
+    video {
+      src
+      poster
+    }
+    seo {
+      title
+      description
+      ogImage
+      ogTitle
+      ogDescription
+    }
+    tagline {
+      heading
+      subheading
+      ctaText
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminPageContentQuery__
+ *
+ * To run a query within a React component, call `useAdminPageContentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminPageContentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminPageContentQuery({
+ *   variables: {
+ *      pageSlug: // value for 'pageSlug'
+ *   },
+ * });
+ */
+export function useAdminPageContentQuery(baseOptions: ApolloReactHooks.QueryHookOptions<AdminPageContentQuery, AdminPageContentQueryVariables> & ({ variables: AdminPageContentQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AdminPageContentQuery, AdminPageContentQueryVariables>(AdminPageContentDocument, options);
+      }
+export function useAdminPageContentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AdminPageContentQuery, AdminPageContentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AdminPageContentQuery, AdminPageContentQueryVariables>(AdminPageContentDocument, options);
+        }
+// @ts-ignore
+export function useAdminPageContentSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<AdminPageContentQuery, AdminPageContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminPageContentQuery, AdminPageContentQueryVariables>;
+export function useAdminPageContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminPageContentQuery, AdminPageContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<AdminPageContentQuery | undefined, AdminPageContentQueryVariables>;
+export function useAdminPageContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AdminPageContentQuery, AdminPageContentQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AdminPageContentQuery, AdminPageContentQueryVariables>(AdminPageContentDocument, options);
+        }
+export type AdminPageContentQueryHookResult = ReturnType<typeof useAdminPageContentQuery>;
+export type AdminPageContentLazyQueryHookResult = ReturnType<typeof useAdminPageContentLazyQuery>;
+export type AdminPageContentSuspenseQueryHookResult = ReturnType<typeof useAdminPageContentSuspenseQuery>;
+export const SiteContentDefaultsDocument = gql`
+    query SiteContentDefaults {
+  siteContentDefaults {
+    value
+  }
+}
+    `;
+
+/**
+ * __useSiteContentDefaultsQuery__
+ *
+ * To run a query within a React component, call `useSiteContentDefaultsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSiteContentDefaultsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSiteContentDefaultsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSiteContentDefaultsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>(SiteContentDefaultsDocument, options);
+      }
+export function useSiteContentDefaultsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>(SiteContentDefaultsDocument, options);
+        }
+// @ts-ignore
+export function useSiteContentDefaultsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>;
+export function useSiteContentDefaultsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<SiteContentDefaultsQuery | undefined, SiteContentDefaultsQueryVariables>;
+export function useSiteContentDefaultsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<SiteContentDefaultsQuery, SiteContentDefaultsQueryVariables>(SiteContentDefaultsDocument, options);
+        }
+export type SiteContentDefaultsQueryHookResult = ReturnType<typeof useSiteContentDefaultsQuery>;
+export type SiteContentDefaultsLazyQueryHookResult = ReturnType<typeof useSiteContentDefaultsLazyQuery>;
+export type SiteContentDefaultsSuspenseQueryHookResult = ReturnType<typeof useSiteContentDefaultsSuspenseQuery>;
 export const AdminGetPresignedUploadUrlDocument = gql`
     mutation AdminGetPresignedUploadUrl($input: GetPresignedUploadUrlInput!) {
   adminGetPresignedUploadUrl(input: $input) {
@@ -8967,6 +9742,51 @@ export function useAdminUserWishlistSuspenseQuery(baseOptions?: ApolloReactHooks
 export type AdminUserWishlistQueryHookResult = ReturnType<typeof useAdminUserWishlistQuery>;
 export type AdminUserWishlistLazyQueryHookResult = ReturnType<typeof useAdminUserWishlistLazyQuery>;
 export type AdminUserWishlistSuspenseQueryHookResult = ReturnType<typeof useAdminUserWishlistSuspenseQuery>;
+export const BrandAssetsDocument = gql`
+    query BrandAssets {
+  brandAssets {
+    logo
+    logoDark
+    favicon
+    appleTouchIcon
+    defaultOgImage
+  }
+}
+    `;
+
+/**
+ * __useBrandAssetsQuery__
+ *
+ * To run a query within a React component, call `useBrandAssetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBrandAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBrandAssetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBrandAssetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<BrandAssetsQuery, BrandAssetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<BrandAssetsQuery, BrandAssetsQueryVariables>(BrandAssetsDocument, options);
+      }
+export function useBrandAssetsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BrandAssetsQuery, BrandAssetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<BrandAssetsQuery, BrandAssetsQueryVariables>(BrandAssetsDocument, options);
+        }
+// @ts-ignore
+export function useBrandAssetsSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<BrandAssetsQuery, BrandAssetsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<BrandAssetsQuery, BrandAssetsQueryVariables>;
+export function useBrandAssetsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<BrandAssetsQuery, BrandAssetsQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<BrandAssetsQuery | undefined, BrandAssetsQueryVariables>;
+export function useBrandAssetsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<BrandAssetsQuery, BrandAssetsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<BrandAssetsQuery, BrandAssetsQueryVariables>(BrandAssetsDocument, options);
+        }
+export type BrandAssetsQueryHookResult = ReturnType<typeof useBrandAssetsQuery>;
+export type BrandAssetsLazyQueryHookResult = ReturnType<typeof useBrandAssetsLazyQuery>;
+export type BrandAssetsSuspenseQueryHookResult = ReturnType<typeof useBrandAssetsSuspenseQuery>;
 export const AddToCartDocument = gql`
     mutation AddToCart($input: AddToCartInput!) {
   addToCart(input: $input) {
@@ -10193,6 +11013,56 @@ export function useCompletedRegistrationsSuspenseQuery(baseOptions?: ApolloReact
 export type CompletedRegistrationsQueryHookResult = ReturnType<typeof useCompletedRegistrationsQuery>;
 export type CompletedRegistrationsLazyQueryHookResult = ReturnType<typeof useCompletedRegistrationsLazyQuery>;
 export type CompletedRegistrationsSuspenseQueryHookResult = ReturnType<typeof useCompletedRegistrationsSuspenseQuery>;
+export const FooterContentDocument = gql`
+    query FooterContent {
+  footerContent {
+    tagline
+    copyright
+    newsletterBlurb
+    columns {
+      title
+      links {
+        label
+        href
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useFooterContentQuery__
+ *
+ * To run a query within a React component, call `useFooterContentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFooterContentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFooterContentQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFooterContentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FooterContentQuery, FooterContentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<FooterContentQuery, FooterContentQueryVariables>(FooterContentDocument, options);
+      }
+export function useFooterContentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FooterContentQuery, FooterContentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<FooterContentQuery, FooterContentQueryVariables>(FooterContentDocument, options);
+        }
+// @ts-ignore
+export function useFooterContentSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<FooterContentQuery, FooterContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FooterContentQuery, FooterContentQueryVariables>;
+export function useFooterContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FooterContentQuery, FooterContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<FooterContentQuery | undefined, FooterContentQueryVariables>;
+export function useFooterContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<FooterContentQuery, FooterContentQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<FooterContentQuery, FooterContentQueryVariables>(FooterContentDocument, options);
+        }
+export type FooterContentQueryHookResult = ReturnType<typeof useFooterContentQuery>;
+export type FooterContentLazyQueryHookResult = ReturnType<typeof useFooterContentLazyQuery>;
+export type FooterContentSuspenseQueryHookResult = ReturnType<typeof useFooterContentSuspenseQuery>;
 export const SubscribeToNewsletterDocument = gql`
     mutation SubscribeToNewsletter {
   subscribeToNewsletter {
@@ -10642,6 +11512,64 @@ export function useOrderSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken |
 export type OrderQueryHookResult = ReturnType<typeof useOrderQuery>;
 export type OrderLazyQueryHookResult = ReturnType<typeof useOrderLazyQuery>;
 export type OrderSuspenseQueryHookResult = ReturnType<typeof useOrderSuspenseQuery>;
+export const PageContentDocument = gql`
+    query PageContent($pageSlug: String!) {
+  pageContent(pageSlug: $pageSlug) {
+    hero
+    video {
+      src
+      poster
+    }
+    seo {
+      title
+      description
+      ogImage
+      ogTitle
+      ogDescription
+    }
+    tagline {
+      heading
+      subheading
+      ctaText
+    }
+  }
+}
+    `;
+
+/**
+ * __usePageContentQuery__
+ *
+ * To run a query within a React component, call `usePageContentQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePageContentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePageContentQuery({
+ *   variables: {
+ *      pageSlug: // value for 'pageSlug'
+ *   },
+ * });
+ */
+export function usePageContentQuery(baseOptions: ApolloReactHooks.QueryHookOptions<PageContentQuery, PageContentQueryVariables> & ({ variables: PageContentQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<PageContentQuery, PageContentQueryVariables>(PageContentDocument, options);
+      }
+export function usePageContentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PageContentQuery, PageContentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<PageContentQuery, PageContentQueryVariables>(PageContentDocument, options);
+        }
+// @ts-ignore
+export function usePageContentSuspenseQuery(baseOptions?: ApolloReactHooks.SuspenseQueryHookOptions<PageContentQuery, PageContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<PageContentQuery, PageContentQueryVariables>;
+export function usePageContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<PageContentQuery, PageContentQueryVariables>): ApolloReactHooks.UseSuspenseQueryResult<PageContentQuery | undefined, PageContentQueryVariables>;
+export function usePageContentSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<PageContentQuery, PageContentQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<PageContentQuery, PageContentQueryVariables>(PageContentDocument, options);
+        }
+export type PageContentQueryHookResult = ReturnType<typeof usePageContentQuery>;
+export type PageContentLazyQueryHookResult = ReturnType<typeof usePageContentLazyQuery>;
+export type PageContentSuspenseQueryHookResult = ReturnType<typeof usePageContentSuspenseQuery>;
 export const ProductsDocument = gql`
     query Products($filter: ProductsFilterInput!) {
   products(filter: $filter) {

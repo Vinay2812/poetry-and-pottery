@@ -7,6 +7,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { createDate } from "@/lib/date";
 
+import { useFooterContentQuery } from "@/graphql/generated/graphql";
+
 import { Footer } from "../components/footer";
 import type {
   FooterContactItem,
@@ -78,6 +80,7 @@ const BRAND_DESCRIPTION =
 export function FooterContainer() {
   const { isSignedIn } = useAuth();
   const { mutate: subscribeMutate } = useSubscribeToNewsletter();
+  const { data: footerData } = useFooterContentQuery();
 
   const [isAlreadySubscribed, setIsAlreadySubscribed] = useState(false);
   const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
@@ -110,10 +113,18 @@ export function FooterContainer() {
     }
   }, [subscribeMutate]);
 
+  const remoteFooter = footerData?.footerContent;
+  const linkGroups: FooterLinkGroup[] =
+    remoteFooter?.columns?.map((c) => ({
+      title: c.title,
+      links: c.links.map((l) => ({ label: l.label, href: l.href })),
+    })) ?? LINK_GROUPS;
+  const brandDescription = remoteFooter?.tagline ?? BRAND_DESCRIPTION;
+
   const viewModel: FooterViewModel = useMemo(
     () => ({
-      brandDescription: BRAND_DESCRIPTION,
-      linkGroups: LINK_GROUPS,
+      brandDescription,
+      linkGroups,
       contactInfo: CONTACT_INFO,
       socialLinks: SOCIAL_LINKS,
       currentYear: createDate().getFullYear(),
@@ -122,7 +133,14 @@ export function FooterContainer() {
       subscriptionSuccess,
       subscriptionError,
     }),
-    [isSignedIn, isAlreadySubscribed, subscriptionSuccess, subscriptionError],
+    [
+      brandDescription,
+      linkGroups,
+      isSignedIn,
+      isAlreadySubscribed,
+      subscriptionSuccess,
+      subscriptionError,
+    ],
   );
 
   return <Footer viewModel={viewModel} onNewsletterSubmit={handleSubmit} />;

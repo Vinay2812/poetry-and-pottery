@@ -68,13 +68,13 @@ export function HeroImagesTabContent({
       <div className="space-y-2">
         <label className="text-sm font-medium">Products Page Hero</label>
         <Input
-          value={heroImages.products}
+          value={heroImages.store}
           onChange={(e) =>
-            onHeroImagesChange({ ...heroImages, products: e.target.value })
+            onHeroImagesChange({ ...heroImages, store: e.target.value })
           }
           placeholder="https://example.com/image.jpg"
         />
-        <ImagePreview src={heroImages.products} alt="Products page hero" />
+        <ImagePreview src={heroImages.store} alt="Products page hero" />
       </div>
       <div className="space-y-2">
         <label className="text-sm font-medium">Events Page Hero</label>
