@@ -1,7 +1,7 @@
 "use client";
 
 import { useUIStore } from "@/store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,10 +38,16 @@ export function FooterPanel({ defaults }: Props) {
   const addToast = useUIStore((s) => s.addToast);
 
   const remote: FooterShape | undefined = data?.adminFooterContent;
+  // Sync local state when the remote response arrives. Uses the React-docs
+  // "store info from previous render" pattern so we don't setState in an effect.
   const [local, setLocal] = useState<FooterShape | null>(null);
-  useEffect(() => {
-    if (remote) setLocal(remote);
-  }, [remote]);
+  const [lastRemote, setLastRemote] = useState<FooterShape | undefined>(
+    undefined,
+  );
+  if (remote && remote !== lastRemote) {
+    setLastRemote(remote);
+    setLocal(remote);
+  }
   if (!local) return <p className="text-muted-foreground text-sm">Loading…</p>;
 
   const save = async (next: FooterShape) => {

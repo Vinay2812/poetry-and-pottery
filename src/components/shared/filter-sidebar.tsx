@@ -3,7 +3,7 @@
 import { UseProductsV2Props } from "@/features/products/components/product-list";
 import { Filters } from "@/features/products/hooks/use-products-filter-v2";
 import { ClassValue } from "clsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Accordion,
@@ -102,16 +102,24 @@ export function FilterSidebar({
     filters.materials.length > 0 ||
     filters.collection_ids.length > 0;
 
+  // Sync local slider state with filters changing externally (e.g. user clears a
+  // category which shifts the price range, navigation with new URL params). Uses
+  // the "store info from previous render" pattern from the React docs so we don't
+  // setState inside an effect.
   const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([
     filters.min_price,
     filters.max_price,
   ]);
-
-  // Sync local slider state when filters change externally (e.g., user clears a
-  // category which shifts the price range, or navigates with new URL params).
-  useEffect(() => {
+  const [lastExternalMin, setLastExternalMin] = useState(filters.min_price);
+  const [lastExternalMax, setLastExternalMax] = useState(filters.max_price);
+  if (
+    lastExternalMin !== filters.min_price ||
+    lastExternalMax !== filters.max_price
+  ) {
+    setLastExternalMin(filters.min_price);
+    setLastExternalMax(filters.max_price);
     setLocalPriceRange([filters.min_price, filters.max_price]);
-  }, [filters.min_price, filters.max_price]);
+  }
 
   const collectionOptions: CheckboxFilterOption[] = (
     filterMetadata.collections ?? []

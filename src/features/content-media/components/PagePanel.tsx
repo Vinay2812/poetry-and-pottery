@@ -66,10 +66,21 @@ export function PagePanel({
   const defSeo = seos[slug] ?? content.seo;
   const defTagline = tags[slug] ?? content.tagline;
 
+  // Sync local state when the parent's content changes (e.g. switching slugs).
+  // Uses the React-docs "store info from previous render" pattern so we don't
+  // setState in an effect.
   const [seo, setSeo] = useState(content.seo);
   const [tag, setTag] = useState(content.tagline);
-  useEffect(() => setSeo(content.seo), [content.seo]);
-  useEffect(() => setTag(content.tagline), [content.tagline]);
+  const [lastContentSeo, setLastContentSeo] = useState(content.seo);
+  const [lastContentTag, setLastContentTag] = useState(content.tagline);
+  if (content.seo !== lastContentSeo) {
+    setLastContentSeo(content.seo);
+    setSeo(content.seo);
+  }
+  if (content.tagline !== lastContentTag) {
+    setLastContentTag(content.tagline);
+    setTag(content.tagline);
+  }
 
   useEffect(() => {
     const t = setTimeout(() => onSeoChange(seo), 1200);

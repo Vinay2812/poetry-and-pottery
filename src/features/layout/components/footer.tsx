@@ -1,27 +1,11 @@
 "use client";
 
-import {
-  ArrowRight,
-  Check,
-  Clock,
-  Loader2,
-  Mail,
-  MapPin,
-  Phone,
-  Send,
-} from "lucide-react";
+import { ArrowRight, Check, Loader2, Send } from "lucide-react";
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
 
 import type { FooterProps } from "../types";
 import { socialIcons } from "./social-icons";
-
-const contactIcons = {
-  address: MapPin,
-  hours: Clock,
-  email: Mail,
-  phone: Phone,
-};
 
 /* ─── Newsletter ─────────────────────────────────────────────── */
 
