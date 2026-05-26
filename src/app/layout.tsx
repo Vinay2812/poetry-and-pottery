@@ -1,3 +1,4 @@
+import { SITE_CONTACT, SITE_MEDIA } from "@/consts/site-content";
 import Providers from "@/providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
@@ -10,8 +11,7 @@ import { Suspense } from "react";
 
 import { RouteAnimationProvider } from "@/components/providers/route-animation-provider";
 
-import { DEFAULT_SOCIAL_IMAGE, SITE_METADATA_BASE, SITE_NAME } from "@/lib/seo";
-import { getBrandAssets } from "@/lib/site-content";
+import { SITE_METADATA_BASE, SITE_NAME } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -41,8 +41,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  const brand = await getBrandAssets();
+export function generateMetadata(): Metadata {
   return {
     metadataBase: SITE_METADATA_BASE,
     applicationName: SITE_NAME,
@@ -60,8 +59,8 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: "/",
     },
     icons: {
-      icon: brand.favicon,
-      apple: brand.appleTouchIcon,
+      icon: SITE_MEDIA.favicon,
+      apple: SITE_MEDIA.appleTouchIcon,
     },
     openGraph: {
       title: SITE_NAME,
@@ -72,7 +71,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "/",
       images: [
         {
-          url: brand.defaultOgImage || DEFAULT_SOCIAL_IMAGE,
+          url: SITE_MEDIA.defaultSocialImage,
           width: 1200,
           height: 630,
           alt: "Poetry & Pottery handcrafted ceramics",
@@ -84,7 +83,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: SITE_NAME,
       description:
         "Handcrafted pottery from Sangli, Maharashtra. Shop artisan ceramics and join pottery workshops.",
-      images: [brand.defaultOgImage || DEFAULT_SOCIAL_IMAGE],
+      images: [SITE_MEDIA.defaultSocialImage],
     },
   };
 }
@@ -111,8 +110,8 @@ export default function RootLayout({
               "@type": "Organization",
               name: SITE_NAME,
               url: SITE_METADATA_BASE.toString(),
-              logo: "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg",
-              sameAs: ["https://instagram.com/poetryandpottery_"],
+              logo: SITE_MEDIA.logoSvg,
+              sameAs: [SITE_CONTACT.instagramUrl],
             }),
           }}
         />

@@ -1,6 +1,6 @@
 "use client";
 
-import { HERO_VIDEOS } from "@/consts/client";
+import { SITE_MEDIA } from "@/consts/site-content";
 import Link from "next/link";
 
 export function BehindScenesSection() {
@@ -12,7 +12,7 @@ export function BehindScenesSection() {
 
       <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl md:aspect-5/3 lg:rounded-[20px]">
         <video
-          src={HERO_VIDEOS.behindTheScenes}
+          src={SITE_MEDIA.behindScenesVideo}
           autoPlay
           loop
           muted

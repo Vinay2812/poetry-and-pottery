@@ -1,3 +1,4 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import type { ProductDetail, ProductReview } from "@/data/products/types";
 
 import { createDate } from "@/lib/date";
@@ -107,9 +108,7 @@ export function buildFormattedReviews(
       id: reviewId,
       authorId: review.user_id,
       author: review.user?.name || "Anonymous",
-      avatar:
-        review.user?.image ||
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+      avatar: review.user?.image || SITE_MEDIA.reviewAvatarFallback,
       rating: review.rating,
       content: review.review || "",
       date: createDate(review.created_at).toLocaleDateString("en-US", {

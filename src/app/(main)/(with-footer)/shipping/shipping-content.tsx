@@ -1,20 +1,12 @@
-import { getPublicShippingContent } from "@/data/admin/content/gateway/server";
+import { SITE_SHIPPING_CONTENT } from "@/consts/site-content";
 
 import { ShippingPageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
 
-export async function ShippingContent() {
-  const content = await getPublicShippingContent();
+import type { ShippingPageContent } from "@/graphql/generated/types";
 
-  if (!content) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Page content not available</p>
-      </div>
-    );
-  }
-
+export function ShippingContent() {
   return (
     <>
       <script
@@ -30,7 +22,9 @@ export async function ShippingContent() {
           }),
         }}
       />
-      <ShippingPageClient content={content} />
+      <ShippingPageClient
+        content={SITE_SHIPPING_CONTENT as ShippingPageContent}
+      />
     </>
   );
 }

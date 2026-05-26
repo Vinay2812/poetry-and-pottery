@@ -1,13 +1,10 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import { getProductById } from "@/data/products/gateway/server";
 import { MobileHeaderContainer } from "@/features/layout";
 import { ProductDetailContainer } from "@/features/product-detail";
 import { notFound } from "next/navigation";
 
-import {
-  DEFAULT_SOCIAL_IMAGE,
-  absoluteUrl,
-  resolveSocialImageUrl,
-} from "@/lib/seo";
+import { absoluteUrl, resolveSocialImageUrl } from "@/lib/seo";
 
 export interface ProductPageParams {
   id: string;
@@ -56,7 +53,7 @@ function buildProductStructuredData(
   const images =
     product?.image_urls?.length && product.image_urls.length > 0
       ? product.image_urls.map((imageUrl) => resolveSocialImageUrl(imageUrl))
-      : [DEFAULT_SOCIAL_IMAGE];
+      : [SITE_MEDIA.defaultSocialImage];
   const canonicalUrl = absoluteUrl(`/products/${product?.id ?? ""}`);
 
   const structuredData: Record<string, unknown> = {

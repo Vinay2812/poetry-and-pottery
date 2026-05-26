@@ -1,11 +1,12 @@
+import { SITE_MEDIA } from "@/consts/site-content";
+
 import { OptimizedImage } from "@/components/shared";
 
 const TEAM = [
   {
     name: "Poetry & Pottery",
     role: "Founder & Potter",
-    image:
-      "https://images.pexels.com/photos/3094208/pexels-photo-3094208.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image: SITE_MEDIA.aboutTeamFounderImage,
   },
 ];
 

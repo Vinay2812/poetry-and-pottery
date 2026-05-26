@@ -1,20 +1,12 @@
-"use client";
+import { SITE_MEDIA } from "@/consts/site-content";
 
 import { OptimizedImage } from "@/components/shared";
 
-import { useBrandAssetsQuery } from "@/graphql/generated/graphql";
-
-const FALLBACK_LOGO =
-  "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.png";
-
 export function Logo() {
-  const { data } = useBrandAssetsQuery();
-  const logoSrc = data?.brandAssets?.logo || FALLBACK_LOGO;
-
   return (
     <>
       <OptimizedImage
-        src={logoSrc}
+        src={SITE_MEDIA.logoPng}
         alt="Poetry & Pottery"
         width={36}
         height={36}

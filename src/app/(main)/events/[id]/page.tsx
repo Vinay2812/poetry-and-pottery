@@ -1,14 +1,11 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import { getEventById } from "@/data/events/gateway/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { EventDetailSkeleton } from "@/components/skeletons";
 
-import {
-  DEFAULT_SOCIAL_IMAGE,
-  absoluteUrl,
-  resolveSocialImageUrl,
-} from "@/lib/seo";
+import { absoluteUrl, resolveSocialImageUrl } from "@/lib/seo";
 
 import {
   EventDetailContent,
@@ -37,7 +34,9 @@ export async function generateMetadata({
   }
 
   const event = eventResult.data;
-  const imageUrl = resolveSocialImageUrl(event.image ?? DEFAULT_SOCIAL_IMAGE);
+  const imageUrl = resolveSocialImageUrl(
+    event.image ?? SITE_MEDIA.defaultSocialImage,
+  );
   const canonicalUrl = absoluteUrl(`/events/${event.id}`);
   const description =
     event.description?.trim() ||

@@ -1,3 +1,4 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     url: absoluteUrl("/events/daily-workshops"),
     images: [
       {
-        url: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=630&fit=crop",
+        url: SITE_MEDIA.eventsOgImage,
         width: 1200,
         height: 630,
         alt: "Daily pottery workshop booking",
@@ -40,9 +41,7 @@ export const metadata: Metadata = {
     title: "Daily Workshops | Poetry & Pottery",
     description:
       "Flexible pottery workshop booking with hourly slot selection and tiered pricing.",
-    images: [
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=630&fit=crop",
-    ],
+    images: [SITE_MEDIA.eventsOgImage],
   },
 };
 

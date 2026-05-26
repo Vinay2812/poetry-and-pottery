@@ -1,20 +1,12 @@
-import { getPublicCareContent } from "@/data/admin/content/gateway/server";
+import { SITE_CARE_CONTENT } from "@/consts/site-content";
 
 import { CarePageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
 
-export async function CareContent() {
-  const content = await getPublicCareContent();
+import type { CarePageContent } from "@/graphql/generated/types";
 
-  if (!content) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Page content not available</p>
-      </div>
-    );
-  }
-
+export function CareContent() {
   return (
     <>
       <script
@@ -30,7 +22,7 @@ export async function CareContent() {
           }),
         }}
       />
-      <CarePageClient content={content} />
+      <CarePageClient content={SITE_CARE_CONTENT as CarePageContent} />
     </>
   );
 }

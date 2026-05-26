@@ -1,5 +1,6 @@
 "use client";
 
+import { SITE_CONTACT } from "@/consts/site-content";
 import { MobileHeaderContainer } from "@/features/layout";
 
 import { absoluteUrl } from "@/lib/seo";
@@ -32,8 +33,8 @@ export default function ContactPage() {
             about: {
               "@type": "Organization",
               name: "Poetry & Pottery",
-              email: "poetryandpottery.aj@gmail.com",
-              telephone: "+91 83290 26762",
+              email: SITE_CONTACT.email,
+              telephone: SITE_CONTACT.phoneDisplay,
             },
           }),
         }}

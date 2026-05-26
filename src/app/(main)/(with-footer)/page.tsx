@@ -1,3 +1,4 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import { CustomizeSection } from "@/features/home";
 import { MobileHeaderContainer } from "@/features/layout";
 import { RecommendedProductsContainer } from "@/features/recommended-products";
@@ -13,10 +14,10 @@ import {
 } from "@/components/sections";
 
 import { absoluteUrl } from "@/lib/seo";
-import { buildMetadataFromSeo, getPageContent } from "@/lib/site-content";
+import { buildMetadataFromSeo } from "@/lib/site-content";
 
-export async function generateMetadata() {
-  const base = await buildMetadataFromSeo("home");
+export function generateMetadata() {
+  const base = buildMetadataFromSeo("home");
   return {
     ...base,
     keywords: [
@@ -42,8 +43,7 @@ export async function generateMetadata() {
  * - Homepage content blocks (hero media, categories, collections, featured products, workshop promos, testimonials).
  * - Linked product/event identifiers and CTA targets used by cards and section buttons.
  */
-export default async function Home() {
-  const { video } = await getPageContent("home");
+export default function Home() {
   return (
     <>
       <MobileHeaderContainer />
@@ -51,7 +51,7 @@ export default async function Home() {
       <main className="min-h-screen pt-14 lg:pt-20">
         {/* Hero Section */}
         <HeroSection
-          video={video?.src ?? ""}
+          video={SITE_MEDIA.homeHeroVideo}
           imageAlt="Handcrafted pottery in our Sangli studio"
           badge="HANDCRAFTED IN SANGLI"
           title="Where earth meets artistry"

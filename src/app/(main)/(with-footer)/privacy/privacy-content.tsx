@@ -1,19 +1,13 @@
-import { getPublicPrivacyContent } from "@/data/admin/content/gateway/server";
+import { SITE_PRIVACY_CONTENT } from "@/consts/site-content";
 
 import { PrivacyPageClient } from "@/components/pages";
 
 import { absoluteUrl } from "@/lib/seo";
 
-export async function PrivacyContent() {
-  const content = await getPublicPrivacyContent();
+import type { PrivacyPageContent } from "@/graphql/generated/types";
 
-  if (!content) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Page content not available</p>
-      </div>
-    );
-  }
+export function PrivacyContent() {
+  const content = SITE_PRIVACY_CONTENT as PrivacyPageContent;
 
   return (
     <>

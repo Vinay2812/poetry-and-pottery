@@ -1,3 +1,4 @@
+import { SITE_CONTACT } from "@/consts/site-content";
 import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
@@ -24,30 +25,30 @@ export function ContactInfoPanel() {
 
         <div className="mt-10 space-y-6">
           <Link
-            href="tel:+918329026762"
+            href={SITE_CONTACT.telUrl}
             className="flex items-center gap-4 text-white transition-opacity hover:opacity-80"
           >
             <Phone className="h-5 w-5" />
-            <span className="text-sm">+91 83290 26762</span>
+            <span className="text-sm">{SITE_CONTACT.phoneDisplay}</span>
           </Link>
 
           <Link
-            href="mailto:poetryandpottery.aj@gmail.com"
+            href={SITE_CONTACT.mailtoUrl}
             className="flex items-center gap-4 text-white transition-opacity hover:opacity-80"
           >
             <Mail className="h-5 w-5" />
-            <span className="text-sm">poetryandpottery.aj@gmail.com</span>
+            <span className="text-sm">{SITE_CONTACT.email}</span>
           </Link>
 
           <div className="flex items-center gap-4 text-white">
             <MapPin className="h-5 w-5 shrink-0" />
-            <span className="text-sm">Sangli, Maharashtra, India</span>
+            <span className="text-sm">{SITE_CONTACT.address}</span>
           </div>
         </div>
 
         <div className="mt-16 flex gap-4">
           <Link
-            href="https://instagram.com/poetryandpottery_"
+            href={SITE_CONTACT.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"

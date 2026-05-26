@@ -1,3 +1,4 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import { MobileHeaderContainer } from "@/features/layout";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     url: absoluteUrl("/products"),
     images: [
       {
-        url: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
+        url: SITE_MEDIA.productsOgImage,
         width: 1200,
         height: 630,
         alt: "Poetry & Pottery Collection",
@@ -45,9 +46,7 @@ export const metadata: Metadata = {
     title: "Shop Handcrafted Pottery | Poetry & Pottery",
     description:
       "Discover our collection of handcrafted ceramic pieces. From vases to mugs, each piece is uniquely crafted by artisan potters.",
-    images: [
-      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
-    ],
+    images: [SITE_MEDIA.productsOgImage],
   },
 };
 

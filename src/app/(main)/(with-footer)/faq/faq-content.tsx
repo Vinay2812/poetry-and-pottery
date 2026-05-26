@@ -1,18 +1,11 @@
-import { getPublicFAQContent } from "@/data/admin/content/gateway/server";
+import { SITE_FAQ_CONTENT } from "@/consts/site-content";
 
 import { FAQPageClient } from "@/components/pages";
 
-export async function FAQContent() {
-  const content = await getPublicFAQContent();
+import type { FaqPageContent } from "@/graphql/generated/types";
 
-  if (!content) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Page content not available</p>
-      </div>
-    );
-  }
-
+export function FAQContent() {
+  const content = SITE_FAQ_CONTENT as FaqPageContent;
   const faqItems = content.categories.flatMap((category) => category.faqs);
 
   return (

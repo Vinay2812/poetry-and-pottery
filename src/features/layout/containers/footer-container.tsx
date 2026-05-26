@@ -1,13 +1,12 @@
 "use client";
 
+import { SITE_CONTACT, SITE_FOOTER_CONTENT } from "@/consts/site-content";
 import { useSubscribeToNewsletter } from "@/data/newsletter/gateway/client";
 import { getNewsletterSubscriptionStatus } from "@/data/newsletter/gateway/server";
 import { useAuth } from "@clerk/nextjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { createDate } from "@/lib/date";
-
-import { useFooterContentQuery } from "@/graphql/generated/graphql";
 
 import { Footer } from "../components/footer";
 import type {
@@ -17,42 +16,20 @@ import type {
   FooterViewModel,
 } from "../types";
 
-const LINK_GROUPS: FooterLinkGroup[] = [
-  {
-    title: "Quick Links",
-    links: [
-      { label: "Home", href: "/" },
-      { label: "Workshops", href: "/events" },
-      { label: "Categories", href: "/products" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "Products", href: "/products" },
-      { label: "Our Story", href: "/about" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Help Centre",
-    links: [
-      { label: "Shipping Info", href: "/shipping" },
-      { label: "Order Tracking", href: "/orders" },
-      { label: "FAQ", href: "/faq" },
-    ],
-  },
-];
+const LINK_GROUPS: FooterLinkGroup[] = SITE_FOOTER_CONTENT.columns.map((c) => ({
+  title: c.title,
+  links: c.links.map((l) => ({ label: l.label, href: l.href })),
+}));
 
 const SOCIAL_LINKS: FooterSocialLink[] = [
   {
     platform: "instagram",
-    href: "https://instagram.com/poetryandpotterystudio_",
+    href: SITE_CONTACT.instagramUrl,
     label: "Follow us on Instagram",
   },
   {
     platform: "whatsapp",
-    href: "https://wa.me/918329026762",
+    href: SITE_CONTACT.whatsappUrl,
     label: "Chat on WhatsApp",
   },
 ];
@@ -60,27 +37,25 @@ const SOCIAL_LINKS: FooterSocialLink[] = [
 const CONTACT_INFO: FooterContactItem[] = [
   {
     type: "address",
-    value: "Sangli, Maharashtra, India",
+    value: SITE_CONTACT.address,
   },
   {
     type: "email",
-    value: "poetryandpottery.aj@gmail.com",
-    href: "mailto:poetryandpottery.aj@gmail.com",
+    value: SITE_CONTACT.email,
+    href: SITE_CONTACT.mailtoUrl,
   },
   {
     type: "phone",
-    value: "+91 83290 26762",
-    href: "tel:+918329026762",
+    value: SITE_CONTACT.phoneDisplay,
+    href: SITE_CONTACT.telUrl,
   },
 ];
 
-const BRAND_DESCRIPTION =
-  "Crafting handmade touch to life\u2019s simplest \uD83C\uDF3C joys :)";
+const BRAND_DESCRIPTION = SITE_FOOTER_CONTENT.tagline;
 
 export function FooterContainer() {
   const { isSignedIn } = useAuth();
   const { mutate: subscribeMutate } = useSubscribeToNewsletter();
-  const { data: footerData } = useFooterContentQuery();
 
   const [isAlreadySubscribed, setIsAlreadySubscribed] = useState(false);
   const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
@@ -113,18 +88,10 @@ export function FooterContainer() {
     }
   }, [subscribeMutate]);
 
-  const remoteFooter = footerData?.footerContent;
-  const linkGroups: FooterLinkGroup[] =
-    remoteFooter?.columns?.map((c) => ({
-      title: c.title,
-      links: c.links.map((l) => ({ label: l.label, href: l.href })),
-    })) ?? LINK_GROUPS;
-  const brandDescription = remoteFooter?.tagline ?? BRAND_DESCRIPTION;
-
   const viewModel: FooterViewModel = useMemo(
     () => ({
-      brandDescription,
-      linkGroups,
+      brandDescription: BRAND_DESCRIPTION,
+      linkGroups: LINK_GROUPS,
       contactInfo: CONTACT_INFO,
       socialLinks: SOCIAL_LINKS,
       currentYear: createDate().getFullYear(),
@@ -133,14 +100,7 @@ export function FooterContainer() {
       subscriptionSuccess,
       subscriptionError,
     }),
-    [
-      brandDescription,
-      linkGroups,
-      isSignedIn,
-      isAlreadySubscribed,
-      subscriptionSuccess,
-      subscriptionError,
-    ],
+    [isSignedIn, isAlreadySubscribed, subscriptionSuccess, subscriptionError],
   );
 
   return <Footer viewModel={viewModel} onNewsletterSubmit={handleSubmit} />;

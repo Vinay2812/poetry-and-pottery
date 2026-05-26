@@ -7,8 +7,8 @@ import { buildMetadataFromSeo } from "@/lib/site-content";
 
 import { PrivacyContent } from "./privacy-content";
 
-export async function generateMetadata() {
-  const base = await buildMetadataFromSeo("privacy");
+export function generateMetadata() {
+  const base = buildMetadataFromSeo("privacy");
   return {
     ...base,
     alternates: {

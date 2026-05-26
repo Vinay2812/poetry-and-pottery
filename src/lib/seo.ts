@@ -1,3 +1,5 @@
+import { SITE_MEDIA } from "@/consts/site-content";
+
 const FALLBACK_SITE_URL = "https://poetryandpottery.com";
 
 function normalizeSiteUrl(rawDomain: string): string {
@@ -26,9 +28,6 @@ export const SITE_METADATA_BASE = (() => {
   }
 })();
 
-export const DEFAULT_SOCIAL_IMAGE =
-  "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop";
-
 export function absoluteUrl(pathname: string): string {
   const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
   return new URL(normalizedPath, SITE_URL).toString();
@@ -36,7 +35,7 @@ export function absoluteUrl(pathname: string): string {
 
 export function resolveSocialImageUrl(imageUrl?: string | null): string {
   if (!imageUrl) {
-    return DEFAULT_SOCIAL_IMAGE;
+    return SITE_MEDIA.defaultSocialImage;
   }
 
   if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {

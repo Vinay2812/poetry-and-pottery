@@ -1,3 +1,5 @@
+import { SITE_MEDIA } from "@/consts/site-content";
+
 const STORY_TITLE = "Where Clay Meets Soul";
 
 const STORY_CONTENT = [
@@ -14,7 +16,7 @@ export function AboutStorySection() {
         {/* Video */}
         <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
           <video
-            src="https://cdn.poetryandpottery.prodapp.club/videos/poetry-pottery-about.mp4"
+            src={SITE_MEDIA.aboutStoryVideo}
             autoPlay
             loop
             muted

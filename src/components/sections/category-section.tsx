@@ -1,5 +1,6 @@
 "use client";
 
+import { SITE_MEDIA } from "@/consts/site-content";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -9,8 +10,7 @@ import { StaggeredGrid } from "@/components/shared";
 
 import type { CategoryWithImage } from "@/graphql/generated/types";
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&h=800&fit=crop";
+const FALLBACK_IMAGE = SITE_MEDIA.categoryFallbackImage;
 
 interface CategorySectionProps {
   categories: CategoryWithImage[];

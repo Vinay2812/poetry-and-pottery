@@ -12,8 +12,8 @@ import {
   buildCustomizeStructuredData,
 } from "./customize-content";
 
-export async function generateMetadata() {
-  const base = await buildMetadataFromSeo("customize");
+export function generateMetadata() {
+  const base = buildMetadataFromSeo("customize");
   return {
     ...base,
     keywords: [

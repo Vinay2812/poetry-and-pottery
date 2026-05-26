@@ -1,3 +1,4 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import { Mic2, Music, Users } from "lucide-react";
 
 import { OptimizedImage } from "@/components/shared";
@@ -62,7 +63,7 @@ export function AboutOpenMicSection() {
           {/* Image */}
           <div className="relative aspect-4/3 overflow-hidden rounded-2xl lg:aspect-square">
             <OptimizedImage
-              src="https://images.pexels.com/photos/6919985/pexels-photo-6919985.jpeg"
+              src={SITE_MEDIA.aboutOpenMicImage}
               alt="Open mic night at Poetry & Pottery"
               fill
               className="object-cover"

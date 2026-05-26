@@ -1,8 +1,8 @@
 import { absoluteUrl } from "@/lib/seo";
 import { buildMetadataFromSeo } from "@/lib/site-content";
 
-export async function generateMetadata() {
-  const base = await buildMetadataFromSeo("shipping");
+export function generateMetadata() {
+  const base = buildMetadataFromSeo("shipping");
   return {
     ...base,
     alternates: {

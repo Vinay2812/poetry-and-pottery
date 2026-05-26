@@ -7,8 +7,8 @@ import { buildMetadataFromSeo } from "@/lib/site-content";
 
 import { TermsContent } from "./terms-content";
 
-export async function generateMetadata() {
-  const base = await buildMetadataFromSeo("terms");
+export function generateMetadata() {
+  const base = buildMetadataFromSeo("terms");
   return {
     ...base,
     alternates: {

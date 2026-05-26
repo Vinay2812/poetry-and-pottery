@@ -1,3 +1,4 @@
+import { SITE_CONTACT } from "@/consts/site-content";
 import type { EventRegistration } from "@/data/events/types";
 
 import {
@@ -288,7 +289,7 @@ export function generateTicketHtml(registration: EventRegistration): string {
       <div style="background-color: #f9fafb; padding: 24px 40px; border-top: 1px solid #e5e7eb; margin-top: auto;">
         <div style="max-width: 600px; margin: 0 auto; text-align: center;">
           <p style="font-size: 12px; color: #6b7280;">
-            Please present this ticket at the venue. For any queries, contact us at support@poetryandpottery.com
+            Please present this ticket at the venue. For any queries, contact us at ${SITE_CONTACT.supportEmail}
           </p>
         </div>
       </div>

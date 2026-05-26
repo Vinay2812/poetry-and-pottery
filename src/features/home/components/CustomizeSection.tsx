@@ -1,4 +1,5 @@
 "use client";
+import { SITE_MEDIA } from "@/consts/site-content";
 import { ArrowRight, LayoutGrid, Package, Paintbrush } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -89,7 +90,7 @@ export function CustomizeSection() {
             {/* Hero Image */}
             <div className="bg-clay relative flex aspect-[4/3] items-center justify-center overflow-hidden md:aspect-auto md:min-h-[300px]">
               <Image
-                src="https://images.pexels.com/photos/6312157/pexels-photo-6312157.jpeg?w=800&h=600"
+                src={SITE_MEDIA.homeCustomizeImage}
                 alt="Custom pottery piece"
                 fill
                 className="object-cover"

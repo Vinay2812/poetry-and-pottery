@@ -1,12 +1,9 @@
+import { SITE_MEDIA } from "@/consts/site-content";
 import { getEventById } from "@/data/events/gateway/server";
 import { UnifiedEventDetailContainer } from "@/features/events/containers/unified-event-detail-container";
 import { notFound } from "next/navigation";
 
-import {
-  DEFAULT_SOCIAL_IMAGE,
-  absoluteUrl,
-  resolveSocialImageUrl,
-} from "@/lib/seo";
+import { absoluteUrl, resolveSocialImageUrl } from "@/lib/seo";
 
 import type { EventDetail } from "@/graphql/generated/types";
 
@@ -56,7 +53,9 @@ function buildEventStructuredData(event: EventDetail) {
       name: event.location || "Poetry & Pottery",
       address: event.full_location || event.location || "Sangli, Maharashtra",
     },
-    image: [resolveSocialImageUrl(event.image ?? DEFAULT_SOCIAL_IMAGE)],
+    image: [
+      resolveSocialImageUrl(event.image ?? SITE_MEDIA.defaultSocialImage),
+    ],
     organizer: {
       "@type": "Organization",
       name: "Poetry & Pottery",
