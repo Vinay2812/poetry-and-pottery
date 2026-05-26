@@ -3,7 +3,7 @@
 import { UseProductsV2Props } from "@/features/products/components/product-list";
 import { Filters } from "@/features/products/hooks/use-products-filter-v2";
 import { ClassValue } from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Accordion,
@@ -106,6 +106,12 @@ export function FilterSidebar({
     filters.min_price,
     filters.max_price,
   ]);
+
+  // Sync local slider state when filters change externally (e.g., user clears a
+  // category which shifts the price range, or navigates with new URL params).
+  useEffect(() => {
+    setLocalPriceRange([filters.min_price, filters.max_price]);
+  }, [filters.min_price, filters.max_price]);
 
   const collectionOptions: CheckboxFilterOption[] = (
     filterMetadata.collections ?? []
