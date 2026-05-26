@@ -51,7 +51,7 @@ export function CategorySection({ categories }: CategorySectionProps) {
               className="min-w-[160px] shrink-0 lg:min-w-[200px] lg:flex-1"
             >
               <Link
-                href={`/products?category=${category.name.toLowerCase()}`}
+                href={`/products?categories=${encodeURIComponent(category.name)}`}
                 className="group relative block h-32 overflow-hidden rounded-2xl lg:h-40"
               >
                 <Image

@@ -51,7 +51,7 @@ export function ExploreSection({ categories }: ExploreSectionProps) {
             return (
               <Link
                 key={category.name}
-                href={`/products?category=${category.name.toLowerCase()}`}
+                href={`/products?categories=${encodeURIComponent(category.name)}`}
                 className="hover:border-primary hover:bg-primary/5 hover:text-primary border-border flex shrink-0 items-center gap-2 rounded-full border bg-transparent px-4 py-2.5 text-sm font-medium text-stone-700 transition-all duration-200 lg:px-5 lg:py-3 lg:text-base"
               >
                 <span className="text-base lg:text-lg">{emoji}</span>

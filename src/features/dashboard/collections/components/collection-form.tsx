@@ -2,7 +2,7 @@
 
 import { R2ImageUploaderContainer } from "@/features/uploads";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -50,7 +50,14 @@ export function CollectionForm({
       startsAt: viewModel.startsAt,
       endsAt: viewModel.endsAt,
     }),
-    [viewModel],
+    [
+      viewModel.name,
+      viewModel.slug,
+      viewModel.description,
+      viewModel.imageUrl,
+      viewModel.startsAt,
+      viewModel.endsAt,
+    ],
   );
 
   const {
@@ -63,11 +70,19 @@ export function CollectionForm({
   } = useForm<FormValues>({
     resolver: zodResolver(collectionFormSchema) as never,
     defaultValues: formDefaults,
+    mode: "onChange",
   });
 
+  // Reset form state only when switching to a different collection (e.g., navigating
+  // between edit pages). Avoids wiping user input when the parent re-renders with the
+  // same logical viewModel but a new object reference.
+  const resetKeyRef = useRef(viewModel.id);
   useEffect(() => {
-    reset(formDefaults);
-  }, [formDefaults, reset]);
+    if (resetKeyRef.current !== viewModel.id) {
+      resetKeyRef.current = viewModel.id;
+      reset(formDefaults);
+    }
+  }, [viewModel.id, formDefaults, reset]);
 
   const name = useWatch({ control, name: "name" });
   const imageUrl = useWatch({ control, name: "imageUrl" });
@@ -75,7 +90,7 @@ export function CollectionForm({
   // Auto-generate slug from name when creating new collection
   useEffect(() => {
     if (!isEditing && name) {
-      setValue("slug", generateSlug(name));
+      setValue("slug", generateSlug(name), { shouldValidate: true });
     }
   }, [name, isEditing, setValue]);
 
@@ -96,7 +111,7 @@ export function CollectionForm({
   // Memoize callback to prevent infinite re-renders in child component
   const handleImageChange = useCallback(
     (urls: string[]) => {
-      setValue("imageUrl", urls[0] || "");
+      setValue("imageUrl", urls[0] || "", { shouldValidate: true });
     },
     [setValue],
   );

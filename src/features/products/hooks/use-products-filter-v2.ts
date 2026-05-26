@@ -1,7 +1,7 @@
 import { getProductsOrderBy } from "@/data/products/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useTransition } from "react";
 
 import { ProductOrderBy, ProductsResponse } from "@/graphql/generated/types";
 
@@ -26,7 +26,7 @@ export function useProductsFilterV2({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const [filters, setFilters] = useState(() => {
+  const filters: Filters = useMemo(() => {
     const selectedCategories =
       searchParams.get("categories")?.split(",") ??
       productsWithFiltersAndMetadata.filter.categories ??
@@ -70,7 +70,7 @@ export function useProductsFilterV2({
       max_price: parseInt(maxPriceParam.toString()),
       archive: archiveParam,
     };
-  });
+  }, [searchParams, productsWithFiltersAndMetadata]);
 
   const filters_meta = useMemo(() => {
     return {
@@ -92,19 +92,11 @@ export function useProductsFilterV2({
           (Array.isArray(value) && value.length === 0)
         ) {
           newParams.delete(key);
-          setFilters((prev) => ({
-            ...prev,
-            [key]: value,
-          }));
         } else {
           newParams.set(
             key,
             Array.isArray(value) ? value.join(",") : value.toString(),
           );
-          setFilters((prev) => ({
-            ...prev,
-            [key]: value,
-          }));
         }
       });
 
@@ -122,28 +114,12 @@ export function useProductsFilterV2({
       // Preserve archive tab when clearing filters
       const archiveParam = filters.archive ? "?archive=true" : "";
 
-      setFilters((prev) => ({
-        categories: [],
-        materials: [],
-        collection_ids: [],
-        sort: ProductOrderBy.Featured,
-        search: "",
-        min_price: productsWithFiltersAndMetadata.meta.price_range.min,
-        max_price: productsWithFiltersAndMetadata.meta.price_range.max,
-        archive: prev.archive, // Keep archive state
-      }));
-
       router.push(`/products${archiveParam}`, { scroll: false });
       queryClient.invalidateQueries({
         queryKey: ["products"],
       });
     });
-  }, [
-    router,
-    productsWithFiltersAndMetadata.meta.price_range,
-    queryClient,
-    filters.archive,
-  ]);
+  }, [router, queryClient, filters.archive]);
 
   return {
     filters,
