@@ -1,4 +1,3 @@
-export { BehindScenesSection } from "./behind-scenes-section";
 export { CategorySection } from "./category-section";
 export { CategorySectionContainer } from "./category-section-container";
 export { CollectionsSection } from "./collections-section";

@@ -1,5 +1,7 @@
 import { SITE_MEDIA } from "@/consts/site-content";
 
+import { OptimizedImage } from "@/components/shared";
+
 const STORY_TITLE = "Where Clay Meets Soul";
 
 const STORY_CONTENT = [
@@ -12,22 +14,17 @@ const STORY_CONTENT = [
 export function AboutStorySection() {
   return (
     <section className="container mx-auto px-4 py-12 lg:px-8 lg:pt-0 lg:pb-20">
-      <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-        {/* Video */}
-        <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
-          <video
-            src={SITE_MEDIA.aboutStoryVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
+      <div className="grid items-center gap-8 lg:grid-cols-[380px_1fr] lg:gap-10">
+        {/* Story still */}
+        <div className="relative mx-auto aspect-4/5 w-full max-w-[340px] overflow-hidden rounded-2xl shadow-sm lg:mx-0 lg:max-w-none">
+          <OptimizedImage
+            src={SITE_MEDIA.aboutStoryImage}
+            alt="The beginning of the Poetry & Pottery journey"
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 380px, 100vw"
+            showLoadingState={false}
           />
-          <div className="absolute top-4 left-4">
-            <span className="bg-primary/90 rounded-full px-3 py-1 text-xs font-medium text-white">
-              The Beginning
-            </span>
-          </div>
         </div>
 
         {/* Content */}

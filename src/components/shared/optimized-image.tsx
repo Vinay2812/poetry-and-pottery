@@ -91,7 +91,7 @@ export function OptimizedImage({
           !isLoading && "opacity-100 transition-opacity duration-300",
           className,
         )}
-        loading={loading}
+        loading={props.priority ? undefined : loading}
         sizes={defaultSizes}
         onError={handleError}
         onLoad={handleLoad}

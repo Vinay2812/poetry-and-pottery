@@ -1,7 +1,7 @@
 "use client";
 
 import type { DailyWorkshopPricingTier } from "@/data/daily-workshops/types";
-import { ArrowRight, Clock3, Users } from "lucide-react";
+import { Clock3, Users } from "lucide-react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -69,13 +69,6 @@ export function WorkshopsSection({ pricingTiers }: WorkshopsSectionProps) {
           href="/events/daily-workshops"
           className="group bg-card border-border block rounded-2xl border p-5 shadow-sm transition-shadow hover:shadow-md"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <span className="bg-primary-lighter text-primary rounded-full px-3 py-1 text-xs font-semibold uppercase">
-              Flexible Booking
-            </span>
-            <ArrowRight className="text-primary h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </div>
-
           <h3 className="font-display mb-2 text-xl font-bold tracking-tight text-neutral-900">
             Design Your Own Pottery Schedule
           </h3>

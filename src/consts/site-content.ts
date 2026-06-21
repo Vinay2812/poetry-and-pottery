@@ -16,22 +16,64 @@ export interface SiteFooterContent {
   columns: { title: string; links: { label: string; href: string }[] }[];
 }
 
-export const SITE_HOME_SEO: SitePageSeo = {
+// All image and video URLs the site uses live here — consumers must import from
+// this object instead of hardcoding URLs in component files. The dashboard
+// editors for these have been removed.
+export const SITE_MEDIA = {
+  // Brand
+  logoSvg:
+    "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg",
+  logoPng:
+    "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.png",
+  favicon:
+    "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg",
+  appleTouchIcon:
+    "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg",
+
+  // Social / OG images
+  defaultSocialImage:
+    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
+  productsOgImage:
+    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
+  eventsOgImage:
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=630&fit=crop",
+
+  // Home hero carousel — handcrafted studio moments shown on the landing hero.
+  homeHeroImages: [
+    "https://cdn.poetryandpottery.prodapp.club/assets/IMG-20260509-WA0055.jpg",
+    "https://cdn.poetryandpottery.prodapp.club/assets/20260422_152745.jpg",
+    "https://cdn.poetryandpottery.prodapp.club/assets/20260422_160705.jpg",
+    "https://cdn.poetryandpottery.prodapp.club/assets/20260505_233607.jpg",
+    "https://cdn.poetryandpottery.prodapp.club/assets/IMG-20260509-WA0068.jpg",
+    "https://cdn.poetryandpottery.prodapp.club/assets/20260510_174007.jpg",
+    "https://cdn.poetryandpottery.prodapp.club/assets/20260510_182735.jpg",
+    "https://cdn.poetryandpottery.prodapp.club/assets/20260512_191421.jpg",
+  ],
+  aboutStoryVideo:
+    "https://cdn.poetryandpottery.prodapp.club/videos/poetry-pottery-about.mp4",
+  // "Our Story" still — the founder's beginning, shown on the about story block.
+  aboutStoryImage:
+    "https://cdn.poetryandpottery.prodapp.club/assets/20260512_181606.png",
+  aboutOpenMicImage:
+    "https://images.pexels.com/photos/6919985/pexels-photo-6919985.jpeg",
+  aboutTeamFounderImage:
+    "https://cdn.poetryandpottery.prodapp.club/assets/600984583_17916866274236583_6231166633502430886_n.jpg",
+
+  // Fallbacks
+  categoryFallbackImage:
+    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&h=800&fit=crop",
+  reviewAvatarFallback:
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+} as const;
+
+export const SITE_SEO: SitePageSeo = {
   title: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
   description:
     "Handcrafted pottery with a touch of poetry from Sangli, Maharashtra. Each piece tells a story — functional, decorative, and custom ceramics crafted with passion.",
-  ogImage: "",
+  ogImage: SITE_MEDIA.logoPng,
   ogTitle: "Poetry & Pottery | Handcrafted Ceramics from Sangli",
   ogDescription:
     "Shop unique pottery and join our workshops in Sangli, Maharashtra.",
-};
-
-export const SITE_DEFAULT_SEO: SitePageSeo = {
-  title: "Poetry & Pottery",
-  description: "",
-  ogImage: "",
-  ogTitle: "Poetry & Pottery",
-  ogDescription: "",
 };
 
 // Contact info, social links, and brand details. Consumers must import from
@@ -46,47 +88,6 @@ export const SITE_CONTACT = {
   whatsappUrl: "https://wa.me/918329026762",
   mailtoUrl: "mailto:poetryandpottery.aj@gmail.com",
   telUrl: "tel:+918329026762",
-} as const;
-
-// All image and video URLs the site uses live here — consumers must import from
-// this object instead of hardcoding URLs in component files. The dashboard
-// editors for these have been removed.
-export const SITE_MEDIA = {
-  // Brand
-  logoSvg:
-    "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.svg",
-  logoPng:
-    "https://cdn.poetryandpottery.prodapp.club/logos/poetry-and-pottery-logo.png",
-  favicon: "/favicon.ico",
-  appleTouchIcon: "/apple-touch-icon.png",
-
-  // Social / OG images
-  defaultSocialImage:
-    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
-  productsOgImage:
-    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&h=630&fit=crop",
-  eventsOgImage:
-    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=630&fit=crop",
-
-  // Page-specific media
-  homeHeroVideo:
-    "https://cdn.poetryandpottery.prodapp.club/videos/poetry-pottery-video.mp4",
-  homeCustomizeImage:
-    "https://images.pexels.com/photos/6312157/pexels-photo-6312157.jpeg?w=800&h=600",
-  behindScenesVideo:
-    "https://cdn.poetryandpottery.prodapp.club/videos/poetry-pottery-behind-scenes.mp4",
-  aboutStoryVideo:
-    "https://cdn.poetryandpottery.prodapp.club/videos/poetry-pottery-about.mp4",
-  aboutOpenMicImage:
-    "https://images.pexels.com/photos/6919985/pexels-photo-6919985.jpeg",
-  aboutTeamFounderImage:
-    "https://images.pexels.com/photos/3094208/pexels-photo-3094208.jpeg?auto=compress&cs=tinysrgb&w=400",
-
-  // Fallbacks
-  categoryFallbackImage:
-    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&h=800&fit=crop",
-  reviewAvatarFallback:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
 } as const;
 
 export interface SiteFAQContent {

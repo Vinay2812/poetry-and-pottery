@@ -1,10 +1,10 @@
 // Public site content is hardcoded in src/consts/site-content.ts — edit values
 // there, not via the dashboard.
-import { SITE_DEFAULT_SEO, SITE_HOME_SEO } from "@/consts/site-content";
+import { SITE_SEO } from "@/consts/site-content";
 import type { Metadata } from "next";
 
 export function buildMetadataFromSeo(pageSlug: string): Metadata {
-  const seo = pageSlug === "home" ? SITE_HOME_SEO : SITE_DEFAULT_SEO;
+  const seo = SITE_SEO;
   return {
     title: seo.title,
     description: seo.description,
