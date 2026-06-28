@@ -712,6 +712,10 @@ export interface DailyWorkshopRegistrationDetailDialogProps {
   open: boolean;
   viewModel: DailyWorkshopRegistrationDetailViewModel | null;
   focusedSlotId: number | null;
+  statusValue: string;
+  statusOptions: { value: string; label: string }[];
+  isStatusUpdating: boolean;
+  onStatusChange: (status: string) => void;
   onOpenChange: (open: boolean) => void;
   onParticipantsChange: (participants: number) => void;
   onPricePerPersonChange: (pricePerPerson: number) => void;

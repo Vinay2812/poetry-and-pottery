@@ -3,6 +3,7 @@
 import {
   AlertCircleIcon,
   ArrowDownUpIcon,
+  ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   SearchIcon,
@@ -10,6 +11,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { Fragment } from "react";
 
 import { OptimizedImage } from "@/components/shared";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +32,7 @@ import {
 } from "@/components/ui/select";
 
 import { createDate } from "@/lib/date";
+import { cn } from "@/lib/utils";
 
 import { UserRole } from "@/graphql/generated/types";
 
@@ -39,16 +42,32 @@ interface UserRowProps {
   user: UserRowViewModel;
   onRoleChange: (userId: number, newRole: UserRole) => void;
   isPending: boolean;
+  isExpanded: boolean;
+  onToggleExpand: (userId: number) => void;
 }
 
-function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
+function UserCard({
+  user,
+  onRoleChange,
+  isPending,
+  isExpanded,
+  onToggleExpand,
+}: UserRowProps) {
   const hasActionsRequired =
     user.pendingOrdersCount > 0 || user.pendingRegistrationsCount > 0;
 
   return (
-    <Link
-      href={`/dashboard/users/${user.id}`}
-      className="block overflow-hidden rounded-xl border border-neutral-200 bg-white p-4 transition-colors hover:bg-neutral-50/50"
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => onToggleExpand(user.id)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggleExpand(user.id);
+        }
+      }}
+      className="block cursor-pointer overflow-hidden rounded-xl border border-neutral-200 bg-white p-4 transition-colors hover:bg-neutral-50/50"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -83,7 +102,7 @@ function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
             <DropdownMenuTrigger
               asChild
               disabled={isPending}
-              onClick={(e) => e.preventDefault()}
+              onClick={(e) => e.stopPropagation()}
             >
               <button className="shrink-0 focus:outline-none">
                 <Badge
@@ -171,22 +190,40 @@ function UserCard({ user, onRoleChange, isPending }: UserRowProps) {
             year: "numeric",
           })}
         </span>
-        <span className="text-sm font-medium text-neutral-600">
-          View Details →
-        </span>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/dashboard/users/${user.id}`}
+            onClick={(e) => e.stopPropagation()}
+            className="hover:text-primary text-sm font-medium text-neutral-600"
+          >
+            View details →
+          </Link>
+          <ChevronDownIcon
+            className={cn(
+              "size-4 text-neutral-400 transition-transform",
+              isExpanded && "rotate-180",
+            )}
+          />
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
-function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
+function UserRow({
+  user,
+  onRoleChange,
+  isPending,
+  isExpanded,
+  onToggleExpand,
+}: UserRowProps) {
   return (
-    <tr className="transition-colors hover:bg-neutral-50/50">
+    <tr
+      onClick={() => onToggleExpand(user.id)}
+      className="cursor-pointer transition-colors hover:bg-neutral-50/50"
+    >
       <td className="px-4 py-3">
-        <Link
-          href={`/dashboard/users/${user.id}`}
-          className="flex items-center gap-3"
-        >
+        <div className="flex items-center gap-3">
           {user.image ? (
             <div className="relative size-10 overflow-hidden rounded-full bg-neutral-100">
               <OptimizedImage
@@ -202,12 +239,12 @@ function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
             </div>
           )}
           <div>
-            <p className="hover:text-primary font-medium text-neutral-900">
+            <p className="font-medium text-neutral-900">
               {user.name || "Unnamed User"}
             </p>
             <p className="text-sm text-neutral-500">{user.email}</p>
           </div>
-        </Link>
+        </div>
       </td>
       <td className="px-4 py-3">
         {user.isCurrentUser ? (
@@ -218,7 +255,11 @@ function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
           </Badge>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild disabled={isPending}>
+            <DropdownMenuTrigger
+              asChild
+              disabled={isPending}
+              onClick={(e) => e.stopPropagation()}
+            >
               <button className="focus:outline-none">
                 <Badge
                   variant={user.role === UserRole.Admin ? "default" : "outline"}
@@ -282,11 +323,33 @@ function UserRow({ user, onRoleChange, isPending }: UserRowProps) {
         </span>
       </td>
       <td className="px-4 py-3 text-right">
-        <Link href={`/dashboard/users/${user.id}`}>
-          <Button variant="ghost" size="sm">
-            View
+        <div className="flex items-center justify-end gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleExpand(user.id);
+            }}
+            aria-label={isExpanded ? "Hide bookings" : "Show bookings"}
+            aria-expanded={isExpanded}
+          >
+            <ChevronDownIcon
+              className={cn(
+                "size-4 transition-transform",
+                isExpanded && "rotate-180",
+              )}
+            />
           </Button>
-        </Link>
+          <Link
+            href={`/dashboard/users/${user.id}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Button variant="ghost" size="sm">
+              View
+            </Button>
+          </Link>
+        </div>
       </td>
     </tr>
   );
@@ -300,6 +363,9 @@ export function UsersTable({
   onSortChange,
   onPageChange,
   onRoleChange,
+  expandedUserId,
+  onToggleExpand,
+  renderUserBookings,
 }: UsersTableProps) {
   return (
     <div className="space-y-4">
@@ -351,12 +417,20 @@ export function UsersTable({
       {/* Mobile: Cards */}
       <div className="space-y-3 md:hidden">
         {viewModel.users.map((user) => (
-          <UserCard
-            key={user.id}
-            user={user}
-            onRoleChange={onRoleChange}
-            isPending={isPending}
-          />
+          <div key={user.id}>
+            <UserCard
+              user={user}
+              onRoleChange={onRoleChange}
+              isPending={isPending}
+              isExpanded={expandedUserId === user.id}
+              onToggleExpand={onToggleExpand}
+            />
+            {expandedUserId === user.id && (
+              <div className="mt-2 rounded-xl border border-neutral-200 bg-white p-3">
+                {renderUserBookings(user.id)}
+              </div>
+            )}
+          </div>
         ))}
         {viewModel.users.length === 0 && (
           <div className="rounded-xl border border-neutral-200 bg-white py-12 text-center text-neutral-500">
@@ -393,12 +467,24 @@ export function UsersTable({
             </thead>
             <tbody className="divide-y divide-neutral-100">
               {viewModel.users.map((user) => (
-                <UserRow
-                  key={user.id}
-                  user={user}
-                  onRoleChange={onRoleChange}
-                  isPending={isPending}
-                />
+                <Fragment key={user.id}>
+                  <UserRow
+                    user={user}
+                    onRoleChange={onRoleChange}
+                    isPending={isPending}
+                    isExpanded={expandedUserId === user.id}
+                    onToggleExpand={onToggleExpand}
+                  />
+                  {expandedUserId === user.id && (
+                    <tr className="bg-neutral-50/40">
+                      <td colSpan={6} className="px-4 pb-4">
+                        <div className="rounded-xl border border-neutral-200 bg-white p-3">
+                          {renderUserBookings(user.id)}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               ))}
               {viewModel.users.length === 0 && (
                 <tr>

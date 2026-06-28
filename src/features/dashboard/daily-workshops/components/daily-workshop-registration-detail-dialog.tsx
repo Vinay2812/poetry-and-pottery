@@ -10,6 +10,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import type { DailyWorkshopRegistrationDetailDialogProps } from "../types";
 import { RegistrationEditableFields } from "./registration-editable-fields";
@@ -19,6 +26,10 @@ export function DailyWorkshopRegistrationDetailDialog({
   open,
   viewModel,
   focusedSlotId,
+  statusValue,
+  statusOptions,
+  isStatusUpdating,
+  onStatusChange,
   onOpenChange,
   onParticipantsChange,
   onPricePerPersonChange,
@@ -62,10 +73,41 @@ export function DailyWorkshopRegistrationDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-h-[85vh] flex-col gap-0 p-0 sm:max-w-xl">
         <DialogHeader className="shrink-0 border-b px-4 py-3">
-          <DialogTitle className="text-base">
-            Daily Workshop Details
-          </DialogTitle>
-          <p className="font-mono text-xs text-neutral-400">#{viewModel.id}</p>
+          <div className="flex items-center justify-between gap-3 pr-10">
+            <div className="min-w-0">
+              <DialogTitle className="text-base">
+                Daily Workshop Details
+              </DialogTitle>
+              <p className="font-mono text-xs text-neutral-400">
+                #{viewModel.id}
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-col items-end gap-1">
+              <span className="text-xs font-medium text-neutral-500">
+                Status
+              </span>
+              <Select
+                value={statusValue}
+                onValueChange={onStatusChange}
+                disabled={isStatusUpdating || viewModel.isPending}
+              >
+                <SelectTrigger className="h-8 w-[150px] text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {statusOptions.map((option) => (
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                      className="text-xs"
+                    >
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">

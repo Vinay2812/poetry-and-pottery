@@ -53,6 +53,29 @@ export interface EventFollowUpData {
   customerEmail: string;
 }
 
+export interface DailyWorkshopBookingData {
+  type: "daily-workshop";
+  registrationId: string;
+  workshopName: string;
+  dates: Array<Date | string>;
+  participants: number;
+  totalHours: number;
+  totalPieces: number;
+  amount: number;
+  customerName: string;
+  customerEmail: string;
+}
+
+export interface DailyWorkshopFollowUpData {
+  type: "daily-workshop-followup";
+  registrationId: string;
+  workshopName: string;
+  date: Date | string;
+  registrationStatus: string;
+  customerName: string;
+  customerEmail: string;
+}
+
 // Product request for archived/sold-out items
 export interface ProductRequestData {
   type: "product-request";
@@ -65,7 +88,10 @@ export interface ProductRequestData {
 }
 
 export type NotificationData = EventNotificationData | OrderNotificationData;
-export type FollowUpData = OrderFollowUpData | EventFollowUpData;
+export type FollowUpData =
+  | OrderFollowUpData
+  | EventFollowUpData
+  | DailyWorkshopFollowUpData;
 
 export async function sendEmailNotification(
   data: NotificationData,
@@ -175,6 +201,18 @@ export function openWhatsAppFollowUp(data: FollowUpData): void {
       `Name: ${data.customerName}\n` +
       `Email: ${data.customerEmail}\n\n` +
       `Please help me with an update on my order.`;
+  } else if (data.type === "daily-workshop-followup") {
+    const formattedDate = formatEventDateFull(data.date);
+    message =
+      `Hi! I have a query about my daily workshop registration:\n\n` +
+      `*Registration ID:* ${data.registrationId}\n` +
+      `*Workshop:* ${data.workshopName}\n` +
+      `*Date:* ${formattedDate}\n` +
+      `*Current Status:* ${data.registrationStatus}\n\n` +
+      `*My Details:*\n` +
+      `Name: ${data.customerName}\n` +
+      `Email: ${data.customerEmail}\n\n` +
+      `Please help me with an update on my registration.`;
   } else {
     const formattedDate = formatEventDateFull(data.eventDate);
     message =
@@ -188,6 +226,30 @@ export function openWhatsAppFollowUp(data: FollowUpData): void {
       `Email: ${data.customerEmail}\n\n` +
       `Please help me with an update on my registration.`;
   }
+
+  openWhatsAppUrl(message);
+}
+
+export function openWhatsAppDailyWorkshopBooking(
+  data: DailyWorkshopBookingData,
+): void {
+  const sessionsList = data.dates
+    .map((date) => `- ${formatEventDateFull(date)}`)
+    .join("\n");
+
+  const message =
+    `Hi! I would like to book the following daily workshop:\n\n` +
+    `*Workshop:* ${data.workshopName}\n` +
+    `*Registration ID:* ${data.registrationId}\n` +
+    `*Participants:* ${data.participants}\n` +
+    `*Total Hours:* ${data.totalHours}\n` +
+    `*Total Pieces:* ${data.totalPieces}\n` +
+    `*Amount:* Rs.${data.amount.toLocaleString()}\n\n` +
+    `*Session${data.dates.length > 1 ? "s" : ""}:*\n${sessionsList}\n\n` +
+    `*My Details:*\n` +
+    `Name: ${data.customerName}\n` +
+    `Email: ${data.customerEmail}\n\n` +
+    `Please confirm my booking.`;
 
   openWhatsAppUrl(message);
 }

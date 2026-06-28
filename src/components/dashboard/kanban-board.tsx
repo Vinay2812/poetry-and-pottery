@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AutoScrollActivator,
   DndContext,
   DragEndEvent,
   DragOverEvent,
@@ -255,6 +256,12 @@ export function KanbanBoard<T extends { id: string }>({
     <DndContext
       sensors={sensors}
       collisionDetection={rectIntersection}
+      autoScroll={{
+        activator: AutoScrollActivator.DraggableRect,
+        acceleration: 60,
+        interval: 5,
+        threshold: { x: 0.3, y: 0.2 },
+      }}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}

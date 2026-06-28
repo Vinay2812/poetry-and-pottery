@@ -53,6 +53,7 @@ export function RegistrationsBoardContainer({
     handleMove,
     handleCardClick,
     handleDialogOpenChange,
+    updateSelectedItem,
   } = useKanbanOptimisticBoard({
     items: registrations,
     columns: REGISTRATION_COLUMNS,
@@ -61,6 +62,20 @@ export function RegistrationsBoardContainer({
     getStatusColor: getRegistrationStatusColor,
     updateStatus: handleUpdateStatus,
   });
+
+  // The dialog persists the status change itself; here we just move the card
+  // to the matching column and keep the open dialog's data in sync.
+  const handleStatusChanged = useCallback(
+    (registrationId: string, newStatus: string) => {
+      if (selectedRegistration && selectedRegistration.id === registrationId) {
+        updateSelectedItem({
+          ...selectedRegistration,
+          status: newStatus as EventRegistrationStatus,
+        });
+      }
+    },
+    [selectedRegistration, updateSelectedItem],
+  );
 
   return (
     <RegistrationsBoard
@@ -71,6 +86,7 @@ export function RegistrationsBoardContainer({
       onMove={handleMove}
       onCardClick={handleCardClick}
       onDialogOpenChange={handleDialogOpenChange}
+      onStatusChanged={handleStatusChanged}
     />
   );
 }

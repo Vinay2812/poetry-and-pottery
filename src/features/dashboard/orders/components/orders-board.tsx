@@ -107,6 +107,7 @@ export function OrdersBoard({
   onMove,
   onCardClick,
   onDialogOpenChange,
+  onStatusChanged,
 }: OrdersBoardProps) {
   const renderOrderCard = useCallback(
     (order: AdminUserOrder, isDragging?: boolean) => {
@@ -141,6 +142,7 @@ export function OrdersBoard({
         order={selectedOrder}
         open={dialogOpen}
         onOpenChange={onDialogOpenChange}
+        onStatusChanged={onStatusChanged}
       />
     </div>
   );

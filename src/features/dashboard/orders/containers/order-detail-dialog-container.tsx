@@ -1,11 +1,15 @@
 "use client";
 
+import { useUIStore } from "@/store/ui.store";
 import { useCallback, useEffect, useState, useTransition } from "react";
+
+import { getOrderStatusOptions } from "@/lib/status-utils";
 
 import {
   useAdminUpdateOrderDiscountMutation,
   useAdminUpdateOrderItemDiscountMutation,
   useAdminUpdateOrderItemQuantityMutation,
+  useAdminUpdateOrderStatusMutation,
 } from "@/graphql/generated/graphql";
 
 import { OrderDetailDialog } from "../components/order-detail-dialog";
@@ -19,19 +23,69 @@ import {
   distributeDiscount,
 } from "../utils/order-calculations";
 
+const ORDER_STATUS_OPTIONS = getOrderStatusOptions();
+
 export function OrderDetailDialogContainer({
   order,
   open,
   onOpenChange,
+  onStatusChanged,
 }: OrderDetailDialogContainerProps) {
+  const { addToast } = useUIStore();
   const [isPending, startTransition] = useTransition();
   const [updateOrderDiscountMutation] = useAdminUpdateOrderDiscountMutation();
   const [updateOrderItemDiscountMutation] =
     useAdminUpdateOrderItemDiscountMutation();
   const [updateOrderItemQuantityMutation] =
     useAdminUpdateOrderItemQuantityMutation();
+  const [updateOrderStatusMutation] = useAdminUpdateOrderStatusMutation();
   const [editedItems, setEditedItems] = useState<Record<number, EditedItem>>(
     {},
+  );
+  const [status, setStatus] = useState<string>(order?.status ?? "");
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
+
+  // Keep the local status in sync when a different order is opened.
+  useEffect(() => {
+    if (order) {
+      setStatus(order.status);
+    }
+  }, [order]);
+
+  const handleStatusChange = useCallback(
+    async (nextStatus: string) => {
+      if (!order || nextStatus === status) return;
+
+      const previousStatus = status;
+      setStatus(nextStatus);
+      setIsStatusUpdating(true);
+      try {
+        const { data } = await updateOrderStatusMutation({
+          variables: { orderId: order.id, status: nextStatus },
+        });
+        if (data?.adminUpdateOrderStatus?.success) {
+          onStatusChanged(order.id, nextStatus);
+          addToast({ type: "success", message: "Order status updated." });
+        } else {
+          setStatus(previousStatus);
+          addToast({
+            type: "error",
+            message:
+              data?.adminUpdateOrderStatus?.error ||
+              "Failed to update order status.",
+          });
+        }
+      } catch {
+        setStatus(previousStatus);
+        addToast({
+          type: "error",
+          message: "Something went wrong. Please try again.",
+        });
+      } finally {
+        setIsStatusUpdating(false);
+      }
+    },
+    [order, status, updateOrderStatusMutation, onStatusChanged, addToast],
   );
 
   // Initialize edited items when order changes
@@ -168,6 +222,10 @@ export function OrderDetailDialogContainer({
     <OrderDetailDialog
       open={open}
       viewModel={viewModel}
+      statusValue={status}
+      statusOptions={ORDER_STATUS_OPTIONS}
+      isStatusUpdating={isStatusUpdating}
+      onStatusChange={handleStatusChange}
       onOpenChange={onOpenChange}
       onItemQuantityChange={handleItemQuantityChange}
       onItemDiscountChange={handleItemDiscountChange}

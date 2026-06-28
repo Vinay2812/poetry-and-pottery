@@ -38,6 +38,10 @@ export interface OrderViewModel {
 export interface OrderDetailDialogProps {
   open: boolean;
   viewModel: OrderViewModel | null;
+  statusValue: string;
+  statusOptions: { value: string; label: string }[];
+  isStatusUpdating: boolean;
+  onStatusChange: (status: string) => void;
   onOpenChange: (open: boolean) => void;
   onItemQuantityChange: (itemId: number, quantity: number) => void;
   onItemDiscountChange: (itemId: number, discount: number) => void;
@@ -52,6 +56,8 @@ export interface OrderDetailDialogContainerProps {
   order: OrderData | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  // Notifies the board so it can move the card to the new status column.
+  onStatusChanged: (orderId: string, newStatus: string) => void;
 }
 
 // Raw order data from the server.
@@ -92,6 +98,7 @@ export interface OrdersBoardProps {
   ) => Promise<void>;
   onCardClick: (order: AdminUserOrder) => void;
   onDialogOpenChange: (open: boolean) => void;
+  onStatusChanged: (orderId: string, newStatus: string) => void;
 }
 
 // Props for the OrdersBoardContainer.

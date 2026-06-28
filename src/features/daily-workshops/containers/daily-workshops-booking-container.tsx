@@ -9,9 +9,12 @@ import type {
   DailyWorkshopConfig,
 } from "@/data/daily-workshops/types";
 import { useAuthAction } from "@/hooks/use-auth-action";
+import { useUIStore } from "@/store/ui.store";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
+import { openWhatsAppDailyWorkshopBooking } from "@/lib/contact-business";
 import { createDate } from "@/lib/date";
 
 import { DailyWorkshopsBooking } from "../components/daily-workshops-booking";
@@ -33,6 +36,8 @@ export function DailyWorkshopsBookingContainer({
 }: DailyWorkshopsBookingContainerProps) {
   const router = useRouter();
   const { requireAuth } = useAuthAction();
+  const { user } = useUser();
+  const { addToast } = useUIStore();
   const { mutate: registerForDailyWorkshop, loading: isBooking } =
     useRegisterForDailyWorkshop();
 
@@ -263,10 +268,42 @@ export function DailyWorkshopsBookingContainer({
         return;
       }
 
+      const registration = result.data;
+      const customerEmail = user?.emailAddresses[0]?.emailAddress ?? "";
+      const customerName =
+        user?.fullName || user?.firstName || customerEmail || "Guest";
+
+      const sessionDates = [...registration.slots]
+        .map((slot) => slot.slot_start_at)
+        .sort((a, b) => createDate(a).getTime() - createDate(b).getTime());
+
+      // Send booking details to the business over WhatsApp to complete the booking.
+      openWhatsAppDailyWorkshopBooking({
+        type: "daily-workshop",
+        registrationId: registration.id.toUpperCase(),
+        workshopName: availability.config.name,
+        dates: sessionDates,
+        participants: registration.participants,
+        totalHours: registration.total_hours,
+        totalPieces: registration.total_pieces,
+        amount: registration.final_amount,
+        customerName,
+        customerEmail,
+      });
+
+      addToast({
+        type: "success",
+        message:
+          "Booking request submitted! Complete your booking via WhatsApp.",
+        duration: 5000,
+      });
+
       resetBookingSelection();
-      router.push(`/events/daily-workshops/${result.data.id}`);
+      router.push(`/events/daily-workshops/${registration.id}`);
     });
   }, [
+    addToast,
+    availability.config.name,
     clearSelectedSlots,
     effectiveParticipants,
     registerForDailyWorkshop,
@@ -277,6 +314,7 @@ export function DailyWorkshopsBookingContainer({
     selectedConfigId,
     selectedSlotStartTimes,
     setBookingError,
+    user,
   ]);
 
   const viewModel: DailyWorkshopsBookingViewModel = {

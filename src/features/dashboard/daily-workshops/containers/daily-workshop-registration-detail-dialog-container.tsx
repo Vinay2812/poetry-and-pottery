@@ -12,7 +12,11 @@ import { toast } from "sonner";
 
 import { createDate, formatCreatedAt, formatDateTimeLocal } from "@/lib/date";
 
-import { useAdminUpdateDailyWorkshopRegistrationDetailsMutation } from "@/graphql/generated/graphql";
+import {
+  useAdminUpdateDailyWorkshopRegistrationDetailsMutation,
+  useAdminUpdateDailyWorkshopRegistrationStatusMutation,
+} from "@/graphql/generated/graphql";
+import { DailyWorkshopRegistrationStatus } from "@/graphql/generated/types";
 
 import { DailyWorkshopRegistrationDetailDialog } from "../components/daily-workshop-registration-detail-dialog";
 import type {
@@ -24,6 +28,15 @@ import {
   inferSlotDurationMinutes,
   toSlotLabel,
 } from "../types";
+
+const DAILY_WORKSHOP_STATUS_OPTIONS: { value: string; label: string }[] = [
+  { value: DailyWorkshopRegistrationStatus.Pending, label: "Pending" },
+  { value: DailyWorkshopRegistrationStatus.Approved, label: "Approved" },
+  { value: DailyWorkshopRegistrationStatus.Paid, label: "Paid" },
+  { value: DailyWorkshopRegistrationStatus.Confirmed, label: "Confirmed" },
+  { value: DailyWorkshopRegistrationStatus.Cancelled, label: "Cancelled" },
+  { value: DailyWorkshopRegistrationStatus.Rejected, label: "Rejected" },
+];
 
 type SlotDraft = {
   id: number;
@@ -39,6 +52,10 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
   const [isPending, startTransition] = useTransition();
   const [updateRegistrationDetailsMutation] =
     useAdminUpdateDailyWorkshopRegistrationDetailsMutation();
+  const [updateRegistrationStatusMutation] =
+    useAdminUpdateDailyWorkshopRegistrationStatusMutation();
+  const [status, setStatus] = useState<string>(registration?.status ?? "");
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
   const [participants, setParticipants] = useState(1);
   const [pricePerPerson, setPricePerPerson] = useState(0);
   const [piecesPerPerson, setPiecesPerPerson] = useState(0);
@@ -59,6 +76,9 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
   }, [registration]);
 
   useEffect(() => {
+    if (registration) {
+      setStatus(registration.status);
+    }
     startTransition(() => {
       if (registration) {
         resetDraft();
@@ -67,6 +87,44 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
       }
     });
   }, [registration, resetDraft]);
+
+  const handleStatusChange = useCallback(
+    async (nextStatus: string) => {
+      if (!registration || nextStatus === status) return;
+
+      const previousStatus = status;
+      setStatus(nextStatus);
+      setIsStatusUpdating(true);
+      try {
+        const { data } = await updateRegistrationStatusMutation({
+          variables: { registrationId: registration.id, status: nextStatus },
+        });
+        const result = data?.adminUpdateDailyWorkshopRegistrationStatus;
+        if (result?.success) {
+          onRegistrationUpdated({
+            ...registration,
+            status: nextStatus as DailyWorkshopRegistrationStatus,
+          });
+          toast.success("Workshop status updated");
+        } else {
+          setStatus(previousStatus);
+          toast.error(result?.error ?? "Failed to update workshop status");
+        }
+      } catch (error) {
+        setStatus(previousStatus);
+        console.error("Failed to update workshop status:", error);
+        toast.error("Failed to update workshop status");
+      } finally {
+        setIsStatusUpdating(false);
+      }
+    },
+    [
+      registration,
+      status,
+      updateRegistrationStatusMutation,
+      onRegistrationUpdated,
+    ],
+  );
 
   const slotDurationMinutes = useMemo(() => {
     if (!registration) return 60;
@@ -260,6 +318,10 @@ export function DailyWorkshopRegistrationDetailDialogContainer({
       open={open}
       viewModel={viewModel}
       focusedSlotId={focusedSlotId}
+      statusValue={status}
+      statusOptions={DAILY_WORKSHOP_STATUS_OPTIONS}
+      isStatusUpdating={isStatusUpdating}
+      onStatusChange={handleStatusChange}
       onOpenChange={handleOpenChange}
       onParticipantsChange={handleParticipantsChange}
       onPricePerPersonChange={handlePricePerPersonChange}

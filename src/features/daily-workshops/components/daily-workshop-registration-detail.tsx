@@ -3,6 +3,7 @@
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
+import { WhatsAppContactButton } from "@/components/shared/whatsapp-contact-button";
 import { Badge } from "@/components/ui/badge";
 
 import { createDate } from "@/lib/date";
@@ -26,6 +27,7 @@ function formatDateTime(date: Date | string): string {
 export function DailyWorkshopRegistrationDetail({
   viewModel,
   onSelectDay,
+  onWhatsAppContact,
 }: DailyWorkshopRegistrationDetailProps) {
   return (
     <main className="pt-14 pb-24 lg:pt-20 lg:pb-12">
@@ -126,6 +128,19 @@ export function DailyWorkshopRegistrationDetail({
               totalHours={viewModel.totalHours}
               totalPieces={viewModel.totalPieces}
             />
+
+            {viewModel.showWhatsAppButton && (
+              <div className="bg-card border-border rounded-2xl border p-5 shadow-sm">
+                <h2 className="font-display text-base font-semibold text-neutral-900">
+                  Need help with your booking?
+                </h2>
+                <p className="mt-1 mb-4 text-sm text-neutral-500">
+                  Reach out to complete your booking or ask a question about
+                  your registration.
+                </p>
+                <WhatsAppContactButton onClick={onWhatsAppContact} />
+              </div>
+            )}
           </aside>
         </div>
       </div>

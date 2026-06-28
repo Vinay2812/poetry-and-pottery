@@ -103,6 +103,7 @@ export function RegistrationsBoard({
   onMove,
   onCardClick,
   onDialogOpenChange,
+  onStatusChanged,
 }: RegistrationsBoardProps) {
   const renderRegistrationCard = useCallback(
     (registration: AdminUserRegistration, isDragging?: boolean) => {
@@ -137,6 +138,7 @@ export function RegistrationsBoard({
         registration={selectedRegistration}
         open={dialogOpen}
         onOpenChange={onDialogOpenChange}
+        onStatusChanged={onStatusChanged}
       />
     </div>
   );

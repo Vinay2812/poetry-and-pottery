@@ -25,6 +25,10 @@ export interface RegistrationViewModel {
 export interface RegistrationDetailDialogProps {
   open: boolean;
   viewModel: RegistrationViewModel | null;
+  statusValue: string;
+  statusOptions: { value: string; label: string }[];
+  isStatusUpdating: boolean;
+  onStatusChange: (status: string) => void;
   onOpenChange: (open: boolean) => void;
   onPriceChange: (newPrice: number) => void;
   onDiscountChange: (newDiscount: number) => void;
@@ -39,6 +43,7 @@ export interface RegistrationDetailDialogContainerProps {
   registration: AdminUserRegistration | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onStatusChanged: (registrationId: string, newStatus: string) => void;
 }
 
 // Raw registration data from the server.
@@ -78,6 +83,7 @@ export interface RegistrationsBoardProps {
   ) => Promise<void>;
   onCardClick: (registration: AdminUserRegistration) => void;
   onDialogOpenChange: (open: boolean) => void;
+  onStatusChanged: (registrationId: string, newStatus: string) => void;
 }
 
 // Props for the RegistrationsBoardContainer.

@@ -1,10 +1,15 @@
 "use client";
 
+import { useUIStore } from "@/store/ui.store";
 import { useCallback, useEffect, useState, useTransition } from "react";
 
 import { formatCreatedAt, formatDateShort, formatTime } from "@/lib/date";
+import { getRegistrationStatusOptions } from "@/lib/status-utils";
 
-import { useAdminUpdateRegistrationDetailsMutation } from "@/graphql/generated/graphql";
+import {
+  useAdminUpdateRegistrationDetailsMutation,
+  useAdminUpdateRegistrationStatusMutation,
+} from "@/graphql/generated/graphql";
 
 import { RegistrationDetailDialog } from "../components/registration-detail-dialog";
 import type {
@@ -12,21 +17,30 @@ import type {
   RegistrationViewModel,
 } from "../types";
 
+const REGISTRATION_STATUS_OPTIONS = getRegistrationStatusOptions();
+
 export function RegistrationDetailDialogContainer({
   registration,
   open,
   onOpenChange,
+  onStatusChanged,
 }: RegistrationDetailDialogContainerProps) {
+  const { addToast } = useUIStore();
   const [isPending, startTransition] = useTransition();
   const [updateRegistrationDetailsMutation] =
     useAdminUpdateRegistrationDetailsMutation();
+  const [updateRegistrationStatusMutation] =
+    useAdminUpdateRegistrationStatusMutation();
   const [editedPrice, setEditedPrice] = useState<number>(0);
   const [editedDiscount, setEditedDiscount] = useState<number>(0);
   const [editedSeats, setEditedSeats] = useState<number>(1);
+  const [status, setStatus] = useState<string>(registration?.status ?? "");
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
 
   // Initialize edited values when registration changes
   useEffect(() => {
     if (registration) {
+      setStatus(registration.status);
       startTransition(() => {
         setEditedPrice(registration.price);
         setEditedDiscount(registration.discount);
@@ -34,6 +48,51 @@ export function RegistrationDetailDialogContainer({
       });
     }
   }, [registration]);
+
+  const handleStatusChange = useCallback(
+    async (nextStatus: string) => {
+      if (!registration || nextStatus === status) return;
+
+      const previousStatus = status;
+      setStatus(nextStatus);
+      setIsStatusUpdating(true);
+      try {
+        const { data } = await updateRegistrationStatusMutation({
+          variables: { registrationId: registration.id, status: nextStatus },
+        });
+        if (data?.adminUpdateRegistrationStatus?.success) {
+          onStatusChanged(registration.id, nextStatus);
+          addToast({
+            type: "success",
+            message: "Registration status updated.",
+          });
+        } else {
+          setStatus(previousStatus);
+          addToast({
+            type: "error",
+            message:
+              data?.adminUpdateRegistrationStatus?.error ||
+              "Failed to update registration status.",
+          });
+        }
+      } catch {
+        setStatus(previousStatus);
+        addToast({
+          type: "error",
+          message: "Something went wrong. Please try again.",
+        });
+      } finally {
+        setIsStatusUpdating(false);
+      }
+    },
+    [
+      registration,
+      status,
+      updateRegistrationStatusMutation,
+      onStatusChanged,
+      addToast,
+    ],
+  );
 
   const handlePriceChange = useCallback((newPrice: number) => {
     setEditedPrice(newPrice);
@@ -124,6 +183,10 @@ export function RegistrationDetailDialogContainer({
     <RegistrationDetailDialog
       open={open}
       viewModel={viewModel}
+      statusValue={status}
+      statusOptions={REGISTRATION_STATUS_OPTIONS}
+      isStatusUpdating={isStatusUpdating}
+      onStatusChange={handleStatusChange}
       onOpenChange={onOpenChange}
       onPriceChange={handlePriceChange}
       onDiscountChange={handleDiscountChange}

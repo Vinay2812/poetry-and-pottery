@@ -143,6 +143,7 @@ export interface DailyWorkshopRegistrationDetailViewModel {
   discount: number;
   pricePerPerson: number;
   tierLabel: string;
+  showWhatsAppButton: boolean;
 }
 
 export interface CancellationNoticeProps {
@@ -173,6 +174,7 @@ export interface PricingSidebarProps {
 export interface DailyWorkshopRegistrationDetailProps {
   viewModel: DailyWorkshopRegistrationDetailViewModel;
   onSelectDay: (dayKey: string) => void;
+  onWhatsAppContact: () => void;
 }
 
 export interface DailyWorkshopRegistrationDetailContainerProps {

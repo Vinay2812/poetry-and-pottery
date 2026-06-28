@@ -45,6 +45,7 @@ export function OrdersBoardContainer({ orders }: OrdersBoardContainerProps) {
     handleMove,
     handleCardClick,
     handleDialogOpenChange,
+    updateSelectedItem,
   } = useKanbanOptimisticBoard({
     items: orders,
     columns: ORDER_COLUMNS,
@@ -53,6 +54,20 @@ export function OrdersBoardContainer({ orders }: OrdersBoardContainerProps) {
     getStatusColor: getOrderStatusColor,
     updateStatus: handleUpdateStatus,
   });
+
+  // The dialog persists the status change itself; here we just move the card
+  // to the matching column and keep the open dialog's data in sync.
+  const handleStatusChanged = useCallback(
+    (orderId: string, newStatus: string) => {
+      if (selectedOrder && selectedOrder.id === orderId) {
+        updateSelectedItem({
+          ...selectedOrder,
+          status: newStatus as OrderStatus,
+        });
+      }
+    },
+    [selectedOrder, updateSelectedItem],
+  );
 
   return (
     <OrdersBoard
@@ -63,6 +78,7 @@ export function OrdersBoardContainer({ orders }: OrdersBoardContainerProps) {
       onMove={handleMove}
       onCardClick={handleCardClick}
       onDialogOpenChange={handleDialogOpenChange}
+      onStatusChanged={handleStatusChanged}
     />
   );
 }

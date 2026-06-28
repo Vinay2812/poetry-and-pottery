@@ -10,6 +10,7 @@ import { UsersTable } from "../components/users-table";
 import type { UserSortOption } from "../types";
 import type { UsersTableContainerProps } from "../types";
 import { buildUsersTableViewModel } from "../types";
+import { UserBookingsAccordionContainer } from "./user-bookings-accordion-container";
 
 export function UsersTableContainer({
   data,
@@ -21,6 +22,21 @@ export function UsersTableContainer({
   const [updateUserRoleMutation] = useAdminUpdateUserRoleMutation();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
+
+  const committedSearch = searchParams.get("search") ?? "";
+  const [expandedUserId, setExpandedUserId] = useState<number | null>(null);
+  const [trackedSearch, setTrackedSearch] = useState<string | null>(null);
+
+  // Auto-expand when a search narrows to exactly one user (e.g. a booking id).
+  // Adjusting state during render (instead of an effect) keeps it in sync with
+  // the committed search without an extra render pass, and still lets the admin
+  // manually toggle rows afterwards.
+  if (trackedSearch !== committedSearch) {
+    setTrackedSearch(committedSearch);
+    setExpandedUserId(
+      committedSearch && data.users.length === 1 ? data.users[0].id : null,
+    );
+  }
 
   const sortValue = (searchParams.get("sort") ||
     "pending_orders") as UserSortOption;
@@ -97,6 +113,20 @@ export function UsersTableContainer({
     [router, searchParams, startTransition],
   );
 
+  const handleToggleExpand = useCallback((userId: number) => {
+    setExpandedUserId((current) => (current === userId ? null : userId));
+  }, []);
+
+  const renderUserBookings = useCallback(
+    (userId: number) => (
+      <UserBookingsAccordionContainer
+        userId={userId}
+        matchQuery={committedSearch}
+      />
+    ),
+    [committedSearch],
+  );
+
   const handleRoleChange = useCallback(
     (userId: number, newRole: UserRole) => {
       startTransition(async () => {
@@ -126,6 +156,9 @@ export function UsersTableContainer({
       onSortChange={handleSortChange}
       onPageChange={handlePageChange}
       onRoleChange={handleRoleChange}
+      expandedUserId={expandedUserId}
+      onToggleExpand={handleToggleExpand}
+      renderUserBookings={renderUserBookings}
     />
   );
 }
