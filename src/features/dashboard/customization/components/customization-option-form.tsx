@@ -58,9 +58,14 @@ export function CustomizationOptionForm({
     defaultValues: formDefaults,
   });
 
+  // Re-sync the form only when a different option is loaded. Depending on
+  // `formDefaults` (a new object on every render) would reset the form on
+  // unrelated re-renders — e.g. when Next.js re-passes server props after a
+  // router.refresh — and clobber the admin's in-progress edits before save.
   useEffect(() => {
     reset(formDefaults);
-  }, [formDefaults, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewModel.id, reset]);
 
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
 
