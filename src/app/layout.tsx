@@ -13,7 +13,7 @@ import { RouteAnimationProvider } from "@/components/providers/route-animation-p
 
 import { SITE_METADATA_BASE, SITE_NAME } from "@/lib/seo";
 
-import "./globals.module.css";
+import "./styles/global.css";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
